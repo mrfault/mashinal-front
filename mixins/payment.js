@@ -41,15 +41,16 @@ export const PaymentMixin = {
     callUpdatePaidStatus(paid, text) {
       let type = paid ? 'success' : 'error';
       if (!paid) text = this.$t('try_again');
-      this.updatePaidStatus({ type, text, title: this.$t(`${type}_payment`) });
+      this.updatePaidStatus({type, text, title: this.$t(`${type}_payment`)}).then(r => {
+         console.log('Update Payment Status', r);
+      });
     },
     handlePayment(res, route = false, text = '', version = 'v1') {
-         console.log(res)
       if (!this.isMobileBreakpoint) {
         let size = ({ v1: 'width=494,height=718', v2: 'width=1042,height=725' })[version];
-        window.open((res?.redirect_url || res), 'purchaseservice', 'toolbar=yes,scrollbars=yes,resizable=yes,top=50,left=100,'+size);
-        let payment_id = res?.payment_id;
-
+        window.open((res?.data.redirect_url || res), 'purchaseservice', 'toolbar=yes,scrollbars=yes,resizable=yes,top=50,left=100,'+size);
+        let payment_id = res?.data?.payment_id;
+         console.log(payment_id);
         if (payment_id) {
           this.connectEcho(`purchase.${payment_id}`, false).listen('PurchaseInitiated', async (data) => {
             this.showPaymentModal = false;
@@ -85,14 +86,14 @@ export const PaymentMixin = {
                      stopListening();
                   });
                } else {
-                  this.$store.dispatch('fetchResetForm', false);
+                  await this.$store.dispatch('fetchResetForm', false);
                   this.callUpdatePaidStatus(paid, text);
                   stopListening();
                }
             } else {
               stopListening();
             }
-            if (data.payment.operation_key=='offer_payment_key' && paid) {
+            if (data.payment.operation_key === 'offer_payment_key' && paid) {
               setTimeout(() => {
                 this.$router.push('/offer');
               },2000)

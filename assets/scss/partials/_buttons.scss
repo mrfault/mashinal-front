@@ -364,6 +364,15 @@
       );
    }
 
+   &--blue-new-2 {
+      @include btn-style(
+         $color: $white,
+         $bg-color: $blue-new,
+         $bg-hover: $blue-new,
+         $border-color: $blue-new,
+      );
+   }
+
    &--blue-new-light {
       @include btn-style(
          $color: $grey-2-new,

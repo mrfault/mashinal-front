@@ -145,7 +145,7 @@
       </template>
 
       <template
-         v-if="!brief &&((!this.isMobileBreakpoint &&(announcement.status == 1 || announcement.has_monetization)) || needToPay)">
+         v-if="!brief &&(((announcement.status == 1 || announcement.has_monetization)) || needToPay)">
 <!--         <hr class="mt-3"-->
 <!--             v-if="needToPay ||-->
 <!--             (!this.isMobileBreakpoint && announcement.has_monetization && $auth.loggedIn) ||-->
@@ -480,6 +480,23 @@
 
          .price {
             margin-top: 90px;
+         }
+      }
+   }
+
+   .dark-mode {
+      .quick-info {
+         &__item {
+            border-color: #1B2434;
+            background-color: #1B2434;
+         }
+
+         &__contact {
+            &-info {
+               h2 {
+                  color: #EEF2F6;
+               }
+            }
          }
       }
    }

@@ -17,10 +17,7 @@
          :toggle="openModal"
          :title="$t('ads_balans')"
          :modal-class="'larger packages'"
-         @close="openModal = false"
-      >
-         <!--<h4 class="paymentMethods mb-3">{{ $t('payment_method') }}</h4>-->
-
+         @close="openModal = false">
          <div class="d-flex justify-content-between align-items-center">
             <form-radio
                :id="'1'"
@@ -29,6 +26,8 @@
                input-name="payment_type"
                v-model="payment_type"
                @change="payment_type = 'card'"
+               :radio-value="'card'"
+               :checked="true"
             />
             <form-radio
                :id="'2'"
@@ -37,32 +36,18 @@
                input-name="payment_type"
                v-model="payment_type"
                class="ml-2"
+               :radio-value="'balance'"
                @change="payment_type = 'balance'"
             />
          </div>
-
-<!--         <label class="radio-container">-->
-<!--            {{$t('pay_with_card')}}-->
-<!--            <input type="radio" name="payment_type" checked @change="payment_type = 'card'">-->
-<!--            <span class="checkmark"></span>-->
-<!--         </label>-->
-
-<!--         <label class="radio-container" v-if="this.$auth.loggedIn && totalBalance > 0">-->
-<!--            {{$t('balans')}}-->
-<!--            <input type="radio" name="payment_type" @change="payment_type = 'balance'">-->
-<!--            <span class="checkmark"></span>-->
-<!--         </label>-->
-
          <hr/>
-
          <div class="terminal-section" v-if="totalBalance > 0">
-<!--            {{ $t('balans') }}: <span style="margin-right: 20px;">{{ totalBalance }}</span>-->
-            {{ $t('package_price') }}: {{ selectedPackage?.price * duration }} AZN
+            {{ $t('package_price') }}: {{ unpaidAgreement?.package?.price * duration }} AZN
          </div>
 
          <hr v-if="totalBalance < 1" />
          <div class="terminal-section" v-if="totalBalance < 1">
-            {{ $t('package_price') }} {{ getAgreements[0]?.price || selectedPackage?.price * duration }} AZN
+            {{ $t('package_price') }} {{ unpaidAgreement?.package?.price  * duration }} AZN
          </div>
 
          <div class="modal-sticky-bottom">
@@ -106,6 +91,7 @@
                   package_id: this.unpaidAgreement.package.id,
                   payment_type: this.payment_type,
                   name: this.user?.autosalon?.name,
+                  agreement_id: this.unpaidAgreement.id,
                   days_type: this.duration
                };
 
@@ -127,7 +113,7 @@
                      title: this.$t('success_payment')
                   });
                } else {
-                  await this.handlePayment(res, this.$localePath('/agreement'));
+                  await this.handlePayment(res, this.$localePath('/profile/agreement'));
                   this.pending = this.openModal = false;
                }
             } catch (error) {
