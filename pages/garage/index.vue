@@ -25,6 +25,7 @@
                         maxlength="9"
                         type="text"
                         @input="onInputChange"
+                        @keypress="validateInput"
                      >
                      <inline-svg src="/new-icons/fi_search.svg"/>
                   </div>
@@ -45,11 +46,11 @@
                         v-for="(car, index) in carsList"
                         :key="index + 98237492"
                         :class="{
-            'ma-penalty-number-chip--active': selectedCar == car,
-            'ma-penalty-number-chip--disabled': car.sync_status !== 1,
-            'ma-penalty-number-chip--active--disabled':
-              selectedCar == car && car.sync_status !== 1
-          }"
+                           'ma-penalty-number-chip--active': selectedCar == car,
+                           'ma-penalty-number-chip--disabled': car.sync_status !== 1,
+                           'ma-penalty-number-chip--active--disabled':
+                             selectedCar == car && car.sync_status !== 1
+                         }"
                         class="ma-penalty-number-chip"
                         @click="selectCar(car)"
                      >
@@ -86,11 +87,11 @@
                      </template>
                   </div>
 
-                  <div class="ma-penalties__card--body">
+                  <div class="ma-penalties__card--body" v-if="carsList.length">
                      <div v-if="activeCardTab == 0" class="ma-penalties__card--body__penalties">
 
                         <!--                                loading-->
-                        <div v-if="loading && carsList.length && protocols && protocols.data && protocols.data.length">
+                        <div v-if="loading && protocols && protocols.data && protocols.data.length">
                            <loader/>
                         </div>
 
@@ -185,7 +186,8 @@
                            <div class="ma-penalties__card--actions">
                               <remove-vehicle v-if="selectCar.sync_status !== 0" :vehicle="selectedCar"
                                               @selectedCarDeleted="getAllCarsList"/>
-                              <stop-subsribtion :vehicle="selectedCar" @carDeactivated="getAllCarsList"/>
+                              <stop-subsribtion v-if="selectedCar.sync_status == 1" :vehicle="selectedCar"
+                                                @carDeactivated="getAllCarsList"/>
                            </div>
                         </div>
                      </div>
@@ -224,88 +226,18 @@
                         </div>
                      </template>
                   </div>
-                  <div v-if="selectedCar && selectedCar.sync_status == 1" class="ma-penalties__card--actions">
+                  <div v-if="selectedCar" class="ma-penalties__card--actions">
                      <remove-vehicle :vehicle="selectedCar" @selectedCarDeleted="getAllCarsList"/>
-                     <stop-subsribtion :vehicle="selectedCar" @carDeactivated="getAllCarsList"/>
+                     <stop-subsribtion v-if="selectedCar.sync_status == 1" :vehicle="selectedCar"
+                                       @carDeactivated="getAllCarsList"/>
+                     <start-subsribtion v-if="selectedCar.sync_status !== 1" :vehicle="selectedCar"
+                                       @carDeactivated="getAllCarsList"/>
+
                   </div>
                </div>
             </div>
          </div>
 
-
-         <!--         payment modal-->
-         <modal-popup
-            :modal-class="!isMobileBreakpoint ? 'midsize': 'larger'"
-            :overflow-hidden="isMobileBreakpoint"
-            :title="$t('payment')"
-            :toggle="showPaymentModal"
-            @close="showPaymentModal = false"
-         >
-            <h4 class="mb-2">{{ $t('payment_method') }}</h4>
-            <div class="d-flex align-items-center justify-content-between">
-               <!--               <form-buttons v-model="paymentMethod" :options="paymentMethodOptions" :group-by="2"/>-->
-               <template v-for="(item,index) in paymentMethodOptions">
-                  <form-radio
-                     v-model="paymentMethod"
-                     :disabled="!user.balance"
-                     :group-by="2"
-                     :label="$t(item.name)"
-                     :radio-value="item.key"
-                     style="width: calc(50% - 8px)"
-                  />
-               </template>
-            </div>
-            <select-banking-card
-               v-show="paymentMethod === 'card'"
-               :value="bankingCard"
-               class="mt-2 mt-lg-3"
-               @input="bankingCard = $event"
-            />
-            <div class="protocol-payment-modal__body--total-amount">
-               <p>{{ $t('total_payment_amount') }}</p>
-               <strong v-if="protocol.selected && protocol.selected.total">{{ protocol.selected.total }} AZN</strong>
-            </div>
-            <!--         <terminal-info-button popup-name="garage-add-popup"/>-->
-            <div :class="{ 'modal-sticky-bottom': isMobileBreakpoint }">
-               <div class="row">
-                  <div class="col-6">
-                     <button
-                        :class="[
-                                        'btn',
-                                        'btn--white',
-                                        'btn-dark-text',
-                                        'full-width',
-                                      ]"
-                        type="button"
-                        @click="showPaymentModal = false"
-                     >
-                        {{ $t('reject') }}
-                     </button>
-                  </div>
-                  <div v-if="protocol.selected" class="col-6">
-                     <!--                     <button-->
-                     <!--                        :class="['btn btn&#45;&#45;green full-width', { pending }]"-->
-                     <!--                        @click="getPayLink(protocol.selected)"-->
-                     <!--                     >-->
-                     <!--                        {{ $t('pay') }}-->
-                     <!--                     </button>-->
-                     <a
-                        v-if="paymentMethod == 'card'"
-                        :href="getPayLink(protocol.selected)"
-                        class="btn btn--green full-width"
-                        rel="noopener"
-                        target="_blank"
-                     >
-                        {{ $t('pay_online') }}
-                     </a>
-                     <button v-else class="btn btn--green full-width" @click="payFromBalance(protocol.selected)"
-                     >
-                        {{ $t('pay_from_balance') }}
-                     </button>
-                  </div>
-               </div>
-            </div>
-         </modal-popup>
 
 
          <!--         date change modal-->
@@ -391,6 +323,8 @@ import SelectBankingCard from "~/components/payments/SelectBankingCard";
 import ProtocolFiles from "~/components/garage/ProtocolFiles";
 import FsLightbox from 'fslightbox-vue';
 
+import StartSubsribtion from "~/components/garage/StartSubsribtion";
+
 export default {
    name: 'pages-garage-index',
    mixins: [UserDataMixin, MenusDataMixin, PaymentMixin],
@@ -411,6 +345,7 @@ export default {
       SelectBankingCard,
       ProtocolFiles,
       FsLightbox,
+      StartSubsribtion,
    },
    middleware: ['auth_general'],
    nuxtI18n: {
@@ -490,7 +425,7 @@ export default {
          }
       },
       isValidInput(text) {
-         const validCharactersRegex = /^[A-Za-z0-9-]*$/;
+         const validCharactersRegex = /^[A-Za-z0-9]*$/;
          return validCharactersRegex.test(text);
       },
       filterCarNumber() {
@@ -509,6 +444,14 @@ export default {
          );
 
          this.selectedCar = null;
+      },
+      validateInput(event) {
+         const enteredChar = event.key;
+         const validCharactersRegex = /^[A-Za-z0-9]*$/;
+
+         if (!validCharactersRegex.test(enteredChar)) {
+            event.preventDefault();
+         }
       },
       containsRussianLetters(text) {
          const russianLettersRegex = /[а-яА-ЯЁё]/;
@@ -577,17 +520,21 @@ export default {
 
       },
       selectCar(car) {
-         this.resetFields();
-         if (car.sync_status == 0) {
+
+         if (car.sync_status !== 1) {
             return
          } else {
-
-         this.loading = true;
-         this.selectedCar = car;
-         this.getCarProtocols();
-         this.protocol.selected = {};
-         this.activeCardTab = 0;
-         this.protocol.filteredList = [];
+            this.protocol.filteredList = [];
+            this.loading = true;
+            this.pending = true;
+            this.protocol.selected = {};
+            this.protocol.allSelected = [];
+            this.loading = true;
+            this.selectedCar = car;
+            this.getCarProtocols();
+            this.protocol.selected = {};
+            this.activeCardTab = 0;
+            this.protocol.filteredList = [];
          }
       },
       selectProtocol(protocol) {
@@ -610,8 +557,10 @@ export default {
       },
       async getAllCarsList() {
          console.log("--------------sadhajsdhjaks", "dispacth")
+         this.loading = true;
          const res = await this.$store.dispatch('garage/getCarList', {})
          this.carsList = res.data;
+         this.loading = false;
          this.setInitialSelectedCar();
       },
       async activatePaymentModal() {
@@ -620,11 +569,6 @@ export default {
       openPaymentModal() {
          // this.showPaymentModal = true;
          this.getPayLink(this.protocol.selected)
-      },
-      resetFields() {
-         this.protocol.selected = {};
-         this.pending = true;
-         this.loading = true;
       },
 
 
@@ -636,7 +580,7 @@ export default {
          if (this.haveBalanceToPay) {
             await Promise.all([this.$nuxt.refresh(), this.$auth.fetchUser()])
             this.pending = false
-            this.showPaymentModal = false
+            // this.showPaymentModal = false
             this.bankingCard = ''
             this.updatePaidStatus({
                type: 'success',
@@ -803,7 +747,7 @@ export default {
             filteredList: [],
          },
          showPaymentModal: false,
-         pending: false,
+         pending: true,
          name: 'pay_with_card',
          paymentOptions: [
             {

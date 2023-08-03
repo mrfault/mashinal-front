@@ -1,6 +1,6 @@
 <template>
    <div
-      :class="{'ma-penalties__card--body__penalties--item--active': protocol.isSelected}"
+      :class="[{'ma-penalties__card--body__penalties--item--active': protocol.isSelected}, classes]"
       class="ma-penalties__card--body__penalties--item"
       @click.prevent="selectProtocol(protocol)"
    >
@@ -48,6 +48,7 @@ export default {
    props: {
       protocol: Object,
       history: Boolean,
+      classes: String,
    },
    components: {
       customCheckbox,

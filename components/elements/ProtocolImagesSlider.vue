@@ -9,7 +9,7 @@
       </div>
       <div class="container wider">
          <div :class="['row', { 'has-sidebar': hasSidebar }]" @click.stop>
-            <div class="col-auto">
+            <div class="col-auto" >
                <button
                   id="slider-prev"
                   class="btn"
@@ -168,6 +168,7 @@ export default {
       announcement: {},
       currentSlide: Number,
       hasSidebar: Boolean,
+      isProtocol: Boolean
    },
    data() {
       return {

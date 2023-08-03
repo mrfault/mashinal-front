@@ -1,86 +1,150 @@
 <template>
    <div style="width: calc(50% - 6px)">
-      <button :class="['btn btn--light-outline full-width',{'d-none': hideButton }, { pending }]" type="button" @click="openFiles" style="min-height: 52px;border-radius: 8px">
+      <button :class="['btn btn--light-outline full-width',{'d-none': hideButton }, { pending }]"
+              style="min-height: 52px;border-radius: 8px"
+              type="button" @click="openFiles">
          {{ $t('watch_files') }}
       </button>
-      <div v-if="slides.main" v-touch:swipe.top="handleSwipeTop" class="inner-gallery-lightbox">
-         <template v-if="isMobileBreakpoint">
-            <FsLightbox
-               :key="lightboxKey"
-               :disableThumbs="true"
-               :onBeforeClose="onBeforeClose"
-               :onClose="refreshLightbox"
-               :onSlideChange="changeLightboxSlide"
-               :slide="currentSlide + 1"
-               :sources="slides.main"
-               :toggler="toggleFsLightbox"
-               :types="slides.types"
-            />
-         </template>
+      <template v-if="pending">
+         <loader/>
+      </template>
+      <template v-else>
+         <div v-if="slides.main" v-touch:swipe.top="handleSwipeTop" class="inner-gallery-lightbox">
 
-         <transition-group name="fade">
-            <template v-if="(showLightbox && isMobileBreakpoint) || (!isMobileBreakpoint && showImagesSlider)">
-               <div :key="0" class="blur-bg">
-                  <img v-if="slides.types[currentSlide] === 'image'" :src="$withBaseUrl(slides.thumbs[currentSlide])"
-                       alt=""/>
-               </div>
-               <div v-if="!isMobileBreakpoint" :key="1" class="blur-bg_slider">
-                  <protocol-images-slider
-                     :current-slide="currentSlide"
-                     :has-sidebar="true"
-                     :slides="slides"
-                     @close="closeLightbox"
-                     @slide-change="currentSlide = $event"
-                  >
-
-                     <template #sidebar>
-                        <div class="card garage_protocol-info">
-                           <div class="garage_protocol-titles">
-                              <h3 class="text-normal">{{ $readCarNumber(protocol.car_number) }}</h3>
-                              <h3 class="text-normal text-dark-blue-2">{{ getTitle(protocol) }}</h3>
-                              <hr/>
-                           </div>
-                           <div class="vehicle-specs">
-                              <div class="row">
-                                 <div v-for="(specs, i) in mainSpecs(protocol, true)"
-                                      :key="i + '6545'" class="col">
-                                    <ul>
-                                       <template v-for="(spec, key) in specs">
-                                          <li v-if="spec + 218" :key="key + '1546786'">
-                                             <span class="w-auto">{{ $t(key) }}</span>
-                                             <span>{{ spec }}</span>
-                                          </li>
-                                       </template>
-                                    </ul>
-                                 </div>
-                              </div>
-                           </div>
-                           <template v-if="protocol.can_pay && protocol.total > 0">
-                              <hr class="mb-auto"/>
-                              <div class="row">
-                                 <div class="col-6">
-                                                  <span class="total-price">
-                                                    <span>{{ $t('total') }}</span>
-                                                    <strong>{{ protocol.total }} ₼</strong>
-                                                  </span>
-                                 </div>
-                                 <div class="col-6">
-                                    <a :href="getPayLink(protocol)" class="btn btn--green full-width"
-                                       rel="noopener"
-                                       target="_blank">
-                                       {{ $t('pay_online') }}
-                                    </a>
-                                 </div>
-                              </div>
-                           </template>
-                        </div>
-                     </template>
-                  </protocol-images-slider>
-
-               </div>
+            <template v-if="isMobileBreakpoint">
+               <FsLightbox
+                  :key="lightboxKey"
+                  :disableThumbs="true"
+                  :onBeforeClose="onBeforeClose"
+                  :onClose="refreshLightbox"
+                  :onSlideChange="changeLightboxSlide"
+                  :slide="currentSlide + 1"
+                  :sources="slides.main"
+                  :toggler="toggleFsLightbox"
+                  :types="slides.types"
+               />
             </template>
-         </transition-group>
-      </div>
+
+            <transition-group name="fade">
+               <template v-if="(showLightbox && isMobileBreakpoint) || (!isMobileBreakpoint && showImagesSlider)">
+                  <div :key="0" class="blur-bg">
+                     <img v-if="slides.types[currentSlide] === 'image'" :src="$withBaseUrl(slides.thumbs[currentSlide])"
+                          alt=""/>
+                  </div>
+                  <div v-if="!isMobileBreakpoint" :key="1" class="blur-bg_slider">
+                     <protocol-images-slider
+                        :current-slide="currentSlide"
+                        :has-sidebar="true"
+                        :slides="slides"
+                        isProtocol
+                        @close="closeLightbox"
+                        @slide-change="currentSlide = $event"
+                     >
+
+                        <template #sidebar>
+                           <div>
+                              <div class="card garage_protocol-info">
+                                 <div class="w-100">
+                                    <div class="garage_protocol-titles">
+                                       <h2 class="ma-subtitle--lg" style="margin-bottom: 12px">{{
+                                             $t('penalty_info')
+                                          }}</h2>
+                                    </div>
+                                    <div class="vehicle-specs">
+                                       <div class="">
+                                          <div
+                                             class="ma-penalties__card--body__penalties--item bottom-border w-100"
+                                          >
+                                             <div class="ma-left">
+                                                <div class="ma-left__content">
+                                                   <p>{{ $t('number_plate_of_vehicle') }}</p>
+                                                </div>
+                                             </div>
+                                             <div class="ma-right" style="padding-left: 24px; text-align: right;">
+                                                <strong class="ma-right__amount">
+                                                   {{ $readCarNumber(protocol.car_number) }}
+                                                </strong>
+                                             </div>
+                                          </div>
+                                          <div
+                                             class="ma-penalties__card--body__penalties--item bottom-border w-100"
+                                          >
+                                             <div class="ma-left">
+                                                <div class="ma-left__content">
+                                                   <p>{{ $t('protocol_number') }}</p>
+                                                </div>
+                                             </div>
+                                             <div class="ma-right" style="padding-left: 24px; text-align: right;">
+                                                <strong class="ma-right__amount">
+                                                   {{ getTitle(protocol) }}
+                                                </strong>
+                                             </div>
+                                          </div>
+                                          <div v-for="(specs, i) in mainSpecs(protocol, true)"
+                                               :key="i + '6545'" class="">
+                                             <template v-for="(spec, key) in specs">
+                                                <div
+                                                   v-if="spec"
+                                                   class="ma-penalties__card--body__penalties--item bottom-border"
+                                                >
+                                                   <div v-if="spec" class="ma-left">
+                                                      <div class="ma-left__content">
+                                                         <p>{{ $t(key) }}</p>
+                                                      </div>
+                                                   </div>
+                                                   <div class="ma-right" style="padding-left: 24px; text-align: right;">
+                                                      <strong v-if="key == 'protocol_amount' " class="ma-right__amount">
+                                                         {{ spec }} AZN
+                                                      </strong>
+                                                      <strong v-else-if="key == 'pay_status' && spec == false"
+                                                              class="ma-right__amount"
+                                                              style="color: #039855">
+                                                         {{ $t('already_paid') }}
+                                                      </strong>
+                                                      <strong v-else-if="key == 'pay_status' && spec == true"
+                                                              class="ma-right__amount"
+                                                              style="color: #F81734">
+                                                         {{ $t('not_paid') }}
+                                                      </strong>
+                                                      <strong v-else class="ma-right__amount">
+                                                         {{ $t(spec) }}
+                                                      </strong>
+                                                   </div>
+                                                </div>
+                                             </template>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div v-if="protocol.can_pay && protocol.total > 0">
+
+                                       <div
+                                          class="ma-penalties__card--body__penalties--item no-borders  mt-0"
+                                          style="padding-bottom: 32px;"
+                                       >
+                                          <h6 class="ma-subtitle--md">{{ $t('total') }}</h6>
+                                          <h6 class="ma-subtitle--md">
+                                             {{ protocol.total }} AZN
+                                          </h6>
+                                       </div>
+
+                                       <a :href="getPayLink(protocol)" class="btn btn--green full-width"
+                                          rel="noopener"
+                                          target="_blank">
+                                          {{ $t('pay_online') }}
+                                       </a>
+
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </template>
+                     </protocol-images-slider>
+
+                  </div>
+               </template>
+            </transition-group>
+         </div>
+      </template>
    </div>
 </template>
 
@@ -99,7 +163,8 @@ export default {
    components: {
       ProtocolImagesSlider,
       FsLightbox,
-      ImagesSlider
+      ImagesSlider,
+
    },
    data() {
       return {
@@ -142,7 +207,7 @@ export default {
 
       async openFiles() {
          this.hideButton = true;
-         this.$emit('mediaOpened',true);
+         this.$emit('mediaOpened', true);
          if (this.files.din_id === this.protocol.din_id) {
             this.openLightbox();
             return;
@@ -201,7 +266,7 @@ export default {
             this.setBodyOverflow('scroll');
             this.showImagesSlider = false;
          }
-         this.$emit('mediaClosed',true)
+         this.$emit('mediaClosed', true)
       },
       handleSwipeTop() {
          if (document?.body?.classList.contains('zooming')) return;
@@ -253,3 +318,16 @@ export default {
    }
 }
 </script>
+
+<style lang="scss" scoped>
+.ma-left__content {
+   p {
+      font: 400 16px/20px 'TTHoves';
+   }
+}
+
+.ma-penalties__card--body__penalties--item {
+   padding-left: 0;
+   padding-right: 0;
+}
+</style>
