@@ -101,7 +101,6 @@ export default {
       }
 
       .btn {
-         width: auto;
          font-size: 14px;
          line-height: 18px;
          color: #039855;
@@ -109,6 +108,7 @@ export default {
          border: 1px solid #039855;
          background-color: transparent;
          border-radius: 8px;
+         width: 100%;
       }
 
       svg {
@@ -127,7 +127,7 @@ export default {
       width: 100%;
       height: 56px;
       font-weight: 600;
-      font-size: 20px;
+      font-size: 16px;
       line-height: 24px;
       color: #FFFFFF;
       border-top-left-radius: 4px;
@@ -141,7 +141,7 @@ export default {
       font-size: 20px;
       line-height: 25px;
       color: #081A3E;
-      margin-bottom: 20px !important;
+      margin-bottom: 50px !important;
       text-align: left;
    }
 

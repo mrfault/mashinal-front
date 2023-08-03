@@ -1,10 +1,11 @@
 <template>
    <div :class="['form-image', {'position-relative': autoSizing}]">
+
       <croppa :class="['croppa-image', {'auto-size': autoSizing, 'prevent-move': noImage}]"
               v-if="croppable"
               :key="refreshCroppa"
               v-model="croppaValue" placeholder=""
-              :initial-image="'https://dev.mashin.al/' +initialImage+'?v=2'"
+              :initial-image="image+'?v=2'"
               :accept="'image/*'"
               :canvas-color="'transparent'"
               :zoom-speed="15"
@@ -17,27 +18,30 @@
               :auto-sizing="autoSizing"
               :disable-drag-to-move="noImage"
               :disable-scroll-to-zoom="noImage"
-              @new-image="$emit('new-image')"
-      >
-         <span class="drop-file">
-           <span @click="removeCover" v-if="showRemoveButton && $store.getters.mySalon[type]">
-               <icon name="garbage"/>
-           </span>
+              @new-image="$emit('new-image')">
 
-            <button class="btn btn-white bg-white"  v-if="type === 'cover'" @click="croppaValue.chooseFile()">
-               <inline-svg src="/icons/camera.svg" :height="14"/> Örtük şəklini dəyiş
-            </button>
+      <span class="drop-file">
 
-<!--            <button class="btn btn-white bg-white ml-2" v-if="type === 'cover'" @click="croppable = !croppable">-->
-<!--               <inline-svg src="/icons/move.svg" :height="14"/> Sürüşdür-->
-<!--            </button>-->
+         <button class="btn btn-white bg-white" @click="removeCover" v-if="showRemoveButton && $store.getters.mySalon[type]">
+            <inline-svg src="/icons/trash.svg" :height="18"/>
+         </button>
+
+         <!--TODO-->
+         <button @click="removeImage" v-if="false">
+            <inline-svg src="/icons/trash.svg" :height="18"/>
+         </button>
+
+         <button class="btn btn-white bg-white ml-1" v-if="type === 'cover'" @click="croppaValue.chooseFile()">
+            Örtük şəklini dəyiş
+         </button>
+
          </span>
       </croppa>
 
       <template v-else>
          <input class="sr-only" type="file" accept="image/*" @change="filesDrop"/>
-         <loader v-if="preview === '' && !initialImage"/>
-         <img :src="preview || 'https://dev.mashin.al'+initialImage" alt="" v-else/>
+         <loader v-if="preview === '' && !image"/>
+         <img :src="preview || image" alt="" v-else/>
 
          <span class="drop-file">
 
@@ -76,6 +80,7 @@ export default {
    created() {
       this.$root.$refs.FormImage = this;
    },
+
    props: {
       refreshCroppa: 0,
       value: {},
@@ -85,7 +90,7 @@ export default {
       croppable: Boolean,
       width: Number,
       height: Number,
-      noImage: Boolean
+      noImage: Boolean,
    },
    mixins: [ImageResizeMixin],
    data() {
@@ -103,6 +108,13 @@ export default {
          set(value) {
             this.$emit('input', value);
          }
+      },
+      image() {
+         if (this.initialImage ) {
+            return (this.initialImage.includes('http') ? '' : 'https://dev.mashin.al/') + this.initialImage;
+         }
+
+         return this.initialImage;
       }
    },
    methods: {
@@ -116,7 +128,6 @@ export default {
       },
       async filesDrop(e) {
          e.preventDefault();
-
          let droppedFiles = e.target.files || e.dataTransfer.files;
 
          for (let i = 0; i < droppedFiles.length; i++) {
@@ -140,3 +151,20 @@ export default {
    }
 }
 </script>
+
+<style>
+.btn-white{
+   display: flex;
+   padding: 8px 10px;
+   align-items: center;
+   gap: 6px;
+   border-radius: 8px;
+   background: #FFF;
+}
+.btn--primary-outline{
+   height: 52px;
+   padding: 14px 16px 14px 16px;
+   border-radius: 8px;
+   gap: 8px;
+}
+</style>
