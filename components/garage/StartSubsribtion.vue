@@ -11,15 +11,15 @@
          type="button"
          @click="showModal = true"
       >
-         {{ $t('stop_subsciption') }}
+         {{ $t('subscribe') }}
       </button>
       <modal-popup
          :modal-class="!isMobileBreakpoint ? 'midsize': 'larger'"
-         :title="$t('stop_subsciption')"
+         :title="$t('subscribe')"
          :toggle="showModal"
          @close="showModal = false">
          <div class="remove-vehicle-modal">
-            <p>{{ $t('stop_subscription_desc1') }}</p>
+            <p>{{ $t('start_subscription_desc1') }}</p>
             <p class="remove-vehicle-modal__text-with-info">
                <inline-svg src="/icons/info-1.svg"/>
                {{ $t('remove_vehicle_desc2') }}
@@ -37,9 +37,9 @@
                   :class="{ 'pointer-events-none': pending }"
                   class="btn btn--white btn-dark-text"
                   type="button"
-                  @click="removeVehicle"
+                  @click="addVehicle"
                >
-                  {{ $t('stop_subsciption') }}
+                  {{ $t('subscribe') }}
                </button>
             </div>
 
@@ -95,23 +95,23 @@ export default {
    },
    methods: {
       ...mapActions({
-         deactivate: 'garage/deactivateCar'
+         activate: 'garage/activateCar'
       }),
-      async removeVehicle() {
+      async addVehicle() {
          if (this.pending) return;
          this.pending = true;
-         console.log("removeVehicle")
+         console.log("addVehicle")
          try {
-            console.log("removeVehicle try")
-            await this.deactivate({ id: this.vehicle.id });
-            console.log("removeVehicle response")
-            this.$toasted.success(this.$t('car_deactivated'));
+            console.log("addVehicle try")
+            await this.activate({ id: this.vehicle.id });
+            console.log("addVehicle response")
+            this.$toasted.success(this.$t('car_activated'));
             this.pending = false;
             this.showModal = false;
             this.scrollReset();
             this.$emit("carDeactivated", true)
          } catch (err) {
-            console.log("removeVehicle catch")
+            console.log("addVehicle catch")
             this.pending = false;
          }
       }
