@@ -22,8 +22,7 @@
                               package_type: unpaidAgreement.package.name,
                               start_date: $moment(unpaidAgreement.start_date).format('DD.MM.YYYY'),
                               end_date: $moment(unpaidAgreement.end_date).format('DD.MM.YYYY'),
-                              price: unpaidAgreement.price
-                           })"/>
+                              price: unpaidAgreement.price })"/>
                      </div>
                   </div>
                   <div class="row" v-if="getAgreements.length > 0">
@@ -111,7 +110,7 @@
                      :title="$t('unpaid_invoice')"
                      :unpaidAgreement="unpaidAgreement"
                      :subtitle="$t('unpaid_params', {
-                        package_type: unpaidAgreement.package.name[locale],
+                        package_type: unpaidAgreement.package.name,
                         start_date: $moment(unpaidAgreement.start_date).format('DD.MM.YYYY'),
                         end_date: $moment(unpaidAgreement.end_date).format('DD.MM.YYYY'),
                         price: unpaidAgreement.price })"/>

@@ -21,7 +21,7 @@
          :modal-class="!isMobileBreakpoint ? 'midsize': 'larger'"
          :title="$t('add_vehicle')"
          :toggle="showModal"
-         @close="showModal = false"
+         @close="closeModal"
       >
          <asan-login-button
             v-if="!hasAsanLoginCopy"
@@ -37,9 +37,9 @@
                <div class="text-input">
                   <input
                      v-model="form.car_number"
-                         v-mask="'99 - A{1,2} - 999'"
-                         :placeholder="$t('car_number')"
-                         @input="filterRussianLetters">
+                     v-mask="'99 - A{1,2} - 999'"
+                     :placeholder="$t('car_number')"
+                     @input="filterRussianLetters">
                </div>
             </div>
             <form-text-input
@@ -61,7 +61,7 @@
                                         'btn-dark-text',
                                       ]"
                   type="button"
-                  @click="showModal = false"
+                  @click="closeModal"
                >
                   {{ $t('reject') }}
                </button>
@@ -211,7 +211,7 @@ export default {
             )
          } else {
             // if (!hasAsanLogin) {
-            this.showModal = false
+            this.closeModal()
             this.showRedirect = true
             await this.asanLogin('garage/asan-cars')
             const data = await this.$axios.$get('/attorney/get_vehicle_list/false')
@@ -232,7 +232,7 @@ export default {
             })
             this.pending = false
             if (res.data?.price) {
-               this.showModal = false
+               this.closeModal()
                this.$v.$reset()
                this.price = res.data.price
                this.showPaymentModal = true
@@ -278,7 +278,7 @@ export default {
          }
       },
       manageModalsInLoading() {
-         this.showModal = false
+         this.closeModal()
       },
 
       filterRussianLetters(event) {
@@ -287,6 +287,13 @@ export default {
          const filteredValue = inputValue.replace(/[а-яА-Я]/g, '');
          this.form.car_number = filteredValue;
       },
+      closeModal() {
+         this.showModal = false;
+         this.form = {
+            car_number: '',
+            tech_id: '',
+         }
+      }
    },
    data() {
       return {
