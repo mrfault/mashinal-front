@@ -67,6 +67,7 @@
                                  <form-image
                                     v-model="form.avatar"
                                     :initial-image="getUserAvatar"
+                                    type="profile"
                                     croppable
                                     :width="72"
                                     :height="72"/>

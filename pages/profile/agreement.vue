@@ -57,11 +57,12 @@
                                  <template v-else>
                                     <button
                                        :class="['btn', 'btn-download', { pending }]"
-                                       :disabled="downloadInvoiceIsDisabled === 1"
+                                       v-bind:key="agreement.id"
+                                       :disabled="clicked.includes(agreement.id)"
                                        @click="downloadInvoice(agreement.id)">
                                        {{ $t('download_invoice') }}
-                                       <inline-svg :src="'/icons/loader1.svg'" v-if="downloadInvoiceIsDisabled === 1"/>
-                                       <inline-svg :src="'/icons/download1.svg'" v-if="downloadInvoiceIsDisabled === 0"/>
+                                       <inline-svg :src="'/icons/loader1.svg'" v-if="clicked.includes(agreement.id)"/>
+                                       <inline-svg :src="'/icons/download1.svg'" v-if="!clicked.includes(agreement.id)"/>
                                     </button>
                                  </template>
 
@@ -153,11 +154,12 @@
                                              <template v-else>
                                                 <button
                                                    :class="['btn', 'btn-download', { pending }]"
-                                                   :disabled="downloadInvoiceIsDisabled === 1"
+                                                   v-bind:key="agreement.id"
+                                                   :disabled="clicked.includes(agreement.id)"
                                                    @click="downloadInvoice(agreement.id)">
                                                    {{ $t('download_invoice') }}
-                                                   <inline-svg :src="'/icons/loader1.svg'" v-if="downloadInvoiceIsDisabled === 1"/>
-                                                   <inline-svg :src="'/icons/download1.svg'" v-if="downloadInvoiceIsDisabled === 0"/>
+                                                   <inline-svg :src="'/icons/loader1.svg'" v-if="clicked.includes(agreement.id)"/>
+                                                   <inline-svg :src="'/icons/download1.svg'" v-if="!clicked.includes(agreement.id)"/>
                                                 </button>
                                              </template>
                                           </div>
@@ -223,14 +225,16 @@
                         </button>
 
                         <button
-                           :class="['btn', 'btn-download', { pending }]"
                            v-else
-                           :disabled="downloadInvoiceIsDisabled === 1"
+                           :class="['btn', 'btn-download', { pending }]"
+                           v-bind:key="activeAgreementDetail.id"
+                           :disabled="clicked.includes(activeAgreementDetail.id)"
                            @click="downloadInvoice(activeAgreementDetail.id)">
                            {{ $t('download_invoice') }}
-                           <inline-svg :src="'/icons/loader1.svg'" v-if="downloadInvoiceIsDisabled === 1"/>
-                           <inline-svg :src="'/icons/download1.svg'" v-if="downloadInvoiceIsDisabled === 0"/>
+                           <inline-svg :src="'/icons/loader1.svg'" v-if="clicked.includes(activeAgreementDetail.id)"/>
+                           <inline-svg :src="'/icons/download1.svg'" v-if="!clicked.includes(activeAgreementDetail.id)"/>
                         </button>
+
                      </div>
 
                   </div>
@@ -260,7 +264,7 @@
                   v-if="this.$auth.loggedIn && totalBalance > 0"
                   :id="'2'"
                   :value="'balance'"
-                  :label="$t('balans') +' ('+totalBalance+' AZN)'"
+                  :label="$t('balans') +' ('+$readNumber(user.balance)+' AZN)'"
                   input-name="payment_type"
                   v-model="payment_type"
                   class="ml-2"
@@ -349,7 +353,8 @@ export default {
          pending: false,
          duration: 1,
          payment_type: 'card',
-         selectedPackage: {}
+         selectedPackage: {},
+         clicked: []
       }
    },
 
@@ -394,7 +399,7 @@ export default {
                this.openViewModal = false;
                this.openModal = false;
             } else {
-               await this.handlePayment(res, false, this.$t('success_payment'));
+               await this.handlePayment(res, this.$localePath('/profile/agreement'), this.$t('success_payment'));
                this.pending =  false;
                this.openViewModal = false;
                this.openModal = false;
@@ -408,6 +413,12 @@ export default {
 
          this.downloadInvoiceIsDisabled = 1;
 
+
+         this.clicked.push(id)
+         if (!id) {
+            return null;
+         }
+
          this.$axios.$get(`/invoice/${id}/download`, {responseType: 'blob'})
             .then(res => {
                const blob = new Blob([res], {type: 'application/pdf'});
@@ -416,7 +427,7 @@ export default {
                link.download = `invoice.pdf`;
                link.click();
                URL.revokeObjectURL(link.href);
-
+               this.clicked.pop(id);
                this.downloadInvoiceIsDisabled = 0;
             })
       },

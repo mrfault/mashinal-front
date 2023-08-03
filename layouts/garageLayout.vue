@@ -8,7 +8,7 @@
                   <NuxtLink :to="$localePath('garage-services')" class="ma-garage__nav--profile">
                      <div class="ma-garage__nav--profile__avatar">
                         <template v-if="user.avatar">
-                           <img :src="'https://dev.mashin.al/storage/'+user.avatar"/>
+                           <img :src="image" alt="user.full_name"/>
                         </template>
                         <h5 v-else class="ma-garage__nav--profile__name">{{ user.full_name.charAt(0) }}</h5>
                      </div>
@@ -94,6 +94,9 @@ export default {
       PageLayout
    },
    computed: {
+      image() {
+         return (this.user.avatar.includes('http') ? '' : 'https://dev.mashin.al/storage/') + this.user.avatar;
+      },
       garageNavs() {
          if (this.user.autosalon) {
             return [
@@ -173,8 +176,7 @@ export default {
    },
    methods: {
       isRouteActive(link) {
-         console.log("this.$route.path", this.$route.path, link)
-         if (this.$route.path == this.$localePath(link)) {
+         if (this.$route.path === this.$localePath(link)) {
             return true
          } else {
             return false

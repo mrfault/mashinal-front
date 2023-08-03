@@ -32,7 +32,7 @@
             <form-radio
                :id="'2'"
                :value="'balance'"
-               :label="$t('balans') +' ('+totalBalance+' AZN)'"
+               :label="$t('balans') +' ('+$readNumber(user.balance)+' AZN)'"
                input-name="payment_type"
                v-model="payment_type"
                class="ml-2"
