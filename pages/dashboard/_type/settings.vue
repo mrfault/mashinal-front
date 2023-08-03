@@ -193,22 +193,18 @@
                   </div>
                   <div class="col-md-6">
                      <div class="row">
+
                         <div class="col-md-12 pb-3">
                            <div class="change-avatar d-flex justify-content-center">
                               <div class="avatar-image">
                                  <form-image
-                                    :refreshCroppa="refreshCroppa"
-                                    @removeImage="removeImage"
-                                    type="logo"
                                     v-model="form.logo"
                                     :initial-image="getSalonImg('logo')"
-                                    :no-image="!hasLogo"
-                                    :width="isMobileBreakpoint ? 72 : 72"
-                                    :height="isMobileBreakpoint ? 72 : 72"
                                     croppable
+                                    :no-image="!hasLogo"
                                     @new-image="hasLogo = true"
-                                    :autoSizing="false"
-                                 />
+                                    :width="isMobileBreakpoint ? 72 : 72"
+                                    :height="isMobileBreakpoint ? 72 : 72"/>
                               </div>
                               <div class="avatar-content">
                                  <h4>{{$t('change_profile_pictures_text')}}</h4>
@@ -219,6 +215,8 @@
                               </div>
                            </div>
                         </div>
+
+
                         <div class="col-md-12" id="anchor-saved_gallery">
                            <form-gallery
                               itemClass="col-12 col-lg-1-8 mb-lg-3 mt-2 mb-2"

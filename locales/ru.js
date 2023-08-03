@@ -1491,7 +1491,7 @@ export default {
    polnyy: "Полный",
    polnyy_podkluchayemiy: "Полный подключаемый",
    popular: "Популярные",
-   most_popular: "Самый популярный",
+   most_popular: "Популярный",
    popular_options: "Популярные опции",
    position: "Расположение",
    post_for_free: "Разместить бесплатно",
