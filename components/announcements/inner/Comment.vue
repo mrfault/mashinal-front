@@ -35,4 +35,25 @@
          color: #202939;
       }
    }
+
+   .dark-mode {
+      .announcement-comment {
+         border-color: #1B2434;
+         background-color: #1B2434;
+
+         &__title {
+            color: #EEF2F6;
+         }
+
+         &__comment {
+            color: #EEF2F6;
+         }
+      }
+   }
+
+   @media (max-width: 385px) {
+      .announcement-comment {
+         padding: 16px;
+      }
+   }
 </style>

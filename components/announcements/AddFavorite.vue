@@ -160,4 +160,25 @@
          }
       }
    }
+
+   .dark-mode {
+      .favorite-btn {
+         border-color: #1B2434;
+         background-color: #1B2434;
+
+         span {
+            color: #EEF2F6;
+         }
+
+         .btn-favorite {
+            background-image: url('../../static/icons/star-favorite2-white-border-min.svg') !important;
+         }
+
+         &:hover {
+            button {
+               background-image: url('../../static/icons/star-favorite2-active-min.svg') !important;
+            }
+         }
+      }
+   }
 </style>

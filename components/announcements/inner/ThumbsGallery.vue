@@ -1,5 +1,5 @@
 <template>
-   <div class="inner-thumbs-gallery">
+   <div class="inner-thumbs-gallery d-none d-sm-block">
       <div class="swiper-container" v-swiper:thumbsSwiper="swiperOps">
          <div class="swiper-wrapper">
             <div class="swiper-slide" :key="index" v-for="(slide, index) in announcement?.media?.main">
@@ -41,14 +41,13 @@
       data() {
          return {
             swiperOps: {
-               slidesPerView: 6.5,
+               slidesPerView: 4.5,
                spaceBetween: 16,
                init: false,
                breakpoints: {
                   1024: {
-                     slidesPerView: 5,
-                     spaceBetween: 20,
-                  },
+                     slidesPerView: 6.5
+                  }
                },
             }
          }

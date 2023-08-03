@@ -60,7 +60,7 @@
             <div class="quick-info__contact-info">
                <h2>{{ contact.name }}</h2>
 
-               <address v-if="announcement.status != 3 && getAddress">{{ getAddress }}</address>
+               <address v-if="announcement.status !== 3 && getAddress">{{ getAddress }}</address>
 
                <p class="text-red" v-else>{{ $t('sold') }}</p>
 
@@ -107,42 +107,42 @@
          </div>
       </div>
 
-      <template v-if="isMobileBreakpoint">
-         <div class="more-data d-flex">
-            <span class="text-data">№ {{ announcement.id_unique }}</span>
-            <span class="text-data">
-             <icon name="eye"/>
-             {{ announcement.view_count }}
-             <icon name="cursor"/>
-             {{ announcement.open_count || announcement.show_phone_number_count }}
-             <icon name="star"/>
-             {{ announcement.favorites_count }}
-           </span>
-            <span class="text-data">
-          <icon name="calendar"/>
-          {{ announcement.humanize_created_at }}
-        </span>
-         </div>
-         <div class="status" v-if="announcement.status == 2">
-            <template v-if="needToPay">
-               {{ $t('need_pay') }}
-            </template>
-            <template v-else>
-               {{ $t('announcement_pending') }}
-            </template>
-         </div>
-         <div class="d-flex">
-            <share-it type="publish" class="btns"/>
+<!--      <template v-if="isMobileBreakpoint">-->
+<!--         <div class="more-data d-flex">-->
+<!--            <span class="text-data">№ {{ announcement.id_unique }}</span>-->
+<!--            <span class="text-data">-->
+<!--             <icon name="eye"/>-->
+<!--             {{ announcement.view_count }}-->
+<!--             <icon name="cursor"/>-->
+<!--             {{ announcement.open_count || announcement.show_phone_number_count }}-->
+<!--             <icon name="star"/>-->
+<!--             {{ announcement.favorites_count }}-->
+<!--           </span>-->
+<!--            <span class="text-data">-->
+<!--          <icon name="calendar"/>-->
+<!--          {{ announcement.humanize_created_at }}-->
+<!--        </span>-->
+<!--         </div>-->
+<!--         <div class="status" v-if="announcement.status == 2">-->
+<!--            <template v-if="needToPay">-->
+<!--               {{ $t('need_pay') }}-->
+<!--            </template>-->
+<!--            <template v-else>-->
+<!--               {{ $t('announcement_pending') }}-->
+<!--            </template>-->
+<!--         </div>-->
+<!--         <div class="d-flex">-->
+<!--            <share-it type="publish" class="btns"/>-->
 
-            <button
-               class="btn btn--dark-blue-2-outline full-width"
-               @click.stop="copyToClipboard($route.path)"
-            >
-               <icon name="link"/>
-               {{ $t('copy_to_clipboard') }}
-            </button>
-         </div>
-      </template>
+<!--            <button-->
+<!--               class="btn btn&#45;&#45;dark-blue-2-outline full-width"-->
+<!--               @click.stop="copyToClipboard($route.path)"-->
+<!--            >-->
+<!--               <icon name="link"/>-->
+<!--               {{ $t('copy_to_clipboard') }}-->
+<!--            </button>-->
+<!--         </div>-->
+<!--      </template>-->
 
       <template
          v-if="!brief &&(((announcement.status == 1 || announcement.has_monetization)) || needToPay)">

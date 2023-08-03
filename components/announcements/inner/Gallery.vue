@@ -142,6 +142,8 @@
                   </div>
 
                   <div class="blur-bg_slider" :key="2" v-else>
+<!--                     <pre>{{announcement?.media?.main}}</pre>-->
+
                      <images-slider
                         :announcement="announcement"
                         :current-slide="currentSlide"
@@ -228,34 +230,39 @@
             this.showInterior = !this.showInterior;
             this.lightboxKey++
             this.toggleFsLightbox = false
+
             setTimeout(() => {
                this.toggleFsLightbox = true;
             }, 1)
          },
+
          openLightbox(index) {
-            if (index || index === 0) {
-               this.currentSlide = index
-            }
+            if (index || index === 0) this.currentSlide = index;
+
             if (this.isMobileBreakpoint) {
-               this.showLightbox = true
-               this.toggleFsLightbox = !this.toggleFsLightbox
+               this.showLightbox = true;
+               this.toggleFsLightbox = !this.toggleFsLightbox;
             } else {
-               this.showImagesSlider = true
+               this.showImagesSlider = true;
             }
-            this.setBodyOverflow('hidden')
+            this.setBodyOverflow('hidden');
          },
+
          refreshLightbox() {
             this.onBeforeClose()
             this.lightboxKey++
          },
+
          onBeforeClose() {
             this.showLightbox = false
             this.setBodyOverflow('scroll')
          },
+
          changeSlide(index) {
             if (!this.showSlider) return
             this.gallerySwiper.slideTo(index, 0)
          },
+
          slidePrev() {
             if (!this.showSlider) return
             if (this.gallerySwiper.activeIndex === 0) {
@@ -263,6 +270,7 @@
             } else this.gallerySwiper.slidePrev()
             this.updateTouchEvents()
          },
+
          slideNext() {
             if (!this.showSlider) return
             if (this.announcement?.media?.main.length - 1 === this.gallerySwiper.activeIndex) {
@@ -270,14 +278,17 @@
             } else this.gallerySwiper.slideNext()
             this.updateTouchEvents()
          },
+
          changeLightboxSlide(fsBox) {
             this.currentSlide = fsBox.stageIndexes.current
             this.changeSlide(this.currentSlide)
          },
+
          getMediaByKey(media, key) {
             key = media[key] ? key : Object.keys(media)[0]
             return media[key] instanceof Array ? media[key].map((item) => this.$withBaseUrl(item)) : []
          },
+
          closeLightbox() {
             if (this.isMobileBreakpoint) {
                if (this.showLightbox) this.toggleFsLightbox = !this.toggleFsLightbox;
@@ -285,16 +296,20 @@
 
             this.setBodyOverflow('scroll');
          },
+
          handleSwipeTop() {
             if (document.body.classList.contains('zooming')) return
             //this.closeLightbox()
          },
+
          showYtVideo(index) {
             return this.announcement?.youtube_id && index === 1
          },
+
          getYtVideoImage(size) {
             return `https://img.youtube.com/vi/${this.announcement.youtube_id}/${size}default.jpg`
          },
+
          updateTouchEvents() {
             if (this.gallerySwiper.activeIndex > 0) {
                this.gallerySwiper.simulateTouch = this.isMobileBreakpoint
@@ -303,7 +318,7 @@
                this.gallerySwiper.simulateTouch = false
                this.gallerySwiper.allowTouchMove = false
             }
-         },
+         }
       },
 
       computed: {
@@ -400,12 +415,11 @@
             this.showImagesSlider = false
             if (this.showSlider) this.updateTouchEvents()
             this.refreshLightbox()
-         },
+         }
       },
 
       mounted() {
-         console.log(this.announcement)
-         let swiperTouchStartX
+         let swiperTouchStartX;
 
          this.$nextTick(() => {
             this.$nuxt.$on('switchInterior', () => {
@@ -457,7 +471,7 @@
 
             if (this.showSlider)
                this.$nuxt.$on('show-gallery-slide', this.changeSlide)
-            this.$nuxt.$on('show-lightbox', this.openLightbox)
+               this.$nuxt.$on('show-lightbox', this.openLightbox)
          })
       },
 
