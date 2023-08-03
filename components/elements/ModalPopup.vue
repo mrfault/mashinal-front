@@ -87,6 +87,64 @@
 </script>
 
 <style lang="scss">
+   .modal-popup {
+      &.exclude-popup {
+         max-width: 885px;
+         width: 100%;
+
+         .title {
+            margin-bottom: 34px;
+         }
+
+         .exclude-popup__grid {
+            display: grid;
+            grid-template-columns: 244px 244px 244px 52px;
+            gap: 16px;
+
+            &:not(:first-child) {
+               margin-top: 16px;
+            }
+
+            &:last-child {
+               grid-template-columns: 223px 223px 223px 115px;
+            }
+
+            &:nth-child(5) {
+               grid-template-columns: 244px 244px 244px 52px;
+            }
+         }
+
+         .form-counter {
+            display: flex;
+            gap: 12px;
+
+            .form-info {
+               border-radius: 8px;
+               border: 1px solid #CDD5DF;
+               background-color: transparent;
+               transition: all .3s;
+
+               i {
+                  color: #0F9AF0;
+                  font-weight: bold;
+               }
+
+               &:hover {
+                  border-color: #0F9AF0;
+               }
+            }
+         }
+
+         .btn {
+            svg {
+               path {
+                  stroke: #FFFFFF;
+               }
+            }
+         }
+      }
+   }
+
    .border-12 {
       border-radius: 12px;
    }

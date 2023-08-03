@@ -86,6 +86,13 @@
                         <template v-else-if="isProfilePage && announcement.status == 3">{{ $t('inactive') }}</template>
 
                      </div>
+
+                     <div
+                        v-if="announcement.is_external_salon"
+                        class="item-overlay__top--left_item"
+                     >
+                        {{ $t('external') }}
+                     </div>
                   </div>
 
                   <div

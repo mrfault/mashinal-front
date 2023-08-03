@@ -2439,6 +2439,7 @@ export default {
    country: "Ölkə",
    dont_drink_so_much: "Bir də bu qədər içmə",
    dashboard_external_salon: "Salon profili",
+   external: "Sifarişlə",
    external_salon: "Sifarişlə avto",
    "external-salons": "Sifarişlə avto",
    registration_marks: "Qeydiyyat nişanları",

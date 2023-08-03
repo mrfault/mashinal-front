@@ -1,7 +1,7 @@
 <template>
    <div class="cars-search-form form">
       <div class="cars-search-form__inner">
-         <div class="d-flex align-items-center justify-content-between mb-5">
+         <div class="cars-search-form__head d-flex align-items-center justify-content-between flex-column mb-5">
             <form-buttons
                class="announce_types"
                :options="getMileageOptions"
@@ -690,83 +690,80 @@
          :overflow-hidden="false"
          @close="showExcludeModal = false"
       >
-         <template>
-            <div class="col-12 mb-2" v-for="(key, index) in excludeRows" :key="key">
-               <div class="row">
-                  <div class="col-3 col-lg-4">
-                     <form-select
-                        :label="$t('mark')"
-                        :options="existsBrands"
-                        v-model="form.exclude_additional_brands[key]['brand']"
-                        @change="setBrandExclude($event, key)"
-                        has-search
-                     />
+         <div class="exclude-popup__inner">
+            <div class="exclude-popup__grid" v-for="(key, index) in excludeRows" :key="key">
+               <form-select
+                  :label="$t('mark')"
+                  :options="existsBrands"
+                  :input-placeholder="$t('mark_search')"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  has-search
+                  @change="setBrandExclude($event, key)"
+                  v-model="form.exclude_additional_brands[key]['brand']"
+               />
+
+               <form-select
+                  :label="$t('model')"
+                  :options="carModelsExclude[key]"
+                  :input-placeholder="$t('model_search')"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  v-model="form.exclude_additional_brands[key]['model']"
+                  :disabled="
+                         form.exclude_additional_brands[key]['brand'] &&
+                         !carModelsExclude[key].length
+                       "
+                  @change="setModelExclude($event, key)"
+                  has-search
+               />
+
+               <form-select
+                  :label="$t('generation')"
+                  :options="carGenerationsExclude[key]"
+                  :input-placeholder="$t('generation_search')"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  v-model="form.exclude_additional_brands[key]['generation']"
+                  :disabled="
+                 form.exclude_additional_brands[key]['model'] &&
+                 !carGenerationsExclude[key].length
+               "
+                  @change="setGenerationExclude($event, key)"
+                  has-search
+                  has-generations
+               />
+
+               <div class="form-counter">
+                  <div
+                     class="form-info w-100 h-52"
+                     v-if="canAddRowExclude(index)"
+                     @click="addSearchRowExclude(key)"
+                  >
+                     <icon name="plus" />
                   </div>
-                  <div class="col-3 col-lg-4">
-                     <form-select
-                        :label="$t('model')"
-                        :options="carModelsExclude[key]"
-                        v-model="form.exclude_additional_brands[key]['model']"
-                        :disabled="
-                      form.exclude_additional_brands[key]['brand'] &&
-                      !carModelsExclude[key].length
-                    "
-                        @change="setModelExclude($event, key)"
-                        has-search
-                     />
-                  </div>
-                  <div class="col-lg-4"
-                       :class="{ 'col-4': index === 0 || !canAddRowExclude(index),'col-3': canAddRowExclude(index) }">
-                     <div
-                        :class="[
-                      'row','flex-nowrap',
-                      {
-                        'has-add-btn': canAddRowExclude(index),
-                        'has-remove-btn': canRemoveRowExclude(),
-                      },
-                    ]"
-                     >
-                        <div class="col">
-                           <form-select
-                              :label="$t('generation')"
-                              :options="carGenerationsExclude[key]"
-                              v-model="form.exclude_additional_brands[key]['generation']"
-                              :disabled="
-                          form.exclude_additional_brands[key]['model'] &&
-                          !carGenerationsExclude[key].length
-                        "
-                              @change="setGenerationExclude($event, key)"
-                              has-search
-                              has-generations
-                           />
-                        </div>
-                        <div class="col-auto">
-                           <div class="form-counter">
-                              <div
-                                 class="form-info mr-1"
-                                 v-if="canAddRowExclude(index)"
-                                 @click="addSearchRowExclude(key)"
-                              >
-                                 <icon name="plus"/>
-                              </div>
-                              <div
-                                 class="form-info"
-                                 v-if="canRemoveRowExclude()"
-                                 @click="removeSearchRowExclude(key)"
-                              >
-                                 <icon name="minus"/>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
+
+                  <div
+                     class="form-info w-100 h-52"
+                     v-if="canRemoveRowExclude()"
+                     @click="removeSearchRowExclude(key)"
+                  >
+                     <icon name="minus" />
                   </div>
                </div>
             </div>
-            <div class="d-flex justify-content-end mr-1 mt-2">
-               <button @click="showExcludeModal = false;submitForm()" class="btn btn--green">OK</button>
-            </div>
-         </template>
+         </div>
+
+         <button
+            class="btn btn--green mt-4"
+            @click="showExcludeModal = false; submitForm()"
+         >
+            <span>{{ $t('save') }}</span>
+
+            <inline-svg src="/icons/check3.svg" />
+         </button>
       </modal-popup>
+
       <modal-popup
          :toggle="showIntervalModal"
          :title="$t('receive_notifications')"
@@ -1158,75 +1155,92 @@ export default {
 </script>
 
 <style lang="scss">
-.cars-search-form {
-   padding: 24px;
-   border-radius: 12px;
-   background-color: #FFFFFF;
+   .cars-search-form {
+      padding: 24px;
+      border-radius: 12px;
+      background-color: #FFFFFF;
 
-   &__grid {
-      display: grid;
-      grid-gap: 20px;
+      &__head {
+         gap: 32px;
+      }
+
+      &__grid {
+         display: grid;
+         grid-gap: 20px;
+
+         .form-group {
+            min-width: 0;
+         }
+      }
+
+      .form-buttons {
+         width: 100%;
+      }
+
+      .btns {
+         display: flex;
+         grid-gap: 12px;
+         height: 52px;
+
+         i {
+            &:before {
+               font-size: 14px;
+            }
+         }
+      }
+
+      .btn {
+         height: 52px;
+      }
+
+      .checkboxes {
+         display: flex;
+         align-items: center;
+         column-gap: 12px;
+         height: max-content;
+      }
 
       .form-group {
-         min-width: 0;
+         height: max-content;
       }
    }
 
-   .form-buttons {
-      &.announce_types {
-         .btn {
-            width: 110px;
+   .dark-mode {
+      .cars-search-form {
+         background-color: #1B2434;
+      }
+   }
+
+   @media (min-width: 992px) {
+      .cars-search-form {
+         .form-buttons {
+            width: unset !important;
+         }
+
+         &__head {
+            flex-direction: row !important;
+            gap: unset;
+
+            .announce_types {
+               .form-group {
+                  .btn {
+                     width: 120px !important;
+                  }
+               }
+            }
+         }
+
+         &__grid {
+            grid-template-columns: repeat(3, 1fr);
          }
       }
    }
 
-   .btns {
-      display: flex;
-      grid-gap: 12px;
-      height: 52px;
-
-      i {
-         &:before {
-            font-size: 14px;
+   @media (min-width: 1150px) {
+      .cars-search-form {
+         &__grid {
+            grid-template-columns: 230px 230px 230px 285px;
          }
       }
    }
-
-   .btn {
-      height: 52px;
-   }
-
-   .checkboxes {
-      display: flex;
-      align-items: center;
-      column-gap: 12px;
-      height: max-content;
-   }
-
-   .form-group {
-      height: max-content;
-   }
-}
-
-.dark-mode {
-   .cars-search-form {
-      background-color: #1B2434;
-   }
-}
-
-@media (min-width: 992px) {
-   .cars-search-form {
-      &__grid {
-         grid-template-columns: repeat(3, 1fr);
-      }
-   }
-}
-
-@media (min-width: 1150px) {
-   .cars-search-form {
-      &__grid {
-         grid-template-columns: 230px 230px 230px 285px;
-      }
-   }
-}
 </style>
