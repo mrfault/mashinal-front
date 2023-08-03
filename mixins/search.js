@@ -30,6 +30,9 @@ export const SearchMixin = {
                   this.$set(form, property, value);
             }
          }
+
+         console.log('form', form)
+
          return form;
       },
       setFormData(form = {}) {
@@ -129,12 +132,16 @@ export const SearchMixin = {
             this.gtagTrack('AW-600951956/Qeu4CILAyPIBEJSZx54C');
          } catch (e) {}
 
+         // this.getFormData().all_options = this.getFormData().all_options.reduce((acc, curr) => {
+         //    acc[curr.label] = curr.selected_key ? curr.selected_key : true;
+         //    return acc;
+         // }, {});
+
          // update route query params and search announcements
          let searchQuery = `${this.meta.param}=${encodeURI(JSON.stringify(this.getFormData()))}`;
          let searchUrl = `${this.$localePath(this.meta.path)}?${searchQuery}`;
          let searchSame = decodeURIComponent(searchUrl) === decodeURIComponent(this.$route.fullPath);
 
-         // console.log('searchQuery', searchQuery)
          // console.log('searchUrl', searchUrl)
 
          this.$emit('pending');
@@ -291,7 +298,7 @@ export const SearchMixin = {
          return this.routeName !== 'index' && !!this.$route.query[this.meta.param];
       },
 
-      getMileageOptions() {
+         getMileageOptions() {
          let zeroFirst = this.meta.type !== 'cars';
          return [
             {name: this.$t('all2'), key: zeroFirst ? 0 : 1},

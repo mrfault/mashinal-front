@@ -186,6 +186,8 @@
 
 <style lang="scss">
    .pages-cars-id {
+      margin-top: -30px;
+
       .bg-white {
          padding: 5px 0 32px 0;
       }
@@ -204,6 +206,14 @@
       }
    }
 
+   .dark-mode {
+      .pages-cars-id {
+         .bg-white {
+            background-color: transparent;
+         }
+      }
+   }
+
    @media (max-width: 1150px) {
       .pages-cars-id {
          &__info {
@@ -214,6 +224,17 @@
                   height: 400px;
                }
             }
+         }
+      }
+   }
+
+   @media (max-width: 992px) {
+      .pages-cars-id {
+         &__info {
+            display: flex;
+            flex-direction: column;
+            grid-template-columns: unset;
+
          }
       }
    }

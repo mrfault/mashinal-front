@@ -312,10 +312,6 @@
    </script>
 
 <style lang="scss">
-   .pages-salons-wrapper {
-      margin-top: 32px;
-   }
-
    .pages-salons {
       &.autosalon {
          padding-top: 56px;

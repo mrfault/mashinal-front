@@ -332,7 +332,7 @@
             line-height: 20px;
             color: #1B2434;
             white-space: nowrap;
-            margin-right: 8px;
+            margin-right: 13px;
          }
 
          &:hover {

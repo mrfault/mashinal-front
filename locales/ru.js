@@ -815,6 +815,7 @@ export default {
    featured_ads: "Рекомендуемые объявления",
    featured_ads_2: "Поднять",
    featured_ads_3: "Рекламное объявление",
+   featured_ads_4: "Рекламировать объявление",
    forgot_your_password: "Восстановить пароль",
    forklift: "Самопогрузчики",
    form_rating: "Внешний вид",
@@ -1425,6 +1426,7 @@ export default {
    pay_with_balance: "Баланс",
    pay_with_card: "Банковская карта",
    pay_with_terminal: "Оплата в терминалах",
+   pay_with_terminal_2: "Оплата в терминалах",
    payment: "Оплата",
    payment_amount: "Стоимость",
    payment_history: "История платежей",
@@ -2632,4 +2634,14 @@ export default {
    package_information: "Информация о моем пакете",
    package_refresh: "Обновить пакет",
    package_current: "Доступный пакет",
+
+
+   "subscription_registration_date_on_site":"Дата начала подписки на сайте",
+   "subscription_registration_end_date_on_site":"Дата окончания подписик на сайте",
+   "edition":"Изменить",
+   "remove_vehicle1":"Удалить транспортное средство",
+
+   "remove_vehicle_desc1":"Вы уверенны что хотите удалить выбранное ТС?",
+
+   "remove_vehicle_desc2":"Оплаченная сумма не подлежит возврату",
 };
