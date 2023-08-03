@@ -2026,7 +2026,7 @@ export default {
    update: "Исправить",
    updated: "Обновлено",
    invoice_date: "Дата счета",
-   invoice_number: "Номер - выставленного счета",
+   invoice_number: "Номер счета",
    type_of_service: "Тип обслуживания",
    status_and_date: "Статус и дата",
    USB: "USB",

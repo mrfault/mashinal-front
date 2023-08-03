@@ -96,45 +96,33 @@
 
          <h4 class="paymentMethods mb-3">{{ $t('payment_method') }}</h4>
 
-         <label class="radio-container">
-            {{$t('pay_with_card')}}
-            <input type="radio" name="payment_type" checked @change="payment_type = 'card'">
-            <span class="checkmark"></span>
-         </label>
-
-         <label class="radio-container" v-if="this.$auth.loggedIn && $readNumber(user.balance) > 0">
-            {{ $t('balans') }}
-            <input type="radio" name="payment_type" @change="payment_type = 'balance'">
-            <span class="checkmark"></span>
-         </label>
-
-<!--         <div class="d-flex justify-content-between align-items-center">-->
-<!--            <form-radio-->
-<!--               :id="'1'"-->
-<!--               :value="'card'"-->
-<!--               :label="$t('pay_with_card')"-->
-<!--               input-name="payment_type"-->
-<!--               v-model="payment_type"-->
-<!--               @change="payment_type = 'card'"-->
-<!--            />-->
-<!--            <form-radio-->
-<!--               :id="'2'"-->
-<!--               :value="'balance'"-->
-<!--               :label="$t('balans') +' ('+$readNumber(user.balance)+' AZN)'"-->
-<!--               input-name="payment_type"-->
-<!--               v-model="payment_type"-->
-<!--               class="ml-2"-->
-<!--               @change="payment_type = 'balance'"-->
-<!--            />-->
-<!--         </div>-->
+         <div class="d-flex justify-content-between align-items-center">
+            <form-radio
+               :id="'1'"
+               :value="'card'"
+               :label="$t('pay_with_card')"
+               input-name="payment_type"
+               v-model="payment_type"
+               @change="payment_type = 'card'"
+               :radio-value="'card'"
+               :checked="true"
+            />
+            <form-radio
+               v-if="this.$auth.loggedIn && $readNumber(user.balance) > 0"
+               :id="'2'"
+               :value="'balance'"
+               :label="$t('balans') +' ('+$readNumber(user.balance)+' AZN)'"
+               input-name="payment_type"
+               v-model="payment_type"
+               class="ml-2"
+               :radio-value="'balance'"
+               @change="payment_type = 'balance'"
+            />
+         </div>
 
          <hr v-if="$readNumber(user.balance) > 0" />
 
          <div class="wrapp">
-<!--            <div class="terminal-section" v-if="$readNumber(user.balance) > 0">-->
-<!--               {{ $t('balans') }}: <span style="margin-right: 20px;">{{ $readNumber(user.balance) }}</span>-->
-<!--            </div>-->
-
             <div class="terminal-section" v-if="$readNumber(user.balance) > 0">
                {{ $t('package_price') }}: <span>{{ selectedPackage?.price * duration }} AZN</span>
             </div>
@@ -206,8 +194,8 @@
 
       methods: {
          nextStep() {
-            this.$v.$touch();
-            if (this.$v.$error) return;
+            //this.$v.$touch();
+            //if (this.$v.$error) return;
 
             this.openModal = true;
          },
@@ -229,6 +217,8 @@
                data.agreement_id = this.getAgreements[0]?.id;
                delete data.name;
             }
+
+            console.log(data);
 
             try {
                const res = await this.$axios.$post(`${api}?is_mobile=${this.isMobileBreakpoint}`, data);
@@ -272,7 +262,13 @@
       mounted() {
          this.selectedPackage = JSON.parse(localStorage.getItem('selectedPackage'));
 
-         if (this.user?.autosalon?.name) this.salon_name = this.user?.autosalon?.name;
+         this.salon_name = this.user?.name;
+
+         // agreement_id
+         // autosalon_id
+         // days_type
+         // package_id
+         // payment_type
       },
 
       validations: {

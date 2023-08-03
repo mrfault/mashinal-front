@@ -9,7 +9,7 @@
          <component
             :is="isMobileBreakpoint ? 'mobile-screen' : 'div'"
             :bar-title="$t('agreements')"
-            @back="$router.push(pageRef || $localePath('/profile/agreement'))"
+            @back="$router.push(pageRef || $localePath('/garage-services'))"
             height-auto>
 
             <div class="row" v-if="!isMobileBreakpoint">
@@ -24,8 +24,8 @@
                   <table class="table" v-if="getAgreements.length > 0">
                      <thead>
                         <tr>
-                           <th class="text-center" v-if="!isMobileBreakpoint">{{ $t('invoice_date') }}</th>
                            <th class="text-center" v-if="!isMobileBreakpoint">{{ $t('invoice_number') }}</th>
+                           <th class="text-center" v-if="!isMobileBreakpoint">{{ $t('invoice_date') }}</th>
                            <th class="text-center" v-if="!isMobileBreakpoint">{{ $t('type_of_service') }}</th>
                            <th class="text-center">{{ $t('payment_amount') }}</th>
                            <th class="text-center">{{ $t('status_and_date') }}</th>
@@ -34,9 +34,9 @@
                      </thead>
                      <tbody>
                         <tr v-for="(agreement, i) in getAgreements" :key="i + 1">
-                           <td v-if="!isMobileBreakpoint">{{ $moment(agreement.start_date).format('DD.MM.YYYY') }}</td>
-                           <td class="text-center" v-if="!isMobileBreakpoint">{{ agreement.id }}</td>
-                           <td class="text-center" v-if="!isMobileBreakpoint">{{ agreement.package.name[locale] }} {{ $t('package3') }}</td>
+                           <td  class="text-center" v-if="!isMobileBreakpoint">{{ agreement.id }}</td>
+                           <td class="text-center" v-if="!isMobileBreakpoint">{{ $moment(agreement.start_date).format('DD.MM.YYYY') }}</td>
+                           <td class="text-center" v-if="!isMobileBreakpoint">{{ agreement.package.name }} {{ $t('package3') }}</td>
                            <td class="text-center">{{ agreement.price }} AZN</td>
                            <td class="text-center" :class="['status', {
                               'not_paid' : !agreement.payment.is_paid && !agreement.is_expired,
@@ -50,7 +50,7 @@
                                  <button
                                     class="btn btn-pay"
                                     v-if="!agreement.payment.is_paid || agreement.is_expired"
-                                    @click="openModal = true">
+                                    @click="paymentPackage(agreement)">
                                     {{ $t('pay') }}
                                  </button>
 
@@ -65,7 +65,7 @@
                                     </button>
                                  </template>
 
-                                 <button class="btn btn-view" @click="openViewPopup(agreement)">
+                                 <button class="btn btn-view ml-2" @click="openViewPopup(agreement)">
                                     {{ $t('view') }} <inline-svg :src="'/icons/eye1.svg'"/>
                                  </button>
                               </div>
@@ -96,7 +96,7 @@
                         <div class="accordion__header" @click="toggleAccordion(index)">
                            <div class="accordion__header__title w-100 d-flex align-items-center justify-content-between">
                               <div class="w-50">
-                                 {{ agreement.package.name[locale] }} {{ $t('package3') }}
+                                 {{ agreement.package.name }} {{ $t('package3') }}
                               </div>
                               <div class="w-50">
                                  <div class="badge" v-if="agreement.is_expired === false" :class="agreement.payment.is_paid ? 'badge-success' : 'badge-primary'">
@@ -114,8 +114,8 @@
                         </div>
                         <transition-expand>
                            <div v-if="activeAccordionIndex === index">
-                              <div class="accordion__body p-0">
-                                 <table>
+                              <div class="accordion__body p-0 pb-2">
+                                 <table class="table">
                                     <tr>
                                        <td>
                                           <div class="mobile-accordion-table-title">{{ $t('status_and_date') }}</div>
@@ -147,7 +147,7 @@
                                           <div class="d-flex w-100 align-items-center justify-content-start">
                                              <button class="btn btn-pay"
                                                 v-if="!agreement.payment.is_paid || agreement.is_expired"
-                                                @click="openModal = true">
+                                                @click="paymentPackage(agreement)">
                                                 {{ $t('pay') }}
                                              </button>
                                              <template v-else>
@@ -218,7 +218,7 @@
                         <button
                            class="btn btn-pay"
                            v-if="!activeAgreementDetail.payment.is_paid || activeAgreementDetail.is_expired"
-                           @click="openModal = true; openViewModal = false;">
+                           @click="paymentPackage(activeAgreementDetail)">
                            {{ $t('pay') }}
                         </button>
 
@@ -245,36 +245,47 @@
             @close="openModal = false">
             <h4 class="paymentMethods mb-3">{{ $t('payment_method') }}</h4>
 
-            <label class="radio-container">
-               {{ $t('pay_with_card') }}
-               <input type="radio" name="payment_type" checked @change="payment_type = 'card'">
-               <span class="checkmark"></span>
-            </label>
-
-            <label class="radio-container" v-if="this.$auth.loggedIn && totalBalance > 0">
-               {{ $t('balans') }}
-               <input type="radio" name="payment_type" @change="payment_type = 'balance'">
-               <span class="checkmark"></span>
-            </label>
+            <div class="d-flex justify-content-between align-items-center">
+               <form-radio
+                  :id="'1'"
+                  :value="'card'"
+                  :label="$t('pay_with_card')"
+                  input-name="payment_type"
+                  v-model="payment_type"
+                  @change="payment_type = 'card'"
+                  :radio-value="'card'"
+                  :checked="true"
+               />
+               <form-radio
+                  v-if="this.$auth.loggedIn && totalBalance > 0"
+                  :id="'2'"
+                  :value="'balance'"
+                  :label="$t('balans') +' ('+totalBalance+' AZN)'"
+                  input-name="payment_type"
+                  v-model="payment_type"
+                  class="ml-2"
+                  :radio-value="'balance'"
+                  @change="payment_type = 'balance'"
+               />
+            </div>
 
             <hr v-if="totalBalance > 0"/>
 
             <div class="terminal-section" v-if="totalBalance > 0">
-               {{ $t('balans') }}: <span style="margin-right: 20px;">{{ totalBalance }}</span>
-               {{ $t('package_price') }}: {{ selectedPackage?.price * duration }} AZN
+               {{ $t('package_price') }}: {{ activeAgreementDetail?.package?.price * duration }} AZN
             </div>
 
             <hr v-if="totalBalance < 1"/>
 
             <div class="terminal-section" v-if="totalBalance < 1">
-               {{ $t('package_price') }} {{ getAgreements[0]?.price || selectedPackage?.price * duration }} AZN
+               {{ $t('package_price') }} {{ activeAgreementDetail?.price || activeAgreementDetail?.package?.price * duration }} AZN
             </div>
 
             <div class="modal-sticky-bottom">
-               <hr/>
+               <hr />
                <div class="row">
                   <div class="col-12 col-lg-12 mt-2 mt-lg-0">
-                     <button :class="['btn btn--green full-width', { pending }]" @click="handleSubmit">
+                     <button :class="['btn btn--green full-width m-0', { pending }]"  @click="handleSubmit">
                         {{ $t('pay') }}
                      </button>
                   </div>
@@ -343,6 +354,12 @@ export default {
    },
 
    methods: {
+      paymentPackage(agreement) {
+         this.activeAgreementDetail = agreement;
+         this.selectedPackage = agreement.package;
+         this.openModal = true;
+         this.openViewModal = false;
+      },
       toggleAccordion(index) {
          if (this.activeAccordionIndex === index) {
             this.activeAccordionIndex = null
@@ -355,9 +372,10 @@ export default {
 
          let api = '/payment/package',
             data = {
-               package_id: this.findUnpaid.package.id,
+               package_id: this.activeAgreementDetail.package.id,
                payment_type: this.payment_type,
                name: this.user.autosalon.name,
+               agreement_id: this.activeAgreementDetail.id,
                days_type: this.duration
             };
 
@@ -371,9 +389,15 @@ export default {
                   // text: this.$t('announcement_paid'),
                   title: this.$t('success_payment')
                });
+
+               this.pending =  false;
+               this.openViewModal = false;
+               this.openModal = false;
             } else {
                await this.handlePayment(res, false, this.$t('success_payment'));
-               this.pending = this.openModal = false;
+               this.pending =  false;
+               this.openViewModal = false;
+               this.openModal = false;
             }
          } catch (error) {
             this.pending = false;
@@ -400,7 +424,6 @@ export default {
          this.openViewModal = true;
          this.activeAgreementDetail = agreement;
          this.activeAgreement = agreement.id;
-
       }
    },
 
@@ -441,7 +464,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.modal-popup.packages .form-group {
+   max-width: 100%;
+}
 .table  {
    border-collapse: separate;
    border:solid #CDD5DF 1px;
@@ -486,13 +511,28 @@ export default {
    margin-left: 5px;
    margin-right: 5px;
 }
-
 .btn:hover,
 .btn:focus {
    background-color: #fff;
    border: 1px solid #9b9fa7;
    color: #1F2937;
 }
+
+.modal-popup.packages .btn--green{
+   border-radius: 8px;
+   background: var(--success-600, #039855);
+   border: 1px solid var(--success-600, #039855);
+   color: #FFF;
+}
+
+.modal-popup.packages .btn--green:hover,
+.modal-popup.packages .btn--green:focus {
+   border-radius: 8px;
+   background: var(--success-600, #039855);
+   border: 1px solid var(--success-600, #039855);
+   color: #FFF;
+}
+
 .btn-download:disabled{
    background-color: #eee;
    cursor: not-allowed;
@@ -590,7 +630,6 @@ export default {
    width: 100%;
    border-radius: 12px;
    gap: 16px;
-   box-shadow: 0 0 24px 0 #0000001A;
    margin-top: 16px;
 }
 .accordion__header{
@@ -600,6 +639,11 @@ export default {
 .accordion__body{
    padding: 16px 24px 16px 24px;
    border-radius: 0 0 12px 12px;
+}
+.accordion__item{
+   border: 1px solid #eee;
+   border-radius: 8px;
+   box-shadow: 0 0 24px 0 #0000001A;
 }
 .accordion__item .accordion__header{
    padding: 16px 24px 16px 24px;
@@ -653,8 +697,8 @@ export default {
 }
 
 .badge.badge-primary{
-   background: #24282A;
-   border: 1px solid #24282A;
+   background: #EEF2F6;
+   border: 1px solid #EEF2F6;
    color: #24282A;
 }
 
@@ -730,6 +774,9 @@ export default {
    }
    .accordion__body{
       background: #1B2434;
+   }
+   .modal-sticky-bottom{
+      background: #1b2434!important
    }
 }
 </style>
