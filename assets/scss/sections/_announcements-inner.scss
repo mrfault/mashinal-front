@@ -588,7 +588,19 @@
 .images-slider {
    width: 100%;
    min-height: 690px;
-   padding-top: 40px;
+   margin-top: 100px;
+
+   &__close {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 52px;
+      height: 52px;
+      font-size: 13px;
+      border-radius: 50%;
+      background-color: #121926;
+      cursor: pointer;
+   }
 
    .iframe {
       padding-bottom: 62%;

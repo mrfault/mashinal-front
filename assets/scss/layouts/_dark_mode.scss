@@ -753,6 +753,14 @@
 
    .bg-white {
       background-color: $dark-light-new;
+
+      .announcements-grid {
+         &__item {
+            .item-details {
+               background-color: $dark-new;
+            }
+         }
+      }
    }
 }
 

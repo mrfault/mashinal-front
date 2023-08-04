@@ -47,7 +47,7 @@
                <h3 class="monetization-popup__title">{{ $t('payment_method') }}</h3>
 
                <div class="radio-items payment">
-                  <label class="radio-container" v-for="(item, index) in paymentMethods">
+                  <label class="radio-container" v-for="item in paymentMethods">
                      <div class="radio-container__description">
                         <h5>{{ item.name }}</h5>
                      </div>
@@ -63,13 +63,19 @@
                   </label>
 
                   <label
-                     v-if="this.$auth.loggedIn && this.user.balance > 10 && this.user.balance > this.price.value"
                      class="radio-container"
+                     v-if="this.$auth.loggedIn && this.user.balance > 10 && this.user.balance > this.price.value"
                   >
-                     {{ $t('balans') }}
+                     <div class="radio-container__description">
+                        <h5>{{ $t('balans') }}</h5>
+                     </div>
 
-                     <input :checked="paymentMethod=='balance'" name="payment_type" type="radio"
-                            @change="paymentMethod='balance'">
+                     <input
+                        :checked="paymentMethod === 'balance'"
+                        name="payment_type"
+                        type="radio"
+                        @change="paymentMethod = 'balance'"
+                     >
                      <span class="checkmark"></span>
                   </label>
                </div>

@@ -34,6 +34,7 @@
       <div class="overflow-hidden bg-white" v-if="mainAnnouncements.length">
          <grid
             :announcements="mainAnnouncements"
+            :itemDetailsDark="true"
             :pending="pending"
          >
             <template #cap>
@@ -89,7 +90,7 @@
                   </template>
 
                   <template #right>
-                     <nuxt-link :to="$localePath('/cars')">
+                     <nuxt-link :to="$localePath('/external-salons')">
                         <span>{{ $t('see_all') }}</span>
                         <icon name="arrow-right"/>
                      </nuxt-link>
@@ -111,7 +112,7 @@
                   </template>
 
                   <template #right>
-                     <nuxt-link :to="$localePath('/cars')">
+                     <nuxt-link :to="$localePath('/parts')">
                         <span>{{ $t('see_all') }}</span>
                         <icon name="arrow-right"/>
                      </nuxt-link>

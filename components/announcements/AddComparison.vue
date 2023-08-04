@@ -116,11 +116,7 @@
       span {
          font-size: 14px;
          color: #364152;
-         margin-right: 5px;
-      }
-
-      .btn-compare {
-
+         margin-right: 7px;
       }
 
       &:hover {
@@ -152,5 +148,30 @@
 
    .btn-compare-active {
       background-image: url('../../static/icons/compare-active.svg');
+   }
+
+   .dark-mode {
+      .compare-btn {
+         border-color: #1B2434;
+         background-color: #1B2434;
+
+         span {
+            color: #EEF2F6;
+         }
+
+         .btn-compare {
+            background-image: url('../../static/icons/compare-icon-white.svg');
+
+            &.btn-compare-active {
+               background-image: url('../../static/icons/compare-active.svg');
+            }
+         }
+
+         &:hover {
+            button {
+               background-image: url('../../static/icons/compare-active.svg') !important;
+            }
+         }
+      }
    }
 </style>

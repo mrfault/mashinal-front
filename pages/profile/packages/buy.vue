@@ -229,9 +229,11 @@
                      type: 'success',
                      // text: this.$t('announcement_paid'),
                      title: this.$t('success_payment')
-                  }, value);
+                  }, value).then(() => {
+                     window.location = this.$localePath('/profile/agreement');
+                  });
                } else {
-                  await this.handlePayment(res, this.$localePath('/agreement'));
+                  await this.handlePayment(res, this.$localePath('/profile/agreement'));
                   this.pending = this.openModal = false;
                }
             } catch (error) {
@@ -541,6 +543,10 @@
                }
             }
          }
+      }
+
+      .modal-sticky-bottom {
+         background-color: #1b2434;
       }
 
      .select-menu_label.selected {
