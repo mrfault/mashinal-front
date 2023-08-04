@@ -477,7 +477,7 @@ export const actions = {
 
    async fetchMonetizedCarsSearch({commit}, data = {}) {
       const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/car/monetized`, data.data);
-      commit("mutate", { property: "mainMonetized", value: res });
+      commit("mutate", { property: "monetizedCars", value: res });
    },
 
    async getAnnouncementInnerV2({commit}, id) {
