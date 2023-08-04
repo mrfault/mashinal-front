@@ -242,14 +242,14 @@
                      :label="$t('credit')"
                      :show-input="false"
                      input-name="exchange_possible"
-                     v-model="form.exchange_possible"
+                     v-model="form.credit"
                   />
 
                   <form-checkbox
                      :label="$t('exchange')"
                      :show-input="false"
                      input-name="credit"
-                     v-model="form.credit"
+                     v-model="form.exchange_possible"
                   />
 
                   <form-checkbox
@@ -379,11 +379,11 @@
 
                   <form-select
                      :label="$t('parameters')"
-                     v-model="form.all_options"
                      :options="popularOptions.map((p) => ({...p, key: $t(p.label), name: $t(p.label)}))"
                      :clear-placeholder="true"
                      :clear-option="false"
                      multiple
+                     v-model="form.all_options"
                   />
 
                   <button
