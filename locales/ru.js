@@ -2650,5 +2650,5 @@ export default {
 
    "confirmation_code":"Код подтверждения",
    "confirmation_code_desc":"Введите SMS-код отправленный на ваш номер"
-
+   "remove_announcement": "Удалить",
 };

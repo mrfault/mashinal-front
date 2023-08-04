@@ -5,7 +5,6 @@
       'login-forms--popup': popup,
       'login-in-attorney': inAttorney,
       'mx-0': true,
-      'w-100': true,
     }"
       @click.stop
    >

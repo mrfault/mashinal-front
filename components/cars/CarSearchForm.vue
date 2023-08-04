@@ -15,11 +15,11 @@
                :options="getSearchTabs"
                :group-by="2"
                :btnClass="'blue-new'"
-               v-model="form.searchType"
+               v-model="searchType"
             />
          </div>
 
-         <template v-if="form.searchType === 1">
+         <template v-if="searchType === 1">
             <template v-if="assistant">
                <div class="col-12">
                   <car-body-shortcuts v-model="formAssistant.body"/>
@@ -242,14 +242,14 @@
                      :label="$t('credit')"
                      :show-input="false"
                      input-name="exchange_possible"
-                     v-model="form.exchange_possible"
+                     v-model="form.credit"
                   />
 
                   <form-checkbox
                      :label="$t('exchange')"
                      :show-input="false"
                      input-name="credit"
-                     v-model="form.credit"
+                     v-model="form.exchange_possible"
                   />
 
                   <form-checkbox
@@ -379,11 +379,11 @@
 
                   <form-select
                      :label="$t('parameters')"
-                     v-model="form.all_options"
                      :options="popularOptions.map((p) => ({...p, key: $t(p.label), name: $t(p.label)}))"
                      :clear-placeholder="true"
                      :clear-option="false"
                      multiple
+                     v-model="form.all_options"
                   />
 
                   <button
@@ -848,13 +848,13 @@ export default {
          searchAppliedCustom: false,
          firstTimeUpdated: true,
          interval: 1440,
+         searchType: 1,
          form: {
             sorting: 'created_at_desc',
             additional_brands: {0: {}, 1: {}, 2: {}, 3: {}, 4: {}},
             exclude_additional_brands: {0: {}, 1: {}, 2: {}, 3: {}, 4: {}},
             all_options: {},
             announce_type: 1,
-            searchType: 1,
             external_salon: false,
             currency: 1,
             min_capacity: '',

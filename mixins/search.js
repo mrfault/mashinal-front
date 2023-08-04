@@ -155,7 +155,7 @@ export const SearchMixin = {
                if (this.routeName !== prevRouteName) {
                   if (scroll) {
                      setTimeout(() => {
-                        this.scrollTo('.announcements-sorting');
+                        this.scrollTo('.announcements-grid');
                      }, 100);
                   }
                }
@@ -166,7 +166,7 @@ export const SearchMixin = {
             });
          }
 
-         await this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'cars', data: this.getFormData() });
+         await this.$store.dispatch('fetchMonetizedCarsSearch', { data: this.getFormData() });
       },
       resetForm(submit = false) {
          this.setFormData({});

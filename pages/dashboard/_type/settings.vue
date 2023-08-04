@@ -1,17 +1,16 @@
 <!--suppress ALL -->
 <template>
-   <div class="pages-dashboard-settings">
+   <div class="pages-dashboard-settings garage">
       <portal to="breadcrumbs">
          <breadcrumbs :crumbs="crumbs"/>
       </portal>
-
       <component
          :is="isMobileBreakpoint ? 'mobile-screen' : 'div'"
          :bar-title="$t('user_information_edit')"
          @back="$router.push(pageRef || $localePath('/dashboard/'+$route.params.type))"
          height-auto>
          <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12 mt-lg-0 mt-3">
                <div class="card profile-settings-card p-0">
                   <div class="row flex-wrap position-relative cover-with-avatar_edit">
                      <div class="avatar_edit col-auto cover" id="anchor-cover">
@@ -55,7 +54,6 @@
                                     v-model="form.address"
                                     :invalid="isInvalid('address')"
                                     @change="removeError('address')"/>
-
                                  <pick-on-map-button
                                     :lat="form.lat"
                                     :lng="form.lng"
@@ -193,7 +191,6 @@
                   </div>
                   <div class="col-md-6">
                      <div class="row">
-
                         <div class="col-md-12 pb-3">
                            <div class="change-avatar d-flex justify-content-center">
                               <div class="avatar-image">
@@ -215,11 +212,8 @@
                               </div>
                            </div>
                         </div>
-
-
                         <div class="col-md-12" id="anchor-saved_gallery">
-                           <form-gallery
-                              itemClass="col-12 col-lg-1-8 mb-lg-3 mt-2 mb-2"
+                           <form-gallery-new
                               :maxFiles="24"
                               :initialFiles="initialFiles"
                               @change="filesOnChange"
@@ -238,9 +232,9 @@
 <script>
 import {mapGetters, mapActions} from 'vuex';
 import {ToastErrorsMixin} from '~/mixins/toast-errors';
-
 import PickOnMapButton from '~/components/elements/PickOnMapButton';
 import FormGallery from '~/components/forms/FormGallery';
+import FormGalleryNew from '~/components/forms/FormGalleryNew';
 
 export default {
    name: 'pages-dashboard-settings',
@@ -248,6 +242,7 @@ export default {
    components: {
       PickOnMapButton,
       FormGallery,
+      FormGalleryNew,
    },
    middleware: ['auth_general', 'auth_salon'],
    nuxtI18n: {
@@ -583,6 +578,19 @@ export default {
    }
    .avatar-content p {
       color: #CDD5DF;
+   }
+   .pages-dashboard-settings.garage{
+      .text-input input,
+      .text-input textarea,
+      .btn--primary-outline,
+      .text-input input{
+         background-color: #1b2434!important;
+         border: 1px solid #1b2434;
+      }
+      .select-menu .select-menu_label{
+         background-color: #1b2434!important;
+         border: 1px solid #1b2434;
+      }
    }
 }
 </style>

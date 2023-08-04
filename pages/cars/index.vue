@@ -138,7 +138,8 @@
                store.dispatch('getBodyOptions'),
                store.dispatch('getOptions'),
                store.dispatch('fetchBrandsList'),
-               store.dispatch('fetchMonetizedCars'),
+               // store.dispatch('fetchMonetizedCarsSearch'),
+               // store.dispatch('fetchMonetizedCars'),
 
                // get model options for brands
                ...Object.keys(post?.additional_brands || {})

@@ -114,7 +114,7 @@ export default {
             return (this.initialImage.includes('http') ? '' : 'https://dev.mashin.al/') + this.initialImage;
          }
 
-         return this.initialImage;
+         return 'https://dev.mashin.al/'+this.initialImage;
       }
    },
    methods: {
@@ -166,5 +166,17 @@ export default {
    padding: 14px 16px 14px 16px;
    border-radius: 8px;
    gap: 8px;
+}
+.dark-mode {
+   .btn-white{
+      background-color: #1b2434!important;
+      border: 1px solid #1b2434;
+      color: #fff;
+   }
+
+   .btn-white svg path{
+      //fill: #fff;
+      stroke: #fff;
+   }
 }
 </style>
