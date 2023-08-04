@@ -31,6 +31,13 @@
                   </div>
                </div>
             </div>
+            <div v-else class="w-100 d-flex justify-content-center">
+               <no-results
+                  :url="'/new-icons/no-car.svg'"
+                  darker
+               >
+               </no-results>
+            </div>
             <div v-show="carsList.length" class="ma-penalties__top--numbers">
                <div
                   id="carNumberContainer"
@@ -322,6 +329,7 @@ import AddCar from "~/components/garage/AddCar";
 import SelectBankingCard from "~/components/payments/SelectBankingCard";
 import ProtocolFiles from "~/components/garage/ProtocolFiles";
 import FsLightbox from 'fslightbox-vue';
+import NoResults from "~/components/elements/NoResults";
 
 import StartSubsribtion from "~/components/garage/StartSubsribtion";
 
@@ -346,6 +354,7 @@ export default {
       ProtocolFiles,
       FsLightbox,
       StartSubsribtion,
+      NoResults,
    },
    middleware: ['auth_general'],
    nuxtI18n: {
