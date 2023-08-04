@@ -2,12 +2,13 @@
    <div class="images-slider">
       <div class="toolbar">
          <span>{{ currentSlide + 1 }} / {{ slides.length }}</span>
-         <span class="cursor-pointer" @click.stop="$emit('close')"
-               style="background: #081a3e94; padding: 5px; border-radius: 5px; font-size: 13px; display: flex;">
-        <icon name="cross"/>
+
+         <div class="images-slider__close" @click.stop="$emit('close')">
+            <icon name="cross" />
             <!-- <inline-svg src="/icons/cross.svg" height="14" /> -->
-      </span>
+         </div>
       </div>
+
       <div class="container wider">
          <div :class="['row', { 'has-sidebar': hasSidebar }]" @click.stop>
             <div class="col-auto">
@@ -46,6 +47,7 @@
                   <icon name="chevron-down"/>
                </button>
             </div>
+
             <div class="col-auto">
                <div class="position-relative">
                   <div
@@ -109,6 +111,7 @@
 <!--                              </div>-->
 
 <!--                              <template v-else>-->
+                              asdsad
                                  <img alt="car_img" :src="`${slide.main_inner}?width=944`" class="swiper-lazy"/>
                                  <!--                      <loader />-->
 <!--                              </template>-->
@@ -140,6 +143,7 @@
                   </div>
                </div>
             </div>
+
             <div class="col-auto" v-if="hasSidebar">
                <slot name="sidebar"/>
             </div>
@@ -149,166 +153,168 @@
 </template>
 
 <script>
-import Interior360Viewer from "~/components/Interior360Viewer";
+   import Interior360Viewer from "~/components/Interior360Viewer";
 
-export default {
-   components: {
-      Interior360Viewer
-   },
-   props: {
-      slides: [],
-      announcement: {},
-      currentSlide: Number,
-      hasSidebar: Boolean,
-   },
-   data() {
-      return {
-         showFirst: false,
-         showInterior: false,
-         zoom: 0,
-         swiperOps: {
-            initialSlide: this.currentSlide,
-            allowTouchMove: false,
-            effect: 'fade',
-            fadeEffect: {
-               crossFade: true,
-            },
-            loop: false,
-            preloadImages: false,
-            lazy: {
-               loadPrevNext: false,
-               preloaderClass: 'loader',
-            },
-            keyboard: {
-               enabled: true,
-            },
-         },
-         thumbOps: {
-            initialSlide: this.currentSlide,
-            direction: 'vertical',
-            slidesPerView: 'auto',
-            spaceBetween: 20,
-            keyboard: {
-               enabled: true,
-               pageUpDown: true,
-            },
-         },
-         showIframe: true,
-      }
-   },
-
-   methods: {
-      slidePrev() {
-         if (this.imagesSwiper.activeIndex === 0) {
-            this.imagesSwiper.slideTo(this.slides.main.length - 1)
-         } else this.imagesSwiper.slidePrev()
-
-         this.updateTouchEvents()
+   export default {
+      components: {
+         Interior360Viewer
       },
-      slideNext() {
-         if (this.slides.main.length - 1 === this.imagesSwiper.activeIndex) {
-            this.imagesSwiper.slideTo(0)
-         } else this.imagesSwiper.slideNext()
 
-         this.updateTouchEvents()
+      props: {
+         slides: [],
+         announcement: {},
+         currentSlide: Number,
+         hasSidebar: Boolean,
       },
-      thumbsPrev() {
-         this.thumbsSwiper.slidePrev()
-      },
-      updateTouchEvents() {
-         if (this.imagesSwiper.activeIndex > 0) {
-            this.imagesSwiper.allowTouchMove = true
-         } else {
-            this.imagesSwiper.allowTouchMove = false
+
+      data() {
+         return {
+            showFirst: false,
+            showInterior: false,
+            zoom: 0,
+            swiperOps: {
+               initialSlide: this.currentSlide,
+               allowTouchMove: false,
+               effect: 'fade',
+               fadeEffect: {
+                  crossFade: true,
+               },
+               loop: false,
+               preloadImages: false,
+               lazy: {
+                  loadPrevNext: false,
+                  preloaderClass: 'loader',
+               },
+               keyboard: {
+                  enabled: true,
+               },
+            },
+            thumbOps: {
+               initialSlide: this.currentSlide,
+               direction: 'vertical',
+               slidesPerView: 'auto',
+               spaceBetween: 20,
+               keyboard: {
+                  enabled: true,
+                  pageUpDown: true,
+               },
+            },
+            showIframe: true,
          }
       },
-      thumbsNext() {
-         this.thumbsSwiper.slideNext()
-      },
-      changeSlide(index) {
-         this.imagesSwiper.slideTo(index, 0)
-      },
-      handleEscapeKey(e) {
-         if (e.key === 'Escape') {
-            this.$emit('close')
-         }
-         // if(e.key === "ArrowLeft") {
-         //   this.slidePrev();
-         //   //Left arrow pressed
-         // }
 
-         if (e.key === "ArrowRight" && this.slides.main.length - 1 === this.imagesSwiper.activeIndex) {
-            if (this.showFirst) {
-               this.imagesSwiper.slideTo(0);
-               this.showFirst = false;
-            } else {
-               this.showFirst = true;
-            }
-         }
-
-         if (e.key === "ArrowLeft" && this.imagesSwiper.activeIndex === 0) {
-            if (this.showFirst) {
+      methods: {
+         slidePrev() {
+            if (this.imagesSwiper.activeIndex === 0) {
                this.imagesSwiper.slideTo(this.slides.main.length - 1)
-               this.showFirst = false;
+            } else this.imagesSwiper.slidePrev()
+
+            this.updateTouchEvents()
+         },
+         slideNext() {
+            if (this.slides.main.length - 1 === this.imagesSwiper.activeIndex) {
+               this.imagesSwiper.slideTo(0)
+            } else this.imagesSwiper.slideNext()
+
+            this.updateTouchEvents()
+         },
+         thumbsPrev() {
+            this.thumbsSwiper.slidePrev()
+         },
+         updateTouchEvents() {
+            if (this.imagesSwiper.activeIndex > 0) {
+               this.imagesSwiper.allowTouchMove = true
             } else {
-               this.showFirst = true;
+               this.imagesSwiper.allowTouchMove = false
             }
-         }
+         },
+         thumbsNext() {
+            this.thumbsSwiper.slideNext()
+         },
+         changeSlide(index) {
+            this.imagesSwiper.slideTo(index, 0)
+         },
+         handleEscapeKey(e) {
+            if (e.key === 'Escape') {
+               this.$emit('close')
+            }
+            // if(e.key === "ArrowLeft") {
+            //   this.slidePrev();
+            //   //Left arrow pressed
+            // }
+
+            if (e.key === "ArrowRight" && this.slides.main.length - 1 === this.imagesSwiper.activeIndex) {
+               if (this.showFirst) {
+                  this.imagesSwiper.slideTo(0);
+                  this.showFirst = false;
+               } else {
+                  this.showFirst = true;
+               }
+            }
+
+            if (e.key === "ArrowLeft" && this.imagesSwiper.activeIndex === 0) {
+               if (this.showFirst) {
+                  this.imagesSwiper.slideTo(this.slides.main.length - 1)
+                  this.showFirst = false;
+               } else {
+                  this.showFirst = true;
+               }
+            }
+         },
       },
-   },
 
-   mounted() {
-      console.log('sssssssss',this.slides)
-      window.addEventListener('keydown', this.handleEscapeKey);
-      this.$nextTick(() => {
-         this.imagesSwiper.thumbs.swiper = this.thumbsSwiper
-         this.imagesSwiper.on('slideChange', () => {
-            this.showIframe = false
-            this.$refs.video?.[0]?.pause()
-            this.$nextTick(() => {
-               this.showIframe = true
+      mounted() {
+         window.addEventListener('keydown', this.handleEscapeKey);
+         this.$nextTick(() => {
+            this.imagesSwiper.thumbs.swiper = this.thumbsSwiper
+            this.imagesSwiper.on('slideChange', () => {
+               this.showIframe = false
+               this.$refs.video?.[0]?.pause()
+               this.$nextTick(() => {
+                  this.showIframe = true
 
-               this.$emit('slide-change', this.imagesSwiper.realIndex)
-               this.updateTouchEvents()
+                  this.$emit('slide-change', this.imagesSwiper.realIndex)
+                  this.updateTouchEvents()
 
 
+               })
+            })
+            let swiperTouchStartX
+            this.imagesSwiper.on('touchStart', (e) => {
+               if (e.type === 'touchstart') {
+                  swiperTouchStartX = e.touches[0].clientX
+               } else {
+                  swiperTouchStartX = e.clientX
+               }
+            })
+
+            this.imagesSwiper.on('touchEnd', (e) => {
+               const tolerance = 100
+               const totalSlidesLen = this.imagesSwiper.slides.length
+
+               const diff = (() => {
+                  if (e.type === 'touchend') {
+                     return e.changedTouches[0].clientX - swiperTouchStartX
+                  } else {
+                     return e.clientX - swiperTouchStartX
+                  }
+               })()
+
+               if (this.imagesSwiper.isBeginning && diff >= tolerance) {
+                  //this.gallerySwiper.slideTo(totalSlidesLen - 1);
+               } else if (this.imagesSwiper.isEnd && diff <= -tolerance) {
+                  setTimeout(() => {
+                     this.imagesSwiper.slideTo(0)
+                  }, 1)
+               }
             })
          })
-         let swiperTouchStartX
-         this.imagesSwiper.on('touchStart', (e) => {
-            if (e.type === 'touchstart') {
-               swiperTouchStartX = e.touches[0].clientX
-            } else {
-               swiperTouchStartX = e.clientX
-            }
-         })
+      },
 
-         this.imagesSwiper.on('touchEnd', (e) => {
-            const tolerance = 100
-            const totalSlidesLen = this.imagesSwiper.slides.length
-
-            const diff = (() => {
-               if (e.type === 'touchend') {
-                  return e.changedTouches[0].clientX - swiperTouchStartX
-               } else {
-                  return e.clientX - swiperTouchStartX
-               }
-            })()
-
-            if (this.imagesSwiper.isBeginning && diff >= tolerance) {
-               //this.gallerySwiper.slideTo(totalSlidesLen - 1);
-            } else if (this.imagesSwiper.isEnd && diff <= -tolerance) {
-               setTimeout(() => {
-                  this.imagesSwiper.slideTo(0)
-               }, 1)
-            }
-         })
-      })
-   },
-   beforeDestroy() {
-      window.removeEventListener('keydown', this.handleEscapeKey)
-   },
-}
+      beforeDestroy() {
+         window.removeEventListener('keydown', this.handleEscapeKey)
+      }
+   }
 </script>
 <style>
 .interior-btn {

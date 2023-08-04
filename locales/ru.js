@@ -1659,7 +1659,7 @@ export default {
    running_light: "Ходовые огни",
    rust_converter: "Тип",
    ryadnoe: "Рядное",
-   S_H: "Б/У",
+   S_H: "С пробегом",
    add_next: "Добавить {count} поиск",
    remove_search: "Удалить поиск",
    safe_type: "Тип",
@@ -2445,6 +2445,7 @@ export default {
    country: "Страна",
    dont_drink_so_much: "Не пей так много",
    dashboard_external_salon: "Профиль салона",
+   external: "По заказу",
    external_salon: "Авто по заказу",
    "external-salons": "Авто по заказу",
    registration_marks: "Регистрационные номера",
@@ -2644,4 +2645,5 @@ export default {
    "remove_vehicle_desc1":"Вы уверенны что хотите удалить выбранное ТС?",
 
    "remove_vehicle_desc2":"Оплаченная сумма не подлежит возврату",
+   "login_mobile_desc": "Введите номер телефона" 
 };

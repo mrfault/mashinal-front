@@ -37,16 +37,16 @@
 
                   <site-banner v-if="!isMobileBreakpoint" class="mb-3" type="in-announcement"/>
 
-                  <comment :comment="announcement.comment" v-if="isMobileBreakpoint">
-                     <template #after v-if="hasComplects || getCarHealth">
-                        <hr v-if="announcement.comment"/>
-                        <template v-if="getCarHealth">
-                           <damage-options :selected="getCarHealth" read-only v-if="false"/>
-                           <hr v-if="hasComplects"/>
-                        </template>
-                        <car-complects :options="getComplectOptions" v-if="hasComplects"/>
-                     </template>
-                  </comment>
+<!--                  <comment :comment="announcement.comment" v-if="isMobileBreakpoint">-->
+<!--                     <template #after v-if="hasComplects || getCarHealth">-->
+<!--                        <hr v-if="announcement.comment"/>-->
+<!--                        <template v-if="getCarHealth">-->
+<!--                           <damage-options :selected="getCarHealth" read-only v-if="false"/>-->
+<!--                           <hr v-if="hasComplects"/>-->
+<!--                        </template>-->
+<!--                        <car-complects :options="getComplectOptions" v-if="hasComplects"/>-->
+<!--                     </template>-->
+<!--                  </comment>-->
                </div>
             </div>
          </div>
@@ -235,6 +235,18 @@
             flex-direction: column;
             grid-template-columns: unset;
 
+         }
+      }
+   }
+
+   @media (max-width: 600px) {
+      .pages-cars-id {
+         &__info {
+            .inner-gallery {
+               .swiper-slide-bg {
+                  height: 332px;
+               }
+            }
          }
       }
    }

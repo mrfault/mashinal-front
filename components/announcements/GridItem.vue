@@ -39,7 +39,7 @@
       </div>
 
       <div :class="['id'+announcement.id,{'overflow-visible isProfilePage': isProfilePage}]" class="announcements-grid__item" @click="goToAnnouncement">
-         <profile-grid-actions v-if="isProfilePage" />
+         <profile-grid-actions v-if="isProfilePage" :announcement="announcement" />
 
          <a
             v-if="clickable && !isMobileBreakpoint && !$env.DEV"
@@ -85,6 +85,13 @@
                         </template>
                         <template v-else-if="isProfilePage && announcement.status == 3">{{ $t('inactive') }}</template>
 
+                     </div>
+
+                     <div
+                        v-if="announcement.is_external_salon"
+                        class="item-overlay__top--left_item"
+                     >
+                        {{ $t('external') }}
                      </div>
                   </div>
 
@@ -394,7 +401,7 @@ export default {
    bottom: 12px;
    left: 12px;
    width: calc(100% - 24px);
-   z-index: 50;
+   z-index: 2;
    padding: 0 !important;
 }
 .isProfilePage{

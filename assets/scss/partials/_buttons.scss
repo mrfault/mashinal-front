@@ -591,6 +591,14 @@
             $border-hover: $red-new,
          );
       }
+      &--red-opacity-2 {
+         @include btn-style(
+            $bg-color: $red-1,
+            $bg-hover: $red-2,
+            $color: $grey-1-new,
+            $border-color: $red-1
+         );
+      }
 
       &--grey-new {
          @include btn-style(

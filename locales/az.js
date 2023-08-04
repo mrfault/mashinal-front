@@ -2439,6 +2439,7 @@ export default {
    country: "Ölkə",
    dont_drink_so_much: "Bir də bu qədər içmə",
    dashboard_external_salon: "Salon profili",
+   external: "Sifarişlə",
    external_salon: "Sifarişlə avto",
    "external-salons": "Sifarişlə avto",
    registration_marks: "Qeydiyyat nişanları",
@@ -2713,7 +2714,13 @@ export default {
    package_refresh: "Paketi yenilə",
    package_current: "Mövcud paket",
 
-   "remove_announcement": "Elanı sil"
+   "remove_announcement": "Elanı sil",
+   "start_subscription_desc1": "Seçilmiş NV-nə abunə olmaq istədiyinizə əminsiniz?",
+   "penalty_info": "Cərimə məlumatları",
+   "number_plate_of_vehicle": "NV-nin qeydiyyat nişanı",
+   "protocol_number": "Protokol nömrəsi",
+
+   "restore_announcement" : "Elanı bərpa et",
 
 };
 
