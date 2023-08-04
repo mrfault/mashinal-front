@@ -22,7 +22,7 @@
                      </tr>
                      <tr class="w-100">
                         <td class="text-left">{{ $t('package_price') }}</td>
-                        <td class="text-right">{{ selectedPackage.price }} AZN</td>
+                        <td class="text-right">{{ selectedPackage?.price * duration }} AZN</td>
                      </tr>
                      <tr class="w-100">
                         <td class="text-left">{{ $t('period_time') }}</td>
@@ -44,7 +44,7 @@
                      </tr>
                      <tr class="w-100">
                         <td class="text-left">{{ $t('end_date') }}</td>
-                        <td class="text-right">{{ $moment(new Date()).format('DD.MM.YYYY') }}</td>
+                        <td class="text-right">{{ $moment(addMonth($moment(new Date()), duration)).format('DD.MM.YYYY')}}</td>
                      </tr>
                   </table>
                </div>
@@ -155,6 +155,7 @@
    import { PaymentMixin } from "~/mixins/payment";
    import ComeBack from "~/components/elements/ComeBack.vue";
    import Alert from "~/components/elements/Alert.vue";
+   import Da from "vue2-datepicker/locale/es/da";
 
    export default {
       components: {Alert, ComeBack },
@@ -186,7 +187,7 @@
             durations: [
                { key: 1, name: `30 ${this.$t('ads_day')}` },
                { key: 2, name: `60 ${this.$t('ads_day')}` },
-               { key: 3, name: `90 ${this.$t('ads_day')}` }
+               { key: 3, name: `90 ${this.$t('ads_day')}` },
             ],
             selectedPackage: {}
          }
@@ -199,7 +200,22 @@
 
             this.openModal = true;
          },
+         addMonth(date, month) {
+            const resultDate = new Date(date);
+            const initialMonth = resultDate.getMonth();
+            const targetMonth = (initialMonth + month) % 12;
 
+            const yearsToAdd = Math.floor((initialMonth + month) / 12);
+            resultDate.setMonth(targetMonth);
+
+            if (targetMonth < initialMonth) {
+               resultDate.setFullYear(resultDate.getFullYear() + yearsToAdd);
+            } else {
+               resultDate.setFullYear(resultDate.getFullYear() + yearsToAdd);
+            }
+
+            return resultDate;
+         },
          async handleSubmit({commit}, value) {
             this.pending = true;
 
@@ -247,6 +263,9 @@
       },
 
       computed: {
+         Da() {
+            return Da
+         },
          ...mapGetters({
             getAgreements: 'getAgreements',
             getResetForm: 'getResetForm'

@@ -115,6 +115,15 @@
                         end_date: $moment(unpaidAgreement.end_date).format('DD.MM.YYYY'),
                         price: unpaidAgreement.price })"/>
                   <Packages :packages="getPackages" :disableBtn="disableBtn"/>
+
+                  <div class="row" v-if="!isMobileBreakpoint">
+                     <div class="col-md-12 mt-3 d-flex justify-content-center align-items-center">
+                        <button class="btn btn--green" @click="goBack()">
+                           <inline-svg :src="'/icons/arrow-left.svg'" class="mr-1"/>
+                           {{$t('go_back')}}
+                        </button>
+                     </div>
+                  </div>
                </template>
             </div>
          </component>
@@ -149,6 +158,10 @@ export default {
    methods: {
       setShowPackage(params) {
          this.showPackage = params;
+      },
+      goBack() {
+         this.showPackage = false;
+         window.scrollTo(0, 0);
       }
    },
    mounted() {
@@ -194,6 +207,10 @@ export default {
    border: 1px solid var(--gray-300, #CDD5DF);
    background: var(--main-white, #FFF);
    min-height: 535px;
+}
+.btn--green svg path{
+   fill: #FFF;
+   stroke: #FFF;
 }
 
 .package-card-title {
