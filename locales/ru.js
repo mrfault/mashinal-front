@@ -2629,6 +2629,7 @@ export default {
    "reject":"Отменить",
    "garage_account_desc":"Измени данные профиля",
    "profile_balance_desc":"Проверь баланс",
+   "profile_settings_desc":"Настройки пользователя, имя, фото профиля и т. д.",
    "logout_account_desc":"Выйти из аккаунта",
    "garage_penalties_desc":"Проверь и оплати штрафы",
    package_type: "Тип пакете",
@@ -2645,5 +2646,5 @@ export default {
    "remove_vehicle_desc1":"Вы уверенны что хотите удалить выбранное ТС?",
 
    "remove_vehicle_desc2":"Оплаченная сумма не подлежит возврату",
-   "login_mobile_desc": "Введите номер телефона" 
+   "login_mobile_desc": "Введите номер телефона"
 };
