@@ -2698,6 +2698,7 @@ export default {
    "add_vehicle_desc": "Hər əlavə etdiyiniz NV-nə görə aylıq 1 AZN ₼ (ƏDV daxil) məbləğ tutulacaq.",
    "no_vehicle_found": "Sizin əlavə edilmiş nəqliyyat vasitəniz yoxdur",
    'profile_balance_desc': "Rəsmi salonlardan avtomobil sifariş et",
+   'profile_settings_desc': "İstifadəçi parametrləri, Ad Soyad, Profil fotosu və s.",
    "logout_account_desc": "Hesabdan çıxış et",
    "garage_penalties_desc": "Cərimələr, gömrük kalkulyatoru, bələdçi, alkotester, vizual şin kalkulyatoru",
    "garage_account_desc": "Rəsmi nümayəndə və digər avtosalonlar",

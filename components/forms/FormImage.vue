@@ -114,7 +114,7 @@ export default {
             return (this.initialImage.includes('http') ? '' : 'https://dev.mashin.al/') + this.initialImage;
          }
 
-         return this.initialImage;
+         return 'https://dev.mashin.al/'+this.initialImage;
       }
    },
    methods: {

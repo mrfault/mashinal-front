@@ -1,6 +1,6 @@
 <!--suppress ALL -->
 <template>
-   <div class="pages-dashboard-settings">
+   <div class="pages-dashboard-settings garage">
       <portal to="breadcrumbs">
          <breadcrumbs :crumbs="crumbs"/>
       </portal>
@@ -579,7 +579,7 @@ export default {
    .avatar-content p {
       color: #CDD5DF;
    }
-   .pages-dashboard-settings{
+   .pages-dashboard-settings.garage{
       .text-input input,
       .text-input textarea,
       .btn--primary-outline,

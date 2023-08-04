@@ -301,7 +301,7 @@ export default {
                title: 'settings',
                image: 'settings.png',
                url: '/profile/settings',
-               description: 'profile_balance_desc',
+               description: 'profile_settings_desc',
                row: 1,
             },
             {

@@ -109,6 +109,7 @@ export default {
          background-color: transparent;
          border-radius: 8px;
          width: 100%;
+         padding: 0;
       }
 
       svg {

@@ -8,7 +8,7 @@
       <component
          :is="isMobileBreakpoint ? 'mobile-screen' : 'div'"
          :bar-title="$t('user_information_edit')"
-         @back="$router.push(pageRef || $localePath('/garage-services'))"
+         @back="$router.push($localePath('/garage-services'))"
          height-auto>
          <div class="row" v-if="!isMobileBreakpoint">
             <div class="col-md-12 mb-0 mb-lg-4">
@@ -276,8 +276,9 @@ export default {
 .btn--green{
    height: 52px;
 }
-
-
+.select-menu_label:not(.disabled):hover{
+   border-color: #165dec!important;
+}
 .dark-mode{
    .pages-dashboard-settings{
       background: #121926!important;
@@ -298,6 +299,17 @@ export default {
    }
    .mobile-screen {
       background: #121926!important;
+   }
+   .mx-datepicker .mx-input-wrapper i{
+      color: #fff;
+   }
+   .text-input:hover .mx-input-wrapper i svg path,
+   .text-input:focus .mx-input-wrapper i svg circle{
+      stroke: #fff;
+   }
+   .mx-datepicker .mx-input-wrapper i svg path,
+   .mx-datepicker .mx-input-wrapper i svg circle{
+      stroke: #fff;
    }
 }
 
