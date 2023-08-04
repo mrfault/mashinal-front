@@ -88,7 +88,7 @@
                      </div>
 
                      <div
-                        v-if="announcement.is_external_salon"
+                        v-if="announcement.is_external_salon && !isProfilePage"
                         class="item-overlay__top--left_item"
                      >
                         {{ $t('external') }}
@@ -176,7 +176,7 @@
             </div>
          </div>
 
-         <div v-if="isProfilePage" class="item-monetization">
+         <div v-if="isProfilePage && announcement.status == 1" class="item-monetization">
             <monetization-button
                :announcement="announcement"
                :disabled="announcement.status !== 1"

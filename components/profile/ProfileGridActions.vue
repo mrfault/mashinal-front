@@ -16,6 +16,29 @@
       <modal-popup
          :modal-class="!isMobileBreakpoint ? 'midsize': 'larger'"
          :title="$t(modal.title)"
+         :toggle="showOptions"
+         @close="showOptions = false">
+         <div>
+            <div class="w-100">
+               <template v-for="(item, index) in options">
+
+                  <div v-if="item.show" :key="index" class="announcement-actions__content--item w-100"
+                       @click="item.method(item)">
+                     <inline-svg :src="`/new-icons/grid/${item.icon}`"/>
+                     <p>{{ $t(item.name) }}</p>
+                  </div>
+               </template>
+            </div>
+
+         </div>
+
+         <!--         options-->
+      </modal-popup>
+
+      <!--      delete,deactivate-->
+      <modal-popup
+         :modal-class="!isMobileBreakpoint ? 'midsize': 'larger'"
+         :title="$t(selectedItem.modalTitle)"
          :toggle="showModal"
          @close="closeModal">
          <div class="remove-vehicle-modal">
@@ -29,11 +52,22 @@
                   {{ $t('reject') }}
                </button>
                <button
+                  v-if="selectedItem.name == 'inactive_make'"
                   :class="{ 'pointer-events-none': pending }"
                   class="btn btn--white btn-dark-text"
                   type="button"
+                  @click="deactivate"
                >
-                  {{ $t(modal.buttonText) }}
+                  {{ $t(selectedItem.name) }}
+               </button>
+               <button
+                  v-else
+                  :class="{ 'pointer-events-none': pending }"
+                  class="btn btn--white btn-dark-text"
+                  type="button"
+                  @click="deleteCar"
+               >
+                  {{ $t(selectedItem.name) }}
                </button>
             </div>
 
@@ -52,11 +86,14 @@ export default {
          isOpen: false,
          pending: false,
          showModal: false,
+         showOptions: false,
          modal: {
             title: '',
             buttonText: '',
             method: null,
-         }
+         },
+         type: 'cars',
+         selectedItem: {}
       };
    },
    computed: {
@@ -82,7 +119,7 @@ export default {
                name: 'edit',
                icon: 'notification.svg',
                show: this.announcement.status == 1,
-               method: this.edit,
+               method: this.editVehicle,
             },
             {
                name: 'remove_announcement',
@@ -93,20 +130,19 @@ export default {
             },
          ]
       },
-      type() {
-         switch (this.announcement.type) {
-            case 'motorcycle':
-               return 'moto'
-            default:
-               this.announcement.type
-         }
-      }
    },
    methods: {
-      toggleOpen() {
-         this.isOpen = !this.isOpen;
-         if (this.isOpen) {
-            document.addEventListener('click', this.onClickOutside);
+      //dropdown
+      toggleOpen(event) {
+
+         event.stopPropagation();
+         if (this.isMobileBreakpoint) {
+            this.showOptions = true;
+         } else {
+            this.isOpen = !this.isOpen;
+            if (this.isOpen) {
+               document.addEventListener('click', this.onClickOutside);
+            }
          }
       },
       onClickOutside(event) {
@@ -117,17 +153,10 @@ export default {
       },
 
       openModal(item) {
-         if (item.openDirectyly){
-            item.method();
-         }else{
-            this.modal.title = item.modalTitle;
-            this.modal.method = item.method;
-            this.modal.buttonText = item.name;
-            this.showModal = true;
-         }
-
+         this.selectedItem = item;
+         this.showModal = true;
       },
-      closeModal(){
+      closeModal() {
          this.showModal = false;
          this.modal = {
             title: '',
@@ -136,7 +165,7 @@ export default {
          }
       },
 
-      async deactivate() {
+      async deactivate(event) {
          try {
             await this.$store.dispatch('deactivateMyAnnounement', this.announcement.id_unique);
             await this.$nuxt.refresh();
@@ -147,7 +176,8 @@ export default {
          }
 
       },
-      async delete() {
+      async deleteCar(event) {
+         event.stopPropagation();
          try {
             await this.$store.dispatch('deactivateMyAnnounement', this.announcement.id_unique);
             await this.$nuxt.refresh();
@@ -167,7 +197,17 @@ export default {
             this.$toasted.error(this.$t('something_went_wrong'))
          }
       },
-      edit() {
+
+      editVehicle() {
+         if (this.announcement.type == 'Motorcycle' || this.announcement.type == 'Scooter' || this.announcement.type == 'Atv') {
+            this.type = 'moto'
+         } else if (this.announcement.type == 'Commercial') {
+            this.type = 'commercial'
+         } else if (this.announcement.type == 'Part') {
+            this.type = 'parts'
+         } else {
+            this.type = 'cars'
+         }
          this.$router.push(this.$localePath(`/${this.type}/announcement/${this.announcement.id_unique}/edit`))
       }
 
@@ -177,55 +217,83 @@ export default {
 
 
 <style lang="scss">
-.announcements-grid__item {
-   .announcement-actions {
+
+.announcement-actions {
+   position: absolute;
+   top: 12px;
+   right: 12px;
+   z-index: 2;
+
+
+   &__button {
+      background: #fff;
+      border-radius: 4px;
+      width: 28px;
+      height: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid #CDD5DF;
+   }
+
+   &__content {
       position: absolute;
-      top: 12px;
-      right: 12px;
-      z-index: 2;
+      top: calc(100% + 10px);
+      border-radius: 8px;
+      background: #fff;
+      padding: 8px;
+      min-width: 152px;
+      left: 0;
 
-      &__button {
+      box-shadow: 8px 16px 32px 0px rgba(17,17,51,0.15);
+      -webkit-box-shadow: 8px 16px 32px 0px rgba(17,17,51,0.15);
+      -moz-box-shadow: 8px 16px 32px 0px rgba(17,17,51,0.15);
+
+      &--item {
+         padding: 12px 8px;
          background: #fff;
-         border-radius: 4px;
-         width: 28px;
-         height: 24px;
          display: flex;
-         justify-content: center;
          align-items: center;
-      }
-
-      &__content {
-         position: absolute;
-         top: calc(100% + 10px);
          border-radius: 8px;
-         background: #fff;
-         padding: 8px;
-         min-width: 152px;
 
-         &--item {
-            padding: 12px 8px;
-            background: #fff;
-            display: flex;
-            align-items: center;
-            border-radius: 8px;
+         svg {
+            margin-right: 8px;
+            width: 20px;
+            height: 20px;
+         }
 
-            svg {
-               margin-right: 8px;
-               width: 20px;
-               height: 20px;
-            }
+         p {
+            font: 500 16px/20px 'TTHoves';
+            color: #364152;
+         }
 
-            p {
-               font: 500 16px/20px 'TTHoves';
-               color: #364152;
-            }
-
-            &:hover {
-               background: #E3E8EF;
-            }
+         &:hover {
+            background: #E3E8EF;
          }
       }
+   }
 
+}
+
+@media (max-width: 599px) {
+   .announcement-actions {
+      top: 0;
+      right: 0;
+      padding: 12px;
+      width: 50px;
+      height: 50px;
+
+      &__content {
+         left: calc(-100% - 59px);
+         top: calc(100% - 10px);
+
+         &--item {
+            width: 100%;
+            background: #E3E8EF;
+            justify-content: center;
+            margin-bottom: 10px;
+         }
+      }
    }
 }
 </style>
