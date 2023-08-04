@@ -18,7 +18,13 @@
             {{ protocol.total }} AZN
          </p>
 
-         <slot></slot>
+         <protocol-details
+            v-if="protocol.isSelected"
+            :protocol="protocol"
+            :history="history"
+            style="margin-right: 8px !important;"
+            @showPaymentModal="openPaymentModal"
+         />
 
          <button
             v-if="protocol.isSelected && !history"
@@ -66,6 +72,11 @@ export default {
       getPayLink(protocol) {
          let agency = protocol.protocol_series === 'BNA' ? 'bna' : 'din';
          window.open(`https://pay.api.az/${agency}/${protocol.protocol_series}${protocol.protocol_number}`);
+      },
+
+      openPaymentModal() {
+         // this.showPaymentModal = true;
+         this.getPayLink(this.protocol.selected)
       },
 
    }

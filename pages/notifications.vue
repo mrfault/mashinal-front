@@ -1,64 +1,129 @@
 <template>
    <div class="container">
       <breadcrumbs :crumbs="crumbs"/>
-      <div v-if="notifications.data.length" class="card d-flex justify-content-between mb-2" style="padding:20px 25px">
-         <div style="font-size: 15px;">{{ $t('notification') }}</div>
-         <div class="d-flex justify-content-between">
-            <div style="font-size: 15px;margin-right: 70px;">{{ $t('date') }}</div>
+      <div class="ma-notifications">
+         <h2 class="ma-notifications__title">{{ $t('notifications') }}</h2>
+
+         <template v-if="notifications.data.length && getNotificationsList.length">
+            <NotificationItem v-for="item in getNotificationsList"
+                              :date="$formatDate(item.created_at, 'D.MM.YYYY HH:mm')[locale]" :link="getRoutePath(item)"
+                              :notification="item"/>
+         </template>
+
+         <div v-else>
+            <not-found :text="$t('notification_not_found')" img-src="/img/notification_icon.png" textClass="text-black">
+               <nuxt-link :to="$localePath('/')" class="btn btn--green">
+                  <icon name="arrow-left"/>
+                  {{ $t('back_to_home') }}
+               </nuxt-link>
+            </not-found>
          </div>
+
+         <pagination
+            v-if="notifications && notifications.last_page > 1"
+            :page-count="notifications.last_page"
+            :value="notifications.current_page"
+            @change-page="changePage"
+         />
+
+
       </div>
 
-      <div v-if="notifications.data.length" class="card-bordered_scrollview card">
-         <div class="vehicle-specs">
-            <div class="row">
-               <div class="col col-12 custom-col-12">
-                  <ul>
-                     <nuxt-link
-                        :to="getRoutePath(item)"
-                        class="cursor-pointer flex-column"
-                        tag="li"
-                        v-for="item in getNotificationsList"
-                        :key="item.id"
-                     >
-                        <div class="full-width d-flex justify-content-between">
-                           <div class="d-flex align-items-center" style="margin-bottom: 5px;white-space: nowrap;">
-                              <i v-show="!item.read_at" class="new-notification-dot"></i>{{ $t(item.title) }}
+      <div v-if="false">
+         <div v-if="notifications.data.length" class="card d-flex justify-content-between mb-2"
+              style="padding:20px 25px">
+            <div style="font-size: 15px;">{{ $t('notification') }}</div>
+
+            <div class="d-flex justify-content-between">
+               <div style="font-size: 15px;margin-right: 70px;">{{ $t('date') }}</div>
+            </div>
+         </div>
+
+
+         <div v-if="notifications.data.length" class="card-bordered_scrollview card">
+            <div class="vehicle-specs">
+               <div class="row">
+                  <div class="col col-12 custom-col-12">
+                     <ul>
+                        <nuxt-link
+                           v-for="item in getNotificationsList"
+                           :key="item.id"
+                           :to="getRoutePath(item)"
+                           class="cursor-pointer flex-column"
+                           tag="li"
+                        >
+                           <div class="full-width d-flex justify-content-between">
+                              <div class="d-flex align-items-center" style="margin-bottom: 5px;white-space: nowrap;">
+                                 <i v-show="!item.read_at" class="new-notification-dot"></i>{{ $t(item.title) }}
+                              </div>
+                              <span>{{ $formatDate(item.created_at, 'HH:mm | D.MM.YYYY')[locale] }}</span>
                            </div>
-                           <span>{{ $formatDate(item.created_at, 'HH:mm | D.MM.YYYY')[locale] }}</span>
-                        </div>
-                        <div class="full-width" v-html="item.body"></div>
-                     </nuxt-link>
-                  </ul>
-                  <hr/>
+                           <div class="full-width" v-html="item.body"></div>
+                        </nuxt-link>
+                     </ul>
+                     <hr/>
+                  </div>
                </div>
             </div>
          </div>
-      </div>
 
-      <div v-else>
-         <not-found img-src="/img/notification_icon.png" textClass="text-black" :text="$t('notification_not_found')">
-            <nuxt-link class="btn btn--green" :to="$localePath('/')">
-               <icon name="arrow-left"/>
-               {{ $t('back_to_home') }}
-            </nuxt-link>
-         </not-found>
-      </div>
+         <div v-else>
+            <not-found :text="$t('notification_not_found')" img-src="/img/notification_icon.png" textClass="text-black">
+               <nuxt-link :to="$localePath('/')" class="btn btn--green">
+                  <icon name="arrow-left"/>
+                  {{ $t('back_to_home') }}
+               </nuxt-link>
+            </not-found>
+         </div>
 
-      <pagination
-         v-if="notifications && notifications.last_page > 1"
-         :page-count="notifications.last_page"
-         :value="notifications.current_page"
-         @change-page="changePage"
-      />
+         <pagination
+            v-if="notifications && notifications.last_page > 1"
+            :page-count="notifications.last_page"
+            :value="notifications.current_page"
+            @change-page="changePage"
+         />
+      </div>
    </div>
 </template>
+
+
+<style lang="scss" scoped>
+.ma-notifications {
+   &__title {
+      font: 700 28px/32px 'TTHoves';
+      margin-bottom: 32px;
+      color: #1b2434;
+   }
+}
+
+.new-notification-dot {
+   display: block;
+   width: 5px;
+   height: 5px;
+   background: #F81734;
+   border-radius: 50%;
+   margin-right: 7px;
+   margin-left: 3px;
+}
+
+.custom-col-12 {
+   padding: 0px 28px 0px 10px;
+}
+
+.notification-info {
+   display: flex;
+   flex-direction: column;
+   align-items: start;
+}
+</style>
 
 <script>
 import {mapGetters} from "vuex";
 import NotFound from "~/components/elements/NotFound";
+import NotificationItem from "~/components/notifications/NotificationItem";
 
 export default {
-   components: {NotFound},
+   components: {NotFound, NotificationItem},
    async fetch({store}) {
       await store.dispatch('getNotifications')
    },
@@ -173,24 +238,4 @@ export default {
 }
 </script>
 
-<style scoped>
-.new-notification-dot {
-   display: block;
-   width: 5px;
-   height: 5px;
-   background: #F81734;
-   border-radius: 50%;
-   margin-right: 7px;
-   margin-left: 3px;
-}
 
-.custom-col-12 {
-   padding: 0px 28px 0px 10px;
-}
-
-.notification-info {
-   display: flex;
-   flex-direction: column;
-   align-items: start;
-}
-</style>

@@ -12,6 +12,7 @@
                <add-car @newVehicleAdded="getAllCarsList"/>
             </div>
          </div>
+
          <!--         numbers/search-->
          <div class="ma-penalties__top">
             <div v-if="cars.data.length" :class="{'mr-0 mt-3' : isMobileBreakpoint}" class="ma-penalties__top--search">
@@ -31,12 +32,14 @@
                   </div>
                </div>
             </div>
-            <div v-else class="w-100 d-flex justify-content-center">
+            <div v-else class="w-100 d-flex flex-wrap justify-content-center">
                <no-results
                   :url="'/new-icons/no-car.svg'"
                   darker
                >
                </no-results>
+               <h2 class="ma-title--md text-center w-100">{{ $t('no_vehicle_found') }}</h2>
+
             </div>
             <div v-show="carsList.length" class="ma-penalties__top--numbers">
                <div
@@ -76,8 +79,8 @@
 
 
          <!--         tabs-->
-         <div class="row">
-            <!--            left-->
+         <div v-if="carsList.length" class="row">
+            <!--            penalties,history, vehicle info(mobile)-->
             <div v-if="selectedCar && selectedCar.sync_status == 1" class="col-12 col-md-6">
                <div class="ma-penalties__card">
                   <div v-if="carsList.length" class="ma-penalties__card--header">
@@ -95,33 +98,23 @@
                   </div>
 
                   <div v-if="carsList.length" class="ma-penalties__card--body">
+                     <!--                     penalties-->
                      <div v-if="activeCardTab == 0" class="ma-penalties__card--body__penalties">
 
+
                         <!--                                loading-->
-                        <div v-if="loading && protocols && protocols.data && protocols.data.length">
+                        <div v-if="loading">
                            <loader/>
                         </div>
 
                         <!--                                content-->
-
-                        <template v-else-if="protocols && protocols.data && protocols.data.length">
+                        <template v-else-if="!loading && protocols && protocols.data && protocols.data.length">
                            <template v-for="(protocol,index) in protocol.filteredList">
 
                               <protocol-list-item
                                  :protocol="protocol"
-                                 @openPaymentModal="openPaymentModal"
                                  @selectProtocol="selectProtocol(protocol)"
-                              >
-                                 <protocol-details
-                                    v-if="protocol.isSelected"
-                                    :protocol="protocol"
-                                    style="margin-right: 8px !important;"
-                                    @showPaymentModal="openPaymentModal"
-                                 >
-
-
-                                 </protocol-details>
-                              </protocol-list-item>
+                              />
                            </template>
                         </template>
 
@@ -132,14 +125,16 @@
                            <p v-else>{{ $t('no_vehicle_found') }}</p>
                         </div>
 
+
+
                      </div>
 
                      <!--                     history-->
                      <div v-if="activeCardTab == 1" class="ma-penalties__card--body__penalty_history">
-                        <div v-if="loading && carsList.length && protocols && protocols.data && protocols.data.length">
+                        <div v-if="loading">
                            <loader/>
                         </div>
-                        <template v-else>
+                        <template v-else-if="!loading && protocols && protocols.data && protocols.data.length">
                            <template v-if="protocols && protocols.data && protocols.data.length">
                               <div
                                  v-if="false" class="ma-penalties__card--body__penalties--item all-items">
@@ -155,28 +150,20 @@
                                  <protocol-list-item
                                     :protocol="protocol"
                                     history
-                                    @openPaymentModal="openPaymentModal"
                                     @selectProtocol="selectProtocol(protocol)"
-                                 >
-                                    <protocol-details
-                                       v-if="protocol.isSelected"
-                                       :protocol="protocol"
-                                       history
-                                       style="margin-right: 8px !important;"
-                                       @showPaymentModal="openPaymentModal"
-                                    />
-                                 </protocol-list-item>
+                                 />
                               </template>
                            </template>
-                           <div v-else class="ma-penalties__card--body__no-results">
-                              <img alt="" src="/images/penalty-no-result.png">
-                              <p v-if="carsList.length">{{ $t('no_payment_history') }}</p>
-                              <p v-else>{{ $t('no_vehicle_found') }}</p>
-                           </div>
+
                         </template>
+                        <div v-else class="ma-penalties__card--body__no-results">
+                           <img alt="" src="/images/penalty-no-result.png">
+                           <p v-if="carsList.length">{{ $t('no_payment_history') }}</p>
+                           <p v-else>{{ $t('no_vehicle_found') }}</p>
+                        </div>
                      </div>
 
-                     <!--                     vehicle info-->
+                     <!--                     vehicle info(mobile)-->
                      <div v-if="activeCardTab == 2" class="ma-penalties__card--body__penalty_history">
                         <div>
                            <div class="ma-penalties__right-card__body">
@@ -202,7 +189,7 @@
                </div>
             </div>
 
-            <!--            right-->
+            <!--            vehicle info-->
             <div v-if="carsList.length && !isMobileBreakpoint" class="col-12 col-md-6">
                <div class="ma-penalties__card">
                   <h2 class="ma-title--md">{{ $t('my_vehicle_info') }}</h2>
@@ -243,6 +230,14 @@
                   </div>
                </div>
             </div>
+         </div>
+
+
+         <!--         no search results-->
+         <div v-if="cars && cars.data && cars.data.length && !carsList.length"
+              class="row flex-wrap justify-content-center" style="height: 500px">
+            <no-results class="mb-0"/>
+            <h2 class="ma-title--md text-center w-100">{{ $t('no_models_found_for_this_request') }}</h2>
          </div>
 
 
@@ -411,8 +406,8 @@ export default {
 
       setInitialSelectedCar() {
          if (this.$route.query.id && this.cars.data.find(el => el.id == this.$route.query.id)) {
-           this.selectedCar = this.cars.data.find(el => el.id == this.$route.query.id)
-         }else{
+            this.selectedCar = this.cars.data.find(el => el.id == this.$route.query.id)
+         } else {
             const carWithSyncStatus1 = this.cars.data.find(el => el.sync_status === 1);
 
             // If an element with sync_status: 1 exists, set selectedCar to that element
@@ -430,7 +425,9 @@ export default {
       onInputChange() {
          if (this.searchNumber.trim() === "") {
             this.carsList = this.cars.data;
+            this.setInitialSelectedCar();
          } else if (this.isValidInput(this.searchNumber)) {
+            this.selectedCar = {};
             this.filterCarNumber();
          } else {
             this.carsList = [];
@@ -451,11 +448,15 @@ export default {
             return;
          }
 
-         this.carsList = this.cars.data.filter((car) =>
+         const initialFilter = this.cars.data.filter((car) =>
             car.car_number.toLowerCase().includes(searchCarNumber.toLowerCase())
          );
 
-         this.selectedCar = null;
+         this.carsList = initialFilter.filter((car) => car.sync_status == 1)
+
+         this.selectedCar = this.carsList[0];
+         this.loading = true;
+         this.getCarProtocols()
       },
       validateInput(event) {
          const enteredChar = event.key;
@@ -509,7 +510,6 @@ export default {
          return this.companies.find(item => item.key == id)?.name
       },
       async getCarProtocols() {
-         console.log("ahey ahey")
          if (this.selectedCar && this.selectedCar.id) {
             await this.$store.dispatch('garage/getProtocols', {id: this.selectedCar.id, history: this.activeCardTab})
             console.log("this../././././ if")
@@ -526,9 +526,6 @@ export default {
             console.log("getCarProtocols else")
             this.loading = false;
          }
-
-         console.log("getCarProtocols end")
-
 
       },
       selectCar(car) {
@@ -577,10 +574,6 @@ export default {
       },
       async activatePaymentModal() {
          this.openPaymentModal();
-      },
-      openPaymentModal() {
-         // this.showPaymentModal = true;
-         this.getPayLink(this.protocol.selected)
       },
 
 
