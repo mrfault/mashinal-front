@@ -2719,5 +2719,7 @@ export default {
    "number_plate_of_vehicle": "NV-nin qeydiyyat nişanı",
    "protocol_number": "Protokol nömrəsi",
 
+   "restore_announcement" : "Elanı bərpa et",
+
 };
 

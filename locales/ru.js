@@ -2644,4 +2644,5 @@ export default {
    "remove_vehicle_desc1":"Вы уверенны что хотите удалить выбранное ТС?",
 
    "remove_vehicle_desc2":"Оплаченная сумма не подлежит возврату",
+   "login_mobile_desc": "Введите номер телефона" 
 };

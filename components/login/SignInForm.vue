@@ -29,7 +29,7 @@
 
       <button
          v-if="!form.staticPhone"
-         :class="['btn', 'btn--green', { pending }]"
+         :class="['btn', 'btn--green', 'full-width', { pending }]"
          type="submit"
       >
          {{ actionText || $t('go_ahead') }}
