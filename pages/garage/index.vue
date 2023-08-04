@@ -94,7 +94,7 @@
                      </template>
                   </div>
 
-                  <div class="ma-penalties__card--body" v-if="carsList.length">
+                  <div v-if="carsList.length" class="ma-penalties__card--body">
                      <div v-if="activeCardTab == 0" class="ma-penalties__card--body__penalties">
 
                         <!--                                loading-->
@@ -238,13 +238,12 @@
                      <stop-subsribtion v-if="selectedCar.sync_status == 1" :vehicle="selectedCar"
                                        @carDeactivated="getAllCarsList"/>
                      <start-subsribtion v-if="selectedCar.sync_status !== 1" :vehicle="selectedCar"
-                                       @carDeactivated="getAllCarsList"/>
+                                        @carDeactivated="getAllCarsList"/>
 
                   </div>
                </div>
             </div>
          </div>
-
 
 
          <!--         date change modal-->
@@ -411,14 +410,18 @@ export default {
       },
 
       setInitialSelectedCar() {
-         const carWithSyncStatus1 = this.cars.data.find(el => el.sync_status === 1);
+         if (this.$route.query.id && this.cars.data.find(el => el.id == this.$route.query.id)) {
+           this.selectedCar = this.cars.data.find(el => el.id == this.$route.query.id)
+         }else{
+            const carWithSyncStatus1 = this.cars.data.find(el => el.sync_status === 1);
 
-         // If an element with sync_status: 1 exists, set selectedCar to that element
-         if (carWithSyncStatus1) {
-            this.selectedCar = carWithSyncStatus1;
-         } else {
-            // If no element with sync_status: 1, set selectedCar to the first element of the first element of the cars array
-            this.selectedCar = this.cars.data[0];
+            // If an element with sync_status: 1 exists, set selectedCar to that element
+            if (carWithSyncStatus1) {
+               this.selectedCar = carWithSyncStatus1;
+            } else {
+               // If no element with sync_status: 1, set selectedCar to the first element of the first element of the cars array
+               this.selectedCar = this.cars.data[0];
+            }
          }
       },
 
