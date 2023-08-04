@@ -39,7 +39,7 @@
       </div>
 
       <div :class="['id'+announcement.id,{'overflow-visible isProfilePage': isProfilePage}]" class="announcements-grid__item" @click="goToAnnouncement">
-         <profile-grid-actions v-if="isProfilePage" />
+         <profile-grid-actions v-if="isProfilePage" :announcement="announcement" />
 
          <a
             v-if="clickable && !isMobileBreakpoint && !$env.DEV"
@@ -401,7 +401,7 @@ export default {
    bottom: 12px;
    left: 12px;
    width: calc(100% - 24px);
-   z-index: 50;
+   z-index: 2;
    padding: 0 !important;
 }
 .isProfilePage{
