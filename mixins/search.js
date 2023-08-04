@@ -155,7 +155,7 @@ export const SearchMixin = {
                if (this.routeName !== prevRouteName) {
                   if (scroll) {
                      setTimeout(() => {
-                        this.scrollTo('.announcements-sorting');
+                        this.scrollTo('.announcements-grid');
                      }, 100);
                   }
                }
