@@ -126,7 +126,6 @@
                         </div>
 
 
-
                      </div>
 
                      <!--                     history-->
@@ -191,44 +190,50 @@
 
             <!--            vehicle info-->
             <div v-if="carsList.length && !isMobileBreakpoint" class="col-12 col-md-6">
-               <div class="ma-penalties__card">
+               <div class="ma-penalties__card" v-if="selectedCar && selectedCar.sync_status == 1">
                   <h2 class="ma-title--md">{{ $t('my_vehicle_info') }}</h2>
-                  <div :class="{'ma-penalties__card--body__no-results': !selectedCar}"
-                       class="ma-penalties__right-card__body">
-                     <div v-if="selectedCar && selectedCar.sync_status == 0"
-                          class="ma-penalties__card--car-specs__item">
-                        <p style="color: #F81734">{{ $t('vehicle_is_not_active') }}</p>
-                     </div>
-                     <template v-if="selectedCar && mainVehicleSpecs">
-                        <div v-for="(spec,index) in mainVehicleSpecs" :key="index + 213654"
-                             class="ma-penalties__card--car-specs">
-                           <div v-for="(value,key) in spec" class="ma-penalties__card--car-specs__item">
-                              <p v-if="key == 'auth_date'">{{ $t('subscription_registration_date_on_site') }}</p>
-                              <p v-else-if="key == 'auth_end_date'">{{
-                                    $t('subscription_registration_end_date_on_site')
-                                 }}</p>
-                              <p v-else v-html="$t(key)"></p>
-                              <strong>
+                  <div >
+                     <div :class="{'ma-penalties__card--body__no-results': !selectedCar}"
+                          class="ma-penalties__right-card__body">
+                        <div v-if="selectedCar && selectedCar.sync_status == 0"
+                             class="ma-penalties__card--car-specs__item">
+                           <p style="color: #F81734">{{ $t('vehicle_is_not_active') }}</p>
+                        </div>
+                        <template v-if="selectedCar && mainVehicleSpecs">
+                           <div v-for="(spec,index) in mainVehicleSpecs" :key="index + 213654"
+                                class="ma-penalties__card--car-specs">
+                              <div v-for="(value,key) in spec" class="ma-penalties__card--car-specs__item">
+                                 <p v-if="key == 'auth_date'">{{ $t('subscription_registration_date_on_site') }}</p>
+                                 <p v-else-if="key == 'auth_end_date'">{{
+                                       $t('subscription_registration_end_date_on_site')
+                                    }}</p>
+                                 <p v-else v-html="$t(key)"></p>
+                                 <strong>
                                     <span v-if="key ==='insurance_end_date'"
                                           style="color: #2970FF; text-decoration: underline; font: 500 16px/20px 'TTHoves'; margin-right: 8px; cursor: pointer"
                                           @click="openDateChangeModal = true">{{ $t('edition') }}
                                  </span>
-                                 {{ value }}</strong>
+                                    {{ value }}</strong>
+                              </div>
+                              <hr v-if="index < mainVehicleSpecs.length - 1"
+                                  class="m-0 ma-penalties__card--car-specs__item--divider">
                            </div>
-                           <hr v-if="index < mainVehicleSpecs.length - 1"
-                               class="m-0 ma-penalties__card--car-specs__item--divider">
-                        </div>
-                     </template>
-                  </div>
-                  <div v-if="selectedCar" class="ma-penalties__card--actions">
-                     <remove-vehicle :vehicle="selectedCar" @selectedCarDeleted="getAllCarsList"/>
-                     <stop-subsribtion v-if="selectedCar.sync_status == 1" :vehicle="selectedCar"
-                                       @carDeactivated="getAllCarsList"/>
-                     <start-subsribtion v-if="selectedCar.sync_status !== 1" :vehicle="selectedCar"
-                                        @carDeactivated="getAllCarsList"/>
-
+                        </template>
+                     </div>
+                     <div v-if="selectedCar" class="ma-penalties__card--actions">
+                        <remove-vehicle :vehicle="selectedCar" @selectedCarDeleted="getAllCarsList"/>
+                        <stop-subsribtion v-if="selectedCar.sync_status == 1 && selectedCar.status == 1" :vehicle="selectedCar"
+                                          @carDeactivated="getAllCarsList"/>
+                        <start-subsribtion v-if="selectedCar.sync_status == 1 && selectedCar.status == 0 "
+                                           :vehicle="selectedCar"
+                                           @carDeactivated="getAllCarsList"/>
+                     </div>
                   </div>
                </div>
+            </div>
+            <div class="w-100 d-flex flex-wrap justify-content-center" v-if="carsList.length && !isMobileBreakpoint && selectedCar && selectedCar.sync_status !== 1">
+               <no-results/>
+               <h2 class="ma-title--md w-100 text-center">{{ $t('vehicle_is_processing') }}</h2>
             </div>
          </div>
 
@@ -239,6 +244,7 @@
             <no-results class="mb-0"/>
             <h2 class="ma-title--md text-center w-100">{{ $t('no_models_found_for_this_request') }}</h2>
          </div>
+         
 
 
          <!--         date change modal-->
@@ -404,6 +410,39 @@ export default {
          return `https://pay.api.az/${agency}/${protocol.protocol_series}${protocol.protocol_number}`;
       },
 
+      async activateCar() {
+         if (this.pending || this.thumbSet) return;
+         this.pending = true;
+         try {
+            const res = await this.activate({
+               id: this.selectedCar.id,
+               card_id: this.bankingCard,
+               pay_type: this.paymentMethod,
+               is_mobile: this.isMobileBreakpoint
+            });
+            if (this.paymentMethod === 'card' && !this.bankingCard) {
+               this.pending = false;
+               this.showPaymentModal = false;
+               this.handlePayment(res, false, this.$t('car_activated'), 'v2');
+            } else {
+               await Promise.all([
+                  this.$nuxt.refresh(),
+                  this.$auth.fetchUser()
+               ]);
+               this.pending = false;
+               this.showPaymentModal = false;
+               this.bankingCard = '';
+               this.updatePaidStatus({
+                  type: 'success',
+                  text: this.$t('car_activated'),
+                  title: this.$t('success_payment')
+               });
+            }
+         } catch (err) {
+            this.pending = false;
+         }
+      },
+
       setInitialSelectedCar() {
          if (this.$route.query.id && this.cars.data.find(el => el.id == this.$route.query.id)) {
             this.selectedCar = this.cars.data.find(el => el.id == this.$route.query.id)
@@ -530,21 +569,19 @@ export default {
       },
       selectCar(car) {
 
-         if (car.sync_status !== 1) {
-            return
-         } else {
-            this.protocol.filteredList = [];
-            this.loading = true;
-            this.pending = true;
-            this.protocol.selected = {};
-            this.protocol.allSelected = [];
-            this.loading = true;
-            this.selectedCar = car;
+         this.protocol.filteredList = [];
+         this.loading = true;
+         this.pending = true;
+         this.protocol.selected = {};
+         this.protocol.allSelected = [];
+         this.loading = true;
+         this.selectedCar = car;
+         if (car.sync_status == 1) {
             this.getCarProtocols();
-            this.protocol.selected = {};
-            this.activeCardTab = 0;
-            this.protocol.filteredList = [];
          }
+         this.protocol.selected = {};
+         this.activeCardTab = 0;
+         this.protocol.filteredList = [];
       },
       selectProtocol(protocol) {
          this.protocol.selected = protocol;

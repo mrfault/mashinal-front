@@ -2649,6 +2649,6 @@ export default {
    "vehicle_is_not_active":"Транспортное средство не активно",
 
    "confirmation_code":"Код подтверждения",
-   "confirmation_code_desc":"Введите SMS-код отправленный на ваш номер"
+   "confirmation_code_desc":"Введите SMS-код отправленный на ваш номер",
    "remove_announcement": "Удалить",
 };

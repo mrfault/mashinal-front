@@ -2722,6 +2722,7 @@ export default {
    "protocol_number": "Protokol nömrəsi",
 
    "restore_announcement" : "Elanı bərpa et",
+   "vehicle_is_processing": "Nəqliyyat vasitəsi prosesdədir",
 
 };
 
