@@ -21,7 +21,7 @@
          :modal-class="!isMobileBreakpoint ? 'midsize': 'larger'"
          :title="$t('add_vehicle')"
          :toggle="showModal"
-         @close="closeModal"
+         @close="closeAndReset"
       >
          <asan-login-button
             v-if="!hasAsanLoginCopy"
@@ -61,7 +61,7 @@
                                         'btn-dark-text',
                                       ]"
                   type="button"
-                  @click="closeModal"
+                  @click="closeAndReset"
                >
                   {{ $t('reject') }}
                </button>
@@ -83,7 +83,7 @@
          :overflow-hidden="isMobileBreakpoint"
          :title="$t('payment')"
          :toggle="showPaymentModal"
-         @close="showPaymentModal = false"
+         @close="closeAndReset"
       >
          <h4 class="mb-2">{{ $t('payment_method') }}</h4>
          <div class="d-flex align-items-center justify-content-between">
@@ -123,7 +123,7 @@
                                       ]"
                      style="height: 52px"
                      type="button"
-                     @click="showPaymentModal = false"
+                     @click="closeAndReset"
                   >
                      {{ $t('reject') }}
                   </button>
@@ -146,6 +146,7 @@
          @close="showPaymentModal = true"
          @open="showPaymentModal = false"
       />
+
       <modal-popup
          :overflow-hidden="isMobileBreakpoint"
          :title="$t('add_car_with_asan_login')"
@@ -270,11 +271,12 @@ export default {
                   type: 'success',
                   text: this.$t('car_added'),
                   title: this.$t('success_payment'),
-               })
+               });
+               this.closeAndReset();
             }
 
          } catch (err) {
-            this.pending = false
+            this.pending = false;
          }
       },
       manageModalsInLoading() {
@@ -289,10 +291,22 @@ export default {
       },
       closeModal() {
          this.showModal = false;
+
+         // this.form = {
+         //    car_number: '',
+         //    tech_id: '',
+         // }
+      },
+      resetForm(){
          this.form = {
             car_number: '',
             tech_id: '',
          }
+      },
+      closeAndReset(){
+         this.showPaymentModal = false
+         this.closeModal();
+         this.resetForm();
       }
    },
    data() {
@@ -336,6 +350,12 @@ export default {
       }
       this.hasAsanLoginCopy = this.hasAsanLogin
    },
+   beforeDestroy() {
+      this.form = {
+         car_number: '',
+         tech_id: '',
+      }
+   }
 }
 </script>
 

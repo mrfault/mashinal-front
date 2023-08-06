@@ -244,7 +244,7 @@
             <no-results class="mb-0"/>
             <h2 class="ma-title--md text-center w-100">{{ $t('no_models_found_for_this_request') }}</h2>
          </div>
-         
+
 
 
          <!--         date change modal-->
