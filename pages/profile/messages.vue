@@ -440,6 +440,13 @@ export default {
    }
 }
 
+.dark-mode .mobile-screen {
+   .chat-item {
+      border-bottom: 1px solid #484e56;
+      background: #121926;
+   }
+}
+
 .mobile-screen {
 
    overflow: hidden;

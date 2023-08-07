@@ -174,7 +174,6 @@
       transition: 'fade-y-20',
 
       layout: 'search',
-
       middleware: 'payment_redirect',
 
       components: {
