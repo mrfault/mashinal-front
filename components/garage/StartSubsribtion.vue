@@ -13,6 +13,8 @@
       >
          {{ $t('subscribe') }}
       </button>
+
+      <!--      are you sure to subscribe-->
       <modal-popup
          :modal-class="!isMobileBreakpoint ? 'midsize': 'larger'"
          :title="$t('subscribe')"
@@ -20,10 +22,11 @@
          @close="showModal = false">
          <div class="remove-vehicle-modal">
             <p>{{ $t('start_subscription_desc1') }}</p>
-            <p class="remove-vehicle-modal__text-with-info">
-               <inline-svg src="/icons/info-1.svg"/>
-               {{ $t('remove_vehicle_desc2') }}
-            </p>
+            <hr>
+            <div class="d-flex align-items-center mb-4">
+               <p style="width: auto; margin-right: 10px" class="mb-0">{{ $t('total') }}:</p>
+               <strong>1 AZN</strong>
+            </div>
             <div class="protocol-payment-modal__actions">
                <button
                   :class="{ 'pointer-events-none': pending }"
@@ -37,12 +40,75 @@
                   :class="{ 'pointer-events-none': pending }"
                   class="btn btn--white btn-dark-text"
                   type="button"
-                  @click="addVehicle"
+                  @click="showPaymentModal = true"
                >
-                  {{ $t('subscribe') }}
+                  {{ $t('make_payment') }}
                </button>
             </div>
 
+         </div>
+      </modal-popup>
+
+      <modal-popup
+         :modal-class="!isMobileBreakpoint ? 'midsize': 'larger'"
+         :overflow-hidden="isMobileBreakpoint"
+         :title="$t('payment')"
+         :toggle="showPaymentModal"
+         @close="showPaymentModal = false"
+      >
+         <h4 class="mb-2">{{ $t('payment_method') }}</h4>
+         <div class="d-flex align-items-center justify-content-between">
+            <template v-for="(item,index) in paymentMethodOptions">
+               <form-radio
+                  v-model="paymentMethod"
+                  :disabled="!user.balance"
+                  :group-by="2"
+                  :label="$t(item.name)"
+                  :radio-value="item.key"
+                  style="width: calc(50% - 8px)"
+               />
+            </template>
+         </div>
+
+         <select-banking-card
+            v-show="paymentMethod === 'card'"
+            :value="bankingCard"
+            class="mt-2 mt-lg-3"
+            @input="bankingCard = $event"
+         />
+         <div class="protocol-payment-modal__body--total-amount">
+            <p>{{ $t('total_payment_amount') }}</p>
+            <strong>1 AZN</strong>
+         </div>
+         <!--         <terminal-info-button popup-name="garage-add-popup"/>-->
+         <div :class="{ 'modal-sticky-bottom': isMobileBreakpoint }">
+            <!--            <hr/>-->
+            <div class="row">
+               <div class="col-6">
+                  <button
+                     :class="[
+                                        'btn',
+                                        'btn--white',
+                                        'btn-dark-text',
+                                        'full-width',
+                                      ]"
+                     style="height: 52px"
+                     type="button"
+                     @click="showPaymentModal = false"
+                  >
+                     {{ $t('reject') }}
+                  </button>
+               </div>
+               <div class="col-6">
+                  <button
+                     :class="['btn btn--green full-width', { pending }]"
+                     style="height: 52px"
+                     @click="activateCar"
+                  >
+                     {{ $t('pay') }}
+                  </button>
+               </div>
+            </div>
          </div>
       </modal-popup>
    </div>
@@ -52,6 +118,7 @@
 import RadioGroup from "~/components/moderator/RadioGroup";
 import CustomRadio from "~/components/elements/CustomRadio";
 import {mapActions} from "vuex";
+import {PaymentMixin} from "~/mixins/payment";
 
 export default {
    props: {
@@ -62,6 +129,7 @@ export default {
       fullWidth: Boolean,
       vehicle: Object,
    },
+   mixins:[PaymentMixin],
    components: {CustomRadio, RadioGroup},
    data() {
       return {
@@ -91,30 +159,50 @@ export default {
             }
          ],
          pending: false,
+         showPaymentModal: false,
       }
    },
    methods: {
       ...mapActions({
          activate: 'garage/activateCar'
       }),
-      async addVehicle() {
-         if (this.pending) return;
+      openPaymentModal() {
+         return
+      },
+      async activateCar() {
+         if (this.pending || this.thumbSet) return;
          this.pending = true;
-         console.log("addVehicle")
          try {
-            console.log("addVehicle try")
-            await this.activate({ id: this.vehicle.id });
-            console.log("addVehicle response")
-            this.$toasted.success(this.$t('car_activated'));
-            this.pending = false;
-            this.showModal = false;
-            this.scrollReset();
-            this.$emit("carDeactivated", true)
+            const res = await this.activate({
+               id: this.vehicle.id,
+               card_id: this.bankingCard,
+               pay_type: this.paymentMethod,
+               is_mobile: this.isMobileBreakpoint
+            });
+            this.$nuxt.refresh()
+            if (this.paymentMethod === 'card' && !this.bankingCard) {
+               this.pending = false;
+               this.showPaymentModal = false;
+               this.handlePayment(res, false, this.$t('car_activated'), 'v2');
+
+            } else {
+               await Promise.all([
+                  this.$nuxt.refresh(),
+                  this.$auth.fetchUser()
+               ]);
+               this.pending = false;
+               this.showPaymentModal = false;
+               this.bankingCard = '';
+               this.updatePaidStatus({
+                  type: 'success',
+                  text: this.$t('car_activated'),
+                  title: this.$t('success_payment')
+               });
+            }
          } catch (err) {
-            console.log("addVehicle catch")
             this.pending = false;
          }
-      }
+      },
    }
 }
 </script>

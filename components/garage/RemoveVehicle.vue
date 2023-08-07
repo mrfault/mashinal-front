@@ -99,10 +99,9 @@ export default {
       }),
       async removeVehicle() {
          if (this.pending) return;
-         this.pending = true;
          try {
             console.log("remove vehicle")
-            await this.delete({id: this.car.id});
+            await this.delete({id: this.vehicle.id});
             console.log("response remove vehicle")
             this.$toasted.success(this.$t('car_deleted'));
             this.pending = false;
