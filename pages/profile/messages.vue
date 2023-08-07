@@ -20,7 +20,7 @@
                               v-model="searchValue"
                               icon-name="search"
                               block-class="placeholder-lighter"
-                              :placeholder="$t('message_or_name')"
+                              :placeholder="isMobileBreakpoint ? $t('search') : $t('message_or_name')"
                            />
                         </div>
                         <div class="chat-list-switch cursor-pointer"
@@ -39,7 +39,6 @@
                               <span class="switch-count text-dark-blue-3">{{ countGroups(true) }}</span>
                            </template>
                         </div>
-                        <hr class="mt-0 mb-0"/>
                      </template>
                      <div class="messages_chat-list">
                         <client-only>
@@ -50,7 +49,7 @@
                                             @show-modal="activeModalGroup = group, showControlsModal = true;"
                                             :group="messagesByGroup(group.id)"
                                             :blocked="isBlocked(group)"
-                                            :active="activeGroupId === group.id"
+                                            :active="activeGroupId == group.id"
                                             :key="group.id"
                                  />
                                  <template v-if="!filteredGroups.length">
@@ -310,6 +309,7 @@ export default {
       }
    },
    mounted() {
+
       this.$nextTick(() => {
          setTimeout(() => {
             this.connectEcho().listenForWhisper('action', (data) => {
@@ -364,73 +364,134 @@ export default {
             margin: 0;
          }
       }
+
+      .messages-card{
+         border-radius: 12px;
+         border: 1px solid #eee;
+      }
+      .placeholder-lighter{
+         width: 100%;
+      }
+      .messages-list-items_group .btn--grey{
+         border-radius: 8px;
+         background: var(--gray-400, #9AA4B2);
+      }
+      .placeholder-lighter input{
+         display: flex;
+         align-items: center;
+         gap: 8px;
+         align-self: stretch;
+         border-radius: 8px;
+         background: var(--gray-100, #EEF2F6);
+         padding: 12px 16px 12px 50px;
+         color: var(--gray-500, #697586);
+         font-size: 16px;
+         font-style: normal;
+         font-weight: 400;
+         line-height: 20px;
+      }
+      .placeholder-lighter .icon-search{
+         width: 20px;
+         height: 20px;
+         font-size: 20px;
+         position: absolute;
+         left: 15px;
+      }
+      .placeholder-lighter .icon-search:before{
+         font-size: 20px;
+      }
+
+      .chat-inner-info i{
+         width: 24px;
+         height: 24px;
+         font-size: 24px;
+      }
+
+      .no-messages{
+         min-height: 500px;
+         margin: auto;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+      }
+      .no-messages-content h3{
+         font-size: 24px;
+         font-weight: 600;
+         line-height: 28px;
+         letter-spacing: 0em;
+         text-align: center;
+         color: #121926;
+         margin-top: 15px;
+         margin-bottom: 15px;
+      }
+      .no-messages-content p{
+         font-size: 16px;
+         font-weight: 400;
+         line-height: 24px;
+         letter-spacing: 0em;
+         text-align: center;
+         color: #697586;
+      }
    }
 
-   .messages-card{
-      border-radius: 12px;
-   }
-   .placeholder-lighter{
-      width: 100%;
-   }
-   .messages-list-items_group .btn--grey{
-      border-radius: 8px;
-      background: var(--gray-400, #9AA4B2);
-   }
-   .placeholder-lighter input{
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      align-self: stretch;
-      border-radius: 8px;
-      background: var(--gray-100, #EEF2F6);
-      padding: 12px 16px 12px 50px;
-      color: var(--gray-500, #697586);
-      font-size: 16px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 20px;
-   }
-   .placeholder-lighter .icon-search{
-      width: 20px;
-      height: 20px;
-      font-size: 20px;
-      position: absolute;
-      left: 15px;
-   }
-   .placeholder-lighter .icon-search:before{
-      font-size: 20px;
-   }
 
-   .chat-inner-info i{
-      width: 24px;
-      height: 24px;
-      font-size: 24px;
-   }
+   .mobile-screen {
 
-   .no-messages{
-      min-height: 500px;
-      margin: auto;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-   }
-   .no-messages-content h3{
-      font-size: 24px;
-      font-weight: 600;
-      line-height: 28px;
-      letter-spacing: 0em;
-      text-align: center;
-      color: #121926;
-      margin-top: 15px;
-      margin-bottom: 15px;
-   }
-   .no-messages-content p{
-      font-size: 16px;
-      font-weight: 400;
-      line-height: 24px;
-      letter-spacing: 0em;
-      text-align: center;
-      color: #697586;
+      overflow: hidden;
+
+      .placeholder-lighter input{
+         display: flex;
+         align-items: center;
+         gap: 8px;
+         align-self: stretch;
+         border-radius: 8px;
+         background: #FFF;
+         padding: 12px 50px 12px 16px;
+         color: var(--gray-500, #697586);
+         font-size: 16px;
+         font-style: normal;
+         font-weight: 400;
+         line-height: 20px;
+      }
+      .placeholder-lighter .icon-search{
+         width: 20px;
+         height: 20px;
+         font-size: 20px;
+         position: absolute;
+         right: 15px;
+      }
+      .placeholder-lighter .icon-search:before{
+         font-size: 20px;
+      }
+      .messages-card{
+         position: absolute;
+         width: 100%;
+         height: 100%;
+         top: 0;
+         left: 0;
+      }
+      .messages_msg-list{
+         height: calc(100% - 66px);
+      }
+      .container{
+         height: 100%!important;
+      }
+      .container .messages{
+         height: 100%;
+      }
+      .chat-messages{
+         height: 100%;
+      }
+      .messages-list .scroll-container {
+         min-height: calc(100% - 84px);
+         max-height: 100%;
+         height: 100%;
+         overflow: hidden;
+      }
+      .row.flex-lg-nowrap{
+         height: 100%;
+         overflow: hidden;
+      }
    }
 
    @media (max-width: 1250px) {
@@ -462,60 +523,101 @@ export default {
       .message-textarea{
          border-radius: 0;
       }
+
+      .dark-mode {
+         .action-bar{
+            background: #121926!important;
+         }
+      }
+
+      .dark-mode .mobile-screen {
+         .action-bar{
+            background: #121926!important;
+         }
+         .chat-item:first-child{
+            border-top: 1px solid  #484e56;;
+         }
+         .chat-inner-info, .chat-inner-announcement{
+            background: #121926!important;
+         }
+         .message-textarea{
+            background: #121926!important;
+         }
+         .chat-inner-info .username span:first-child{
+            color: #FFF;
+         }
+      }
    }
 
    .dark-mode{
-      .chat-item{
-         background: #1b2434;
-         border-bottom: 1px solid #1C1C1E;
-      }
+      .pages-profile-messages{
+         .chat-item{
+            background: #1b2434;
+            border-bottom: 1px solid #1C1C1E;
+         }
+         .chat-item.active{
+            background: #121926;
+            border-bottom: 1px solid #1C1C1E;
+         }
+         .messages-card{
+            border: 1px solid #1C1C1E;
+         }
+         .chat-inner-info, .chat-inner-announcement{
+            background: #1b2434;
+         }
+         .chat-inner-info .username span:first-child{
+            color: #FFF;
+         }
+         .message-content.sent-by-me {
+            background-color: #697586;
+         }
+         .message-content {
+            background-color: #484e56;
+         }
+         .message-textarea {
+            background: #1b2434;
+         }
+         .message-textarea .textarea-text textarea {
+            border: 1px solid #121926;
+            background: #121926;
+            color: #FFF;
+         }
+         .message-textarea .textarea-text textarea::placeholder {
+            color: #454d5a;
+            opacity: 1;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 20px;
+         }
 
-      .chat-inner-info, .chat-inner-announcement{
-         background: #1b2434;
-      }
-      .chat-inner-info .username span:first-child{
-         color: #FFF;
-      }
-      .message-content.sent-by-me {
-         background-color: #697586;
-      }
-      .message-content {
-         background-color: #484e56;
-      }
-      .message-textarea {
-         background: #1b2434;
-      }
-      .message-textarea .textarea-text textarea {
-         border: 1px solid #121926;
-         background: #121926;
-         color: #FFF;
-      }
-      .message-textarea .textarea-text textarea::placeholder {
-         color: #454d5a;
-         opacity: 1;
-         font-size: 16px;
-         font-style: normal;
-         font-weight: 400;
-         line-height: 20px;
-      }
+         .message-textarea .textarea-text textarea:-ms-input-placeholder {
+            color: #454d5a;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 20px;
+         }
 
-      .message-textarea .textarea-text textarea:-ms-input-placeholder {
-         color: #454d5a;
-         font-size: 16px;
-         font-style: normal;
-         font-weight: 400;
-         line-height: 20px;
-      }
-
-      .message-textarea .textarea-text textarea::-ms-input-placeholder {
-         color: #454d5a;
-         font-size: 16px;
-         font-style: normal;
-         font-weight: 400;
-         line-height: 20px;
-      }
-      .dark-mode hr {
-         background-color: #46454c!important;
+         .message-textarea .textarea-text textarea::-ms-input-placeholder {
+            color: #454d5a;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 20px;
+         }
+         hr {
+            background-color: transparent!important;
+         }
+         .chat-item:first-child{
+            border-top: 1px solid  #484e56;;
+         }
+         .chat-inner-info, .chat-inner-announcement{
+            background: #121926!important;
+         }
+         .message-textarea{
+            background: #121926!important;
+         }
       }
    }
 </style>
