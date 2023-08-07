@@ -573,10 +573,7 @@ export default {
             credit: this.form.credit,
             guaranty: this.form.guaranty,
             saved_images: this.form.saved_images,
-            all_options: this.form.other_parameters.reduce((acc, curr) => {
-               acc[curr.name] = curr.selected_key ? curr.selected_key : true;
-               return acc;
-            }, {}),
+            all_options: [],
             selectedColor: this.form.color,
             owner_type: 0,
             region_id: this.form.region_id

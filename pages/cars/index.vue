@@ -1,13 +1,43 @@
 <template>
    <div class="pages-cars-index">
       <div class="container">
-         <car-search-form
-            :only-saved-search="!!$route.query.saved || false"
-            :total-count="$paginate(carsAnnouncements).total"
-            :pending="pending"
-            @pending="pending = true"
-            @submit="searchCars"
-         />
+         <div class="filters-container mb-5">
+            <div class="filters-container__head d-flex align-items-center justify-content-between flex-column mb-5">
+               <form-buttons
+                  class="announce_types"
+                  :options="getMileageOptions"
+                  :group-by="3"
+                  :btnClass="'blue-new'"
+                  v-model="announceType"
+               />
+
+               <form-buttons
+                  class="no-bg"
+                  :options="getSearchTabs"
+                  :group-by="2"
+                  :btnClass="'blue-new'"
+                  v-model="searchType"
+               />
+            </div>
+
+            <car-search-form
+               v-if="searchType === 1"
+               :only-saved-search="!!$route.query.saved || false"
+               :total-count="$paginate(carsAnnouncements).total"
+               :pending="pending"
+               @pending="pending = true"
+               @submit="searchCars"
+            />
+
+            <moto-search-form
+               v-else
+               :pending="pending"
+               :total-count="$paginate(motoAnnouncements).total"
+               @pending="pending = true"
+               :announceType="announceType"
+               :category="{}"
+            />
+         </div>
 
          <breadcrumbs :crumbs="crumbs" />
 
@@ -74,6 +104,7 @@
 <script>
    import { mapGetters, mapActions } from 'vuex';
    import CarSearchForm from '~/components/cars/CarSearchForm';
+   import MotoSearchForm from "~/components/moto/MotoSearchForm.vue";
    import Grid from '~/components/announcements/Grid';
    import NoResults from '~/components/elements/NoResults';
    import brand from "../../components/moderator/brand.vue";
@@ -87,6 +118,7 @@
 
       components: {
          CarSearchForm,
+         MotoSearchForm,
          Grid,
          NoResults,
          HandleIds,
@@ -111,6 +143,8 @@
 
       data() {
         return {
+           announceType: 1,
+           searchType: 1,
            sorting: ''
         }
       },
@@ -138,6 +172,8 @@
                store.dispatch('getBodyOptions'),
                store.dispatch('getOptions'),
                store.dispatch('fetchBrandsList'),
+               store.dispatch('getMotoOptions'),
+               store.dispatch('getPopularOptions'),
                // store.dispatch('fetchMonetizedCarsSearch'),
                // store.dispatch('fetchMonetizedCars'),
 
@@ -174,6 +210,8 @@
       },
 
       mounted() {
+         this.searchType = 1;
+
          if (!Object.keys(this.$route.query).length) {
             this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'cars' });
          }
@@ -202,7 +240,15 @@
       },
 
       computed: {
-         ...mapGetters(['carsAnnouncements', 'getMainMonetized', 'singleSavedSearch', 'brandsList', 'monetizedCars']),
+         ...mapGetters([
+            'carsAnnouncements',
+            'getMainMonetized',
+            'singleSavedSearch',
+            'brandsList',
+            'monetizedCars',
+            'motoAnnouncements',
+            'popularOptions'
+         ]),
 
          brand() {
             return brand
@@ -246,7 +292,24 @@
                { id: 'price_asc', name: this.$t('show_cheap_first') },
                { id: 'price_desc', name: this.$t('show_expensive_first') }
             ]
-         }
+         },
+
+         getMileageOptions() {
+            let zeroFirst;
+            return [
+               {name: this.$t('all2'), key: zeroFirst ? 0 : 1},
+               {name: this.$t('new'), key: zeroFirst ? 1 : 2},
+               {name: this.$t('S_H'), key: zeroFirst ? 2 : 3}
+               // {name: this.$t(this.meta.type === 'parts' ? 'S_H' : 'with_mileage'), key: zeroFirst ? 2 : 3}
+            ];
+         },
+
+         getSearchTabs() {
+            return [
+               { name: this.$t('auto'), key: 1 },
+               { name: this.$t('category_moto'), key: 2 }
+            ];
+         },
       },
 
       beforeRouteLeave(to, from, next) {
@@ -266,6 +329,10 @@
          line-height: 38px;
          color: #121926;
          margin-bottom: 32px;
+      }
+
+      .announcements-grid {
+         margin-top: 30px;
       }
    }
 </style>

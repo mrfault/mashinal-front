@@ -33,7 +33,7 @@
                path: 'masinlar',
                query: { car_filter: JSON.stringify(url) }
             }, () => {
-               window.location.reload(true);
+               window.location.reload();
                this.scrollTo('.announcements-grid', [0, 0], 1000);
             })
          }
