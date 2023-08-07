@@ -37,16 +37,16 @@
 
                   <site-banner v-if="!isMobileBreakpoint" class="mb-3" type="in-announcement"/>
 
-                  <comment :comment="announcement.comment" v-if="isMobileBreakpoint">
-                     <template #after v-if="hasComplects || getCarHealth">
-                        <hr v-if="announcement.comment"/>
-                        <template v-if="getCarHealth">
-                           <damage-options :selected="getCarHealth" read-only v-if="false"/>
-                           <hr v-if="hasComplects"/>
-                        </template>
-                        <car-complects :options="getComplectOptions" v-if="hasComplects"/>
-                     </template>
-                  </comment>
+<!--                  <comment :comment="announcement.comment" v-if="isMobileBreakpoint">-->
+<!--                     <template #after v-if="hasComplects || getCarHealth">-->
+<!--                        <hr v-if="announcement.comment"/>-->
+<!--                        <template v-if="getCarHealth">-->
+<!--                           <damage-options :selected="getCarHealth" read-only v-if="false"/>-->
+<!--                           <hr v-if="hasComplects"/>-->
+<!--                        </template>-->
+<!--                        <car-complects :options="getComplectOptions" v-if="hasComplects"/>-->
+<!--                     </template>-->
+<!--                  </comment>-->
                </div>
             </div>
          </div>
@@ -186,6 +186,8 @@
 
 <style lang="scss">
    .pages-cars-id {
+      margin-top: -30px;
+
       .bg-white {
          padding: 5px 0 32px 0;
       }
@@ -204,6 +206,14 @@
       }
    }
 
+   .dark-mode {
+      .pages-cars-id {
+         .bg-white {
+            background-color: transparent;
+         }
+      }
+   }
+
    @media (max-width: 1150px) {
       .pages-cars-id {
          &__info {
@@ -212,6 +222,29 @@
             .inner-gallery {
                .swiper-slide-bg {
                   height: 400px;
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 992px) {
+      .pages-cars-id {
+         &__info {
+            display: flex;
+            flex-direction: column;
+            grid-template-columns: unset;
+
+         }
+      }
+   }
+
+   @media (max-width: 600px) {
+      .pages-cars-id {
+         &__info {
+            .inner-gallery {
+               .swiper-slide-bg {
+                  height: 332px;
                }
             }
          }

@@ -29,12 +29,10 @@
                   </div>
 
                   <div class="ma-right" style="padding-left: 24px; text-align: right;">
-
-
                      <strong v-if="key == 'protocol_amount' " class="ma-right__amount">
                         {{ value }} AZN
                      </strong>
-                     <strong v-if="key == 'pay_status' && value == false" class="ma-right__amount"
+                     <strong v-else-if="key == 'pay_status' && value == false" class="ma-right__amount"
                              style="color: #039855">
                         {{ $t('already_paid') }}
                      </strong>

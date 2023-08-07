@@ -9,7 +9,7 @@
                <div class="ma-login-tab--mobile__top--image">
                   <img src="/images/login-image-mobile.png"/>
                </div>
-               <h2 class="ma-title--md">{{ $t('sign_in_to_account') }}</h2>
+               <h2 class="ma-title--md" :class="{'text-center': isMobileBreakpoint}">{{ $t('sign_in_to_account') }}</h2>
                <p class="login_mobile_desc">{{ $t('login_mobile_desc') }}</p>
             </div>
          </template>
@@ -29,7 +29,7 @@
 
       <button
          v-if="!form.staticPhone"
-         :class="['btn', 'btn--green', { pending }]"
+         :class="['btn', 'btn--green', 'full-width', { pending }]"
          type="submit"
       >
          {{ actionText || $t('go_ahead') }}

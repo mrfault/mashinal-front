@@ -55,7 +55,7 @@
         {{ $t('please_call_to_support') }}
       </span>
       </p>
-      <button :class="['btn', 'btn--green', { pending }]" type="submit">
+      <button :class="['btn', 'btn--green', 'full-width', { pending }]" type="submit">
          {{ actionText || $t('confirm') }}
       </button>
 

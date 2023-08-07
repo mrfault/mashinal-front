@@ -7,8 +7,8 @@
                <div class="ma-garage__nav">
                   <NuxtLink :to="$localePath('garage-services')" class="ma-garage__nav--profile">
                      <div class="ma-garage__nav--profile__avatar">
-                        <template v-if="user.avatar">
-                           <img :src="'https://dev.mashin.al/storage/'+user.avatar"/>
+                        <template v-if="user.avatar || user.autosalon.logo">
+                           <img :src="image" :alt="user.full_name"/>
                         </template>
                         <h5 v-else class="ma-garage__nav--profile__name">{{ user.full_name.charAt(0) }}</h5>
                      </div>
@@ -48,8 +48,8 @@
                      <div v-if="!isMobileBreakpoint" class="ma-garage__nav">
                         <div class="ma-garage__nav--profile">
                            <div class="ma-garage__nav--profile__avatar">
-                              <template v-if="user.avatar">
-                                 <img :src="`https://dev.mashin.al/storage/${user.avatar}`" alt="avatar"/>
+                              <template v-if="user.avatar|| user.autosalon.logo">
+                                 <img :src="image" :alt="user.full_name"/>
                               </template>
                               <h5 v-else class="ma-garage__nav--profile__name">{{ user.full_name.charAt(0) }}</h5>
                            </div>
@@ -94,6 +94,13 @@ export default {
       PageLayout
    },
    computed: {
+      image() {
+         if (this.user.autosalon) {
+            return (this.user.autosalon.logo.includes('http') ? '' : 'https://dev.mashin.al/storage/') + this.user.autosalon.logo;
+         } else {
+            return (this.user.avatar.includes('http') ? '' : 'https://dev.mashin.al/storage/') + this.user.avatar;
+         }
+      },
       garageNavs() {
          if (this.user.autosalon) {
             return [
@@ -115,7 +122,7 @@ export default {
                {
                   title: this.$t('my_profile'),
                   icon: 'store',
-                  link: '/profile/settings/',
+                  link: '/dashboard/1/settings/',
                },
                {
                   title: this.$t('agreements'),
@@ -128,41 +135,52 @@ export default {
                   link: '/logout',
                   isButton: true,
                },
-            ]
-         } else return [
-            {
-               title: this.$t('my_announces'),
-               icon: 'layers',
-               link: '/profile/announcements',
-            },
-            {
-               icon: 'invoice',
-               title: this.$t('penalties'),
-               link: '/garage',
-            },
-            {
-               title: this.$t('my_balance'),
-               icon: 'wallet',
-               link: '/profile/balance/',
-            },
-            {
-               title: this.$t('my_account'),
-               icon: 'user',
-               link: '/profile/settings/',
-            },
-            {
-               title: this.$t('sign_out'),
-               icon: 'logout',
-               link: 'announces',
-               isButton: true,
-            },
-         ]
+            ];
+         } else {
+            let data =  [
+               {
+                  title: this.$t('my_announces'),
+                  icon: 'layers',
+                  link: '/profile/announcements',
+               },
+               {
+                  icon: 'invoice',
+                  title: this.$t('penalties'),
+                  link: '/garage',
+               },
+               {
+                  title: this.$t('my_balance'),
+                  icon: 'wallet',
+                  link: '/profile/balance/',
+               },
+               {
+                  title: this.$t('my_account'),
+                  icon: 'user',
+                  link: '/profile/settings/',
+               },
+               {
+                  title: this.$t('sign_out'),
+                  icon: 'logout',
+                  link: 'announces',
+                  isButton: true,
+               },
+            ];
+
+            if (this.user.can_be_autosalon) {
+               data.unshift({
+                  title: this.$t('my_packages'),
+                  icon: 'packages',
+                  link: '/profile/packages/',
+               });
+            }
+
+            return data;
+         }
       },
    },
    methods: {
       isRouteActive(link) {
-         console.log("this.$route.path", this.$route.path, link)
-         if (this.$route.path == this.$localePath(link)) {
+         if (this.$route.path === this.$localePath(link)) {
             return true
          } else {
             return false

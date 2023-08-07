@@ -129,36 +129,7 @@
     />
   </div>
 </template>
-<style scoped lang="scss">
-.car-item-process {
-  color: #246EB2;
-  font-size: 12px;
-  display: flex;
-  align-items: center;
-  &:before {
-    content: '';
-    background: #246EB2;
-    width: 4px;
-    height: 4px;
-    margin-right: 3px;
-    border-radius: 50%;
-    display: inline-block;
-  }
-}
-.alert-warning-del {
-  margin-right: 2px;
-  margin-left: 2px;
-  vertical-align: text-bottom;
-}
-  .car-bg-custom-size {
-    background-size: 100px 100px;
-  }
-  .car-bg:not(.no-img) {
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-color: #fff !important;
-  }
-</style>
+
 <script>
 import { mapActions } from 'vuex';
 
@@ -283,3 +254,35 @@ export default {
   }
 }
 </script>
+
+
+<style scoped lang="scss">
+.car-item-process {
+   color: #246EB2;
+   font-size: 12px;
+   display: flex;
+   align-items: center;
+   &:before {
+      content: '';
+      background: #246EB2;
+      width: 4px;
+      height: 4px;
+      margin-right: 3px;
+      border-radius: 50%;
+      display: inline-block;
+   }
+}
+.alert-warning-del {
+   margin-right: 2px;
+   margin-left: 2px;
+   vertical-align: text-bottom;
+}
+.car-bg-custom-size {
+   background-size: 100px 100px;
+}
+.car-bg:not(.no-img) {
+   background-repeat: no-repeat;
+   background-position: center center;
+   background-color: #fff !important;
+}
+</style>

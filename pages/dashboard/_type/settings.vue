@@ -1,17 +1,16 @@
 <!--suppress ALL -->
 <template>
-   <div class="pages-dashboard-settings">
+   <div class="pages-dashboard-settings garage">
       <portal to="breadcrumbs">
          <breadcrumbs :crumbs="crumbs"/>
       </portal>
-
       <component
          :is="isMobileBreakpoint ? 'mobile-screen' : 'div'"
          :bar-title="$t('user_information_edit')"
          @back="$router.push(pageRef || $localePath('/dashboard/'+$route.params.type))"
          height-auto>
          <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12 mt-lg-0 mt-3">
                <div class="card profile-settings-card p-0">
                   <div class="row flex-wrap position-relative cover-with-avatar_edit">
                      <div class="avatar_edit col-auto cover" id="anchor-cover">
@@ -55,7 +54,6 @@
                                     v-model="form.address"
                                     :invalid="isInvalid('address')"
                                     @change="removeError('address')"/>
-
                                  <pick-on-map-button
                                     :lat="form.lat"
                                     :lng="form.lng"
@@ -155,7 +153,7 @@
 
                         <div class="col-md-12">
                            <div class="row">
-                              <div class="col-md-12 pb-3">
+                              <!--<div class="col-md-12 pb-3">
                                  <form-text-input
                                     type="password"
                                     autocomplete="old-password"
@@ -178,12 +176,13 @@
                                     :maxlength="255"
                                     :placeholder="$t('confirm_new_password')"
                                     v-model="pwdForm.password_confirmation"/>
-                              </div>
+                              </div>-->
                               <div class="col-md-12 pb-3">
                                  <button
                                     type="submit"
-                                    @click="submit"
-                                    :class="['btn btn--green full-width', { pending: pending && showPasswordModal }]">
+                                    @click="submit(salon.id)"
+                                    v-bind:key="salon.id"
+                                    :class="['btn btn--green full-width', { pending: pending }]">
                                     {{ $t('save') }}
                                  </button>
                               </div>
@@ -197,18 +196,13 @@
                            <div class="change-avatar d-flex justify-content-center">
                               <div class="avatar-image">
                                  <form-image
-                                    :refreshCroppa="refreshCroppa"
-                                    @removeImage="removeImage"
-                                    type="logo"
                                     v-model="form.logo"
                                     :initial-image="getSalonImg('logo')"
-                                    :no-image="!hasLogo"
-                                    :width="isMobileBreakpoint ? 72 : 72"
-                                    :height="isMobileBreakpoint ? 72 : 72"
                                     croppable
+                                    :no-image="!hasLogo"
                                     @new-image="hasLogo = true"
-                                    :autoSizing="false"
-                                 />
+                                    :width="isMobileBreakpoint ? 72 : 72"
+                                    :height="isMobileBreakpoint ? 72 : 72"/>
                               </div>
                               <div class="avatar-content">
                                  <h4>{{$t('change_profile_pictures_text')}}</h4>
@@ -220,11 +214,11 @@
                            </div>
                         </div>
                         <div class="col-md-12" id="anchor-saved_gallery">
-                           <form-gallery
-                              itemClass="col-12 col-lg-1-8 mb-lg-3 mt-2 mb-2"
+                           <form-gallery-new
                               :maxFiles="24"
                               :initialFiles="initialFiles"
                               @change="filesOnChange"
+                              :rotatable="true"
                               @loading="pending = $event"
                            />
                         </div>
@@ -240,9 +234,9 @@
 <script>
 import {mapGetters, mapActions} from 'vuex';
 import {ToastErrorsMixin} from '~/mixins/toast-errors';
-
 import PickOnMapButton from '~/components/elements/PickOnMapButton';
 import FormGallery from '~/components/forms/FormGallery';
+import FormGalleryNew from '~/components/forms/FormGalleryNew';
 
 export default {
    name: 'pages-dashboard-settings',
@@ -250,6 +244,7 @@ export default {
    components: {
       PickOnMapButton,
       FormGallery,
+      FormGalleryNew,
    },
    middleware: ['auth_general', 'auth_salon'],
    nuxtI18n: {
@@ -280,6 +275,7 @@ export default {
             password: '',
             password_confirmation: ''
          },
+         salon: salon,
          form: {
             name: salon.name || '',
             phones: [...(salon.phones || [])].map(phone => '+' + phone),
@@ -303,7 +299,8 @@ export default {
          },
          files: [],
          hasLogo: !!salon.logo,
-         hasCover: !!salon.cover
+         hasCover: !!salon.cover,
+         clicked: []
       }
    },
    computed: {
@@ -353,7 +350,8 @@ export default {
       clickAvatar() {
          this.$root.$refs.FormImage.croppaValue.chooseFile();
       },
-      async submit() {
+      async submit(id) {
+         this.clicked.push(id);
          if (this.pending) return;
          this.clearErrors();
          this.pending = true;
@@ -448,6 +446,9 @@ export default {
                count++;
             })
          }
+
+         this.clicked.pop(id);
+         window.scrollTo(0, 0);
       },
 
       getSalonImg(key) {
@@ -575,6 +576,14 @@ export default {
    height: 72px;
    width: 72px;
 }
+.select-menu.wider{
+   width: 100%!important;
+}
+.pages-dashboard-settings.garage{
+   .text-input textarea:hover{
+      border: 1px solid #155EEF;
+   }
+}
 .dark-mode{
    .change-avatar {
       border: 1px solid #1B2434!important;
@@ -585,6 +594,29 @@ export default {
    }
    .avatar-content p {
       color: #CDD5DF;
+   }
+   .pages-dashboard-settings.garage{
+      .text-input input,
+      .text-input textarea,
+      .btn--primary-outline,
+      .text-input input{
+         background-color: #1b2434!important;
+      }
+      .select-menu .select-menu_label{
+         background-color: #1b2434!important;
+      }
+   }
+
+   .pages-dashboard-settings.garage{
+      .text-input input:hover,
+      .text-input textarea:hover,
+      .btn--primary-outline:hover,
+      .text-input input:hover{
+         border: 1px solid #155EEF;
+      }
+      .select-menu .select-menu_label:hover{
+         border: 1px solid #155EEF;
+      }
    }
 }
 </style>

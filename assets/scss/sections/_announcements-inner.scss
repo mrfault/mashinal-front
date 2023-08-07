@@ -545,6 +545,34 @@
          }
       }
    }
+
+   .ads_statics {
+      background-color: $dark-new;
+
+      span {
+         color: $grey-5-new;
+      }
+   }
+
+   .radio-container {
+      border-color: $grey-2-new;
+
+      &__description {
+         h6 {
+            color: $grey-5-new;
+         }
+      }
+   }
+
+   .terminal-info-popup {
+      .steps {
+         .step-item {
+            .step-text {
+               color: $grey-5-new;
+            }
+         }
+      }
+   }
 }
 
 .iframe {
@@ -560,7 +588,19 @@
 .images-slider {
    width: 100%;
    min-height: 690px;
-   padding-top: 40px;
+   margin-top: 100px;
+
+   &__close {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 52px;
+      height: 52px;
+      font-size: 13px;
+      border-radius: 50%;
+      background-color: #121926;
+      cursor: pointer;
+   }
 
    .iframe {
       padding-bottom: 62%;
@@ -955,109 +995,111 @@
 }
 
 .ads_statics {
-   background: $dark-blue-2;
-   border-radius: 4px;
-   color: white;
-   font-size: 14px;
-   height: 45px;
    display: flex;
    align-items: center;
    justify-content: center;
-   padding: 12px;
+   border-radius: 12px;
+   padding: 16px;
+   background-color: $grey-1-new;
+
+   svg {
+      min-width: 22px;
+      color: $blue-new;
+   }
 
    span {
-      font-size: 18px;
-      font-weight: 600;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 20px;
+      margin-left: 12px;
+      color: $dark-light-new;
    }
 }
 
 .radio-items {
-   width: 100%;
-   display: flex;
-   flex-wrap: wrap;
-   gap: 15px;
+   display: grid;
+   grid-template-columns: repeat(3, 1fr);
+   gap: 12px;
+
+   &.payment {
+      grid-template-columns: repeat(2, 1fr);
+   }
 }
 
 .radio-container {
-   width: calc(33.33% - 15px);
+   display: flex;
+   align-items: center;
    position: relative;
-   padding-left: 35px;
-   margin-bottom: 12px;
-   cursor: pointer;
-   font-size: 14px;
+   height: 52px;
+   border: 1px solid $white-2-new;
+   border-radius: 8px;
+   transition: all .3s;
+
    -webkit-user-select: none;
    -moz-user-select: none;
    -ms-user-select: none;
    user-select: none;
-   color: $red-1;
-}
-
-/* Hide the browser's default checkbox */
-.radio-container input {
-   position: absolute;
-   opacity: 0;
    cursor: pointer;
-   height: 0;
-   width: 0;
+
+   &__description {
+      display: flex;
+      flex-direction: column;
+      margin-left: 50px;
+
+      h6 {
+         font-size: 12px;
+         font-weight: 400;
+         line-height: 14px;
+         color: $grey-2-new;
+      }
+
+      h5 {
+         font-size: 16px;
+         font-weight: 500;
+         line-height: 20px;
+         color: $dark-new;
+      }
+   }
+
+   &:has(input:checked) {
+      border-color: $blue-new;
+   }
+
+   &:hover {
+      border-color: $blue-new;
+   }
 }
 
 /* Create a custom checkbox */
 .checkmark {
-   display: flex;
-   align-items: center;
-   justify-content: center;
    position: absolute;
-   top: 0;
-   left: 0;
-   height: 18px;
-   width: 18px;
-   border-radius: 100%;
-   background-color: $white;
-   border: 1px solid $dark-blue-3;
+   top: 50%;
+   left: 16px;
+   transform: translateY(-50%);
+   height: 24px;
+   width: 24px;
+   border-radius: 50%;
+   background-color: transparent;
+   border: 1px solid $white-2-new;
 }
 
-/* On mouse-over, add a grey background color */
-.radio-container:hover input ~ .checkmark {
-   background-color: $white;
-}
-
-/* When the checkbox is checked, add a blue background */
 .radio-container input:checked ~ .checkmark {
-   border: 1px solid $red-1;
    display: flex;
    align-items: center;
    justify-content: center;
+   border: 1px solid $blue-new;
+   background-color: $blue-3-new;
 }
 
-/* Create the checkmark/indicator (hidden when not checked) */
-.checkmark:after {
+.radio-container input:checked ~ .checkmark:after {
    content: "";
    display: flex;
    align-items: center;
    justify-content: center;
-
-}
-
-/* Show the checkmark when checked */
-.radio-container input:checked ~ .checkmark:after {
-   display: block;
-   height: 12px;
-   width: 12px;
-   border: 1px solid $red-1;
-   background: $red-1;
-   border-radius: 100%;
-}
-
-/* Style the checkmark/indicator */
-.radio-container .checkmark:after {
-   width: 12px;
-   height: 12px;
-
-}
-
-.paymentMethods {
-   font-size: 18px;
-   font-weight: 600;
+   height: 10px;
+   width: 10px;
+   background-color: $blue-new;
+   border-radius: 50%;
 }
 
 .terminal-section {
@@ -1072,111 +1114,106 @@
       font-size: 13px;
    }
 
-   label {
-      margin-bottom: unset;
-   }
-
    .info-text {
-      padding-left: 0px;
+      padding-left: 0;
    }
 
    .icon-alert-circle {
       left: 3px;
    }
 }
-.terminal-info-popup{
-    width: 590px;
-   .phone-section{
+
+.terminal-info-popup {
+   max-width: 490px;
+   width: 100%;
+
+   &__inner {
       display: flex;
-      align-items: center;
-
-      .phone {
-         background: $dark-blue-2;
-         border-radius: 4px;
-         padding: 14px;
-         color: $white;
-      }
-
-      span {
-         margin-left: 15px;
-      }
+      flex-direction: column;
+      gap: 24px;
    }
 
-   .description {
-      display: flex;
-
-      span {
-         margin-left: 15px;
-         font-weight: 500;
-      }
+   &__description {
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 20px;
+      color: #1B2434;
    }
 
    .steps {
       display: flex;
       flex-direction: column;
-      margin-top: 15px;
 
       .step-item {
          display: flex;
          align-items: center;
-         margin: 8px 0px;
 
          .step-number {
             position: relative;
-            width: 34px;
-            height: 34px;
-            border: 1px solid #DBE7F9;
+            min-width: 40px;
+            //width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #8B92AF;
-            border-radius: 4px;
+            border-radius: 50%;
+            background-color: $pink-light-new;
+
+            span {
+               font-size: 20px;
+               font-weight: 700;
+               line-height: 24px;
+               color: $red-1;
+            }
          }
 
          .step-text {
-            margin-left: 10px;
+            margin-left: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 20px;
+            color: $dark-light-new;
+         }
+
+         &:not(:first-child) {
+            margin-top: 24px;
          }
       }
 
-      .step-number::after {
-         content: "";
-         display: block;
-         height: 17px;
-         vertical-align: bottom;
-         width: 0.1rem;
-         margin-top: 50px;
-         background: #DBE7F9;
-         position: absolute;
-         left: 50%;
-         transform: translateX(-50%);
-      }
+      //.step-number::after {
+      //   content: "";
+      //   display: block;
+      //   height: 17px;
+      //   vertical-align: bottom;
+      //   width: 0.1rem;
+      //   margin-top: 50px;
+      //   background: #DBE7F9;
+      //   position: absolute;
+      //   left: 50%;
+      //   transform: translateX(-50%);
+      //}
 
-      .step-item {
-         &:last-child {
-            .step-number {
-               &::after {
-                  content: none;
-               }
-            }
-         }
-      }
+      //.step-item {
+      //   &:last-child {
+      //      .step-number {
+      //         &::after {
+      //            content: none;
+      //         }
+      //      }
+      //   }
+      //}
+   }
+
+   .btn {
+      height: 52px;
    }
 }
 
-@media only screen and (max-width: 600px) {
-   .ads_statics {
-      padding: 33px 22px;
-   }
+@media (max-width: 500px) {
    .radio-items {
       display: flex;
       flex-direction: column;
-
-      .radio-container {
-         width: 100%;
-      }
-   }
-   .terminal-info-popup {
-      width: 100%;
+      grid-template-columns: none;
    }
 }
 

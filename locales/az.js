@@ -821,6 +821,7 @@ export default {
    featured_ads: "Önə çəkilmiş elanlar",
    featured_ads_2: "Önə çək",
    featured_ads_3: "Önə çəkilmiş elan",
+   featured_ads_4: "Elanı irəli çək",
    for_the_provision_of_electronic_customs_service:
       "Elektron gömrük xidmətinin göstərilməsinə görə",
    forgot_your_password: "Şifrəni bərpa et",
@@ -1074,6 +1075,7 @@ export default {
    lens: "Linza",
    less: "Daha az",
    less_2: "Qısalt",
+   less_3: "Axtarışı qısalt",
    license_plate: "Dövlət nişanı",
    license_plate_number: "Qeydiyyat nişanı",
    license_plate_number_vin_or_carcase_number:
@@ -1442,6 +1444,7 @@ export default {
    pay_with_balance: "Balans",
    pay_with_card: "Bank kartı",
    pay_with_terminal: "Terminallarda ödəniş",
+   pay_with_terminal_2: "Terminaldan",
    payment: "Ödəniş",
    payment_amount: "Məbləğ",
    payment_history: "Ödəniş tarixçəsi",
@@ -1911,7 +1914,7 @@ export default {
    terminal_pay_info:
       "Milliön terminalları vasitəsilə aşağıdakı qaydada balans artıra bilərsiniz.",
    terminal_pay_steps: [
-      '"Elanlar və kuponlar" bölməsini seçin',
+      'Elanlar və kuponlar" bölməsini seçin',
       'Açılan bölmədə "Mashin.AL"-ı seçin',
       "Qeydiyyat zamanı istifadə etdiyiniz mobil nömrəni daxil edin",
       "Nömrənin düzgünlüyünə əmin olun",
@@ -2437,6 +2440,7 @@ export default {
    country: "Ölkə",
    dont_drink_so_much: "Bir də bu qədər içmə",
    dashboard_external_salon: "Salon profili",
+   external: "Sifarişlə",
    external_salon: "Sifarişlə avto",
    "external-salons": "Sifarişlə avto",
    registration_marks: "Qeydiyyat nişanları",
@@ -2695,6 +2699,7 @@ export default {
    "add_vehicle_desc": "Hər əlavə etdiyiniz NV-nə görə aylıq 1 AZN ₼ (ƏDV daxil) məbləğ tutulacaq.",
    "no_vehicle_found": "Sizin əlavə edilmiş nəqliyyat vasitəniz yoxdur",
    'profile_balance_desc': "Rəsmi salonlardan avtomobil sifariş et",
+   'profile_settings_desc': "İstifadəçi parametrləri, Ad Soyad, Profil fotosu və s.",
    "logout_account_desc": "Hesabdan çıxış et",
    "garage_penalties_desc": "Cərimələr, gömrük kalkulyatoru, bələdçi, alkotester, vizual şin kalkulyatoru",
    "garage_account_desc": "Rəsmi nümayəndə və digər avtosalonlar",
@@ -2710,6 +2715,17 @@ export default {
    package_information: "Paket məlumatlarım",
    package_refresh: "Paketi yenilə",
    package_current: "Mövcud paket",
+
+   "remove_announcement": "Elanı sil",
+   "start_subscription_desc1": "Seçilmiş NV-nə abunə olmaq istədiyinizə əminsiniz?",
+   "penalty_info": "Cərimə məlumatları",
+   "number_plate_of_vehicle": "NV-nin qeydiyyat nişanı",
+   "protocol_number": "Protokol nömrəsi",
+
+   "restore_announcement" : "Elanı bərpa et",
+   "vehicle_is_processing": "Nəqliyyat vasitəsi prosesdədir",
+
+   "no_payment_history": "Ödəniş tarixçəsi yoxdur",
 
 };
 

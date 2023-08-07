@@ -82,6 +82,80 @@
          <!--         body ----------------------------------------------------------------------------------------------------------------------- -->
          <!--         body ----------------------------------------------------------------------------------------------------------------------- -->
 
+         <!--         payment modal-->
+         <modal-popup
+            :modal-class="!isMobileBreakpoint ? 'midsize': 'larger'"
+            :overflow-hidden="isMobileBreakpoint"
+            :title="$t('payment')"
+            :toggle="showPaymentModal"
+            @close="showPaymentModal = false"
+         >
+            <h4 class="mb-2">{{ $t('payment_method') }}</h4>
+            <div class="d-flex align-items-center justify-content-between">
+               <!--               <form-buttons v-model="paymentMethod" :options="paymentMethodOptions" :group-by="2"/>-->
+               <template v-for="(item,index) in paymentMethodOptions">
+                  <form-radio
+                     v-model="paymentMethod"
+                     :disabled="!user.balance"
+                     :group-by="2"
+                     :label="$t(item.name)"
+                     :radio-value="item.key"
+                     style="width: calc(50% - 8px)"
+                  />
+               </template>
+            </div>
+            <select-banking-card
+               v-show="paymentMethod === 'card'"
+               :value="bankingCard"
+               class="mt-2 mt-lg-3"
+               @input="bankingCard = $event"
+            />
+            <div class="protocol-payment-modal__body--total-amount">
+               <p>{{ $t('total_payment_amount') }}</p>
+               <strong v-if="protocol.selected && protocol.selected.total">{{ protocol.selected.total }} AZN</strong>
+            </div>
+            <!--         <terminal-info-button popup-name="garage-add-popup"/>-->
+            <div :class="{ 'modal-sticky-bottom': isMobileBreakpoint }">
+               <div class="row">
+                  <div class="col-6">
+                     <button
+                        :class="[
+                                        'btn',
+                                        'btn--white',
+                                        'btn-dark-text',
+                                        'full-width',
+                                      ]"
+                        type="button"
+                        @click="showPaymentModal = false"
+                     >
+                        {{ $t('reject') }}
+                     </button>
+                  </div>
+                  <div v-if="protocol.selected" class="col-6">
+                     <!--                     <button-->
+                     <!--                        :class="['btn btn&#45;&#45;green full-width', { pending }]"-->
+                     <!--                        @click="getPayLink(protocol.selected)"-->
+                     <!--                     >-->
+                     <!--                        {{ $t('pay') }}-->
+                     <!--                     </button>-->
+                     <a
+                        v-if="paymentMethod == 'card'"
+                        :href="getPayLink(protocol.selected)"
+                        class="btn btn--green full-width"
+                        rel="noopener"
+                        target="_blank"
+                     >
+                        {{ $t('pay_online') }}
+                     </a>
+                     <button v-else class="btn btn--green full-width" @click="payFromBalance(protocol.selected)"
+                     >
+                        {{ $t('pay_from_balance') }}
+                     </button>
+                  </div>
+               </div>
+            </div>
+         </modal-popup>
+
          <no-ssr>
             <template v-if="cars.data && cars.data.length">
                <garage-nav

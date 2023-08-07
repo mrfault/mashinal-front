@@ -22,7 +22,7 @@
                      </tr>
                      <tr class="w-100">
                         <td class="text-left">{{ $t('package_price') }}</td>
-                        <td class="text-right">{{ selectedPackage.price }} AZN</td>
+                        <td class="text-right">{{ selectedPackage?.price * duration }} AZN</td>
                      </tr>
                      <tr class="w-100">
                         <td class="text-left">{{ $t('period_time') }}</td>
@@ -44,7 +44,7 @@
                      </tr>
                      <tr class="w-100">
                         <td class="text-left">{{ $t('end_date') }}</td>
-                        <td class="text-right">{{ $moment(new Date()).format('DD.MM.YYYY') }}</td>
+                        <td class="text-right">{{ $moment(addMonth($moment(new Date()), duration)).format('DD.MM.YYYY')}}</td>
                      </tr>
                   </table>
                </div>
@@ -96,25 +96,33 @@
 
          <h4 class="paymentMethods mb-3">{{ $t('payment_method') }}</h4>
 
-         <label class="radio-container">
-            {{$t('pay_with_card')}}
-            <input type="radio" name="payment_type" checked @change="payment_type = 'card'">
-            <span class="checkmark"></span>
-         </label>
-
-         <label class="radio-container" v-if="this.$auth.loggedIn && $readNumber(user.balance) > 0">
-            {{ $t('balans') }}
-            <input type="radio" name="payment_type" @change="payment_type = 'balance'">
-            <span class="checkmark"></span>
-         </label>
+         <div class="d-flex justify-content-between align-items-center">
+            <form-radio
+               :id="'1'"
+               :value="'card'"
+               :label="$t('pay_with_card')"
+               input-name="payment_type"
+               v-model="payment_type"
+               @change="payment_type = 'card'"
+               :radio-value="'card'"
+               :checked="true"
+            />
+            <form-radio
+               v-if="this.$auth.loggedIn && $readNumber(user.balance) > 0"
+               :id="'2'"
+               :value="'balance'"
+               :label="$t('balans') +' ('+$readNumber(user.balance)+' AZN)'"
+               input-name="payment_type"
+               v-model="payment_type"
+               class="ml-2"
+               :radio-value="'balance'"
+               @change="payment_type = 'balance'"
+            />
+         </div>
 
          <hr v-if="$readNumber(user.balance) > 0" />
 
          <div class="wrapp">
-            <div class="terminal-section" v-if="$readNumber(user.balance) > 0">
-               {{ $t('balans') }}: <span style="margin-right: 20px;">{{ $readNumber(user.balance) }}</span>
-            </div>
-
             <div class="terminal-section" v-if="$readNumber(user.balance) > 0">
                {{ $t('package_price') }}: <span>{{ selectedPackage?.price * duration }} AZN</span>
             </div>
@@ -147,6 +155,7 @@
    import { PaymentMixin } from "~/mixins/payment";
    import ComeBack from "~/components/elements/ComeBack.vue";
    import Alert from "~/components/elements/Alert.vue";
+   import Da from "vue2-datepicker/locale/es/da";
 
    export default {
       components: {Alert, ComeBack },
@@ -178,7 +187,7 @@
             durations: [
                { key: 1, name: `30 ${this.$t('ads_day')}` },
                { key: 2, name: `60 ${this.$t('ads_day')}` },
-               { key: 3, name: `90 ${this.$t('ads_day')}` }
+               { key: 3, name: `90 ${this.$t('ads_day')}` },
             ],
             selectedPackage: {}
          }
@@ -186,12 +195,27 @@
 
       methods: {
          nextStep() {
-            this.$v.$touch();
-            if (this.$v.$error) return;
+            //this.$v.$touch();
+            //if (this.$v.$error) return;
 
             this.openModal = true;
          },
+         addMonth(date, month) {
+            const resultDate = new Date(date);
+            const initialMonth = resultDate.getMonth();
+            const targetMonth = (initialMonth + month) % 12;
 
+            const yearsToAdd = Math.floor((initialMonth + month) / 12);
+            resultDate.setMonth(targetMonth);
+
+            if (targetMonth < initialMonth) {
+               resultDate.setFullYear(resultDate.getFullYear() + yearsToAdd);
+            } else {
+               resultDate.setFullYear(resultDate.getFullYear() + yearsToAdd);
+            }
+
+            return resultDate;
+         },
          async handleSubmit({commit}, value) {
             this.pending = true;
 
@@ -210,6 +234,8 @@
                delete data.name;
             }
 
+            console.log(data);
+
             try {
                const res = await this.$axios.$post(`${api}?is_mobile=${this.isMobileBreakpoint}`, data);
 
@@ -219,9 +245,11 @@
                      type: 'success',
                      // text: this.$t('announcement_paid'),
                      title: this.$t('success_payment')
-                  }, value);
+                  }, value).then(() => {
+                     window.location = this.$localePath('/profile/agreement');
+                  });
                } else {
-                  await this.handlePayment(res, this.$localePath('/agreement'));
+                  await this.handlePayment(res, this.$localePath('/profile/agreement'));
                   this.pending = this.openModal = false;
                }
             } catch (error) {
@@ -235,6 +263,9 @@
       },
 
       computed: {
+         Da() {
+            return Da
+         },
          ...mapGetters({
             getAgreements: 'getAgreements',
             getResetForm: 'getResetForm'
@@ -252,7 +283,13 @@
       mounted() {
          this.selectedPackage = JSON.parse(localStorage.getItem('selectedPackage'));
 
-         if (this.user?.autosalon?.name) this.salon_name = this.user?.autosalon?.name;
+         this.salon_name = this.user?.name;
+
+         // agreement_id
+         // autosalon_id
+         // days_type
+         // package_id
+         // payment_type
       },
 
       validations: {
@@ -525,6 +562,10 @@
                }
             }
          }
+      }
+
+      .modal-sticky-bottom {
+         background-color: #1b2434;
       }
 
      .select-menu_label.selected {

@@ -15,7 +15,7 @@
       </button>
       <modal-popup
          :modal-class="!isMobileBreakpoint ? 'midsize': 'larger'"
-         :title="$t('remove_vehicle1')"
+         :title="$t('stop_subsciption')"
          :toggle="showModal"
          @close="showModal = false">
          <div class="remove-vehicle-modal">

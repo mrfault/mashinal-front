@@ -1,654 +1,521 @@
 <template>
    <div class="cars-search-form form">
       <div class="cars-search-form__inner">
-         <div class="d-flex align-items-center justify-content-between mb-5">
-            <form-buttons
-               class="announce_types"
-               :options="getMileageOptions"
-               :group-by="3"
-               :btnClass="'blue-new'"
-               v-model="form.announce_type"
+         <template v-if="assistant">
+            <div class="col-12">
+               <car-body-shortcuts v-model="formAssistant.body"/>
+            </div>
+
+            <div class="col-12">
+               <car-option-packs v-model="formAssistant.packs"/>
+            </div>
+         </template>
+
+         <div class="cars-search-form__grid" v-else>
+            <form-select
+               :label="$t('mark')"
+               :options="existsBrands"
+               :clear-placeholder="true"
+               :clear-option="false"
+               :input-placeholder="$t('mark_search')"
+               v-model="form.additional_brands[0]['brand']"
+               @change="setBrand($event, 0)"
+               has-search
             />
 
-            <form-buttons
-               class="no-bg"
-               :options="getSearchTabs"
-               :group-by="2"
-               :btnClass="'blue-new'"
-               v-model="form.searchType"
+            <form-select
+               :label="$t('model')"
+               :options="carModels[0]"
+               :clear-placeholder="true"
+               :clear-option="false"
+               :input-placeholder="$t('model_search')"
+               v-model="form.additional_brands[0]['model']"
+               :disabled="form.additional_brands[0]['brand'] && !carModels[0].length"
+               @change="setModel($event, 0)"
+               has-search
             />
-         </div>
 
-         <template v-if="form.searchType === 1">
-            <template v-if="assistant">
-               <div class="col-12">
-                  <car-body-shortcuts v-model="formAssistant.body"/>
-               </div>
+            <form-select
+               :label="$t('generation')"
+               :options="carGenerations[0]"
+               :clear-placeholder="true"
+               :clear-option="false"
+               :input-placeholder="$t('generation_search')"
+               v-model="form.additional_brands[0]['generation']"
+               :disabled="form.additional_brands[0]['model'] &&!carGenerations[0].length"
+               @change="setGeneration($event, 0)"
+               has-search
+               has-generations
+            />
 
-               <div class="col-12">
-                  <car-option-packs v-model="formAssistant.packs"/>
-               </div>
+            <div class="form-merged">
+               <form-select
+                  :label="$t('from_year')"
+                  :options="getYearOptions(false, form.max_year)"
+                  v-model="form.min_year"
+                  :show-label-on-select="false"
+                  :clear-option="false"
+                  in-select-menu
+               />
+
+               <form-select
+                  :label="$t('to')"
+                  :options="getYearOptions(form.min_year, false)"
+                  v-model="form.max_year"
+                  :show-label-on-select="false"
+                  :clear-option="false"
+                  in-select-menu
+               />
+            </div>
+
+            <template v-for="(key, i) in rows" v-if="key > 0">
+               <form-select
+                  :key="'1' +i"
+                  :label="$t('mark')"
+                  :options="existsBrands"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  :input-placeholder="$t('mark_search')"
+                  v-model="form.additional_brands[key]['brand']"
+                  @change="setBrand($event, key)"
+                  has-search
+               />
+
+               <form-select
+                  :key="'2' +i"
+                  :label="$t('model')"
+                  :options="carModels[key]"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  :input-placeholder="$t('model_search')"
+                  v-model="form.additional_brands[key]['model']"
+                  :disabled="form.additional_brands[key]['brand'] && !carModels[key].length"
+                  @change="setModel($event, key)"
+                  has-search
+               />
+
+               <form-select
+                  :key="'3' +i"
+                  :label="$t('generation')"
+                  :options="carGenerations[key]"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  :input-placeholder="$t('generation_search')"
+                  v-model="form.additional_brands[key]['generation']"
+                  :disabled="form.additional_brands[key]['model'] &&!carGenerations[key].length"
+                  @change="setGeneration($event, key)"
+                  has-search
+                  has-generations
+               />
+
+               <button
+                  :key="'4' +i"
+                  type="button"
+                  :class="['btn', 'full-width', 'btn--white', { 'pointer-events-none': pending }]"
+                  @click="removeSearchRow(key)"
+               >
+                  {{ $t('remove_search') }}
+
+                  <icon name="minus" />
+               </button>
             </template>
 
-            <div class="cars-search-form__grid" v-else>
-               <!--            <div class="cars-search-form__grid-item">-->
-               <form-select
-                  :label="$t('mark')"
-                  :options="existsBrands"
-                  :clear-placeholder="true"
-                  :clear-option="false"
-                  :input-placeholder="$t('mark_search')"
-                  v-model="form.additional_brands[0]['brand']"
-                  @change="setBrand($event, 0)"
-                  has-search
-               />
-
-               <form-select
-                  :label="$t('model')"
-                  :options="carModels[0]"
-                  :clear-placeholder="true"
-                  :clear-option="false"
-                  :input-placeholder="$t('model_search')"
-                  v-model="form.additional_brands[0]['model']"
-                  :disabled="form.additional_brands[0]['brand'] && !carModels[0].length"
-                  @change="setModel($event, 0)"
-                  has-search
-               />
-
-               <form-select
-                  :label="$t('generation')"
-                  :options="carGenerations[0]"
-                  :clear-placeholder="true"
-                  :clear-option="false"
-                  :input-placeholder="$t('generation_search')"
-                  v-model="form.additional_brands[0]['generation']"
-                  :disabled="form.additional_brands[0]['model'] &&!carGenerations[0].length"
-                  @change="setGeneration($event, 0)"
-                  has-search
-                  has-generations
-               />
-
-               <div class="form-merged">
-                  <form-select
-                     :label="$t('from_year')"
-                     :options="getYearOptions(false, form.max_year)"
-                     v-model="form.min_year"
-                     :show-label-on-select="false"
-                     :clear-option="false"
-                     in-select-menu
+            <form-select
+               :label="$t('price')"
+               custom
+               :new-label="false"
+               :suffix="getOptionValue('Currency', form.currency)"
+               :values="{from: form.price_from, to: form.price_to, suffix: getSuffix}"
+               @clear="(form.price_from = ''), (form.price_to = '')"
+            >
+               <div class="form-merged flex-column price">
+                  <form-buttons
+                     :options="getCurrencyOptions"
+                     :group-by="3"
+                     :btnClass="'blue-new-light'"
+                     v-model="form.currency"
                   />
 
-                  <form-select
-                     :label="$t('to')"
-                     :options="getYearOptions(form.min_year, false)"
-                     v-model="form.max_year"
-                     :show-label-on-select="false"
-                     :clear-option="false"
-                     in-select-menu
-                  />
-               </div>
-               <!--            </div>-->
-
-               <template v-for="(key, i) in rows"  v-if="key > 0">
-                  <form-select
-                     :key="'1' +i"
-                     :label="$t('mark')"
-                     :options="existsBrands"
-                     :clear-placeholder="true"
-                     :clear-option="false"
-                     :input-placeholder="$t('mark_search')"
-                     v-model="form.additional_brands[key]['brand']"
-                     @change="setBrand($event, key)"
-                     has-search
-                  />
-
-                  <form-select
-                     :key="'2' +i"
-                     :label="$t('model')"
-                     :options="carModels[key]"
-                     :clear-placeholder="true"
-                     :clear-option="false"
-                     :input-placeholder="$t('model_search')"
-                     v-model="form.additional_brands[key]['model']"
-                     :disabled="form.additional_brands[key]['brand'] && !carModels[key].length"
-                     @change="setModel($event, key)"
-                     has-search
-                  />
-
-                  <form-select
-                     :key="'3' +i"
-                     :label="$t('generation')"
-                     :options="carGenerations[key]"
-                     :clear-placeholder="true"
-                     :clear-option="false"
-                     :input-placeholder="$t('generation_search')"
-                     v-model="form.additional_brands[key]['generation']"
-                     :disabled="form.additional_brands[key]['model'] &&!carGenerations[key].length"
-                     @change="setGeneration($event, key)"
-                     has-search
-                     has-generations
-                  />
-
-                  <button
-                     :key="'4' +i"
-                     type="button"
-                     :class="['btn', 'full-width', 'btn--white', { 'pointer-events-none': pending }]"
-                     @click="removeSearchRow(key)"
-                  >
-                     {{ $t('remove_search') }}
-
-                     <icon name="minus" />
-                  </button>
-               </template>
-
-               <!--            <div class="cars-search-form__grid-item">-->
-               <form-select
-                  :label="$t('price')"
-                  custom
-                  :new-label="false"
-                  :suffix="getOptionValue('Currency', form.currency)"
-                  :values="{from: form.price_from, to: form.price_to, suffix: getSuffix}"
-                  @clear="(form.price_from = ''), (form.price_to = '')"
-               >
-                  <div class="form-merged flex-column price">
-                     <form-buttons
-                        :options="getCurrencyOptions"
-                        :group-by="3"
-                        :btnClass="'blue-new-light'"
-                        v-model="form.currency"
-                     />
-
-                     <div class="form-merged__inputs d-flex">
-                        <form-numeric-input
-                           :placeholder="$t('from')"
-                           v-model="form.price_from"
-                        />
-
-                        <form-numeric-input
-                           :placeholder="$t('to')"
-                           v-model="form.price_to"
-                        />
-                     </div>
-
-
-                     <!--                                 <form-select-->
-                     <!--                                    :label="'AZN'"-->
-                     <!--                                    :options="getCurrencyOptions"-->
-                     <!--                                    v-model="form.currency"-->
-                     <!--                                    :allow-clear="false"-->
-                     <!--                                    :clear-option="false"-->
-                     <!--                                    in-select-menu-->
-                     <!--                                 />-->
-                  </div>
-               </form-select>
-
-               <form-select
-                  :label="$t('mileage')"
-                  custom
-                  :new-label="false"
-                  :suffix="$t('char_kilometre')"
-                  :values="{ from: form.mileage_from, to: form.mileage_to }"
-                  @clear=";(form.mileage_from = ''), (form.mileage_to = '')"
-               >
-                  <div class="form-merged">
+                  <div class="form-merged__inputs d-flex">
                      <form-numeric-input
                         :placeholder="$t('from')"
-                        v-model="form.mileage_from"
-                        :suffix="$t('char_kilometre')"
+                        v-model="form.price_from"
                      />
+
                      <form-numeric-input
                         :placeholder="$t('to')"
-                        v-model="form.mileage_to"
-                        :suffix="$t('char_kilometre')"
+                        v-model="form.price_to"
                      />
                   </div>
-               </form-select>
 
-               <form-select
-                  :label="$t('capacity')"
-                  custom
-                  :new-label="false"
-                  :suffix="$t('char_litre')"
-                  :values="{ from: form.min_capacity, to: form.max_capacity }"
-                  @clear=";(form.min_capacity = ''), (form.max_capacity = '')"
-               >
-                  <div class="form-merged">
-                     <form-select
-                        :label="$t('from')"
-                        v-model="form.min_capacity"
-                        :options="bodyOptions.main.custom_options['capacity'].values"
-                        :show-label-on-select="false"
-                        :clear-option="false"
-                        in-select-menu
-                        :suffix="$t('char_litre')"
-                     />
 
-                     <form-select
-                        :label="$t('to')"
-                        v-model="form.max_capacity"
-                        :options="
-                      bodyOptions.main.custom_options['capacity'].values
-                    "
-                        :show-label-on-select="false"
-                        :clear-option="false"
-                        in-select-menu
-                        :suffix="$t('char_litre')"
-                     />
-                  </div>
-               </form-select>
+                  <!--                                 <form-select-->
+                  <!--                                    :label="'AZN'"-->
+                  <!--                                    :options="getCurrencyOptions"-->
+                  <!--                                    v-model="form.currency"-->
+                  <!--                                    :allow-clear="false"-->
+                  <!--                                    :clear-option="false"-->
+                  <!--                                    in-select-menu-->
+                  <!--                                 />-->
+               </div>
+            </form-select>
 
-               <div class="checkboxes">
-                  <form-checkbox
-                     :label="$t('credit')"
-                     :show-input="false"
-                     input-name="exchange_possible"
-                     v-model="form.exchange_possible"
+            <form-select
+               :label="$t('mileage')"
+               custom
+               :new-label="false"
+               :suffix="$t('char_kilometre')"
+               :values="{ from: form.mileage_from, to: form.mileage_to }"
+               @clear=";(form.mileage_from = ''), (form.mileage_to = '')"
+            >
+               <div class="form-merged">
+                  <form-numeric-input
+                     :placeholder="$t('from')"
+                     v-model="form.mileage_from"
+                     :suffix="$t('char_kilometre')"
                   />
-
-                  <form-checkbox
-                     :label="$t('exchange')"
-                     :show-input="false"
-                     input-name="credit"
-                     v-model="form.credit"
-                  />
-
-                  <form-checkbox
-                     :label="$t('with_video')"
-                     :show-input="false"
-                     input-name="with_video"
-                     v-model="form.with_video"
+                  <form-numeric-input
+                     :placeholder="$t('to')"
+                     v-model="form.mileage_to"
+                     :suffix="$t('char_kilometre')"
                   />
                </div>
-               <!--            </div>-->
+            </form-select>
 
-               <template v-if="showMore">
-                  <!--               <div class="cars-search-form__grid-item">-->
-                  <form-select
-                     :label="$t('city')"
-                     :options="sellOptions.regions"
-                     :clear-placeholder="true"
-                     :clear-option="false"
-                     :input-placeholder="$t('city_search')"
-                     v-model="form.region"
-                     has-search
-                  />
-
-                  <form-select
-                     :label="$t('korobka')"
-                     v-model="form.korobka"
-                     :options="bodyOptions.main.default_options['korobka'].values"
-                     :clear-placeholder="true"
-                     :clear-option="false"
-                     multiple
-                     name-in-value
-                     translate-options
-                  />
-
-                  <form-select
-                     :label="$t('fuel')"
-                     v-model="form.engine_type"
-                     :options="bodyOptions.main.default_options['tip-dvigatelya'].values"
-                     :clear-placeholder="true"
-                     :clear-option="false"
-                     multiple
-                     name-in-value
-                     translate-options
-                  />
-                  <!--               <pre>{{bodyOptions.main.default_options['tip-dvigatelya'].values}}</pre>-->
-
-                  <div class="btns">
-                     <form-checkbox
-                        :label="$t('in_garanty')"
-                        :show-input="false"
-                        v-model="form.in_garanty"
-                        input-name="in_garanty"
-                     />
-
-                     <form-checkbox
-                        :label="$t('external_salon')"
-                        :show-input="false"
-                        v-model="form.external_salon"
-                        input-name="external_salon"
-                     />
-                  </div>
-                  <!--               </div>-->
-
-                  <!--               <div class="cars-search-form__grid-item">-->
-                  <form-select
-                     :label="$t('carcase')"
-                     v-model="form.body"
-                     :options="bodyOptions.main.default_options['body'].values"
-                     :clear-placeholder="true"
-                     :clear-option="false"
-                     multiple
-                     name-in-value
-                     translate-options
-                  />
-
-                  <form-select
-                     :label="$t('privod')"
-                     v-model="form.gearing"
-                     :options="bodyOptions.main.default_options['privod'].values"
-                     :clear-placeholder="true"
-                     :clear-option="false"
-                     multiple
-                     name-in-value
-                     translate-options
-                  />
-
-                  <form-select
-                     :label="$t('customs')"
-                     v-model="form.customs"
-                     :options="getCustomsOptions"
-                     :clear-placeholder="true"
-                     :clear-option="false"
-                  />
-
-                  <form-select
-                     :label="$t('damage')"
-                     v-model="form.damage"
-                     :options="getDamageOptions"
-                     :clear-placeholder="true"
-                     :clear-option="false"
-                  />
-                  <!--               </div>-->
-
-                  <!--               <div class="cars-search-form__grid-item">-->
-                  <form-select
-                     :label="$t('count_of_seats')"
-                     v-model="form.n_of_seats"
-                     multiple
-                     name-in-value
-                     translate-options
-                     :options="allSellOptions2?.n_of_seats?.options"
-                     :clear-placeholder="true"
-                     :clear-option="false"
-                  />
-
-                  <form-select
-                     :label="$t('color')"
-                     v-model="form.colors"
-                     translate-options
-                     :options="colors"
-                     :clear-placeholder="true"
-                     :clear-option="false"
-                     multiple
-                  />
-
-<!--                  <pre>{{popularOptions}}</pre>-->
-
-                  <form-select
-                     :label="$t('parameters')"
-                     v-model="form.all_options"
-                     :options="popularOptions.map((p) => ({...p, key: $t(p.label), name: $t(p.label)}))"
-                     :clear-placeholder="true"
-                     :clear-option="false"
-                     multiple
-                  />
-
-                  <button
-                     type="button"
-                     :class="[
-                               'btn',
-                               'full-width',
-                               'btn--white',
-                               { 'pointer-events-none': pending },
-                               { 'disabled': rows.length > 4 },
-                     ]"
-                     @click="addSearchRow(rows.length - 1)"
-                  >
-                     {{ $t('add_next', { count: rows.length + 1 }) }}
-
-                     <icon name="plus" />
-                  </button>
-                  <!--               </div>-->
-               </template>
-
-               <!--            <div class="cars-search-form__grid-item">-->
-               <button
-                  type="button"
-                  class="btn btn--red-opacity full-width"
-                  @click="showExcludeModal = true"
-               >
-                  {{ $t('exclude') }}
-
-                  <inline-svg :src="'/icons/eye-slash.svg'" />
-
-                  <template v-if="getExcludeCount">({{ getExcludeCount }})</template>
-               </button>
-
-               <div class="btns" v-if="!onlySavedSearch">
-                  <button
-                     v-if="!hasValue"
-                     type="button"
-                     :class="['btn', 'full-width', 'btn--white', { 'pointer-events-none': pending }]"
-                     @click="resetForm(!(advanced || assistant))"
-                  >
-                     {{ $t('clear_search2') }}
-
-                     <icon name="cross" />
-                  </button>
-
-                  <button
-                     v-else
-                     type="button"
-                     :class="[
-                               'btn',
-                               'full-width',
-                               'btn--blue-new-light-2',
-                               { 'pointer-events-none': pending },
-                           ]"
-                     @click="savedSearch = true; $nuxt.$emit('login-popup', 'saved-search')"
-                  >
-                     {{ $t('search_save') }}
-
-                     <inline-svg :src="'/icons/save-search.svg'" />
-                  </button>
-               </div>
-
-               <div class="btns">
-                  <button
-                     v-if="hasValue"
-                     type="button"
-                     :class="[
-                               'btn',
-                               'full-width',
-                               'btn--white',
-                               { 'pointer-events-none': pending },
-                             ]"
-                     @click="resetForm(!(advanced || assistant))"
-                  >
-                     {{ $t('clear_search') }}
-
-                     <icon name="cross" />
-                  </button>
-
-                  <button class="btn btn--grey-new-2 full-width" @click="showMore = !showMore">
-                     <template v-if="!showMore">
-                        {{ hasValue ? $t('detail') : $t('advanced_search') }}
-                     </template>
-
-                     <template v-else>
-                        {{ $t('less_2') }}
-                     </template>
-
-                     <inline-svg :src="'/icons/setting-2.svg'" v-if="!showMore" />
-
-                     <icon name="chevron-up" v-else />
-                  </button>
-               </div>
-
-               <button
-                  type="button"
-                  :class="['btn', 'full-width', 'btn--green', { pending }]"
-                  @click="submitForm()"
-               >
-                  {{ $t('find') }}
-
-                  <inline-svg :src="'/icons/search_new.svg'" />
-               </button>
-               <!--            </div>-->
-
-               <template v-if="advanced">
-                  <div class="col-6 col-lg-2 mb-2 mb-lg-3">
-                     <form-select
-                        :label="$t('mileage')"
-                        custom
-                        anchor="right"
-                        :suffix="$t('char_kilometre')"
-                        :values="{ from: form.mileage_from, to: form.mileage_to }"
-                        @clear=";(form.mileage_from = ''), (form.mileage_to = '')"
-                     >
-                        <div class="form-merged">
-                           <form-numeric-input
-                              :placeholder="$t('from')"
-                              v-model="form.mileage_from"
-                              :suffix="$t('char_kilometre')"
-                           />
-                           <form-numeric-input
-                              :placeholder="$t('to')"
-                              v-model="form.mileage_to"
-                              :suffix="$t('char_kilometre')"
-                           />
-                        </div>
-                     </form-select>
-                  </div>
-
-                  <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="isMobileBreakpoint">
-                     <form-select
-                        :label="$t('fuel')"
-                        v-model="form.engine_type"
-                        :options="bodyOptions.main.default_options['tip-dvigatelya'].values"
-                        multiple
-                        name-in-value
-                        translate-options
-                     />
-                  </div>
-
-                  <div class="col-12">
-                     <car-filters
-                        :is-search-page="isSearchPage"
-                        :values="form.all_options"
-                        name-in-value
-                        popular
-                        @change-filter="setCarFilter"
-                     />
-                  </div>
-               </template>
-            </div>
-         </template>
-
-         <template v-else>
-            <div class="cars-search-form__grid">
-               <form-select
-                  :label="$t('mark')"
-                  :options="existsBrands"
-                  :clear-placeholder="true"
-                  :clear-option="false"
-                  :input-placeholder="$t('mark_search')"
-                  v-model="form.additional_brands[0]['brand']"
-                  @change="setBrand($event, 0)"
-                  has-search
-               />
-
-               <form-select
-                  :label="$t('model')"
-                  :options="carModels[0]"
-                  :clear-placeholder="true"
-                  :clear-option="false"
-                  :input-placeholder="$t('model_search')"
-                  v-model="form.additional_brands[0]['model']"
-                  :disabled="form.additional_brands[0]['brand'] && !carModels[0].length"
-                  @change="setModel($event, 0)"
-                  has-search
-               />
-
-               <form-select
-                  :label="$t('generation')"
-                  :options="carGenerations[0]"
-                  :clear-placeholder="true"
-                  :clear-option="false"
-                  :input-placeholder="$t('generation_search')"
-                  v-model="form.additional_brands[0]['generation']"
-                  :disabled="form.additional_brands[0]['model'] &&!carGenerations[0].length"
-                  @change="setGeneration($event, 0)"
-                  has-search
-                  has-generations
-               />
-
+            <form-select
+               :label="$t('capacity')"
+               custom
+               :new-label="false"
+               :suffix="$t('char_litre')"
+               :values="{ from: form.min_capacity, to: form.max_capacity }"
+               @clear=";(form.min_capacity = ''), (form.max_capacity = '')"
+            >
                <div class="form-merged">
                   <form-select
-                     :label="$t('from_year')"
-                     :options="getYearOptions(false, form.max_year)"
-                     v-model="form.min_year"
+                     :label="$t('from')"
+                     v-model="form.min_capacity"
+                     :options="bodyOptions.main.custom_options['capacity'].values"
                      :show-label-on-select="false"
                      :clear-option="false"
                      in-select-menu
+                     :suffix="$t('char_litre')"
                   />
 
                   <form-select
                      :label="$t('to')"
-                     :options="getYearOptions(form.min_year, false)"
-                     v-model="form.max_year"
+                     v-model="form.max_capacity"
+                     :options="
+                   bodyOptions.main.custom_options['capacity'].values
+                 "
                      :show-label-on-select="false"
                      :clear-option="false"
                      in-select-menu
+                     :suffix="$t('char_litre')"
                   />
                </div>
+            </form-select>
 
-               <template v-for="(key, i) in rows"  v-if="key > 0">
-                  <form-select
-                     :key="'1' +i"
-                     :label="$t('mark')"
-                     :options="existsBrands"
-                     :clear-placeholder="true"
-                     :clear-option="false"
-                     :input-placeholder="$t('mark_search')"
-                     v-model="form.additional_brands[key]['brand']"
-                     @change="setBrand($event, key)"
-                     has-search
-                  />
+            <div class="checkboxes">
+               <form-checkbox
+                  :label="$t('credit')"
+                  :show-input="false"
+                  input-name="exchange_possible"
+                  v-model="form.credit"
+               />
 
-                  <form-select
-                     :key="'2' +i"
-                     :label="$t('model')"
-                     :options="carModels[key]"
-                     :clear-placeholder="true"
-                     :clear-option="false"
-                     :input-placeholder="$t('model_search')"
-                     v-model="form.additional_brands[key]['model']"
-                     :disabled="form.additional_brands[key]['brand'] && !carModels[key].length"
-                     @change="setModel($event, key)"
-                     has-search
-                  />
+               <form-checkbox
+                  :label="$t('exchange')"
+                  :show-input="false"
+                  input-name="credit"
+                  v-model="form.exchange_possible"
+               />
 
-                  <form-select
-                     :key="'3' +i"
-                     :label="$t('generation')"
-                     :options="carGenerations[key]"
-                     :clear-placeholder="true"
-                     :clear-option="false"
-                     :input-placeholder="$t('generation_search')"
-                     v-model="form.additional_brands[key]['generation']"
-                     :disabled="form.additional_brands[key]['model'] &&!carGenerations[key].length"
-                     @change="setGeneration($event, key)"
-                     has-search
-                     has-generations
-                  />
-
-                  <button
-                     :key="'4' +i"
-                     type="button"
-                     :class="['btn', 'full-width', 'btn--white', { 'pointer-events-none': pending }]"
-                     @click="removeSearchRow(key)"
-                  >
-                     {{ $t('remove_search') }}
-
-                     <icon name="minus" />
-                  </button>
-               </template>
+               <form-checkbox
+                  :label="$t('with_video')"
+                  :show-input="false"
+                  input-name="with_video"
+                  v-model="form.with_video"
+               />
             </div>
-         </template>
+
+            <template v-if="showMore">
+               <!--               <div class="cars-search-form__grid-item">-->
+               <form-select
+                  :label="$t('city')"
+                  :options="sellOptions.regions"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  :input-placeholder="$t('city_search')"
+                  v-model="form.region"
+                  has-search
+               />
+
+               <form-select
+                  :label="$t('korobka')"
+                  v-model="form.korobka"
+                  :options="bodyOptions.main.default_options['korobka'].values"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  multiple
+                  name-in-value
+                  translate-options
+               />
+
+               <form-select
+                  :label="$t('fuel')"
+                  v-model="form.engine_type"
+                  :options="bodyOptions.main.default_options['tip-dvigatelya'].values"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  multiple
+                  name-in-value
+                  translate-options
+               />
+               <!--               <pre>{{bodyOptions.main.default_options['tip-dvigatelya'].values}}</pre>-->
+
+               <div class="btns">
+                  <form-checkbox
+                     :label="$t('in_garanty')"
+                     :show-input="false"
+                     v-model="form.in_garanty"
+                     input-name="in_garanty"
+                  />
+
+                  <form-checkbox
+                     :label="$t('external_salon')"
+                     :show-input="false"
+                     v-model="form.external_salon"
+                     input-name="external_salon"
+                  />
+               </div>
+               <!--               </div>-->
+
+               <!--               <div class="cars-search-form__grid-item">-->
+               <form-select
+                  :label="$t('carcase')"
+                  v-model="form.body"
+                  :options="bodyOptions.main.default_options['body'].values"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  multiple
+                  name-in-value
+                  translate-options
+               />
+
+               <form-select
+                  :label="$t('privod')"
+                  v-model="form.gearing"
+                  :options="bodyOptions.main.default_options['privod'].values"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  multiple
+                  name-in-value
+                  translate-options
+               />
+
+               <form-select
+                  :label="$t('customs')"
+                  v-model="form.customs"
+                  :options="getCustomsOptions"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+               />
+
+               <form-select
+                  :label="$t('damage')"
+                  v-model="form.damage"
+                  :options="getDamageOptions"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+               />
+               <!--               </div>-->
+
+               <!--               <div class="cars-search-form__grid-item">-->
+               <form-select
+                  :label="$t('count_of_seats')"
+                  v-model="form.n_of_seats"
+                  multiple
+                  name-in-value
+                  translate-options
+                  :options="allSellOptions2?.n_of_seats?.options"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+               />
+
+               <form-select
+                  :label="$t('color')"
+                  v-model="form.colors"
+                  translate-options
+                  :options="colors"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  multiple
+               />
+
+               <form-select
+                  :label="$t('parameters')"
+                  :options="popularOptions.map((p) => ({...p, key: $t(p.label), slug: p.name, name: $t(p.label)}))"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  object-in-value
+                  translate-options
+                  multiple
+                  v-model="form.all_options"
+               />
+
+               <button
+                  type="button"
+                  :class="[
+                            'btn',
+                            'full-width',
+                            'btn--white',
+                            { 'pointer-events-none': pending },
+                            { 'disabled': rows.length > 4 },
+                  ]"
+                  @click="addSearchRow(rows.length - 1)"
+               >
+                  {{ $t('add_next', { count: rows.length + 1 }) }}
+
+                  <icon name="plus" />
+               </button>
+               <!--               </div>-->
+            </template>
+
+            <button
+               type="button"
+               class="btn btn--red-opacity full-width"
+               @click="showExcludeModal = true"
+            >
+               {{ $t('exclude') }}
+
+               <inline-svg :src="'/icons/eye-slash.svg'" />
+
+               <template v-if="getExcludeCount">({{ getExcludeCount }})</template>
+            </button>
+
+            <button
+               v-if="hasValue"
+               type="button"
+               :class="[
+                   'btn',
+                   'full-width',
+                   'btn--blue-new-light-2',
+                   { 'pointer-events-none': pending },
+               ]"
+               @click="savedSearch = true; $nuxt.$emit('login-popup', 'saved-search')"
+            >
+               {{ $t('search_save') }}
+
+               <inline-svg :src="'/icons/save-search.svg'" />
+            </button>
+
+            <button
+               v-if="!hasValue"
+               type="button"
+               :class="[
+                   'btn',
+                   'px-2',
+                   'full-width',
+                   'btn--white',
+                   { 'pointer-events-none': pending },
+                 ]"
+               @click="resetForm(!(advanced || assistant))"
+            >
+               {{ $t('clear_search') }}
+
+               <icon name="cross" />
+            </button>
+
+            <div class="btns">
+               <button
+                  v-if="hasValue"
+                  type="button"
+                  :class="[
+                            'btn',
+                            'px-2',
+                            'full-width',
+                            'btn--white',
+                            { 'pointer-events-none': pending },
+                          ]"
+                  @click="resetForm(!(advanced || assistant))"
+               >
+                  {{ $t('clear_search') }}
+
+                  <icon name="cross" />
+               </button>
+
+               <button class="btn btn--grey-new-2 full-width px-2" @click="showMore = !showMore">
+                  <template v-if="!showMore">
+                     {{ hasValue ? $t('detail') : $t('advanced_search') }}
+                  </template>
+
+                  <template v-else>
+                     {{ $t('less_2') }}
+                  </template>
+
+                  <inline-svg :src="'/icons/setting-2.svg'" v-if="!showMore" />
+
+                  <icon name="chevron-up" v-else />
+               </button>
+            </div>
+
+            <button
+               type="button"
+               :class="['btn', 'full-width', 'btn--green', { pending }]"
+               @click="submitForm()"
+            >
+               {{ $t('find') }}
+
+               <inline-svg :src="'/icons/search_new.svg'" />
+            </button>
+
+<!--               <template v-if="advanced">-->
+<!--                  <div class="col-6 col-lg-2 mb-2 mb-lg-3">-->
+<!--                     <form-select-->
+<!--                        :label="$t('mileage')"-->
+<!--                        custom-->
+<!--                        anchor="right"-->
+<!--                        :suffix="$t('char_kilometre')"-->
+<!--                        :values="{ from: form.mileage_from, to: form.mileage_to }"-->
+<!--                        @clear=";(form.mileage_from = ''), (form.mileage_to = '')"-->
+<!--                     >-->
+<!--                        <div class="form-merged">-->
+<!--                           <form-numeric-input-->
+<!--                              :placeholder="$t('from')"-->
+<!--                              v-model="form.mileage_from"-->
+<!--                              :suffix="$t('char_kilometre')"-->
+<!--                           />-->
+<!--                           <form-numeric-input-->
+<!--                              :placeholder="$t('to')"-->
+<!--                              v-model="form.mileage_to"-->
+<!--                              :suffix="$t('char_kilometre')"-->
+<!--                           />-->
+<!--                        </div>-->
+<!--                     </form-select>-->
+<!--                  </div>-->
+
+<!--                  <div class="col-6 col-lg-2 mb-2 mb-lg-3" v-if="isMobileBreakpoint">-->
+<!--                     <form-select-->
+<!--                        :label="$t('fuel')"-->
+<!--                        v-model="form.engine_type"-->
+<!--                        :options="bodyOptions.main.default_options['tip-dvigatelya'].values"-->
+<!--                        multiple-->
+<!--                        name-in-value-->
+<!--                        translate-options-->
+<!--                     />-->
+<!--                  </div>-->
+
+<!--                  <div class="col-12">-->
+<!--                     <car-filters-->
+<!--                        :is-search-page="isSearchPage"-->
+<!--                        :values="form.all_options"-->
+<!--                        name-in-value-->
+<!--                        popular-->
+<!--                        @change-filter="setCarFilter"-->
+<!--                     />-->
+<!--                  </div>-->
+<!--               </template>-->
+         </div>
       </div>
 
       <div
@@ -662,12 +529,12 @@
                   {{ $readPlural(totalCount, $t('plural_forms_announcements')) }}
                </div>
             </div>
-<!--            <div class="col-6 col-lg-2 mt-3 mt-lg-5 mb-n6 mb-lg-n1">-->
-<!--               <button @click="showExcludeModal = true;" type="button" class="btn btn&#45;&#45;dark-blue full-width">-->
-<!--                  {{ $t('exclude') }}-->
-<!--                  <template v-if="getExcludeCount">({{ getExcludeCount }})</template>-->
-<!--               </button>-->
-<!--            </div>-->
+            <!--            <div class="col-6 col-lg-2 mt-3 mt-lg-5 mb-n6 mb-lg-n1">-->
+            <!--               <button @click="showExcludeModal = true;" type="button" class="btn btn&#45;&#45;dark-blue full-width">-->
+            <!--                  {{ $t('exclude') }}-->
+            <!--                  <template v-if="getExcludeCount">({{ getExcludeCount }})</template>-->
+            <!--               </button>-->
+            <!--            </div>-->
             <div class="col-6 col-lg-2 mt-3 mt-lg-5 mb-n6 mb-lg-n1">
                <form-select
                   :label="$t('sorting')"
@@ -690,82 +557,78 @@
          :overflow-hidden="false"
          @close="showExcludeModal = false"
       >
-         <template>
-            <div class="col-12 mb-2" v-for="(key, index) in excludeRows" :key="key">
-               <div class="row">
-                  <div class="col-3 col-lg-4">
-                     <form-select
-                        :label="$t('mark')"
-                        :options="existsBrands"
-                        v-model="form.exclude_additional_brands[key]['brand']"
-                        @change="setBrandExclude($event, key)"
-                        has-search
-                     />
+         <div class="exclude-popup__inner">
+            <div class="exclude-popup__grid" v-for="(key, index) in excludeRows" :key="key">
+               <form-select
+                  :label="$t('mark')"
+                  :options="existsBrands"
+                  :input-placeholder="$t('mark_search')"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  has-search
+                  @change="setBrandExclude($event, key)"
+                  v-model="form.exclude_additional_brands[key]['brand']"
+               />
+
+               <form-select
+                  :label="$t('model')"
+                  :options="carModelsExclude[key]"
+                  :input-placeholder="$t('model_search')"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  v-model="form.exclude_additional_brands[key]['model']"
+                  :disabled="
+                         form.exclude_additional_brands[key]['brand'] &&
+                         !carModelsExclude[key].length
+                       "
+                  @change="setModelExclude($event, key)"
+                  has-search
+               />
+
+               <form-select
+                  :label="$t('generation')"
+                  :options="carGenerationsExclude[key]"
+                  :input-placeholder="$t('generation_search')"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  v-model="form.exclude_additional_brands[key]['generation']"
+                  :disabled="
+                 form.exclude_additional_brands[key]['model'] &&
+                 !carGenerationsExclude[key].length
+               "
+                  @change="setGenerationExclude($event, key)"
+                  has-search
+                  has-generations
+               />
+
+               <div class="form-counter">
+                  <div
+                     class="form-info w-100 h-52"
+                     v-if="canAddRowExclude(index)"
+                     @click="addSearchRowExclude(key)"
+                  >
+                     <icon name="plus" />
                   </div>
-                  <div class="col-3 col-lg-4">
-                     <form-select
-                        :label="$t('model')"
-                        :options="carModelsExclude[key]"
-                        v-model="form.exclude_additional_brands[key]['model']"
-                        :disabled="
-                      form.exclude_additional_brands[key]['brand'] &&
-                      !carModelsExclude[key].length
-                    "
-                        @change="setModelExclude($event, key)"
-                        has-search
-                     />
-                  </div>
-                  <div class="col-lg-4"
-                       :class="{ 'col-4': index === 0 || !canAddRowExclude(index),'col-3': canAddRowExclude(index) }">
-                     <div
-                        :class="[
-                      'row','flex-nowrap',
-                      {
-                        'has-add-btn': canAddRowExclude(index),
-                        'has-remove-btn': canRemoveRowExclude(),
-                      },
-                    ]"
-                     >
-                        <div class="col">
-                           <form-select
-                              :label="$t('generation')"
-                              :options="carGenerationsExclude[key]"
-                              v-model="form.exclude_additional_brands[key]['generation']"
-                              :disabled="
-                          form.exclude_additional_brands[key]['model'] &&
-                          !carGenerationsExclude[key].length
-                        "
-                              @change="setGenerationExclude($event, key)"
-                              has-search
-                              has-generations
-                           />
-                        </div>
-                        <div class="col-auto">
-                           <div class="form-counter">
-                              <div
-                                 class="form-info mr-1"
-                                 v-if="canAddRowExclude(index)"
-                                 @click="addSearchRowExclude(key)"
-                              >
-                                 <icon name="plus"/>
-                              </div>
-                              <div
-                                 class="form-info"
-                                 v-if="canRemoveRowExclude()"
-                                 @click="removeSearchRowExclude(key)"
-                              >
-                                 <icon name="minus"/>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
+
+                  <div
+                     class="form-info w-100 h-52"
+                     v-if="canRemoveRowExclude()"
+                     @click="removeSearchRowExclude(key)"
+                  >
+                     <icon name="minus" />
                   </div>
                </div>
             </div>
-            <div class="d-flex justify-content-end mr-1 mt-2">
-               <button @click="showExcludeModal = false;submitForm()" class="btn btn--green">OK</button>
-            </div>
-         </template>
+         </div>
+
+         <button
+            class="btn btn--green mt-4"
+            @click="showExcludeModal = false; submitForm()"
+         >
+            <span>{{ $t('save') }}</span>
+
+            <inline-svg src="/icons/check3.svg" />
+         </button>
       </modal-popup>
       <modal-popup
          :toggle="showIntervalModal"
@@ -798,8 +661,8 @@
 </template>
 
 <script>
-   import {mapGetters, mapActions} from 'vuex'
-   import {SearchMixin} from '~/mixins/search'
+   import { mapGetters, mapActions } from 'vuex'
+   import { SearchMixin } from '~/mixins/search'
    import ColorOptions from '~/components/options/ColorOptions'
    import CarFilters from '~/components/cars/CarFilters'
    import CarBodyShortcuts from '~/components/cars/CarBodyShortcuts'
@@ -821,6 +684,10 @@
          totalCount: {
             type: Number,
             default: 0,
+         },
+         announceType: {
+            type: Number,
+            default: 1,
          },
          isSearchPage: {
             type: Boolean,
@@ -851,13 +718,13 @@
             searchAppliedCustom: false,
             firstTimeUpdated: true,
             interval: 1440,
+            searchType: 1,
             form: {
                sorting: 'created_at_desc',
                additional_brands: {0: {}, 1: {}, 2: {}, 3: {}, 4: {}},
                exclude_additional_brands: {0: {}, 1: {}, 2: {}, 3: {}, 4: {}},
-               all_options: {},
+               all_options: [],
                announce_type: 1,
-               searchType: 1,
                external_salon: false,
                currency: 1,
                min_capacity: '',
@@ -953,7 +820,7 @@
                },
             ]
          },
-         // meta data
+
          meta() {
             return {
                type: 'cars',
@@ -964,22 +831,18 @@
 
          hasValue() {
             return !!(this.form.additional_brands[0].brand ||
-                   this.form.additional_brands[0].model ||
-                   this.form.additional_brands[0].generation ||
-                   this.form.min_year || this.form.max_year ||
-                   this.form.price_from || this.form.price_to ||
-                   this.form.mileage_from || this.form.mileage_to ||
-                   this.form.min_capacity || this.form.max_capacity ||
-                   this.form.exchange_possible || this.form.credit ||
-                   this.form.with_video || this.form.region || this.form.korobka.length ||
-                   this.form.engine_type.length || this.form.in_garanty || this.form.external_salon ||
-                   this.form.body.length || this.form.gearing.length || this.form.customs ||
-                   this.form.damage || this.form.n_of_seats.length ||
-                   this.form.colors.length || Object.values(this.form.all_options).length)
-         },
-
-         popularOptions2() {
-            return this.popularOptions.map((p) => ({...p, key: this.$t(p.label), name: this.$t(p.label)}))
+               this.form.additional_brands[0].model ||
+               this.form.additional_brands[0].generation ||
+               this.form.min_year || this.form.max_year ||
+               this.form.price_from || this.form.price_to ||
+               this.form.mileage_from || this.form.mileage_to ||
+               this.form.min_capacity || this.form.max_capacity ||
+               this.form.exchange_possible || this.form.credit ||
+               this.form.with_video || this.form.region || this.form.korobka.length ||
+               this.form.engine_type.length || this.form.in_garanty || this.form.external_salon ||
+               this.form.body.length || this.form.gearing.length || this.form.customs ||
+               this.form.damage || this.form.n_of_seats.length ||
+               this.form.colors.length || Object.values(this.form.all_options).length)
          }
       },
 
@@ -993,10 +856,19 @@
                }
             },
             deep: true,
+         },
+
+         announceType(val) {
+            this.form.announce_type = val;
          }
       },
 
       mounted() {
+         if (this.$route.query.car_filter) {
+            this.form.all_options = this.popularOptions?.filter((option) => Object.keys(JSON.parse(this.$route?.query?.car_filter)?.all_options).includes(option.name)).map((p) => ({...p, key: this.$t(p.label), slug: p.name, name: this.$t(p.label)
+            }))
+         }
+
          this.$nuxt.$on('saved-search-created', () => {
             if (this.singleSavedSearch.id) {
                this.selected.push(this.singleSavedSearch.id)
@@ -1013,15 +885,14 @@
             'getModelGenerationsArrayExclude',
             'updateSavedSearchNotificationsInterval',
          ]),
-         handleExclude() {
 
-         },
          saveSearch() {
             if (this.searchAppliedCustom) {
                this.submitForm()
                this.savedSearch = true
             }
          },
+
          async updateNotifications() {
             if (this.pending2) return
             this.pending2 = true
@@ -1038,6 +909,7 @@
                this.pending2 = false
             }
          },
+
          async setBrand(id, index) {
             let brand = this.existsBrands.find((option) => option.id == id)
             let slug = brand?.slug || ''
@@ -1076,6 +948,7 @@
             })
             if (id) await this.getModelsArrayExclude({value: slug, index})
          },
+
          async setModel(id, index) {
             let model = this.carModels[index].find((option) => option.id == id)
             let slug = model?.slug || '',
@@ -1091,6 +964,7 @@
                this.getModelGenerationsArray({value: slug, brand_slug, index})
             }
          },
+
          async setModelExclude(id, index) {
             let model = this.carModelsExclude[index].find((option) => option.id == id)
             let slug = model?.slug || '',
@@ -1105,6 +979,7 @@
             if (id)
                await this.getModelGenerationsArrayExclude({value: slug, brand_slug, index})
          },
+
          async setGeneration(id, index = 0) {
             let generation = this.carGenerations[index].find(
                (option) => option.id == id,
@@ -1121,6 +996,7 @@
                generation?.name || '',
             )
          },
+
          async setGenerationExclude(id, index) {
             let generation = this.carGenerationsExclude[index].find(
                (option) => option.id == id,
@@ -1132,6 +1008,7 @@
                generation?.name || '',
             )
          },
+
          setCarFilter(key, value) {
             if (
                value === false ||
@@ -1140,28 +1017,30 @@
             )
                this.$delete(this.form.all_options, key)
             else this.$set(this.form.all_options, key, value)
-         },
+         }
       },
 
       created() {
-         this.$nuxt.$on('extend-options', this.goToSearch)
-         if (this.routeName === 'index')
-            this.$nuxt.$on('reset-search-form', this.resetForm)
+         this.$nuxt.$on('extend-options', this.goToSearch);
+         if (this.routeName === 'index') this.$nuxt.$on('reset-search-form', this.resetForm);
       },
 
       beforeDestroy() {
-         this.$nuxt.$off('extend-options', this.goToSearch)
-         if (this.routeName === 'index')
-            this.$nuxt.$off('reset-search-form', this.resetForm)
+         this.$nuxt.$off('extend-options', this.goToSearch);
+         if (this.routeName === 'index') this.$nuxt.$off('reset-search-form', this.resetForm);
       }
    }
 </script>
 
 <style lang="scss">
    .cars-search-form {
-      padding: 24px;
-      border-radius: 12px;
-      background-color: #FFFFFF;
+      //padding: 24px;
+      //border-radius: 12px;
+      //background-color: #FFFFFF;
+
+      //&__head {
+      //   gap: 32px;
+      //}
 
       &__grid {
          display: grid;
@@ -1170,14 +1049,18 @@
          .form-group {
             min-width: 0;
          }
+
+         //.form-merged {
+         //   height: 52px;
+         //
+         //   .select-menu_label {
+         //      height: 100%;
+         //   }
+         //}
       }
 
       .form-buttons {
-         &.announce_types {
-            .btn {
-               width: 110px;
-            }
-         }
+         width: 100%;
       }
 
       .btns {
@@ -1208,14 +1091,25 @@
       }
    }
 
-   .dark-mode {
-      .cars-search-form {
-         background-color: #1B2434;
-      }
-   }
-
    @media (min-width: 992px) {
       .cars-search-form {
+         .form-buttons {
+            width: unset !important;
+         }
+
+         //&__head {
+         //   flex-direction: row !important;
+         //   gap: unset;
+         //
+         //   .announce_types {
+         //      .form-group {
+         //         .btn {
+         //            width: 120px !important;
+         //         }
+         //      }
+         //   }
+         //}
+
          &__grid {
             grid-template-columns: repeat(3, 1fr);
          }

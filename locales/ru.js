@@ -815,6 +815,7 @@ export default {
    featured_ads: "Рекомендуемые объявления",
    featured_ads_2: "Поднять",
    featured_ads_3: "Рекламное объявление",
+   featured_ads_4: "Рекламировать объявление",
    forgot_your_password: "Восстановить пароль",
    forklift: "Самопогрузчики",
    form_rating: "Внешний вид",
@@ -1061,6 +1062,7 @@ export default {
    lens: "Линза",
    less: "Скрыть",
    less_2: "Меньше",
+   less_3: "Меньше",
    license_plate: "Госномер",
    license_plate_number: "Регистрационный номер",
    license_plate_number_vin_or_carcase_number: "Госномер, VIN или номер кузова",
@@ -1425,6 +1427,7 @@ export default {
    pay_with_balance: "Баланс",
    pay_with_card: "Банковская карта",
    pay_with_terminal: "Оплата в терминалах",
+   pay_with_terminal_2: "Оплата в терминалах",
    payment: "Оплата",
    payment_amount: "Стоимость",
    payment_history: "История платежей",
@@ -2026,7 +2029,7 @@ export default {
    update: "Исправить",
    updated: "Обновлено",
    invoice_date: "Дата счета",
-   invoice_number: "Номер - выставленного счета",
+   invoice_number: "Номер счета",
    type_of_service: "Тип обслуживания",
    status_and_date: "Статус и дата",
    USB: "USB",
@@ -2632,4 +2635,21 @@ export default {
    package_information: "Информация о моем пакете",
    package_refresh: "Обновить пакет",
    package_current: "Доступный пакет",
+
+
+   "subscription_registration_date_on_site":"Дата начала подписки на сайте",
+   "subscription_registration_end_date_on_site":"Дата окончания подписик на сайте",
+   "edition":"Изменить",
+   "remove_vehicle1":"Удалить транспортное средство",
+
+   "remove_vehicle_desc1":"Вы уверенны что хотите удалить выбранное ТС?",
+
+   "remove_vehicle_desc2":"Оплаченная сумма не подлежит возврату",
+   "login_mobile_desc": "Введите номер телефона",
+
+   "vehicle_is_not_active":"Транспортное средство не активно",
+
+   "confirmation_code":"Код подтверждения",
+   "confirmation_code_desc":"Введите SMS-код отправленный на ваш номер",
+   "remove_announcement": "Удалить",
 };

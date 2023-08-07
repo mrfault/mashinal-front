@@ -364,6 +364,15 @@
       );
    }
 
+   &--blue-new-2 {
+      @include btn-style(
+         $color: $white,
+         $bg-color: $blue-new,
+         $bg-hover: $blue-new,
+         $border-color: $blue-new,
+      );
+   }
+
    &--blue-new-light {
       @include btn-style(
          $color: $grey-2-new,
@@ -580,6 +589,14 @@
             $bg-hover: $red-new,
             $border-color: $red-new-3,
             $border-hover: $red-new,
+         );
+      }
+      &--red-opacity-2 {
+         @include btn-style(
+            $bg-color: $red-1,
+            $bg-hover: $red-2,
+            $color: $grey-1-new,
+            $border-color: $red-1
          );
       }
 

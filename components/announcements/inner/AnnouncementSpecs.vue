@@ -253,7 +253,7 @@
    }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
    .vehicle-specs {
       padding: 32px 24px;
       border-radius: 12px;
@@ -332,11 +332,77 @@
             line-height: 20px;
             color: #1B2434;
             white-space: nowrap;
-            margin-right: 8px;
+            margin-right: 13px;
          }
 
          &:hover {
             border-color: #84ADFF;
+         }
+      }
+   }
+
+   .dark-mode {
+      .vehicle-specs {
+         border-color: #1B2434;
+         background-color: #1B2434;
+
+         &__title {
+            color: #EEF2F6;
+         }
+
+         &__list {
+            &-description {
+               h6 {
+                  color: #9AA4B2;
+               }
+
+               h5 {
+                  color: #EEF2F6;
+               }
+            }
+
+            &:not(:first-child) {
+               &:before {
+                  background-color: #4B5565;
+               }
+            }
+         }
+
+         &__btn {
+            border-color: transparent;
+            background-color: transparent;
+
+            &:hover {
+               border-color: #4B5565;
+            }
+
+            span {
+               color: #EEF2F6 !important;
+            }
+
+            svg {
+               path {
+                  fill: #EEF2F6;
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 1150px) {
+      .vehicle-specs {
+         &__inner {
+            flex-direction: column;
+         }
+      }
+   }
+
+   @media (max-width: 385px) {
+      .vehicle-specs {
+         padding: 16px;
+
+         &__btn {
+            padding: 14px;
          }
       }
    }

@@ -15,3 +15,9 @@ ul, ol {
 label {
    margin-bottom: 0;
 }
+
+body {
+   min-height: min-content !important;
+   overflow-y: scroll !important;
+   background: $grey-1-new;
+}

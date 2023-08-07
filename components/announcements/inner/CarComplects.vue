@@ -124,7 +124,7 @@
    }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
    .car-complects {
       padding: 32px;
       border-radius: 12px;
@@ -135,6 +135,28 @@
          font-weight: 600;
          line-height: 28px;
          color: #1B2434;
+      }
+   }
+
+   .dark-mode {
+      .car-complects {
+         border-color: #1B2434;
+         background-color: #1B2434;
+
+         .keywords {
+            &__list {
+               .keyword {
+                  color: #EEF2F6;
+                  background-color: #364152;
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 385px) {
+      .car-complects {
+         padding: 16px;
       }
    }
 </style>

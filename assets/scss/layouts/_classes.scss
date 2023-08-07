@@ -155,11 +155,11 @@ hr {
 }
 
 .h-52 {
-   height: 52px;
+   height: 52px !important;
 }
 
 .h-56 {
-   height: 56px;
+   height: 56px !important;
 }
 
 .stratch-child-block {
@@ -478,4 +478,8 @@ hr {
 
 .overflow-x-hidden{
    overflow-x: hidden !important;
+}
+
+.overflow-visible{
+   overflow: visible !important;
 }

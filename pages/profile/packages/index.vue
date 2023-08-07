@@ -19,13 +19,13 @@
                            :title="$t('unpaid_invoice')"
                            :unpaidAgreement="unpaidAgreement"
                            :subtitle="$t('unpaid_params', {
-                        package_type: unpaidAgreement.package.name[locale],
-                        start_date: $moment(unpaidAgreement.start_date).format('DD.MM.YYYY'),
-                        end_date: $moment(unpaidAgreement.end_date).format('DD.MM.YYYY'),
-                        price: unpaidAgreement.price })"/>
+                              package_type: unpaidAgreement.package.name,
+                              start_date: $moment(unpaidAgreement.start_date).format('DD.MM.YYYY'),
+                              end_date: $moment(unpaidAgreement.end_date).format('DD.MM.YYYY'),
+                              price: unpaidAgreement.price })"/>
                      </div>
                   </div>
-                  <div class="row">
+                  <div class="row" v-if="getAgreements.length > 0">
                      <div class="col-md-7">
                         <div class="package-card mt-3 mt-lg-0">
                            <div class="row">
@@ -38,30 +38,36 @@
                                  <table class="package-card-table mb-5">
                                     <tr>
                                        <td class="text-left">{{ $t('package_type') }}</td>
-                                       <td class="text-right">{{getAgreements[0].package.name}}</td>
+                                       <td class="text-right">{{ getAgreements[(getAgreements.length - 1)].package.name }}</td>
                                     </tr>
                                     <tr>
-                                       <td class="text-left">{{$t('package_price')}}</td>
-                                       <td class="text-right">{{getAgreements[0].price}} AZN</td>
+                                       <td class="text-left">{{ $t('package_price') }}</td>
+                                       <td class="text-right">{{ getAgreements[(getAgreements.length - 1)].price }} AZN</td>
                                     </tr>
                                     <tr>
-                                       <td class="text-left">{{$t('duration_package')}}</td>
-                                       <td class="text-right">{{getAgreements[0].days_type}} {{$t('month')}}</td>
+                                       <td class="text-left">{{ $t('duration_package') }}</td>
+                                       <td class="text-right">{{ getAgreements[(getAgreements.length - 1)].days_type }} {{ $t('month') }}</td>
                                     </tr>
                                     <tr>
-                                       <td class="text-left">{{$t('start_date')}}</td>
-                                       <td class="text-right">{{ $moment(new Date(getAgreements[0].start_date)).format('DD.MM.YYYY') }}</td>
+                                       <td class="text-left">{{ $t('start_date') }}</td>
+                                       <td class="text-right">
+                                          {{ $moment(new Date(getAgreements[(getAgreements.length - 1)].start_date)).format('DD.MM.YYYY') }}
+                                       </td>
                                     </tr>
                                     <tr>
-                                       <td class="text-left">{{$t('end_date')}}</td>
-                                       <td class="text-right">{{$moment(new Date(getAgreements[0].end_date)).format('DD.MM.YYYY')}}</td>
+                                       <td class="text-left">{{ $t('end_date') }}</td>
+                                       <td class="text-right">
+                                          {{ $moment(new Date(getAgreements[(getAgreements.length - 1)].end_date)).format('DD.MM.YYYY') }}
+                                       </td>
                                     </tr>
                                  </table>
                               </div>
                            </div>
                            <div class="row">
                               <div class="col-md-12">
-                                 <button class="btn btn-refresh-package mt-5"  @click="setShowPackage(true)">{{$t('package_refresh')}}</button>
+                                 <button class="btn btn-refresh-package mt-5" @click="setShowPackage(true)">
+                                    {{ $t('package_refresh') }}
+                                 </button>
                               </div>
                            </div>
                         </div>
@@ -73,16 +79,17 @@
                                  <h2 class="package-card-subtitle mb-2">{{ $t('package_current') }}</h2>
                               </div>
                               <div class="col-md-12">
-                                 <h2 class="package-card-title mb-5">{{getAgreements[0].package.name}}</h2>
+                                 <h2 class="package-card-title mb-5">{{ getAgreements[(getAgreements.length - 1)].package.name }}</h2>
                               </div>
                            </div>
                            <div class="row">
                               <div class="col-md-12">
                                  <ul class="package-card-list">
-                                    <li v-for="option in getAgreements[0].package.items" :key="option.id" :class="option.checked ? 'checked' : 'unchecked'">
+                                    <li v-for="option in getAgreements[(getAgreements.length - 1)].package.items" :key="option.id"
+                                        :class="option.checked ? 'checked' : 'unchecked'">
                                        <div>
-                                          <inline-svg :src="'/icons/check3.svg'" v-if="option.checked" />
-                                          <inline-svg :src="'/icons/close2.svg'" v-else />
+                                          <inline-svg :src="'/icons/check3.svg'" v-if="option.checked"/>
+                                          <inline-svg :src="'/icons/close2.svg'" v-else/>
                                        </div>
                                        <div>
                                           {{ option.text }}
@@ -103,11 +110,20 @@
                      :title="$t('unpaid_invoice')"
                      :unpaidAgreement="unpaidAgreement"
                      :subtitle="$t('unpaid_params', {
-                        package_type: unpaidAgreement.package.name[locale],
+                        package_type: unpaidAgreement.package.name,
                         start_date: $moment(unpaidAgreement.start_date).format('DD.MM.YYYY'),
                         end_date: $moment(unpaidAgreement.end_date).format('DD.MM.YYYY'),
                         price: unpaidAgreement.price })"/>
                   <Packages :packages="getPackages" :disableBtn="disableBtn"/>
+
+                  <div class="row" v-if="!isMobileBreakpoint">
+                     <div class="col-md-12 mt-3 d-flex justify-content-center align-items-center">
+                        <button class="btn btn--green" @click="goBack()">
+                           <inline-svg :src="'/icons/arrow-left.svg'" class="mr-1"/>
+                           {{$t('go_back')}}
+                        </button>
+                     </div>
+                  </div>
                </template>
             </div>
          </component>
@@ -142,6 +158,10 @@ export default {
    methods: {
       setShowPackage(params) {
          this.showPackage = params;
+      },
+      goBack() {
+         this.showPackage = false;
+         window.scrollTo(0, 0);
       }
    },
    mounted() {
@@ -181,13 +201,18 @@ export default {
 </script>
 
 <style lang="scss">
-.package-card{
+.package-card {
    padding: 32px 24px;
    border-radius: 12px;
    border: 1px solid var(--gray-300, #CDD5DF);
    background: var(--main-white, #FFF);
    min-height: 535px;
 }
+.btn--green svg path{
+   fill: #FFF;
+   stroke: #FFF;
+}
+
 .package-card-title {
    color: var(--gray-800, #1B2434);
    font-size: 28px;
@@ -195,33 +220,40 @@ export default {
    font-weight: 700;
    line-height: 32px;
 }
-.package-card-subtitle{
+
+.package-card-subtitle {
    color: var(--gray-600, #4B5565);
    font-size: 16px;
    font-style: normal;
    font-weight: 600;
    line-height: 24px;
 }
-.package-card-table{
+
+.package-card-table {
    width: 100%;
 }
+
 .package-card-table tr {
    border-bottom: 1px solid var(--gray-200, #E3E8EF);
 }
+
 .package-card-table tr:last-child {
    border-bottom: 1px solid transparent;
 }
-.package-card-table tr td{
+
+.package-card-table tr td {
    padding: 20px 0;
 }
-.package-card-table tr td.text-left{
+
+.package-card-table tr td.text-left {
    color: var(--gray-700, #364152);
    font-size: 16px;
    font-style: normal;
    font-weight: 400;
    line-height: 20px;
 }
-.package-card-table tr td.text-right{
+
+.package-card-table tr td.text-right {
    color: var(--gray-900, #121926);
    text-align: right;
    font-size: 16px;
@@ -229,7 +261,8 @@ export default {
    font-weight: 500;
    line-height: 20px;
 }
-.package-card .btn-refresh-package{
+
+.package-card .btn-refresh-package {
    display: flex;
    padding: 14px 16px;
    justify-content: center;
@@ -246,11 +279,13 @@ export default {
    line-height: 20px;
    width: 100%;
 }
-.package-card-list{
+
+.package-card-list {
    padding: 0;
    margin: 0;
    list-style: none;
 }
+
 .package-card-list li {
    color: var(--gray-900, #121926);
    font-size: 16px;
@@ -262,40 +297,48 @@ export default {
    justify-content: start;
    align-items: center;
 }
-.package-card-list li:last-child{
+
+.package-card-list li:last-child {
    margin-bottom: 0;
 }
-.package-card-list li.unchecked{
+
+.package-card-list li.unchecked {
    display: none;
 }
-.package-card-list li svg{
+
+.package-card-list li svg {
    margin-right: 10px;
    width: 24px;
    height: 24px;
 }
 
-.dark-mode{
-   .package-card{
+.dark-mode {
+   .package-card {
       background: #1B2434;
       border: 1px solid #364152;
    }
-   .package-card-table tr td.text-left{
+
+   .package-card-table tr td.text-left {
       color: #CDD5DF;
    }
-   .package-card-table tr td.text-right{
+
+   .package-card-table tr td.text-right {
       color: #CDD5DF;
    }
+
    .package-card-table tr {
       border-bottom: 1px solid #E3E8EF;
    }
+
    .package-card-table tr:last-child {
       border-bottom: 1px solid transparent;
    }
+
    .package-card-list li {
       color: #CDD5DF;
    }
 
-   .package-card-list li.unchecked svg path{
+   .package-card-list li.unchecked svg path {
       stroke: #CDD5DF;
       fill: #CDD5DF;
    }
