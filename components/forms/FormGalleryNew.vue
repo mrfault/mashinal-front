@@ -35,13 +35,9 @@
                            <button class="form-gallery-new-item-remove" @click.stop="deleteFile(file.key)">
                               <inline-svg src="/icons/delete.svg"/>
                            </button>
-                           <button class="form-gallery-new-item-remove" v-if="rotatable" @click.prevent="rotateFile(file.key)">
-                              <inline-svg src="/icons/reset-new.svg"/>
+                           <button class="form-gallery-new-item-rotate" v-if="rotatable" @click.prevent="rotateFile(file.key)">
+                              <inline-svg src="/icons/reset.svg"  size="20"/>
                            </button>
-                           <div class="form-gallery-new-item-information">
-                              <p class="form-gallery-new-item-name">{{getName(file.preview)}}</p>
-                              <p class="form-gallery-new-item-size">200KB</p>
-                           </div>
                         </div>
                      </div>
                   </template>
@@ -262,9 +258,38 @@ export default {
    background: none;
    border: 0;
 }
+.form-gallery-new-item-remove svg{
+   height: 20px;
+   width: 20px;
+   margin: 0;
+   padding: 0;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+.form-gallery-new-item-rotate{
+   background: none;
+   border: 0;
+}
+.form-gallery-new-item-rotate svg{
+   height: 16px;
+   width: 16px;
+   margin: 0;
+   padding: 0;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
 
 .form-gallery-new-item-remove:hover,
 .form-gallery-new-item-remove:focus{
+   background: none;
+   border: 0;
+}
+
+.form-gallery-new-item-rotate:hover,
+.form-gallery-new-item-rotate:focus{
    background: none;
    border: 0;
 }
@@ -287,7 +312,7 @@ export default {
 }
 .form-gallery-new-item-content{
    display: flex;
-   justify-content: start;
+   justify-content: space-between;
    align-items: center;
    border-radius: 6px;
    background:  #E5E7EB;
@@ -340,6 +365,24 @@ export default {
    .form-gallery-new-item-remove svg path{
       fill: #fff;
       stroke: #fff;
+   }
+
+   .form-gallery-new-item-rotate svg path{
+      fill: red;
+      stroke: red;
+   }
+   .form-gallery_thumbnail{
+      background-color: #3a3a3d;
+      color: #FFF;
+   }
+   .form-gallery_thumbnail:hover,
+   .form-gallery_thumbnail:focus{
+      background-color: #606061;
+      border-color: #606061;
+   }
+   .form-gallery_thumbnail.add-image .overlay i,
+   .form-gallery_thumbnail.add-image .overlay p{
+      color: #FFF;
    }
 }
 </style>

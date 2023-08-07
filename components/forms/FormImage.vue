@@ -167,6 +167,9 @@ export default {
    border-radius: 8px;
    gap: 8px;
 }
+.croppa-container canvas{
+   background-color: #000!important;
+}
 .dark-mode {
    .btn-white{
       background-color: #1b2434!important;
