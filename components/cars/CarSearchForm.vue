@@ -1091,12 +1091,6 @@
       }
    }
 
-   .dark-mode {
-      .cars-search-form {
-         background-color: #1B2434;
-      }
-   }
-
    @media (min-width: 992px) {
       .cars-search-form {
          .form-buttons {

@@ -434,6 +434,12 @@
       margin-top: 32px;
    }
 
+   .dark-mode {
+      .filters-container {
+         background-color: #1B2434;
+      }
+   }
+
    @media (min-width: 992px) {
       .filters-container {
          &__head {
