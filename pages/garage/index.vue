@@ -303,6 +303,57 @@
          </modal-popup>
 
 
+
+         <no-ssr v-if="false">
+            <template v-if="cars.data && cars.data.length">
+               <garage-nav
+                  v-show="showNav || !isMobileBreakpoint"
+                  :tab="tab"
+                  @filterCarNumber="filterCarNumber"
+                  @change-tab="tab = $event"
+               />
+               <cars-list v-if="tab === 'cars'" :filter_car_number="car_number" @show-nav="showNav = $event"/>
+               <cars-list v-if="tab === 'penalty_history'" key="history_key" :filter_car_number="car_number" history
+                          @show-nav="showNav = $event"/>
+               <check-driver-points
+                  v-show="tab === 'check-points'"
+                  @show-nav="showNav = $event"
+               />
+               <list-of-attorneys
+                  v-show="tab === 'attorney-list'"
+                  :attorneys="attorneys"
+                  @show-nav="showNav = $event"
+               />
+            </template>
+            <template v-else>
+               <garage-empty :default-vehicle-list="vehicleList"/>
+            </template>
+            <template v-if="false">
+               <template v-if="tab === 'cars' && (showNav || !isMobileBreakpoint)">
+                  <div
+                     v-if="isMobileBreakpoint"
+                     :class="[
+                'card profile-links-card with-margins',
+                { 'mt-3': !cars.data || !cars.data.length },
+              ]"
+                  >
+                     <div
+                        v-for="menu in userMenus.filter((menu) => menu.showOnCard)"
+                        :key="menu.title"
+                        class="link-block"
+                     >
+                        <nuxt-link :to="$localePath(menu.route)">
+                           <icon :name="menu.icon"/>
+                           {{ $t(menu.title) }}
+                           <icon name="chevron-right"/>
+                           <!-- <inline-svg src="/icons/chevron-right.svg" :height="14" /> -->
+                        </nuxt-link>
+                        <hr/>
+                     </div>
+                  </div>
+               </template>
+            </template>
+         </no-ssr>
       </div>
    </div>
 </template>
@@ -881,6 +932,7 @@ export default {
       }
    }
 }
+
 </style>
 
 
