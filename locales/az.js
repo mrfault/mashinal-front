@@ -1075,6 +1075,7 @@ export default {
    lens: "Linza",
    less: "Daha az",
    less_2: "Qısalt",
+   less_3: "Axtarışı qısalt",
    license_plate: "Dövlət nişanı",
    license_plate_number: "Qeydiyyat nişanı",
    license_plate_number_vin_or_carcase_number:

@@ -1062,6 +1062,7 @@ export default {
    lens: "Линза",
    less: "Скрыть",
    less_2: "Меньше",
+   less_3: "Меньше",
    license_plate: "Госномер",
    license_plate_number: "Регистрационный номер",
    license_plate_number_vin_or_carcase_number: "Госномер, VIN или номер кузова",
