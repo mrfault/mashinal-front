@@ -2724,5 +2724,7 @@ export default {
    "restore_announcement" : "Elanı bərpa et",
    "vehicle_is_processing": "Nəqliyyat vasitəsi prosesdədir",
 
+   "no_payment_history": "Ödəniş tarixçəsi yoxdur",
+
 };
 
