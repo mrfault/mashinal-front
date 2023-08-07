@@ -1484,6 +1484,15 @@ export const actions = {
    async motoPost({}, form) {
       await this.$axios.$post(`/sell/moto/post/publish?is_mobile=false`, form);
    },
+   async motoEdit({}, {id, isMobile, form}) {
+      await this.$axios.$post(`sell/moto/post/edit/${id}?is_mobile=${isMobile}`, form);
+   },
+   async carEdit({}, {id, isMobile, form}) {
+      await this.$axios.$post(`sell/post/edit/${id}?is_mobile=${isMobile}`, form);
+   },
+   async partEdit({}, {id, isMobile, form}) {
+      await this.$axios.$post(`/sell/part/edit/${id}`, form);
+   },
 
 
    updateSalonsFilters({commit}, form) {
