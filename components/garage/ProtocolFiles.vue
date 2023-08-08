@@ -248,6 +248,7 @@ export default {
       refreshLightbox() {
          this.onBeforeClose();
          this.lightboxKey++;
+         this.$emit('mediaClosed', true)
       },
       onBeforeClose() {
          this.showLightbox = false;
@@ -257,6 +258,7 @@ export default {
          this.currentSlide = fsBox.stageIndexes.current;
       },
       closeLightbox() {
+         console.log("this.$emit('mediaClosed', true)")
          this.hideButton = false;
          if (this.isMobileBreakpoint) {
             if (this.showLightbox) {
@@ -325,6 +327,7 @@ export default {
       font: 400 16px/20px 'TTHoves';
    }
 }
+
 
 .ma-penalties__card--body__penalties--item {
    padding-left: 0;

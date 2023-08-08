@@ -65,8 +65,6 @@
                box-sizing: border-box;
                overflow-x: scroll;
                overflow-y: hidden;
-               overflow-y: scroll;
-               //margin-bottom: 40px;
                cursor: grab;
                position: relative;
                @include customScrollbar1;
@@ -168,7 +166,8 @@
                      margin-top: 12px;
                      display: flex;
                      justify-content: space-between;
-                     .btn--light-green, .protocol-details-component{
+
+                     .btn--light-green, .protocol-details-component {
                         width: calc(50% - 8px);
                      }
                   }
@@ -296,7 +295,7 @@
       justify-content: space-between;
       margin-top: 24px;
 
-      a,button {
+      a, button {
          width: calc(50% - 6px);
       }
 
@@ -340,9 +339,9 @@
 
 
 @media (max-width: 991px) {
-   .protocol-details-button{
-      &__actions{
-         button{
+   .protocol-details-button {
+      &__actions {
+         button {
             white-space: initial;
          }
       }
@@ -439,8 +438,9 @@
                   &--active {
                      border: 1px solid #528BFF;
                      flex-wrap: wrap;
-                     .ma-left{
-                        &__content{
+
+                     .ma-left {
+                        &__content {
                            width: 100%;
                            display: flex;
                            justify-content: space-between;
@@ -720,7 +720,57 @@
             color: #fff;
          }
       }
+
+      .ma-penalty-number-chip__container {
+         overflow-y: hidden !important;
+
+         &::-webkit-scrollbar-track {
+            background: transparent !important;
+         }
+
+         &::-webkit-scrollbar-thumb {
+            background: #555 !important;
+         }
+
+         &::-webkit-scrollbar-thumb:hover {
+            background: #000 !important;
+         }
+      }
    }
+
+   .ma-penalties__card--car-specs__item--divider {
+      background: #fff;
+   }
+
+   .ma-penalty-number-chip--active {
+      background: #155EEF !important;
+      color: #fff !important;
+   }
+
+   .ma-penalties {
+      .btn__blue-outlined {
+         &:hover {
+            background: #1b2434;
+         }
+      }
+   }
+
+   .remove-vehicle-modal {
+      p {
+         color: rgba(205, 213, 223, 1);
+      }
+   }
+
+   .ma-penalties__top--numbers__scrollButton {
+      background: #121926 !important;
+
+      button {
+         color: #fff;
+         background: #364152;
+
+      }
+   }
+
 }
 
 

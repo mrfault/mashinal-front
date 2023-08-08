@@ -155,6 +155,11 @@ export default {
                   link: '/profile/settings/',
                },
                {
+                  title: this.$t('my_autos'),
+                  icon: 'car',
+                  link: '/profile/automobiles/',
+               },
+               {
                   title: this.$t('sign_out'),
                   icon: 'logout',
                   link: 'announces',

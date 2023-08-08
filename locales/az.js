@@ -2726,5 +2726,8 @@ export default {
 
    "no_payment_history": "Ödəniş tarixçəsi yoxdur",
 
+   "remove_announcement ": "Удалить",
+   "my_autos": "Avtomobillərim",
+
 };
 

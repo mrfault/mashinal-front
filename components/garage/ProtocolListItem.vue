@@ -13,7 +13,7 @@
             <strong v-if="protocol.isSelected">{{ protocol.total }} AZN</strong>
          </div>
       </div>
-      <div class="ma-right mt-0">
+      <div class="ma-right mt-2 mt-md-0">
          <p v-if="!protocol.isSelected" class="ma-right__amount">
             {{ protocol.total }} AZN
          </p>

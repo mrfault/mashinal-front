@@ -12,6 +12,7 @@
       >
          {{ $t('detail') }}
       </button>
+
       <modal-popup
          :modal-class="!mediaIsOpen ? 'wider'  : 'background-transparent full-screen '"
          :title="$t('protocol_details')"
@@ -61,15 +62,7 @@
                <protocol-files v-if="!history" :protocol="protocol" @mediaClosed="mediaIsOpen = false"
                                @mediaOpened="openMedia"></protocol-files>
 
-               <!--               <button-->
-               <!--                  v-if="protocol.isSelected && !history"-->
-               <!--                  :class="['btn', 'btn&#45;&#45;light-green', { pending }]"-->
-               <!--                  style="margin-left: 8px"-->
-               <!--                  type="button"-->
-               <!--                  @click="showPaymentModal"-->
-               <!--               >-->
-               <!--                  {{ $t('make_payment') }}-->
-               <!--               </button>-->
+
 
                <a v-if="protocol.isSelected && !history && !mediaIsOpen" :href="getPayLink(protocol)" class="btn btn--green"
                   rel="noopener"
