@@ -665,6 +665,9 @@ export default {
          border-top: 1px solid #484e56 !important;
          background: #1b2434 !important;
       }
+      .swiper-slide{
+         background: transparent!important;
+      }
    }
    .chat-list-switch .switch-text,
    .chat-list-switch .switch-icon{
