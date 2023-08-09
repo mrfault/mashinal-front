@@ -428,8 +428,8 @@ export default {
             ]);
             //this.$toasted.success(this.$t('saved_changes'));
             // reset form values
-            this.$set(this.form, 'logo', null);
-            this.$set(this.form, 'cover', null);
+            //this.$set(this.form, 'logo', null);
+            //this.$set(this.form, 'cover', null);
             this.$nuxt.$emit('gallery-update');
             this.pending = false;
          } catch ({response: {status, data: {data, message}}}) {

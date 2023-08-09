@@ -2630,6 +2630,7 @@ export default {
    "garage_account_desc":"Измени данные профиля",
    "profile_balance_desc":"Проверь баланс",
    "logout_account_desc":"Выйти из аккаунта",
+   'profile_settings_desc': "Настройки пользователя, имя, фото профиля и т. д.",
    "garage_penalties_desc":"Проверь и оплати штрафы",
    package_type: "Тип пакете",
    package_information: "Информация о моем пакете",
