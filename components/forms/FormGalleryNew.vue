@@ -2,7 +2,7 @@
    <div class="form-gallery-new">
       <div class="row full-width p-0 m-0">
          <div class="col-md-12">
-            <h2 class="form-gallery-new-title">Digər fotoları yüklə</h2>
+            <h2 class="form-gallery-new-title">{{$t('upload_other_photos')}}</h2>
          </div>
          <div class="col-md-12">
             <div :class="itemClass" v-if="files.length < this.maxFiles">
