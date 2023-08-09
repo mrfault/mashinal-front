@@ -32,8 +32,8 @@
                </div>
             </div>
             <div class="col-md-12 pt-5">
-               <div class="row">
-                  <div class="col-md-6 pb-5">
+               <div class="row flex-column-reverse flex-lg-row pt-lg-0 pt-5">
+                  <div class="col-md-6 pb-5 pt-lg-0 pt-5">
                      <div class="row">
                         <div class="col-md-12 pb-3">
                            <form-text-input
@@ -427,6 +427,7 @@ export default {
                this.$auth.fetchUser()
             ]);
             //this.$toasted.success(this.$t('saved_changes'));
+            this.$toasted.success(this.$t('saved_changes'));
             // reset form values
             //this.$set(this.form, 'logo', null);
             //this.$set(this.form, 'cover', null);
@@ -490,6 +491,7 @@ export default {
             this.showPasswordModal = false;
             this.$nextTick(() => {
               // this.$toasted.show(data.message, {type: 'success'});
+               this.$toasted.success(this.$t('saved_changes'));
             });
          } catch (err) {
             this.pending = false;

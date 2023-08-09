@@ -261,4 +261,11 @@ export default {
    align-items: center;
    justify-content: center;
 }
+.images-slider .toolbar{
+   z-index: 99999;
+   position: fixed;
+}
+.layout.wider, .container.wider{
+   z-index: 0;
+}
 </style>

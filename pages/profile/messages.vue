@@ -576,6 +576,13 @@ export default {
          background: #1b2434;
          color: #FFF;
       }
+      .message-content.sent-by-me {
+         background-color: #697586;
+      }
+
+      .message-content {
+         background-color: #484e56;
+      }
    }
 }
 
@@ -673,8 +680,11 @@ export default {
    .chat-list-switch .switch-icon{
       color: #FFF;
    }
-}
 
+}
+.fslightbox-container{
+   background: #000;
+}
 .mobile-screen{
    .no-messages{
       padding: 50px 0;
