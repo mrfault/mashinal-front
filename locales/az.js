@@ -2729,6 +2729,8 @@ export default {
    "no_payment_history": "Ödəniş tarixçəsi yoxdur",
    "no_message": "Mesaj yoxdur",
    "no_message_text": "Sizə mesaj gəlsə vəya kiməsə mesaj yazsanız burada görünəcək",
+   "change_cover": "Örtük şəklini dəyiş",
+   "upload_other_photos": "Digər fotoları yüklə",
 
 };
 
