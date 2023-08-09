@@ -3,7 +3,17 @@
       <div class="d-flex">
          <div class="chat-inner-info">
             <div :class="{'is-online': isOnline}">
-               <img class="chat-avatar" :src="chatAvatar" alt=""/>
+
+               <template v-if="chatAnnouncementThumb">
+                  <img
+                     v-if="group.announce.type !== 6 && chatAnnouncementThumb"
+                     class="chat-avatar"
+                     :src="chatAnnouncementThumb"
+                     alt="img"
+                     @click.stop="$emit('go-to-announcement', group)"
+                  />
+               </template>
+               <img class="chat-avatar" :src="chatAvatar" v-else alt=""/>
             </div>
             <span class="username">
                <span>{{ chatUser.full_name }}</span>
@@ -13,9 +23,9 @@
                  <template v-else-if="typing">{{ $t('is_typing') }}</template>
                </span>
 
-               <template v-if="isMobileBreakpoint">
+               <template>
                   <br/>
-                  <span class="username-subtitle" @click.stop="$emit('go-to-announcement', group)">
+                  <span class="username-subtitle" style="cursor:pointer" @click.stop="$emit('go-to-announcement', group)">
                     <span class="text-truncate">{{ getAnnouncementTitle(chatAnnouncement) }}</span>
                     <span class="text-dark-blue-2">{{ chatAnnouncement.price || '' }}</span>
                   </span>

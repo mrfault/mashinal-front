@@ -12,16 +12,17 @@ export const ToastErrorsMixin = {
         action: { text: this.$t("update") }
       });
       this.toasts[key].el.addEventListener("click", () => {
-        this.scrollTo(
-          `#anchor-${options.fieldView || key}`,
-          options.offset || 0
-        );
+        // this.scrollTo(
+        //   `#anchor-${options.fieldView || key}`,
+        //   options.offset || 0
+        // );
       });
-      if (scroll)
-        this.scrollTo(
-          `#anchor-${options.fieldView || key}`,
-          options.offset || 0
-        );
+      if (scroll) {
+         // this.scrollTo(
+         //    `#anchor-${options.fieldView || key}`,
+         //    options.offset || 0
+         // );
+      }
     },
     removeError(field, force = false) {
       if (!force && (!this.form[field] || this.form[field] === "")) return;

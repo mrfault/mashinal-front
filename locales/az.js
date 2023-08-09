@@ -2170,7 +2170,7 @@ export default {
    you_should_deactivate_announcements:
       "Sizin {package1} paketiniz aktivdir. {package2} paketə keçid etmək üçün elanlarınızın sayını maksimum {n}-a endirməlisiniz.<br/>Davam etmək üçün deaktiv etmək istədiyiniz elanları seçin.",
    you_unblocked_this_user: "Siz bu istifadəçini blokdan çıxarmısınız",
-   you_were_blocked_by_this_user: "İstifadəçi mesaj bölməsini məhdudlaşdırıb",
+   you_were_blocked_by_this_user: "Bu mesaja cavab yazmaq mümkün deyil",
    you_will_be_contacted_shortly:
       "* Qısa zaman ərzində sizinlə əlaqə yaradılacaq.",
    you_will_have_to_pay_100_to_get_a_business_profile:

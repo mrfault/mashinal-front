@@ -2133,7 +2133,7 @@ export default {
    years: "Год выпуска",
    yes: "Да",
    you: "Вы",
-   you_blocked_this_user: "Вы заблокировали этого пользователя",
+   you_blocked_this_user: "Невозможно ответить на это сообщение",
    you_can_add_a_maximum_of_count_photos:
       "Вы можете добавить максимум {count} изображения",
    you_can_create_announcement:

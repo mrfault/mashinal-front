@@ -22,10 +22,6 @@
                      v-model="messageValue"
            />
         </vue-scroll>
-        <span class="textarea-message text-dark-blue-3" v-if="message">
-          <icon name="block" v-if="blocked" />
-          {{ message }}
-        </span>
       </div>
       <div class="textarea-submit" v-if="!blocked">
         <button type="submit" class="btn-reset">
