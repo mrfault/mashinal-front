@@ -3,7 +3,7 @@
       <div class="toolbar">
          <span>{{ currentSlide + 1 }} / {{ slides.main.length }}</span>
 
-         <div class="images-slider__close" @click.stop="$emit('close')">
+         <div class="images-slider__close" style="z-index: 9999" @click.stop="$emit('close')">
             <icon name="cross" />
             <!-- <inline-svg src="/icons/cross.svg" height="14" /> -->
          </div>
@@ -22,7 +22,7 @@
                      </div>
                   </div>
                </div>
-               <button id="slider-next" class="btn" @click.stop="thumbsNext" v-if="slides.length > 6">
+               <button id="slider-next" class="btn" @click.stop="thumbsNext" v-if="slides.main.length > 6">
                   <icon name="chevron-down"/>
                </button>
             </div>
@@ -255,7 +255,6 @@ export default {
    width: 130px;
    height: 77px;
    object-fit: cover;
-   border-radius: 12px;
 }
 .blur-bg_slider{
    display: flex;
