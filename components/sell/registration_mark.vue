@@ -87,6 +87,10 @@ export default {
       isReady: {
          type: Boolean,
          default: false
+      },
+      isEdit: {
+         type: Boolean,
+         default: false
       }
    },
    computed: {
@@ -153,6 +157,13 @@ export default {
       }
    },
    methods: {},
+   mounded() {
+      if (this.isEdit) {
+         this.form.category_id = this.announcement.category_id
+         this.form.brand_id = this.announcement.brand_id
+         this.form.title = this.announcement.title
+      }
+   },
    watch: {
       isReady() {
          this.$v.form.$touch()
@@ -204,6 +215,22 @@ export default {
          svg {
             min-width: 24px;
             min-height: 24px;
+         }
+      }
+   }
+
+   .divider {
+      display: grid;
+      grid-template-columns: repeat(2, calc(50% - 8px));
+      gap: 20px;
+
+      .price_types {
+         .price_item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 52px;
+            padding: 0 16px;
          }
       }
    }

@@ -208,6 +208,20 @@ import FormKeywords from "~/components/forms/FormKeywords.vue";
 
 export default {
    components: {FormKeywords, ImageComponent, ToggleGroup},
+   props: {
+      announcement: {
+         type: Object,
+         required: true
+      },
+      isReady: {
+         type: Boolean,
+         default: false
+      },
+      isEdit: {
+         type: Boolean,
+         default: false
+      }
+   },
    computed: {
       ...mapGetters(['partCategories', 'partFilters']),
    },
@@ -266,6 +280,30 @@ export default {
          return this.partFilters?.filters?.map((ftr) => ftr.key).includes(key)
       }
    },
+   mounted() {
+      if (this.isEdit) {
+         this.getPartFilters(this.announcement.category_id);
+         this.form.category_id = this.announcement.category_id
+         this.form.brand_id = this.announcement.brand_id
+         this.form.title = this.announcement.title
+         this.form.product_code = this.announcement.product_code
+         this.form.is_new = this.announcement.is_new ? 1 : 0
+         this.form.is_original = this.announcement.is_original ? 1 : 0
+         this.form.run_flat = this.announcement.run_flat
+         this.form.thorns = this.announcement.thorns
+         this.form.height = this.announcement.height
+         this.form.diameter = this.announcement.diameter
+         this.form.shine_width = this.announcement.shine_width
+         this.form.price = this.announcement.price
+         this.form.have_delivery = this.announcement.have_delivery
+         this.form.have_warranty = this.announcement.have_warranty
+         this.form.is_negotiable = this.announcement.is_negotiable
+         this.form.region_id = this.announcement.region_id
+         this.form.description = this.announcement.description
+         this.form.saved_images = this.announcement.defaultImageIds
+         this.form.keywords = this.announcement.tags.map((tag) => tag.text)
+      }
+   },
    watch: {
       isReady() {
          this.$v.form.$touch()
@@ -298,12 +336,7 @@ export default {
 
 // {"data":{"category":{"id":19,"parent_id":0,"name":"Şinlər","slug":{"az":"sinler","ru":"siny"},"show_on_search":false,"show_on_form":true,"created_at":"2021-06-29T10:19:13.000000Z","updated_at":"2021-06-29T10:19:13.000000Z","deleted_at":null,"child":[]},"sub_category":"","brand":{"id":4,"name":"Advan"},"title":"wder","product_code":"reth","is_new":"new","is_original":"original","run_flat":true,"thorns":2,"number_of_mounting_holes":"","diameter":10,"height":3,"shine_width":3,"delivery":true,"warranty":true,"price":15,"currency":1,"is_negotiable":false,"region_id":1,"comment":"2wert","keywords":[{"text":"wqregb"},{"text":"t5 b"},{"text":"ytry"},{"text":"grggr"}],"saved_images":[1512784,1512785]}}:
    },
-   props: {
-      isReady: {
-         type: Boolean,
-         default: false
-      }
-   },
+
    validations: {
       form: {
          // category: "",

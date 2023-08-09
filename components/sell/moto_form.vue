@@ -68,7 +68,7 @@
             <form-select
                v-if="motoOptions?.config?.box?.sell_values[form.type_of_moto.id]?.length"
                :label="$t('box')"
-               :options="motoOptions?.config?.box?.sell_values[form.type_of_moto.id]?.map((f) => ({...f, name: $t(f.name)}))"
+               :options="motoOptions?.config?.box?.sell_values[form.type_of_moto.id]?.map((f) => ({...f, id: f.key, name: $t(f.name)}))"
                :clear-placeholder="true"
                :clear-option="false"
                :new-label="false"
@@ -495,7 +495,11 @@ export default {
          })
       }
    },
-   async mounted() {
+   async fetch() {
+      await this.getMotoOptions();
+      await this.$store.dispatch("getPopularOptions")
+   },
+   mounted() {
       if (this.isEdit) {
          this.form.type_of_moto = {id: this.announcement.type_of_moto}
          this.form.year = this.announcement.year
@@ -503,11 +507,32 @@ export default {
          this.form.power = this.announcement.power
          this.form.fuel = this.announcement.engine_type_id
          this.form.box = this.announcement.box_id
+         this.form.saved_images = this.announcement.mediaIds
+         this.form.color = this.announcement.color.id
+         this.form.gearing = this.announcement.gear_id
          this.form.mileage = this.announcement.mileage
-         this.form.saved_images = this.announcement.media
+         this.form.mileage_type = this.announcement.mileage_measure
+         this.form.is_new = this.announcement.is_new ? 1 : 0
+         this.form.beaten = this.announcement.status_id ? 1 : 0
+         this.form.guaranty = this.announcement.guaranty
+         this.form.region_id = this.announcement.region_id
+         this.form.address = this.announcement.address
+         this.form.lat = Number(this.announcement.latitude)
+         this.form.lng = Number(this.announcement.longitude)
+         this.form.price = this.announcement.price_int
+         this.form.currency = this.announcement.currency_id
+         this.form.tradeable = this.announcement.tradeable
+         this.form.credit = this.announcement.credit
+         this.form.car_number = this.announcement.car_number
+         this.form.show_car_number = this.announcement.show_car_number
+         this.form.vin = this.announcement.vin
+         this.form.show_vin = this.announcement.show_vin
+         this.form.customs_clearance = this.announcement.customed_id
+         this.form.engine = this.announcement.engine_type_id
+         this.form.cylinders = this.announcement.cylinders
+         this.form.number_of_vehicles = this.announcement.tact
+         this.form.comment = this.announcement.comment
       }
-      await this.getMotoOptions();
-      await this.$store.dispatch("getPopularOptions")
    },
    validations: {
       form: {
@@ -567,6 +592,10 @@ export default {
    }
 
    .comment {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+
       &_info {
          display: flex;
          align-items: center;

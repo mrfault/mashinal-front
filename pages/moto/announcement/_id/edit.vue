@@ -6,8 +6,8 @@
             <div class="card">
                <form class="add_announce_form">
                   <moto_form isEdit :announcement="announcement" :isReady="isReady"
-                             @getForm="getMotoForm($event)"/>
-                  <button type="button" class="btn full-width btn--pale-green-outline active">
+                             @getForm="getMotoForm($event)" />
+                  <button type="button" @click="onClick()" class="btn full-width btn--pale-green-outline active">
                      {{ $t("place_announcement") }}
                   </button>
                </form>
@@ -53,7 +53,7 @@ export default {
    },
    data() {
       return {
-         isReady: true
+         isReady: false
       }
    },
    async asyncData({store, route, app}) {
@@ -116,7 +116,7 @@ export default {
             tradeable: announcement.tradeable,
             credit: announcement.credit,
             guaranty: announcement.guaranty,
-            saved_images: announcement.mediaIds
+            saved_images: announcement.media
          }
       }
    },
@@ -134,9 +134,21 @@ export default {
       }
    },
    methods: {
-      getMotoForm(val) {
-         console.log(val)
-      }
+      ...mapActions(['motoEdit']),
+      async getMotoForm(form) {
+
+         try {
+            await this.motoEdit({id: this.$route.params.id.slice(0, -1), isMobile: this.isMobileBreakpoint, form})
+            this.$router.push(this.$localePath('/profile/announcements'))
+         }catch(e){}
+      },
+      onClick() {
+         // this.$v.form.$touch()
+         // if (this.$v.authForm.$error) return;
+            this.isReady = !this.isReady
+
+
+      },
    }
 }
 </script>
