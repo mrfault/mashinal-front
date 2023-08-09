@@ -426,7 +426,7 @@ export default {
                this.getMySalon({id: this.$getDashboardId(this.$route.params.type)}),
                this.$auth.fetchUser()
             ]);
-            this.$toasted.success(this.$t('saved_changes'));
+            //this.$toasted.success(this.$t('saved_changes'));
             // reset form values
             this.$set(this.form, 'logo', null);
             this.$set(this.form, 'cover', null);
@@ -489,7 +489,7 @@ export default {
             this.pending = false;
             this.showPasswordModal = false;
             this.$nextTick(() => {
-               this.$toasted.show(data.message, {type: 'success'});
+              // this.$toasted.show(data.message, {type: 'success'});
             });
          } catch (err) {
             this.pending = false;

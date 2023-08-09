@@ -24,7 +24,6 @@
                            />
                         </div>
                         <div class="chat-list-switch cursor-pointer"
-                             v-if="!isMobileBreakpoint"
                              @click="showBlockedGroups = !showBlockedGroups">
                            <template v-if="showBlockedGroups">
                               <span class="switch-icon"><icon name="chat"/></span>
@@ -66,8 +65,8 @@
                                           <inline-svg src="/icons/no-message.svg"/>
                                        </div>
                                        <div class="col-md-12 no-messages-content">
-                                          <h3>Mesaj yoxdur</h3>
-                                          <p>Sizə mesaj gəlsə vəya kiməsə mesaj yazsanız burada görünəcək</p>
+                                          <h3>{{$t('no_message')}}</h3>
+                                          <p>{{$t('no_message_text')}}</p>
                                        </div>
                                     </div>
                                  </div>
@@ -666,6 +665,20 @@ export default {
          border-top: 1px solid #484e56 !important;
          background: #1b2434 !important;
       }
+   }
+   .chat-list-switch .switch-text,
+   .chat-list-switch .switch-icon{
+      color: #FFF;
+   }
+}
+
+.mobile-screen{
+   .no-messages{
+      padding: 50px 0;
+   }
+   .no-messages-content{
+      padding: 50px!important;
+      text-align: center!important;
    }
 }
 </style>

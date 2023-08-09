@@ -1,7 +1,7 @@
 <template>
   <form class="form" @submit.prevent="$emit('send', $event)">
     <div class="message-textarea" :class="{disabled}">
-      <div class="textarea-attach">
+      <div class="textarea-attach" v-if="!blocked">
         <span class="cursor-pointer">
           <inline-svg src="/icons/file.svg"/>
         </span>
@@ -12,7 +12,7 @@
           @change="attachFiles"
         />
       </div>
-      <div class="textarea-text">
+      <div class="textarea-text" v-if="!blocked">
         <vue-scroll>
            <textarea id="textarea"
                      @keydown="handleKeyDown"
@@ -27,13 +27,16 @@
           {{ message }}
         </span>
       </div>
-      <div class="textarea-submit">
+      <div class="textarea-submit" v-if="!blocked">
         <button type="submit" class="btn-reset">
            <inline-svg src="/icons/send.svg"/>
         </button>
       </div>
+      <div class="blocked-text w-100" v-if="blocked">
+         <p class="p-2 m-0 text-center w-100">{{$t('you_blocked_this_user')}}</p>
+      </div>
     </div>
-    <div class="message-attachment-preview" v-if="attachmentsLength">
+    <div class="message-attachment-preview" v-if="!blocked && attachmentsLength">
       <div class="preview" :class="{'hide':!loaded[key], 'loading': sending}" v-for="(attachment, key) in attachments" :key="key">
         <div class="image-preloader" v-if="sending"></div>
         <button class="btn-sq btn-sq--color-red" @click="removeFile(key)">

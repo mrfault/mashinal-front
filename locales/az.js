@@ -2717,6 +2717,7 @@ export default {
    package_current: "Mövcud paket",
 
    "remove_announcement": "Elanı sil",
+   "remove_message": "Mesajı sil",
    "start_subscription_desc1": "Seçilmiş NV-nə abunə olmaq istədiyinizə əminsiniz?",
    "penalty_info": "Cərimə məlumatları",
    "number_plate_of_vehicle": "NV-nin qeydiyyat nişanı",
@@ -2726,6 +2727,8 @@ export default {
    "vehicle_is_processing": "Nəqliyyat vasitəsi prosesdədir",
 
    "no_payment_history": "Ödəniş tarixçəsi yoxdur",
+   "no_message": "Mesaj yoxdur",
+   "no_message_text": "Sizə mesaj gəlsə vəya kiməsə mesaj yazsanız burada görünəcək",
 
 };
 
