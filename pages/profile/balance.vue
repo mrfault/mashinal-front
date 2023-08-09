@@ -549,8 +549,10 @@
 .select-menu_dropdown-option.card-option{
    width: 100%!important;
 }
-.select-menu_dropdown{
-   width: 140%!important;
+.pages-profile-balance{
+   .select-menu_dropdown{
+      width: 140%!important;
+   }
 }
 
 @media (max-width: 1250px) {

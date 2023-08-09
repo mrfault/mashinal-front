@@ -194,8 +194,6 @@ export default {
    background-color: #FFF;
    padding: 20px;
    border-radius: 12px;
-   height: max-content;
-   max-height: max-content;
 }
 
 .map.lower {

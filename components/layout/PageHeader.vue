@@ -121,7 +121,9 @@
                                  :to="getUserSettingsLink"
                                  class="d-inline-flex align-items-center align-top"
                               >
-                                 <img :src="getUserAvatar" :alt="user.full_name"/>
+                                 <template v-if="user.avatar || user.autosalon.logo">
+                                    <img :src="image" :alt="user.full_name"/>
+                                 </template>
 
                                  <span class="text-truncate">{{ user.full_name }}</span>
                               </nuxt-link>
@@ -368,7 +370,14 @@ export default {
          'notViewedFavorites',
          'notViewedSavedSearch',
          'homePageSliders',
-      ])
+      ]),
+      image() {
+         if (this.user.autosalon) {
+            return (this.user.autosalon.logo.includes('http') ? '' : 'https://dev.mashin.al/storage/') + this.user.autosalon.logo;
+         } else {
+            return (this.user.avatar.includes('http') ? '' : 'https://dev.mashin.al/storage/') + this.user.avatar;
+         }
+      },
    },
 
    watch: {
