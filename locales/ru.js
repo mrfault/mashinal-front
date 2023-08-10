@@ -2653,10 +2653,20 @@ export default {
    "confirmation_code":"Код подтверждения",
    "confirmation_code_desc":"Введите SMS-код отправленный на ваш номер",
    "remove_announcement": "Удалить",
+
+
+   "penalty_info":"Информация о штрафе",
+   "number_plate_of_vehicle":"Регистрационный номер ТС",
+   "protocol_number":"Номер протокола",
+   "no_vehicle_found":"Нет добавленных транспортных средств",
+
+
+
    "remove_message": "Удалить",
 
    "no_message": "Нет сообщений",
    "no_message_text": "Если вы получили сообщение или сообщение кому-то, оно появится здесь",
    "change_cover": "Изменить обложку",
    "upload_other_photos": "Загрузить другие фотографии",
+
 };

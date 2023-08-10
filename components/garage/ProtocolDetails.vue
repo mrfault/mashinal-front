@@ -12,6 +12,7 @@
       >
          {{ $t('detail') }}
       </button>
+
       <modal-popup
          :modal-class="!mediaIsOpen ? 'wider'  : 'background-transparent full-screen '"
          :title="$t('protocol_details')"
@@ -58,20 +59,17 @@
 
             <div v-if="!history" class="protocol-details-button__actions">
 
-               <protocol-files v-if="!history" :protocol="protocol" @mediaClosed="mediaIsOpen = false"
-                               @mediaOpened="openMedia"></protocol-files>
+               <protocol-files
+                  v-if="!history"
+                  :mediaIsOpen="mediaIsOpen"
+                  :protocol="protocol"
+                  @mediaClosed="mediaIsOpen = false"
+                  @mediaOpened="openMedia"
+               />
 
-               <!--               <button-->
-               <!--                  v-if="protocol.isSelected && !history"-->
-               <!--                  :class="['btn', 'btn&#45;&#45;light-green', { pending }]"-->
-               <!--                  style="margin-left: 8px"-->
-               <!--                  type="button"-->
-               <!--                  @click="showPaymentModal"-->
-               <!--               >-->
-               <!--                  {{ $t('make_payment') }}-->
-               <!--               </button>-->
 
-               <a v-if="protocol.isSelected && !history && !mediaIsOpen" :href="getPayLink(protocol)" class="btn btn--green"
+               <a v-if="protocol.isSelected && !history && !mediaIsOpen" :href="getPayLink(protocol)"
+                  class="btn btn--green"
                   rel="noopener"
                   style="margin-left: 8px" target="_blank">
                   {{ $t('pay_online') }}
@@ -127,7 +125,7 @@ export default {
          let agency = protocol.protocol_series === 'BNA' ? 'bna' : 'din';
          return `https://pay.api.az/${agency}/${protocol.protocol_series}${protocol.protocol_number}`;
       },
-      openMedia(){
+      openMedia() {
          console.log("this.mediaIsOpen = true;")
          this.mediaIsOpen = true;
       }
@@ -156,10 +154,12 @@ export default {
       border-bottom: 1px solid #364152;
    }
 }
-.visibility-hidden{
+
+.visibility-hidden {
    visibility: hidden !important;
 }
-.background-transparent{
+
+.background-transparent {
    background: transparent !important;
 }
 </style>

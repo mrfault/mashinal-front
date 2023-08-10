@@ -5,9 +5,12 @@
          <h2 class="ma-notifications__title">{{ $t('notifications') }}</h2>
 
          <template v-if="notifications.data.length && getNotificationsList.length">
-            <NotificationItem v-for="item in getNotificationsList"
-                              :date="$formatDate(item.created_at, 'D.MM.YYYY HH:mm')[locale]" :link="getRoutePath(item)"
-                              :notification="item"/>
+            <NotificationItem
+               v-for="item in getNotificationsList"
+               :date="$formatDate(item.created_at, 'D.MM.YYYY HH:mm')[locale]" :link="getRoutePath(item)"
+               :notification="item"
+               :page="page"
+            />
          </template>
 
          <div v-else>
@@ -143,6 +146,7 @@ export default {
       async changePage(page) {
          await this.$store.dispatch('getNotifications', 'page=' + page)
          this.scrollTo('.vehicle-specs', [-15, -20]);
+         window.scrollTo({top: 0})
       },
       getAnnounceTypePath(type) {
          switch (type) {

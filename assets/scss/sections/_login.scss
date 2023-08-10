@@ -439,12 +439,13 @@
 
 .send-again-text {
    margin-bottom: 0;
+   text-align: center;
 
    a {
       font: 500 16px/20px 'TTHoves';
       text-align: center;
       text-decoration: none;
-      color: #2970FF;
+      color: rgba(154, 164, 178, 1);
    }
 
    span {

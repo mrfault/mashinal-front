@@ -255,6 +255,7 @@ export default {
          display: flex;
          align-items: center;
          border-radius: 8px;
+         cursor: pointer;
 
          svg {
             margin-right: 8px;

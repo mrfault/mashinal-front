@@ -130,6 +130,11 @@ export default {
                   link: '/profile/agreement',
                },
                {
+                  title: this.$t('my_autos'),
+                  icon: 'car',
+                  link: '/profile/automobiles/',
+               },
+               {
                   title: this.$t('sign_out'),
                   icon: 'logout',
                   link: '/logout',
@@ -157,6 +162,11 @@ export default {
                   title: this.$t('my_account'),
                   icon: 'user',
                   link: '/profile/settings/',
+               },
+               {
+                  title: this.$t('my_autos'),
+                  icon: 'car',
+                  link: '/profile/automobiles/',
                },
                {
                   title: this.$t('sign_out'),

@@ -81,7 +81,9 @@
          <!--         tabs-->
          <div v-if="carsList.length" class="row">
             <!--            penalties,history, vehicle info(mobile)-->
-            <div v-if="selectedCar && selectedCar.sync_status == 1" class="col-12 col-md-6">
+            <div
+               v-if="selectedCar && showLeftCard"
+               class="col-12 col-md-6">
                <div class="ma-penalties__card">
                   <div v-if="carsList.length" class="ma-penalties__card--header">
                      <template v-for="(item,index) in cardTabs">
@@ -164,25 +166,7 @@
 
                      <!--                     vehicle info(mobile)-->
                      <div v-if="activeCardTab == 2" class="ma-penalties__card--body__penalty_history">
-                        <div>
-                           <div class="ma-penalties__right-card__body">
-                              <template v-if="selectedCar && mainVehicleSpecs">
-                                 <div v-for="(spec,index) in mainVehicleSpecs" :key="index + 213654"
-                                      class="ma-penalties__card--car-specs">
-                                    <div v-for="(value,key) in spec" class="ma-penalties__card--car-specs__item">
-                                       <p v-html="$t(key)"></p>
-                                       <strong>{{ value }}</strong>
-                                    </div>
-                                 </div>
-                              </template>
-                           </div>
-                           <div class="ma-penalties__card--actions">
-                              <remove-vehicle v-if="selectCar.sync_status !== 0" :vehicle="selectedCar"
-                                              @selectedCarDeleted="getAllCarsList"/>
-                              <stop-subsribtion v-if="selectedCar.sync_status == 1" :vehicle="selectedCar"
-                                                @carDeactivated="getAllCarsList"/>
-                           </div>
-                        </div>
+                        <vehicle-info :selected-car="selectedCar"/>
                      </div>
                   </div>
                </div>
@@ -190,48 +174,14 @@
 
             <!--            vehicle info-->
             <div v-if="carsList.length && !isMobileBreakpoint" class="col-12 col-md-6">
-               <div class="ma-penalties__card" v-if="selectedCar && selectedCar.sync_status == 1">
-                  <h2 class="ma-title--md">{{ $t('my_vehicle_info') }}</h2>
-                  <div >
-                     <div :class="{'ma-penalties__card--body__no-results': !selectedCar}"
-                          class="ma-penalties__right-card__body">
-                        <div v-if="selectedCar && selectedCar.sync_status == 0"
-                             class="ma-penalties__card--car-specs__item">
-                           <p style="color: #F81734">{{ $t('vehicle_is_not_active') }}</p>
-                        </div>
-                        <template v-if="selectedCar && mainVehicleSpecs">
-                           <div v-for="(spec,index) in mainVehicleSpecs" :key="index + 213654"
-                                class="ma-penalties__card--car-specs">
-                              <div v-for="(value,key) in spec" class="ma-penalties__card--car-specs__item">
-                                 <p v-if="key == 'auth_date'">{{ $t('subscription_registration_date_on_site') }}</p>
-                                 <p v-else-if="key == 'auth_end_date'">{{
-                                       $t('subscription_registration_end_date_on_site')
-                                    }}</p>
-                                 <p v-else v-html="$t(key)"></p>
-                                 <strong>
-                                    <span v-if="key ==='insurance_end_date'"
-                                          style="color: #2970FF; text-decoration: underline; font: 500 16px/20px 'TTHoves'; margin-right: 8px; cursor: pointer"
-                                          @click="openDateChangeModal = true">{{ $t('edition') }}
-                                 </span>
-                                    {{ value }}</strong>
-                              </div>
-                              <hr v-if="index < mainVehicleSpecs.length - 1"
-                                  class="m-0 ma-penalties__card--car-specs__item--divider">
-                           </div>
-                        </template>
-                     </div>
-                     <div v-if="selectedCar" class="ma-penalties__card--actions">
-                        <remove-vehicle :vehicle="selectedCar" @selectedCarDeleted="getAllCarsList"/>
-                        <stop-subsribtion v-if="selectedCar.sync_status == 1 && selectedCar.status == 1" :vehicle="selectedCar"
-                                          @carDeactivated="getAllCarsList"/>
-                        <start-subsribtion v-if="selectedCar.sync_status == 1 && selectedCar.status == 0 "
-                                           :vehicle="selectedCar"
-                                           @carDeactivated="getAllCarsList"/>
-                     </div>
-                  </div>
-               </div>
+               <vehicle-info
+                  v-if="selectedCar && selectedCar.sync_status == 1"
+                  :selectedCar="selectedCar"
+                  @getAllCarsList="getAllCarsList"
+               />
             </div>
-            <div class="w-100 d-flex flex-wrap justify-content-center" v-if="carsList.length && !isMobileBreakpoint && selectedCar && selectedCar.sync_status !== 1">
+            <div v-if="carsList.length  && selectedCar && selectedCar.sync_status !== 1"
+                 class="w-100 d-flex flex-wrap justify-content-center">
                <no-results/>
                <h2 class="ma-title--md w-100 text-center">{{ $t('vehicle_is_processing') }}</h2>
             </div>
@@ -246,114 +196,6 @@
          </div>
 
 
-
-         <!--         date change modal-->
-         <modal-popup
-            :overflow-hidden="false"
-            :title="$t('insurance_end_date_text')"
-            :toggle="openDateChangeModal"
-            modal-class="car-info-modal"
-            @close="openDateChangeModal = false"
-         >
-            <form-select
-               v-model="dateChangeForm.company"
-               :allow-clear="false"
-               :clear-option="false"
-               :label="$t('insurance_company')"
-               :options="companies"
-               class="mb-2"
-            />
-            <span>{{ $t('date') }}</span>
-            <div class="d-flex">
-               <form-select
-                  v-model="dateChangeForm.year"
-                  :allow-clear="false"
-                  :clear-option="false"
-                  :label="$t('year_first_letter')"
-                  :options="years"
-                  class="mr-1"
-               />
-               <form-select
-                  v-model="dateChangeForm.month"
-                  :allow-clear="false"
-                  :clear-option="false"
-                  :label="capitalizeFirstLetter($t('plural_forms_month')[0])"
-                  :options="months"
-                  class="mr-1"
-               />
-               <form-select
-                  v-model="dateChangeForm.day"
-                  :allow-clear="false"
-                  :clear-option="false"
-                  :label="$t('day')"
-                  :options="days"
-               />
-            </div>
-
-            <button
-               :class="{ 'disabled' : !dateChangeForm.company || !dateChangeForm.year ||  !dateChangeForm.month ||  !dateChangeForm.day  }"
-               :disabled="!dateChangeForm.company || !dateChangeForm.year ||  !dateChangeForm.month ||  !dateChangeForm.day  "
-               class="btn btn--green mt-2 w-100"
-               @click="confirmInsurance"
-            >
-               {{
-                  $t('confirm')
-               }}
-            </button>
-         </modal-popup>
-
-
-
-         <no-ssr v-if="false">
-            <template v-if="cars.data && cars.data.length">
-               <garage-nav
-                  v-show="showNav || !isMobileBreakpoint"
-                  :tab="tab"
-                  @filterCarNumber="filterCarNumber"
-                  @change-tab="tab = $event"
-               />
-               <cars-list v-if="tab === 'cars'" :filter_car_number="car_number" @show-nav="showNav = $event"/>
-               <cars-list v-if="tab === 'penalty_history'" key="history_key" :filter_car_number="car_number" history
-                          @show-nav="showNav = $event"/>
-               <check-driver-points
-                  v-show="tab === 'check-points'"
-                  @show-nav="showNav = $event"
-               />
-               <list-of-attorneys
-                  v-show="tab === 'attorney-list'"
-                  :attorneys="attorneys"
-                  @show-nav="showNav = $event"
-               />
-            </template>
-            <template v-else>
-               <garage-empty :default-vehicle-list="vehicleList"/>
-            </template>
-            <template v-if="false">
-               <template v-if="tab === 'cars' && (showNav || !isMobileBreakpoint)">
-                  <div
-                     v-if="isMobileBreakpoint"
-                     :class="[
-                'card profile-links-card with-margins',
-                { 'mt-3': !cars.data || !cars.data.length },
-              ]"
-                  >
-                     <div
-                        v-for="menu in userMenus.filter((menu) => menu.showOnCard)"
-                        :key="menu.title"
-                        class="link-block"
-                     >
-                        <nuxt-link :to="$localePath(menu.route)">
-                           <icon :name="menu.icon"/>
-                           {{ $t(menu.title) }}
-                           <icon name="chevron-right"/>
-                           <!-- <inline-svg src="/icons/chevron-right.svg" :height="14" /> -->
-                        </nuxt-link>
-                        <hr/>
-                     </div>
-                  </div>
-               </template>
-            </template>
-         </no-ssr>
       </div>
    </div>
 </template>
@@ -374,22 +216,20 @@ import CustomCheckbox from "~/components/forms/CustomCheckbox";
 import ProtocolDetails from "~/components/garage/ProtocolDetails";
 import ProtocolPayment from "~/components/garage/ProtocolPayment";
 import ProtocolListItem from "~/components/garage/ProtocolListItem";
-import RemoveVehicle from "~/components/garage/RemoveVehicle";
-import StopSubsribtion from "~/components/garage/StopSubsribtion";
+
+
 import AddCar from "~/components/garage/AddCar";
 import SelectBankingCard from "~/components/payments/SelectBankingCard";
 import ProtocolFiles from "~/components/garage/ProtocolFiles";
 import FsLightbox from 'fslightbox-vue';
 import NoResults from "~/components/elements/NoResults";
-
-import StartSubsribtion from "~/components/garage/StartSubsribtion";
+import VehicleInfo from "~/components/garage/VehicleInfo";
 
 export default {
    name: 'pages-garage-index',
    mixins: [UserDataMixin, MenusDataMixin, PaymentMixin],
    layout: 'garageLayout',
    components: {
-      StopSubsribtion,
       ProtocolPayment,
       ProtocolDetails,
       CustomCheckbox,
@@ -399,13 +239,12 @@ export default {
       CarsList,
       CheckDriverPoints,
       ProtocolListItem,
-      RemoveVehicle,
       AddCar,
       SelectBankingCard,
       ProtocolFiles,
       FsLightbox,
-      StartSubsribtion,
       NoResults,
+      VehicleInfo,
    },
    middleware: ['auth_general'],
    nuxtI18n: {
@@ -596,9 +435,7 @@ export default {
          const carNumberContainer = document.getElementById('carNumberContainer');
          carNumberContainer.scrollLeft += 100
       },
-      getInsuranceText(id) {
-         return this.companies.find(item => item.key == id)?.name
-      },
+
       async getCarProtocols() {
          if (this.selectedCar && this.selectedCar.id) {
             await this.$store.dispatch('garage/getProtocols', {id: this.selectedCar.id, history: this.activeCardTab})
@@ -627,12 +464,19 @@ export default {
          this.protocol.allSelected = [];
          this.loading = true;
          this.selectedCar = car;
+
+         this.protocol.selected = {};
+
+         this.activeCardTab = 0;
+         if (this.isMobileBreakpoint && this.selectedCar.status == 0){
+            this.activeCardTab = 2
+         }
+         this.protocol.filteredList = [];
          if (car.sync_status == 1) {
             this.getCarProtocols();
+         }else{
+            return
          }
-         this.protocol.selected = {};
-         this.activeCardTab = 0;
-         this.protocol.filteredList = [];
       },
       selectProtocol(protocol) {
          this.protocol.selected = protocol;
@@ -688,34 +532,6 @@ export default {
          return parseFloat(this.protocol.selected.total) <= this.user.balance
       },
 
-      async confirmInsurance() {
-         console.log("confirmInsurance")
-         this.pending = true;
-         try {
-            console.log("confirmInsurance try")
-            await this.$axios.$post('/garage/insurance/set-enddate', {
-               car_id: this.selectedCar.id,
-               end_date: `${this.dateChangeForm.year}-${this.dateChangeForm.month}-${this.dateChangeForm.day}`,
-               insurance_company_id: this.dateChangeForm.company
-            })
-            console.log("confirmInsurance response")
-            this.$emit('refresh-data')
-            this.openDateChangeModal = false;
-            this.getAllCarsList();
-            this.dateChangeForm = {
-               day: null,
-               month: null,
-               year: null,
-               company: null,
-            }
-         } catch (e) {
-            console.log("confirmInsurance catch", e)
-         }
-         this.pending = false;
-      },
-      capitalizeFirstLetter(string) {
-         return string.charAt(0).toUpperCase() + string.slice(1);
-      },
 
    },
    computed: {
@@ -729,8 +545,27 @@ export default {
          return [{name: this.$t('garage')}]
       },
       cardTabs() {
-         if (this.isMobileBreakpoint) {
-
+         if(!this.isMobileBreakpoint) {
+            return [
+               {
+                  id: '0',
+                  title: 'penalties',
+               },
+               {
+                  id: '1',
+                  title: 'penalty_history',
+               },
+            ]
+         }
+         else if(this.isMobileBreakpoint && this.selectedCar.status !== 1 && this.selectedCar.sync_status == 1) {
+            return [
+               {
+                  id: '2',
+                  title: 'my_vehicle_info',
+               }
+            ]
+         }
+        else if (this.isMobileBreakpoint && this.selectedCar.sync_status == 1 && this.selectedCar.status == 1) {
             return [
                {
                   id: '0',
@@ -745,65 +580,17 @@ export default {
                   title: 'my_vehicle_info',
                }
             ]
-         } else {
-            return [
-               {
-                  id: '0',
-                  title: 'penalties',
-               },
-               {
-                  id: '1',
-                  title: 'penalty_history',
-               },
-            ]
          }
       },
-      mainVehicleSpecs() {
-         let getDate = (date) => date && this.$moment((date)).format('DD.MM.YYYY');
+      showLeftCard(){
+         if (!this.isMobileBreakpoint){
+            return this.selectedCar.status == 1
+         }else{
+            return this.selectedCar.sync_status == 1
+         }
 
-         return this.$dataRows({
-            tech_id: this.selectedCar.tech_id,
-            brand_model: this.selectedCar.mark,
-            years: this.selectedCar.year,
-            insurance_company: this.getInsuranceText(this.selectedCar.insurance_company_id),
-            // has_insurance: this.selectedCar.insurance_id ? this.$t('have') : this.$t('dont_have'),
-            insurance_end_date: this.selectedCar.insurance_end_date ? this.$moment(this.selectedCar.insurance_end_date).format('DD.MM.YYYY') : '00.00.0000',
-            auth_date: getDate(this.selectedCar.created_date),
-            auth_end_date: getDate(this.selectedCar.end_date),
-            tech_exp_date: getDate(this.selectedCar.tech_exp_date),
-            has_arrest: this.selectedCar.has_arrest ? this.$t('have') : this.$t('dont_have')
-         }, this.isMobileBreakpoint);
-      },
-      years() {
-         const years = (back) => {
-            const year = new Date().getFullYear();
-            return Array.from({length: back}, (v, i) => year - back + i + 1).reverse();
-         }
-         return years(50).map(item => {
-            return {
-               name: item,
-               key: item
-            }
-         })
-      },
-      months() {
-         this.$moment.locale(this.locale)
-         return this.$moment.months().map((item, code) => {
-            return {
-               name: this.capitalizeFirstLetter(item),
-               key: code + 1
-            }
-         });
-      },
-      days() {
-         let days = Array.from({length: 31}, (v, i) => 31 - i).reverse();
-         return days.map((item) => {
-            return {
-               name: item,
-               key: item
-            }
-         });
-      },
+      }
+
    },
    data() {
       return {
@@ -811,23 +598,7 @@ export default {
          searchNumber: "",
          activeCardTab: 0,
          selectedCar: null,
-         companies: [
-            {key: 1, name: 'Azsığorta'},
-            {key: 2, name: 'Ata Sığorta'},
-            {key: 3, name: 'Atəşgah Sığorta'},
-            {key: 4, name: 'A-qroup sığorta'},
-            {key: 5, name: 'AzRe Təkrarsığorta'},
-            {key: 6, name: 'Azərbaycan Sənaye Sığorta'},
-            {key: 7, name: 'Azərbaycan Dövlət Sığorta'},
-            {key: 8, name: 'Bakı Sığorta'},
-            {key: 9, name: 'Günay Sığorta'},
-            {key: 10, name: 'Xalq Sığorta'},
-            {key: 11, name: 'İpək Yolu Sığorta'},
-            {key: 12, name: 'Qala Sığorta'},
-            {key: 13, name: 'Meqa Sığorta'},
-            {key: 14, name: 'Naxçıvan sığorta'},
-            {key: 15, name: 'Paşa Sığorta'},
-         ],
+
          carsList: [],
          filteredCarsList: [],
          protocol: {
@@ -872,12 +643,6 @@ export default {
          price: 0,
          showProtocolDetails: false,
          openDateChangeModal: false,
-         dateChangeForm: {
-            day: null,
-            month: null,
-            year: null,
-            company: null,
-         }
       }
    },
    watch: {
@@ -898,40 +663,7 @@ export default {
 </script>
 
 <style lang="scss">
-.dark-mode {
-   .ma-penalties__card--car-specs__item--divider {
-      background: #fff;
-   }
 
-   .ma-penalty-number-chip--active {
-      background: #155EEF !important;
-      color: #fff !important;
-   }
-
-   .ma-penalties {
-      .btn__blue-outlined {
-         &:hover {
-            background: #1b2434;
-         }
-      }
-   }
-
-   .remove-vehicle-modal {
-      p {
-         color: rgba(205, 213, 223, 1);
-      }
-   }
-
-   .ma-penalties__top--numbers__scrollButton {
-      background: #121926 !important;
-
-      button {
-         color: #fff;
-         background: #364152;
-
-      }
-   }
-}
 
 </style>
 
