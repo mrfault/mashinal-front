@@ -1175,9 +1175,7 @@ export const actions = {
       commit("mutate", {property: "partAnnouncements", value: res});
    },
    async getGridSearch({commit, dispatch}, data) {
-      const res = await this.$axios.$post(
-         `https://v2dev.mashin.al/api/v2${data.url}?page=${data.page || 1}`, data.post);
-
+      const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2${data.url}?page=${data.page || 1}`, data.post);
       commit("mutate", {property: data.prefix + "Announcements", value: res});
    },
    // Announcements
@@ -1492,6 +1490,15 @@ export const actions = {
    },
    async motoPost({}, form) {
       await this.$axios.$post(`/sell/moto/post/publish?is_mobile=false`, form);
+   },
+   async motoEdit({}, {id, isMobile, form}) {
+      await this.$axios.$post(`sell/moto/post/edit/${id}?is_mobile=${isMobile}`, form);
+   },
+   async carEdit({}, {id, isMobile, form}) {
+      await this.$axios.$post(`sell/post/edit/${id}?is_mobile=${isMobile}`, form);
+   },
+   async partEdit({}, {id, isMobile, form}) {
+      await this.$axios.$post(`/sell/part/edit/${id}`, form);
    },
 
 

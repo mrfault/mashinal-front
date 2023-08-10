@@ -1,4 +1,5 @@
-import {mapGetters, mapActions} from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
+import {all} from "core-js/internals/document-all";
 
 export const SearchMixin = {
    data() {
@@ -6,6 +7,7 @@ export const SearchMixin = {
          collapsed: true
       }
    },
+
    methods: {
       ...mapActions(['fetchSavedSearch', 'createSavedSearch', 'deleteSavedSearch', 'getNotViewedSavedSearch']),
 
@@ -31,10 +33,16 @@ export const SearchMixin = {
             }
          }
 
-         console.log('form', form)
+         if (form.all_options) {
+            form.all_options =  form.all_options.reduce((acc, curr) => {
+               acc[curr.slug] = curr.selected_key ? curr.selected_key : true;
+               return acc;
+            }, {});
+         }
 
          return form;
       },
+
       setFormData(form = {}) {
          // set initial data
          let collapsed = this.collapsed;
@@ -56,6 +64,7 @@ export const SearchMixin = {
             }
          });
       },
+
       parseFormData() {
          this.setFormData(JSON.parse(this.$route.query[this.meta.param] || '{}'));
          if (this.form.additional_brands) {
@@ -67,6 +76,7 @@ export const SearchMixin = {
             if (keys.length) this.excludeRows = [...keys];
          }
       },
+
       beforeSubmitForm() {
          if (['cars-assistant'].includes(this.routeName)) {
             this.$set(this.form, 'currency', 1);
@@ -123,6 +133,7 @@ export const SearchMixin = {
             })
          }
       },
+
       async submitForm(scroll = true) {
          this.beforeSubmitForm();
 
@@ -132,19 +143,13 @@ export const SearchMixin = {
             this.gtagTrack('AW-600951956/Qeu4CILAyPIBEJSZx54C');
          } catch (e) {}
 
-         // this.getFormData().all_options = this.getFormData().all_options.reduce((acc, curr) => {
-         //    acc[curr.label] = curr.selected_key ? curr.selected_key : true;
-         //    return acc;
-         // }, {});
-
          // update route query params and search announcements
          let searchQuery = `${this.meta.param}=${encodeURI(JSON.stringify(this.getFormData()))}`;
          let searchUrl = `${this.$localePath(this.meta.path)}?${searchQuery}`;
          let searchSame = decodeURIComponent(searchUrl) === decodeURIComponent(this.$route.fullPath);
 
-         // console.log('searchUrl', searchUrl)
-
          this.$emit('pending');
+
          if (searchSame) {
             this.$emit('submit');
          } else {
@@ -168,25 +173,31 @@ export const SearchMixin = {
 
          await this.$store.dispatch('fetchMonetizedCarsSearch', { data: this.getFormData() });
       },
+
       resetForm(submit = false) {
          this.setFormData({});
          if (submit) this.submitForm();
       },
+
       getOptionValue(name, key) {
          return this[`get${name}Options`].find(option => option.key === key)?.name || '';
       },
+
       canAddRow(index) {
          return this.rows.length < 5 && index === this.rows.length - 1;
       },
+
       canRemoveRow() {
          return this.rows.length > 1;
       },
+
       addSearchRow(key) {
          if (this.rows.length === 5) return;
          let keys = Object.keys(this.form.additional_brands);
          let index = this.rows.indexOf(key);
          this.rows.splice(index, 0, keys.filter(key => this.rows.indexOf(key) === -1)[0]);
       },
+
       removeSearchRow(key) {
          if (this.rows.length === 1) return;
          let index = this.rows.indexOf(key);
@@ -201,15 +212,18 @@ export const SearchMixin = {
       canAddRowExclude(index) {
          return this.excludeRows.length < 5 && index === this.excludeRows.length - 1;
       },
+
       canRemoveRowExclude() {
          return this.excludeRows.length > 1;
       },
+
       addSearchRowExclude(key) {
          if (this.excludeRows.length === 5) return;
          let keys = Object.keys(this.form.additional_brands);
          let index = this.excludeRows.indexOf(key);
          this.excludeRows.splice(index + 1, 0, keys.filter(key => this.excludeRows.indexOf(key) === -1)[0]);
       },
+
       removeSearchRowExclude(key) {
          if (this.excludeRows.length === 1) return;
          let index = this.excludeRows.indexOf(key);
@@ -220,6 +234,7 @@ export const SearchMixin = {
          }
          this.excludeRows.splice(index, 1);
       },
+
       getYearOptions(min, max) {
          let years = [], j = 0;
          for (let i = (max || this.currentYear); i >= (min || 1886); i--) {
@@ -228,19 +243,23 @@ export const SearchMixin = {
          }
          return years;
       },
+
       goToSearch(path) {
          this.$router.push(`${path}?${this.meta.param}=${encodeURI(JSON.stringify(this.getFormData()))}`);
       },
+
       extendOptions() {
          this.collapsed = false;
          this.scrollTo(this.$refs.searchForm);
       },
+
       async handleAfterLogin(key) {
          if (key === 'saved-search' && this.meta.type === 'cars') {
             this.savedSearch = true;
          }
          this.scrollTo(0);
       },
+
       async handlePopState() {
          // refresh page's async data
          await this.$nuxt.refresh();
@@ -248,11 +267,13 @@ export const SearchMixin = {
          this.parseFormData();
          this.scrollTo(0);
       },
+
       togglePopStateListener(listen = false) {
          if (listen) window.addEventListener('popstate', this.handlePopState);
          else window.removeEventListener('popstate', this.handlePopState);
       }
    },
+
    computed: {
       ...mapGetters(['singleSavedSearch']),
 
@@ -285,20 +306,23 @@ export const SearchMixin = {
             }
          }
       },
+
       isStarterPage() {
          return ['index', 'moto', 'commercial'].includes(this.routeName);
       },
+
       filtersApplied() {
          let hasBrand = this.rows.filter(key => this.form.additional_brands[key].brand).length;
          let hasAllOptions = this.form.all_options && Object.keys(this.form.all_options).length;
          let hasOptions = Object.keys(this.getFormData()).length > 5 || (this.form.announce_type !== 1);
          return !!(hasBrand || hasAllOptions || hasOptions);
       },
+
       searchApplied() {
          return this.routeName !== 'index' && !!this.$route.query[this.meta.param];
       },
 
-         getMileageOptions() {
+      getMileageOptions() {
          let zeroFirst = this.meta.type !== 'cars';
          return [
             {name: this.$t('all2'), key: zeroFirst ? 0 : 1},
@@ -322,18 +346,21 @@ export const SearchMixin = {
             {key: 3, name: 'EUR', sign: '€'}
          ];
       },
+
       getDamageOptions() {
          return [
             {name: this.$t('without_beaten'), key: 1},
             {name: this.$t('broken'), key: 2}
          ];
       },
+
       getCustomsOptions() {
          return [
             {name: this.$t('cleared'), key: 1},
-            {name: this.$t('not_cleared'), key: 2}
+            {name: this.$t('not_cleared2'), key: 2}
          ];
       },
+
       getSortingOptions() {
          return [
             {name: this.$t('show_by_date'), key: 'created_at_desc'},
@@ -344,21 +371,21 @@ export const SearchMixin = {
          ];
       }
    },
+
    watch: {
       '$route.query'(query) {
          if (this.routeName === 'index') return;
-         if (!Object.keys(query || {}).length) {
-            this.resetForm(true);
-         }
+         if (!Object.keys(query || {}).length) this.resetForm(true);
       }
    },
-   created() {
 
+   created() {
       var route = this.$route.path.split('/');
       if (!this.routeName !== 'index') {
          this.parseFormData();
       }
    },
+
    mounted() {
       this.togglePopStateListener(true);
       this.$nuxt.$on('prevent-popstate', this.togglePopStateListener);
@@ -367,6 +394,7 @@ export const SearchMixin = {
          this.$nuxt.$on('extend-options', this.extendOptions);
       }
    },
+
    beforeDestroy() {
       this.togglePopStateListener(false);
       this.$nuxt.$off('prevent-popstate', this.togglePopStateListener);

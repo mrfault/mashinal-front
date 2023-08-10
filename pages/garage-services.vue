@@ -300,7 +300,7 @@ export default {
             {
                title: 'settings',
                image: 'settings.png',
-               url: '/profile/settings',
+               url:  this.user.autosalon ? '/dashboard/1/settings' : '/profile/settings',
                description: 'profile_settings_desc',
                row: 1,
             },

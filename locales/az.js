@@ -1075,6 +1075,7 @@ export default {
    lens: "Linza",
    less: "Daha az",
    less_2: "Qısalt",
+   less_3: "Axtarışı qısalt",
    license_plate: "Dövlət nişanı",
    license_plate_number: "Qeydiyyat nişanı",
    license_plate_number_vin_or_carcase_number:
@@ -2169,7 +2170,7 @@ export default {
    you_should_deactivate_announcements:
       "Sizin {package1} paketiniz aktivdir. {package2} paketə keçid etmək üçün elanlarınızın sayını maksimum {n}-a endirməlisiniz.<br/>Davam etmək üçün deaktiv etmək istədiyiniz elanları seçin.",
    you_unblocked_this_user: "Siz bu istifadəçini blokdan çıxarmısınız",
-   you_were_blocked_by_this_user: "İstifadəçi mesaj bölməsini məhdudlaşdırıb",
+   you_were_blocked_by_this_user: "Bu mesaja cavab yazmaq mümkün deyil",
    you_will_be_contacted_shortly:
       "* Qısa zaman ərzində sizinlə əlaqə yaradılacaq.",
    you_will_have_to_pay_100_to_get_a_business_profile:
@@ -2715,6 +2716,7 @@ export default {
    package_current: "Mövcud paket",
 
    "remove_announcement": "Elanı sil",
+   "remove_message": "Mesajı sil",
    "start_subscription_desc1": "Seçilmiş NV-nə abunə olmaq istədiyinizə əminsiniz?",
    "penalty_info": "Cərimə məlumatları",
    "number_plate_of_vehicle": "NV-nin qeydiyyat nişanı",
@@ -2724,6 +2726,10 @@ export default {
    "vehicle_is_processing": "Nəqliyyat vasitəsi prosesdədir",
 
    "no_payment_history": "Ödəniş tarixçəsi yoxdur",
+   "no_message": "Mesaj yoxdur",
+   "no_message_text": "Sizə mesaj gəlsə vəya kiməsə mesaj yazsanız burada görünəcək",
+   "change_cover": "Örtük şəklini dəyiş",
+   "upload_other_photos": "Digər fotoları yüklə",
 
    "remove_announcement ": "Удалить",
    "my_autos": "Avtomobillərim",

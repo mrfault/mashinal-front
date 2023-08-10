@@ -1,6 +1,7 @@
 <template>
    <div class="cars_form">
       <form-select
+         v-if="!isEdit"
          :label="$t('brand_name')"
          :options="brands"
          :clear-placeholder="true"
@@ -123,23 +124,31 @@
       />
       <!--      v-if="form.modification"-->
 
-      <template v-if="form.modification && sellModificationsV2.length">
-         <form-select
-            :label="$t('color')"
-            :options="colors"
-            :clear-placeholder="true"
-            :clear-option="false"
-            v-model="form.color"
-            multiple
-            :invalid="$v.form.color.$error"
-            :limit="2"
-         />
+      <template v-if="isEdit || (form.modification && sellModificationsV2.length)">
+         <div class="divider">
+            <form-select
+               :label="$t('color')"
+               :options="colors"
+               :clear-placeholder="true"
+               :clear-option="false"
+               v-model="form.color"
+               multiple
+               :invalid="$v.form.color.$error"
+               :limit="2"
+            />
+            <form-checkbox
+               v-model="form.is_matte"
+               :label="$t('matt')"
+               input-name="is_matte"
+               transparent
+            />
+         </div>
          <div class="divider">
             <form-numeric-input
                :placeholder="$t('mileage')"
                v-model="form.mileage"
                @change="announcement.mileage = $event || 0"
-                  :invalid="$v.form.mileage.$error"
+               :invalid="$v.form.mileage.$error"
             />
             <div class="mileage_types">
                <form-radio
@@ -225,7 +234,7 @@
             <form-numeric-input
                :placeholder="$t('price')"
                v-model="form.price"
-               @change="announcement.price = $event ? $event + (form.currency.name?.[locale] || 'AZN') : 0"
+               @change="!isEdit && (announcement.price = $event ? $event + (form.currency.name?.[locale] || 'AZN') : 0)"
                :invalid="$v.form.price.$error"
             />
             <div class="price_types">
@@ -315,7 +324,7 @@
          <form-select
             :label="$t('other_parameters')"
             v-model="form.other_parameters"
-            :options="popularOptions.map((p) => ({...p, key: $t(p.label), name: $t(p.label)}))"
+            :options="popularOptions.map((p) => ({...p, key: $t(p.label), slug: p.name, name: $t(p.label)}))"
             :clear-placeholder="true"
             :clear-option="false"
             object-in-value
@@ -353,7 +362,7 @@ import PickOnMapButton from "~/components/elements/PickOnMapButton.vue";
 import {MenusDataMixin} from "~/mixins/menus-data";
 import {ToastErrorsMixin} from "~/mixins/toast-errors";
 import {mapActions, mapGetters} from "vuex";
-import { required } from "vuelidate/lib/validators";
+import {required} from "vuelidate/lib/validators";
 import MaxLength from "vuelidate/lib/validators/maxLength";
 
 export default {
@@ -368,6 +377,10 @@ export default {
          required: true
       },
       isReady: {
+         type: Boolean,
+         default: false
+      },
+      isEdit: {
          type: Boolean,
          default: false
       }
@@ -401,8 +414,9 @@ export default {
             gearing: "",
             modification: "",
             color: [],
+            is_matte: false,
             mileage: 0,
-            mileage_type: "",
+            mileage_type: 1,
             is_new: "",
             beaten: "",
             customs_clearance: "",
@@ -529,6 +543,44 @@ export default {
          })
       }
    },
+   mounted() {
+      if (this.isEdit) {
+         this.form.brand = this.announcement.brand
+         this.form.model = this.announcement.model
+         this.form.generation = this.announcement.generation.id
+         this.form.year = this.announcement.year
+         this.form.saved_images = this.announcement.mediaIds
+         this.form.color = this.announcement.colors
+         this.form.is_matte = this.announcement.is_matte
+         this.form.gearing = this.announcement.gear_id
+         this.form.mileage = this.announcement.mileage
+         this.form.mileage_type = this.announcement.mileage_measure
+         this.form.is_new = this.announcement.is_new ? 1 : 0
+         this.form.beaten = this.announcement.broken ? 1 : 0
+         this.form.guaranty = this.announcement.in_garanty
+         this.form.region_id = this.announcement.region_id
+         this.form.address = this.announcement.address
+         this.form.lat = Number(this.announcement.latitude)
+         this.form.lng = Number(this.announcement.longitude)
+         this.form.price = this.announcement.price_int
+         this.form.currency = this.announcement.currency_id
+         this.form.tradeable = this.announcement.exchange_possible
+         this.form.credit = this.announcement.credit
+         this.form.car_number = this.announcement.car_number
+         this.form.show_car_number = this.announcement.show_car_number
+         this.form.vin = this.announcement.vin
+         this.form.show_vin = this.announcement.show_vin
+         this.form.customs_clearance = this.announcement.customs_clearance
+         this.form.number_of_vehicles = this.announcement.tact
+         this.form.comment = this.announcement.comment
+         this.form.other_parameters = this.popularOptions.filter((option) => Object.keys(this.announcement.options).includes(option.name)).map((p) => ({
+            ...p,
+            key: this.$t(p.label),
+            slug: p.name,
+            name: this.$t(p.label)
+         }))
+      }
+   },
    async fetch() {
       await Promise.all([
          this.$store.dispatch("getPopularOptions")
@@ -539,8 +591,8 @@ export default {
       'form.modification'() {
          this.$emit("done", !!(this.form.modification && this.sellModificationsV2.length))
       },
-      "form.color"() {
-         console.log(this.form.color)
+      "form.other_parameters"() {
+         console.log(this.form.other_parameters)
       },
       isReady() {
          this.$v.form.$touch()
@@ -574,12 +626,14 @@ export default {
             guaranty: this.form.guaranty,
             saved_images: this.form.saved_images,
             all_options: this.form.other_parameters.reduce((acc, curr) => {
-               acc[curr.name] = curr.selected_key ? curr.selected_key : true;
+               acc[curr.slug] = curr.selected_key ? curr.selected_key : true;
                return acc;
             }, {}),
             selectedColor: this.form.color,
+            is_matte: this.form.is_matte,
             owner_type: 0,
             region_id: this.form.region_id
+
          }
          const formData = new FormData()
          formData.append('data', JSON.stringify(newForm))
@@ -697,6 +751,57 @@ export default {
       gap: 8px;
       height: 52px;
       padding: 0 16px;
+   }
+
+   .full_grid {
+      grid-column: 1/3;
+   }
+
+   .divider {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+
+      .mileage_types {
+         display: flex;
+         gap: 16px;
+      }
+
+      .price_types {
+         .price_item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 52px;
+            padding: 0 16px;
+         }
+      }
+
+      .car_number_suffix {
+         position: absolute;
+         top: 50%;
+         transform: translateY(-50%);
+         right: 16px;
+      }
+
+      .beaten_suffix {
+         position: relative;
+         z-index: 1;
+         margin-left: auto;
+         cursor: progress;
+      }
+   }
+
+   .comment {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+
+      &_info {
+         display: flex;
+         align-items: center;
+         gap: 10px;
+      }
    }
 }
 </style>

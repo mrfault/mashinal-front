@@ -1062,6 +1062,7 @@ export default {
    lens: "Линза",
    less: "Скрыть",
    less_2: "Меньше",
+   less_3: "Меньше",
    license_plate: "Госномер",
    license_plate_number: "Регистрационный номер",
    license_plate_number_vin_or_carcase_number: "Госномер, VIN или номер кузова",
@@ -2132,7 +2133,7 @@ export default {
    years: "Год выпуска",
    yes: "Да",
    you: "Вы",
-   you_blocked_this_user: "Вы заблокировали этого пользователя",
+   you_blocked_this_user: "Невозможно ответить на это сообщение",
    you_can_add_a_maximum_of_count_photos:
       "Вы можете добавить максимум {count} изображения",
    you_can_create_announcement:
@@ -2629,6 +2630,7 @@ export default {
    "garage_account_desc":"Измени данные профиля",
    "profile_balance_desc":"Проверь баланс",
    "logout_account_desc":"Выйти из аккаунта",
+   'profile_settings_desc': "Настройки пользователя, имя, фото профиля и т. д.",
    "garage_penalties_desc":"Проверь и оплати штрафы",
    package_type: "Тип пакете",
    package_information: "Информация о моем пакете",
@@ -2652,10 +2654,19 @@ export default {
    "confirmation_code_desc":"Введите SMS-код отправленный на ваш номер",
    "remove_announcement": "Удалить",
 
+
    "penalty_info":"Информация о штрафе",
    "number_plate_of_vehicle":"Регистрационный номер ТС",
    "protocol_number":"Номер протокола",
    "no_vehicle_found":"Нет добавленных транспортных средств",
 
+
+
+   "remove_message": "Удалить",
+
+   "no_message": "Нет сообщений",
+   "no_message_text": "Если вы получили сообщение или сообщение кому-то, оно появится здесь",
+   "change_cover": "Изменить обложку",
+   "upload_other_photos": "Загрузить другие фотографии",
 
 };
