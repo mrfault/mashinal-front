@@ -1,11 +1,10 @@
 <template>
-   <nuxt-link
+   <div
       :class="{'ma-notification__inactive': !notification.read_at}"
-      :to="link"
       class="ma-notification"
-      tag="a"
-      target="_blank"
+      @click.prevent="gotoLink"
    >
+      {{link}}
       <div class="ma-notification__icon">
          <inline-svg v-if="notification.read_at" src="/new-icons/notification.svg"/>
          <inline-svg v-else src="/new-icons/notification-read.svg"/>
@@ -19,7 +18,7 @@
                {{ date }}
             </span>
       </div>
-   </nuxt-link>
+   </div>
 </template>
 
 <script>
@@ -29,10 +28,14 @@ export default {
       link: String,
       date: String,
       notification: Object,
+      page: Number,
    },
    methods: {
       gotoLink() {
-         this.$router.push(this.link)
+         const routePath = this.link;
+         window.open(routePath, '_blank');
+         this.$store.dispatch('getNotifications', this.page);
+         this.$nuxt.refresh()
       }
    }
 }
@@ -50,6 +53,10 @@ export default {
    width: 100%;
    background: #fff;
    margin-bottom: 16px;
+
+   &:hover{
+      background: rgba(#2970FF, .1);
+   }
 
    &__content {
       width: calc(100% - 60px);
@@ -176,14 +183,17 @@ export default {
       .ma-notification {
          background: #121926;
          border-bottom: 1px solid #364152;
-         &__content{
-            &--desc{
+
+         &__content {
+            &--desc {
                color: #CDD5DF;
             }
          }
-         &__date{
+
+         &__date {
             color: #9AA4B2;
          }
+
          &__inactive {
             border-bottom: 1px solid #364152 !important;
          }

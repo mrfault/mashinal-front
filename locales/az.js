@@ -2704,9 +2704,8 @@ export default {
    "garage_account_desc": "Rəsmi nümayəndə və digər avtosalonlar",
 
 
-
-   "subscription_registration_date_on_site" : "Saytda abunəliyin qeydiyyat tarixi",
-   "subscription_registration_end_date_on_site" : "Saytda abunəliyin bitmə tarixi",
+   "subscription_registration_date_on_site": "Saytda abunəliyin qeydiyyat tarixi",
+   "subscription_registration_end_date_on_site": "Saytda abunəliyin bitmə tarixi",
 
    "edition": "Düzəliş",
 
@@ -2721,13 +2720,19 @@ export default {
    "number_plate_of_vehicle": "NV-nin qeydiyyat nişanı",
    "protocol_number": "Protokol nömrəsi",
 
-   "restore_announcement" : "Elanı bərpa et",
+   "restore_announcement": "Elanı bərpa et",
    "vehicle_is_processing": "Nəqliyyat vasitəsi prosesdədir",
 
    "no_payment_history": "Ödəniş tarixçəsi yoxdur",
 
    "remove_announcement ": "Удалить",
    "my_autos": "Avtomobillərim",
+   "my_autos_desc": "Avtomobilinizi əlavə etməklə siz bu avtomobilə aid yeniliklər, xüsusi təkliflər və ehtiyyat hissələrinə endirimlərlə bağlı bildirişlər əldə etmək imkanına sahib olacaqsınız. İstənilən sayda avtomobil əlavə edə bilərsiniz!",
+   "add_new_auto": "Yeni avtomobil əlavə et",
+   "add_new_auto_desc": "Avtomobilinizi əlavə etməklə siz bu avtomobilə aid yeniliklər, xüsusi təkliflər və ehtiyyat hissələrinə endirimlərlə bağlı bildirişlər əldə etmək imkanına sahib olacaqsınız. İstənilən sayda avtomobil əlavə edə bilərsiniz!",
 
+   "this_field_is_mandatory": "Bu xana məcburidir",
+   "given_data_is_not_matching_car_number": "Yazdığınız nömrə qeyd etdiyiniz avtomobil məlumatlarına uyğun deyil",
+   "details_of_search": "Axtarışın detalları",
 };
 

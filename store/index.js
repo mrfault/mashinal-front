@@ -226,6 +226,9 @@ const getInitialState = () => ({
    mySavedPlates: [],
    registrationMark: [],
    handleIds: null,
+
+   //usercabinet
+   userCabinetCars: []
 });
 
 export const state = () => getInitialState();
@@ -424,7 +427,10 @@ export const getters = {
    offerGenerations: s => s.offer_generations,
 //  moderator
    partCategories: s => s.partCategories,
-   partFilters: s => s.partFilters
+   partFilters: s => s.partFilters,
+
+//   usercabinet
+   userCabinetCars: s => s.userCabinetCars
 };
 
 const objectNotEmpty = (state, commit, property) => {
@@ -1400,7 +1406,8 @@ export const actions = {
          `/sell/${data.brand}/${data.model}/body/${data.body}/generation/${data.generation}/engine/${data.engine}/gearing/${data.gearing}/trns/${data.transmission}/modifications`
       );
       commit("mutate", {property: "sellModifications", value: res});
-   }, async getSellModificationsV2({commit}, data) {
+   },
+   async getSellModificationsV2({commit}, data) {
       const res = await this.$axios.$get(
          `https://v2dev.mashin.al/api/v2/car-catalog/${data.brand}/${data.model}/body/${data.body}/generation/${data.generation}/engine/${data.engine}/gearing/${data.gearing}/trns/${data.transmission}/modifications`
       );
@@ -1651,7 +1658,24 @@ export const actions = {
 
    async readOfferMessage({commit, state}, payload) {
       await this.$axios.$post("/offer/message/read/" + payload.id);
-   }
+   },
+
+   async UserCabinetCarsAdd({commit,state}, payload){
+      const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/me/cars/create?brand_id=${payload.brand_id}&model_id=${payload.model_id}&generation_id=${payload.generation_id}&car_type_id=${payload.car_type_id}&car_catalog_id=${payload.car_catalog_id}&vin=${payload.vin}&car_number=${payload.car_number}`);
+      // commit("mutate", {property: "userCabinetCars", value: res});
+   },
+   async UserCabinetCarsEdit({commit,state}, payload){
+      const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/me/cars/${payload.id}/edit?brand_id=${payload.brand_id}&model_id=${payload.model_id}&generation_id=${payload.generation_id}&car_type_id=${payload.car_type_id}&car_catalog_id=${payload.car_catalog_id}&vin=${payload.vin}&car_number=${payload.car_number}`);
+      // commit("mutate", {property: "userCabinetCars", value: res});
+   },
+   async UserCabinetCarsGetAll({commit,state}, payload){
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/me/cars`);
+      commit("mutate", {property: "userCabinetCars", value: res.data});
+   },
+   async UserCabinetCarDelete({commit,state}, payload){
+      const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/me/cars/${payload.id}/delete`);
+   },
+
 };
 export const mutations = {
    mutate: mutate(),
