@@ -247,11 +247,12 @@ export default {
          else if (['motorcycle', 'scooter', 'motoatv'].includes(type)) type = 'moto';
          else if (type === 'commercial') type = 'commercial';
          else if (type === 'part') type = 'parts';
+
          if (group.announce.type === 6) {
             type = 'registration-marks';
-            this.$router.push(this.$localePath(`/${type}/${announcement.id_unique}`));
+            this.$router.push(this.$localePath(`/${type}/${announcement.id}`));
          } else {
-            this.$router.push(this.$localePath(`/${type}/announcement/${announcement.id_unique}`));
+            this.$router.push(this.$localePath(`/${type}/announcement/${announcement.id}`));
          }
       },
 
@@ -546,12 +547,14 @@ export default {
    .dark-mode {
       .action-bar {
          background: #121926 !important;
+         border: 1px solid #364152!important;
       }
    }
 
    .dark-mode .mobile-screen {
       .action-bar {
          background: #121926 !important;
+         border: 1px solid #364152!important;
       }
 
       .chat-item:first-child {
