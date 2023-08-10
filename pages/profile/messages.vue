@@ -252,7 +252,6 @@ export default {
             this.$router.push(this.$localePath(`/${type}/${announcement.id_unique}`));
          } else {
             this.$router.push(this.$localePath(`/${type}/announcement/${announcement.id_unique}`));
-
          }
       },
 

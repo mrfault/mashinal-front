@@ -194,10 +194,14 @@ export default {
    background-color: #FFF;
    padding: 20px;
    border-radius: 12px;
+   height: 100%;
 }
 
 .map.lower {
    border-radius: 12px;
+}
+.backdrop .map-wrapper .map{
+   max-height: 400px!important;
 }
 .title-modal{
    font-size: 24px;
