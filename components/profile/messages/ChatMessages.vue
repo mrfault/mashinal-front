@@ -352,7 +352,6 @@ export default {
                } else this.text = '';
                // after send
                const afterSendActions = () => {
-                  //window.scrollTo(0,0);
                   if (hasAttachments) {
                      this.text = '';
                      this.$nuxt.$emit('clear-message-attachments');
