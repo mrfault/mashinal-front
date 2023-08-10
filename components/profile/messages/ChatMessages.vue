@@ -89,9 +89,9 @@
 
       <div class="messages_msg-list">
          <div :class="['messages-list', {'attachments-preview-active': !!Object.keys(files).length}]">
-            <div class="scroll-container">
+            <div class="scroll-container" id="chat">
                <client-only>
-                  <vue-scroll class="white-scroll-bg" ref="chat">
+                  <vue-scroll class="white-scroll-bg"  ref="chat">
                      <div class="messages-list-items">
                         <div class="messages-list-items_group" v-for="(messages, date) in messagesByDate(group.id)"
                              :key="date">
@@ -271,6 +271,12 @@ export default {
    },
    methods: {
       ...mapActions(['markAsRead', 'sendMessage']),
+      scrollToBottom (id) {
+         const element = document.getElementById(id);
+         ///element.scrollTop = element.scrollHeight;
+         //element.animate({scrollTop: element.scrollHeight});
+         element.lastElementChild.scrollIntoView({  block: "end", behavior: 'smooth' });
+      },
       deleteGroup() {
          this.$emit('delete-chat', this.removeItem)
       },
@@ -352,6 +358,7 @@ export default {
                } else this.text = '';
                // after send
                const afterSendActions = () => {
+                  this.scrollToBottom('chat');
                   if (hasAttachments) {
                      this.text = '';
                      this.$nuxt.$emit('clear-message-attachments');

@@ -1,7 +1,7 @@
 <template>
    <form class="form" @submit.prevent="$emit('send', $event)">
-      <div class="scrollable">
-         <div class="message-attachment-preview" v-if="!blocked && attachmentsLength">
+      <div class="scrollable" v-if="!blocked && attachmentsLength">
+         <div class="message-attachment-preview">
             <div class="preview" :class="{'hide':!loaded[key], 'loading': sending}"
                  v-for="(attachment, key) in attachments" :key="key">
                <div class="image-preloader" v-if="sending"></div>
@@ -187,6 +187,16 @@ export default {
             -o-object-fit: cover;
             object-fit: contain;
             border-radius: 3px;
+         }
+      }
+   }
+}
+.dark-mode{
+   .scrollable{
+      background: #121926;
+      .message-attachment-preview{
+         .preview{
+            border: 1px solid #121926;
          }
       }
    }
