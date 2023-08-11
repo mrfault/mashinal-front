@@ -209,6 +209,7 @@ export default {
       },
 
       async setBrand(id, index) {
+         this.pending = true;
          this.form.model = null;
          this.form.generation = null;
          this.form.body = null;
@@ -220,11 +221,15 @@ export default {
          this.form.brandSlug = slug;
 
          this.form.generation = null;
+
+         this.$store.commit("mutate", {property: "carModels", value: []});
          if (id) {
-            this.getModelsArray({value: slug, index})
+            await this.getModelsArray({value: slug, index})
+            this.pending = false;
          }
       },
       async setModel(id, index) {
+         this.pending = true;
          this.form.generation = null;
          this.form.body = null;
          this.form.modification = null;
@@ -233,11 +238,14 @@ export default {
             name = model?.name || '';
          this.form.modelSlug = slug;
          let brand_slug = this.form.brandSlug
+         this.$store.commit("mutate", {property: "carGenerations", value: []});
          if (id) {
             await this.getModelGenerationsArray({value: slug, brand_slug, index})
+            this.pending = false;
          }
       },
       async setGeneration(id, index = 0) {
+         this.pending = true;
          this.form.body = null;
          this.form.modification = null;
          if (this.carGenerations && this.carGenerations.length) {
@@ -245,20 +253,25 @@ export default {
                (option) => option.id == id,
             );
          }
-         this.getGenerationTypes(
+         this.$store.commit("mutate", {property: "generationTypes", value: []});
+         await this.getGenerationTypes(
             {
                brand: this.form.brandSlug,
                model: this.form.modelSlug,
                generation: this.form.generation
             })
+         this.pending = false;
       },
       async setBody(id) {
          this.form.modification = null;
+         this.pending = true;
+         this.$store.commit("mutate", {property: "modificationsList", vamlue: []});
          if (id) {
             await this.$store.dispatch('comparison/getModifications', {
                car_type_id: id,
                generation_id: this.form.generation,
             });
+            this.pending = false;
          }
 
       },
@@ -292,7 +305,7 @@ export default {
                this.closeAndReset();
                this.$toasted.success(this.$t('car_added'));
                this.$nuxt.refresh();
-               this.$emit('carAdded',true)
+               this.$emit('carAdded', true)
             } catch (error) {
                if (error.response && error.response.status) {
                   console.log('Error Status Code:', error.response.status);
