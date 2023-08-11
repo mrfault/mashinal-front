@@ -13,7 +13,7 @@
                   <div class="row">
                      <div class="col-12" v-if="false">
                         <form-select
-                           :label="$t('vehicle_type_2')"
+                           :label="$t('passenger_car')"
                            :options="vehicleTypes"
                            v-model="filled.vehicleType"
                            :invalid="$v.filled.vehicleType.$error"
@@ -234,7 +234,7 @@
                {name: this.$t('benzin'), id: 1},
                {name: this.$t('dizel'), id: 2},
                {name: this.$t('hybrid'), id: 3},
-               {name: this.$t('electrical'), id: 4},
+               {name: this.$t('электро'), id: 4},
             ],
             hybridEngineTypes: [
                {name: this.$t('benzin'), id: 1},
@@ -594,6 +594,8 @@
 
 <style lang="scss" scoped>
    .calculator-customs {
+      padding-bottom: 120px;
+
       .card {
          padding: 32px 24px 24px;
 
@@ -604,6 +606,12 @@
             color: #1B2434;
             margin-bottom: 20px;
          }
+      }
+   }
+
+   @media (max-width: 600px) {
+      .calculator-customs {
+         background-color: #FFFFFF;
       }
    }
 </style>
