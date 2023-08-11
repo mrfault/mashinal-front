@@ -1,67 +1,72 @@
 <template>
-   <div ref="actionsRef" class="announcement-actions">
-      <div class="announcement-actions__button" @click="toggleOpen">
-         <inline-svg src="/new-icons/dots-vertical-new.svg"/>
-      </div>
-      <div v-if="isOpen" class="announcement-actions__content">
-         <template v-for="(item, index) in options">
-            <div :key="index" class="announcement-actions__content--item" @click="item.method(item)">
-               <inline-svg :src="`/new-icons/grid/${item.icon}`"/>
-               <p>{{ $t(item.name) }}</p>
-            </div>
-         </template>
-      </div>
-
-      <modal-popup
-         :modal-class="!isMobileBreakpoint ? 'midsize': 'larger'"
-         :title="$t(modal.title)"
-         :toggle="showOptions"
-         @close="showOptions = false">
-         <div>
-            <div class="w-100">
-               <template v-for="(item, index) in options">
-
-                  <div v-if="item.show" :key="index" class="announcement-actions__content--item w-100"
-                       @click="item.method(item)">
-                     <inline-svg :src="`/new-icons/grid/${item.icon}`"/>
-                     <p>{{ $t(item.name) }}</p>
-                  </div>
-               </template>
-            </div>
-
+   <div class="automobile-card-actions">
+      <div ref="actionsRef" class="announcement-actions ">
+         <div class="announcement-actions__button" @click="toggleOpen">
+            <inline-svg src="/new-icons/dots-vertical-new.svg"/>
+         </div>
+         <div v-if="isOpen" class="announcement-actions__content">
+            <template v-for="(item, index) in options">
+               <div :key="index" class="announcement-actions__content--item" @click="item.method(item)">
+                  <inline-svg :src="`/new-icons/grid/${item.icon}`"/>
+                  <p>{{ $t(item.name) }}</p>
+               </div>
+            </template>
          </div>
 
-         <!--         options-->
-      </modal-popup>
+         <modal-popup
+            :modal-class="!isMobileBreakpoint ? 'midsize': 'larger'"
+            :title="$t(modal.title)"
+            :toggle="showOptions"
+            @close="showOptions = false">
+            <div>
+               <div class="w-100">
 
-<!--      delete-->
-      <modal-popup
-         :modal-class="!isMobileBreakpoint ? 'midsize': 'larger'"
-         :title="$t(selectedItem.modalTitle)"
-         :toggle="showModal"
-         @close="closeModal">
-         <div class="remove-vehicle-modal">
-            <div class="protocol-payment-modal__actions">
-               <button
-                  :class="{ 'pointer-events-none': pending }"
-                  class="btn btn--white btn-dark-text"
-                  type="button"
-                  @click="showModal = false"
-               >
-                  {{ $t('reject') }}
-               </button>
-               <button
-                  :class="{ 'pointer-events-none': pending }"
-                  class="btn btn--white btn-dark-text"
-                  type="button"
-                  @click="deleteAnnounce"
-               >
-                  {{ $t('delete') }}
-               </button>
+                     <div class="announcement-actions__content--item w-100"
+                          @click="openModal(item)">
+                        <inline-svg :src="`/new-icons/grid/${options[0].icon}`"/>
+                        <p>{{ $t(options[0].name) }}</p>
+                     </div>
+                  <div class="announcement-actions__content--item w-100"
+                          @click="openEditModal(options[1])">
+                        <inline-svg :src="`/new-icons/grid/${options[1].icon}`"/>
+                        <p>{{ $t(options[1].name) }}</p>
+                     </div>
+               </div>
+
             </div>
 
-         </div>
-      </modal-popup>
+            <!--         options-->
+         </modal-popup>
+
+         <!--      delete-->
+         <modal-popup
+            :modal-class="!isMobileBreakpoint ? 'midsize': 'larger'"
+            :title="$t(selectedItem.modalTitle)"
+            :toggle="showModal"
+            @close="closeModal">
+            <div class="remove-vehicle-modal">
+               <div class="protocol-payment-modal__actions">
+                  <button
+                     :class="{ 'pointer-events-none': pending }"
+                     class="btn btn--white btn-dark-text"
+                     type="button"
+                     @click="showModal = false"
+                  >
+                     {{ $t('reject') }}
+                  </button>
+                  <button
+                     :class="{ 'pointer-events-none': pending }"
+                     class="btn btn--white btn-dark-text"
+                     type="button"
+                     @click="deleteAnnounce"
+                  >
+                     {{ $t('delete') }}
+                  </button>
+               </div>
+
+            </div>
+         </modal-popup>
+      </div>
    </div>
 </template>
 
@@ -87,13 +92,13 @@ export default {
    computed: {
       options() {
          return [
-            {
-               name: 'details_of_search',
-               icon: 'eye.svg',
-               method: this.openDetails,
-               modalTitle: 'are_you_sure_you_want_to_deactivate_the_announcement',
-
-            },
+            // {
+            //    name: 'details_of_search',
+            //    icon: 'eye.svg',
+            //    method: this.openDetails,
+            //    modalTitle: 'are_you_sure_you_want_to_deactivate_the_announcement',
+            //
+            // },
             {
                name: 'edit',
                icon: 'fi_check-square.svg',
@@ -119,6 +124,8 @@ export default {
             this.isOpen = !this.isOpen;
             if (this.isOpen) {
                document.addEventListener('click', this.onClickOutside);
+            }else{
+               this.isOpen = false;
             }
          }
       },
@@ -143,14 +150,18 @@ export default {
          }
       },
 
-      editAnnounce(){
+      openEditModal(item){
+         this.$emit('openEditModal',item)
+      },
+
+      editAnnounce() {
          return
       },
 
-      openDetails(){
+      openDetails() {
          return;
       },
-      async deleteAnnounce(){
+      async deleteAnnounce() {
          await this.$store.dispatch('UserCabinetCarDelete', {id: this.announcement.id})
          this.$toasted.success(this.$t('car_deleted'));
          this.closeModal();
@@ -163,44 +174,70 @@ export default {
 </script>
 
 
-<style lang="scss" scoped>
-.announcement-actions {
-   height: 100%;
+<style lang="scss">
+.automobile-card-actions {
    position: relative;
-   border: none;
-   margin-top: -20px;
-   margin-right: -13px;
-
-   &__button {
+   .announcement-actions {
+      height: 100%;
+      position: initial;
       border: none;
-      padding: 10px;
-      height: 50px;
-      width: 100%;
-      cursor: pointer;
-      z-index: 0 !important;
 
-      &:hover {
-         background: #cacaca;
+
+      &__button {
+         border: none;
+         padding: 10px 0;
+         height: 50px;
+         width: 100%;
+         cursor: pointer;
+         z-index: 0 !important;
+
+         svg {
+            path {
+               stroke: #1B2434 !important;
+            }
+         }
+
+         &:hover {
+            background: #cacaca;
+         }
       }
-   }
 
-   .announcement-actions__content {
-      position: absolute;
-      top: 0;
-      left: calc(-100% - 100px);
-      z-index: 2 !important;
+      &__content {
+         position: absolute;
+         top: 0;
+         left: calc(-100% - 180px);
+         z-index: 2 !important;
+         width: 200px;
 
-      background: #fff;
-   }
+         background: #fff;
+      }
 
-   .btn-transparent {
-      width: 44px;
-      height: 44px;
-      border: none !important;
+      .btn-transparent {
+         width: 44px;
+         height: 44px;
+         border: none !important;
 
-      &:hover {
-         background: #cacaca;
+         &:hover {
+            background: #cacaca;
+         }
       }
    }
 }
+
+
+.dark-mode {
+   .automobile-card-actions {
+      .announcement-actions__button {
+         background: #1b2434 !important;
+
+         svg {
+            path {
+               stroke: #fff !important;
+            }
+         }
+      }
+   }
+}
+
+
 </style>
