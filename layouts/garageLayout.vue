@@ -115,6 +115,11 @@ export default {
                   link: '/profile/announcements?type=1',
                },
                {
+                  icon: 'invoice',
+                  title: this.$t('penalties'),
+                  link: '/garage',
+               },
+               {
                   title: this.$t('my_balance'),
                   icon: 'wallet',
                   link: '/profile/balance/',

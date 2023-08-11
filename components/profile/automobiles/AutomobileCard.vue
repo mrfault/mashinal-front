@@ -1,5 +1,5 @@
 <template>
-   <div class="ma-automobile-card">
+   <div class="ma-automobile-card" :key="keyItem">
       <div class="ma-automobile-card__image">
          <img :src="item.generation.image"
               @error="$event.target.src = '/placeholder-car.png'">
@@ -19,6 +19,7 @@ import AutomobileCardActions from "~/components/profile/automobiles/AutomobileCa
 export default {
    props: {
       item: Object,
+      keyItem: Number,
    },
    components: {
       AutomobileCardActions
@@ -26,7 +27,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .ma-automobile-card {
    width: 100%;
    min-height: 104px;
@@ -70,12 +71,102 @@ export default {
    }
 
    &__actions {
+   }
+}
 
-      //width: 24px;
-      //position: relative;
-      //.announcement-actions{
-      //   position: relative;
-      //}
+.dark-mode{
+   .ma-automobile-card {
+      border: 1px solid #364152;
+      background:  #364152;
+
+      &__image {
+         background: #364152;
+
+         img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+         }
+      }
+
+      &__content {
+         padding: 0 16px;
+         width: calc(100% - 104px - 24px);
+
+         &--brand {
+            color: #fff;
+         }
+
+         &--desc {
+            color: #fff;
+         }
+      }
+
+
+   }
+}
+
+.automobile-card-actions {
+   position: relative;
+   .announcement-actions {
+      height: 100%;
+      position: initial;
+      border: none;
+
+
+      &__button {
+         border: none;
+         padding: 10px 0;
+         height: 50px;
+         width: 100%;
+         cursor: pointer;
+         z-index: 0 !important;
+
+         svg {
+            path {
+               stroke: #1B2434 !important;
+            }
+         }
+
+         &:hover {
+            background: #cacaca;
+         }
+      }
+
+      &__content {
+         position: absolute;
+         top: 0;
+         left: calc(-100% - 180px);
+         z-index: 2 !important;
+         width: 200px;
+
+         background: #fff;
+      }
+
+      .btn-transparent {
+         width: 44px;
+         height: 44px;
+         border: none !important;
+
+         &:hover {
+            background: #cacaca;
+         }
+      }
+   }
+}
+
+
+.dark-mode {
+   .automobile-card-actions {
+      .announcement-actions__button {
+         background: #1b2434 !important;
+
+         svg {
+            path {
+               stroke: #fff !important;
+            }
+         }
+      }
    }
 }
 </style>

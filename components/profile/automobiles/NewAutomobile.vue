@@ -378,4 +378,17 @@ export default {
 .border-red {
    border: 1px solid red;
 }
+
+.dark-mode {
+   .ma-new-automobile {
+      &__button {
+         background: #364152;
+         color: #fff;
+      }
+
+      &__desc {
+         color: #fff;
+      }
+   }
+}
 </style>
