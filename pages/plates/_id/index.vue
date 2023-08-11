@@ -260,6 +260,30 @@
       }
    }
 
+   .dark-mode {
+      .plate-id {
+         background-color: #1B2434;
+
+         .bg-white {
+            background-color: #121926 !important;
+         }
+
+         .quick-info {
+            .registration-marks__number {
+               border-color: #1B2434;
+            }
+         }
+
+         .quickInfoPrice {
+            &.plates {
+               p {
+                  color: #EEF2F6;
+               }
+            }
+         }
+      }
+   }
+
    @media (max-width: 1250px) {
       .plate-id {
          margin-top: -31px;
