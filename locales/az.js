@@ -2742,6 +2742,7 @@ export default {
    "this_field_is_mandatory": "Bu xana məcburidir",
    "given_data_is_not_matching_car_number": "Yazdığınız nömrə qeyd etdiyiniz avtomobil məlumatlarına uyğun deyil",
    "details_of_search": "Axtarışın detalları",
-   "my_car_desc": "Lorem impusum dolor set amon",
+   "my_car_desc": "Lorem impusum dolor set amon", 
+   "info_saved": "Məlumatlar yadda saxlanıldı", 
 };
 
