@@ -22,7 +22,7 @@
                <div class="w-100">
 
                      <div class="announcement-actions__content--item w-100"
-                          @click="openModal(item)">
+                          @click="openModal(options[0])">
                         <inline-svg :src="`/new-icons/grid/${options[0].icon}`"/>
                         <p>{{ $t(options[0].name) }}</p>
                      </div>
@@ -117,6 +117,7 @@ export default {
    methods: {
       //dropdown
       toggleOpen(event) {
+         this.showOptions = false;
          event.stopPropagation();
          if (this.isMobileBreakpoint) {
             this.showOptions = true;
@@ -138,6 +139,7 @@ export default {
       },
 
       openModal(item) {
+         this.showOptions = false;
          this.selectedItem = item;
          this.showModal = true;
       },

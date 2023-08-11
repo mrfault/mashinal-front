@@ -121,7 +121,7 @@
                                  :to="getUserSettingsLink"
                                  class="d-inline-flex align-items-center align-top"
                               >
-                                 <template v-if="user.avatar || user.autosalon.logo">
+                                 <template v-if="user.avatar || (user.autosalon?.logo)">
                                     <img :src="image" :alt="user.full_name"/>
                                  </template>
 
