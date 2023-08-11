@@ -86,7 +86,7 @@ export const MenusDataMixin = {
             {title: 'favorites', route: '/profile/favorites', icon: '/icons/favorites.svg'},
             {title: 'new_announce', route: '/sell', icon: '/icons/plus-circle-2.svg'},
             {title: 'messages', route: '/profile/messages', icon: '/icons/message.svg'},
-            {title: 'garage', route: '/garage-services', icon: 'garage-tab', hide: !this.loggedIn},
+            {title: 'garage', route: '/garage-services', icon: '/icons/user_2.svg', hide: !this.loggedIn},
             {title: 'login', route: '/login', icon: '/icons/user_2.svg', hide: this.loggedIn}
          ];
       },

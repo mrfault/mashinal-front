@@ -107,7 +107,7 @@
             }
 
             &:nth-child(3) {
-               margin: -45px 0 0 0;
+               margin: -45px 0 0 -10px;
 
                span {
                   margin-top: 15px;
@@ -357,5 +357,19 @@
    .btn-compare {
       width: 20px;
       height: 20px;
+   }
+}
+
+@media (max-width: 280px) {
+   .mobile-nav {
+      .container {
+         ul {
+            li {
+               &:nth-child(3) {
+                  margin: -45px 0 0 -10px;
+               }
+            }
+         }
+      }
    }
 }

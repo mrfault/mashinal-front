@@ -298,20 +298,6 @@ export default {
                row: 1,
             },
             {
-               title: 'settings',
-               image: 'settings.png',
-               url:  this.user.autosalon ? '/dashboard/1/settings' : '/profile/settings',
-               description: 'profile_settings_desc',
-               row: 1,
-            },
-            {
-               title: 'logout',
-               image: 'logout.png',
-               url: null,
-               description: 'logout_account_desc',
-               row: 1,
-            },
-            {
                title: 'MashinPay',
                image: 'mashinpay.png',
                url: '/',
@@ -326,13 +312,26 @@ export default {
                row: 2,
             },
             {
+               title: 'my_autos',
+               image: 'mycar.png',
+               url: '/profile/automobiles',
+               description: 'my_car_desc',
+               row: 1,
+            },
+            {
                title: 'my_account',
                image: 'avatar.png',
-               url: '/profile/settings',
+               url:  this.user.autosalon ? '/dashboard/1/settings' : '/profile/settings',
                description: 'garage_account_desc',
                row: 2,
             },
-
+            {
+               title: 'logout',
+               image: 'logout.png',
+               url: null,
+               description: 'logout_account_desc',
+               row: 1,
+            },
          ]
       }
 
