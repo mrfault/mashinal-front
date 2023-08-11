@@ -604,7 +604,7 @@
 
    &__grid {
       display: grid;
-      grid-template-columns: 104px 1040px 400px;
+      grid-template-columns: 104px 1440px;
       grid-column-gap: 20px;
       justify-content: center;
 
@@ -623,6 +623,10 @@
                }
             }
          }
+      }
+
+      &.has-sidebar {
+         grid-template-columns: 104px 1040px 400px;
       }
    }
 

@@ -37,6 +37,8 @@
             store.dispatch('getSalonById', {slug: route.params.id, page: (route.query.page || 1)}),
             store.dispatch('getMotoOptions'),
          ]);
+
+         store.dispatch('fetchAutosalonAnnouncementsId', store.getters.salonSingle.id);
       },
 
       computed: {
@@ -49,6 +51,10 @@
                {name: this.salonSingle.name || this.salonSingle.user.full_name}
             ]
          }
+      },
+
+      mounted() {
+         this.id = this.salonSingle?.id;
       }
    }
 </script>
