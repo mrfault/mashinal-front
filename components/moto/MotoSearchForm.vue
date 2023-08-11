@@ -444,6 +444,7 @@
    import ColorOptions from '~/components/options/ColorOptions';
    import { mapGetters, mapActions } from 'vuex';
    import { SearchMixin } from '~/mixins/search';
+   import {set} from "lodash/object";
 
    export default {
       components: {
@@ -629,6 +630,7 @@
                3: this.motoOptions.atv_brands
             }[parseInt(category) || 1];
          },
+
          models(category) {
             return {
                1: this.motorcycleModels,
@@ -636,6 +638,20 @@
                3: this.atvModels
             }[parseInt(category) || 1];
          },
+
+         initialValue() {
+            if (this.$route.query?.filter && JSON.parse(this.$route.query?.filter)?.box) {
+               this.form.box = JSON.parse(this.$route.query?.filter)?.box?.map((f) => f.key);
+            }
+
+            if (this.$route.query?.filter && JSON.parse(this.$route.query?.filter)?.fuel_type) {
+               this.form.fuel_type = JSON.parse(this.$route.query?.filter)?.fuel_type?.map((f) => f.key);
+            }
+
+            if (this.$route.query?.filter && JSON.parse(this.$route.query?.filter)?.gearing) {
+               this.form.gearing = JSON.parse(this.$route.query?.filter)?.gearing?.map((f) => f.key);
+            }
+         }
       },
 
       async fetch() {
@@ -648,6 +664,10 @@
          announceType(val) {
             this.form.announce_type = val;
          }
+      },
+
+      mounted() {
+         this.initialValue();
       }
    }
 </script>
