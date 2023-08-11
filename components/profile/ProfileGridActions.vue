@@ -153,6 +153,7 @@ export default {
       },
 
       openModal(item) {
+         this.showOptions = false;
          this.selectedItem = item;
          this.showModal = true;
       },

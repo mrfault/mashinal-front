@@ -251,6 +251,26 @@ export default {
    }
    .ma-announcements__head{
       background: #1B2434;
+      overflow-y: auto !important;
+      &::-webkit-scrollbar {
+         width: 3px;
+         height: 7px;
+      }
+
+      /* Track */
+      &::-webkit-scrollbar-track {
+         background: transparent !important;
+      }
+
+      /* Handle */
+      &::-webkit-scrollbar-thumb {
+         background: rgb(206, 206, 206);
+      }
+
+      /* Handle on hover */
+      &::-webkit-scrollbar-thumb:hover {
+         background: #555;
+      }
       button{
          color: #fff;
       }
