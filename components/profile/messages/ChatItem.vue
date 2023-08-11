@@ -3,7 +3,16 @@
 
     <div class="d-flex">
       <div :class="{'is-online': isOnline}">
-        <img class="chat-avatar" :src="chatAvatar" alt="" >
+         <template v-if="chatAnnouncementThumb">
+            <img
+               v-if="group.announce.type !== 6 && chatAnnouncementThumb"
+               class="chat-avatar"
+               :src="chatAnnouncementThumb"
+               alt="img"
+               @click.stop="$emit('go-to-announcement', group)"
+            />
+         </template>
+         <img class="chat-avatar" :src="chatAvatar" v-else alt=""/>
       </div>
       <div class="chat-info">
         <div class="chat-first-line">
@@ -62,6 +71,9 @@ export default {
     chatAnnouncement() {
       return this.group.announce || {};
     },
+     chatAnnouncementThumb() {
+        return this.chatAnnouncement.media?.thumb_100x100?.[0];
+     },
     chatUser() {
       return this.group.sender_id == this.user.id ? this.group.recipient : this.group.sender;
     },

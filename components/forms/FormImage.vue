@@ -32,7 +32,7 @@
          </button>
 
          <button class="btn btn-white bg-white ml-1" v-if="type === 'cover'" @click="croppaValue.chooseFile()">
-            Örtük şəklini dəyiş
+            {{$t('change_cover')}}
          </button>
 
          </span>
@@ -166,6 +166,9 @@ export default {
    padding: 14px 16px 14px 16px;
    border-radius: 8px;
    gap: 8px;
+}
+.croppa-container canvas{
+   background-color: #000!important;
 }
 .dark-mode {
    .btn-white{

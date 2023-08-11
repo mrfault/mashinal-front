@@ -3,7 +3,17 @@
       <div class="d-flex">
          <div class="chat-inner-info">
             <div :class="{'is-online': isOnline}">
-               <img class="chat-avatar" :src="chatAvatar" alt=""/>
+
+               <template v-if="chatAnnouncementThumb">
+                  <img
+                     v-if="group.announce.type !== 6 && chatAnnouncementThumb"
+                     class="chat-avatar"
+                     :src="chatAnnouncementThumb"
+                     alt="img"
+                     @click.stop="$emit('go-to-announcement', group)"
+                  />
+               </template>
+               <img class="chat-avatar" :src="chatAvatar" v-else alt=""/>
             </div>
             <span class="username">
                <span>{{ chatUser.full_name }}</span>
@@ -13,9 +23,9 @@
                  <template v-else-if="typing">{{ $t('is_typing') }}</template>
                </span>
 
-               <template v-if="isMobileBreakpoint">
+               <template>
                   <br/>
-                  <span class="username-subtitle" @click.stop="$emit('go-to-announcement', group)">
+                  <span class="username-subtitle" style="cursor:pointer" @click.stop="$emit('go-to-announcement', group)">
                     <span class="text-truncate">{{ getAnnouncementTitle(chatAnnouncement) }}</span>
                     <span class="text-dark-blue-2">{{ chatAnnouncement.price || '' }}</span>
                   </span>
@@ -23,11 +33,15 @@
             </span>
 
             <template v-if="!isChatBot">
-               <span class="cursor-pointer" @click.stop="$emit('block-chat', group)">
+               <span class="cursor-pointer"
+                     v-b-tooltip="blocked ? $t('unblock_user') : $t('block_user')"
+                     @click.stop="$emit('block-chat', group)">
                   <icon :name="blocked ? 'unblock' : 'block'"/>
                </span>
 
-               <span class="cursor-pointer" @click.stop="removeItem = group; showRemoveModal = true;">
+               <span class="cursor-pointer"
+                     v-b-tooltip="$t('remove_message')"
+                     @click.stop="removeItem = group; showRemoveModal = true;">
                   <icon name="garbage"/>
                </span>
             </template>
@@ -75,16 +89,16 @@
 
       <div class="messages_msg-list">
          <div :class="['messages-list', {'attachments-preview-active': !!Object.keys(files).length}]">
-            <div class="scroll-container">
+            <div class="scroll-container" id="chat">
                <client-only>
-                  <vue-scroll class="white-scroll-bg" ref="chat">
+                  <vue-scroll class="white-scroll-bg"  ref="chat">
                      <div class="messages-list-items">
                         <div class="messages-list-items_group" v-for="(messages, date) in messagesByDate(group.id)"
                              :key="date">
                            <div class="text-center">
-                    <span class="btn btn--grey pointer-events-none">
-                      {{ $formatDate(date, '[day], D MMM', $t('days-short'), true)[locale] }}
-                    </span>
+                             <span class="btn btn--grey pointer-events-none">
+                               {{ $formatDate(date, '[day], D MMM', $t('days-short'), true)[locale] }}
+                             </span>
                            </div>
                            <message-item
                               v-for="message in messages"
@@ -108,8 +122,7 @@
                      :onClose="refreshLightbox"
                      :onBeforeClose="onBeforeClose"
                      :disableThumbs="true"
-                     :onSlideChange="changeLightboxSlide"
-                  />
+                     :onSlideChange="changeLightboxSlide"/>
                </template>
                <transition-group name="fade">
                   <template v-if="(showLightbox && isMobileBreakpoint) || (!isMobileBreakpoint && showImagesSlider)">
@@ -117,12 +130,11 @@
                         <img :src="$withBaseUrl(attachments[currentSlide])" alt=""/>
                      </div>
                      <div class="blur-bg_slider" :key="1" v-if="!isMobileBreakpoint">
-                        <images-slider
+                        <image-slider-message
                            :current-slide="currentSlide"
                            :slides="{ main: attachments }"
                            @close="closeLightbox"
-                           @slide-change="currentSlide = $event"
-                        />
+                           @slide-change="currentSlide = $event"/>
                      </div>
                   </template>
                </transition-group>
@@ -146,16 +158,14 @@
                     v-for="(title, i) in filteredSuggestedMessages"
                     @click="useSuggestedMessage(title)"
                     :key="i"
-                    v-html="title"
-            />
+                    v-html="title"/>
          </div>
       </div>
 
       <modal-popup
          :toggle="showRemoveModal"
          :title="$t('are_you_sure_you_want_to_delete_the_message')"
-         @close="showRemoveModal = false"
-      >
+         @close="showRemoveModal = false">
          <form class="form" @submit.prevent="deleteGroup" novalidate>
             <button type="submit" :class="['btn btn--green full-width', { pending }]">
                {{ $t('confirm') }}
@@ -175,7 +185,7 @@ import FsLightbox from 'fslightbox-vue';
 
 import MessageItem from '~/components/profile/messages/MessageItem';
 import MessageSend from '~/components/profile/messages/MessageSend';
-import ImagesSlider from '~/components/elements/ImagesSlider';
+import ImageSliderMessage from '~/components/elements/ImageSliderMessage';
 
 export default {
    props: {
@@ -190,7 +200,7 @@ export default {
       FsLightbox,
       MessageItem,
       MessageSend,
-      ImagesSlider
+      ImageSliderMessage
    },
    data() {
       return {
@@ -261,6 +271,12 @@ export default {
    },
    methods: {
       ...mapActions(['markAsRead', 'sendMessage']),
+      scrollToBottom (id) {
+         const element = document.getElementById(id);
+         ///element.scrollTop = element.scrollHeight;
+         //element.animate({scrollTop: element.scrollHeight});
+         element.lastElementChild.scrollIntoView({  block: "end", behavior: 'smooth' });
+      },
       deleteGroup() {
          this.$emit('delete-chat', this.removeItem)
       },
@@ -342,7 +358,7 @@ export default {
                } else this.text = '';
                // after send
                const afterSendActions = () => {
-                  //window.scrollTo(0,0);
+                  this.scrollToBottom('chat');
                   if (hasAttachments) {
                      this.text = '';
                      this.$nuxt.$emit('clear-message-attachments');
@@ -428,6 +444,7 @@ export default {
       }
    },
    mounted() {
+      //console.log(this.attachments);
       this.checkIfRead();
       this.handleScrollToMessage(this.messagePin, false);
       this.$nextTick(() => {

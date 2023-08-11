@@ -7,8 +7,8 @@
                <div class="ma-garage__nav">
                   <NuxtLink :to="$localePath('garage-services')" class="ma-garage__nav--profile">
                      <div class="ma-garage__nav--profile__avatar">
-                        <template v-if="user.avatar">
-                           <img :src="image" alt="user.full_name"/>
+                        <template v-if="user.avatar || user.autosalon.logo">
+                           <img :src="image" :alt="user.full_name"/>
                         </template>
                         <h5 v-else class="ma-garage__nav--profile__name">{{ user.full_name.charAt(0) }}</h5>
                      </div>
@@ -48,8 +48,8 @@
                      <div v-if="!isMobileBreakpoint" class="ma-garage__nav">
                         <div class="ma-garage__nav--profile">
                            <div class="ma-garage__nav--profile__avatar">
-                              <template v-if="user.avatar">
-                                 <img :src="`https://dev.mashin.al/storage/${user.avatar}`" alt="avatar"/>
+                              <template v-if="user.avatar|| user.autosalon.logo">
+                                 <img :src="image" :alt="user.full_name"/>
                               </template>
                               <h5 v-else class="ma-garage__nav--profile__name">{{ user.full_name.charAt(0) }}</h5>
                            </div>
@@ -95,7 +95,11 @@ export default {
    },
    computed: {
       image() {
-         return (this.user.avatar.includes('http') ? '' : 'https://dev.mashin.al/storage/') + this.user.avatar;
+         if (this.user.autosalon) {
+            return (this.user.autosalon.logo.includes('http') ? '' : 'https://dev.mashin.al/storage/') + this.user.autosalon.logo;
+         } else {
+            return (this.user.avatar.includes('http') ? '' : 'https://dev.mashin.al/storage/') + this.user.avatar;
+         }
       },
       garageNavs() {
          if (this.user.autosalon) {
@@ -126,6 +130,11 @@ export default {
                   link: '/profile/agreement',
                },
                {
+                  title: this.$t('my_autos'),
+                  icon: 'car',
+                  link: '/profile/automobiles/',
+               },
+               {
                   title: this.$t('sign_out'),
                   icon: 'logout',
                   link: '/logout',
@@ -153,6 +162,11 @@ export default {
                   title: this.$t('my_account'),
                   icon: 'user',
                   link: '/profile/settings/',
+               },
+               {
+                  title: this.$t('my_autos'),
+                  icon: 'car',
+                  link: '/profile/automobiles/',
                },
                {
                   title: this.$t('sign_out'),

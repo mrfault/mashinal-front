@@ -32,8 +32,8 @@
                </div>
             </div>
             <div class="col-md-12 pt-5">
-               <div class="row">
-                  <div class="col-md-6 pb-5">
+               <div class="row flex-column-reverse flex-lg-row pt-lg-0 pt-5">
+                  <div class="col-md-6 pb-5 pt-lg-0 pt-5">
                      <div class="row">
                         <div class="col-md-12 pb-3">
                            <form-text-input
@@ -153,7 +153,7 @@
 
                         <div class="col-md-12">
                            <div class="row">
-                              <div class="col-md-12 pb-3">
+                              <!--<div class="col-md-12 pb-3">
                                  <form-text-input
                                     type="password"
                                     autocomplete="old-password"
@@ -176,12 +176,13 @@
                                     :maxlength="255"
                                     :placeholder="$t('confirm_new_password')"
                                     v-model="pwdForm.password_confirmation"/>
-                              </div>
+                              </div>-->
                               <div class="col-md-12 pb-3">
                                  <button
                                     type="submit"
-                                    @click="submit"
-                                    :class="['btn btn--green full-width', { pending: pending && showPasswordModal }]">
+                                    @click="submit(salon.id)"
+                                    v-bind:key="salon.id"
+                                    :class="['btn btn--green full-width', { pending: pending }]">
                                     {{ $t('save') }}
                                  </button>
                               </div>
@@ -217,6 +218,7 @@
                               :maxFiles="24"
                               :initialFiles="initialFiles"
                               @change="filesOnChange"
+                              :rotatable="true"
                               @loading="pending = $event"
                            />
                         </div>
@@ -273,6 +275,7 @@ export default {
             password: '',
             password_confirmation: ''
          },
+         salon: salon,
          form: {
             name: salon.name || '',
             phones: [...(salon.phones || [])].map(phone => '+' + phone),
@@ -296,7 +299,8 @@ export default {
          },
          files: [],
          hasLogo: !!salon.logo,
-         hasCover: !!salon.cover
+         hasCover: !!salon.cover,
+         clicked: []
       }
    },
    computed: {
@@ -346,7 +350,8 @@ export default {
       clickAvatar() {
          this.$root.$refs.FormImage.croppaValue.chooseFile();
       },
-      async submit() {
+      async submit(id) {
+         this.clicked.push(id);
          if (this.pending) return;
          this.clearErrors();
          this.pending = true;
@@ -421,10 +426,11 @@ export default {
                this.getMySalon({id: this.$getDashboardId(this.$route.params.type)}),
                this.$auth.fetchUser()
             ]);
+            //this.$toasted.success(this.$t('saved_changes'));
             this.$toasted.success(this.$t('saved_changes'));
             // reset form values
-            this.$set(this.form, 'logo', null);
-            this.$set(this.form, 'cover', null);
+            //this.$set(this.form, 'logo', null);
+            //this.$set(this.form, 'cover', null);
             this.$nuxt.$emit('gallery-update');
             this.pending = false;
          } catch ({response: {status, data: {data, message}}}) {
@@ -441,6 +447,9 @@ export default {
                count++;
             })
          }
+
+         this.clicked.pop(id);
+         window.scrollTo(0, 0);
       },
 
       getSalonImg(key) {
@@ -481,7 +490,8 @@ export default {
             this.pending = false;
             this.showPasswordModal = false;
             this.$nextTick(() => {
-               this.$toasted.show(data.message, {type: 'success'});
+              // this.$toasted.show(data.message, {type: 'success'});
+               this.$toasted.success(this.$t('saved_changes'));
             });
          } catch (err) {
             this.pending = false;
@@ -568,6 +578,14 @@ export default {
    height: 72px;
    width: 72px;
 }
+.select-menu.wider{
+   width: 100%!important;
+}
+.pages-dashboard-settings.garage{
+   .text-input textarea:hover{
+      border: 1px solid #155EEF;
+   }
+}
 .dark-mode{
    .change-avatar {
       border: 1px solid #1B2434!important;
@@ -585,11 +603,21 @@ export default {
       .btn--primary-outline,
       .text-input input{
          background-color: #1b2434!important;
-         border: 1px solid #1b2434;
       }
       .select-menu .select-menu_label{
          background-color: #1b2434!important;
-         border: 1px solid #1b2434;
+      }
+   }
+
+   .pages-dashboard-settings.garage{
+      .text-input input:hover,
+      .text-input textarea:hover,
+      .btn--primary-outline:hover,
+      .text-input input:hover{
+         border: 1px solid #155EEF;
+      }
+      .select-menu .select-menu_label:hover{
+         border: 1px solid #155EEF;
       }
    }
 }

@@ -6,7 +6,7 @@
             :value="digit"
             class="ma-sms__input"
             maxlength="1"
-            type="text"
+            type="number"
             @input="handleInput(index, $event.target.value)"
             @keydown="handleKeydown(index, $event)"
          />

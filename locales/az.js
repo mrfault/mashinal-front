@@ -2172,7 +2172,7 @@ export default {
    you_should_deactivate_announcements:
       "Sizin {package1} paketiniz aktivdir. {package2} paketə keçid etmək üçün elanlarınızın sayını maksimum {n}-a endirməlisiniz.<br/>Davam etmək üçün deaktiv etmək istədiyiniz elanları seçin.",
    you_unblocked_this_user: "Siz bu istifadəçini blokdan çıxarmısınız",
-   you_were_blocked_by_this_user: "İstifadəçi mesaj bölməsini məhdudlaşdırıb",
+   you_were_blocked_by_this_user: "Bu mesaja cavab yazmaq mümkün deyil",
    you_will_be_contacted_shortly:
       "* Qısa zaman ərzində sizinlə əlaqə yaradılacaq.",
    you_will_have_to_pay_100_to_get_a_business_profile:
@@ -2707,9 +2707,8 @@ export default {
    "garage_account_desc": "Rəsmi nümayəndə və digər avtosalonlar",
 
 
-
-   "subscription_registration_date_on_site" : "Saytda abunəliyin qeydiyyat tarixi",
-   "subscription_registration_end_date_on_site" : "Saytda abunəliyin bitmə tarixi",
+   "subscription_registration_date_on_site": "Saytda abunəliyin qeydiyyat tarixi",
+   "subscription_registration_end_date_on_site": "Saytda abunəliyin bitmə tarixi",
 
    "edition": "Düzəliş",
 
@@ -2719,15 +2718,29 @@ export default {
    package_current: "Mövcud paket",
 
    "remove_announcement": "Elanı sil",
+   "remove_message": "Mesajı sil",
    "start_subscription_desc1": "Seçilmiş NV-nə abunə olmaq istədiyinizə əminsiniz?",
    "penalty_info": "Cərimə məlumatları",
    "number_plate_of_vehicle": "NV-nin qeydiyyat nişanı",
    "protocol_number": "Protokol nömrəsi",
 
-   "restore_announcement" : "Elanı bərpa et",
+   "restore_announcement": "Elanı bərpa et",
    "vehicle_is_processing": "Nəqliyyat vasitəsi prosesdədir",
 
    "no_payment_history": "Ödəniş tarixçəsi yoxdur",
+   "no_message": "Mesaj yoxdur",
+   "no_message_text": "Sizə mesaj gəlsə vəya kiməsə mesaj yazsanız burada görünəcək",
+   "change_cover": "Örtük şəklini dəyiş",
+   "upload_other_photos": "Digər fotoları yüklə",
 
+   "remove_announcement ": "Удалить",
+   "my_autos": "Avtomobillərim",
+   "my_autos_desc": "Avtomobilinizi əlavə etməklə siz bu avtomobilə aid yeniliklər, xüsusi təkliflər və ehtiyyat hissələrinə endirimlərlə bağlı bildirişlər əldə etmək imkanına sahib olacaqsınız. İstənilən sayda avtomobil əlavə edə bilərsiniz!",
+   "add_new_auto": "Yeni avtomobil əlavə et",
+   "add_new_auto_desc": "Avtomobilinizi əlavə etməklə siz bu avtomobilə aid yeniliklər, xüsusi təkliflər və ehtiyyat hissələrinə endirimlərlə bağlı bildirişlər əldə etmək imkanına sahib olacaqsınız. İstənilən sayda avtomobil əlavə edə bilərsiniz!",
+
+   "this_field_is_mandatory": "Bu xana məcburidir",
+   "given_data_is_not_matching_car_number": "Yazdığınız nömrə qeyd etdiyiniz avtomobil məlumatlarına uyğun deyil",
+   "details_of_search": "Axtarışın detalları",
 };
 

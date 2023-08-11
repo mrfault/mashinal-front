@@ -9,6 +9,16 @@
             <template #default="{ show }">
                <transition name="fade">
                   <div class="map-wrapper" v-show="show" @keyup.prevent.enter="savePlaceOnMap">
+                     <div class="full-width">
+                        <div class="row">
+                           <div class="col-md-12 d-flex justify-content-between align-items-center">
+                              <h4 class="title-modal">{{$t('choose_on_map')}}</h4>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                 <span aria-hidden="true">&times;</span>
+                              </button>
+                           </div>
+                        </div>
+                     </div>
                      <div class="full-width" @click.stop>
                         <div class="row mt-2 mt-lg-3">
                            <div class="col-lg-10">
@@ -184,11 +194,59 @@ export default {
    background-color: #FFF;
    padding: 20px;
    border-radius: 12px;
-   height: max-content;
-   max-height: max-content;
+   height: 100%;
 }
 
 .map.lower {
    border-radius: 12px;
+}
+.backdrop .map-wrapper .map{
+   max-height: 400px!important;
+}
+.title-modal{
+   font-size: 24px;
+   font-weight: 600;
+   line-height: 28px;
+   letter-spacing: 0;
+   text-align: left;
+   margin: 0;
+   padding: 0;
+}
+.close{
+   height: 32px;
+   width: 32px;
+   border-radius: 50%;
+   background-color: #E3E8EF;
+   border: 1px solid #E3E8EF;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   padding: 0;
+}
+.close:hover{
+   box-shadow: 1px 2px 6px rgba(0,0,0, .19);
+}
+.close span{
+   font-size: 24px;
+   padding: 0;
+   margin: -2px 0 0;
+}
+.dark-mode {
+   .backdrop .map-wrapper {
+      border: 1px solid #1B2434;
+      background-color: #1B2434;
+   }
+   .close{
+      background-color: #364152;
+      border: 1px solid #364152;
+   }
+   .close span{
+      color: #121926;
+   }
+   .close:hover,
+   .close:focus{
+      background-color: #3D475AFF;
+      border: 1px solid #3D475AFF;
+   }
 }
 </style>
