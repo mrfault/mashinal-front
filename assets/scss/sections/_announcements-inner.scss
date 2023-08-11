@@ -673,6 +673,10 @@
       max-width: 1616px;
    }
 
+   .swiper-wrapper {
+      max-height: 590px !important;
+   }
+
    .swiper-slide {
       max-height: 630px;
       height: 100vh;
@@ -919,10 +923,6 @@
    .images-slider {
       &__grid {
          grid-template-columns: 104px 700px 400px;
-
-         .swiper-wrapper {
-            max-height: 590px !important;
-         }
       }
    }
 }
