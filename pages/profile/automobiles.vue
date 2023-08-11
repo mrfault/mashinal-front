@@ -7,7 +7,7 @@
             <new-automobile @carAdded="getAllCars"/>
          </div>
          <div v-for="(item,index) in userCabinetCars" class="ma-autos__content--item">
-            <automobile-card :item="item"/>
+            <automobile-card :item="item" :keyItem="index"/>
          </div>
       </div>
    </div>
@@ -88,6 +88,25 @@ export default {
          &--item {
             width: 100%;
             padding: 10px;
+         }
+      }
+   }
+}
+
+.dark-mode{
+   .ma-autos {
+      .ma-title--md {
+         color: #fff;
+      }
+
+      &--subtitle {
+         color: #fff;
+      }
+
+      &__content {
+
+         &--item {
+
          }
       }
    }
