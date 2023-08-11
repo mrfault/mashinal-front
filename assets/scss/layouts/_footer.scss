@@ -53,6 +53,21 @@
    }
 }
 
+.dark-mode{
+   .footer{
+      background-color: $dark-light-new;
+
+      &__content {
+         &-link {
+            color: $white!important;
+            &:hover {
+               color: $blue-4-new!important;
+            }
+         }
+      }
+   }
+}
+
 @media (max-width: 1150px) {
    .footer {
       margin-bottom: 60px;

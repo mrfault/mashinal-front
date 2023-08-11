@@ -2701,10 +2701,10 @@ export default {
    "add_vehicle_desc": "Hər əlavə etdiyiniz NV-nə görə aylıq 1 AZN ₼ (ƏDV daxil) məbləğ tutulacaq.",
    "no_vehicle_found": "Sizin əlavə edilmiş nəqliyyat vasitəniz yoxdur",
    'profile_balance_desc': "Rəsmi salonlardan avtomobil sifariş et",
-   'profile_settings_desc': "İstifadəçi parametrləri, Ad Soyad, Profil fotosu və s.",
+   'profile_settings_desc': "Qaranlıq rejim, dil və bildiriş ayarları və s.",
    "logout_account_desc": "Hesabdan çıxış et",
    "garage_penalties_desc": "Cərimələr, gömrük kalkulyatoru, bələdçi, alkotester, vizual şin kalkulyatoru",
-   "garage_account_desc": "Rəsmi nümayəndə və digər avtosalonlar",
+   "garage_account_desc": "Официальный представитель и другие автосалоны",
 
 
    "subscription_registration_date_on_site": "Saytda abunəliyin qeydiyyat tarixi",
@@ -2742,7 +2742,11 @@ export default {
    "this_field_is_mandatory": "Bu xana məcburidir",
    "given_data_is_not_matching_car_number": "Yazdığınız nömrə qeyd etdiyiniz avtomobil məlumatlarına uyğun deyil",
    "details_of_search": "Axtarışın detalları",
-   "my_car_desc": "Lorem impusum dolor set amon", 
-   "info_saved": "Məlumatlar yadda saxlanıldı", 
+   "my_car_desc": "Lorem impusum dolor set amon",
+   "info_saved": "Məlumatlar yadda saxlanıldı",
+   "site_settings": "Tənzimləmələr",
+   "dark_mode": "Qaranlıq rejim",
+   "notification_status": "Bildirişləri aktiv et",
+   "select_language": "Dil seçimi",
 };
 
