@@ -154,21 +154,29 @@
             </div>
 
             <div class="item-details__item">
-               {{ announcement.brand }} {{ announcement.model }}
+               <template v-if="announcement.brand || announcement.model">
+                  {{ announcement.brand }} {{ announcement.model }}
+               </template>
+
+               <template v-if="announcement.title">{{ announcement.title }}</template>
             </div>
 
             <div class="item-details__item">
                <span v-if="announcement.year">{{ announcement.year }} {{ $t('year') }}</span>
+
                <span v-if="announcement?.car_catalog?.capacity">
                   {{ announcement?.car_catalog?.capacity }} {{ $t('char_litre') }}
                </span>
-               <span>
+
+               <span v-if="announcement.mileage || announcement.mileage_measure">
                   {{ announcement.mileage }}
 
                   <template v-if="announcement.mileage_measure === 1">
                      {{ $t('char_kilometre') }}
                   </template>
                </span>
+
+               <span v-if="announcement?.description">{{ announcement?.description }}</span>
             </div>
 
             <div class="item-details__item">

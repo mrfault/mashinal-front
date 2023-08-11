@@ -1,6 +1,6 @@
 <template>
-   <div :class="['quick-info mb-lg-3', {'registration-marks' : type === 'registration-marks'}]">
-      <div class="registration-marks__number" v-if="type === 'registration-marks'">
+   <div :class="['quick-info mb-lg-3', {'registration-marks' : type === 'plates'}]">
+      <div class="registration-marks__number" v-if="type === 'plates'">
          <div class="divider">
             <img src="/icons/registrationMarks_icons.svg" alt="icons">
          </div>
@@ -12,7 +12,10 @@
          <span class="registration-marks__number-description">MASHIN.AL</span>
       </div>
 
-      <div class="quick-info__item">
+      <div
+         class="quick-info__item"
+         :class="{'registration-marks' : type === 'plates'}"
+      >
          <h1 class="quick-info__title" v-if="getAnnouncementTitle(announcement)">{{ getAnnouncementTitle(announcement) }}</h1>
 
          <div class="d-flex align-items-center justify-content-between">
@@ -96,7 +99,8 @@
                <chat-button :announcement="announcement" has-after-login />
             </div>
 
-            <div class="col-7 mt-2 mt-lg-3" v-if="!isMobileBreakpoint">
+<!--            v-if="!isMobileBreakpoint"-->
+            <div class="col-7 mt-2 mt-lg-3" >
                <call-button-multiple v-if="announcement.is_autosalon" :phones="announcement.user.autosalon.phones" />
                <call-button v-else :phone="contact.phone" />
             </div>
@@ -145,14 +149,14 @@
 <!--      </template>-->
 
       <template
-         v-if="!brief &&(((announcement.status == 1 || announcement.has_monetization)) || needToPay)">
+         v-if="(((announcement.status == 1 || announcement.has_monetization)) || needToPay)">
 <!--         <hr class="mt-3"-->
 <!--             v-if="needToPay ||-->
 <!--             (!this.isMobileBreakpoint && announcement.has_monetization && $auth.loggedIn) ||-->
 <!--             (!this.isMobileBreakpoint && !announcement.has_monetization) && this.type !== 'registration-marks'"-->
 <!--         />-->
 
-         <div :class="{'mb-2 mb-lg-3': !needToPay }" v-if="type !== 'registration-marks'">
+         <div :class="{'mb-2 mb-lg-3': !needToPay }" v-if="type !== 'plates'">
             <pay-announcement-button
                :announcement="announcement"
                v-if="needToPay"
@@ -162,16 +166,43 @@
                :announcement="announcement"
                v-else-if="!this.isMobileBreakpoint && announcement.has_monetization && $auth.loggedIn && $auth.user.id === announcement.user_id && !needToPay"
             />
-
-            <monetization-button
-               class="h-52"
-               :announcement="announcement"
-               @openModal="openModal"
-            />
          </div>
       </template>
 
-      <div class="btns">
+      <div class="quick-info__item" v-if="brief">
+         <monetization-button
+            class="h-52"
+            :announcement="announcement"
+            @openModal="openModal"
+         />
+
+         <div class="btns">
+            <add-favorite
+               class="h-52"
+               :template="'btn'"
+               :text="'Seçilmiş et'"
+               :announcement="announcement"
+            />
+
+            <add-comparison
+               v-if="type !== 'plates'"
+               class="h-52"
+               :template="'btn'"
+               :text="$t('compare')"
+               :id="announcement.id_unique"
+            />
+
+            <edit-button
+               :announcement="announcement"
+               :type="type"
+               :className="'white h-52'"
+               v-if="showEditButton(announcement)"
+               @openModal="openModal"
+            />
+         </div>
+      </div>
+
+      <div class="btns" v-else>
          <add-favorite
             class="h-52"
             :template="'btn'"
@@ -180,10 +211,19 @@
          />
 
          <add-comparison
+            v-if="type !== 'plates'"
             class="h-52"
             :template="'btn'"
             :text="$t('compare')"
             :id="announcement.id_unique"
+         />
+
+         <edit-button
+            :announcement="announcement"
+            :type="type"
+            :className="'white h-52'"
+            v-if="showEditButton(announcement)"
+            @openModal="openModal"
          />
       </div>
 
@@ -203,12 +243,7 @@
 <!--            </div>-->
 <!--            -->
 <!--            <div class="col mt-2 mt-lg-3">-->
-<!--               <edit-button-->
-<!--                  :announcement="announcement"-->
-<!--                  :type="type"-->
-<!--                  v-if="showEditButton(announcement)"-->
-<!--                  @openModal="openModal"-->
-<!--               />-->
+
 <!--            </div>-->
 <!--         </div>-->
 <!--      </template>-->
@@ -309,7 +344,7 @@
             return false;
          },
          showEditButton(item) {
-            if (this.$auth.loggedIn == false) {
+            if (this.$auth.loggedIn === false) {
                return item.status == 1 || item.status == 2
             } else {
                return this.$auth.user.id == item.user.id && item.status != 5 && item.status !== 3;
@@ -345,6 +380,11 @@
          border-radius: 12px;
          border: 1px solid #CDD5DF;
          margin-bottom: 20px;
+
+         &.registration-marks {
+            margin-top: -1px;
+            border-radius: 0 0 12px 12px;
+         }
       }
 
       &__title {
@@ -436,16 +476,16 @@
 
       &.registration-marks {
          .registration-marks__number {
-            position: absolute;
-            top: 0;
-            left: 0;
+            position: relative;
+            //top: 0;
+            //left: 0;
             display: flex;
             align-items: center;
             width: 100%;
             padding: 0 11px;
-            border: 7px solid #121926;
+            border-radius: 12px 12px 0 0;
+            border: 8px solid #121926;
             border-bottom-width: 22px;
-            margin-bottom: 24px;
 
             &-description {
                position: absolute;
@@ -480,6 +520,11 @@
 
          .price {
             margin-top: 90px;
+         }
+
+         .quick-info__details {
+            padding: 8px 0;
+            border-top: 1px solid #E3E8EF;
          }
       }
    }

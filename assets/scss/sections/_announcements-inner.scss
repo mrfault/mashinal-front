@@ -361,6 +361,18 @@
          //}
       }
 
+      #gallery-prev {
+         i {
+            margin-left: -3px;
+         }
+      }
+
+      #gallery-next {
+         i {
+            margin-right: -3px;
+         }
+      }
+
       .badge {
          display: flex;
          align-items: center;
@@ -590,6 +602,30 @@
    min-height: 690px;
    margin-top: 100px;
 
+   &__grid {
+      display: grid;
+      grid-template-columns: 104px 1040px 400px;
+      grid-column-gap: 20px;
+      justify-content: center;
+
+      &-item {
+         &:first-child {
+            .swiper-slide {
+               width: 100%;
+               height: 84px;
+               border-radius: 12px;
+               overflow: hidden;
+               cursor: pointer;
+
+               div {
+                  width: 100%;
+                  height: 100%;
+               }
+            }
+         }
+      }
+   }
+
    &__close {
       display: flex;
       align-items: center;
@@ -600,6 +636,10 @@
       border-radius: 50%;
       background-color: #121926;
       cursor: pointer;
+
+      i {
+         color: $white-2-new;
+      }
    }
 
    .iframe {
@@ -620,17 +660,28 @@
    }
 
    .toolbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
       position: absolute;
       top: 22px;
       left: 50%;
       transform: translate(-50%);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
       padding: 0 25px;
       color: $white;
       width: 100%;
       max-width: 1616px;
+   }
+
+   .swiper-wrapper {
+      max-height: 590px !important;
+   }
+
+   .swiper-slide {
+      max-height: 630px;
+      height: 100vh;
+      border-radius: 12px;
+      overflow: hidden;
    }
 
    .swiper-thumb-bg,
@@ -657,23 +708,16 @@
       background-repeat: no-repeat;
       padding-bottom: 0;
       height: 100%;
-      min-height: 491px;
-      width: calc(100% - 120px);
-      margin-left: 60px;
+      //min-height: 491px;
+      //width: calc(100% - 120px);
+      //margin-left: 60px;
 
       img {
-         max-width: 100%;
-         max-height: 100%;
-         border-radius: 4px;
-      }
-
-   }
-
-   @media only screen and (min-width: 1024px) {
-      .swiper-slide-bg {
-         img {
-            max-height: 630px;
-         }
+         width: 100%;
+         height: 100%;
+         //max-width: 100%;
+         //max-height: 100%;
+         object-fit: contain;
       }
    }
 
@@ -711,7 +755,7 @@
       }
 
       &_middle {
-         margin: auto 0;
+         margin: auto 24px;
 
          .d-flex {
             width: 100%;
@@ -731,70 +775,188 @@
                background-color: rgba($dark-blue-1, 0.3);
             }
          }
+
+         button {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background-color: rgba(18, 25, 38, 0.64);
+
+            svg {
+               width: 20px;
+               height: 20px;
+            }
+
+            &#slider-prev {
+               svg {
+                  margin-left: -3px;
+               }
+            }
+
+            &#slider-next {
+               svg {
+                  margin-right: -3px;
+               }
+            }
+         }
       }
    }
 
-   & > .container > .row {
-      flex-wrap: nowrap;
-      align-items: center;
+   .btns {
+      margin-top: 16px;
+      background-color: $dark-new;
+   }
 
-      & > .col-auto {
-         &:nth-child(1) {
-            width: 150px;
-            height: 436px;
-            padding-top: 34px;
-            padding-bottom: 34px;
+   .quick-info {
+      &__item {
+         border-color: $dark-new;
+         background-color: $dark-new;
 
-            .swiper-container {
-               height: 100%;
-            }
+         .btn--red-opacity-2 {
+            color: $white;
+            border-radius: 8px;
+            border: none;
+            background-color: rgba(248, 23, 52, 0.72);
+         }
 
-            .swiper-slide {
-               height: 77px;
-            }
+         .btns {
+            background-color: transparent;
 
-            .btn {
-               width: 130px;
-               position: absolute;
-               left: 10px;
-               background-color: rgba($dark-blue-1, 0.15);
-               height: 20px;
-               color: $white;
-               transition: 0.3s;
+            .favorite-btn {
+               border-color: $dark-light-new;
+               background-color: $dark-light-new;
 
-               &:first-child {
-                  top: 0;
+               span {
+                  color: $white;
                }
 
-               &:last-child {
-                  bottom: 0;
+               .btn-favorite {
+                  background-image: url('../../static/icons/star-favorite2-white-border-min.svg') !important;
                }
 
                &:hover {
-                  background-color: rgba($dark-blue-1, 0.35);
+                  border-color: $blue-2-new;
+
+                  button {
+                     background-image: url('../../static/icons/star-favorite2-active-min.svg') !important;
+                  }
+               }
+            }
+
+            .compare-btn {
+               border-color: $dark-light-new;
+               background-color: $dark-light-new;
+
+               span {
+                  color: $white;
+               }
+
+               &:hover {
+                  border-color: $blue-2-new;
+               }
+            }
+
+            .edit-btn {
+               color: $white;
+               border-color: $dark-light-new;
+               background-color: $dark-light-new;
+
+               &:hover {
+                  border-color: $blue-2-new;
+               }
+            }
+         }
+
+         .chat-button {
+            &:hover {
+               border-color: $blue-new;
+            }
+         }
+      }
+
+      &__title {
+         color: $white-2-new;
+      }
+
+      &__details {
+         color: $white-2-new;
+         border-color: $white-2-new;
+      }
+
+      &__contact {
+         &-info {
+            h2 {
+               color: $white-2-new;
+            }
+         }
+      }
+
+      .chat-button {
+         color: $white;
+         border-color: #030A17;
+         background-color: #030A17;
+      }
+
+      .quickInfoPrice {
+         &__head {
+            span {
+               color: $white-2-new;
+            }
+         }
+      }
+   }
+
+   .vehicle-specs {
+      display: none;
+   }
+}
+
+@media (max-width: 1700px) {
+   .images-slider {
+      &__grid {
+         grid-template-columns: 104px 900px 400px;
+      }
+   }
+}
+
+@media (max-width: 1500px) {
+   .images-slider {
+      &__grid {
+         grid-template-columns: 104px 700px 400px;
+      }
+   }
+}
+
+@media (max-width: 1300px) {
+   .images-slider {
+      &__grid {
+         grid-template-columns: 104px 500px 370px;
+
+         .swiper-wrapper {
+            max-height: 550px !important;
+         }
+      }
+
+      .slider-overlay {
+         &_middle {
+            button {
+               width: 40px;
+               height: 40px;
+
+               svg {
+                  width: 15px;
+                  height: 15px;
                }
             }
          }
       }
+   }
+}
 
-      & > .col-auto {
-         &:nth-child(2) {
-            width: calc(100% - 150px);
-         }
-      }
-
-      &.has-sidebar {
-         & > .col-auto {
-            &:nth-child(2) {
-               max-width: calc(100% - 494px);
-            }
-         }
-
-         & > .col-auto {
-            &:nth-child(3) {
-               width: 366px;
-            }
-         }
+@media (max-width: 1150px) {
+   .images-slider {
+      &__grid {
+         grid-template-columns: 104px 400px 370px;
       }
    }
 }
@@ -892,16 +1054,9 @@
    }
 
    .images-slider {
-      .slider-overlay {
-         &_middle {
-            .btn-sq {
-               background-color: rgba($dark-2, 0.6);
-
-               &:hover,
-               &.active {
-                  background-color: $dark-2;
-               }
-            }
+      .quick-info {
+         &__item {
+            background-color: $dark-new;
          }
       }
    }

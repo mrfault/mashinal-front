@@ -464,6 +464,7 @@ export default {
    clear_search: "Очистить",
    clear_search2: "Очистить поиск",
    cleared: "Растаможен",
+   not_cleared: "Не растаможен",
    close: "Закрыть",
    close2: "Закрыть",
    co2_emissions: "Выбросы CO2 г/км",
@@ -2101,6 +2102,7 @@ export default {
    "with spikes": "Шипованные",
    with_discount: "Со скидкой",
    with_mileage: "С пробегом",
+   with_mileage_2: "С пробегом",
    with_new: "новых",
    with_significant_damage_to_body_elements_that_do_not_move_on_their_own:
       "С существенными повреждениями кузовных элементов, не передвигающиеся своим ходом.",

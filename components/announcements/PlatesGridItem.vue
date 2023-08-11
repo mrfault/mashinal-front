@@ -143,6 +143,11 @@
       border: 1px solid #CDD5DF;
       background-color: #FFFFFF;
       cursor: pointer;
+      transition: all .3s;
+
+      &:hover {
+         box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.12);
+      }
 
       &__head {
          display: flex;

@@ -519,7 +519,7 @@
          @include btn-style(
             $color: $white,
             $border-color: $grey-2-new,
-            $border-hover: $blue-2-new,
+            $border-hover: $blue-2-new !important,
             $bg-hover: transparent,
             $bg-color: transparent
          );

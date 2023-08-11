@@ -27,7 +27,7 @@
                         :options="getRegionNumbers"
                         :clear-placeholder="true"
                         :clear-option="false"
-                        v-model="form.region"
+                        v-model="form.serial_number"
                         has-search
                      />
 
@@ -155,6 +155,8 @@
    import CustomDropdown from "~/components/elements/CustomDropdown.vue";
 
    export default {
+      name: 'PlatesPage',
+
       head() {
          return this.$headMeta({
             title: this.$t('registration_marks'),
@@ -184,7 +186,6 @@
             page: 1,
 
             form: {
-               region: '',
                serial_number: '',
                serial_letter1: '',
                serial_letter2: '',
@@ -244,57 +245,70 @@
          }
       },
 
+      computed: {
+         ...mapGetters({
+            getRegionNumbers: 'getRegionNumbers',
+            getRegistrationMarks: 'getRegistrationMarks',
+            cities: 'sellOptions',
+            loading: 'loadingData'
+         }),
+
+         crumbs() {
+            return [{ name: this.$t('registration_marks') }]
+         }
+      },
+
       watch: {
          page() {
-            this.$store.dispatch('fetchRegistrationMarks', `?page=${this.page}`);
+            const query = new URLSearchParams();
+
+            for (const key in this.form) {
+               const value = this.form[key];
+               if (value !== '') query.append(key, value);
+            }
+
+            this.$store.dispatch('fetchRegistrationMarks', `?page=${this.page}&${query.toString()}`);
 
             this.$router.push({
                query: { filters: `?page=${this.page}` }
             })
          },
+
          form: {
-            handler() {
-               // Нужно поменять этот алгоритм! Сделать по быстрому! ---------------------------
-               let queryArray = [],
-                   query;
+            deep: true,
+            handler: function () {
+               this.$store.commit('mutate',{ property: 'loadingData', value: true });
 
-               this.page = 1;
-               queryArray.push(`?page=1`);
+               const query = new URLSearchParams();
 
-               if (this.form.region) {
-                  queryArray.push(`&region=${this.form.region}`);
-                  this.form.serial_number = this.form.region.split('-')[0];
-               } else {
-                  this.form.serial_number = '';
+               for (const key in this.form) {
+                  const value = this.form[key];
+                  if (value !== '') {
+                     if (key === 'serial_number') {
+                        this.form.serial_number = this.form.serial_number.split('-')[0].replace(/\s/g, "");
+                        query.append('serial_number', value);
+                     } else {
+                        query.append(key, value);
+                     }
+                  }
                }
-               if (this.form.serial_number) queryArray.push(`&serial_number=${this.form.serial_number}`);
-               if (this.form.serial_letter1) queryArray.push(`&serial_letter1=${this.form.serial_letter1}`);
-               if (this.form.serial_letter2) queryArray.push(`&serial_letter2=${this.form.serial_letter2}`);
-               if (this.form.car_number) queryArray.push(`&car_number=${this.form.car_number}`);
-               if (this.form.price_from) queryArray.push(`&price_from=${this.form.price_from}`);
-               if (this.form.price_to) queryArray.push(`&price_to=${this.form.price_to}`);
-               if (this.form.currency) queryArray.push(`&currency=${this.form.currency}`);
-               if (this.form.region_id) queryArray.push(`&region_id=${this.form.region_id}`);
-               if (this.form.sorting) queryArray.push(`&sorting=${this.form.sorting}`);
 
-               query = queryArray.join('');
+               this.$router.push({
+                  query: { filters: `?${query.toString()}` }
+               })
 
                clearTimeout(this.timeout);
                this.timeout = setTimeout(() => {
-                  this.$store.dispatch('fetchRegistrationMarks', query);
-               }, 400);
+                  this.$store.dispatch('fetchRegistrationMarks', `?${query.toString()}`);
+               }, 300);
 
-               this.$router.push({
-                  query: { filters: query }
-               })
-            },
-            deep: true
-            // Нужно поменять этот алгоритм! Сделать по быстрому! ---------------------------
+               this.page = 1;
+            }
          },
       },
 
       mounted() {
-         this.$route.query?.filters?.split('&').forEach(query => {
+         this.$route.query?.filters?.slice(1).split('&').forEach(query => {
             this.page = Number(query.split('=')[1]);
 
             for (const item in this.form) {
@@ -307,19 +321,6 @@
                }
             }
          })
-      },
-
-      computed: {
-         ...mapGetters({
-            getRegionNumbers: 'getRegionNumbers',
-            getRegistrationMarks: 'getRegistrationMarks',
-            cities: 'sellOptions',
-            loading: 'loadingData'
-         }),
-
-         crumbs() {
-            return [{ name: this.$t('registration_marks') }]
-         }
       },
 
       async asyncData({ store }) {
@@ -336,6 +337,28 @@
 
 <style lang="scss">
    .registrationMarks {
+      .breadcrumbs {
+         ul {
+            li {
+               font-weight: 500;
+               font-size: 16px;
+               line-height: 20px;
+               opacity: 0.9;
+               color: #FFFFFF;
+
+               i {
+                  &:before {
+                     color: #FFFFFF;
+                  }
+               }
+
+               .active {
+                  color: #FFFFFF;
+               }
+            }
+         }
+      }
+
       &__hero {
          position: relative;
          width: 100%;
@@ -360,27 +383,6 @@
             left: 64px;
             bottom: 48px;
             z-index: 2;
-
-            .breadcrumbs {
-               ul {
-                  li {
-                     font-weight: 500;
-                     font-size: 16px;
-                     line-height: 20px;
-                     opacity: 0.9;
-
-                     i {
-                        &:before {
-                           color: #FFFFFF;
-                        }
-                     }
-
-                     &.active {
-                        color: #FFFFFF;
-                     }
-                  }
-               }
-            }
          }
 
          &-title {
