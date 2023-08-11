@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import AutomobileCard from "~/components/profile/Automobiles/AutomobileCard";
+import AutomobileCard from "~/components/profile/automobiles/AutomobileCard";
 import NewAutomobile from "~/components/profile/automobiles/NewAutomobile";
 
 

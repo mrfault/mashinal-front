@@ -20,14 +20,17 @@
             @close="showOptions = false">
             <div>
                <div class="w-100">
-                  <template v-for="(item, index) in options">
 
-                     <div v-if="item.show" :key="index" class="announcement-actions__content--item w-100"
-                          @click="item.method(item)">
-                        <inline-svg :src="`/new-icons/grid/${item.icon}`"/>
-                        <p>{{ $t(item.name) }}</p>
+                     <div class="announcement-actions__content--item w-100"
+                          @click="openModal(item)">
+                        <inline-svg :src="`/new-icons/grid/${options[0].icon}`"/>
+                        <p>{{ $t(options[0].name) }}</p>
                      </div>
-                  </template>
+                  <div class="announcement-actions__content--item w-100"
+                          @click="openEditModal(options[1])">
+                        <inline-svg :src="`/new-icons/grid/${options[1].icon}`"/>
+                        <p>{{ $t(options[1].name) }}</p>
+                     </div>
                </div>
 
             </div>
@@ -89,13 +92,13 @@ export default {
    computed: {
       options() {
          return [
-            {
-               name: 'details_of_search',
-               icon: 'eye.svg',
-               method: this.openDetails,
-               modalTitle: 'are_you_sure_you_want_to_deactivate_the_announcement',
-
-            },
+            // {
+            //    name: 'details_of_search',
+            //    icon: 'eye.svg',
+            //    method: this.openDetails,
+            //    modalTitle: 'are_you_sure_you_want_to_deactivate_the_announcement',
+            //
+            // },
             {
                name: 'edit',
                icon: 'fi_check-square.svg',
@@ -147,6 +150,10 @@ export default {
          }
       },
 
+      openEditModal(item){
+         this.$emit('openEditModal',item)
+      },
+
       editAnnounce() {
          return
       },
@@ -168,7 +175,69 @@ export default {
 
 
 <style lang="scss">
+.automobile-card-actions {
+   position: relative;
+   .announcement-actions {
+      height: 100%;
+      position: initial;
+      border: none;
 
+
+      &__button {
+         border: none;
+         padding: 10px 0;
+         height: 50px;
+         width: 100%;
+         cursor: pointer;
+         z-index: 0 !important;
+
+         svg {
+            path {
+               stroke: #1B2434 !important;
+            }
+         }
+
+         &:hover {
+            background: #cacaca;
+         }
+      }
+
+      &__content {
+         position: absolute;
+         top: 0;
+         left: calc(-100% - 180px);
+         z-index: 2 !important;
+         width: 200px;
+
+         background: #fff;
+      }
+
+      .btn-transparent {
+         width: 44px;
+         height: 44px;
+         border: none !important;
+
+         &:hover {
+            background: #cacaca;
+         }
+      }
+   }
+}
+
+
+.dark-mode {
+   .automobile-card-actions {
+      .announcement-actions__button {
+         background: #1b2434 !important;
+
+         svg {
+            path {
+               stroke: #fff !important;
+            }
+         }
+      }
+   }
+}
 
 
 </style>
