@@ -40,6 +40,24 @@ export const SearchMixin = {
             }, {});
          }
 
+         if (form.box) {
+            form.box = form.box.map(item => {
+               return { key: item }
+            });
+         }
+
+         if (form.fuel_type) {
+            form.fuel_type = form.fuel_type.map(item => {
+               return { key: item }
+            });
+         }
+
+         if (form.gearing) {
+            form.gearing = form.gearing.map(item => {
+               return { key: item }
+            });
+         }
+
          return form;
       },
 
@@ -84,17 +102,21 @@ export const SearchMixin = {
             this.rows.map(this.removeSearchRow);
             this.setBrand('', this.rows[0]);
             // reset other options
-            [
-               'min_year', 'max_year', 'price_from', 'price_to', 'region', 'min_capacity',
-               'max_capacity', 'mileage_from', 'mileage_to', 'damage', 'customs'
-            ].map(key => {
+            ['min_year', 'max_year', 'price_from', 'price_to', 'region', 'min_capacity',
+               'max_capacity', 'mileage_from', 'mileage_to', 'damage', 'customs']
+               .map(key => {
                this.$set(this.form, key, '');
             });
+
+            console.log('form1', this.form);
 
             ['body', 'korobka', 'engine_type', 'gearing', 'n_of_seats', 'colors']
                .map(key => {
                   this.$set(this.form, key, []);
                });
+
+            console.log('form2', this.form);
+
 
             ['credit', 'exchange_possible', 'is_matte', 'in_garanty', 'with_video']
                .map(key => {
@@ -143,6 +165,12 @@ export const SearchMixin = {
             this.gtagTrack('AW-600951956/Qeu4CILAyPIBEJSZx54C');
          } catch (e) {}
 
+         // let aaa = this.getFormData().fuel_type.map(item => {
+         //    return [...item.key]
+         // })
+
+         // console.log(aaa)
+         // console.log('getFormData', this.getFormData().fuel_type)
          // update route query params and search announcements
          let searchQuery = `${this.meta.param}=${encodeURI(JSON.stringify(this.getFormData()))}`;
          let searchUrl = `${this.$localePath(this.meta.path)}?${searchQuery}`;
@@ -291,6 +319,8 @@ export const SearchMixin = {
                   });
             } else {
                let searchFilter = JSON.stringify(this.getFormData());
+
+               console.log('searchFilter', searchFilter)
                // save search
                this.createSavedSearch({
                   search_type: this.meta.type,
