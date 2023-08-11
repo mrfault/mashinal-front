@@ -4,12 +4,23 @@
       <p class="ma-autos--subtitle">{{ $t('my_autos_desc') }}</p>
       <div class="ma-autos__content">
          <div class="ma-autos__content--item">
-            <new-automobile @carAdded="getAllCars"/>
+            <button class="ma-new-automobile__button" @click="showModal = true">
+               {{ $t('add_new_auto') }}
+               <icon name="plus"/>
+            </button>
          </div>
          <div v-for="(item,index) in userCabinetCars" class="ma-autos__content--item">
-            <automobile-card :item="item" :keyItem="index"/>
+            <automobile-card :item="item" :keyItem="index" @openEditModal="openEditModal(item)"/>
          </div>
       </div>
+      <new-automobile
+         :showModal="showModal"
+         :announcement="selectedCar"
+         :is-editing="isEditing"
+         @carEdited="getAllCars"
+         @carAdded="getAllCars"
+         @modalClosed="closeModal"
+      />
    </div>
 </template>
 
@@ -32,6 +43,29 @@ export default {
    methods: {
       async getAllCars() {
          await this.$store.dispatch('UserCabinetCarsGetAll');
+         this.selectedCar = null;
+      },
+      openNewCarModal(){
+        this.isEditing = false;
+        this.showModal = true;
+      },
+      openEditModal(item) {
+         this.isEditing = true;
+         this.selectedCar = item;
+         this.showModal = true;
+
+      },
+      closeModal(){
+         this.showModal = false;
+         this.isEditing = false;
+      }
+   },
+   data() {
+      return {
+         showEditModal: false,
+         selectedCar: null,
+         showModal: false,
+         isEditing: false,
       }
    },
    computed: {
@@ -43,72 +77,3 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.ma-autos {
-   margin-bottom: 150px;
-   .ma-title--md {
-      padding: 10px 10px 20px 10px;
-   }
-
-   &--subtitle {
-      padding: 10px 10px 20px 10px;
-      font: 400 16px/26px 'TTHoves';
-      color: rgba(27, 36, 52, 1);
-
-   }
-
-   &__content {
-      width: 100%;
-      display: flex;
-      flex-wrap: wrap;
-
-      &--item {
-         width: 50%;
-         padding: 10px;
-      }
-   }
-}
-
-@media(max-width: 599px) {
-   .ma-autos {
-      .ma-title--md {
-         padding: 10px 10px 20px 10px;
-      }
-
-      &--subtitle {
-         padding: 10px 10px 20px 10px;
-         font: 400 16px/26px 'TTHoves';
-      }
-
-      &__content {
-         width: 100%;
-         display: flex;
-         flex-wrap: wrap;
-
-         &--item {
-            width: 100%;
-            padding: 10px;
-         }
-      }
-   }
-}
-
-.dark-mode{
-   .ma-autos {
-      .ma-title--md {
-         color: #fff;
-      }
-
-      &--subtitle {
-         color: #fff;
-      }
-
-      &__content {
-
-         &--item {
-
-         }
-      }
-   }
-}
-</style>

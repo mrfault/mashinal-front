@@ -21,16 +21,16 @@
             <div>
                <div class="w-100">
 
-                     <div class="announcement-actions__content--item w-100"
-                          @click="openModal(item)">
-                        <inline-svg :src="`/new-icons/grid/${options[0].icon}`"/>
-                        <p>{{ $t(options[0].name) }}</p>
-                     </div>
                   <div class="announcement-actions__content--item w-100"
-                          @click="openEditModal(options[1])">
-                        <inline-svg :src="`/new-icons/grid/${options[1].icon}`"/>
-                        <p>{{ $t(options[1].name) }}</p>
-                     </div>
+                       @click="openEditModal(options[0])">
+                     <inline-svg :src="`/new-icons/grid/${options[0].icon}`"/>
+                     <p>{{ $t(options[0].name) }}</p>
+                  </div>
+                  <div class="announcement-actions__content--item w-100"
+                       @click="openDeleteModal(options[1])">
+                     <inline-svg :src="`/new-icons/grid/${options[1].icon}`"/>
+                     <p>{{ $t(options[1].name) }}</p>
+                  </div>
                </div>
 
             </div>
@@ -42,7 +42,7 @@
          <modal-popup
             :modal-class="!isMobileBreakpoint ? 'midsize': 'larger'"
             :title="$t(selectedItem.modalTitle)"
-            :toggle="showModal"
+            :toggle="showDeleteModal"
             @close="closeModal">
             <div class="remove-vehicle-modal">
                <div class="protocol-payment-modal__actions">
@@ -50,7 +50,7 @@
                      :class="{ 'pointer-events-none': pending }"
                      class="btn btn--white btn-dark-text"
                      type="button"
-                     @click="showModal = false"
+                     @click="showDeleteModal = false"
                   >
                      {{ $t('reject') }}
                   </button>
@@ -79,7 +79,7 @@ export default {
       return {
          isOpen: false,
          pending: false,
-         showModal: false,
+         showDeleteModal: false,
          showOptions: false,
          modal: {
             title: '',
@@ -102,13 +102,13 @@ export default {
             {
                name: 'edit',
                icon: 'fi_check-square.svg',
-               method: this.editAnnounce,
+               method: this.openEditModal,
             },
             {
                name: 'remove_bookmark',
                icon: 'trash.svg',
                show: true,
-               method: this.openModal,
+               method: this.openDeleteModal,
                modalTitle: 'are_you_sure_you_want_to_delete_the_car'
             },
          ]
@@ -117,6 +117,7 @@ export default {
    methods: {
       //dropdown
       toggleOpen(event) {
+         this.showOptions = false;
          event.stopPropagation();
          if (this.isMobileBreakpoint) {
             this.showOptions = true;
@@ -124,7 +125,7 @@ export default {
             this.isOpen = !this.isOpen;
             if (this.isOpen) {
                document.addEventListener('click', this.onClickOutside);
-            }else{
+            } else {
                this.isOpen = false;
             }
          }
@@ -137,12 +138,13 @@ export default {
          }
       },
 
-      openModal(item) {
+      openDeleteModal(item) {
+         this.showOptions = false;
          this.selectedItem = item;
-         this.showModal = true;
+         this.showDeleteModal = true;
       },
       closeModal() {
-         this.showModal = false;
+         this.showDeleteModal = false;
          this.modal = {
             title: '',
             buttonText: '',
@@ -150,8 +152,9 @@ export default {
          }
       },
 
-      openEditModal(item){
-         this.$emit('openEditModal',item)
+      openEditModal(item) {
+         this.$emit('openEditModal', true);
+    
       },
 
       editAnnounce() {
@@ -177,6 +180,7 @@ export default {
 <style lang="scss">
 .automobile-card-actions {
    position: relative;
+
    .announcement-actions {
       height: 100%;
       position: initial;

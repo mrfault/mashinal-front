@@ -1700,8 +1700,7 @@ export const actions = {
       // commit("mutate", {property: "userCabinetCars", value: res});
    },
    async UserCabinetCarsEdit({commit,state}, payload){
-      const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/me/cars/${payload.id}/edit?brand_id=${payload.brand_id}&model_id=${payload.model_id}&generation_id=${payload.generation_id}&car_type_id=${payload.car_type_id}&car_catalog_id=${payload.car_catalog_id}&vin=${payload.vin}&car_number=${payload.car_number}`);
-      // commit("mutate", {property: "userCabinetCars", value: res});
+      const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/me/cars/${payload.id}/update?brand_id=${payload.brand_id}&model_id=${payload.model_id}&generation_id=${payload.generation_id}&car_type_id=${payload.car_type_id}&car_catalog_id=${payload.car_catalog_id}&vin=${payload.vin}&car_number=${payload.car_number}`);
    },
    async UserCabinetCarsGetAll({commit,state}, payload){
       const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/me/cars`);

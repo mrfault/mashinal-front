@@ -1,20 +1,15 @@
 <template>
    <div class="ma-new-automobile">
-      <button class="ma-new-automobile__button" @click="showModal = true">
-         {{ $t('add_new_auto') }}
-         <icon name="plus"/>
-      </button>
-
       <modal-popup
          :modal-class="!isMobileBreakpoint ? 'midsize': 'larger'"
          :overflow-hidden="isMobileBreakpoint"
-         :title="$t('add_new_auto')"
+         :title="isEditing ? $t('edit') : $t('add_new_auto')"
          :toggle="showModal"
-         @close="showModal = false"
+         @close="closeAndReset"
       >
          <div>
-            <p class="ma-new-automobile__desc">{{ $t('add_new_auto_desc') }}</p>
-            <div class="row">
+            <p v-if="!isEditing" class="ma-new-automobile__desc">{{ $t('add_new_auto_desc') }}</p>
+            <div v-if="!isEditing" class="row">
                <!--               brand-->
                <div v-if="brandsList && brandsList.length" class="col-12">
                   <form-select
@@ -85,6 +80,8 @@
                      has-search
                   />
                </div>
+
+
                <!--               car_number-->
                <div v-if="form.modification" class="col-12 mt-3">
                   <form-text-input
@@ -100,11 +97,108 @@
                      key="vin"
                      v-model="form.vin"
                      :placeholder="$t('vin_carcase_number')"
-                     @change="removeError('vin')"
+                  />
+               </div>
+
+            </div>
+            <div v-if="isEditing" class="row">
+               <!--               brand-->
+               <div v-if="brandsList && brandsList.length" class="col-12">
+                  <form-select
+                     v-model="form.brand"
+                     :clear-option="false"
+                     :clear-placeholder="true"
+                     :input-placeholder="$t('mark_search')"
+                     :invalid="$v.form.brand.$error"
+                     :label="$t('mark')"
+                     :options="brandsList"
+                     disabled
+                     has-search
+                     @change="setBrand($event, 0)"
+                  />
+               </div>
+               <!--               model-->
+               <div v-if="form.brand && carModels && carModels.length" class="col-12 mt-3">
+                  <form-select
+                     v-model="form.model"
+                     :clear-option="false"
+                     :clear-placeholder="true"
+                     :input-placeholder="$t('model')"
+                     :invalid="$v.form.model.$error"
+                     :label="$t('model')"
+                     :options="carModels"
+                     disabled
+                     has-search
+                     @change="setModel($event, 0)"
+                  />
+               </div>
+               <!--               generation-->
+               <div v-if="form.model  && generations && generations.length" class="col-12 mt-3">
+                  <form-select
+                     v-model="form.generation"
+                     :clear-option="false"
+                     :clear-placeholder="true"
+                     :input-placeholder="$t('generation')"
+                     :invalid="$v.form.generation.$error"
+                     :label="$t('generation')"
+                     :options="generations"
+                     disabled
+                     has-search
+                     @change="setGeneration($event, 0)"
+
+                  />
+               </div>
+               <!--               body-->
+               <div v-if="form.generation && generationTypes && generationTypes.length" class="col-12 mt-3">
+                  <form-select
+                     v-model="form.body"
+                     :clear-option="false"
+                     :clear-placeholder="true"
+                     :input-placeholder="$t('body_type')"
+                     :invalid="$v.form.body.$error"
+                     :label="$t('body_type')"
+                     :options="generationTypes"
+                     disabled
+                     has-search
+                     @change="setBody($event, 0)"
+                  />
+               </div>
+               <!--               modifications-->
+               <div v-if="form.body && modifications && modifications.length" class="col-12 mt-3">
+                  <form-select
+                     v-model="form.modification"
+                     :clear-option="false"
+                     :clear-placeholder="true"
+                     :input-placeholder="$t('modification')"
+                     :invalid="$v.form.modification.$error"
+                     :label="$t('modification')"
+                     :options="modifications"
+                     disabled
+                     has-search
+                  />
+               </div>
+
+               <!--               car_number-->
+               <div class="col-12 mt-3">
+                  <form-text-input
+                     key="car_number"
+                     v-model="form.car_number"
+                     :invalid="$v.form.car_number.$error"
+                     :mask="'99 - AA - 999'"
+                     :placeholder="$t('car_number')"
+                  />
+               </div>
+               <div class="col-12 mt-3">
+                  <form-text-input
+                     key="vin"
+                     v-model="form.vin"
+                     :placeholder="$t('vin_carcase_number')"
                   />
                </div>
 
 
+            </div>
+            <div class="row">
                <div class="col-12 mt-3">
                   <button
                      :class="['btn btn--green w-100',{pending}]"
@@ -123,9 +217,14 @@ import {ToastErrorsMixin} from '~/mixins/toast-errors';
 import {minLength, required, requiredIf} from "vuelidate/lib/validators";
 
 export default {
+   props: {
+      isEditing: Boolean,
+      announcement: Object,
+      showModal: Boolean,
+   },
    data() {
       return {
-         showModal: false,
+
          form: {
             brand: null,
             model: null,
@@ -188,7 +287,7 @@ export default {
          'getModificationsList',
       ]),
       closeAndReset() {
-         this.showModal = false;
+         this.$emit("modalClosed", true)
          this.form = {
             brand: null,
             model: null,
@@ -292,35 +391,94 @@ export default {
          } else {
             try {
                this.pending = true;
-               const res = await this.$store.dispatch('UserCabinetCarsAdd', {
-                  brand_id: this.form.brand,
-                  model_id: this.form.model,
-                  generation_id: this.form.generation,
-                  car_type_id: this.form.body,
-                  car_catalog_id: this.form.modification,
-                  vin: this.form.vin,
-                  car_number: this.form.car_number.replace(/-|[ ]/g, '')
-               });
+               if (this.isEditing) {
+                  const res = await this.$store.dispatch('UserCabinetCarsEdit', {
+                     id: this.announcement.id,
+                     brand_id: this.form.brand,
+                     model_id: this.form.model,
+                     generation_id: this.form.generation,
+                     car_type_id: this.form.body,
+                     car_catalog_id: this.form.modification,
+                     vin: this.form.vin,
+                     car_number: this.form.car_number.replace(/-|[ ]/g, '')
+                  });
+               } else {
+                  const res = await this.$store.dispatch('UserCabinetCarsAdd', {
+                     brand_id: this.form.brand,
+                     model_id: this.form.model,
+                     generation_id: this.form.generation,
+                     car_type_id: this.form.body,
+                     car_catalog_id: this.form.modification,
+                     vin: this.form.vin,
+                     car_number: this.form.car_number.replace(/-|[ ]/g, '')
+                  });
+               }
                this.pending = false;
                this.closeAndReset();
-               this.$toasted.success(this.$t('car_added'));
-               this.$nuxt.refresh();
                this.$emit('carAdded', true)
+               this.$nuxt.refresh();
+               this.$toasted.success(this.$t('info_saved'));
             } catch (error) {
                if (error.response && error.response.status) {
-                  console.log('Error Status Code:', error.response.status);
                   if (error.response.status == 422) {
-                     console.log('hhhhhhhhhhhhh')
                      this.$toasted.error(this.$t('given_data_is_not_matching_car_number'));
                   } else if (error.response.status == 403) {
                      this.$toasted.error(this.$t('given_data_is_invalid'));
                   }
                } else {
-                  console.log('Unexpected error:', error);
+                  return
                }
                this.pending = false;
             }
          }
+      },
+      async editCar() {
+         this.$emit('carEdited', true)
+      },
+
+      async fillFormForEditing() {
+
+         this.form.brand = this.announcement.brand.id;
+         this.pending = true;
+         Promise.all([
+            await this.getModelsList(),
+            await this.getGenerationsList(),
+            await this.getGenerationTypesList(),
+            await this.getModificationsList(),
+         ])
+         this.form.modification = this.announcement.catalog_id
+         this.form.vin = this.announcement.vin;
+
+         this.form.car_number = this.announcement.car_number
+         this.pending = false;
+
+      },
+      async getModelsList() {
+         console.log("getModelsList")
+         await this.getModelsArray({value: this.announcement.brand.slug});
+         this.form.model = this.announcement.model.id
+      },
+      async getGenerationsList() {
+         await this.getModelGenerationsArray({
+            brand_slug: this.announcement.brand.slug,
+            value: this.announcement.model.slug
+         });
+         this.form.generation = this.announcement.generation.id;
+      },
+      async getGenerationTypesList() {
+         await this.getGenerationTypes(
+            {
+               brand: this.form.brandSlug,
+               model: this.form.modelSlug,
+               generation: this.form.generation
+            })
+         this.form.body = this.announcement.car_type.id
+      },
+      async getModificationsList() {
+         await this.$store.dispatch('comparison/getModifications', {
+            car_type_id: this.announcement.car_type.id,
+            generation_id: this.announcement.generation.id,
+         });
       }
 
 
@@ -335,60 +493,15 @@ export default {
          car_number: {required}
       }
    },
-
    mounted() {
-      this.getBrands()
-   }
+      this.getBrands();
+   },
+   watch: {
+      isEditing(newValue) {
+         if (newValue) {
+            this.fillFormForEditing();
+         }
+      },
+   },
 }
 </script>
-
-<style lang="scss">
-.ma-new-automobile {
-   width: 100%;
-
-
-   &__button {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      height: 104px;
-      border: 1px dashed rgba(154, 164, 178, 1);
-      border-radius: 12px;
-      background: #fff;
-
-      &:hover {
-         background: rgba(#dadada, 0.3);
-      }
-
-      i {
-         margin-left: 16px;
-         margin-top: 2px;
-      }
-   }
-
-   &__desc {
-      font: 400 18px/22px 'TTHoves';
-      color: #1B2434;
-      margin-bottom: 24px;
-   }
-}
-
-
-.border-red {
-   border: 1px solid red;
-}
-
-.dark-mode {
-   .ma-new-automobile {
-      &__button {
-         background: #364152;
-         color: #fff;
-      }
-
-      &__desc {
-         color: #fff;
-      }
-   }
-}
-</style>
