@@ -110,33 +110,35 @@
          </div>
       </div>
 
-      <Cap>
-         <template #left>
-            <h3>{{ $t('auto_salon_ads') }}</h3>
-         </template>
-
-         <template #right>
-            <form-select
-               :label="$t('show_by_date')"
-               :options="sortItems"
-               :clearPlaceholder="true"
-               :clear-option="false"
-               v-model="sorting"
-            />
-         </template>
-      </Cap>
-
       <grid
-         v-if="salonSingle.announcements.data.length"
-         :announcements="salonSingle.announcements.data"
-         :paginate="$paginate(salonSingle.announcements)"
+         v-if="autosalonAnnouncementsId?.data?.length"
+         :announcements="autosalonAnnouncementsId?.data"
+         :paginate="$paginate(autosalonAnnouncementsId?.meta)"
          :pending="pending"
          @pending="pending = true"
          @change-page="changePage"
          escape-duplicates
          :needAutoScroll="true"
          :hasContainer="false"
-      />
+      >
+         <template #cap>
+            <Cap>
+               <template #left>
+                  <h3>{{ $t('auto_salon_ads') }}</h3>
+               </template>
+
+               <template #right>
+                  <form-select
+                     :label="$t('show_by_date')"
+                     :options="sortItems"
+                     :clearPlaceholder="true"
+                     :clear-option="false"
+                     v-model="sorting"
+                  />
+               </template>
+            </Cap>
+         </template>
+      </grid>
 
       <gallery
          v-if="salonSingle.gallery_urls.length"
@@ -180,7 +182,7 @@
       },
 
       computed: {
-         ...mapGetters(['salonSingle']),
+         ...mapGetters(['salonSingle', 'autosalonAnnouncementsId']),
 
          hasWorkingHours() {
             return !!this.getWorkingDays(
@@ -201,7 +203,7 @@
 
          isShop() {
             return this.routeName.includes('parts')
-         },
+         }
       },
 
       methods: {

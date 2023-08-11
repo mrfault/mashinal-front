@@ -231,6 +231,10 @@ export default {
          await this.getGroupMessages(groupId);
          await this.$router.push({query: {group: groupId}});
          this.activeMessage = messageId;
+         setTimeout(() => {
+            this.$root.$refs.ChatMessages.scrollToBottom('chat');
+            console.log('ok');
+         }, 1000);
       },
 
       isBlocked(group) {
@@ -547,14 +551,14 @@ export default {
    .dark-mode {
       .action-bar {
          background: #121926 !important;
-         border: 1px solid #364152!important;
+         border-bottom: 1px solid #364152!important;
       }
    }
 
    .dark-mode .mobile-screen {
       .action-bar {
          background: #121926 !important;
-         border: 1px solid #364152!important;
+         border-bottom: 1px solid #364152!important;
       }
 
       .chat-item:first-child {

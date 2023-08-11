@@ -91,7 +91,7 @@
          <div :class="['messages-list', {'attachments-preview-active': !!Object.keys(files).length}]">
             <div class="scroll-container" id="chat">
                <client-only>
-                  <vue-scroll class="white-scroll-bg"  ref="chat">
+                  <vue-scroll class="white-scroll-bg" ref="chat">
                      <div class="messages-list-items">
                         <div class="messages-list-items_group" v-for="(messages, date) in messagesByDate(group.id)"
                              :key="date">
@@ -201,6 +201,9 @@ export default {
       MessageItem,
       MessageSend,
       ImageSliderMessage
+   },
+   created() {
+      this.$root.$refs.ChatMessages = this;
    },
    data() {
       return {
@@ -469,6 +472,14 @@ export default {
             }
          });
       });
+
+      setTimeout(() => {
+         this.scrollToBottom('chat');
+         console.log('ok');
+      }, 1000);
+   },
+   ready() {
+
    },
    beforeDestroy() {
       this.connectEcho('typing.' + this.user.id).stopListeningForWhisper('typing');
