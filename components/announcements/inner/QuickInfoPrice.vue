@@ -1,20 +1,29 @@
 <template>
-   <div class="quickInfoPrice">
-      <div class="quickInfoPrice__head">
-         <span>{{ announcement.price }}</span>
+   <div :class="['quickInfoPrice', {'plates' : type === 'plates'}]">
+      <template v-if="type !== 'plates'">
+         <div class="quickInfoPrice__head">
+            <span>{{ announcement.price }}</span>
 
-         <inline-svg
-            src="/icons/chevron-down.svg"
-            width="18px"
-            height="18px"
-         />
-      </div>
+            <inline-svg
+               src="/icons/chevron-down.svg"
+               width="18px"
+               height="18px"
+            />
+         </div>
 
-      <div class="quickInfoPrice__main">
-<!--         v-if="type !== 'parts'"-->
-         <p>~ {{ announcement.price_converted }}</p>
-         <p>~ {{ announcement.price_converted }}</p>
-      </div>
+         <div class="quickInfoPrice__main">
+            <p>~ {{ announcement.price_converted }}</p>
+            <p>~ {{ announcement.price_converted }}</p>
+         </div>
+      </template>
+
+      <template v-else>
+         <p>{{ announcement.price }}</p>
+
+         <inline-svg src="/icons/exchange_2.svg" />
+
+         <p>{{ announcement.price_converted }}</p>
+      </template>
    </div>
 </template>
 
@@ -94,6 +103,26 @@
             &:not(:first-child) {
                margin-top: 10px;
             }
+         }
+      }
+
+      &.plates {
+         display: flex;
+         align-items: center;
+         gap: 8px;
+         margin: 0;
+         padding: 0 0 18px 0;
+         cursor: initial;
+
+         p {
+            font-size: 24px;
+            font-weight: 600;
+            line-height: 28px;
+            color: #1B2434;
+         }
+
+         &:hover {
+            box-shadow: unset;
          }
       }
    }

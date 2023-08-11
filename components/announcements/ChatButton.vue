@@ -45,6 +45,7 @@
    .chat-button {
       font-size: 13px;
       height: 56px;
+      transition: all .3s;
    }
 
    .dark-mode {

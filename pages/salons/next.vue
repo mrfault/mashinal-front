@@ -103,6 +103,7 @@
                </div>
             </div>
          </div>
+
          <div class="row">
             <div class="col-md-12">
                <div :class="['pages-salons autosalon list-view']" v-if="!showMapsView">
@@ -147,215 +148,215 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex'
-import SalonSearchForm from '~/components/salons/SalonSearchForm'
-import SalonFiltersForm from '~/components/salons/SalonFiltersForm'
-import SalonCard from '~/components/salons/SalonCard'
-import NoResults from '~/components/elements/NoResults'
-import ClusteredMap from '~/components/elements/ClusteredMap'
-import Banners from '~/components/parts/Banners'
-import Banner from "~/components/elements/Banner.vue";
-import Cap from "~/components/elements/Cap.vue";
-import is from "vue2-datepicker/locale/es/is";
-export default {
-   name: 'pages-salons',
+   import { mapGetters, mapActions } from 'vuex'
+   import SalonSearchForm from '~/components/salons/SalonSearchForm'
+   import SalonFiltersForm from '~/components/salons/SalonFiltersForm'
+   import SalonCard from '~/components/salons/SalonCard'
+   import NoResults from '~/components/elements/NoResults'
+   import ClusteredMap from '~/components/elements/ClusteredMap'
+   import Banners from '~/components/parts/Banners'
+   import Banner from "~/components/elements/Banner.vue";
+   import Cap from "~/components/elements/Cap.vue";
+   import is from "vue2-datepicker/locale/es/is";
+   export default {
+      name: 'pages-salons',
 
-   transition: 'fade-y-20',
+      transition: 'fade-y-20',
 
-   components: {
-      Banner,
-      SalonSearchForm,
-      SalonFiltersForm,
-      SalonCard,
-      NoResults,
-      ClusteredMap,
-      Banners,
-      Cap
-   },
-
-   nuxtI18n: {
-      paths: {
-         az: '/salonlar/novbeti',
-      },
-   },
-
-   head() {
-      return this.$headMeta({
-         title: this.$t('salons'),
-      })
-   },
-
-   data() {
-      return {
-         showMapsView: false
-      }
-   },
-
-   async asyncData({store}) {
-      await Promise.all([
-         store.dispatch('getBrands'),
-         store.dispatch('getSalonsList', {type: 1}),
-      ])
-      return {
-         collapse: false,
-         disableCollapse: true,
-         showSearch: false,
-         searchFormType: 0,
-         mapKey: 0,
-      }
-   },
-
-   computed: {
-      is() {
-         return is
-      },
-      ...mapGetters(['salonsFiltered', 'salonsInBounds', 'mapView']),
-      nonOfficialSalons() {
-         return this.salonsFiltered.filter(item => !item.is_official);
-      },
-      officialSalons() {
-         return this.salonsFiltered.filter(item => item.is_official).sort((a, b) => a.name.localeCompare(b.name));
-      },
-      crumbs() {
-         return [{name: this.$t('auto_salons')}]
+      components: {
+         Banner,
+         SalonSearchForm,
+         SalonFiltersForm,
+         SalonCard,
+         NoResults,
+         ClusteredMap,
+         Banners,
+         Cap
       },
 
-      salonsInView() {
-         return this.salonsFiltered.filter((salon) => {
-            return this.salonsInBounds
-               ? this.salonsInBounds.includes(salon.id)
-               : true
+      nuxtI18n: {
+         paths: {
+            az: '/salonlar/novbeti',
+         },
+      },
+
+      head() {
+         return this.$headMeta({
+            title: this.$t('salons'),
          })
       },
-      searchFormTypeOptions() {
-         return [
-            {key: 0, name: this.$t('search_by_salon')},
-            {key: 1, name: this.$t('search_by_auto')},
-         ]
-      },
-   },
 
-   methods: {
-      ...mapActions([
-         'setFooterVisibility',
-         'setMapView',
-         'updateSalonsInBounds',
-         'updateSalonsSearchFilters',
-         'updateSalonsFilters',
-      ]),
-      setView() {
-        this.showMapsView = !this.showMapsView;
-      },
-      toggleSearch() {
-         this.showSearch = !this.showSearch
+      data() {
+         return {
+            showMapsView: false
+         }
       },
 
-      callEvent() {
-         this.$nextTick(() => {
-            this.$nuxt.$emit('showMapEvent', this.mapView)
-            window.dispatchEvent(new Event('scroll'));
-         });
+      async asyncData({store}) {
+         await Promise.all([
+            store.dispatch('getBrands'),
+            store.dispatch('getSalonsList', {type: 1}),
+         ])
+         return {
+            collapse: false,
+            disableCollapse: true,
+            showSearch: false,
+            searchFormType: 0,
+            mapKey: 0,
+         }
+      },
+
+      computed: {
+         is() {
+            return is
+         },
+         ...mapGetters(['salonsFiltered', 'salonsInBounds', 'mapView']),
+         nonOfficialSalons() {
+            return this.salonsFiltered.filter(item => !item.is_official);
+         },
+         officialSalons() {
+            return this.salonsFiltered.filter(item => item.is_official).sort((a, b) => a.name.localeCompare(b.name));
+         },
+         crumbs() {
+            return [{name: this.$t('auto_salons')}]
+         },
+
+         salonsInView() {
+            return this.salonsFiltered.filter((salon) => {
+               return this.salonsInBounds
+                  ? this.salonsInBounds.includes(salon.id)
+                  : true
+            })
+         },
+         searchFormTypeOptions() {
+            return [
+               {key: 0, name: this.$t('search_by_salon')},
+               {key: 1, name: this.$t('search_by_auto')},
+            ]
+         },
+      },
+
+      methods: {
+         ...mapActions([
+            'setFooterVisibility',
+            'setMapView',
+            'updateSalonsInBounds',
+            'updateSalonsSearchFilters',
+            'updateSalonsFilters',
+         ]),
+         setView() {
+           this.showMapsView = !this.showMapsView;
+         },
+         toggleSearch() {
+            this.showSearch = !this.showSearch
+         },
+
+         callEvent() {
+            this.$nextTick(() => {
+               this.$nuxt.$emit('showMapEvent', this.mapView)
+               window.dispatchEvent(new Event('scroll'));
+            });
+         }
+      },
+
+      watch: {
+         mapView(visible) {
+            this.mapKey = 1
+            this.setFooterVisibility(!visible)
+         },
+      },
+
+      created() {
+         this.$nuxt.$on('search-icon-click', this.toggleSearch)
+      },
+
+      beforeDestroy() {
+         this.setMapView(false)
+         this.setFooterVisibility(true)
+         this.updateSalonsFilters({})
+         this.updateSalonsSearchFilters({})
+         this.$nuxt.$off('search-icon-click', this.toggleSearch)
       }
-   },
-
-   watch: {
-      mapView(visible) {
-         this.mapKey = 1
-         this.setFooterVisibility(!visible)
-      },
-   },
-
-   created() {
-      this.$nuxt.$on('search-icon-click', this.toggleSearch)
-   },
-
-   beforeDestroy() {
-      this.setMapView(false)
-      this.setFooterVisibility(true)
-      this.updateSalonsFilters({})
-      this.updateSalonsSearchFilters({})
-      this.$nuxt.$off('search-icon-click', this.toggleSearch)
-   },
-}
+   }
 </script>
 
-<style>
-.pages-salons-wrapper{
-   margin: 0;
-}
-.map-viewer{
-   width: 100%;
-   height: 624px;
-   flex-shrink: 0;
-   border-radius: 12px;
-   border: 1px solid var(--gray-300, #CDD5DF);
-   background: lightgray 50% / cover no-repeat;
-}
-.salon-card-list.maps-list{
-   height: 624px;
-   max-height: 624px;
-   overflow-y: auto;
-   overflow-x: hidden;
-   margin-top: 0!important;
-}
-.salon-card-list.maps-list .salon-card-list__item{
-   margin-bottom: 10px;
-}
-.salon-card-list__item:last-child{
-   margin-bottom: 0;
-}
-.salon-card-list.maps-list:not(.row) > div:not(:last-child) .salon-card::after{
-   border: 0!important;
-}
-.salon-card-list.maps-list .salon-card-list__item{
-   border-radius: 12px;
-   border: 1px solid var(--gray-300, #CDD5DF);
-   background: #FFF;
-}
-.map-view{
-   background-color: #FFF;
-}
-.pages-salons{
-   padding-top: 32px;
-}
-.ymaps-2-1-79-map,
-.ymaps-2-1-79-inner-panes,
-.ymaps-2-1-79-events-pane {
-   border-radius: 12px!important;
-}
-.ymaps-2-1-79-balloon__tail{
-   display: none!important;
-}
-.ymaps-2-1-79-balloon__content .salon-announce{
-   display: none!important;
-}
-.ymaps-2-1-79-balloon__layout{
-    border-radius: 8px!important;
-}
-.ymaps-2-1-79-balloon__content .salon-card .salon-info {
-   width: calc(100% - 143px)!important;
-}
-.ymaps-2-1-79-balloon__content .balloon-content .salon-card .d-flex{
-   align-items: center!important;
-}
-.ymaps-2-1-79-balloon__content .balloon-content .salon-card:hover{
-   border: 1px solid transparent!important;
-   border-radius: 8px!important;
-}
-.ymaps-2-1-79-balloon__content{
-   padding: 0!important;
-   border-radius: 8px!important;
-}
-.dark-mode{
+<style lang="scss">
+   .pages-salons-wrapper{
+      margin: 0;
+   }
+   .map-viewer{
+      width: 100%;
+      height: 624px;
+      flex-shrink: 0;
+      border-radius: 12px;
+      border: 1px solid var(--gray-300, #CDD5DF);
+      background: lightgray 50% / cover no-repeat;
+   }
+   .salon-card-list.maps-list{
+      height: 624px;
+      max-height: 624px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      margin-top: 0!important;
+   }
+   .salon-card-list.maps-list .salon-card-list__item{
+      margin-bottom: 10px;
+   }
+   .salon-card-list__item:last-child{
+      margin-bottom: 0;
+   }
+   .salon-card-list.maps-list:not(.row) > div:not(:last-child) .salon-card::after{
+      border: 0!important;
+   }
+   .salon-card-list.maps-list .salon-card-list__item{
+      border-radius: 12px;
+      border: 1px solid var(--gray-300, #CDD5DF);
+      background: #FFF;
+   }
    .map-view{
-      background-color: var(--gray-900, #121926);
+      background-color: #FFF;
    }
-   .ymaps-2-1-79-balloon__close-button{
-      color: #FFF!important;
+   .pages-salons{
+      padding-top: 32px;
    }
-   .cap svg path {
-      stroke: #FFF!important;
-      fill: #FFF!important;
+   .ymaps-2-1-79-map,
+   .ymaps-2-1-79-inner-panes,
+   .ymaps-2-1-79-events-pane {
+      border-radius: 12px!important;
    }
-}
+   .ymaps-2-1-79-balloon__tail{
+      display: none!important;
+   }
+   .ymaps-2-1-79-balloon__content .salon-announce{
+      display: none!important;
+   }
+   .ymaps-2-1-79-balloon__layout{
+       border-radius: 8px!important;
+   }
+   .ymaps-2-1-79-balloon__content .salon-card .salon-info {
+      width: calc(100% - 143px)!important;
+   }
+   .ymaps-2-1-79-balloon__content .balloon-content .salon-card .d-flex{
+      align-items: center!important;
+   }
+   .ymaps-2-1-79-balloon__content .balloon-content .salon-card:hover{
+      border: 1px solid transparent!important;
+      border-radius: 8px!important;
+   }
+   .ymaps-2-1-79-balloon__content{
+      padding: 0!important;
+      border-radius: 8px!important;
+   }
+   .dark-mode{
+      .map-view{
+         background-color: var(--gray-900, #121926);
+      }
+      .ymaps-2-1-79-balloon__close-button{
+         color: #FFF!important;
+      }
+      .cap svg path {
+         stroke: #FFF!important;
+         fill: #FFF!important;
+      }
+   }
 </style>

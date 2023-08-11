@@ -57,6 +57,8 @@
                         {{ getCarDetails && getCarDetails.model }}
                         {{ getCarDetails && getCarDetails.generation && getCarDetails.generation[locale] }}
                      </h3>
+
+                     <h3 v-else>{{ $t('announcements') }}</h3>
                   </template>
 
                   <template #right>
@@ -129,7 +131,7 @@
       async asyncData({store, route}) {
          let post = {...JSON.parse(route.query.filter || '{}')};
          let page = route.query.page || 1;
-         let searchParams = {url: '/moto/motorcycle', prefix: 'moto'}
+         let searchParams = {url: '/moto', prefix: 'moto'}
 
          await Promise.all([
             store.dispatch('fetchAllAnnouncementsHome'),

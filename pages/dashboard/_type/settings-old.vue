@@ -219,6 +219,7 @@ export default {
          title: this.$t('user_information_edit')
       });
    },
+
    async asyncData({store, route, app}) {
       await Promise.all([
          store.dispatch('getOptions'),
@@ -262,6 +263,7 @@ export default {
          hasCover: !!salon.cover
       }
    },
+
    computed: {
       ...mapGetters(['sellOptions', 'mySalon']),
 
@@ -295,6 +297,7 @@ export default {
          })) || []
       }
    },
+
    methods: {
       ...mapActions(['updateMySalon', 'getMySalon']),
       async removeImage(type) {
@@ -451,6 +454,7 @@ export default {
          this.files = files
       }
    },
+
    created() {
       if (!this.form.phones.length)
          this.$set(this.form.phones, 0, '');

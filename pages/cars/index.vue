@@ -43,9 +43,9 @@
 
          <grid
             class="mt-2"
-            v-if="monetizedCars.length"
+            v-if="monetizedCars?.length"
             :announcements="monetizedCars"
-            :numberOfAds="monetizedCars.length"
+            :numberOfAds="monetizedCars?.length"
             :hasContainer="false"
             escape-duplicates
          >
@@ -60,11 +60,11 @@
 
 <!--         <template v-if="!$route.query.saved">-->
             <grid
-               v-if="carsAnnouncements.meta.total > 0"
-               :announcements="carsAnnouncements.data"
+               v-if="carsAnnouncements?.meta?.total > 0"
+               :announcements="carsAnnouncements?.data"
                :paginate="$paginate(carsAnnouncements)"
                :hasContainer="false"
-               :numberOfAds="carsAnnouncements.total"
+               :numberOfAds="carsAnnouncements?.total"
                :pending="pending"
                @change-page="searchCars"
                escape-duplicates
@@ -77,6 +77,8 @@
                            {{ getCarDetails && getCarDetails.model }}
                            {{ getCarDetails && getCarDetails.generation && getCarDetails.generation[locale] }}
                         </h3>
+
+                        <h3 v-else>{{ $t('announcements') }}</h3>
                      </template>
 
                      <template #right>
@@ -164,8 +166,13 @@
          }
          let page = route.query.page || 1;
          let searchParams = { url: '/car', prefix: 'cars' }
-         if (!store.state.carsAnnouncements.total)
-            await store.dispatch('getGridSearch', {...searchParams, post, page})
+         if (!store.state.carsAnnouncements.total) await store.dispatch('getGridSearch', {...searchParams, post, page})
+
+         // if (route.query.monetized) {
+         //    store.dispatch('fetchMonetizedAnnouncementsHome');
+         //    console.log('1')
+         // } else {
+         //    console.log('2')
 
             await Promise.all([
                store.dispatch('getBrandsOnlyExists'),
@@ -196,6 +203,7 @@
                      })
                   }),
             ]);
+         // }
 
          if ($auth.loggedIn) {
             await store.dispatch('fetchSavedSearch', {
@@ -261,12 +269,16 @@
          },
 
          getCarDetails() {
-            const carInfo = JSON.parse(this.$route.query.car_filter);
+            let carInfo;
 
-            for (let i = 0; i < this.brandsList.length; i++) {
-               if (this.brandsList[i].id === carInfo.additional_brands[0].brand) {
+            if (this.$route?.query?.car_filter) {
+               carInfo = JSON.parse(this.$route?.query?.car_filter);
+            }
+
+            for (let i = 0; i < this.brandsList?.length; i++) {
+               if (this.brandsList[i]?.id === carInfo?.additional_brands[0]?.brand) {
                   return {
-                     brand: this.brandsList[i].name,
+                     brand: this.brandsList[i]?.name,
                      model: carInfo?.additional_brands[0]?.model_name,
                      generation: carInfo?.additional_brands[0]?.generation_name
                   }

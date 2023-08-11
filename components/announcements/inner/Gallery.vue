@@ -15,14 +15,14 @@
                >
                   <div
                      style="width: 100%;"
-                     v-if="index === 0 && announcement?.media?.images_360 && announcement?.media?.images_360.length"
+                     v-if="index === 0 && announcement?.media?.images_360 && announcement?.media?.images_360?.length"
                   >
                      <div class="position-relative">
                         <no-ssr>
                            <Interior360Viewer :url="announcement?.media?.interior_360" v-if="showInterior"/>
                            <vue-three-sixty
                               v-else
-                              :amount="announcement?.media?.images_360.length"
+                              :amount="announcement?.media?.images_360?.length"
                               buttonClass="d-none"
                               disableZoom
                               :files="announcement?.media?.images_360"
@@ -91,12 +91,14 @@
          </div>
 
          <div class="inner-gallery-lightbox" v-touch:swipe.top="handleSwipeTop">
+<!--            <pre style="background-color: black">{{ slides.types }}</pre>-->
+<!--<pre>{{announcement}}</pre>-->
             <template v-if="isMobileBreakpoint">
                <FsLightbox
                   :zoomIncrement="0"
                   :toggler="toggleFsLightbox"
                   :sources="getSourcesFsLightbox"
-                  :types="announcement?.media?.main"
+                  :types="slides.types"
                   :slide="currentSlide + 1"
                   :key="lightboxKey"
                   :onClose="refreshLightbox"
@@ -107,7 +109,7 @@
             </template>
 
             <transition-group name="fade">
-               <template v-if="(showLightbox && isMobileBreakpoint) ||(!isMobileBreakpoint && showImagesSlider)">
+               <template v-if="(showLightbox && isMobileBreakpoint) || (!isMobileBreakpoint && showImagesSlider)">
                   <div class="blur-bg" :key="0">
 <!--                     <img :src="showYtVideo(currentSlide)? getYtVideoImage('hq'): $withBaseUrl(slides.main[currentSlide])" alt="" />-->
                   </div>
@@ -121,6 +123,7 @@
                         <template v-if="where === 'announcement'">
                            <h3>{{ getAnnouncementTitle(announcement) }}</h3>
                            <h4>{{ announcement.price }}</h4>
+
                            <div class="row" v-if="announcement.status != 3">
                               <div class="col" v-if="canSendMessage(announcement)">
                                  <chat-button
@@ -128,6 +131,7 @@
                                     :className="'white-outline'"
                                  />
                               </div>
+
                               <div class="col">
                                  <call-button :phone="announcement.user.phone"/>
                               </div>
@@ -141,13 +145,12 @@
                      </div>
                   </div>
 
-                  <div class="blur-bg_slider" :key="2" v-else>
-<!--                     <pre>{{announcement?.media?.main}}</pre>-->
-
+                  <div class="blur-bg_slider" :key="2">
+<!--                     <pre>{{slides}}</pre>-->
                      <images-slider
                         :announcement="announcement"
                         :current-slide="currentSlide"
-                        :slides="announcement?.media?.main"
+                        :slides="slides"
                         :has-sidebar="where === 'announcement'"
                         @close="closeLightbox"
                         @slide-change="currentSlide = $event"
@@ -266,14 +269,14 @@
          slidePrev() {
             if (!this.showSlider) return
             if (this.gallerySwiper.activeIndex === 0) {
-               this.gallerySwiper.slideTo(this.announcement?.media?.main.length - 1)
+               this.gallerySwiper.slideTo(this.announcement?.media?.main?.length - 1)
             } else this.gallerySwiper.slidePrev()
             this.updateTouchEvents()
          },
 
          slideNext() {
             if (!this.showSlider) return
-            if (this.announcement?.media?.main.length - 1 === this.gallerySwiper.activeIndex) {
+            if (this.announcement?.media?.main?.length - 1 === this.gallerySwiper.activeIndex) {
                this.gallerySwiper.slideTo(0)
             } else this.gallerySwiper.slideNext()
             this.updateTouchEvents()
@@ -326,27 +329,30 @@
 
          showInteriorCondition() {
             return this.currentSlide === 0 &&
-               this.announcement.images_360 &&
-               this.announcement.images_360.length &&
-               this.announcement.interior_360
+               this.announcement?.images_360 &&
+               this.announcement?.images_360?.length &&
+               this.announcement?.interior_360
          },
 
          getSourcesFsLightbox() {
-            // if (this.slides.types[0] === 'custom') {
-            //    return [
-            //       {
-            //          component: this.showInterior ? 'interior360-viewer' : 'vue-three-sixty',
-            //          props: {
-            //             onFsLightBox: true,
-            //             url: this.announcement?.media?.interior_360,
-            //             files: this.announcement?.media?.images_360,
-            //             amount: this.announcement?.media?.images_360.length,
-            //             fromFsPopup: true,
-            //          },
-            //       },
-            //       ...this.announcement?.media?.main.slice(1, this.announcement?.media?.main.length),
-            //    ]
-            // }
+            console.log('announcement', this.announcement)
+            console.log('slides', this.slides)
+
+            if (this.slides.types[0] === 'custom') {
+               return [
+                  {
+                     component: this.showInterior ? 'interior360-viewer' : 'vue-three-sixty',
+                     props: {
+                        onFsLightBox: true,
+                        url: this.announcement?.media?.interior_360,
+                        files: this.announcement?.media?.images_360,
+                        amount: this.announcement?.media?.images_360.length,
+                        fromFsPopup: true,
+                     },
+                  },
+                  ...this.announcement?.media?.main.slice(1, this.announcement?.media?.main.length),
+               ]
+            }
             return this.announcement?.media?.main
          },
 
@@ -360,10 +366,14 @@
                thumbs = this.getMediaByKey(this.media, 'thumb')
                main = this.getMediaByKey(this.media, 'main')
             } else if (this.where === 'announcement') {
-               let media = this.announcement.media
-               if (media.length === 0) return []
-               thumbs = this.getMediaByKey(media, 'thumb_inner')
-               main = this.getMediaByKey(media, 'main_inner')
+               let media = this.announcement.media.main
+               if (media?.length === 0) return []
+               thumbs = media.map((item) => {
+                  return item.thumb;
+               })
+               main = media.map((item) => {
+                  return item.main_inner;
+               })
                if (this.announcement.youtube_id) {
                   hasVideo = true
                   thumbs.splice(1, 0, this.getYtVideoImage('hq'))
@@ -373,10 +383,7 @@
                      `https://www.youtube.com/watch?v=${this.announcement.youtube_id}`,
                   )
                }
-               if (
-                  this.announcement.images_360 &&
-                  this.announcement.images_360.length
-               ) {
+               if (this.announcement?.images_360 && this.announcement?.images_360?.length) {
                   thumbs.splice(0, 0, this.announcement.images_360[0])
                   main.splice(0, 0, this.announcement.images_360[0])
                   has360 = true
@@ -443,7 +450,7 @@
 
                   this.gallerySwiper.on('touchEnd', (e) => {
                      const tolerance = 100
-                     const totalSlidesLen = this.gallerySwiper.slides.length
+                     const totalSlidesLen = this.gallerySwiper?.slides?.length
 
                      const diff = (() => {
                         if (e.type === 'touchend') {
@@ -484,11 +491,11 @@
 </script>
 
 <style lang="scss">
-   @media only screen and (min-width: 1024px) {
-      .inner-gallery .swiper-wrapper {
-         max-height: 630px;
-      }
-   }
+   //@media only screen and (min-width: 1024px) {
+   //   .inner-gallery .swiper-wrapper {
+   //      max-height: 630px;
+   //   }
+   //}
 
    .fslightbox-source {
       width: 100vw !important;

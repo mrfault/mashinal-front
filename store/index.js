@@ -68,6 +68,9 @@ const getInitialState = () => ({
    plateNumbers: [],
    brandsList: [],
    monetizedCars: [],
+   motoGearbox: [],
+   motoTransmissions: [],
+   motoFuelTypes: [],
    mainPartsAnnouncements: {},
    carsAnnouncements: [],
    motoAnnouncements: [],
@@ -258,6 +261,9 @@ export const getters = {
    pageRef: s => s.pageRef,
    hideFooter: s => s.hideFooter,
    monetizedCars: s => s.monetizedCars,
+   motoGearbox: s => s.motoGearbox,
+   motoTransmissions: s => s.motoTransmissions,
+   motoFuelTypes: s => s.motoFuelTypes,
    // saved search & favorites
    savedSearchList: s => s.savedSearchList,
    carModelsExclude: s => s.carModelsExclude,
@@ -490,6 +496,21 @@ export const actions = {
       const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/car/${id}`);
       commit("mutate", {property: "announcement", value: res});
    },
+
+   async getMotoGearboxV2({commit}) {
+      const res = await this.$axios.$get('https://v2dev.mashin.al/api/v2/moto/gearbox');
+      commit("mutate", {property: "motoGearbox", value: res});
+   },
+
+   async getMotoTransmissionsV2({commit}) {
+      const res = await this.$axios.$get('https://v2dev.mashin.al/api/v2/moto/transmissions');
+      commit("mutate", {property: "motoTransmissions", value: res});
+   },
+
+   async getMotoFuelTypesV2({commit}) {
+      const res = await this.$axios.$get('https://v2dev.mashin.al/api/v2/moto/fuel-types');
+      commit("mutate", {property: "motoFuelTypes", value: res});
+   },
    // New API --------------------
 
    async fetchAgreements({commit}) {
@@ -520,8 +541,8 @@ export const actions = {
    },
 
    async fetchRegionNumbers({commit}) {
-      const res = await this.$axios.$get("/regions-and-serial-number")
-      commit("mutate", {property: "regionNumbers", value: res.data || []})
+      const res = await this.$axios.$get("https://v2dev.mashin.al/api/v2/regions/list-serial-number")
+      commit("mutate", {property: "regionNumbers", value: res || []})
    },
 
    async fetchRegistrationMarks({commit}, data = '') {
