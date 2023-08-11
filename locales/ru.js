@@ -2632,7 +2632,7 @@ export default {
    "garage_account_desc":"Измени данные профиля",
    "profile_balance_desc":"Проверь баланс",
    "logout_account_desc":"Выйти из аккаунта",
-   'profile_settings_desc': "Настройки пользователя, имя, фото профиля и т. д.",
+   'profile_settings_desc': "Темный режим, настройки языка и уведомлений и т. д.",
    "garage_penalties_desc":"Проверь и оплати штрафы",
    package_type: "Тип пакете",
    package_information: "Информация о моем пакете",
@@ -2678,4 +2678,8 @@ export default {
    "given_data_is_not_matching_car_number": "Введенный вами номер не соответствует введенной вами информации об автомобиле.",
    "details_of_search": "Детали поиска",
    "my_car_desc": "Lorem impusum dolor set amon",
+   "site_settings": "Настройки",
+   "dark_mode": "Темный режим",
+   "notification_status": "Включить уведомления",
+   "select_language": "Выбор языка",
 };

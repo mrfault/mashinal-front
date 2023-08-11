@@ -298,6 +298,13 @@ export default {
                row: 1,
             },
             {
+               title: 'site_settings',
+               image: 'settings.png',
+               url:  '/settings',
+               description: 'profile_settings_desc',
+               row: 1,
+            },
+            {
                title: 'MashinPay',
                image: 'mashinpay.png',
                url: '/',
@@ -330,7 +337,7 @@ export default {
                image: 'logout.png',
                url: null,
                description: 'logout_account_desc',
-               row: 1,
+               row: 2,
             },
          ]
       }
