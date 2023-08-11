@@ -68,6 +68,7 @@ const getInitialState = () => ({
    plateNumbers: [],
    brandsList: [],
    monetizedCars: [],
+   autosalonAnnouncementsId: [],
    motoGearbox: [],
    motoTransmissions: [],
    motoFuelTypes: [],
@@ -261,6 +262,7 @@ export const getters = {
    pageRef: s => s.pageRef,
    hideFooter: s => s.hideFooter,
    monetizedCars: s => s.monetizedCars,
+   autosalonAnnouncementsId: s => s.autosalonAnnouncementsId,
    motoGearbox: s => s.motoGearbox,
    motoTransmissions: s => s.motoTransmissions,
    motoFuelTypes: s => s.motoFuelTypes,
@@ -480,6 +482,11 @@ export const actions = {
    async fetchBrandsList({commit}) {
       const res = await this.$axios.$get('https://v2dev.mashin.al/api/v2/brands/list-with-count');
       commit("mutate", {property: "brandsList", value: res});
+   },
+
+   async fetchAutosalonAnnouncementsId({ commit }, id) {
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/autosalon/announcements/${id}`);
+      commit("mutate", { property: "autosalonAnnouncementsId", value: res });
    },
 
    async fetchMonetizedCars({ commit }) {
