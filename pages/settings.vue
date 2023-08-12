@@ -154,18 +154,6 @@ export default {
 .border-bottom{
    border-bottom: 1px solid #CDD5DF;
 }
-.dark-mode{
-   .card-settings{
-      background: #1B2434;
-      border: 1px solid #1b2434;
-   }
-   .settings-label{
-      color: #9AA4B2;
-   }
-   .border-bottom{
-      border-bottom: 1px solid #1b2434;
-   }
-}
 .mobile-screen {
    .settings-label{
       font-size: 18px;
@@ -190,17 +178,29 @@ export default {
       border-bottom: 1px solid #CDD5DF;
    }
 }
+.dark-mode{
+   .card-settings{
+      background: #1B2434!important;
+      border: 1px solid #1b2434!important;
+   }
+   .settings-label{
+      color: #9AA4B2!important;
+   }
+   .border-bottom{
+      border-bottom: 1px solid #1b2434!important;
+   }
+}
 .dark-mode {
    .mobile-screen {
       .card-settings{
-         background: #1B2434;
-         border: 1px solid #1b2434;
+         background: #1B2434!important;
+         border: 1px solid #1b2434!important;
       }
       .settings-label{
-         color: #9AA4B2;
+         color: #9AA4B2!important;
       }
       .border-bottom{
-         border-bottom: 1px solid #1b2434;
+         border-bottom: 1px solid #1b2434!important;
       }
    }
 }
