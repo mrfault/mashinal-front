@@ -114,11 +114,11 @@ export default {
                   icon: 'layers',
                   link: '/profile/announcements?type=1',
                },
-               {
-                  icon: 'invoice',
-                  title: this.$t('penalties'),
-                  link: '/garage',
-               },
+               // {
+               //    icon: 'invoice',
+               //    title: this.$t('penalties'),
+               //    link: '/garage',
+               // },
                {
                   title: this.$t('my_balance'),
                   icon: 'wallet',
@@ -248,9 +248,32 @@ export default {
       .no-results{
          background: #1b2434 !important;
       }
+      .stratch-child-block{
+         height: 100%;
+      }
    }
    .ma-announcements__head{
       background: #1B2434;
+      overflow-y: auto !important;
+      &::-webkit-scrollbar {
+         width: 3px;
+         height: 7px;
+      }
+
+      /* Track */
+      &::-webkit-scrollbar-track {
+         background: transparent !important;
+      }
+
+      /* Handle */
+      &::-webkit-scrollbar-thumb {
+         background: rgb(206, 206, 206);
+      }
+
+      /* Handle on hover */
+      &::-webkit-scrollbar-thumb:hover {
+         background: #555;
+      }
       button{
          color: #fff;
       }

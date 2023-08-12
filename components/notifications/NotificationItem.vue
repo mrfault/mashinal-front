@@ -4,7 +4,6 @@
       class="ma-notification"
       @click.prevent="gotoLink"
    >
-      {{link}}
       <div class="ma-notification__icon">
          <inline-svg v-if="notification.read_at" src="/new-icons/notification.svg"/>
          <inline-svg v-else src="/new-icons/notification-read.svg"/>
@@ -111,7 +110,8 @@ export default {
 
    .ma-notification {
       background: #1B2434;
-      //border: none;
+
+
 
       &__content {
          &--title {
@@ -128,7 +128,7 @@ export default {
       }
 
       &__inactive {
-         border: none !important;
+         border: 1px solid #cdd5df;
       }
 
       &:hover {
@@ -144,8 +144,8 @@ export default {
       border: none;
       border-bottom: 1px solid #EEF2F6;
       border-radius: 0;
-      padding: 16px 0;
       margin-bottom: 0;
+      padding: 16px;
 
       &__content {
          flex-wrap: wrap;

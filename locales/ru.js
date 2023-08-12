@@ -1871,7 +1871,7 @@ export default {
    "strana-marki": "Страна марки",
    studded: "Шипованные",
    sub_category: "Подкатегория",
-   subscribe: "Подписывайтесь",
+   subscribe: "Подписаться",
    success_activate: "Сервис активирован!",
    success_activate_msg:
       "Ваше объявление будет отображаться первым в разделе последних объявлений и в результатах поиска.",
@@ -2632,7 +2632,7 @@ export default {
    "garage_account_desc":"Измени данные профиля",
    "profile_balance_desc":"Проверь баланс",
    "logout_account_desc":"Выйти из аккаунта",
-   'profile_settings_desc': "Темный режим, настройки языка и уведомлений и т. д.",
+   'profile_settings_desc': "Настройки пользователя, имя, фото профиля и т. д.",
    "garage_penalties_desc":"Проверь и оплати штрафы",
    package_type: "Тип пакете",
    package_information: "Информация о моем пакете",
@@ -2670,6 +2670,9 @@ export default {
    "no_message_text": "Если вы получили сообщение или сообщение кому-то, оно появится здесь",
    "change_cover": "Изменить обложку",
    "upload_other_photos": "Загрузить другие фотографии",
+
+   "vehicle_deactivated" : "Объявление деактивировалось",
+
    "my_autos": "Мои автомобили",
    "my_autos_desc": "Добавив свой автомобиль, вы сможете получать уведомления об обновлениях, специальных предложениях и скидках на запчасти для этого автомобиля. Вы можете добавить любое количество автомобилей!",
    "add_new_auto": "Добавить новую машину",
@@ -2682,4 +2685,11 @@ export default {
    "dark_mode": "Темный режим",
    "notification_status": "Включить уведомления",
    "select_language": "Выбор языка",
+
+   "start_subscription_desc1": "Уверены ли вы, что хотите продлить подписку?",
+   "vehicle_is_processing":"ТС в процессе",
+   "stop_subscription_desc1": "Уверены ли вы,что хотите отписаться?",
+
+   "no_payment_history": "Нет истории оплат",
+
 };

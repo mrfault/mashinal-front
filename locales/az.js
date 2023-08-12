@@ -2748,5 +2748,9 @@ export default {
    "dark_mode": "Qaranlıq rejim",
    "notification_status": "Bildirişləri aktiv et",
    "select_language": "Dil seçimi",
+
+   "today": "Bu gün",
+
+   "vehiclePassportExpired": "Nəqliyyat vasitəsinin qeydiyyat şəhadətnaməsi dəyişdirilib"
 };
 
