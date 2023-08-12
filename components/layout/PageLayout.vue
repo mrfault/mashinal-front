@@ -7,7 +7,8 @@
          <div class="layout" v-show="!loading" :class="{'layoutForMap': checkRouteIfSalon}">
             <site-banner :check-emitting="checkEmitting" type="top"/>
 
-            <mobile-menu/>
+<!--            <mobile-menu/>-->
+            <mobile-menu-new/>
 
             <page-header/>
 
@@ -119,10 +120,12 @@
    import MapSwitch from '~/components/salons/MapSwitch';
    import SiteBanner from "~/components/banners/SiteBanner";
    import BrandsList from "~/components/layout/BrandsList.vue";
+   import MobileMenuNew from "~/components/layout/MobileMenuNew.vue";
 
    export default {
       mixins: [LayoutMixin],
       components: {
+         MobileMenuNew,
          SiteBanner,
          PageHeader,
          PageFooter,

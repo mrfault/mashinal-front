@@ -3,55 +3,50 @@
       <portal to="breadcrumbs">
          <breadcrumbs :crumbs="crumbs"/>
       </portal>
-      <component
-         :is="isMobileBreakpoint ? 'mobile-screen' : 'div'"
-         :bar-title="$t('site_settings')"
-         @back="$router.push($localePath('/garage-services'))"
-         height-auto>
-         <div class="row" v-if="!isMobileBreakpoint">
-            <div class="col-md-12 mb-0 mb-lg-4">
-               <h1>{{ $t('site_settings') }}</h1>
-            </div>
+
+      <div class="row" v-if="!isMobileBreakpoint">
+         <div class="col-md-12 mb-0 mb-lg-4">
+            <h1>{{ $t('site_settings') }}</h1>
          </div>
-         <div class="row">
-            <div class="col-md-12 pb-5">
-               <div class="row flex-column-reverse flex-lg-row pt-lg-0 pt-5">
-                  <div class="col-md-12 pb-5">
-                     <div class="card-settings">
-                        <div class="row">
-                           <div class="col-md-12 pb-3 pt-3 border-bottom">
-                              <div class="row">
-                                 <div class="col-md-12 d-flex justify-content-between align-items-center">
-                                    <label @click="changeTheme()" class="settings-label">{{$t('dark_mode')}}</label>
-                                    <custom-switch :value="darkTheme" @input="changeTheme()"/>
-                                 </div>
+      </div>
+      <div class="row">
+         <div class="col-md-12 pb-5">
+            <div class="row flex-column-reverse flex-lg-row pt-lg-0 pt-5">
+               <div class="col-md-12 pb-5">
+                  <div class="card-settings">
+                     <div class="row">
+                        <div class="col-md-12 pb-3 pt-3 border-bottom">
+                           <div class="row">
+                              <div class="col-md-12 d-flex justify-content-between align-items-center">
+                                 <label @click="changeTheme()" class="settings-label">{{$t('dark_mode')}}</label>
+                                 <custom-switch :value="darkTheme" @input="changeTheme()"/>
                               </div>
                            </div>
-                           <div class="col-md-12 pb-3 pt-3 border-bottom">
-                              <div class="row">
-                                 <div class="col-md-12 d-flex justify-content-between align-items-center">
-                                    <label @click="changeNotificationStatus()" class="settings-label">{{$t('notification_status')}}</label>
-                                    <custom-switch :value="notificationStatus" @input="changeNotificationStatus()"/>
-                                 </div>
+                        </div>
+                        <div class="col-md-12 pb-3 pt-3 border-bottom">
+                           <div class="row">
+                              <div class="col-md-12 d-flex justify-content-between align-items-center">
+                                 <label @click="changeNotificationStatus()" class="settings-label">{{$t('notification_status')}}</label>
+                                 <custom-switch :value="notificationStatus" @input="changeNotificationStatus()"/>
                               </div>
                            </div>
-                           <div class="col-md-12 pb-3 pt-3">
-                              <div class="row">
-                                 <div class="col-md-12 d-flex justify-content-between align-items-center">
-                                    <label class="settings-label p-0 col">{{$t('select_language')}}</label>
-                                    <form-select
-                                       :label="$t('select_language')"
-                                       :options="getLanguageOptions"
-                                       :clear-placeholder="true"
-                                       :clear-option="false"
-                                       :input-placeholder="$t('select_language')"
-                                       v-model="language"
-                                       :new-label="false"
-                                       has-search
-                                       :class-name="'col p-0'"
-                                       @change="changeSiteLanguage()"
-                                    />
-                                 </div>
+                        </div>
+                        <div class="col-md-12 pb-3 pt-3">
+                           <div class="row">
+                              <div class="col-md-12 d-flex justify-content-between align-items-center">
+                                 <label class="settings-label p-0 col">{{$t('select_language')}}</label>
+                                 <form-select
+                                    :label="$t('select_language')"
+                                    :options="getLanguageOptions"
+                                    :clear-placeholder="true"
+                                    :clear-option="false"
+                                    :input-placeholder="$t('select_language')"
+                                    v-model="language"
+                                    :new-label="false"
+                                    has-search
+                                    :class-name="'col p-0'"
+                                    @change="changeSiteLanguage()"
+                                 />
                               </div>
                            </div>
                         </div>
@@ -60,7 +55,7 @@
                </div>
             </div>
          </div>
-      </component>
+      </div>
    </div>
 </template>
 
