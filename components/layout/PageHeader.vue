@@ -118,15 +118,23 @@
                         <div class="user-menu_list" v-if="loggedIn" @click.stop>
                            <div class="user-menu_list-inner">
                               <nuxt-link
+                                 v-if="image"
                                  :to="getUserSettingsLink"
                                  class="d-inline-flex align-items-center align-top"
                               >
-                                 <template v-if="user.avatar || (user.autosalon?.logo)">
+                                 <template>
                                     <img :src="image" :alt="user.full_name"/>
                                  </template>
 
                                  <span class="text-truncate">{{ user.full_name }}</span>
                               </nuxt-link>
+
+                              <NuxtLink v-else :to="getUserSettingsLink" class="ma-garage__nav--profile">
+                                 <div class="ma-garage__nav--profile__avatar">
+                                    <h5  class="ma-garage__nav--profile__name">{{ user?.full_name.charAt(0) }}</h5>
+                                 </div>
+                                 <h5 class="ma-garage__nav--profile__name"> {{ user?.full_name }}</h5>
+                              </NuxtLink>
 
                               <hr/>
 
@@ -372,10 +380,12 @@ export default {
          'homePageSliders',
       ]),
       image() {
-         if (this.user.autosalon) {
-            return (this.user.autosalon.logo.includes('http') ? '' : 'https://dev.mashin.al/storage/') + this.user.autosalon.logo;
+         if (this.user?.autosalon) {
+            return (this.user?.autosalon?.logo.includes('http') ? '' : 'https://dev.mashin.al/storage/') + this.user?.autosalon?.logo;
+         } else if (this.user?.avatar){
+            return (this.user?.avatar?.includes('http') ? '' : 'https://dev.mashin.al/storage/') + this.user?.avatar;
          } else {
-            return (this.user.avatar.includes('http') ? '' : 'https://dev.mashin.al/storage/') + this.user.avatar;
+            return false;
          }
       },
    },
@@ -392,6 +402,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.ma-garage__nav--profile{
+   margin-bottom: 30px;
+}
+.ma-garage__nav--profile__avatar img{
+   height: 36px;
+   width: 36px;
+   object-fit: contain;
+}
+.dark-mode{
+   .ma-garage__nav--item__title{
+      color: #9AA4B2!important;
+   }
+   .ma-garage__nav--profile__name{
+      color: #fff!important;
+   }
+}
+
 .resize-icon {
    i {
       font-size: 35px !important;
