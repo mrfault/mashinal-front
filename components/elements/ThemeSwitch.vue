@@ -27,7 +27,7 @@ export default {
          this.$cookies.set('color-mode', colorMode);
          document.documentElement.setAttribute('data-color-mode', this.colorMode);
 
-         this.$root.$refs.Settings.changeOptionValue((colorMode === 'dark'));
+         this.$root.$refs?.Settings?.changeOptionValue((colorMode === 'dark'));
          this.updateAnimation();
       },
       initAnimation() {

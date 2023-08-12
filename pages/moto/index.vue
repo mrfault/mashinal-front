@@ -140,7 +140,7 @@
             store.dispatch('getMotoOptions'),
             store.dispatch('getBodyOptions'),
             store.dispatch('getOptions'),
-            store.dispatch('getColors'),
+            // store.dispatch('getColors'),
             store.dispatch('getGridSearch', {...searchParams, post, page}),
             // get model options for brands
             ...Object.keys(post?.additional_brands || {})
@@ -237,7 +237,7 @@
 
 <style lang="scss" scoped>
    .pages-moto-index {
-      margin-top: 32px;
+      padding-top: 32px;
 
       .announcements-grid {
          margin-top: 30px;

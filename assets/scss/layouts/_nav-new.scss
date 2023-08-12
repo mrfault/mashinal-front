@@ -5,7 +5,6 @@
       left: 0;
       height: 100%;
       z-index: 51;
-      display: flex;
       overflow: auto;
       transform: translate(-100%);
       transition: transform 0.3s ease;
@@ -80,6 +79,22 @@
                color: #FFF;
             }
          }
+      }
+   }
+}
+
+@media (min-width: 768px) {
+   .mobile-menu {
+      .menu-sidebar-new{
+         width: 80%;
+      }
+   }
+}
+
+@media (min-width: 992px) {
+   .mobile-menu {
+      .menu-sidebar-new{
+         width: 70%;
       }
    }
 }

@@ -655,9 +655,12 @@
       },
 
       async fetch() {
-        await this.$store.dispatch('getMotoGearboxV2');
-        await this.$store.dispatch('getMotoTransmissionsV2');
-        await this.$store.dispatch('getMotoFuelTypesV2');
+         await Promise.all([
+            this.$store.dispatch('getMotoGearboxV2'),
+            this.$store.dispatch('getMotoTransmissionsV2'),
+            this.$store.dispatch('getMotoFuelTypesV2'),
+            this.$store.dispatch('getColors')
+         ])
       },
 
       watch: {

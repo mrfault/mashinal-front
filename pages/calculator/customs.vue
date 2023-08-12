@@ -222,11 +222,18 @@
 </template>
 
 <script>
+   import Models from '@/models'
    import { mapGetters } from 'vuex'
    import { required, requiredIf } from 'vuelidate/lib/validators'
-   import Models from '@/models'
 
    export default {
+      head() {
+         return this.$headMeta({
+            title: this.$t('customs_calculator'),
+            // description: this.$t('meta-registration_marks')
+         });
+      },
+
       data() {
          return {
             vehicleTypes: [{name: this.$t('passenger_car'), id: 1}],
@@ -652,10 +659,4 @@
          }
       }
    }
-
-   //@media (max-width: 600px) {
-   //   .calculator-customs {
-   //      background-color: #FFFFFF;
-   //   }
-   //}
 </style>
