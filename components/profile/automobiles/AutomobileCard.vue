@@ -9,7 +9,7 @@
             {{ item.generation.start_year }}-{{ item.generation.end_year }}</h4>
          <p class="ma-automobile-card__content--desc">{{ $t(item.car_type.name) }} / {{ 2.4 }}L / {{ 'benzin' }}</p>
       </div>
-      <automobile-card-actions @openEditModal="openEditModal(item)" :announcement="item"/>
+      <automobile-card-actions @openEditModal="openEditModal(item)" :announcement="item" :dropdown-id="item.id"/>
    </div>
 </template>
 

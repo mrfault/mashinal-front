@@ -2775,5 +2775,9 @@ export default {
    "menu_comparisons_desc": "Avtomobilləri müqayisələrə əlavə etməklə müqayisə et",
    "menu_settings": "Tənzimləmələr",
    "menu_settings_desc": "Qaranlıq rejim, dil və bildiriş ayarları və s.",
+
+   "today": "Bu gün",
+
+   "vehiclePassportExpired": "Nəqliyyat vasitəsinin qeydiyyat şəhadətnaməsi dəyişdirilib"
 };
 

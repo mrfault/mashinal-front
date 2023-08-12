@@ -1,5 +1,5 @@
 <template>
-   <div style="width: calc(50% - 6px)">
+   <div class="ma-protocol-files">
       <button :class="['btn btn--light-outline full-width',{'d-none': hideButton }, { pending }]"
               style="min-height: 52px;border-radius: 8px"
               type="button" @click="openFiles">
@@ -8,8 +8,9 @@
       <template v-if="pending">
          <loader/>
       </template>
-      <template v-else>
 
+
+      <template v-else>
          <div v-if="slides.main" v-touch:swipe.top="handleSwipeTop" class="inner-gallery-lightbox">
 
             <!--mobile-->
@@ -28,37 +29,42 @@
             </template>
 
 
-            <transition-group name="fade">
-               <template v-if="showSliderTemplate">
+            <template v-if="!isMobileBreakpoint">
+               <transition-group name="fade">
+                  <template v-if="showSliderTemplate">
 
-                  <div :key="0" class="blur-bg">
-                     <img v-if="slides.types[currentSlide] === 'image'" :src="$withBaseUrl(slides.thumbs[currentSlide])"
-                          alt=""/>
-                  </div>
+                     <div :key="0" class="blur-bg">
+                        <img v-if="slides.types[currentSlide] === 'image'"
+                             :src="$withBaseUrl(slides.thumbs[currentSlide])"
+                             alt=""/>
+                     </div>
 
 
-                  <!--                  desktop-->
-                  <div v-if="!isMobileBreakpoint" :key="1" class="blur-bg_slider">
-                     <protocol-images-slider
-                        :current-slide="currentSlide"
-                        :has-sidebar="true"
-                        :slides="slides"
-                        isProtocol
-                        @close="closeLightbox"
-                        @slide-change="currentSlide = $event"
-                     >
+                     <!--                  desktop-->
+                     <div v-if="!isMobileBreakpoint" :key="1" class="blur-bg_slider">
+                        <images-slider
+                           :current-slide="currentSlide"
+                           :has-sidebar="true"
+                           :slides="slides"
+                           isProtocol
+                           @close="closeLightbox"
+                           @slide-change="currentSlide = $event"
+                        >
 
-                        <template #sidebar>
-                           <protocol-slider-info :protocol="protocol"/>
-                        </template>
-                     </protocol-images-slider>
-
-                  </div>
-               </template>
-            </transition-group>
+                           <template #sidebar>
+                              <protocol-slider-info :protocol="protocol"/>
+                           </template>
+                        </images-slider>
+                     </div>
+                  </template>
+               </transition-group>
+            </template>
 
 
          </div>
+      </template>
+      <template v-if="!pending">
+
       </template>
    </div>
 </template>
@@ -132,18 +138,25 @@ export default {
 
       async openFiles() {
          this.hideButton = true;
-         this.$emit('mediaOpened', true);
+
          if (this.files.din_id === this.protocol.din_id) {
             this.openLightbox();
             return;
          }
          if (this.pending) return;
          this.pending = true;
+
          try {
             const res = await this.getProtocolFiles({din_id: this.protocol.din_id});
             this.pending = false;
             if (res.status === 'success') {
                this.openLightbox();
+               if (!this.isMobileBreakpoint) {
+                  this.$emit('mediaOpened', true);
+               }
+               if (this.isMobileBreakpoint) {
+                  this.$emit('mobileMediaOpened')
+               }
             }
 
          } catch (err) {
@@ -169,7 +182,7 @@ export default {
 
       },
       refreshLightbox() {
-         console.log("refreshLightbox")
+         this.$emit('mobileMediaClosed', true);
          this.onBeforeClose();
          this.lightboxKey++;
       },
@@ -177,7 +190,11 @@ export default {
          console.log("onBeforeClose")
          this.showLightbox = false;
          this.setBodyOverflow('scroll');
-         this.$emit('mediaClosed', true);
+         if (this.isMobileBreakpoint) {
+            this.$emit('mobileMediaClosed', true);
+         } else {
+            this.$emit('mediaClosed', true);
+         }
          this.hideButton = false
 
       },
@@ -186,20 +203,19 @@ export default {
          this.currentSlide = fsBox.stageIndexes.current;
       },
       closeLightbox() {
-         console.log("closeLightbox")
          this.hideButton = false;
+         this.$emit('mediaClosed', true)
          if (this.isMobileBreakpoint) {
-            console.log("closeLightbox  s.isMobileBreakpoint")
             if (this.showLightbox) {
                console.log("closeLightbox  showLightbox")
                this.toggleFsLightbox = !this.toggleFsLightbox;
             }
-         } else {
-            console.log("closeLightbox  !isMobileBreakpoint")
+         }
+         if (!this.isMobileBreakpoint) {
             this.setBodyOverflow('scroll');
             this.showImagesSlider = false;
          }
-         this.$emit('mediaClosed', true)
+
       },
       handleSwipeTop() {
          if (document?.body?.classList.contains('zooming')) return;
@@ -226,15 +242,3 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.ma-left__content {
-   p {
-      font: 400 16px/20px 'TTHoves';
-   }
-}
-
-.ma-penalties__card--body__penalties--item {
-   padding-left: 0;
-   padding-right: 0;
-}
-</style>

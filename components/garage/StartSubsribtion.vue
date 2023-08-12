@@ -9,7 +9,7 @@
                          { 'pointer-events-none': pending },
                  ]"
          type="button"
-         @click="showModal = true"
+         @click="openModal"
       >
          {{ $t('subscribe') }}
       </button>
@@ -24,7 +24,7 @@
             <p>{{ $t('start_subscription_desc1') }}</p>
             <hr>
             <div class="d-flex align-items-center mb-4">
-               <p style="width: auto; margin-right: 10px" class="mb-0">{{ $t('total') }}:</p>
+               <p class="mb-0" style="width: auto; margin-right: 10px">{{ $t('total') }}:</p>
                <strong>1 AZN</strong>
             </div>
             <div class="protocol-payment-modal__actions">
@@ -40,7 +40,7 @@
                   :class="{ 'pointer-events-none': pending }"
                   class="btn btn--white btn-dark-text"
                   type="button"
-                  @click="showPaymentModal = true"
+                  @click="openPaymentModal"
                >
                   {{ $t('make_payment') }}
                </button>
@@ -129,7 +129,7 @@ export default {
       fullWidth: Boolean,
       vehicle: Object,
    },
-   mixins:[PaymentMixin],
+   mixins: [PaymentMixin],
    components: {CustomRadio, RadioGroup},
    data() {
       return {
@@ -167,7 +167,19 @@ export default {
          activate: 'garage/activateCar'
       }),
       openPaymentModal() {
-         return
+         if (this.isMobileBreakpoint) {
+            this.showModal = false
+            this.showPaymentModal = true;
+         } else {
+            this.showPaymentModal = true;
+
+         }
+      },
+      openModal() {
+         this.showModal = true;
+         if (this.isMobileBreakpoint) {
+
+         }
       },
       async activateCar() {
          if (this.pending || this.thumbSet) return;
@@ -198,6 +210,9 @@ export default {
                   text: this.$t('car_activated'),
                   title: this.$t('success_payment')
                });
+               this.$emit('carActivated',true)
+               this.showPaymentModal = false;
+               this.$nuxt.refresh()
             }
          } catch (err) {
             this.pending = false;
@@ -224,6 +239,14 @@ export default {
       svg {
          margin-bottom: 5px;
          margin-right: 11px;
+      }
+   }
+}
+
+.dark-mode {
+   .remove-vehicle-modal {
+      hr {
+         background: #697586;
       }
    }
 }

@@ -7,8 +7,10 @@
                      $t('penalty_info')
                   }}</h2>
             </div>
+<!--            --------------------------------------->
+
             <div class="vehicle-specs">
-               <div class="">
+               <div class="asd">
                   <div
                      class="ma-penalties__card--body__penalties--item bottom-border w-100"
                   >
@@ -137,5 +139,7 @@ export default {
 </script>
 
 <style scoped>
-
+.images-slider .vehicle-specs{
+   display: block;
+}
 </style>

@@ -74,10 +74,10 @@
 export default {
    props: {
       announcement: Object,
+      dropdownId: String,
    },
    data() {
       return {
-         isOpen: false,
          pending: false,
          showDeleteModal: false,
          showOptions: false,
@@ -90,6 +90,9 @@ export default {
       };
    },
    computed: {
+      isOpen() {
+         return this.$store.state.openDropdownId === this.dropdownId;
+      },
       options() {
          return [
             // {
@@ -117,23 +120,20 @@ export default {
    methods: {
       //dropdown
       toggleOpen(event) {
-         this.showOptions = false;
          event.stopPropagation();
          if (this.isMobileBreakpoint) {
             this.showOptions = true;
          } else {
-            this.isOpen = !this.isOpen;
-            if (this.isOpen) {
+            const isOpen = this.$store.state.openDropdownId === this.dropdownId;
+            this.$store.commit(isOpen ? 'closeDropdown' : 'setOpenDropdown', this.dropdownId);
+            if (!isOpen) {
                document.addEventListener('click', this.onClickOutside);
-            } else {
-               this.isOpen = false;
             }
          }
       },
       onClickOutside(event) {
-         this.isOpen = false;
          if (!this.$refs.actionsRef.contains(event.target)) {
-            this.isOpen = false;
+            this.$store.commit('closeDropdown');
             document.removeEventListener('click', this.onClickOutside);
          }
       },
@@ -154,7 +154,7 @@ export default {
 
       openEditModal(item) {
          this.$emit('openEditModal', true);
-    
+
       },
 
       editAnnounce() {
