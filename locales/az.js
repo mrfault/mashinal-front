@@ -2744,5 +2744,9 @@ export default {
    "details_of_search": "Axtarışın detalları",
 
    "info_saved": "Məlumatlar yadda saxlanıldı",
+
+   "today": "Bu gün",
+
+   "vehiclePassportExpired": "Nəqliyyat vasitəsinin qeydiyyat şəhadətnaməsi dəyişdirilib"
 };
 

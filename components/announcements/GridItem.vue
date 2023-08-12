@@ -39,7 +39,7 @@
       </div>
 
       <div :class="['id'+announcement.id,{'overflow-visible isProfilePage': isProfilePage}]" class="announcements-grid__item" @click="goToAnnouncement">
-         <profile-grid-actions v-if="isProfilePage" :announcement="announcement" />
+         <profile-grid-actions :class="{'right-aligned-dropdown': isLastChild}" v-if="isProfilePage" :dropdown-id="announcement.id_unique" :announcement="announcement" />
 
          <a
             v-if="clickable && !isMobileBreakpoint && !$env.DEV"
@@ -219,6 +219,7 @@ export default {
          type: Boolean,
          default: false,
       },
+      isLastChild: Boolean,
    },
 
    components: {

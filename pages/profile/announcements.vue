@@ -27,7 +27,7 @@
             </div>
          </div>
          <div class="ma-announcements__body">
-            <h4 class="ma-subtitle--lg" v-if="!loading">{{ $t('my_vehicle_announcements') }}</h4>
+            <h4 v-if="!loading" class="ma-subtitle--lg">{{ $t('my_vehicle_announcements') }}</h4>
             <div id="announcementsContainer" :class="{'overflow-x-hidden': !myAnnouncements.length}"
                  class="ma-announcements__body--row" @mousedown.prevent="startDragging">
                <!--                                loading-->
@@ -44,6 +44,7 @@
                         <grid-item
                            :key="announcement.id_unique +  '_' + index"
                            :announcement="announcement"
+                           :isLastChild="index === myAnnouncements.length - 1"
                            clickable
                            isProfilePage
                            show-monetization-actions
@@ -51,7 +52,6 @@
                            show-phone-count
                            show-status
                            track-views
-
                         />
                      </div>
                   </template>
@@ -68,7 +68,7 @@
             </div>
 
             <!--            number plates-->
-            <h4 class="ma-subtitle--lg" v-if="!loading">{{ $t('my_car_number_announcements') }}</h4>
+            <h4 v-if="!loading" class="ma-subtitle--lg">{{ $t('my_car_number_announcements') }}</h4>
             <div id="platesContainer" :class="{'overflow-x-hidden': !allMyPlates.length}"
                  class="ma-announcements__body--row" @mousedown.prevent="startDragging">
                <div v-if="loading" style="height: 420px !important;width:100%; display: flex;justify-content: center;">

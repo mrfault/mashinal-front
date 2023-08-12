@@ -31,7 +31,7 @@
 
                   <div class="ma-right" style="padding-left: 24px; text-align: right;">
                      <strong v-if="key == 'protocol_amount' " class="ma-right__amount">
-                        {{ value }} AZN
+                        {{ value }} <template v-if="protocol.amount">AZN</template>
                      </strong>
                      <strong v-else-if="key == 'pay_status' && value == false" class="ma-right__amount"
                              style="color: #039855">
@@ -52,7 +52,8 @@
                >
                   <strong class="">{{ $t('total') }}</strong>
                   <strong>
-                     {{ protocol.total }} AZN
+                     {{ protocol.total }}
+                     <template v-if="protocol.amount">AZN</template>
                   </strong>
                </div>
             </div>
@@ -108,7 +109,7 @@ export default {
             pay_status: this.protocol.can_pay,
             car_number: this.protocol.car_number,
             fined_fullname: this.protocol.fullname,
-            protocol_amount: this.protocol.amount || 'dont_have',
+            protocol_amount: this.protocol.amount || this.$t('dont_have'),
             date_decided: this.protocol.decision_date || 'no_decision',
             date: this.protocol.action_date,
             protocol_took_place: this.protocol.address,

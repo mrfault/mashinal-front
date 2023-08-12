@@ -1871,7 +1871,7 @@ export default {
    "strana-marki": "Страна марки",
    studded: "Шипованные",
    sub_category: "Подкатегория",
-   subscribe: "Подписывайтесь",
+   subscribe: "Подписаться",
    success_activate: "Сервис активирован!",
    success_activate_msg:
       "Ваше объявление будет отображаться первым в разделе последних объявлений и в результатах поиска.",
@@ -2671,5 +2671,11 @@ export default {
    "change_cover": "Изменить обложку",
    "upload_other_photos": "Загрузить другие фотографии",
    "vehicle_deactivated" : "Объявление деактивировалось",
+
+   "start_subscription_desc1": "Уверены ли вы, что хотите продлить подписку?",
+   "vehicle_is_processing":"ТС в процессе",
+   "stop_subscription_desc1": "Уверены ли вы,что хотите отписаться?",
+
+   "no_payment_history": "Нет истории оплат",
 
 };

@@ -114,11 +114,11 @@ export default {
                   icon: 'layers',
                   link: '/profile/announcements?type=1',
                },
-               {
-                  icon: 'invoice',
-                  title: this.$t('penalties'),
-                  link: '/garage',
-               },
+               // {
+               //    icon: 'invoice',
+               //    title: this.$t('penalties'),
+               //    link: '/garage',
+               // },
                {
                   title: this.$t('my_balance'),
                   icon: 'wallet',
@@ -247,6 +247,9 @@ export default {
    .ma-announcements{
       .no-results{
          background: #1b2434 !important;
+      }
+      .stratch-child-block{
+         height: 100%;
       }
    }
    .ma-announcements__head{
