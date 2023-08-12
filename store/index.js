@@ -562,12 +562,9 @@ export const actions = {
    },
 
    async fetchRegistrationMarks({commit}, data = '') {
-      const res = await this.$axios.$get(`/plates${data}`);
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/plate-numbers${data}`);
 
-      if (res.data.length) {
-         commit("mutate", {property: "loadingData", value: false});
-      }
-
+      if (res.data.length) commit("mutate", {property: "loadingData", value: false});
       commit("mutate", {property: "registrationMarks", value: res || []});
    },
 
@@ -1182,7 +1179,6 @@ export const actions = {
       commit("mutate", {property: "temporaryLazyData", value: res});
    },
    async getInfiniteMainPartsPageSearch({commit, dispatch}, payload = {}) {
-      console.log('payload', payload)
       const body = payload.body ? {...payload.body} : {};
       if (body.announce_type) {
          body.is_new = body.announce_type === 1 ? true : false;
