@@ -199,7 +199,7 @@ export const SearchMixin = {
             });
          }
 
-         await this.$store.dispatch('fetchMonetizedCarsSearch', { data: this.getFormData() });
+         // await this.$store.dispatch('fetchMonetizedCarsSearch', { data: this.getFormData() });
       },
 
       resetForm(submit = false) {

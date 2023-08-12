@@ -59,43 +59,46 @@
          </grid>
 
 <!--         <template v-if="!$route.query.saved">-->
-            <grid
-               v-if="carsAnnouncements?.meta?.total > 0"
-               :announcements="carsAnnouncements?.data"
-               :paginate="$paginate(carsAnnouncements)"
-               :hasContainer="false"
-               :numberOfAds="carsAnnouncements?.total"
-               :pending="pending"
-               @change-page="searchCars"
-               escape-duplicates
-            >
-               <template #cap>
-                  <Cap :className="'mb40'">
-                     <template #left>
-                        <h3 v-if="getCarDetails && getCarDetails.brand">
-                           {{ getCarDetails && getCarDetails.brand }}
-                           {{ getCarDetails && getCarDetails.model }}
-                           {{ getCarDetails && getCarDetails.generation && getCarDetails.generation[locale] }}
-                        </h3>
+         <grid
+            v-if="carsAnnouncements?.meta?.total > 0"
+            :announcements="carsAnnouncements?.data"
+            :paginate="$paginate(carsAnnouncements)"
+            :hasContainer="false"
+            :numberOfAds="carsAnnouncements?.total"
+            :pending="pending"
+            @change-page="searchCars"
+            escape-duplicates
+         >
+            <template #cap>
+               <Cap :className="'mb40'">
+                  <template #left>
+                     <h3 v-if="getCarDetails && getCarDetails.brand">
+                        {{ getCarDetails && getCarDetails.brand }}
+                        {{ getCarDetails && getCarDetails.model }}
+                        {{ getCarDetails && getCarDetails.generation && getCarDetails.generation[locale] }}
+                     </h3>
 
-                        <h3 v-else>{{ $t('announcements') }}</h3>
-                     </template>
+                     <h3 v-else>{{ $t('announcements') }}</h3>
+                  </template>
 
-                     <template #right>
-                        <form-select
-                           :label="$t('sorting_2')"
-                           :options="sortItems"
-                           :clearPlaceholder="true"
-                           :clear-option="false"
-                           :allowClear="false"
-                           v-model="sorting"
-                        />
-                     </template>
-                  </Cap>
-               </template>
-            </grid>
+                  <template #right>
+                     <form-select
+                        :label="$t('sorting_2')"
+                        :options="sortItems"
+                        :clearPlaceholder="true"
+                        :clear-option="false"
+                        :allowClear="false"
+                        v-model="sorting"
+                     />
+                  </template>
+               </Cap>
+            </template>
+         </grid>
 
-            <no-results v-else />
+         <no-results
+            :type="'car'"
+            v-else
+         />
 <!--         </template>-->
 
          <HandleIds :items="carsAnnouncements.data" />
@@ -168,6 +171,7 @@
          let searchParams = { url: '/car', prefix: 'cars' }
          if (!store.state.carsAnnouncements.total) await store.dispatch('getGridSearch', {...searchParams, post, page})
 
+         console.log('post', post)
          // if (route.query.monetized) {
          //    store.dispatch('fetchMonetizedAnnouncementsHome');
          //    console.log('1')
@@ -181,7 +185,7 @@
                store.dispatch('fetchBrandsList'),
                store.dispatch('getMotoOptions'),
                store.dispatch('getPopularOptions'),
-               // store.dispatch('fetchMonetizedCarsSearch'),
+               store.dispatch('fetchMonetizedCarsSearch', post),
                // store.dispatch('fetchMonetizedCars'),
 
                // get model options for brands
@@ -333,7 +337,7 @@
 
 <style lang="scss">
    .pages-cars-index {
-      margin-top: 32px;
+      padding-top: 32px;
 
       &__title {
          font-weight: 600;

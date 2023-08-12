@@ -168,7 +168,7 @@
 
 <style lang="scss">
    .plate-id {
-      margin-top: -27px;
+      //margin-top: -27px;
 
       .bg-white {
          padding-bottom: 56px;
