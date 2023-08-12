@@ -285,7 +285,7 @@ export default {
          return [
             {
                title: 'my_announcements',
-               image: 'speaker.png',
+               image: 'speaker2.png',
                url: '/profile/announcements',
                description: 'sign_in_to_account',
                row: 1,

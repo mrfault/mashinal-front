@@ -1871,7 +1871,7 @@ export default {
    "strana-marki": "Страна марки",
    studded: "Шипованные",
    sub_category: "Подкатегория",
-   subscribe: "Подписаться",
+   subscribe: "Подписывайтесь",
    success_activate: "Сервис активирован!",
    success_activate_msg:
       "Ваше объявление будет отображаться первым в разделе последних объявлений и в результатах поиска.",
@@ -2685,7 +2685,6 @@ export default {
    "dark_mode": "Темный режим",
    "notification_status": "Включить уведомления",
    "select_language": "Выбор языка",
-
    "menu_login": "Авторизоваться",
    "menu_login_desc": "Войдите в свой аккаунт",
    "menu_external_salon": "Авто под заказ",
@@ -2712,10 +2711,8 @@ export default {
    "menu_comparisons_desc": "Сравните автомобили, добавив их в сравнения",
    "menu_settings": "Корректировки",
    "menu_settings_desc": "Темный режим, настройки языка и уведомлений и т. д.",
-
    "start_subscription_desc1": "Уверены ли вы, что хотите продлить подписку?",
    "vehicle_is_processing":"ТС в процессе",
    "stop_subscription_desc1": "Уверены ли вы,что хотите отписаться?",
-
    "no_payment_history": "Нет истории оплат",
 };
