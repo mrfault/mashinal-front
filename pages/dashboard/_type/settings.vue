@@ -144,9 +144,8 @@
                         </div>
                         <div class="col-md-12 pb-3">
                            <form-textarea
-                              :maxlength="130"
-                              :placeholder="$t('general_information')"
                               v-model="form.description"
+                              :placeholder="$t('general_information')"
                               @change="removeError('description')"
                               :invalid="isInvalid('description')"/>
                         </div>

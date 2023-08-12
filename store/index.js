@@ -8,6 +8,8 @@ const getInitialState = () => ({
    loading: true,
    loadingData: false,
    colorMode: "light",
+   notificationStatus: "deactive",
+   currentLanguage: "az",
    partAnnouncements: {},
    breakpoint: null,
    newOfferCount: 0,
@@ -619,6 +621,9 @@ export const actions = {
    setColorMode({commit}, theme) {
       commit("mutate", {property: "colorMode", value: theme});
    },
+   setNotificationStatus({commit}, status) {
+      commit("mutate", {property: "notificationStatus", value: status});
+   },
    // Grid
    setGridBreakpoint({commit}, breakpoint) {
       commit("mutate", {property: "breakpoint", value: breakpoint});
@@ -628,7 +633,8 @@ export const actions = {
       commit("mutate", {property: "hideFooter", value: !show});
    },
    // Localization
-   async changeLocale({dispatch}, locale) {
+   async changeLocale({commit, dispatch}, locale) {
+      commit("mutate", {property: "currentLanguage", value: locale});
       let changed = locale !== this.$i18n.locale;
       this.$i18n.setLocale(locale);
       // update options in store
