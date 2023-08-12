@@ -123,7 +123,8 @@
                         <!--                           no results-->
                         <div v-else class="ma-penalties__card--body__no-results">
                            <img alt="" src="/images/penalty-no-result.png">
-                           <p v-if="carsList.length">{{ $t('no_protocols') }}</p>
+                           <p v-if="vehiclePassportExpired">{{ $t('vehiclePassportExpired') }}</p>
+                           <p v-else-if="carsList.length">{{ $t('no_protocols') }}</p>
                            <p v-else>{{ $t('no_vehicle_found') }}</p>
                         </div>
 
@@ -159,14 +160,18 @@
                         </template>
                         <div v-else class="ma-penalties__card--body__no-results">
                            <img alt="" src="/images/penalty-no-result.png">
-                           <p v-if="carsList.length">{{ $t('no_payment_history') }}</p>
+                           <p v-if="vehiclePassportExpired">{{ $t('vehiclePassportExpired') }}</p>
+                           <p v-else-if="carsList.length">{{ $t('no_payment_history') }}</p>
                            <p v-else>{{ $t('no_vehicle_found') }}</p>
                         </div>
                      </div>
 
                      <!--                     vehicle info(mobile)-->
                      <div v-if="activeCardTab == 2" class="ma-penalties__card--body__penalty_history">
-                        <vehicle-info :selected-car="selectedCar"/>
+                        <vehicle-info
+                           :selected-car="selectedCar"
+                           @carDataChanged="carDataChanged(selectedCar)"
+                        />
                      </div>
                   </div>
                </div>
@@ -177,7 +182,7 @@
                <vehicle-info
                   v-if="selectedCar && selectedCar.sync_status == 1"
                   :selectedCar="selectedCar"
-                  @getAllCarsList="getAllCarsList"
+                  @carDataChanged="carDataChanged(selectedCar)"
                />
             </div>
             <div v-if="carsList.length  && selectedCar && selectedCar.sync_status !== 1"
@@ -193,6 +198,7 @@
               class="row flex-wrap justify-content-center" style="height: 500px">
             <no-results class="mb-0"/>
             <h2 class="ma-title--md text-center w-100">{{ $t('no_models_found_for_this_request') }}</h2>
+
          </div>
 
 
@@ -295,6 +301,16 @@ export default {
       carNumberContainer.addEventListener('mousedown', this.startDragging);
    },
    methods: {
+      carDataChanged(item) {
+         setTimeout(() => {
+            this.refreshCarData()
+         }, 1500)
+      },
+      async refreshCarData() {
+         await this.getAllCarsList();
+         this.selectedCar = item;
+         this.$nuxt.refresh()
+      },
       getPayLink(protocol) {
          let agency = protocol.protocol_series === 'BNA' ? 'bna' : 'din';
          return `https://pay.api.az/${agency}/${protocol.protocol_series}${protocol.protocol_number}`;
@@ -333,24 +349,22 @@ export default {
          }
       },
 
-      setInitialSelectedCar() {
+      setInitialSelectedCar(insuranceCase) {
+
          if (this.$route.query.id && this.cars.data.find(el => el.id == this.$route.query.id)) {
             this.selectedCar = this.cars.data.find(el => el.id == this.$route.query.id)
          } else {
             const carWithSyncStatus1 = this.cars.data.find(el => el.sync_status === 1);
-
-            // If an element with sync_status: 1 exists, set selectedCar to that element
             if (carWithSyncStatus1) {
                this.selectedCar = carWithSyncStatus1;
             } else {
-               // If no element with sync_status: 1, set selectedCar to the first element of the first element of the cars array
                this.selectedCar = this.cars.data[0];
             }
          }
       },
 
 
-      // search input
+// search input
       onInputChange() {
          if (this.searchNumber.trim() === "") {
             this.carsList = this.cars.data;
@@ -361,11 +375,13 @@ export default {
          } else {
             this.carsList = [];
          }
-      },
+      }
+      ,
       isValidInput(text) {
          const validCharactersRegex = /^[A-Za-z0-9]*$/;
          return validCharactersRegex.test(text);
-      },
+      }
+      ,
       filterCarNumber() {
          const searchCarNumber = this.searchNumber.trim();
 
@@ -386,7 +402,8 @@ export default {
          this.selectedCar = this.carsList[0];
          this.loading = true;
          this.getCarProtocols()
-      },
+      }
+      ,
       validateInput(event) {
          const enteredChar = event.key;
          const validCharactersRegex = /^[A-Za-z0-9]*$/;
@@ -394,19 +411,23 @@ export default {
          if (!validCharactersRegex.test(enteredChar)) {
             event.preventDefault();
          }
-      },
+      }
+      ,
       containsRussianLetters(text) {
          const russianLettersRegex = /[а-яА-ЯЁё]/;
          return russianLettersRegex.test(text);
-      },
+      }
+      ,
       containsDisallowedCharacters(text) {
          const disallowedCharactersRegex = /[^0-9A-Za-z-]/;
          return disallowedCharactersRegex.test(text);
-      },
+      }
+      ,
       formattedCarNumber(carNumber) {
          return carNumber.replace(/(\d{2})([A-Z]+)(\d{3})/, "$1 $2 $3");
-      },
-      // --- --- search input
+      }
+      ,
+// --- --- search input
 
 
       startDragging(event) {
@@ -430,25 +451,34 @@ export default {
          document.addEventListener('mousemove', scrollByDragging);
          document.addEventListener('mouseup', stopDragging);
          container.style.userSelect = 'none'; // Disable content selection during dragging
-      },
+      }
+      ,
       scrollToRight(e) {
          const carNumberContainer = document.getElementById('carNumberContainer');
          carNumberContainer.scrollLeft += 100
       },
 
       async getCarProtocols() {
+         console.log("getCarProtocols else")
          if (this.selectedCar && this.selectedCar.id) {
-            await this.$store.dispatch('garage/getProtocols', {id: this.selectedCar.id, history: this.activeCardTab})
-            console.log("this../././././ if")
-            this.protocol.filteredList = [];
-            if (this.protocols && this.protocols.data && this.protocols.data.length) {
-               this.protocols.data.forEach(el => {
-                  el.isSelected = false;
-                  el.isChecked = false;
-                  this.protocol.filteredList.push(el);
-               })
+            try {
+               await this.$store.dispatch('garage/getProtocols', {id: this.selectedCar.id, history: this.activeCardTab})
+               console.log("this../././././ if")
+               this.protocol.filteredList = [];
+               if (this.protocols && this.protocols.data && this.protocols.data.length) {
+                  this.protocols.data.forEach(el => {
+                     el.isSelected = false;
+                     el.isChecked = false;
+                     this.protocol.filteredList.push(el);
+                  })
+               }
+               this.loading = false;
+            } catch (e) {
+               this.loading = false;
+               this.$toasted.error("salam aleykum");
+               this.vehiclePassportExpired = true;
             }
-            this.loading = false;
+
          } else {
             console.log("getCarProtocols else")
             this.loading = false;
@@ -456,7 +486,7 @@ export default {
 
       },
       selectCar(car) {
-
+         this.vehiclePassportExpired = false;
          this.protocol.filteredList = [];
          this.loading = true;
          this.pending = true;
@@ -468,13 +498,14 @@ export default {
          this.protocol.selected = {};
 
          this.activeCardTab = 0;
-         if (this.isMobileBreakpoint && this.selectedCar.status == 0){
+         if (this.isMobileBreakpoint && this.selectedCar.status == 0) {
             this.activeCardTab = 2
          }
          this.protocol.filteredList = [];
          if (car.sync_status == 1) {
             this.getCarProtocols();
-         }else{
+            console.log("selectCar getCarProtocols")
+         } else {
             return
          }
       },
@@ -509,7 +540,7 @@ export default {
       },
 
 
-      //===================
+//===================
 
 
       async payFromBalance(protocol) {
@@ -535,17 +566,18 @@ export default {
 
    },
    computed: {
-      ...mapGetters({
-         cars: 'garage/cars',
-         attorneys: 'garage/attorneys',
-         protocols: 'garage/protocols',
-         bankingCards: 'bankingCards/bankingCards',
-      }),
+      ...
+         mapGetters({
+            cars: 'garage/cars',
+            attorneys: 'garage/attorneys',
+            protocols: 'garage/protocols',
+            bankingCards: 'bankingCards/bankingCards',
+         }),
       crumbs() {
          return [{name: this.$t('garage')}]
       },
       cardTabs() {
-         if(!this.isMobileBreakpoint) {
+         if (!this.isMobileBreakpoint) {
             return [
                {
                   id: '0',
@@ -556,16 +588,14 @@ export default {
                   title: 'penalty_history',
                },
             ]
-         }
-         else if(this.isMobileBreakpoint && this.selectedCar.status !== 1 && this.selectedCar.sync_status == 1) {
+         } else if (this.isMobileBreakpoint && this.selectedCar.status !== 1 && this.selectedCar.sync_status == 1) {
             return [
                {
                   id: '2',
                   title: 'my_vehicle_info',
                }
             ]
-         }
-        else if (this.isMobileBreakpoint && this.selectedCar.sync_status == 1 && this.selectedCar.status == 1) {
+         } else if (this.isMobileBreakpoint && this.selectedCar.sync_status == 1 && this.selectedCar.status == 1) {
             return [
                {
                   id: '0',
@@ -582,22 +612,24 @@ export default {
             ]
          }
       },
-      showLeftCard(){
-         if (!this.isMobileBreakpoint){
+      showLeftCard() {
+         if (!this.isMobileBreakpoint) {
             return this.selectedCar.status == 1
-         }else{
+         } else {
             return this.selectedCar.sync_status == 1
          }
 
       }
 
-   },
+   }
+   ,
    data() {
       return {
          loading: true,
          searchNumber: "",
          activeCardTab: 0,
          selectedCar: null,
+         vehiclePassportExpired: false,
 
          carsList: [],
          filteredCarsList: [],
@@ -644,20 +676,22 @@ export default {
          showProtocolDetails: false,
          openDateChangeModal: false,
       }
-   },
+   }
+   ,
    watch: {
-      'protocol.allSelected': {
-         deep: true,
-         handler() {
-            if (this.protocol.allSelected) {
-               this.protocol.filteredList.forEach(el => el.isChecked = true)
-            } else {
-               this.protocol.filteredList.forEach(el => el.isChecked = false)
+      'protocol.allSelected':
+         {
+            deep: true,
+            handler() {
+               if (this.protocol.allSelected) {
+                  this.protocol.filteredList.forEach(el => el.isChecked = true)
+               } else {
+                  this.protocol.filteredList.forEach(el => el.isChecked = false)
 
+               }
             }
-         }
 
-      }
+         }
    }
 }
 </script>

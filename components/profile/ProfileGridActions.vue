@@ -80,10 +80,13 @@
 export default {
    props: {
       announcement: Object,
+      dropdownId: {
+         type: String,
+         required: true,
+      },
    },
    data() {
       return {
-         isOpen: false,
          pending: false,
          showModal: false,
          showOptions: false,
@@ -130,29 +133,33 @@ export default {
             },
          ]
       },
+      isOpen() {
+         return this.$store.state.openDropdownId === this.dropdownId;
+      },
    },
    methods: {
       //dropdown
       toggleOpen(event) {
-
          event.stopPropagation();
          if (this.isMobileBreakpoint) {
             this.showOptions = true;
          } else {
-            this.isOpen = !this.isOpen;
-            if (this.isOpen) {
+            const isOpen = this.$store.state.openDropdownId === this.dropdownId;
+            this.$store.commit(isOpen ? 'closeDropdown' : 'setOpenDropdown', this.dropdownId);
+            if (!isOpen) {
                document.addEventListener('click', this.onClickOutside);
             }
          }
       },
       onClickOutside(event) {
          if (!this.$refs.actionsRef.contains(event.target)) {
-            this.isOpen = false;
+            this.$store.commit('closeDropdown');
             document.removeEventListener('click', this.onClickOutside);
          }
       },
 
       openModal(item) {
+         this.showOptions = false;
          this.selectedItem = item;
          this.showModal = true;
       },
@@ -245,9 +252,9 @@ export default {
       min-width: 152px;
       left: 0;
 
-      box-shadow: 8px 16px 32px 0px rgba(17,17,51,0.15);
-      -webkit-box-shadow: 8px 16px 32px 0px rgba(17,17,51,0.15);
-      -moz-box-shadow: 8px 16px 32px 0px rgba(17,17,51,0.15);
+      box-shadow: 8px 16px 32px 0px rgba(17, 17, 51, 0.15);
+      -webkit-box-shadow: 8px 16px 32px 0px rgba(17, 17, 51, 0.15);
+      -moz-box-shadow: 8px 16px 32px 0px rgba(17, 17, 51, 0.15);
 
       &--item {
          padding: 12px 8px;
@@ -295,6 +302,18 @@ export default {
             margin-bottom: 10px;
          }
       }
+   }
+}
+
+.right-0{
+   left: auto;
+   right: 0;
+}
+
+.right-aligned-dropdown{
+   .announcement-actions__content{
+      left: auto;
+      right: 0;
    }
 }
 </style>

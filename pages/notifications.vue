@@ -1,5 +1,5 @@
 <template>
-   <div class="container">
+   <div class="container px-0">
       <breadcrumbs :crumbs="crumbs"/>
       <div class="ma-notifications">
          <h2 class="ma-notifications__title">{{ $t('notifications') }}</h2>
@@ -7,7 +7,7 @@
          <template v-if="notifications.data.length && getNotificationsList.length">
             <NotificationItem
                v-for="item in getNotificationsList"
-               :date="$formatDate(item.created_at, 'D.MM.YYYY HH:mm')[locale]" :link="getRoutePath(item)"
+               :date="getDateString(item)" :link="getRoutePath(item)"
                :notification="item"
                :page="page"
             />
@@ -143,6 +143,25 @@ export default {
       });
    },
    methods: {
+      getDateString(item) {
+         const apiDate = new Date(item.created_at);
+         const today = new Date();
+
+         // Check if the year, month, and day match
+         if (
+            apiDate.getFullYear() === today.getFullYear() &&
+            apiDate.getMonth() === today.getMonth() &&
+            apiDate.getDate() === today.getDate()
+         ) {
+            // If the date is today, format it as 'today 12.03'
+            const obj = this.$formatDate(item.created_at, 'HH:mm');
+            return this.$t('today') + " " + obj.az
+         } else {
+            // If it's not today, format the date in your preferred way
+            const obj = this.$formatDate(item.created_at, 'D.MM.YYYY HH:mm');
+            return obj.az
+         }
+      },
       async changePage(page) {
          await this.$store.dispatch('getNotifications', 'page=' + page)
          this.scrollTo('.vehicle-specs', [-15, -20]);

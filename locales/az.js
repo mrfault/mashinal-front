@@ -2748,7 +2748,6 @@ export default {
    "dark_mode": "Qaranlıq rejim",
    "notification_status": "Bildirişləri aktiv et",
    "select_language": "Dil seçimi",
-
    "menu_login": "Giriş",
    "menu_login_desc": "Hesaba daxil ol",
    "menu_external_salon": "Sifarişlə avto",
@@ -2775,5 +2774,7 @@ export default {
    "menu_comparisons_desc": "Avtomobilləri müqayisələrə əlavə etməklə müqayisə et",
    "menu_settings": "Tənzimləmələr",
    "menu_settings_desc": "Qaranlıq rejim, dil və bildiriş ayarları və s.",
+   "today": "Bu gün",
+   "vehiclePassportExpired": "Nəqliyyat vasitəsinin qeydiyyat şəhadətnaməsi dəyişdirilib"
 };
 

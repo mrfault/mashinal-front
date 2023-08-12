@@ -1,7 +1,7 @@
 <template>
    <div>
       <div class="ma-penalties__card">
-         <h2 class="ma-title--md" v-if="!isMobileBreakpoint">{{ $t('my_vehicle_info') }}</h2>
+         <h2 v-if="!isMobileBreakpoint" class="ma-title--md">{{ $t('my_vehicle_info') }}</h2>
          <div>
             <div :class="{'ma-penalties__card--body__no-results': !selectedCar}"
                  class="ma-penalties__right-card__body">
@@ -40,17 +40,17 @@
                                  @carDeactivated="getAllCarsList"/>
                <start-subsribtion v-if="selectedCar.sync_status == 1 && selectedCar.status == 0 "
                                   :vehicle="selectedCar"
-                                  @carDeactivated="getAllCarsList"/>
+                                  @carActivated="carActivated"/>
             </div>
          </div>
       </div>
 
       <!--         date change modal-->
       <modal-popup
+         :modal-class="{'car-info-modal': !isMobileBreakpoint, 'wider': isMobileBreakpoint}"
          :overflow-hidden="false"
          :title="$t('insurance_end_date_text')"
          :toggle="openDateChangeModal"
-         modal-class="car-info-modal"
          @close="openDateChangeModal = false"
       >
          <form-select
@@ -106,11 +106,12 @@
 import StartSubsribtion from "~/components/garage/StartSubsribtion";
 import StopSubsribtion from "~/components/garage/StopSubsribtion";
 import RemoveVehicle from "~/components/garage/RemoveVehicle";
+
 export default {
    props: {
       selectedCar: Object,
    },
-   components:{
+   components: {
       StopSubsribtion,
       RemoveVehicle,
       StartSubsribtion,
@@ -163,13 +164,14 @@ export default {
             console.log("confirmInsurance response")
             this.$emit('refresh-data')
             this.openDateChangeModal = false;
-            this.getAllCarsList();
+            this.$emit('carDataChanged', true)
             this.dateChangeForm = {
                day: null,
                month: null,
                year: null,
                company: null,
-            }
+            };
+            this.$nuxt.refresh();
          } catch (e) {
             console.log("confirmInsurance catch", e)
          }
@@ -179,7 +181,7 @@ export default {
          return string.charAt(0).toUpperCase() + string.slice(1);
       },
    },
-   computed:{
+   computed: {
       days() {
          let days = Array.from({length: 31}, (v, i) => 31 - i).reverse();
          return days.map((item) => {
@@ -200,7 +202,7 @@ export default {
       },
       years() {
          const years = (back) => {
-            const year = new Date().getFullYear();
+            const year = new Date().getFullYear() + 10;
             return Array.from({length: back}, (v, i) => year - back + i + 1).reverse();
          }
          return years(50).map(item => {
@@ -226,7 +228,9 @@ export default {
             has_arrest: this.selectedCar.has_arrest ? this.$t('have') : this.$t('dont_have')
          }, this.isMobileBreakpoint);
       },
-
+      carActivated(){
+         this.getAllCarsList();
+      }
    }
 }
 </script>

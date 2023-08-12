@@ -233,6 +233,9 @@ const getInitialState = () => ({
    registrationMark: [],
    handleIds: null,
 
+   //   dropdown
+   openDropdownId: null,
+
    //usercabinet
    userCabinetCars: []
 });
@@ -438,6 +441,10 @@ export const getters = {
 //  moderator
    partCategories: s => s.partCategories,
    partFilters: s => s.partFilters,
+
+   openDropdownId: s => s.openDropdownId,
+
+
 
 //   usercabinet
    userCabinetCars: s => s.userCabinetCars
@@ -1723,6 +1730,13 @@ export const mutations = {
 
    offerAddFavorite(state) {
       state.offer.data.isFavorite = !state.offer.data.isFavorite
+   },
+
+   setOpenDropdown(state, dropdownId) {
+      state.openDropdownId = dropdownId;
+   },
+   closeDropdown(state) {
+      state.openDropdownId = null;
    },
 
    // messages
