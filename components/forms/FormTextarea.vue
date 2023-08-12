@@ -2,13 +2,14 @@
   <div class="form-group">
     <div class="text-input textarea">
       <icon :name="iconName" v-if="iconName" :class="{invalid, disabled}" />
-      <textarea 
+      <textarea
         :id="id"
-        :placeholder="placeholder" 
-        :maxlength="maxlength" 
+        :placeholder="placeholder"
+        :maxlength="maxlength"
         :disabled="disabled"
         :class="{invalid, valid, disabled}"
         v-model="inputValue"
+        @keydown="validate()"
       ></textarea>
       <icon name="alert-circle" v-if="invalid" class="invalid" />
       <icon name="check-circle" v-else-if="valid" class="valid" />
@@ -64,6 +65,14 @@
           }
         }
       }
-    }
+    },
+    methods: {
+        validate() {
+           if (this.value.length >= this.maxlength) {
+              this.inputValue = this.value.substring(0, this.maxlength);
+              this.valid = true;
+           }
+        }
+    },
   }
 </script>
