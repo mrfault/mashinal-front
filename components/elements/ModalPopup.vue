@@ -167,4 +167,24 @@
       //   color: #000;
       //}
    }
+
+   @media (max-width: 992px) {
+      .modal-popup {
+         &.exclude-popup {
+            .exclude-popup__grid {
+               grid-template-columns: repeat(2, 1fr) !important;
+            }
+         }
+      }
+   }
+
+   @media (max-width: 576px) {
+      .modal-popup {
+         &.exclude-popup {
+            .exclude-popup__grid {
+               grid-template-columns: repeat(1, 1fr) !important;
+            }
+         }
+      }
+   }
 </style>

@@ -147,14 +147,13 @@
 </template>
 
 <script>
-   import { mapGetters } from "vuex";
-   import { minLength } from "vuelidate/lib/validators";
    import PlatesGrid from "~/components/announcements/PlatesGrid.vue";
    import NoResults from "~/components/elements/NoResults.vue";
    import HandleIds from "~/components/announcements/HandleIds.vue";
    import Cap from "~/components/elements/Cap.vue";
    import CustomDropdown from "~/components/elements/CustomDropdown.vue";
-   import tr from "vue2-datepicker/locale/es/tr";
+   import { mapGetters } from "vuex";
+   import { minLength } from "vuelidate/lib/validators";
 
    export default {
       name: 'PlatesPage',
@@ -243,22 +242,23 @@
          changePage(e) {
             this.$store.commit('mutate',{ property: 'loadingData', value: true });
             this.page = e;
-            this.scrollTo('.registrationMarks__filters', [-15, -20]);
+            this.scrollTo('.registrationMarks__filters', [-15, -50]);
          },
 
          setInitialValues() {
             this.$route.query?.filters?.slice(1).split('&').forEach(query => {
-               // console.log(query.split('='))
+               if (query.split('=')[0] === 'page') this.page = +query.split('=')[1];
 
                for (const item in this.form) {
                   if (query.split('=')[0] === item) {
-                     if (item === 'page' || item === 'region_id'|| item === 'currency') {
+                     if (item === 'region_id'|| item === 'currency') {
                         this.form[item] = +query.split('=')[1];
-                        console.log(item, this.form[item])
                      } else {
                         this.form[item] = query.split('=')[1];
                      }
-                  } else if (typeof this.form[item] === 'object') {
+                  } else if (typeof this.form[item] === 'object' && query.split('=')[0] !== 'page') {
+                     console.log('w',this.form[item])
+                     console.log('e', query.split('='))
                      if (query.split('=')[0] === 'sort_by') {
                         this.form.sorting.key = query.split('=')[1]
                      } else {
@@ -269,7 +269,7 @@
                         if (item.key === this.form.sorting.key && item.value === this.form.sorting.value) {
                            this.form.sorting.name = item.name;
                         }
-                     })
+                     });
                   }
                }
             });
@@ -277,9 +277,6 @@
       },
 
       computed: {
-         tr() {
-            return tr
-         },
          ...mapGetters({
             getRegionNumbers: 'getRegionNumbers',
             getRegistrationMarks: 'getRegistrationMarks',
@@ -307,12 +304,10 @@
                      query.append('sort_order', value.value);
                   }
                }
-
             }
 
             this.$store.dispatch('fetchRegistrationMarks', `?page=${this.page}&${query.toString()}`);
 
-            console.log('Page', this.page)
             this.$router.push({
                query: { filters: `?page=${this.page}&${query.toString()}` }
             })
@@ -341,15 +336,15 @@
                }
 
                this.$router.push({
-                  query: { filters: `?${query.toString()}` }
+                  query: { filters: `?page=1&${query.toString()}` }
                })
 
                clearTimeout(this.timeout);
                this.timeout = setTimeout(() => {
-                  this.$store.dispatch('fetchRegistrationMarks', `?${query.toString()}`);
+                  this.$store.dispatch('fetchRegistrationMarks', `?page=1&${query.toString()}`);
                }, 300);
 
-               this.page = 1;
+               // this.page = 1;
             }
          },
       },
@@ -362,7 +357,6 @@
          await store.dispatch('fetchRegionNumbers');
          await store.dispatch('fetchRegistrationMarks');
          await store.dispatch('getOptions');
-         // `?page=1&sorting=created_at_desc`
       },
 
       validations: {
@@ -481,6 +475,8 @@
       }
 
       &.index {
+         padding-top: 32px;
+
          .pagination {
             li {
                button {

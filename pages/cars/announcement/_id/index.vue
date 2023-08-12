@@ -186,7 +186,7 @@
 
 <style lang="scss">
    .pages-cars-id {
-      margin-top: -30px;
+      //margin-top: -30px;
 
       .bg-white {
          padding: 5px 0 32px 0;
