@@ -8,6 +8,8 @@ const getInitialState = () => ({
    loading: true,
    loadingData: false,
    colorMode: "light",
+   notificationStatus: "deactive",
+   currentLanguage: "az",
    partAnnouncements: {},
    breakpoint: null,
    newOfferCount: 0,
@@ -231,6 +233,9 @@ const getInitialState = () => ({
    registrationMark: [],
    handleIds: null,
 
+   //   dropdown
+   openDropdownId: null,
+
    //usercabinet
    userCabinetCars: []
 });
@@ -437,6 +442,10 @@ export const getters = {
    partCategories: s => s.partCategories,
    partFilters: s => s.partFilters,
 
+   openDropdownId: s => s.openDropdownId,
+
+
+
 //   usercabinet
    userCabinetCars: s => s.userCabinetCars
 };
@@ -609,6 +618,9 @@ export const actions = {
    setColorMode({commit}, theme) {
       commit("mutate", {property: "colorMode", value: theme});
    },
+   setNotificationStatus({commit}, status) {
+      commit("mutate", {property: "notificationStatus", value: status});
+   },
    // Grid
    setGridBreakpoint({commit}, breakpoint) {
       commit("mutate", {property: "breakpoint", value: breakpoint});
@@ -618,7 +630,8 @@ export const actions = {
       commit("mutate", {property: "hideFooter", value: !show});
    },
    // Localization
-   async changeLocale({dispatch}, locale) {
+   async changeLocale({commit, dispatch}, locale) {
+      commit("mutate", {property: "currentLanguage", value: locale});
       let changed = locale !== this.$i18n.locale;
       this.$i18n.setLocale(locale);
       // update options in store
@@ -1696,8 +1709,7 @@ export const actions = {
       // commit("mutate", {property: "userCabinetCars", value: res});
    },
    async UserCabinetCarsEdit({commit,state}, payload){
-      const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/me/cars/${payload.id}/edit?brand_id=${payload.brand_id}&model_id=${payload.model_id}&generation_id=${payload.generation_id}&car_type_id=${payload.car_type_id}&car_catalog_id=${payload.car_catalog_id}&vin=${payload.vin}&car_number=${payload.car_number}`);
-      // commit("mutate", {property: "userCabinetCars", value: res});
+      const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/me/cars/${payload.id}/update?brand_id=${payload.brand_id}&model_id=${payload.model_id}&generation_id=${payload.generation_id}&car_type_id=${payload.car_type_id}&car_catalog_id=${payload.car_catalog_id}&vin=${payload.vin}&car_number=${payload.car_number}`);
    },
    async UserCabinetCarsGetAll({commit,state}, payload){
       const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/me/cars`);
@@ -1714,6 +1726,13 @@ export const mutations = {
 
    offerAddFavorite(state) {
       state.offer.data.isFavorite = !state.offer.data.isFavorite
+   },
+
+   setOpenDropdown(state, dropdownId) {
+      state.openDropdownId = dropdownId;
+   },
+   closeDropdown(state) {
+      state.openDropdownId = null;
    },
 
    // messages

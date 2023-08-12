@@ -7,16 +7,10 @@
             </span>
 
             <nuxt-link class="logo" :to="$localePath('/')" @click.native="$nuxt.$emit('logo-click')">
-               <!--          <img :src="`/img/${isDarkMode ? 'logo-dark-blue-white' : 'logo'}.svg`" alt="logo" v-if="!btlCookie" />-->
                <inline-svg
                   :src="`/img/${isDarkMode ? 'logo_new' : 'logo_mobile_new'}.svg`"
                   v-if="!btlCookie"
                />
-
-               <!--           <inline-svg-->
-               <!--              :src="'/img/logo_new.svg'"-->
-               <!--              v-if="!btlCookie && isDarkMode"-->
-               <!--           />-->
             </nuxt-link>
 
             <span class="cursor-pointer" @click="handleIconClick(false, 'search-icon-click')" v-if="hasSearchFilters">
@@ -46,19 +40,19 @@
                <div class="langs-menu">
                   <button
                      :class="['btn','btn--pale-red-outline']"
-                     @click="changeLoc"
-                  >{{ locale === 'ru' ? 'AZ' : 'RU' }}
+                     @click="changeLoc">{{ locale === 'ru' ? 'AZ' : 'RU' }}
                   </button>
                </div>
                <theme-switch v-if="isMobileBreakpoint"/>
                <span class="cursor-pointer close d-inline-flex align-top" @click="toggleSidebarMenu(false)">
-            <icon name="cross"/>
-                  <!-- <inline-svg src="/icons/cross.svg" height="14"/> -->
-          </span>
+                  <icon name="cross"/>
+               </span>
             </div>
             <div class="user-menu" v-if="loggedIn">
-               <nuxt-link :to="getUserSettingsLink" @click.native="toggleSidebarMenu(false)"
-                          class="d-inline-flex align-items-center align-top">
+               <nuxt-link
+                  :to="getUserSettingsLink"
+                  @click.native="toggleSidebarMenu(false)"
+                  class="d-inline-flex align-items-center align-top">
                   <img :src="getUserAvatar" :alt="user.full_name"/>
                   <span class="text-truncate">{{ user.full_name }}</span>
                </nuxt-link>
@@ -77,28 +71,21 @@
                      <nuxt-link
                         style="position:relative"
                         :to="$localePath(menu.route)"
-                        @click.native="toggleSidebarMenu(false)"
-                     >
+                        @click.native="toggleSidebarMenu(false)">
                         <inline-svg
                            v-if="menu.title === 'registration_marks'"
                            src="/icons/registration_marks-white.svg"
                            style="width: 20px;
-                   margin-right: 10px;"
-                        />
+                   margin-right: 10px;"/>
                         <icon
                            v-else-if="!['favorites','comparisons'].includes(menu.title)"
-                           :name="menu.icon"
-                        />
+                           :name="menu.icon"/>
                         <inline-svg v-else :src="`/icons/${menu.icon}`"/>
 
                         <span>{{ menu.title[locale] || $t(menu.title) }}</span>
-                        <span>{{
-                              (menu.title === 'comparisons') && comparisonCount ? '&nbsp;(' + comparisonCount + ')' : ''
-                           }}</span>
-                        <span v-if="isMobileBreakpoint"
-                              style="position: absolute; top: -13px; right: -23px; display: flex;">
-                          <inline-svg style="width: 31px;" v-if="menu.title === 'registration_marks'"
-                                      src="/img/new_badge_white.svg"/>
+                        <span>{{(menu.title === 'comparisons') && comparisonCount ? '&nbsp;(' + comparisonCount + ')' : '' }}</span>
+                        <span v-if="isMobileBreakpoint" style="position: absolute; top: -13px; right: -23px; display: flex;">
+                          <inline-svg style="width: 31px;" v-if="menu.title === 'registration_marks'" src="/img/new_badge_white.svg"/>
                         </span>
                      </nuxt-link>
                   </li>
@@ -117,10 +104,8 @@
 
 <script>
 import {mapGetters, mapActions} from 'vuex';
-
 import {MenusDataMixin} from '~/mixins/menus-data';
 import {UserDataMixin} from '~/mixins/user-data';
-
 import ThemeSwitch from '~/components/elements/ThemeSwitch';
 
 export default {
