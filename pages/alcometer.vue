@@ -146,7 +146,7 @@
                   </div>
                </div>
 
-               <div class="alco-form result" v-show="showGraphs">
+               <div :class="['alco-form result', {'ru' : locale === 'ru'}]" v-show="showGraphs">
                   <div class="ma-alco-card">
                      <alcometer-speedometer
                         :speedometerValue="diagValue"
@@ -249,6 +249,10 @@
                {
                   name: '45',
                   key: 45,
+               },
+               {
+                  name: '50',
+                  key: 50,
                },
                {
                   name: '55',
@@ -694,6 +698,8 @@
 
 <style lang="scss">
    .alcometer-page {
+      padding-bottom: 120px;
+
       .alco-form {
          height: 100%;
          padding: 32px;
@@ -761,6 +767,29 @@
             flex-direction: column;
             justify-content: space-between;
             padding: 32px 22px 22px;
+         }
+
+         &.result {
+            svg {
+               width: 100%;
+            }
+         }
+
+         &.ru {
+            .ma-alco-card__list {
+               //margin-top: 50px;
+               flex-wrap: wrap;
+
+               &-item {
+                  width: 48%;
+
+                  &:first-child {
+                     width: 100%;
+                     text-align: center;
+                     margin-bottom: 20px;
+                  }
+               }
+            }
          }
       }
 

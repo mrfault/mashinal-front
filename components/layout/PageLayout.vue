@@ -147,7 +147,6 @@
                this.$store.dispatch("getNotifications"),
                this.$store.dispatch("getNotViewedFavorites"),
                this.$store.dispatch("getNotViewedSavedSearch"),
-               this.$store.dispatch("fetchBrandsList"),
                this.$store.dispatch("getFavorites")
             ]);
          }
@@ -194,6 +193,10 @@
             return this.mapView && (this.$route.name == "salons___az" || this.$route.name == "salons___ru" || this.$route.name == "parts-shops___az" || this.$route.name == "parts-shops___ru")
          }
       },
+
+      async fetch() {
+         await this.$store.dispatch("fetchBrandsList");
+      }
    }
 </script>
 

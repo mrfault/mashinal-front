@@ -607,11 +607,55 @@
             margin-bottom: 20px;
          }
       }
-   }
 
-   @media (max-width: 600px) {
-      .calculator-customs {
-         background-color: #FFFFFF;
+      .calculator__results {
+         .vehicle-specs {
+            ul {
+               li {
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  gap: 20px;
+                  padding: 20px 0;
+                  border-bottom: 1px solid #E3E8EF;
+
+                  span {
+                     font-size: 16px;
+                     line-height: 20px;
+
+                     &:first-child {
+                        color: #364152;
+                        font-weight: 400;
+                     }
+
+                     &:last-child {
+                        color: #121926;
+                        font-weight: 500;
+                     }
+                  }
+               }
+            }
+
+            .sum {
+               display: flex;
+               align-items: center;
+               justify-content: space-between;
+               margin-top: 20px;
+
+               span {
+                  color: #121926;
+                  font-size: 20px;
+                  font-weight: 600;
+                  line-height: 24px;
+               }
+            }
+         }
       }
    }
+
+   //@media (max-width: 600px) {
+   //   .calculator-customs {
+   //      background-color: #FFFFFF;
+   //   }
+   //}
 </style>

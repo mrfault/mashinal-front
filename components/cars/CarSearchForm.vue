@@ -352,6 +352,7 @@
                      :clear-option="false"
                      multiple
                   />
+<!--                  <pre>{{colors}}</pre>-->
 
                   <form-select
                      :label="$t('parameters')"
