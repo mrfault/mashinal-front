@@ -149,7 +149,7 @@ export default {
                link: "/",
             },
             {
-               id: 0,
+               id: 7,
                title: 'timed_out',
                link: "/",
             },
@@ -465,6 +465,14 @@ export default {
 
    }
 
+}
+
+
+.ma-announcements__body--row__inner, .ma-announcements__body--row__inner--item-plate {
+   .stratch-child-block {
+      height: 100% !important;
+      min-height: auto !important;
+   }
 }
 </style>
 

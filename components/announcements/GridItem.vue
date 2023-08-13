@@ -38,8 +38,10 @@
          </div>
       </div>
 
-      <div :class="['id'+announcement.id,{'overflow-visible isProfilePage': isProfilePage}]" class="announcements-grid__item" @click="goToAnnouncement">
-         <profile-grid-actions :class="{'right-aligned-dropdown': isLastChild}" v-if="isProfilePage" :dropdown-id="announcement.id_unique" :announcement="announcement" />
+      <div :class="['id'+announcement.id,{'overflow-visible isProfilePage': isProfilePage}]"
+           class="announcements-grid__item" @click="goToAnnouncement">
+         <profile-grid-actions v-if="isProfilePage" :announcement="announcement"
+                               :class="{'right-aligned-dropdown': isLastChild}" :dropdown-id="announcement.id_unique"/>
 
          <a
             v-if="clickable && !isMobileBreakpoint && !$env.DEV"
@@ -63,7 +65,7 @@
                <div class="item-overlay__top">
                   <div class="item-overlay__top--left">
                      <div
-                        v-if="announcement.is_auto_salon"
+                        v-if="isProfilePage"
                         :class="{
                         'activeStatus': announcement.status == 1,
                         'deactiveStatus': announcement.status == 3,
@@ -179,12 +181,28 @@
                <span v-if="announcement?.description">{{ announcement?.description }}</span>
             </div>
 
-            <div class="item-details__item">
+            <div v-if="!isProfilePage" class="item-details__item">
                {{ announcement.created_at }}
+            </div>
+            <div v-if="isProfilePage" class="item-details__item d-flex justify-csb">
+               <span>
+                                 <inline-svg src="/new-icons/grid/cards/phone.svg"/>
+                  123
+               </span>
+               <span>
+                            <inline-svg src="/new-icons/grid/cards/eye.svg"/>
+                  123
+               </span>
+               <span>
+                   <inline-svg src="/new-icons/grid/cards/calendar.svg"/>
+                  {{ announcement.created_at }}
+               </span>
+
+
             </div>
          </div>
 
-         <div v-if="isProfilePage && announcement.status == 1" class="item-monetization">
+         <div v-if="isProfilePage" class="item-monetization">
             <monetization-button
                :announcement="announcement"
                :disabled="announcement.status !== 1"
@@ -200,6 +218,7 @@ import AddComparison from '~/components/announcements/AddComparison'
 import MonetizationButton from '~/components/announcements/MonetizationButton'
 import MonetizationStatsButton from '~/components/announcements/MonetizationStatsButton'
 import ProfileGridActions from "~/components/profile/ProfileGridActions";
+
 export default {
    props: {
       announcement: {},
@@ -405,7 +424,7 @@ export default {
    }
 }
 
-.item-monetization{
+.item-monetization {
    position: absolute;
    bottom: 12px;
    left: 12px;
@@ -413,8 +432,9 @@ export default {
    z-index: 2;
    padding: 0 !important;
 }
-.isProfilePage{
-   .item-details{
+
+.isProfilePage {
+   .item-details {
       padding-bottom: 70px;
       height: auto;
    }
