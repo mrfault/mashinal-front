@@ -169,7 +169,7 @@ export const MenusDataMixin = {
 
       exceptions() {
          return [
-            'calculator-customs'
+            'calculator-customs', 'parts-shops-id'
          ].includes(this.routeName);
       },
 
