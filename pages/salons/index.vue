@@ -15,7 +15,7 @@
                </Banner>
             </div>
 
-            <div class="container mt-5" v-if="!showMapsView">
+            <div class="container" v-if="!showMapsView">
                <div class="row">
                   <div class="col-md-12">
                      <Cap>
@@ -33,7 +33,7 @@
                   </div>
 
                   <div class="col-md-12">
-                     <div class="mb-lg-4 mt-4 mt-lg-5 row salon-card-list" v-if="officialSalons.length">
+                     <div class="mb-lg-5 mt-4 mt-lg-5 row salon-card-list" v-if="officialSalons.length">
                         <div class="col-12 col-md-6 col-lg-4 mb-2 mb-lg-3" v-for="salon in officialSalons"
                              :key="salon.id"
                              v-if="salon.announcement_count">
@@ -125,7 +125,8 @@
                         <div class="col-12 col-md-6 col-lg-4 mb-4"
                              v-for="salon in nonOfficialSalons"
                              :key="salon.id"
-                             v-if="salon.announcement_count">
+                             v-if="salon.announcement_count"
+                        >
                            <nuxt-link
                               class="keep-colors border"
                               :to="$localePath(`/salons/${salon.slug}`)">
@@ -152,7 +153,7 @@ import ClusteredMap from '~/components/elements/ClusteredMap'
 import Banners from '~/components/parts/Banners'
 import Banner from "~/components/elements/Banner.vue";
 import Cap from "~/components/elements/Cap.vue";
-import is from "vue2-datepicker/locale/es/is";
+
 export default {
    name: 'pages-salons',
 
@@ -171,7 +172,7 @@ export default {
 
    nuxtI18n: {
       paths: {
-         az: '/salonlar/novbeti',
+         az: '/salonlar',
       },
    },
 
@@ -202,12 +203,10 @@ export default {
    },
 
    computed: {
-      is() {
-         return is
-      },
       ...mapGetters(['salonsFiltered', 'salonsInBounds', 'mapView']),
+
       nonOfficialSalons() {
-         return this.salonsFiltered.filter(item => !item.is_official);
+         return this.salonsFiltered.filter(item => !item.is_official && item.announcement_count);
       },
       officialSalons() {
          return this.salonsFiltered.filter(item => item.is_official).sort((a, b) => a.name.localeCompare(b.name));
@@ -262,7 +261,7 @@ export default {
    },
 
    created() {
-      this.$nuxt.$on('search-icon-click', this.toggleSearch)
+      this.$nuxt.$on('search-icon-click', this.toggleSearch);
    },
 
    beforeDestroy() {
@@ -270,97 +269,139 @@ export default {
       this.setFooterVisibility(true)
       this.updateSalonsFilters({})
       this.updateSalonsSearchFilters({})
-      this.$nuxt.$off('search-icon-click', this.toggleSearch)
+      this.$nuxt.$off('search-icon-click', this.toggleSearch);
    }
 }
 </script>
 
 <style lang="scss">
-.keep-colors {
-   &.border {
-      .salon-card {
-         border: 1px solid #CDD5DF
+   .pages-salons-wrapper {
+      overflow: hidden;
+
+      .pages-salons {
+         &:first-child {
+            padding-top: 32px;
+         }
+
+         &.list-view {
+            .container {
+               &:last-child {
+                  padding-top: 56px;
+               }
+            }
+         }
       }
    }
-}
-.pages-salons-wrapper{
-   margin-top: -27px;
-   overflow: hidden;
-}
 
-.map-viewer{
-   width: 100%;
-   height: 624px;
-   flex-shrink: 0;
-   border-radius: 12px;
-   border: 1px solid var(--gray-300, #CDD5DF);
-   background: lightgray 50% / cover no-repeat;
-}
-.salon-card-list.maps-list{
-   height: 624px;
-   max-height: 624px;
-   overflow-y: auto;
-   overflow-x: hidden;
-   margin-top: 0!important;
-}
-.salon-card-list.maps-list .salon-card-list__item{
-   margin-bottom: 10px;
-}
-.salon-card-list__item:last-child{
-   margin-bottom: 0;
-}
-.salon-card-list.maps-list:not(.row) > div:not(:last-child) .salon-card::after{
-   border: 0!important;
-}
-.salon-card-list.maps-list .salon-card-list__item{
-   border-radius: 12px;
-   border: 1px solid var(--gray-300, #CDD5DF);
-   background: #FFF;
-}
-.map-view{
-   background-color: #FFF;
-}
-.pages-salons{
-   padding-top: 32px;
-}
-.ymaps-2-1-79-map,
-.ymaps-2-1-79-inner-panes,
-.ymaps-2-1-79-events-pane {
-   border-radius: 12px!important;
-}
-.ymaps-2-1-79-balloon__tail{
-   display: none!important;
-}
-.ymaps-2-1-79-balloon__content .salon-announce{
-   display: none!important;
-}
-.ymaps-2-1-79-balloon__layout{
-   border-radius: 8px!important;
-}
-.ymaps-2-1-79-balloon__content .salon-card .salon-info {
-   width: calc(100% - 143px)!important;
-}
-.ymaps-2-1-79-balloon__content .balloon-content .salon-card .d-flex{
-   align-items: center!important;
-}
-.ymaps-2-1-79-balloon__content .balloon-content .salon-card:hover{
-   border: 1px solid transparent!important;
-   border-radius: 8px!important;
-}
-.ymaps-2-1-79-balloon__content{
-   padding: 0!important;
-   border-radius: 8px!important;
-}
-.dark-mode{
+   .keep-colors {
+      &.border {
+         .salon-card {
+            border: 1px solid #CDD5DF
+         }
+      }
+   }
+
+   .map-viewer{
+      width: 100%;
+      height: 624px;
+      flex-shrink: 0;
+      border-radius: 12px;
+      border: 1px solid var(--gray-300, #CDD5DF);
+      background: lightgray 50% / cover no-repeat;
+   }
+   .salon-card-list.maps-list{
+      height: 624px;
+      max-height: 624px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      margin-top: 0!important;
+   }
+   .salon-card-list.maps-list .salon-card-list__item{
+      margin-bottom: 10px;
+   }
+   .salon-card-list__item:last-child{
+      margin-bottom: 0;
+   }
+   .salon-card-list.maps-list:not(.row) > div:not(:last-child) .salon-card::after{
+      border: 0!important;
+   }
+   .salon-card-list.maps-list .salon-card-list__item{
+      border-radius: 12px;
+      border: 1px solid var(--gray-300, #CDD5DF);
+      background: #FFF;
+   }
    .map-view{
-      background-color: var(--gray-900, #121926);
+      background-color: #FFF;
    }
-   .ymaps-2-1-79-balloon__close-button{
-      color: #FFF!important;
+   .ymaps-2-1-79-map,
+   .ymaps-2-1-79-inner-panes,
+   .ymaps-2-1-79-events-pane {
+      border-radius: 12px!important;
    }
-   .cap svg path {
-      stroke: #FFF!important;
-      fill: #FFF!important;
+   .ymaps-2-1-79-balloon__tail{
+      display: none!important;
    }
-}
+   .ymaps-2-1-79-balloon__content .salon-announce{
+      display: none!important;
+   }
+   .ymaps-2-1-79-balloon__layout{
+      border-radius: 8px!important;
+   }
+   .ymaps-2-1-79-balloon__content .salon-card .salon-info {
+      width: calc(100% - 143px)!important;
+   }
+   .ymaps-2-1-79-balloon__content .balloon-content .salon-card .d-flex{
+      align-items: center!important;
+   }
+   .ymaps-2-1-79-balloon__content .balloon-content .salon-card:hover{
+      border: 1px solid transparent!important;
+      border-radius: 8px!important;
+   }
+   .ymaps-2-1-79-balloon__content{
+      padding: 0!important;
+      border-radius: 8px!important;
+   }
+
+   .dark-mode{
+      .map-view{
+         background-color: var(--gray-900, #121926);
+      }
+      .ymaps-2-1-79-balloon__close-button{
+         color: #FFF!important;
+      }
+      .cap svg path {
+         stroke: #FFF!important;
+         fill: #FFF!important;
+      }
+
+      .pages-salons-wrapper {
+         .pages-salons {
+            &:first-child {
+               background-color: #121926 !important;
+            }
+         }
+      }
+   }
+
+   @media (max-width: 600px) {
+      .pages-salons-wrapper {
+         overflow: hidden;
+
+         .pages-salons {
+            &:first-child {
+               padding-top: 0;
+            }
+
+            &.list-view {
+               padding-bottom: 32px;
+
+               .container {
+                  &:last-child {
+                     padding-top: 32px;
+                  }
+               }
+            }
+         }
+      }
+   }
 </style>

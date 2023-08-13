@@ -116,6 +116,7 @@
                               :clearPlaceholder="true"
                               :clear-option="false"
                               :allowClear="false"
+                              :objectInValue="true"
                               v-model="form.sorting"
                            />
                         </template>
@@ -124,8 +125,8 @@
                </PlatesGrid>
 
                <pagination
-                  v-if="getRegistrationMarks?.meta?.last_page > 1"
-                  :page-count="getRegistrationMarks?.meta?.last_page"
+                  v-if="getRegistrationMarks?.meta?.total_pages > 1"
+                  :page-count="getRegistrationMarks?.meta?.total_pages"
                   :value="page"
                   @change-page="changePage"
                />
@@ -146,13 +147,13 @@
 </template>
 
 <script>
-   import { mapGetters } from "vuex";
-   import { minLength } from "vuelidate/lib/validators";
    import PlatesGrid from "~/components/announcements/PlatesGrid.vue";
    import NoResults from "~/components/elements/NoResults.vue";
    import HandleIds from "~/components/announcements/HandleIds.vue";
    import Cap from "~/components/elements/Cap.vue";
    import CustomDropdown from "~/components/elements/CustomDropdown.vue";
+   import { mapGetters } from "vuex";
+   import { minLength } from "vuelidate/lib/validators";
 
    export default {
       name: 'PlatesPage',
@@ -194,7 +195,7 @@
                price_to: '',
                currency: '',
                region_id: '',
-               sorting: 'created_at_desc',
+               sorting: { key: 'created_at', value: 'desc', name: this.$t('show_by_date') }
             },
 
             numbers: [
@@ -230,9 +231,9 @@
                { id: 2, name: 'USD' }
             ],
             sortItems: [
-               { id: 'created_at_desc', name: this.$t('show_by_date') },
-               { id: 'price_asc', name: this.$t('show_cheap_first') },
-               { id: 'price_desc', name: this.$t('show_expensive_first') }
+               { key: 'created_at', value: 'desc', name: this.$t('show_by_date') },
+               { key: 'price', value: 'asc', name: this.$t('show_cheap_first') },
+               { key: 'price', value: 'desc', name: this.$t('show_expensive_first') }
             ]
          }
       },
@@ -241,7 +242,37 @@
          changePage(e) {
             this.$store.commit('mutate',{ property: 'loadingData', value: true });
             this.page = e;
-            this.scrollTo('.registrationMarks__filters', [-15, -20]);
+            this.scrollTo('.registrationMarks__filters', [-15, -50]);
+         },
+
+         setInitialValues() {
+            this.$route.query?.filters?.slice(1).split('&').forEach(query => {
+               if (query.split('=')[0] === 'page') this.page = +query.split('=')[1];
+
+               for (const item in this.form) {
+                  if (query.split('=')[0] === item) {
+                     if (item === 'region_id'|| item === 'currency') {
+                        this.form[item] = +query.split('=')[1];
+                     } else {
+                        this.form[item] = query.split('=')[1];
+                     }
+                  } else if (typeof this.form[item] === 'object' && query.split('=')[0] !== 'page') {
+                     console.log('w',this.form[item])
+                     console.log('e', query.split('='))
+                     if (query.split('=')[0] === 'sort_by') {
+                        this.form.sorting.key = query.split('=')[1]
+                     } else {
+                        this.form.sorting.value = query.split('=')[1]
+                     }
+
+                     this.sortItems.forEach(item => {
+                        if (item.key === this.form.sorting.key && item.value === this.form.sorting.value) {
+                           this.form.sorting.name = item.name;
+                        }
+                     });
+                  }
+               }
+            });
          }
       },
 
@@ -264,13 +295,21 @@
 
             for (const key in this.form) {
                const value = this.form[key];
-               if (value !== '') query.append(key, value);
+
+               if (value !== '') {
+                  if (key !== 'sorting') {
+                     query.append(key, value);
+                  } else {
+                     query.append('sort_by', value.key);
+                     query.append('sort_order', value.value);
+                  }
+               }
             }
 
             this.$store.dispatch('fetchRegistrationMarks', `?page=${this.page}&${query.toString()}`);
 
             this.$router.push({
-               query: { filters: `?page=${this.page}` }
+               query: { filters: `?page=${this.page}&${query.toString()}` }
             })
          },
 
@@ -287,6 +326,9 @@
                      if (key === 'serial_number') {
                         this.form.serial_number = this.form.serial_number.split('-')[0].replace(/\s/g, "");
                         query.append('serial_number', value);
+                     } else if (key === 'sorting') {
+                        query.append('sort_by', value.key);
+                        query.append('sort_order', value.value);
                      } else {
                         query.append(key, value);
                      }
@@ -294,38 +336,26 @@
                }
 
                this.$router.push({
-                  query: { filters: `?${query.toString()}` }
+                  query: { filters: `?page=1&${query.toString()}` }
                })
 
                clearTimeout(this.timeout);
                this.timeout = setTimeout(() => {
-                  this.$store.dispatch('fetchRegistrationMarks', `?${query.toString()}`);
+                  this.$store.dispatch('fetchRegistrationMarks', `?page=1&${query.toString()}`);
                }, 300);
 
-               this.page = 1;
+               // this.page = 1;
             }
          },
       },
 
       mounted() {
-         this.$route.query?.filters?.slice(1).split('&').forEach(query => {
-            this.page = Number(query.split('=')[1]);
-
-            for (const item in this.form) {
-               if (query.split('=')[0] === item) {
-                  if (item === 'region_id' || item === 'currency') {
-                     this.form[item] = Number(query.split('=')[1]);
-                  } else {
-                     this.form[item] = query.split('=')[1];
-                  }
-               }
-            }
-         })
+         this.setInitialValues();
       },
 
       async asyncData({ store }) {
          await store.dispatch('fetchRegionNumbers');
-         await store.dispatch('fetchRegistrationMarks', `?page=1&sorting=created_at_desc`);
+         await store.dispatch('fetchRegistrationMarks');
          await store.dispatch('getOptions');
       },
 
@@ -445,6 +475,8 @@
       }
 
       &.index {
+         padding-top: 32px;
+
          .pagination {
             li {
                button {

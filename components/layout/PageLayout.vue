@@ -7,7 +7,8 @@
          <div class="layout" v-show="!loading" :class="{'layoutForMap': checkRouteIfSalon}">
             <site-banner :check-emitting="checkEmitting" type="top"/>
 
-            <mobile-menu/>
+<!--            <mobile-menu/>-->
+            <mobile-menu-new/>
 
             <page-header/>
 
@@ -15,7 +16,7 @@
             <slot name="after-header"/>
 
             <main
-               :class="{'min-height-if-notification':  !cookiesHasNotificationOn || storeBannerIsOn, 'min-height-if-not-notification':  cookiesHasNotificationOn || !storeBannerIsOn, }">
+               :class="{'min-height-if-notification':  !cookiesHasNotificationOn || storeBannerIsOn, 'min-height-if-not-notification':  cookiesHasNotificationOn || !storeBannerIsOn }">
 <!--               'positionInitial' : checkRouteIfSalon-->
                <site-banner
                   v-if="windowWidth > 1800"
@@ -119,10 +120,12 @@
    import MapSwitch from '~/components/salons/MapSwitch';
    import SiteBanner from "~/components/banners/SiteBanner";
    import BrandsList from "~/components/layout/BrandsList.vue";
+   import MobileMenuNew from "~/components/layout/MobileMenuNew.vue";
 
    export default {
       mixins: [LayoutMixin],
       components: {
+         MobileMenuNew,
          SiteBanner,
          PageHeader,
          PageFooter,
@@ -147,7 +150,6 @@
                this.$store.dispatch("getNotifications"),
                this.$store.dispatch("getNotViewedFavorites"),
                this.$store.dispatch("getNotViewedSavedSearch"),
-               this.$store.dispatch("fetchBrandsList"),
                this.$store.dispatch("getFavorites")
             ]);
          }
@@ -194,6 +196,10 @@
             return this.mapView && (this.$route.name == "salons___az" || this.$route.name == "salons___ru" || this.$route.name == "parts-shops___az" || this.$route.name == "parts-shops___ru")
          }
       },
+
+      async fetch() {
+         await this.$store.dispatch("fetchBrandsList");
+      }
    }
 </script>
 

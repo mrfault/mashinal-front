@@ -7,12 +7,12 @@
                <div class="ma-garage__nav">
                   <NuxtLink :to="$localePath('garage-services')" class="ma-garage__nav--profile">
                      <div class="ma-garage__nav--profile__avatar">
-                        <template v-if="user.avatar || user.autosalon.logo">
-                           <img :src="image" :alt="user.full_name"/>
+                        <template v-if="image">
+                           <img :src="image" :alt="user?.full_name"/>
                         </template>
-                        <h5 v-else class="ma-garage__nav--profile__name">{{ user.full_name.charAt(0) }}</h5>
+                        <h5 v-else class="ma-garage__nav--profile__name">{{ user?.full_name.charAt(0) }}</h5>
                      </div>
-                     <h5 class="ma-garage__nav--profile__name"> {{ user.full_name }}</h5>
+                     <h5 class="ma-garage__nav--profile__name"> {{ user?.full_name }}</h5>
                   </NuxtLink>
                   <template v-for="(item, index) in garageNavs">
                      <nuxt-link
@@ -48,7 +48,7 @@
                      <div v-if="!isMobileBreakpoint" class="ma-garage__nav">
                         <div class="ma-garage__nav--profile">
                            <div class="ma-garage__nav--profile__avatar">
-                              <template v-if="user.avatar|| user.autosalon.logo">
+                              <template v-if="image">
                                  <img :src="image" :alt="user.full_name"/>
                               </template>
                               <h5 v-else class="ma-garage__nav--profile__name">{{ user.full_name.charAt(0) }}</h5>
@@ -57,7 +57,7 @@
                         </div>
                         <template v-for="(item) in garageNavs">
                            <nuxt-link v-if="!item.isButton" :to="item.link" class="ma-garage__nav--item">
-                              <!--                              <icon :name="item.icon"/>-->
+                              <!--<icon :name="item.icon"/>-->
                               <inline-svg :src="`/new-icons/${item.icon}-new.svg`"/>
                               <h6 class="ma-garage__nav--item__title">{{ item.title }}</h6>
                            </nuxt-link>
@@ -95,10 +95,12 @@ export default {
    },
    computed: {
       image() {
-         if (this.user.autosalon) {
-            return (this.user.autosalon.logo.includes('http') ? '' : 'https://dev.mashin.al/storage/') + this.user.autosalon.logo;
+         if (this.user?.autosalon) {
+            return (this.user?.autosalon?.logo.includes('http') ? '' : 'https://dev.mashin.al/storage/') + this.user?.autosalon?.logo;
+         } else if (this.user?.avatar){
+            return (this.user?.avatar?.includes('http') ? '' : 'https://dev.mashin.al/storage/') + this.user?.avatar;
          } else {
-            return (this.user.avatar.includes('http') ? '' : 'https://dev.mashin.al/storage/') + this.user.avatar;
+            return false;
          }
       },
       garageNavs() {

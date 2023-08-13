@@ -207,6 +207,8 @@
 
 <style lang="scss">
    .pages-parts-index {
+      padding-top: 32px;
+
       .announcements-grid {
          margin: 32px -15px 0 -15px;
       }

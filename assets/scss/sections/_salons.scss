@@ -180,14 +180,14 @@
         margin-top: 0;
     }
 
-    .breadcrumbs {
-        margin: 0;
-        //padding: 10px 25px 0;
-
-        ul {
-            height: 40px;
-        }
-    }
+    //.breadcrumbs {
+    //    margin: 0;
+    //    //padding: 10px 25px 0;
+    //
+    //    ul {
+    //        height: 40px;
+    //    }
+    //}
 }
 
 @include media-max-width('lg') {

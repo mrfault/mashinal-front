@@ -98,7 +98,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(243, 247, 252, 0.6);
+            background-color: rgba(238, 242, 246, 0.6);
             z-index: 5;
          }
       }

@@ -249,7 +249,7 @@
             store.dispatch('getBodyOptions'),
             store.dispatch('getMotoOptions'),
             store.dispatch('getOptions'),
-            store.dispatch('getColors'),
+            // store.dispatch('getColors'),
             // store.dispatch('getFavorites'),
          ])
          return {
@@ -431,7 +431,7 @@
    }
 
    .pages-index {
-      margin-top: 32px;
+      padding-top: 32px;
    }
 
    .dark-mode {

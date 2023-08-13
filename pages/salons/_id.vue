@@ -59,3 +59,9 @@
        }
    }
 </script>
+
+<style lang="scss">
+   .pages-salons-id {
+      padding-top: 32px;
+   }
+</style>

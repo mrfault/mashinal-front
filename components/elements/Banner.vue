@@ -65,9 +65,9 @@ export default {
                   opacity: 0.9;
                }
 
-               span,i {
-                  margin-top: 3px;
-               }
+               //span, i {
+               //   margin-top: 3px;
+               //}
             }
          }
       }

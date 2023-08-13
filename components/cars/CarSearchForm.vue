@@ -352,6 +352,7 @@
                      :clear-option="false"
                      multiple
                   />
+<!--                  <pre>{{colors}}</pre>-->
 
                   <form-select
                      :label="$t('parameters')"
@@ -626,7 +627,7 @@
          </div>
 
          <button
-            class="btn btn--green mt-4"
+            class="btn btn--green mt-4 w-md-100"
             @click="showExcludeModal = false; submitForm()"
          >
             <span>{{ $t('save') }}</span>
@@ -1022,6 +1023,12 @@
                this.$delete(this.form.all_options, key)
             else this.$set(this.form.all_options, key, value)
          }
+      },
+
+      async fetch() {
+         await Promise.all([
+            this.$store.dispatch('getColors')
+         ])
       },
 
       created() {
