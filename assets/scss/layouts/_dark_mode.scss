@@ -51,8 +51,12 @@
       }
    }
 
-   .swiper-slide {
-      background: $dark-2 !important;
+   .images-slider {
+      .slider-overlay_middle {
+         button {
+            background-color: $dark-light-new;
+         }
+      }
    }
 
    .map-sidebar {

@@ -167,6 +167,12 @@ export const MenusDataMixin = {
          ].includes(this.routeName);
       },
 
+      exceptions() {
+         return [
+            'calculator-customs'
+         ].includes(this.routeName);
+      },
+
       hasProfileData() {
          return [
             'profile', 'profile-settings'

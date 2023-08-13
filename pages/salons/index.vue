@@ -49,6 +49,7 @@
                   </div>
                </div>
             </div>
+
             <div class="container mt-5" v-else>
                <div class="row">
                   <div class="col-md-12">
@@ -212,7 +213,7 @@ export default {
          return this.salonsFiltered.filter(item => item.is_official).sort((a, b) => a.name.localeCompare(b.name));
       },
       crumbs() {
-         return [{name: this.$t('auto_salons')}]
+         return [{ name: this.$t('auto_salons') }]
       },
 
       salonsInView() {
@@ -279,10 +280,6 @@ export default {
       overflow: hidden;
 
       .pages-salons {
-         &:first-child {
-            padding-top: 32px;
-         }
-
          &.list-view {
             .container {
                &:last-child {
@@ -388,10 +385,6 @@ export default {
          overflow: hidden;
 
          .pages-salons {
-            &:first-child {
-               padding-top: 0;
-            }
-
             &.list-view {
                padding-bottom: 32px;
 

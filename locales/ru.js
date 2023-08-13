@@ -644,6 +644,7 @@ export default {
       "Дополнительная информация о транспортном средстве",
    desired_credit_amount: "Желаемая сумма кредита",
    detail: "Подробнее",
+   required_fields: "Заполните обязательные поля!",
    detail_report: "Полный отчет",
    detailed: "Детальный",
    detailed_search: "Детальный поиск",

@@ -1,6 +1,5 @@
 <template>
    <div class="salon-inner">
-<!--      <pre>{{salonSingle.gallery_thumbs}}</pre>-->
       <div :class="['profile-card salon-single-card overflow-hidden']">
          <div class="cover-with-avatar position-relative">
              <img
@@ -8,7 +7,7 @@
                  :src="getCover(salonSingle.cover, salonSingle.type_id)"
                  alt="img"
              >
-<!--            <pre>{{ getCover(salonSingle.cover, salonSingle.type_id)}} ssssss</pre>-->
+
             <div
                class="cover-with-avatar__gallery d-none"
                :class="{
@@ -400,6 +399,7 @@
             }
          }
       }
+
    }
 
    .border-padding-none {
@@ -413,6 +413,15 @@
       left: 25px !important;
       font-size: 14px !important;
       font-weight: 500;
+   }
+
+   .dark-mode {
+      .salon-inner {
+         table {
+            border: none;
+            background-color: unset;
+         }
+      }
    }
 
    @media (min-width: 992px) {

@@ -1,8 +1,6 @@
 <template>
     <div class="pages-salons-id">
         <div class="container">
-<!--            <breadcrumbs :crumbs="crumbs" />-->
-
             <salon-inner />
         </div>
     </div>
@@ -38,6 +36,7 @@
                store.dispatch('getMotoOptions'),
            ]);
 
+          store.dispatch('fetchAutosalonAnnouncementsId', store.getters.salonSingle.id);
        },
 
        mounted() {
@@ -59,9 +58,3 @@
        }
    }
 </script>
-
-<style lang="scss">
-   .pages-salons-id {
-      padding-top: 32px;
-   }
-</style>
