@@ -25,7 +25,9 @@
          <div class="col-md-12">
             <draggable v-model="files" class="row" draggable=".draggable">
                <div class="col-md-6 draggable" v-for="file in files" :key="file.key" :class="itemClass">
-                  <loader v-if="file.loading" />
+                  <div class="form-gallery-new-item loader-data" v-if="file.loading">
+                     <loader />
+                  </div>
                   <template v-else>
                      <div class="form-gallery-new-item">
                         <div class="form-gallery-new-item-image">
@@ -234,6 +236,7 @@ export default {
 </script>
 
 <style>
+
 .form-gallery-new{
    border-radius: 12px;
    border: 1px solid var(--gray-300, #CDD5DF);
@@ -258,7 +261,9 @@ export default {
    cursor: move;
    margin-bottom: 20px;
 }
-
+.form-gallery-new-item.loader-data{
+   height: 140px;
+}
 .form-gallery-new-item-remove{
    background: none;
    border: 0;
