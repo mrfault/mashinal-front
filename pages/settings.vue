@@ -85,7 +85,7 @@ export default {
       ...mapActions(['setNotificationStatus', 'changeLocale']),
       changeTheme() {
          this.darkTheme = !this.darkTheme;
-         this.$root.$refs.ThemeSwitch.switchColorMode();
+         this.$root?.$refs?.ThemeSwitch?.switchColorMode();
       },
       changeOptionValue(value) {
          this.darkTheme = value;
@@ -123,8 +123,8 @@ export default {
    data() {
       return {
          language: this.$cookies.get('current-language') ?? 'az',
-         notificationStatus: (this.$cookies.get('notification-status') === 'active') ? true : false,
-         darkTheme: (this.$cookies.get('color-mode') === 'dark') ? true : false
+         notificationStatus: (this.$cookies.get('notification-status') === 'active'),
+         darkTheme: (this.$cookies.get('color-mode') === 'dark')
       }
    }
 }

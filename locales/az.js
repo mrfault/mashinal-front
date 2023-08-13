@@ -1890,6 +1890,7 @@ export default {
    studded: "Şipli",
    sub_category: "Alt kateqoriya",
    subscribe: "Abunə olun",
+   subscribe2: "Abunə olun",
    subscription_completed_modal_body:
       "Abunəliyiniz qeydə alındı, təşəkkür edirik.",
    subscription_completed_modal_title: "Abunə olun",

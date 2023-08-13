@@ -70,7 +70,8 @@
 
             <!-- /portal targets -->
             <comparison-badge :window-width="windowWidth" />
-            <mobile-nav/>
+<!--            <mobile-nav/>-->
+            <mobile-nav-new/>
 
             <BrandsList v-if="brandsList.length" :options="brandsList" />
 
@@ -121,10 +122,12 @@
    import SiteBanner from "~/components/banners/SiteBanner";
    import BrandsList from "~/components/layout/BrandsList.vue";
    import MobileMenuNew from "~/components/layout/MobileMenuNew.vue";
+   import MobileNavNew from "~/components/layout/MobileNavNew.vue";
 
    export default {
       mixins: [LayoutMixin],
       components: {
+         MobileNavNew,
          MobileMenuNew,
          SiteBanner,
          PageHeader,

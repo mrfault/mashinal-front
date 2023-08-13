@@ -7,7 +7,7 @@
          :toggle="showModal"
          @close="closeAndReset"
       >
-         <div>
+         <div class="ma-new-automobile__content">
             <p v-if="!isEditing" class="ma-new-automobile__desc">{{ $t('add_new_auto_desc') }}</p>
             <div v-if="!isEditing" class="row">
                <!--               brand-->
@@ -198,13 +198,14 @@
 
 
             </div>
-            <div class="row">
-               <div class="col-12 mt-3">
-                  <button
-                     :class="['btn btn--green w-100',{pending}]"
-                     @click="addCar">{{ $t('save') }}
-                  </button>
-               </div>
+
+         </div>
+         <div class="row">
+            <div class="col-12 mt-3">
+               <button
+                  :class="['btn btn--green w-100',{pending}]"
+                  @click="addCar">{{ $t('save') }}
+               </button>
             </div>
          </div>
       </modal-popup>

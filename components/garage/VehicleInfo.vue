@@ -40,7 +40,7 @@
                                  @carDeactivated="getAllCarsList"/>
                <start-subsribtion v-if="selectedCar.sync_status == 1 && selectedCar.status == 0 "
                                   :vehicle="selectedCar"
-                                  @carActivated="carActivated"/>
+                                  @carActivated="carActivatedMethod()"/>
             </div>
          </div>
       </div>
@@ -146,7 +146,7 @@ export default {
    },
    methods: {
       getAllCarsList() {
-         this.$emit('getAllCarsList', true)
+         this.$emit('carDataChanged', true)
       },
       getInsuranceText(id) {
          return this.companies.find(item => item.key == id)?.name
@@ -180,6 +180,11 @@ export default {
       capitalizeFirstLetter(string) {
          return string.charAt(0).toUpperCase() + string.slice(1);
       },
+      carActivatedMethod(){
+         console.log("carActivated ahey ahey")
+         this.getAllCarsList();
+         this.$nuxt.refresh();
+      }
    },
    computed: {
       days() {
@@ -228,9 +233,7 @@ export default {
             has_arrest: this.selectedCar.has_arrest ? this.$t('have') : this.$t('dont_have')
          }, this.isMobileBreakpoint);
       },
-      carActivated(){
-         this.getAllCarsList();
-      }
+
    }
 }
 </script>

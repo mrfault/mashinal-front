@@ -459,11 +459,9 @@ export default {
       },
 
       async getCarProtocols() {
-         console.log("getCarProtocols else")
          if (this.selectedCar && this.selectedCar.id) {
             try {
                await this.$store.dispatch('garage/getProtocols', {id: this.selectedCar.id, history: this.activeCardTab})
-               console.log("this../././././ if")
                this.protocol.filteredList = [];
                if (this.protocols && this.protocols.data && this.protocols.data.length) {
                   this.protocols.data.forEach(el => {
@@ -475,12 +473,10 @@ export default {
                this.loading = false;
             } catch (e) {
                this.loading = false;
-               this.$toasted.error("salam aleykum");
                this.vehiclePassportExpired = true;
             }
 
          } else {
-            console.log("getCarProtocols else")
             this.loading = false;
          }
 
@@ -504,7 +500,6 @@ export default {
          this.protocol.filteredList = [];
          if (car.sync_status == 1) {
             this.getCarProtocols();
-            console.log("selectCar getCarProtocols")
          } else {
             return
          }
@@ -528,7 +523,6 @@ export default {
          this.protocol.selected = {};
       },
       async getAllCarsList() {
-         console.log("--------------sadhajsdhjaks", "dispacth")
          this.loading = true;
          const res = await this.$store.dispatch('garage/getCarList', {})
          this.carsList = res.data;

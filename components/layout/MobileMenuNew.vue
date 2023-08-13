@@ -122,6 +122,15 @@ export default {
       ...mapGetters({
          comparisonCount: 'comparison/count'
       }),
+      image() {
+         if (this.user?.autosalon) {
+            return (this.user?.autosalon?.logo.includes('http') ? '' : 'https://dev.mashin.al/storage/') + this.user?.autosalon?.logo;
+         } else if (this.user?.avatar){
+            return (this.user?.avatar?.includes('http') ? '' : 'https://dev.mashin.al/storage/') + this.user?.avatar;
+         } else {
+            return false;
+         }
+      },
       menuServices() {
          let data = [
             {
@@ -130,7 +139,8 @@ export default {
                url: '/external-salons',
                description: 'menu_external_salon_desc',
                row: 1,
-               auth: false
+               auth: false,
+               disabled: false
             },
             {
                title: 'menu_spare_parts',
@@ -138,7 +148,8 @@ export default {
                url: '/parts',
                description: 'menu_spare_parts_desc',
                row: 1,
-               auth: false
+               auth: false,
+               disabled: false
             },
             {
                title: 'menu_auto_catalog',
@@ -147,6 +158,8 @@ export default {
                description: 'menu_auto_catalog_desc',
                row: 1,
                auth: false
+               ,
+               disabled: false
             },
             {
                title: 'menu_call_center',
@@ -154,7 +167,8 @@ export default {
                url: '/',
                description: 'menu_call_center_desc',
                row: 1,
-               auth: false
+               auth: false,
+               disabled: true
             },
             {
                title: 'menu_guide',
@@ -162,7 +176,8 @@ export default {
                url: '/cars/assistant',
                description: 'menu_guide_desc',
                row: 1,
-               auth: false
+               auth: false,
+               disabled: false
             },
             {
                title: 'menu_terms',
@@ -170,7 +185,8 @@ export default {
                url: '/policy',
                description: 'menu_terms_desc',
                row: 1,
-               auth: false
+               auth: false,
+               disabled: false
             },
             {
                title: 'menu_e_services',
@@ -178,7 +194,8 @@ export default {
                url: '/e-services',
                description: 'menu_e_services_desc',
                row: 2,
-               auth: false
+               auth: false,
+               disabled: false
             },
             {
                title: 'menu_salons',
@@ -186,7 +203,8 @@ export default {
                url: '/salons',
                description: 'menu_salons_desc',
                row: 2,
-               auth: false
+               auth: false,
+               disabled: false
             },
             {
                title: 'menu_shops',
@@ -194,7 +212,8 @@ export default {
                url: '/parts/shops',
                description: 'menu_shops_desc',
                row: 2,
-               auth: false
+               auth: false,
+               disabled: false
             },
             {
                title: 'menu_messages',
@@ -202,7 +221,8 @@ export default {
                url: '/profile/messages',
                description: 'menu_messages_desc',
                row: 2,
-               auth: false
+               auth: false,
+               disabled: false
             },
             {
                title: 'menu_comparisons',
@@ -210,7 +230,8 @@ export default {
                url: '/comparison',
                description: 'menu_comparisons_desc',
                row: 2,
-               auth: false
+               auth: false,
+               disabled: false
             },
             {
                title: 'menu_settings',
@@ -218,7 +239,8 @@ export default {
                url: '/settings',
                description: 'menu_settings_desc',
                row: 2,
-               auth: false
+               auth: false,
+               disabled: false
             }
          ];
 
@@ -229,16 +251,18 @@ export default {
                url: '/login',
                description: 'menu_login_desc',
                row: 1,
-               auth: false
+               auth: false,
+               disabled: false
             });
          } else {
             data.unshift({
                title: this.user.full_name,
-               image: this.getUserAvatar,
+               image: this.image,
                url: '/garage-services',
                description: 'menu_login_desc',
                row: 1,
-               auth: true
+               auth: true,
+               disabled: false
             });
          }
 

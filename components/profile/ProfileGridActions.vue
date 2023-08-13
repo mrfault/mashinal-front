@@ -178,6 +178,9 @@ export default {
             await this.$nuxt.refresh();
             this.$emit('deactivateMyAnnounement');
             this.$toasted.success(this.$t('vehicle_deactivated'))
+            this.closeModal();
+            this.$nuxt.refresh();
+            this.$store.commit('closeDropdown');
          } catch (e) {
             this.$toasted.error(this.$t('something_went_wrong'))
          }
@@ -186,10 +189,13 @@ export default {
       async deleteCar(event) {
          event.stopPropagation();
          try {
-            await this.$store.dispatch('deactivateMyAnnounement', this.announcement.id_unique);
+            await this.$store.dispatch('deleteMyAnnounementV2', this.announcement.id_unique);
             await this.$nuxt.refresh();
             this.$emit('deleteMyAnnounement');
             this.$toasted.success(this.$t('vehicle_deleted'))
+            this.closeModal();
+            this.$nuxt.refresh();
+            this.$store.commit('closeDropdown');
          } catch (e) {
             this.$toasted.error(this.$t('something_went_wrong'))
          }
@@ -200,6 +206,9 @@ export default {
             await this.$nuxt.refresh();
             this.$emit('restoredMyAnnounement');
             this.$toasted.success(this.$t('announcement_restored'))
+            this.closeModal();
+            this.$nuxt.refresh();
+            this.$store.commit('closeDropdown');
          } catch (e) {
             this.$toasted.error(this.$t('something_went_wrong'))
          }

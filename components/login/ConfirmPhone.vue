@@ -8,7 +8,6 @@
             <h2 class="ma-title--md">{{ $t('confirmation_code') }}</h2>
             <p class="login_mobile_desc">{{ $t('confirmation_code_desc') }}</p>
          </div>
-         <separated-input v-if="isMobileBreakpoint" v-model="form.code"/>
          <form-text-input
             v-if="!form.staticPhone && isNewUser"
             v-model="form.name"
@@ -16,12 +15,14 @@
             :placeholder="$t('your_name')"
             auto-focus
          />
-         <p
-            v-if="!form.staticPhone && isNewUser"
-            style="color: #92959a; margin-top: -12px;"
-         >
-            {{ $t('filled_in_at_will') }}
-         </p>
+         <separated-input v-if="isMobileBreakpoint" v-model="form.code"/>
+
+<!--         <p-->
+<!--            v-if="!form.staticPhone && isNewUser"-->
+<!--            style="color: #92959a; margin-top: -12px;"-->
+<!--         >-->
+<!--            {{ $t('filled_in_at_will') }}-->
+<!--         </p>-->
          <form-text-input
             v-if="!isMobileBreakpoint"
             v-model="form.code"

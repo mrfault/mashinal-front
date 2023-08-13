@@ -18,7 +18,7 @@
                      <nuxt-link
                         v-if="!item.isButton"
                         :class="{'ma-garage-link-active': isRouteActive(item.link) }"
-                        :to="item.link"
+                        :to="$localePath(item.link)"
                         class="ma-garage__nav--item"
                      >
                         <inline-svg :src="`/new-icons/${item.icon}-new.svg`"/>
