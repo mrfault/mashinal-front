@@ -116,6 +116,18 @@
    position: relative;
    display: inline-block;
    width: 100%;
+
+   &.invalid {
+      input {
+         border-color: $red-new;
+      }
+
+      svg {
+         path {
+            fill: transparent;
+         }
+      }
+   }
 }
 
 .mx-datepicker svg {
@@ -161,6 +173,11 @@
 
 .mx-input-wrapper .mx-icon-clear {
    //display: none;
+   svg {
+      path {
+         fill: #364152;
+      }
+   }
 }
 
 .mx-input-wrapper .mx-input:not(:placeholder-shown) ~ .mx-icon-clear {
@@ -188,9 +205,9 @@
 }
 
 .mx-icon-clear {
-   display: none;
    cursor: pointer;
    right: 20px !important;
+   top: calc(50% - 1px) !important;
 }
 
 //.mx-icon-clear svg {

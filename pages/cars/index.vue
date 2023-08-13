@@ -337,8 +337,6 @@
 
 <style lang="scss">
    .pages-cars-index {
-      padding-top: 32px;
-
       &__title {
          font-weight: 600;
          font-size: 32px;

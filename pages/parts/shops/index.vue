@@ -263,7 +263,6 @@
 
 <style lang="scss" scoped>
    .pages-parts-shops {
-      padding-top: 32px;
-      padding-bottom: 100px;
+      padding-bottom: 50px;
    }
 </style>

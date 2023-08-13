@@ -5,6 +5,7 @@
 
          <template v-if="inputDate">
             <date-picker
+               :class="{'invalid' : invalid}"
                ref="datepicker"
                @click="open = false"
                v-model="inputValue"

@@ -52,8 +52,8 @@
                <div class="form-merged">
                   <form-select
                      :label="$t('from_year')"
-                     :options="getYearOptions(false, form.max_year)"
-                     v-model="form.min_year"
+                     :options="getYearOptions(false, form.year_to)"
+                     v-model="form.year_from"
                      :show-label-on-select="false"
                      :clear-option="false"
                      in-select-menu
@@ -61,8 +61,8 @@
 
                   <form-select
                      :label="$t('to')"
-                     :options="getYearOptions(form.min_year, false)"
-                     v-model="form.max_year"
+                     :options="getYearOptions(form.year_from, false)"
+                     v-model="form.year_to"
                      :show-label-on-select="false"
                      :clear-option="false"
                      in-select-menu
@@ -734,8 +734,8 @@
                currency: 1,
                min_capacity: '',
                max_capacity: '',
-               min_year: '',
-               max_year: '',
+               year_form: '',
+               year_to: '',
                price_from: '',
                price_to: '',
                mileage_from: '',
@@ -838,7 +838,7 @@
             return !!(this.form.additional_brands[0].brand ||
                this.form.additional_brands[0].model ||
                this.form.additional_brands[0].generation ||
-               this.form.min_year || this.form.max_year ||
+               this.form.year_from || this.form.year_to ||
                this.form.price_from || this.form.price_to ||
                this.form.mileage_from || this.form.mileage_to ||
                this.form.min_capacity || this.form.max_capacity ||
