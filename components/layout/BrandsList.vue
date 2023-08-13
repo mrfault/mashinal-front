@@ -81,7 +81,7 @@
    .dark-mode {
       .brandsList {
          background-color: #1B2434;
-
+         border-top: 1px solid #364152;
          &__list {
             &-link {
                color: #EEF2F6;

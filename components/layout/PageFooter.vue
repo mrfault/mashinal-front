@@ -107,3 +107,11 @@
       // }
    }
 </script>
+
+<style lang="scss" scoped>
+.dark-mode{
+   .footer{
+      border-top: 1px solid #364152;
+   }
+}
+</style>
