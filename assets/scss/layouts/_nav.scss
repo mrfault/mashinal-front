@@ -35,7 +35,6 @@
    background-image: url("/images/mobile-nav-bg.svg");
    background-position: center;
    background-repeat: no-repeat;
-   //background-size: cover;
    z-index: 9;
 
    &:before,
@@ -107,7 +106,7 @@
             }
 
             &:nth-child(3) {
-               margin: -45px 0 0 -8px;
+               margin: -45px 0 0 0px;
 
                span {
                   margin-top: 15px;
@@ -366,7 +365,7 @@
          ul {
             li {
                &:nth-child(3) {
-                  margin: -45px 0 0 -8px;
+                  margin: -45px 0 0 0px;
                }
             }
          }

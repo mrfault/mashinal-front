@@ -1,5 +1,5 @@
 <template>
-   <nuxt-link class="ma-garage-card" :to="$localePath(item.url)">
+   <nuxt-link class="ma-garage-card" :to="item.disabled ? '#' : $localePath(item.url)">
       <div class="ma-garage-card__body" v-if="true">
          <div class="ma-garage-card--image">
             <img :src="`${item.image}`" v-if="item.auth === true" alt="">
