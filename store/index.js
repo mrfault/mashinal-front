@@ -1279,6 +1279,12 @@ export const actions = {
       await this.$axios.$delete(`/announcement/${id}/remove`);
       commit("mutate", {property: "myAnnouncement", value: {}});
    },
+   async deleteMyAnnounementV2({commit}, id) {
+      await this.$axios.$post(
+         `https://v2dev.mashin.al/api/v2/me/cars/${id}/delete`
+      );
+      commit("mutate", {property: "myAnnouncement", value: {}});
+   },
    // Car announcements
    async getCarAnnouncement({commit}, data) {
       const res = await this.$axios.$get(`/announcement/${data.id}`);

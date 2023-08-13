@@ -32,7 +32,19 @@ import NewAutomobile from "~/components/profile/automobiles/NewAutomobile";
 import {mapGetters} from "vuex";
 
 export default {
+   name: 'pages-automobiles',
+
    layout: 'garageLayout',
+   head() {
+      return this.$headMeta({
+         title: this.$t('my_autos'),
+      })
+   },
+   nuxtI18n: {
+      paths: {
+         az: '/profil/avtomobiller',
+      },
+   },
    components: {
       AutomobileCard,
       NewAutomobile

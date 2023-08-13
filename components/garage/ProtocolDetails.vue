@@ -19,7 +19,8 @@
          :toggle="showProtocolDetails"
          @close="showProtocolDetails = false"
       >
-         <div v-if="(!mediaIsOpen && !isMobileBreakpoint) || isMobileBreakpoint" class="protocol-details-button__content--container">
+         <div v-if="(!mediaIsOpen && !isMobileBreakpoint) || isMobileBreakpoint"
+              class="protocol-details-button__content--container">
             <div
                class="protocol-details-button__content">
                <div v-for="(value, key) in filteredProtocol"
@@ -72,7 +73,7 @@
                <!--               />-->
 
                <button :class="['btn btn--light-outline full-width', { pending }]"
-                       style="min-height: 52px;border-radius: 8px"
+                       style="min-height: 52px;border-radius: 8px; width: calc(50% - 8px)"
                        type="button" @click="openFiles">
                   {{ $t('watch_files') }}
                </button>
@@ -89,82 +90,68 @@
 
             </div>
          </div>
-
-         <div v-else>
-            <template v-if="pending">
-               <loader/>
-            </template>
-            <template v-else>
-               <div v-if="slides.main" v-touch:swipe.top="handleSwipeTop" class="inner-gallery-lightbox">
-
-                  <!--mobile-->
-                  <template v-if="isMobileBreakpoint">
-                     <!--                     <FsLightbox-->
-                     <!--                        :key="lightboxKey"-->
-                     <!--                        :disableThumbs="true"-->
-                     <!--                        :onBeforeClose="onBeforeClose"-->
-                     <!--                        :onClose="refreshLightbox"-->
-                     <!--                        :onSlideChange="changeLightboxSlide"-->
-                     <!--                        :slide="currentSlide + 1"-->
-                     <!--                        :sources="slides.main"-->
-                     <!--                        :toggler="toggleFsLightbox"-->
-                     <!--                        :types="slides.types"-->
-                     <!--                     />-->
-                  </template>
-
-
-                  <template v-if="!isMobileBreakpoint">
-                     <transition-group name="fade">
-                        <template v-if="showSliderTemplate">
-
-                           <div :key="0" class="blur-bg">
-                              <img v-if="slides.types[currentSlide] === 'image'"
-                                   :src="$withBaseUrl(slides.thumbs[currentSlide])"
-                                   alt=""/>
-                           </div>
-
-
-                           <!--                  desktop-->
-                           <div v-if="!isMobileBreakpoint" :key="1" class="blur-bg_slider">
-                              <images-slider
-                                 :current-slide="currentSlide"
-                                 :has-sidebar="true"
-                                 :slides="slides"
-                                 isProtocol
-                                 @close="closeLightbox"
-                                 @slide-change="currentSlide = $event"
-                              >
-
-                                 <template #sidebar>
-                                    <protocol-slider-info :protocol="protocol"/>
-                                 </template>
-                              </images-slider>
-                           </div>
-                        </template>
-                     </transition-group>
-                  </template>
-
-
-               </div>
-            </template>
-         </div>
-
-
       </modal-popup>
 
-      <template v-if="slides?.main?.length && isMobileBreakpoint && mediaIsOpen">
-         <FsLightbox
-            :key="lightboxKey"
-            :disableThumbs="true"
-            :onBeforeClose="onBeforeClose"
-            :onClose="refreshLightbox"
-            :onSlideChange="changeLightboxSlide"
-            :slide="currentSlide + 1"
-            :sources="slides.main"
-            :toggler="toggleFsLightbox"
-            :types="slides.types"
-         />
-      </template>
+
+      <!--      media -->
+      <div v-if="mediaIsOpen">
+         <template v-if="pending">
+            <loader/>
+         </template>
+         <template v-else>
+            <div v-if="slides.main" v-touch:swipe.top="handleSwipeTop" class="inner-gallery-lightbox">
+
+               <!--mobile-->
+               <template v-if="isMobileBreakpoint">
+                  <FsLightbox
+                     :key="lightboxKey"
+                     :disableThumbs="true"
+                     :onBeforeClose="onBeforeClose"
+                     :onClose="refreshLightbox"
+                     :onSlideChange="changeLightboxSlide"
+                     :slide="currentSlide + 1"
+                     :sources="slides.main"
+                     :toggler="toggleFsLightbox"
+                     :types="slides.types"
+                  />
+               </template>
+
+
+               <template v-if="!isMobileBreakpoint">
+                  <transition-group name="fade">
+                     <template v-if="showSliderTemplate">
+
+                        <div :key="0" class="blur-bg">
+                           <img v-if="slides.types[currentSlide] === 'image'"
+                                :src="$withBaseUrl(slides.thumbs[currentSlide])"
+                                alt=""/>
+                        </div>
+
+
+                        <!--                  desktop-->
+                        <div v-if="!isMobileBreakpoint" :key="1" class="blur-bg_slider">
+                           <images-slider
+                              :current-slide="currentSlide"
+                              :has-sidebar="true"
+                              :slides="slides"
+                              isProtocol
+                              @close="closeLightbox"
+                              @slide-change="currentSlide = $event"
+                           >
+
+                              <template #sidebar>
+                                 <protocol-slider-info :protocol="protocol"/>
+                              </template>
+                           </images-slider>
+                        </div>
+                     </template>
+                  </transition-group>
+               </template>
+
+
+            </div>
+         </template>
+      </div>
    </div>
 </template>
 
@@ -217,7 +204,7 @@ export default {
          } else if (!this.isMobileBreakpoint && !this.mediaIsOpen) {
             return 'wider'
          } else if (this.isMobileBreakpoint && this.mediaIsOpen) {
-            return 'full-screen'
+            return ''
          }
 
       },
@@ -282,7 +269,7 @@ export default {
       },
       mobileMediaClose() {
          this.mediaIsOpen = false;
-         this.mobileMediaIsOpen = false;
+         // this.mobileMediaIsOpen = false;
       },
 
 
@@ -313,20 +300,24 @@ export default {
       },
       openLightbox() {
 
-         this.mediaIsOpen = true;
          if (this.isMobileBreakpoint) {
             this.showProtocolDetails = false;
-         }
-         this.currentSlide = 0;
-         if (this.isMobileBreakpoint) {
             this.showLightbox = true;
             this.toggleFsLightbox = !this.toggleFsLightbox;
+            this.mediaIsOpen = true;
+            setTimeout(() => {
+               this.showLightbox = true;
+               this.toggleFsLightbox = !this.toggleFsLightbox;
+            }, 1000)
          } else {
+            this.showProtocolDetails = false;
+            this.currentSlide = 0;
+            this.mediaIsOpen = true;
             setTimeout(() => {
                this.showImagesSlider = true;
             }, 1000)
+            this.setBodyOverflow('hidden');
          }
-         this.setBodyOverflow('hidden');
 
 
       },
@@ -362,14 +353,14 @@ export default {
          this.closeLightbox();
       },
    },
-   watch: {
-      breakpoint() {
-         this.showImagesSlider = false;
-         if (this.showSlider)
-            this.updateTouchEvents();
-         this.refreshLightbox();
-      }
-   }
+   // watch: {
+   //    breakpoint() {
+   //       this.showImagesSlider = false;
+   //       if (this.showSlider)
+   //          this.updateTouchEvents();
+   //       this.refreshLightbox();
+   //    }
+   // }
 }
 </script>
 
