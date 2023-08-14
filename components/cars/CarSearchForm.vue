@@ -161,60 +161,40 @@
                   </div>
                </form-select>
 
-               <form-select
-                  :label="$t('mileage')"
-                  custom
-                  :new-label="false"
-                  :suffix="$t('char_kilometre')"
-                  :values="{ from: form.mileage_from, to: form.mileage_to }"
-                  @clear=";(form.mileage_from = ''), (form.mileage_to = '')"
-               >
-                  <div class="form-merged">
-                     <form-numeric-input
-                        :placeholder="$t('from')"
-                        v-model="form.mileage_from"
-                        :suffix="$t('char_kilometre')"
-                     />
-                     <form-numeric-input
-                        :placeholder="$t('to')"
-                        v-model="form.mileage_to"
-                        :suffix="$t('char_kilometre')"
-                     />
-                  </div>
-               </form-select>
+               <div class="form-merged custom">
+                  <form-numeric-input
+                     :placeholder="$t('mileage_from')"
+                     v-model="form.mileage_from"
+                     :suffix="$t('char_kilometre')"
+                  />
+                  <form-numeric-input
+                     :placeholder="$t('to')"
+                     v-model="form.mileage_to"
+                     :suffix="$t('char_kilometre')"
+                  />
+               </div>
 
-               <form-select
-                  :label="$t('capacity')"
-                  custom
-                  :new-label="false"
-                  :suffix="$t('char_litre')"
-                  :values="{ from: form.min_capacity, to: form.max_capacity }"
-                  @clear=";(form.min_capacity = ''), (form.max_capacity = '')"
-               >
-                  <div class="form-merged">
-                     <form-select
-                        :label="$t('from')"
-                        v-model="form.min_capacity"
-                        :options="bodyOptions.main.custom_options['capacity'].values"
-                        :show-label-on-select="false"
-                        :clear-option="false"
-                        in-select-menu
-                        :suffix="$t('char_litre')"
-                     />
+               <div class="form-merged custom">
+                  <form-select
+                     :label="$t('capacity_from')"
+                     v-model="form.min_capacity"
+                     :options="bodyOptions.main.custom_options['capacity'].values"
+                     :show-label-on-select="false"
+                     :clear-option="false"
+                     in-select-menu
+                     :suffix="$t('char_litre')"
+                  />
 
-                     <form-select
-                        :label="$t('to')"
-                        v-model="form.max_capacity"
-                        :options="
-                   bodyOptions.main.custom_options['capacity'].values
-                 "
-                        :show-label-on-select="false"
-                        :clear-option="false"
-                        in-select-menu
-                        :suffix="$t('char_litre')"
-                     />
-                  </div>
-               </form-select>
+                  <form-select
+                     :label="$t('to')"
+                     v-model="form.max_capacity"
+                     :options="bodyOptions.main.custom_options['capacity'].values"
+                     :show-label-on-select="false"
+                     :clear-option="false"
+                     in-select-menu
+                     :suffix="$t('char_litre')"
+                  />
+               </div>
 
                <div class="checkboxes">
                   <form-checkbox
