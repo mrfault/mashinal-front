@@ -11,7 +11,7 @@
             </template>
          </Banner>
 
-         <salon-filters-form :count="salonsFiltered.length"/>
+         <salon-filters-form :count="salonsFiltered.length" />
 
          <div
             class="mb-lg-0 mb-n2 mt-2 row salon-card-list"
@@ -153,7 +153,8 @@
 </script>
 
 <style lang="scss">
-   .pages-salons {
+   .pages-salons,
+   .pages-parts-shops {
       .form-group {
          .text-input {
             input {
@@ -195,7 +196,8 @@
    }
 
    .dark-mode {
-      .pages-salons {
+      .pages-salons,
+      .pages-parts-shops {
          .form-group {
             .text-input {
                input {
