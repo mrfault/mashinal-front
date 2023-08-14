@@ -2,7 +2,7 @@
    <div class="mobile-nav-new d-lg-none">
       <ul>
          <li v-for="menu in bottomMenus.filter(item => !item.hide)" :key="menu.title">
-            <nuxt-link :to="$localePath(menu.route)" :class="{'active': isPseudoActive(menu)}">
+            <nuxt-link :to="$localePath(menu.route)" :active-class="''" :exact-active-clas="'active'">
                <inline-svg :src="menu.icon" />
                <span>{{ $t(menu.title) }}</span>
             </nuxt-link>
@@ -22,12 +22,17 @@ export default {
       ...mapGetters(['countNewMessages'])
    },
 
+   mounted() {
+      console.log(this.hasSearchNav);
+   },
+
    methods: {
-      isPseudoActive(menu) {
-         return (this.hasSearchNav && menu.title === 'main')
-            || (this.routeName === 'profile-messages' && menu.title === 'messages')
-            || (this.routeName === 'garage' && menu.title === 'garage')
-            || (this.routeName?.includes('catalog') && menu.title === 'catalog');
+      isActiveMobileNav(menu) {
+         console.log(menu);
+         // return (this.hasSearchNav && menu.title === 'main')
+         //    || (this.routeName === 'profile-messages' && menu.title === 'messages')
+         //    || (this.routeName === 'garage' && menu.title === 'garage')
+         //    || (this.routeName?.includes('catalog') && menu.title === 'catalog');
       }
    }
 }
