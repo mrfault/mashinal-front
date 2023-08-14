@@ -123,7 +123,7 @@
          <template #cap>
             <Cap>
                <template #left>
-                  <h3>{{ $t('auto_salon_ads') }}</h3>
+                  <h3>{{ $t(gridTitle) }}</h3>
                </template>
 
 <!--               <template #right>-->
@@ -242,6 +242,13 @@
               this.$store.dispatch('getSalonById', { slug: this.$route.params.id, sorting: this.sorting });
            }
         }
+      },
+
+      props: {
+         gridTitle: {
+            type: String,
+            default: 'auto_salon_ads'
+         }
       },
 
       mounted() {

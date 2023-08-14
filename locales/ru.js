@@ -1763,6 +1763,7 @@ export default {
    shop_name: "Название магазина",
    shop_other_announcements: 'Другие объявления магазина "{name}"',
    shops: "Магазины",
+   shops_announcements: "Объявления магазина",
    short_information: "Краткая информация",
    short_number: "Короткий номер",
    show: "Показать",

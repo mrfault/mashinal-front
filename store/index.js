@@ -65,6 +65,7 @@ const getInitialState = () => ({
    myAnnouncement: {},
    mainAnnouncements: {},
    mainMonetized: [],
+   monetizedPage: [],
    carShowroom: [],
    partsHome: [],
    plateNumbers: [],
@@ -244,6 +245,7 @@ const getInitialState = () => ({
 export const state = () => getInitialState();
 
 export const getters = {
+   monetizedPage: s => s.monetizedPage,
    getAgreements: s => s.agreements,
    getResetForm: s => s.resetForm,
    getMainMonetized: s => s.mainMonetized,
@@ -465,6 +467,11 @@ const objectNotEmpty = (state, commit, property) => {
 };
 export const actions = {
    // New API ++++++++++++++++++++
+   async fetchMonetizedAnnouncementsPage({commit}, page = 1) {
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/monetized-announcements?${page}`);
+      commit("mutate", {property: "monetizedPage", value: res});
+   },
+
    async fetchMonetizedAnnouncementsHome({commit}) {
       const res = await this.$axios.$get('https://v2dev.mashin.al/api/v2/monetized-announcements/home');
       commit("mutate", {property: "mainMonetized", value: res});

@@ -236,6 +236,13 @@
                v-model="form.fuel_type"
             />
 
+            <form-checkbox
+               :label="$t('in_garanty')"
+               :show-input="false"
+               v-model="form.in_garanty"
+               input-name="in_garanty"
+            />
+
             <form-select
                :label="$t('gearing')"
                :options="motoTransmissions"
@@ -245,8 +252,8 @@
                v-model="form.gearing"
             />
 
-<!--            <div class="d-flex">-->
-<!--               <span>Zəmanətli</span>-->
+<!--            <div class="btns">-->
+<!--               -->
 
 <!--               <form-checkbox-->
 <!--                  :label="$t('external_moto')"-->
@@ -277,7 +284,7 @@
                :clear-option="false"
             />
 
-<!--            <div class="checkboxes">-->
+            <div class="btns">
                <form-select
                   v-model="form['damaged']"
                   :options="motoOptions.config['used_ones'].values.filter(value => value.key !== 0)"
@@ -306,7 +313,7 @@
                   :clear-option="false"
                   multiple
                />
-<!--            </div>-->
+            </div>
 
             <div class="checkboxes">
                <form-checkbox

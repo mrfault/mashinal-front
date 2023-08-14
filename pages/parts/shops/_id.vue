@@ -1,7 +1,7 @@
 <template>
    <div class="pages-parts-shops-id">
       <div class="container">
-         <salon-inner />
+         <salon-inner :gridTitle="'shops_announcements'" />
       </div>
    </div>
 </template>
