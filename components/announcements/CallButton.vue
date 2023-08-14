@@ -1,5 +1,8 @@
 <template>
-   <button :class="['call-button btn full-width', `btn--${callAtOnce ? '' : 'new-'}green`]" @click.stop="handleClick">
+   <button
+      :class="['call-button btn full-width', `btn--${callAtOnce ? '' : 'new-'}green`]"
+      @click.stop="handleClick"
+   >
 <!--      <icon name="phone-call"/>-->
       <template v-if="callAtOnce">
          <span v-mask="$maskPhone(true)" v-if="!isMobileBreakpoint">+{{ phone }}</span>
@@ -33,6 +36,7 @@
          callAtOnce() {
             return this.showPhone || this.isMobileBreakpoint;
          },
+
          id() {
             return this.$route.params.id || this.announcementId
          }
@@ -56,7 +60,7 @@
          trackCall(n) {
             this.fbTrack('Call ' + n);
             this.gtagTrack('AW-600951956/' + (n === 1 ? 'rgWNCOTA8IMCEJSZx54C' : 'VunMCPr51oMCEJSZx54C'));
-            this.$axios.$get(`/announce/${this.id}/show/phone`);
+            this.$axios.$get(`/announce/${this.announcementId}/show/phone`);
          }
       },
 

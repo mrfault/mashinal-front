@@ -45,6 +45,7 @@
          <div class="gallery-overlay" v-if="showSlider">
             <div class="gallery-overlay_top d-flex">
                <ViewAspect
+                  v-if="announcement.has_360"
                   :options="viewAspectOptions"
                   v-model="viewAspect"
                />
@@ -91,8 +92,6 @@
          </div>
 
          <div class="inner-gallery-lightbox" v-touch:swipe.top="handleSwipeTop">
-<!--            <pre style="background-color: black">{{ slides.types }}</pre>-->
-<!--<pre>{{announcement}}</pre>-->
             <template v-if="isMobileBreakpoint">
                <FsLightbox
                   :zoomIncrement="0"
@@ -156,7 +155,7 @@
                         @slide-change="currentSlide = $event"
                      >
                         <template #sidebar v-if="where === 'announcement'">
-                           <slot/>
+                           <slot />
                         </template>
                      </images-slider>
                   </div>

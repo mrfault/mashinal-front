@@ -72,17 +72,20 @@
                   v-if="
                      contact.user.active_announcements_count > 1 ||
                      announcement.is_part_salon ||
-                     announcement.is_autosalon ||
+                     announcement.is_auto_salon ||
                      announcement.is_external_salon
                   "
                >
                   <span v-if="announcement.is_part_salon">{{ $t('go_to_shop') }}</span>
 
-                  <span v-else-if="announcement.is_autosalon || announcement.is_external_salon">
+                  <span v-else-if="announcement.is_auto_salon || announcement.is_external_salon">
                      {{ $t('go_to_salon') }}
                   </span>
 
+
                   <span v-else>{{ $t('other_announcements_of_user') }}</span>
+<!--                  <pre>{{announcement.is_auto_salon}} - {{ announcement.is_external_salon }}</pre>-->
+
 
 <!--                  <icon name="chevron-right" />-->
                   <!-- <inline-svg src="/icons/chevron-right.svg" :height="14" /> -->
@@ -100,12 +103,22 @@
             </div>
 
 <!--            v-if="!isMobileBreakpoint"-->
+
             <div class="col-7 mt-2 mt-lg-3" >
-               <call-button-multiple v-if="announcement.is_autosalon" :phones="announcement.user.autosalon.phones" />
-               <call-button v-else :phone="contact.phone" />
+               <call-button-multiple
+                  v-if="announcement?.is_auto_salon"
+                  :phones="announcement?.user?.autosalon?.phones"
+                  :announcement-id="announcement?.id_unique"
+               />
+
+               <call-button
+                  v-else
+                  :phone="contact?.phone"
+                  :announcement-id="announcement?.id_unique"
+               />
             </div>
 
-            <div class="col-12 mt-2 mt-lg-3" v-if="!isMobileBreakpoint && announcement.status === 2">
+            <div class="col-12 mt-2 mt-lg-3" v-if="!isMobileBreakpoint && announcement?.status === 2">
                <div class="status"> {{ $t('announcement_pending') }}</div>
             </div>
          </div>
@@ -227,7 +240,7 @@
          />
       </div>
 
-<!--      <template v-if="!brief && announcement.status != 2 && !(announcement.is_autosalon && announcement.status == 3)">-->
+<!--      <template v-if="!brief && announcement.status != 2 && !(announcement.is_auto_salon && announcement.status == 3)">-->
 <!--         <div class="row mt-n2 mt-lg-n3">-->
 <!--            <div class="col mt-2 mt-lg-3">-->
 <!--               <restore-button-->
@@ -309,7 +322,7 @@
          ...mapGetters(['announcement']),
 
          getAddress() {
-            return this.announcement.is_autosalon ? this.announcement.user?.autosalon?.address : this.announcement.is_part_salon ? this.announcement.user?.part_salon?.address : this.announcement.address
+            return this.announcement.is_auto_salon ? this.announcement.user?.autosalon?.address : this.announcement.is_part_salon ? this.announcement.user?.part_salon?.address : this.announcement.address
          },
 
          contact() {

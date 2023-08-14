@@ -37,6 +37,8 @@
             store.dispatch('getSalonById', {slug: route.params.id}),
             store.dispatch('getMotoOptions'),
          ]);
+
+         store.dispatch('fetchAutosalonAnnouncementsId', store.getters.salonSingle.id);
       },
 
       mounted() {

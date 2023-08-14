@@ -36,7 +36,7 @@
             store.dispatch('getMotoOptions'),
          ]);
 
-         store.dispatch('fetchAutosalonAnnouncementsId', store.getters.salonSingle.id);
+         store.dispatch('fetchPartsAnnouncementsId', store.getters.salonSingle.id);
       },
 
       computed: {
