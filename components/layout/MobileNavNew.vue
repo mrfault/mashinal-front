@@ -20,20 +20,6 @@ export default {
 
    computed: {
       ...mapGetters(['countNewMessages'])
-   },
-
-   mounted() {
-      console.log(this.hasSearchNav);
-   },
-
-   methods: {
-      isActiveMobileNav(menu) {
-         console.log(menu);
-         // return (this.hasSearchNav && menu.title === 'main')
-         //    || (this.routeName === 'profile-messages' && menu.title === 'messages')
-         //    || (this.routeName === 'garage' && menu.title === 'garage')
-         //    || (this.routeName?.includes('catalog') && menu.title === 'catalog');
-      }
    }
 }
 </script>
