@@ -28,6 +28,7 @@
                         <template #left>
                            <h3>{{ $t('official_salons_3') }} ({{ officialSalons.length }})</h3>
                         </template>
+
                         <template #right>
                            <p
                               class="d-flex align-items-center"
@@ -65,11 +66,13 @@
                   <div class="col-md-12">
                      <Cap>
                         <template #left>
-                           <h3>{{ $t('auto_salons') }} ({{ salonsFiltered.filter(item => item.announcement_count > 0).filter(a => a.is_official).length }})</h3>
+                           <h3 v-if="!showMapsView">{{ $t('auto_salons') }} ({{ salonsFiltered.filter(item => item.announcement_count > 0).filter(a => a.is_official).length }})</h3>
+                           <h3 v-else>{{ $t('auto_salons') }} ({{ salonsInView.length }})</h3>
                         </template>
+
                         <template #right>
                            <p class="d-flex align-items-center" @click="setView()">
-                              <span v-if="!isMobileBreakpoint">{{ $t('show_on_site') }}</span>
+                              <span v-if="!isMobileBreakpoint">{{ $t('show_on_list') }}</span>
                               <span v-else>{{ $t('list') }}</span>
                               <inline-svg :src="'/icons/list1.svg'"/>
                            </p>
@@ -254,6 +257,7 @@ export default {
          'updateSalonsInBounds',
          'updateSalonsSearchFilters',
          'updateSalonsFilters',
+         'setMapView'
       ]),
       setView() {
          this.showMapsView = !this.showMapsView;

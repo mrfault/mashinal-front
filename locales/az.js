@@ -1798,6 +1798,7 @@ export default {
    show_number: "Nömrəni göstər",
    show_on_map: "Xəritədə göstər",
    show_on_site: "Saytda göstərilsin",
+   show_on_list: "Siyahıda gosterilsin",
    show_report: "Hesabatı göstərmək",
    show_vin_on_site: "Ban nömrəsi saytda göstərilsin",
    showing_stores_with_admin_rights:
