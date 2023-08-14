@@ -375,6 +375,7 @@ export default {
    cant_delete_selected_announcements:
       "Выбранные объявления должны быть деактивированы",
    capacity: "Объем",
+   capacity_from: "Мотор от.",
    capacity_from_l: "Объем от, л",
    capacity_from_sm3: "Объем от, см³",
    car: "Автомобиль",
@@ -1208,6 +1209,7 @@ export default {
    mexanika: "Механика",
    microphone: "Микрофон",
    mileage: "Пробег",
+   mileage_from: "Пробег от.",
    mileage_from_km: "Пробег от, км",
    min_image_count: "Минимум - {count} фото",
    min_image_size: "Минимальный размер - {w}x{h} px",

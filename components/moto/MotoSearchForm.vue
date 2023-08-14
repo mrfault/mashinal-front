@@ -132,60 +132,39 @@
             </div>
          </form-select>
 
-         <form-select
-            :label="$t('mileage')"
-            custom
-            :new-label="false"
-            :suffix="$t('char_kilometre')"
-            :values="{ from: form.mileage_from, to: form.mileage_to }"
-            @clear=";(form.mileage_from = ''), (form.mileage_to = '')"
-         >
-            <div class="form-merged">
-               <form-numeric-input
-                  :placeholder="$t('from')"
-                  v-model="form.mileage_from"
-                  :suffix="$t('char_kilometre')"
-               />
+         <div class="form-merged custom">
+            <form-numeric-input
+               :placeholder="$t('mileage_from')"
+               v-model="form.mileage_from"
+               :suffix="$t('char_kilometre')"
+            />
 
-               <form-numeric-input
-                  :placeholder="$t('to')"
-                  v-model="form.mileage_to"
-                  :suffix="$t('char_kilometre')"
-               />
-            </div>
-         </form-select>
+            <form-numeric-input
+               :placeholder="$t('to')"
+               v-model="form.mileage_to"
+               :suffix="$t('char_kilometre')"
+            />
+         </div>
 
-         <form-select
-            :label="$t('capacity')"
-            custom
-            :new-label="false"
-            :suffix="$t('char_sm_cube')"
-            :values="{
-               from: getOptionValue('MotoCapacity', form.capacity_from),
-               to: getOptionValue('MotoCapacity', form.capacity_to)
-            }"
-            @clear="form.capacity_from = '', form.capacity_to = ''"
-         >
-            <div class="form-merged">
-               <form-select
-                  :label="$t('from')"
-                  v-model="form.capacity_from"
-                  :options="getMotoCapacityOptions"
-                  :show-label-on-select="false"
-                  :clear-option="false"
-                  in-select-menu
-               />
+         <div class="form-merged custom">
+            <form-select
+               :label="$t('capacity_from')"
+               v-model="form.capacity_from"
+               :options="getMotoCapacityOptions"
+               :show-label-on-select="false"
+               :clear-option="false"
+               in-select-menu
+            />
 
-               <form-select
-                  :label="$t('to')"
-                  v-model="form.capacity_to"
-                  :options="getMotoCapacityOptions"
-                  :show-label-on-select="false"
-                  :clear-option="false"
-                  in-select-menu
-               />
-            </div>
-         </form-select>
+            <form-select
+               :label="$t('to')"
+               v-model="form.capacity_to"
+               :options="getMotoCapacityOptions"
+               :show-label-on-select="false"
+               :clear-option="false"
+               in-select-menu
+            />
+         </div>
 
          <form-select
             :label="$t('power')"
