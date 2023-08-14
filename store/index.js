@@ -157,6 +157,7 @@ const getInitialState = () => ({
    salonSingle: {},
    mySalon: {},
    homePageSliders: {},
+   servicePackages: [],
    myAnnouncementCalls: {},
    myAnnouncementStats: {},
    mapView: false,
@@ -242,6 +243,7 @@ export const getters = {
    getRegistrationMark: s => s.registrationMark,
    single_announce: s => s.single_announce,
    homePageSliders: s => s.homePageSliders,
+   servicePackages: s => s.servicePackages,
    loading: s => s.loading,
    loadingData: s => s.loadingData,
    colorMode: s => s.colorMode,
@@ -1466,6 +1468,11 @@ export const actions = {
    async updateMySalon({}, {id, form}) {
       await this.$axios.$post(`/my/autosalon/${id}/edit`, form);
    },
+   async getServicePackages({commit}) {
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/promotion/list`);
+      commit("mutate", {property: "servicePackages", value: res});
+   },
+
    //SELL POSTS
    async plateNumbersPost({}, {is_mobile, form}) {
       try {
@@ -1490,8 +1497,11 @@ export const actions = {
    async carEdit({}, {id, isMobile, form}) {
       await this.$axios.$post(`sell/post/edit/${id}?is_mobile=${isMobile}`, form);
    },
-   async partEdit({}, {id, isMobile, form}) {
+   async partEdit({}, {id, form}) {
       await this.$axios.$post(`/sell/part/edit/${id}`, form);
+   },
+   async registrationMarkEdit({}, {id, form}) {
+      await this.$axios.$post(`/sell/plate/edit/${id}`, form);
    },
 
 
