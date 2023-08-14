@@ -87,11 +87,7 @@ export default {
          }catch(e){}
       },
       onClick() {
-         // this.$v.form.$touch()
-         // if (this.$v.authForm.$error) return;
          this.isReady = !this.isReady
-
-
       },
    }
 }

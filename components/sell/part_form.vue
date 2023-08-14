@@ -8,21 +8,22 @@
             :clear-option="false"
             :new-label="false"
             v-model="form.category_id"
-            @change="onChangeCategory()"
+            :class="{full_grid: !(form.category_id && Object.values(partFilters).length)}"
+            @change="onChangeCategory"
          />
-         <template v-if="Object.values(partFilters).length">
+         <template v-if="form.category_id && Object.values(partFilters).length">
             <form-select
-               v-if="partFilters?.sub_categories.length"
+               v-if="form.category_id && partFilters?.sub_categories.length"
                :label="$t('sub_category')"
                :options="partFilters?.sub_categories"
                :clear-placeholder="true"
                :clear-option="false"
                :new-label="false"
-               v-model="form.brand_id"
+               v-model="form.sub_category_id"
                @change="onChangeSubCategory()"
             />
             <form-select
-               v-if="partFilters?.brands.length"
+               v-if="form.category_id && partFilters?.brands.length"
                :label="$t('mark')"
                :options="partFilters?.brands"
                :clear-placeholder="true"
@@ -33,169 +34,202 @@
             />
          </template>
       </div>
-      <form-text-input
-         key="title"
-         v-model="form.title"
-         :placeholder="$t('title_max_character', {max: 25})"
-      />
-      <form-text-input
-         key="product_code"
-         v-model="form.product_code"
-         :placeholder="$t('product_code_not_required')"
-      />
-      <div class="divider">
-         <form-radio
-            :id="'1'"
-            :label="$t('new')"
-            input-name="is_new"
-            v-model="form.is_new"
-            :radio-value="1"
+      <template v-if="form.brand_id || form.sub_category_id">
+         <form-text-input
+            key="title"
+            v-model="form.title"
+            :placeholder="$t('title_max_character', {max: 25})"
          />
-         <form-radio
-            :id="'2'"
-            :label="$t('s_h')"
-            input-name="is_new"
-            v-model="form.is_new"
-            :radio-value="0"
+         <form-text-input
+            key="product_code"
+            v-model="form.product_code"
+            :placeholder="$t('product_code_not_required')"
          />
-      </div>
-      <div class="divider">
-         <form-radio
-            :id="'3'"
-            :label="$t('original')"
-            input-name="is_original"
-            v-model="form.is_original"
-            :radio-value="1"
-         />
-         <form-radio
-            :id="'4'"
-            :label="$t('duplicate')"
-            input-name="is_original"
-            v-model="form.is_original"
-            :radio-value="0"
-         />
-      </div>
-      <form-checkbox
-         v-if="hasComponent('run_flat')"
-         v-model="form.run_flat"
-         :label="$t('run_flat')"
-         input-name="run_flat"
-         transparent
-      />
-      <div class="divider">
-         <form-select
-            v-if="hasComponent('thorns')"
-            :label="$t('thorns')"
-            :options="partFilters?.filters.find((f) => f.key === 'thorns').values.map((v) => ({...v, name: $t(v.name)}))"
-            :clear-placeholder="true"
-            :clear-option="false"
-            :new-label="false"
-            v-model="form.thorns"
-         />
-         <form-select
-            v-if="hasComponent('height')"
-            :label="$t('height')"
-            :options="partFilters?.filters.find((f) => f.key === 'height').values"
-            :clear-placeholder="true"
-            :clear-option="false"
-            :new-label="false"
-            v-model="form.height"
-         />
-      </div>
-      <div class="divider">
-         <form-select
-            v-if="hasComponent('number_of_mounting_holes')"
-            :label="$t('number_of_mounting_holes')"
-            :options="partFilters?.filters.find((f) => f.key === 'number_of_mounting_holes').values"
-            :clear-placeholder="true"
-            :clear-option="false"
-            :new-label="false"
-            v-model="form.number_of_mounting_holes"
-         />
-         <form-select
-            v-if="hasComponent('shine_width')"
-            :label="$t('shine_width')"
-            :options="partFilters?.filters.find((f) => f.key === 'shine_width').values"
-            :clear-placeholder="true"
-            :clear-option="false"
-            :new-label="false"
-            v-model="form.shine_width"
-         />
-         <form-select
-            v-if="hasComponent('diameter')"
-            :label="$t('diameter')"
-            :options="partFilters?.filters.find((f) => f.key === 'diameter').values"
-            :clear-placeholder="true"
-            :clear-option="false"
-            :new-label="false"
-            v-model="form.diameter"
-         />
-      </div>
-      <div class="divider">
+         <div class="divider">
+            <form-radio
+               :id="'1'"
+               :label="$t('new')"
+               input-name="is_new"
+               v-model="form.is_new"
+               :radio-value="1"
+            />
+            <form-radio
+               :id="'2'"
+               :label="$t('s_h')"
+               input-name="is_new"
+               v-model="form.is_new"
+               :radio-value="0"
+            />
+         </div>
+         <div class="divider">
+            <form-radio
+               :id="'3'"
+               :label="$t('original')"
+               input-name="is_original"
+               v-model="form.is_original"
+               :radio-value="1"
+            />
+            <form-radio
+               :id="'4'"
+               :label="$t('duplicate')"
+               input-name="is_original"
+               v-model="form.is_original"
+               :radio-value="0"
+            />
+         </div>
          <form-checkbox
-            v-model="form.have_delivery"
-            :label="$t('have_delivery')"
-            input-name="have_delivery"
+            v-if="hasComponent('run_flat')"
+            v-model="form.run_flat"
+            :label="$t('run_flat')"
+            input-name="run_flat"
             transparent
          />
+         <template v-if="form.category_id === 27">
+            <form-numeric-input
+               :placeholder="$t('starting_current')"
+               v-model="form.starting_current"
+            />
+            <div class="divider">
+               <form-numeric-input
+                  :placeholder="$t('length')"
+                  v-model="form.length"
+               />
+               <form-numeric-input
+                  :placeholder="$t('width')"
+                  v-model="form.width"
+               />
+            </div>
+            <div class="divider">
+               <form-numeric-input
+                  :placeholder="$t('height')"
+                  v-model="form.height"
+               />
+               <form-numeric-input
+                  :placeholder="$t('weight')"
+                  v-model="form.weight"
+               />
+            </div>
+            <!--               :invalid="$v.form.price.$error"-->
+         </template>
+         <div class="divider">
+            <form-select
+               v-if="hasComponent('thorns')"
+               :label="$t('thorns')"
+               :options="partFilters?.filters.find((f) => f.key === 'thorns').values.map((v) => ({...v, name: $t(v.name)}))"
+               :clear-placeholder="true"
+               :clear-option="false"
+               :new-label="false"
+               v-model="form.thorns"
+            />
+            <form-select
+               v-if="form.category_id !== 27 && hasComponent('height')"
+               :label="$t('height')"
+               :options="partFilters?.filters.find((f) => f.key === 'height').values"
+               :clear-placeholder="true"
+               :clear-option="false"
+               :new-label="false"
+               v-model="form.height"
+               :invalid="$v.form.height.$error"
+            />
+         </div>
+         <div class="divider">
+            <form-select
+               v-if="hasComponent('number_of_mounting_holes')"
+               :label="$t('number_of_mounting_holes')"
+               :options="partFilters?.filters.find((f) => f.key === 'number_of_mounting_holes').values"
+               :clear-placeholder="true"
+               :clear-option="false"
+               :new-label="false"
+               v-model="form.number_of_mounting_holes"
+               :invalid="$v.form.number_of_mounting_holes.$error"
+            />
+            <form-select
+               v-if="hasComponent('shine_width')"
+               :label="$t('shine_width')"
+               :options="partFilters?.filters.find((f) => f.key === 'shine_width').values"
+               :clear-placeholder="true"
+               :clear-option="false"
+               :new-label="false"
+               v-model="form.shine_width"
+               :invalid="$v.form.shine_width.$error"
+            />
+            <form-select
+               v-if="hasComponent('diameter')"
+               :label="$t('diameter')"
+               :options="partFilters?.filters.find((f) => f.key === 'diameter').values"
+               :clear-placeholder="true"
+               :clear-option="false"
+               :new-label="false"
+               v-model="form.diameter"
+               :invalid="$v.form.diameter.$error"
+            />
+         </div>
+         <div class="divider">
+            <form-checkbox
+               v-model="form.have_delivery"
+               :label="$t('have_delivery')"
+               input-name="have_delivery"
+               transparent
+            />
+            <form-checkbox
+               v-model="form.have_warranty"
+               :label="$t('have_warranty')"
+               input-name="have_warranty"
+               transparent
+            />
+         </div>
+         <div class="divider">
+            <form-numeric-input
+               :placeholder="$t('price')"
+               v-model="form.price"
+               :invalid="$v.form.price.$error"
+            />
+            <!--            @change="announcement.price = $event ? $event + (form.currency.name?.[locale] || 'AZN') : 0"-->
+            <div class="price_types">
+               <toggle-group :items="priceTypes" v-slot="{ item }" @change="form.currency = $event">
+                  <div class="price_item">
+                     <p>{{ item.name[locale] }}</p>
+                  </div>
+               </toggle-group>
+            </div>
+         </div>
          <form-checkbox
-            v-model="form.have_warranty"
-            :label="$t('have_warranty')"
-            input-name="have_warranty"
+            v-model="form.is_negotiable"
+            :label="$t('negotiable_price')"
+            input-name="is_negotiable"
             transparent
          />
-      </div>
-      <div class="divider">
-         <form-numeric-input
-            :placeholder="$t('price')"
-            v-model="form.price"
-            :invalid="$v.form.price.$error"
+         <form-select v-if="Object.values(partFilters).length" :label="$t('region')" :options="partFilters?.regions"
+                      v-model="form.region_id"
+                      has-search
+                      :invalid="$v.form.region_id.$error"
          />
-         <!--            @change="announcement.price = $event ? $event + (form.currency.name?.[locale] || 'AZN') : 0"-->
-         <div class="price_types">
-            <toggle-group :items="priceTypes" v-slot="{ item }" @change="form.currency = $event">
-               <div class="price_item">
-                  <p>{{ item.name[locale] }}</p>
-               </div>
-            </toggle-group>
+         <div class="part_form_with_info">
+            <form-textarea
+               v-model="form.description"
+               :placeholder="$t('additional_info')"
+               :maxlength="600"
+            />
+            <div class="part_form_with_info_inner">
+               <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
+               <p>{{ $t("additional_info_warning") }}</p>
+            </div>
          </div>
-      </div>
-      <form-checkbox
-         v-model="form.is_negotiable"
-         :label="$t('negotiable_price')"
-         input-name="is_negotiable"
-         transparent
-      />
-      <form-select v-if="Object.values(partFilters).length" :label="$t('region')" :options="partFilters?.regions"
-                   v-model="form.region_id"
-                   has-search
-                   :invalid="$v.form.region_id.$error"
-      />
-      <div class="part_form_with_info">
-         <form-textarea
-            v-model="form.description"
-            :placeholder="$t('additional_info')"
-            :maxlength="600"
-         />
-         <div class="part_form_with_info_inner">
-            <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
-            <p>{{ $t("additional_info_warning") }}</p>
+         <div class="part_form_with_info">
+            <form-keywords v-model="form.keywords"/>
+            <div class="part_form_with_info_inner">
+               <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
+               <p>{{ $t("sell_parts_keywords_info") }}</p>
+            </div>
          </div>
-      </div>
-      <div class="part_form_with_info">
-         <form-keywords v-model="form.keywords"/>
-         <div class="part_form_with_info_inner">
-            <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
-            <p>{{ $t("sell_parts_keywords_info") }}</p>
+         <div class="part_form_with_info">
+            <image-component :type="'parts'" :initial-form="form"/>
+            <div class="part_form_with_info_inner">
+               <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
+               <p :class="{isInvalid: $v.form.saved_images.$error}">{{ $t("part_images_info") }}</p>
+            </div>
          </div>
-      </div>
-      <div class="part_form_with_info">
-         <image-component :type="'parts'" :initial-form="form"/>
-         <div class="part_form_with_info_inner">
-            <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
-            <p>{{ $t("part_images_info") }}</p>
-         </div>
-      </div>
+      </template>
    </div>
 </template>
 
@@ -223,7 +257,7 @@ export default {
       }
    },
    computed: {
-      ...mapGetters(['partCategories', 'partFilters']),
+      ...mapGetters(['partCategories', 'partFilters'])
    },
    data() {
       return {
@@ -244,19 +278,24 @@ export default {
          form: {
             category_id: "",
             brand_id: "",
+            sub_category_id: "",
             brand: "",
             title: "",
             product_code: "",
-            is_new: "",
-            is_original: "",
-            run_flat: "",
+            is_new: 1,
+            is_original: 1,
+            run_flat: false,
             thorns: "",
             number_of_mounting_holes: "",
             diameter: "",
             height: "",
             shine_width: "",
-            have_delivery: "",
-            have_warranty: "",
+            starting_current: "",
+            length: "",
+            width: "",
+            weight: "",
+            have_delivery: false,
+            have_warranty: false,
             price: "",
             currency: 1,
             is_negotiable: false,
@@ -264,27 +303,43 @@ export default {
             description: "",
             keywords: [],
             saved_images: [],
-         }
+         },
+         initialForm: {}
       }
    },
    methods: {
       ...mapActions(['getPartFilters']),
       async onChangeCategory() {
+         this.clearFields(['brand_id', 'sub_category_id'])
          this.$emit('changeType', this.form.category_id)
-         await this.getPartFilters(this.form.category_id);
+         if (this.form.category_id) {
+            await this.getPartFilters(this.form.category_id);
+         }
       },
       onChangeSubCategory() {
-         console.log('miyau2')
+         this.form = {
+            ...this.initialForm,
+            category_id: this.form.category_id,
+            brand_id: this.form.brand_id,
+            sub_category_id: this.form.sub_category_id
+         }
       },
       hasComponent(key) {
          return this.partFilters?.filters?.map((ftr) => ftr.key).includes(key)
+      },
+      clearFields(keys) {
+         keys.forEach((key) => {
+            this.form[key] = ""
+         })
       }
    },
    mounted() {
+      this.initialForm = {...this.form}
       if (this.isEdit) {
          this.getPartFilters(this.announcement.category_id);
          this.form.category_id = this.announcement.category_id
          this.form.brand_id = this.announcement.brand_id
+         this.form.sub_category_id = this.announcement.sub_category_id
          this.form.title = this.announcement.title
          this.form.product_code = this.announcement.product_code
          this.form.is_new = this.announcement.is_new ? 1 : 0
@@ -292,6 +347,10 @@ export default {
          this.form.run_flat = this.announcement.run_flat
          this.form.thorns = this.announcement.thorns
          this.form.height = this.announcement.height
+         this.form.starting_current = this.announcement.starting_current
+         this.form.length = this.announcement.length
+         this.form.width = this.announcement.width
+         this.form.weight = this.announcement.weight
          this.form.diameter = this.announcement.diameter
          this.form.shine_width = this.announcement.shine_width
          this.form.price = this.announcement.price
@@ -305,8 +364,15 @@ export default {
       }
    },
    watch: {
+      'form.brand_id'() {
+         this.$emit("done", !!((this.form.brand_id) && Object.values(this.partFilters).length))
+      },
+      'form.sub_category_id'() {
+         this.$emit("done", !!((this.form.sub_category_id) && Object.values(this.partFilters).length))
+      },
       isReady() {
          this.$v.form.$touch()
+         if (this.$v.form.$error) return;
          const newForm = {
             product_code: this.form.product_code,
             title: this.form.title,
@@ -314,56 +380,70 @@ export default {
             category_id: this.form.category_id,
             region_id: this.form.region_id,
             currency: this.form.currency,
-            is_new: this.form.is_new === 1,
-            is_original: this.form.is_original === 1,
-            have_delivery: this.form.have_delivery,
-            have_warranty: this.form.have_warranty,
+            is_new: this.form.is_new ? 1 : 0,
+            is_original: this.form.is_original ? 1 : 0,
+            have_delivery: this.form.have_delivery ? 1 : 0,
+            have_warranty: this.form.have_warranty ? 1 : 0,
             price: this.form.is_negotiable ? 0 : this.form.price,
             is_negotiable: this.form.is_negotiable,
-            brand_id: this.form.brand_id,
             diameter: this.form.diameter,
             shine_width: this.form.shine_width,
             height: this.form.height,
+            starting_current: this.form.starting_current,
+            length: this.form.length,
+            width: this.form.width,
+            weight: this.form.weight,
             number_of_mounting_holes: this.form.number_of_mounting_holes,
             tags: this.form.keywords.map((k) => ({text: k})),
             saved_images: this.form.saved_images
          }
-         const formData = new FormData()
-         formData.append('data', JSON.stringify(newForm))
-         this.$emit("getForm", formData)
-      }
-// {"product_code":"eewrwe","title":"wq","commercial_part":true,"commercial_size":"245x45x18","description":"gretgertertt","category_id":20,"region_id":1,"currency":1,"is_new":true,"is_original":true,"have_delivery":true,"have_warranty":true,"price":"123","is_negotiable":false,"btl_cookie":"","brand_id":258,"diameter":6,"number_of_mounting_holes":5,"tags":[{"text":"qunduz"},{"text":"miyau"}],"saved_images":[1512771,1512770],"deletedIds":[]}
+         const filteredForm = this.partFilters?.sub_categories.length ? {
+            ...newForm,
+            sub_category_id: this.form.sub_category_id
+         } : {...newForm, brand_id: this.form.brand_id}
 
-// {"data":{"category":{"id":19,"parent_id":0,"name":"Şinlər","slug":{"az":"sinler","ru":"siny"},"show_on_search":false,"show_on_form":true,"created_at":"2021-06-29T10:19:13.000000Z","updated_at":"2021-06-29T10:19:13.000000Z","deleted_at":null,"child":[]},"sub_category":"","brand":{"id":4,"name":"Advan"},"title":"wder","product_code":"reth","is_new":"new","is_original":"original","run_flat":true,"thorns":2,"number_of_mounting_holes":"","diameter":10,"height":3,"shine_width":3,"delivery":true,"warranty":true,"price":15,"currency":1,"is_negotiable":false,"region_id":1,"comment":"2wert","keywords":[{"text":"wqregb"},{"text":"t5 b"},{"text":"ytry"},{"text":"grggr"}],"saved_images":[1512784,1512785]}}:
+         this.$emit("getForm", filteredForm)
+      }
    },
 
    validations: {
       form: {
-         // category: "",
-         // sub_category: "",
-         // brand: "",
-         title: {maxLength: maxLength(25)},
-         // product_code: "",
+         title: {
+            required,
+            maxLength: maxLength(25)
+         },
+         description: {maxLength: maxLength(3000)},
          is_new: {required},
          is_original: {required},
-         // run_flat: "",
-         // thorns: "",
-         // number_of_mounting_holes: "",
-         // diameter: "",
-         // height: "",
-         // shine_width: "",
          price: {
             required: requiredIf(function () {
                return !this.form.is_negotiable
             })
          },
          region_id: {required},
-         // negotiable_price: "",
-         // delivery: "",
-         // warranty: "",
-         // comment: "",
-         // saved_images: [],
-         // comment: {required},
+         diameter: {
+            required: requiredIf(function () {
+               return this.hasComponent('diameter')
+            })
+         },
+         height: {
+            required: requiredIf(function () {
+               return this.hasComponent('height')
+            })
+         },
+         shine_width: {
+            required: requiredIf(function () {
+               return this.hasComponent('shine_width')
+            })
+         },
+         number_of_mounting_holes: {
+            required: requiredIf(function () {
+               return this.hasComponent('number_of_mounting_holes')
+            })
+         },
+         saved_images: {
+            required
+         }
       }
    }
 }
@@ -376,10 +456,15 @@ export default {
    flex-direction: column;
    gap: 20px;
 
+
    .divider {
       display: grid;
       grid-template-columns: repeat(2, calc(50% - 8px));
       gap: 20px;
+
+      .full_grid {
+         grid-column: 1/3;
+      }
 
       .price_types {
          .price_item {
@@ -400,6 +485,10 @@ export default {
          margin-top: 12px;
          align-items: center;
          gap: 10px;
+
+         .isInvalid {
+             color: red
+         }
 
          svg {
             min-width: 24px;

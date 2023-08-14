@@ -21,8 +21,13 @@
                <icon name="store"/>
             </span>
 
-            <span class="cursor-pointer" @click="handleIconClick($localePath('/cars/advanced-search'))"
-                  v-else-if="false">
+            <span class="cursor-pointer" @click="handleIconClick($localePath('/cars'))"
+                  v-else-if="exceptions">
+
+            </span>
+
+            <span class="cursor-pointer" @click="handleIconClick($localePath('/cars'))"
+                  v-else-if="hasSearchNav || !loggedIn">
                <icon name="options"/>
             </span>
 

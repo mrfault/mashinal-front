@@ -73,6 +73,13 @@
 .ma-new-automobile {
    width: 100%;
 
+   &__content{
+      max-height: calc(100vh - 200px);
+      box-sizing: border-box;
+      overflow-x: hidden;
+      overflow-y: scroll;
+   }
+
 
    &__button {
       display: flex;

@@ -1,6 +1,6 @@
 <template>
    <div :class="['salon-filters-form form', {'has-sticky-screen-bottom': isMobileBreakpoint}]">
-      <div :class="`mt-lg-${short ? '0' : '3'}`">
+      <div :class="`mt-${short ? '0' : '3'}`">
          <div class="row">
             <div class="col-12">
                <form-text-input

@@ -52,8 +52,8 @@
                <div class="form-merged">
                   <form-select
                      :label="$t('from_year')"
-                     :options="getYearOptions(false, form.max_year)"
-                     v-model="form.min_year"
+                     :options="getYearOptions(false, form.year_to)"
+                     v-model="form.year_from"
                      :show-label-on-select="false"
                      :clear-option="false"
                      in-select-menu
@@ -61,8 +61,8 @@
 
                   <form-select
                      :label="$t('to')"
-                     :options="getYearOptions(form.min_year, false)"
-                     v-model="form.max_year"
+                     :options="getYearOptions(form.year_from, false)"
+                     v-model="form.year_to"
                      :show-label-on-select="false"
                      :clear-option="false"
                      in-select-menu
@@ -161,60 +161,40 @@
                   </div>
                </form-select>
 
-               <form-select
-                  :label="$t('mileage')"
-                  custom
-                  :new-label="false"
-                  :suffix="$t('char_kilometre')"
-                  :values="{ from: form.mileage_from, to: form.mileage_to }"
-                  @clear=";(form.mileage_from = ''), (form.mileage_to = '')"
-               >
-                  <div class="form-merged">
-                     <form-numeric-input
-                        :placeholder="$t('from')"
-                        v-model="form.mileage_from"
-                        :suffix="$t('char_kilometre')"
-                     />
-                     <form-numeric-input
-                        :placeholder="$t('to')"
-                        v-model="form.mileage_to"
-                        :suffix="$t('char_kilometre')"
-                     />
-                  </div>
-               </form-select>
+               <div class="form-merged custom">
+                  <form-numeric-input
+                     :placeholder="$t('mileage_from')"
+                     v-model="form.mileage_from"
+                     :suffix="$t('char_kilometre')"
+                  />
+                  <form-numeric-input
+                     :placeholder="$t('to')"
+                     v-model="form.mileage_to"
+                     :suffix="$t('char_kilometre')"
+                  />
+               </div>
 
-               <form-select
-                  :label="$t('capacity')"
-                  custom
-                  :new-label="false"
-                  :suffix="$t('char_litre')"
-                  :values="{ from: form.min_capacity, to: form.max_capacity }"
-                  @clear=";(form.min_capacity = ''), (form.max_capacity = '')"
-               >
-                  <div class="form-merged">
-                     <form-select
-                        :label="$t('from')"
-                        v-model="form.min_capacity"
-                        :options="bodyOptions.main.custom_options['capacity'].values"
-                        :show-label-on-select="false"
-                        :clear-option="false"
-                        in-select-menu
-                        :suffix="$t('char_litre')"
-                     />
+               <div class="form-merged custom">
+                  <form-select
+                     :label="$t('capacity_from')"
+                     v-model="form.min_capacity"
+                     :options="bodyOptions.main.custom_options['capacity'].values"
+                     :show-label-on-select="false"
+                     :clear-option="false"
+                     in-select-menu
+                     :suffix="$t('char_litre')"
+                  />
 
-                     <form-select
-                        :label="$t('to')"
-                        v-model="form.max_capacity"
-                        :options="
-                   bodyOptions.main.custom_options['capacity'].values
-                 "
-                        :show-label-on-select="false"
-                        :clear-option="false"
-                        in-select-menu
-                        :suffix="$t('char_litre')"
-                     />
-                  </div>
-               </form-select>
+                  <form-select
+                     :label="$t('to')"
+                     v-model="form.max_capacity"
+                     :options="bodyOptions.main.custom_options['capacity'].values"
+                     :show-label-on-select="false"
+                     :clear-option="false"
+                     in-select-menu
+                     :suffix="$t('char_litre')"
+                  />
+               </div>
 
                <div class="checkboxes">
                   <form-checkbox
@@ -734,8 +714,8 @@
                currency: 1,
                min_capacity: '',
                max_capacity: '',
-               min_year: '',
-               max_year: '',
+               year_form: '',
+               year_to: '',
                price_from: '',
                price_to: '',
                mileage_from: '',
@@ -838,7 +818,7 @@
             return !!(this.form.additional_brands[0].brand ||
                this.form.additional_brands[0].model ||
                this.form.additional_brands[0].generation ||
-               this.form.min_year || this.form.max_year ||
+               this.form.year_from || this.form.year_to ||
                this.form.price_from || this.form.price_to ||
                this.form.mileage_from || this.form.mileage_to ||
                this.form.min_capacity || this.form.max_capacity ||

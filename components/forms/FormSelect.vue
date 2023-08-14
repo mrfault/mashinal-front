@@ -646,10 +646,16 @@ export default {
          // })
       },
       getLabelText() {
-         if (this.objectInValue) {
-            const selectKey = this.value.title ? "title" : "name"
-            return this.value ? this.$t(this.value[selectKey]) : this.label
-         }
+         // if (this.objectInValue) {
+         //    const selectKey = this.value.title ? "title" : "name"
+         //
+         //    if (this.multiple) {
+         //       return this.value.length > 1
+         //          ? `${this.label} (${this.value.length})`
+         //
+         //    }
+         //    return this.value ? this.$t(this.value[selectKey]) : this.label
+         // }
          if (this.custom) {
             let value;
             let read = this.values.read !== false;

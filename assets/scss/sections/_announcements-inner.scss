@@ -628,6 +628,36 @@
       &.has-sidebar {
          grid-template-columns: 104px 1040px 400px;
       }
+
+      .quickInfoPriceWrapper {
+         .quickInfoPrice {
+            background-color: transparent !important;
+
+            &__head {
+               span {
+                  color: $white-2-new !important;
+               }
+
+               svg {
+                  path {
+                     fill: $white-2-new !important;
+                  }
+               }
+            }
+
+            &:hover {
+               background-color: $dark-light-new !important;
+
+               .quickInfoPrice__main {
+                  background-color: $dark-light-new !important;
+
+                  p {
+                     color: $white-2-new !important;
+                  }
+               }
+            }
+         }
+      }
    }
 
    &__close {
@@ -910,7 +940,8 @@
       }
    }
 
-   .vehicle-specs {
+   .vehicle-specs,
+   .vinCode {
       display: none;
    }
 }
@@ -918,7 +949,11 @@
 @media (max-width: 1700px) {
    .images-slider {
       &__grid {
-         grid-template-columns: 104px 900px 400px;
+         &.has-sidebar {
+            grid-template-columns: 104px 900px 400px;
+         }
+
+         grid-template-columns: 104px 1200px;
       }
    }
 }
@@ -926,7 +961,11 @@
 @media (max-width: 1500px) {
    .images-slider {
       &__grid {
-         grid-template-columns: 104px 700px 400px;
+         &.has-sidebar {
+            grid-template-columns: 104px 700px 400px;
+         }
+
+         grid-template-columns: 104px 1000px;
       }
    }
 }
@@ -934,7 +973,13 @@
 @media (max-width: 1300px) {
    .images-slider {
       &__grid {
-         grid-template-columns: 104px 500px 370px;
+         &.has-sidebar {
+            grid-template-columns: 104px 500px 370px;
+            grid-column-gap: 20px;
+         }
+
+         grid-template-columns: 104px 800px;
+         grid-column-gap: 30px;
 
          .swiper-wrapper {
             max-height: 550px !important;
@@ -960,7 +1005,11 @@
 @media (max-width: 1150px) {
    .images-slider {
       &__grid {
-         grid-template-columns: 104px 400px 370px;
+         &.has-sidebar {
+            grid-template-columns: 104px 400px 370px;
+         }
+
+         grid-template-columns: 104px 700px;
       }
    }
 }

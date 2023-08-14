@@ -11,7 +11,7 @@
          type="button"
          @click="openModal"
       >
-         {{ $t('subscribe') }}
+         {{ $t('subscribe2') }}
       </button>
 
       <!--      are you sure to subscribe-->
@@ -191,12 +191,13 @@ export default {
                pay_type: this.paymentMethod,
                is_mobile: this.isMobileBreakpoint
             });
-            this.$nuxt.refresh()
+            this.$nuxt.refresh();
+            this.$emit('carActivated',true)
             if (this.paymentMethod === 'card' && !this.bankingCard) {
                this.pending = false;
                this.showPaymentModal = false;
+               this.showModal = false;
                this.handlePayment(res, false, this.$t('car_activated'), 'v2');
-
             } else {
                await Promise.all([
                   this.$nuxt.refresh(),
@@ -204,6 +205,7 @@ export default {
                ]);
                this.pending = false;
                this.showPaymentModal = false;
+               this.showModal = false;
                this.bankingCard = '';
                this.updatePaidStatus({
                   type: 'success',
@@ -212,6 +214,7 @@ export default {
                });
                this.$emit('carActivated',true)
                this.showPaymentModal = false;
+               this.showModal = false;
                this.$nuxt.refresh()
             }
          } catch (err) {

@@ -68,7 +68,7 @@
             } else {
                await this.addToFavorites(this.announcement.id_unique);
                await this.getNotViewedFavorites();
-               if (this.type === 'announcement') await this.$store.dispatch('getAnnouncementInner', this.announcement.id_unique);
+               if (this.type === 'announcement') await this.$store.dispatch('getAnnouncementInnerV2', this.announcement.id);
                await this.$store.dispatch('fetchMySavedPlates');
                this.$nuxt.$emit('favorites-updated');
                if (this.isAdded) {

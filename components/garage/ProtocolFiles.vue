@@ -3,15 +3,13 @@
       <button :class="['btn btn--light-outline full-width',{'d-none': hideButton }, { pending }]"
               style="min-height: 52px;border-radius: 8px"
               type="button" @click="openFiles">
-         {{ $t('watch_files') }}
+                  {{ $t('watch_files') }}
       </button>
-      <template v-if="pending">
-         <loader/>
-      </template>
-
-
-      <template v-else>
-         <div v-if="slides.main" v-touch:swipe.top="handleSwipeTop" class="inner-gallery-lightbox">
+      <div>
+         <template v-if="pending">
+            <loader/>
+         </template>
+         <div v-if="slides.main && !pending" v-touch:swipe.top="handleSwipeTop" class="inner-gallery-lightbox">
 
             <!--mobile-->
             <template v-if="isMobileBreakpoint">
@@ -62,10 +60,7 @@
 
 
          </div>
-      </template>
-      <template v-if="!pending">
-
-      </template>
+      </div>
    </div>
 </template>
 
@@ -221,8 +216,6 @@ export default {
          if (document?.body?.classList.contains('zooming')) return;
          this.closeLightbox();
       },
-
-
       restSpecs(protocol) {
          return {
             protocol_took_place: protocol.address,

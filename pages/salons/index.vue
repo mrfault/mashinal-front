@@ -10,9 +10,16 @@
                   :bg="'/img/salon-bg.png'"
                   :title="$t('auto_salons')">
                   <template #content>
-                     <breadcrumbs class="light-color" :crumbs="crumbs"/>
+                     <breadcrumbs class="light-color" :crumbs="crumbs" />
                   </template>
                </Banner>
+
+               <pre>{{  }}</pre>
+               <salon-filters-form
+                  v-show="searchFormType === 0"
+                  @filter="showSearch = false"
+                  :count="(!mapView ? salonsFiltered : salonsInView).length"
+               />
             </div>
 
             <div class="container" v-if="!showMapsView">
@@ -23,7 +30,11 @@
                            <h3>{{ $t('official_salons_3') }} ({{ officialSalons.length }})</h3>
                         </template>
                         <template #right>
-                           <p class="d-flex align-items-center" @click="setView()">
+                           <p
+                              class="d-flex align-items-center"
+                              @click="setView()"
+                              v-if="salonsFiltered.filter(item => item.announcement_count > 0).filter(a => a.is_official).length"
+                           >
                               <span v-if="!isMobileBreakpoint">{{ $t('show_on_map') }}</span>
                               <span v-else>{{ $t('map') }}</span>
                               <inline-svg :src="'/icons/location_2.svg'"/>
@@ -49,12 +60,13 @@
                   </div>
                </div>
             </div>
+
             <div class="container mt-5" v-else>
                <div class="row">
                   <div class="col-md-12">
                      <Cap>
                         <template #left>
-                           <h3>{{ $t('auto_salons') }} ({{ officialSalons.length }})</h3>
+                           <h3>{{ $t('auto_salons') }} ({{ salonsFiltered.filter(item => item.announcement_count > 0).filter(a => a.is_official).length }})</h3>
                         </template>
                         <template #right>
                            <p class="d-flex align-items-center" @click="setView()">
@@ -103,16 +115,20 @@
             </div>
          </div>
 
-         <div :class="['pages-salons autosalon list-view bg-white']" v-if="!showMapsView">
+         <div :class="['pages-salons autosalon list-view bg-silver']" v-if="!showMapsView">
             <div class="container">
                <div class="row">
                   <div class="col-md-12">
                      <Cap>
                         <template #left>
-                           <h3>{{ $t('auto_salons') }} ({{ nonOfficialSalons.length }})</h3>
+                           <h3>{{ $t('auto_salons') }} ({{ salonsFiltered.filter(item => item.announcement_count > 0).filter(a => !a.is_official).length }})</h3>
                         </template>
                         <template #right>
-                           <p class="d-flex align-items-center" @click="setView()">
+                           <p
+                              class="d-flex align-items-center"
+                              @click="setView()"
+                              v-if="salonsFiltered.filter(item => item.announcement_count > 0).filter(a => !a.is_official).length"
+                           >
                               <span v-if="!isMobileBreakpoint">{{ $t('show_on_map') }}</span>
                               <span v-else>{{ $t('map') }}</span>
                               <inline-svg :src="'/icons/location_2.svg'" />
@@ -212,11 +228,13 @@ export default {
          return this.salonsFiltered.filter(item => item.is_official).sort((a, b) => a.name.localeCompare(b.name));
       },
       crumbs() {
-         return [{name: this.$t('auto_salons')}]
+         return [{ name: this.$t('auto_salons') }]
       },
 
       salonsInView() {
-         return this.salonsFiltered.filter((salon) => {
+         let salons = this.salonsFiltered.filter(item => item.announcement_count > 0);
+
+         return salons.filter((salon) => {
             return this.salonsInBounds
                ? this.salonsInBounds.includes(salon.id)
                : true
@@ -279,10 +297,6 @@ export default {
       overflow: hidden;
 
       .pages-salons {
-         &:first-child {
-            padding-top: 32px;
-         }
-
          &.list-view {
             .container {
                &:last-child {
@@ -388,10 +402,6 @@ export default {
          overflow: hidden;
 
          .pages-salons {
-            &:first-child {
-               padding-top: 0;
-            }
-
             &.list-view {
                padding-bottom: 32px;
 

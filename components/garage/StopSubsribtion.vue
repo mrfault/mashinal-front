@@ -42,7 +42,6 @@
                   {{ $t('stop_subsciption') }}
                </button>
             </div>
-
          </div>
       </modal-popup>
    </div>
@@ -100,11 +99,8 @@ export default {
       async removeVehicle() {
          if (this.pending) return;
          this.pending = true;
-         console.log("removeVehicle")
          try {
-            console.log("removeVehicle try")
             await this.deactivate({ id: this.vehicle.id });
-            console.log("removeVehicle response")
             this.$toasted.success(this.$t('car_deactivated'));
             this.pending = false;
             this.showModal = false;
