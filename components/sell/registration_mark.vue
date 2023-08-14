@@ -9,6 +9,7 @@
          has-search
          v-model="form.car_number.region_id"
          :invalid="$v.form.car_number.region_id.$error"
+         :disabled="isEdit"
       />
       <div class="car_number">
          <form-select
@@ -20,6 +21,7 @@
             has-search
             v-model="form.car_number.first"
             :invalid="$v.form.car_number.first.$error"
+            :disabled="isEdit"
          />
          <form-select
             :label="$t('letter')"
@@ -29,22 +31,26 @@
             :new-label="false"
             has-search
             v-model="form.car_number.second"
+            :disabled="isEdit"
          />
          <form-numeric-input
             :placeholder="$t('000')"
             v-model="form.car_number.number"
             :maxlength="3"
             :invalid="$v.form.car_number.number.$error"
+            :disabled="isEdit"
          />
       </div>
       <div class="divider">
          <form-numeric-input
             :placeholder="$t('price')"
             v-model="form.price"
+            :invalid="$v.form.price.$error"
          />
          <!--            @change="announcement.price = $event ? $event + (form.currency.name?.[locale] || 'AZN') : 0"-->
          <div class="price_types">
-            <toggle-group :items="priceTypes" v-slot="{ item }" :defaultValue="form.currency_id" @change="form.currency_id = $event.id">
+            <toggle-group :items="priceTypes" v-slot="{ item }" :defaultValue="form.currency_id"
+                          @change="form.currency_id = $event.id">
                <div class="price_item">
                   <p>{{ item.name[locale] }}</p>
                </div>
@@ -52,9 +58,9 @@
          </div>
       </div>
       <form-checkbox
-         v-model="negotiable_price"
+         v-model="form.is_negotiable"
          :label="$t('negotiable_price')"
-         input-name="negotiable_price"
+         input-name="is_negotiable"
          transparent
       />
       <form-select :label="$t('region')" :options="sellOptions.regions"
@@ -79,11 +85,15 @@
 <script>
 import {mapGetters} from "vuex";
 import ToggleGroup from "~/components/elements/ToggleGroup.vue";
-import {email, required} from "vuelidate/lib/validators";
+import {required, requiredIf} from "vuelidate/lib/validators";
 
 export default {
    components: {ToggleGroup},
    props: {
+      announcement: {
+         type: Object,
+         required: true
+      },
       isReady: {
          type: Boolean,
          default: false
@@ -98,7 +108,6 @@ export default {
    },
    data() {
       return {
-         negotiable_price: false,
          form: {
             car_number: {
                region_id: "",
@@ -108,6 +117,7 @@ export default {
             },
             price: "",
             currency_id: 1,
+            is_negotiable: false,
             region_id: "",
             comment: ""
 
@@ -157,11 +167,17 @@ export default {
       }
    },
    methods: {},
-   mounded() {
+   mounted() {
       if (this.isEdit) {
-         this.form.category_id = this.announcement.category_id
-         this.form.brand_id = this.announcement.brand_id
-         this.form.title = this.announcement.title
+         this.form.car_number.region_id = this.announcement.car_number.split("-")[0]
+         this.form.car_number.first = this.announcement.car_number.split("-")[1].charAt(0)
+         this.form.car_number.second = this.announcement.car_number.split("-")[1].charAt(1) || ""
+         this.form.car_number.number = this.announcement.car_number.split("-")[2]
+         this.form.price = this.announcement.price_int
+         this.form.currency_id = this.announcement.currency
+         this.form.is_negotiable = this.announcement.is_negotiable
+         this.form.region_id = this.announcement.region.id
+         this.form.comment = this.announcement.comment
       }
    },
    watch: {
@@ -170,7 +186,7 @@ export default {
          if (this.$v.form.$error) return;
          const {region_id, first, second, number} = this.form.car_number;
          const car_number = `${region_id} -  ${first + second} - ${number}`
-         const body = {...this.form, price: this.negotiable_price ? null : this.form.price, car_number}
+         const body = {...this.form, price: this.form.is_negotiable ? null : this.form.price, car_number}
          this.$emit("getForm", body)
       }
    },
@@ -181,7 +197,11 @@ export default {
             first: {required},
             number: {required}
          },
-         price: {required},
+         price: {
+            required: requiredIf(function () {
+               return !this.form.is_negotiable
+            })
+         },
          region_id: {required},
       }
    }

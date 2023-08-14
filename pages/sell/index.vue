@@ -31,13 +31,15 @@
                   />
 
                   <car_form v-if="form.announce_type.title === 'cars'" :announcement="announcement" :isReady="isReady"
-                            @getForm="getCarForm($event)" @done="submitShow = $event" />
+                            @getForm="getCarForm($event)" @done="submitShow = $event"/>
                   <moto_form v-if="form.announce_type.title === 'moto'" :announcement="announcement" :isReady="isReady"
-                             @getForm="getMotoForm($event)" @done="submitShow = $event" />
-                  <part_form v-if="form.announce_type.title === 'parts'" @changeType="onChangePartType($event)"
-                             :isReady="isReady" @getForm="getPartForm($event)"/>
+                             @getForm="getMotoForm($event)" @done="submitShow = $event"/>
+                  <part_form v-if="form.announce_type.title === 'parts'" :announcement="announcement"
+                             @changeType="onChangePartType($event)"
+                             :isReady="isReady" @getForm="getPartForm($event)" @done="submitShow = $event"/>
                   <registration_mark v-if="form.announce_type.title === 'registration_marks'" :isReady="isReady"
                                      @getForm="getRegistrationMarksForm($event)"/>
+
                   <template v-if="submitShow">
                      <div class="contacts">
                         <h2>{{ $t("contact_information") }}</h2>
@@ -84,6 +86,50 @@
                            </nuxt-link>
                         </p>
                      </div>
+                     <div class="service_packages">
+                        <div :class="['package', 'standard_package', form.add_monetization === 0 ? 'selected': '' ]"
+                             @click="form.add_monetization = 0">
+                           <div class="title">
+                              <inline-svg class="stars_svg" :src="'/icons/stars.svg'"/>
+                              <p>{{ $t('standard_announce') }}</p>
+                           </div>
+                           <ul class="content">
+                              <li class="content_list" v-for="sp in servicePackages?.standard" :key="sp.id">
+                                 <inline-svg :class="sp.status ? 'active' : 'check_svg'"
+                                             :src="'/icons/filled_circled_check.svg'"/>
+                                 {{ sp.text }}
+                              </li>
+                           </ul>
+                           <div class="package_price">
+                              <p>{{ $t('free_for_30_days') }}</p>
+                           </div>
+                        </div>
+                        <div :class="['package', 'premium_package', form.add_monetization === 1 ? 'selected': '' ]"
+                             @click="form.add_monetization = 1">
+                           <div class="sale_effect">
+                              <p>x3</p>
+                              <span>daha <br> tez sat</span>
+                           </div>
+                           <div class="title">
+                              <inline-svg class="stars_svg" :src="'/icons/stars.svg'"/>
+                              <p>{{ $t('paid_announce') }}</p>
+
+                           </div>
+                           <ul class="content">
+                              <li class="content_list" v-for="sp in servicePackages?.premium" :key="sp.id">
+                                 <inline-svg :class="sp.status ? 'active' : 'check_svg'"
+                                             :src="'/icons/filled_circled_check.svg'"/>
+                                 {{ sp.text }}
+                              </li>
+                           </ul>
+                           <div class="package_price">
+                              <p><span>{{ $t('discount_message') }}</span>{{ $t('total_count_message') }}</p>
+                              <div class="badge">
+                                 <p>-40% {{ $t('cheap') }}</p>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
                      <modal-popup
                         :modal-class="'wider'"
                         :toggle="showRules"
@@ -96,8 +142,9 @@
 
                </form>
                <div class="vehicle_card_info" v-if="!isMobileBreakpoint">
-                  <template v-if="form.announce_type.title !== 'registration_marks'">
-                     <grid-item :announcement="announcement"/>
+                  <template v-if="form.announce_type.title !== 'registration_marks' && form.announce_type !== '' && announcement.image !== ''">
+                     <grid-item v-if="form.announce_type.title === 'cars' ||  form.announce_type.title === 'moto' || announcement.image"
+                                :announcement="announcement"/>
                      <div class="vehicle_card_info_description">
                         <p>{{ $t('announce_looks_like') }}</p>
                      </div>
@@ -134,7 +181,7 @@ import Car_form from "~/components/sell/car_form.vue";
 import Part_form from "~/components/sell/part_form.vue";
 import Registration_mark from "~/components/sell/registration_mark.vue";
 import Moto_form from "~/components/sell/moto_form.vue";
-import {required, email} from "vuelidate/lib/validators";
+import {required, email, requiredIf} from "vuelidate/lib/validators";
 import {PaymentMixin} from "~/mixins/payment";
 
 export default {
@@ -147,7 +194,7 @@ export default {
       Car_form, GridItem, PickOnMapButton, ImageComponent, GridRadio, ToggleGroup, FormNumericInput, FormRadio
    },
    computed: {
-      ...mapGetters(['staticPages']),
+      ...mapGetters(['staticPages', 'servicePackages']),
       getRulesPage() {
          return this.staticPages.find(page => page.id == 1);
       },
@@ -173,38 +220,39 @@ export default {
          },
          form: {
             announce_type: "",
-            moto_type: "",
-            commercial_vehicle_type: "",
-            brand: "",
-            model: "",
-            year: "",
-            body_type: "",
-            fuel_type: "",
-            autogas: "",
-            transmission: "",
-            gearing: "",
-            modification: "",
-            color: "",
-            mileage: 0,
-            mileage_type: "",
-            beaten: "",
-            customs_clearance: "",
-            guaranty: "",
-            region_id: "",
-            address: "",
-            lat: 0,
-            lng: 0,
-            tradeable: "",
-            credit: "",
-            car_number: "",
-            show_car_number: "",
-            vin: "",
-            show_vin: "",
-            comment: "",
-            saved_images: [],
-            name: "",
-            email: "",
-            phone: ""
+            // moto_type: "",
+            // commercial_vehicle_type: "",
+            // brand: "",
+            // model: "",
+            // year: "",
+            // body_type: "",
+            // fuel_type: "",
+            // autogas: "",
+            // transmission: "",
+            // gearing: "",
+            // modification: "",
+            // color: "",
+            // mileage: 0,
+            // mileage_type: "",
+            // beaten: "",
+            // customs_clearance: "",
+            // guaranty: "",
+            // region_id: "",
+            // address: "",
+            // lat: 0,
+            // lng: 0,
+            // tradeable: "",
+            // credit: "",
+            // car_number: "",
+            // show_car_number: "",
+            // vin: "",
+            // show_vin: "",
+            // comment: "",
+            // saved_images: [],
+            // name: "",
+            // email: "",
+            // phone: "",
+            add_monetization: 0
          },
          authForm: {
             name: "",
@@ -215,6 +263,9 @@ export default {
          authStep: ""
       };
       // {"end_date":"","auction":1,"country_id":null,"car_catalog_id":46273,"brand":"bmw","model":"5-series","generation_id":4782,"car_body_type":2,"gearing":"1","modification":"2","transmission":"1","capacity":"","power":"","year":2006,"youtube":{"id":"","thumb":""},"selectedColor":[23],"is_matte":false,"mileage":287000,"mileage_measure":1,"region_id":1,"address":"","lat":0,"lng":0,"vin":"","price":20000,"owner_type":0,"currency":1,"car_number":"77 - BZ - 351","show_car_number":1,"show_vin":0,"part":{},"all_options":{"camera":true,"usb":true,"luke":true,"abs":true,"headlights":1,"c_locking":true},"comment":"test test","autogas":false,"is_new":false,"beaten":false,"customs_clearance":false,"tradeable":false,"credit":false,"guaranty":false,"saved_images":[1512580,1512581,1512582,1512583],"btl_cookie":"","is_autosalon":false}
+   },
+   async asyncData({store}) {
+      await store.dispatch('getServicePackages')
    },
    methods: {
       ...mapActions(['carsPost', 'motoPost', 'partsPost', 'plateNumbersPost', 'updatePaidStatus']),
@@ -240,7 +291,23 @@ export default {
       },
       async getCarForm(form) {
          try {
-            await this.carsPost(form);
+            const newForm = {...form, add_monetization: this.form.add_monetization};
+            const formData = new FormData()
+            formData.append('data', JSON.stringify(newForm))
+            const res = await this.carsPost(formData);
+
+            if (res?.redirect_url) {
+               this.handlePayment(res, false, this.$t('car_added'), 'v2')
+            } else {
+               this.$router.push(this.$localePath('/profile/announcements'), () => {
+                  this.updatePaidStatus({
+                     type: 'success',
+                     text: this.$t('announcement_paid'),
+                     title: this.$t('success_payment')
+                  });
+
+               });
+            }
          } catch (e) {
          }
       },
@@ -271,14 +338,17 @@ export default {
       },
       async getPartForm(form) {
          try {
-            await this.partsPost(form);
+            const formData = new FormData()
+            formData.append('data', JSON.stringify(form))
+            await this.partsPost(formData);
+            this.$router.push(this.$localePath('/profile/announcements'))
          } catch (e) {
          }
       },
 
       onClick() {
          this.$v.authForm.$touch()
-         // if (this.$v.authForm.$error) return;
+         if (this.$v.authForm.$error) return;
          if (this.authStep === "loggedIn") {
             this.isReady = !this.isReady
          } else if (this.authStep === "notLoggedIn") {
@@ -311,6 +381,7 @@ export default {
             this.$auth.setUser(data.user.original)
             await this.$auth.setUserToken(data.meta.token)
             this.authStep = 'loggedIn'
+            this.isReady = !this.isReady
             this.$v.authForm.$reset()
          } catch (e) {
          }
@@ -320,6 +391,7 @@ export default {
       if (Object.values(this.user).length) {
          this.authForm.name = this.user.full_name
          this.authForm.email = this.user.email
+         this.authForm.phone = this.user.phone
       }
       Object.values(this.user).length ? this.authStep = "loggedIn" : this.authStep = "notLoggedIn"
       this.$nuxt.$on("get-main-image", this.getMainImage)
@@ -331,7 +403,7 @@ export default {
          this.submitShow = false
          switch (this.form.announce_type.title) {
             case "cars":
-               return this.announcement.image = "/img/car.svg"
+               return this.announcement.image = "/img/car_default.svg"
             case "moto":
                return this.announcement.image = "/img/motorbike.svg"
             case "registration_marks":
@@ -346,7 +418,11 @@ export default {
             email, required
          },
          phone: {required},
-         code: {required}
+         code: {
+            required: requiredIf(function () {
+               return !(this.authStep === "loggedIn" || this.authStep === "notLoggedIn")
+            })
+         }
       }
    }
 };
@@ -365,7 +441,7 @@ export default {
       .card {
          flex-grow: 3;
          display: flex;
-         gap: 68px;
+         gap: 36px;
 
          .add_announce_form {
             display: flex;
@@ -436,6 +512,135 @@ export default {
                }
             }
 
+            .service_packages {
+               display: flex;
+               gap: 16px;
+
+               .package {
+                  position: relative;
+                  flex-grow: 1;
+                  display: flex;
+                  flex-direction: column;
+                  gap: 16px;
+                  padding: 20px 16px;
+                  border: 1px solid #CDD5DF;
+                  border-radius: 12px;
+                  overflow: hidden;
+                  cursor: pointer;
+
+                  .title {
+
+                     display: flex;
+                     align-items: center;
+                     gap: 8px;
+                     padding-bottom: 20px;
+                     border-bottom: 1px solid #CDD5DF;
+
+
+                     p {
+                        font-size: 16px;
+                        font-weight: 700;
+                     }
+
+                     .stars_svg {
+                        width: 24px;
+                        height: 24px;
+                        color: #0A77E8;
+                     }
+                  }
+
+                  .sale_effect {
+                     width: 100%;
+                     position: absolute;
+                     top: 14px;
+                     left: 74px;
+                     background-color: #D1E0FF;
+                     display: flex;
+                     align-items: center;
+                     gap: 2px;
+                     justify-content: center;
+                     transform: rotate(45deg);
+                     padding: 2px 0;
+
+                     p {
+                        font-size: 17px;
+                        font-weight: 600;
+                     }
+
+                     span {
+                        line-height: 13px;
+                        font-size: 11px;
+                        font-weight: 600;
+                     }
+                  }
+
+                  .content {
+
+                     &_list {
+                        padding: 20px 0;
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+
+                        .check_svg {
+                           color: #CDD5DF;
+
+                        }
+
+                        .active {
+                           color: #12B76A;
+                        }
+                     }
+                  }
+
+                  .package_price {
+                     position: relative;
+                     padding: 4px 8px;
+                     height: 56px;
+                     margin-top: auto;
+                     display: flex;
+                     justify-content: center;
+                     align-items: center;
+                     border-radius: 8px;
+                     background-color: #D1E0FF;
+                     font-size: 15px;
+                     font-weight: 700;
+                     text-align: center;
+
+                     span {
+                        display: block;
+                        font-size: 11px;
+                        font-weight: 500;
+                     }
+
+                     .badge {
+                        position: absolute;
+                        top: -21px;
+                        right: 8px;
+                        background-color: #F81734;
+                        padding: 4px 6px;
+                        border-radius: 6px;
+                        color: #fff;
+                        font-size: 13px;
+                        font-weight: 600;
+                     }
+                  }
+
+                  &.selected {
+                     border-color: #004EEB;
+
+                     .package_price {
+                        background-color: #004EEB;
+                        color: #fff;
+                     }
+
+                     .sale_effect {
+                        background-color: #004EEB;
+                        color: #fff;
+                     }
+                  }
+               }
+            }
          }
 
          .vehicle_card_info {
