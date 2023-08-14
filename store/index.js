@@ -498,6 +498,11 @@ export const actions = {
       commit("mutate", { property: "autosalonAnnouncementsId", value: res });
    },
 
+   async fetchPartsAnnouncementsId({ commit }, id) {
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/parts/announcements/${id}`);
+      commit("mutate", { property: "autosalonAnnouncementsId", value: res });
+   },
+
    async fetchMonetizedCars({ commit }) {
       const res = await this.$axios.$get('https://v2dev.mashin.al/api/v2/car/monetized-cars');
       commit("mutate", { property: "monetizedCars", value: res });
@@ -1264,6 +1269,11 @@ export const actions = {
 
    async getAnnouncementInner({commit}, id) {
       const res = await this.$axios.$get(`/announce/${id}`);
+      commit("mutate", {property: "announcement", value: res});
+   },
+
+   async getPartsInnerV2({commit}, id) {
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/parts/${id}`);
       commit("mutate", {property: "announcement", value: res});
    },
 

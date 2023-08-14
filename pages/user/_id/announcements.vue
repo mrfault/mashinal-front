@@ -19,6 +19,7 @@
                <grid
                   v-if="userAnnouncements.length"
                   :announcements="userAnnouncements"
+                  :has-container="false"
                   escape-duplicates
                />
 
