@@ -43,16 +43,16 @@
             }
          }
 
-         a.active{
+         a.exact-active{
             color: #081A3E;
          }
 
-         a.active svg path{
+         a.exact-active svg path{
             fill: #081A3E;
             stroke: #081A3E;
          }
 
-         a.active span{
+         a.exact-active span{
             color: #081A3E;
          }
       }
@@ -109,16 +109,16 @@
 
       ul {
          li{
-            a.active{
+            a.exact-active{
                color: #fff;
             }
 
-            a.active svg path{
+            a.exact-active svg path{
                fill: #fff;
                stroke: #fff;
             }
 
-            a.active span{
+            a.exact-active span{
                color: #fff;
             }
          }
