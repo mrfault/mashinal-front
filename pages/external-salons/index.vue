@@ -153,26 +153,7 @@
 </script>
 
 <style lang="scss">
-   .pages-salons,
-   .pages-parts-shops {
-      .form-group {
-         .text-input {
-            input {
-               height: 56px !important;
-               border: none;
-               padding: 16px;
-            }
 
-            i {
-               right: 16px;
-
-               &:before {
-                  font-size: 16px;
-               }
-            }
-         }
-      }
-   }
 
    .salon-count {
       padding-left: 25px;
@@ -195,32 +176,5 @@
       transform: translateZ(0);
    }
 
-   .dark-mode {
-      .pages-salons,
-      .pages-parts-shops {
-         .form-group {
-            .text-input {
-               input {
-                  background-color: #1B2434 !important;
 
-                  &::placeholder {
-                     color: #CDD5DF;
-                  }
-               }
-            }
-         }
-      }
-
-      .text-with-line {
-         background-color: #1C1C1EFF;
-
-         h2.title-with-line {
-            background: #1c1c1e;
-
-            span {
-               background: #1c1c1e;
-            }
-         }
-      }
-   }
 </style>

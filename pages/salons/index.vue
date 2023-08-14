@@ -14,7 +14,6 @@
                   </template>
                </Banner>
 
-               <pre>{{  }}</pre>
                <salon-filters-form
                   v-show="searchFormType === 0"
                   @filter="showSearch = false"
