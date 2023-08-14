@@ -1781,6 +1781,7 @@ export default {
    show_number: "Показать номер",
    show_on_map: "Показать на карте",
    show_on_site: "Показать на сайте",
+   show_on_list: "Показать в списке",
    show_report: "Показать отчет",
    show_vin_on_site: "Показать VIN номер на сайте",
    showing_stores_with_admin_rights:
