@@ -344,7 +344,7 @@
                   this.$store.dispatch('fetchRegistrationMarks', `?page=1&${query.toString()}`);
                }, 300);
 
-               // this.page = 1;
+               this.page = 1;
             }
          },
       },
