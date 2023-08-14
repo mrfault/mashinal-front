@@ -4,11 +4,10 @@
    position: fixed;
    left: 0;
    bottom: 0;
-   z-index: 10;
    background-image: url("/nav/light.svg");
    background-repeat: no-repeat;
    background-position: center center;
-
+   z-index: 3;
    ul{
       width: 100%;
       padding: 0;
@@ -43,16 +42,16 @@
             }
          }
 
-         a.active{
+         a.exact-active{
             color: #081A3E;
          }
 
-         a.active svg path{
+         a.exact-active svg path{
             fill: #081A3E;
             stroke: #081A3E;
          }
 
-         a.active span{
+         a.exact-active span{
             color: #081A3E;
          }
       }
@@ -109,16 +108,16 @@
 
       ul {
          li{
-            a.active{
+            a.exact-active{
                color: #fff;
             }
 
-            a.active svg path{
+            a.exact-active svg path{
                fill: #fff;
                stroke: #fff;
             }
 
-            a.active span{
+            a.exact-active span{
                color: #fff;
             }
          }

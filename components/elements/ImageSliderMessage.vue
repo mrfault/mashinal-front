@@ -12,7 +12,7 @@
       <div class="container wider">
          <div :class="['row', { 'has-sidebar': hasSidebar }]" @click.stop>
             <div class="col-auto">
-               <button id="slider-prev" class="btn" @click.stop="thumbsPrev" v-if="slides.main.length > 6">
+               <button id="slider-prev" class="btn slider-prev" @click.stop="thumbsPrev" v-if="slides.main.length > 6">
                   <icon name="chevron-up"/>
                </button>
                <div class="swiper-container" v-swiper:thumbsSwiper="thumbOps" ref="thumbsSwiper">
@@ -22,7 +22,7 @@
                      </div>
                   </div>
                </div>
-               <button id="slider-next" class="btn" @click.stop="thumbsNext" v-if="slides.main.length > 6">
+               <button id="slider-next" class="btn slider-next" @click.stop="thumbsNext" v-if="slides.main.length > 6">
                   <icon name="chevron-down"/>
                </button>
             </div>
@@ -104,7 +104,7 @@ export default {
             initialSlide: this.currentSlide,
             direction: 'vertical',
             slidesPerView: 'auto',
-            spaceBetween: 20,
+            spaceBetween: 10,
             keyboard: {
                enabled: true,
                pageUpDown: true,
@@ -284,11 +284,74 @@ export default {
 .col-auto:first-child  .swiper-slide{
    height: max-content;
 }
+.col-auto:first-child  .swiper-container{
+   padding-right: 2px;
+}
 .col-auto:last-child{
    width: 90%;
 }
 
 .images-slider .swiper-slide{
    height: 70vh;
+}
+
+.slider-next,
+.slider-prev{
+   width: 99%;
+   padding: 0;
+   margin: 0;
+   height: max-content;
+   padding: 5px 0;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+.slider-next{
+   margin-top: 10px;
+}
+.slider-prev{
+   margin-bottom: 10px;
+}
+.slider-prev i{
+   margin: 0;
+}
+.images-slider .swiper-wrapper {
+   max-height: 513px !important;
+}
+.swiper-slide.thump img {
+   width: 100%;
+}
+.swiper-slide.thump.swiper-slide-thumb-active{
+   border: 1px solid #000;
+}
+
+@media (max-height: 700px) {
+   .images-slider .swiper-wrapper {
+      max-height: 424px !important;
+   }
+}
+
+@media (max-height: 600px) {
+   .images-slider .swiper-wrapper {
+      max-height: 336px !important;
+   }
+}
+
+@media (max-height: 500px) {
+   .images-slider .swiper-wrapper {
+      max-height: 248px !important;
+   }
+}
+
+@media (max-height: 400px) {
+   .images-slider .swiper-wrapper {
+      max-height: 160px !important;
+   }
+}
+
+@media (max-height: 300px) {
+   .images-slider .swiper-wrapper {
+      max-height: 72px !important;
+   }
 }
 </style>

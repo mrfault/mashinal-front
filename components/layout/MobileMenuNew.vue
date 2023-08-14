@@ -45,7 +45,7 @@
                <div class="menu-sidebar-new-action-bar">
                   <div class="menu-sidebar-new-action-bar-left"></div>
                   <div class="menu-sidebar-new-action-bar-center">
-                     <span>Menyu</span>
+                     <span>{{$t('menu')}}</span>
                   </div>
                   <div class="menu-sidebar-new-action-bar-right" @click="toggleSidebarMenu(false)">
                      <inline-svg :src="'/icons/close-nav.svg'"/>
@@ -92,6 +92,9 @@ export default {
       return {
          showSidebar: false
       }
+   },
+   created() {
+      this.$root.$refs.MobileMenuNew = this;
    },
    methods: {
       ...mapActions(['changeLocale']),
