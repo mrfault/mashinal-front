@@ -224,7 +224,7 @@ export default {
    }
 }
 </script>
-<style>
+<style lang="scss" scoped>
 .interior-btn {
    display: flex;
    align-items: center;
@@ -261,11 +261,34 @@ export default {
    align-items: center;
    justify-content: center;
 }
+.blur-bg img{
+   display: none;
+}
 .images-slider .toolbar{
    z-index: 99999;
    position: fixed;
+   display: flex;
+   justify-content: space-between;
+   padding: 0 15px;
+}
+.images-slider .slider-overlay_middle{
+   margin: auto 0px;
 }
 .layout.wider, .container.wider{
    z-index: 0;
+}
+.col-auto:first-child{
+   width: 10%;
+}
+
+.col-auto:first-child  .swiper-slide{
+   height: max-content;
+}
+.col-auto:last-child{
+   width: 90%;
+}
+
+.images-slider .swiper-slide{
+   height: 70vh;
 }
 </style>
