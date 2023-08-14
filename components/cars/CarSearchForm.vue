@@ -1007,7 +1007,8 @@
 
       async fetch() {
          await Promise.all([
-            this.$store.dispatch('getColors')
+            this.$store.dispatch('getColors'),
+            this.$store.dispatch('getAllOtherOptions', '2'),
          ])
       },
 

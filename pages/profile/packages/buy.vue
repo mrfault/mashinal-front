@@ -455,7 +455,6 @@
          height: 60px!important;
          padding: 14px 16px 14px 16px;
          border-radius: 8px;
-         gap: 8px;
          font-size: 16px;
          font-weight: 500;
          line-height: 20px;

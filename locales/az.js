@@ -1780,6 +1780,7 @@ export default {
    shop_name: "Mağazanın adı",
    shop_other_announcements: "Mağazanın digər elanları",
    shops: "Mağazalar",
+   shops_announcements: "Mağaza elanları",
    short_information: "Qısa təsvir",
    short_number: "Qısa nömrə",
    show: "Göstər",
