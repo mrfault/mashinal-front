@@ -2719,7 +2719,7 @@ export default {
    "menu_salons_desc": "Официальный представитель и другие автосалоны",
    "menu_shops": "Магазины",
    "menu_shops_desc": "Магазины запчастей",
-   "menu_messages": "Обмен сообщениями",
+   "menu_messages": "Сообщения",
    "menu_messages_desc": "Отправить сообщение продавцам",
    "menu_comparisons": "Сравнения",
    "menu_comparisons_desc": "Сравните автомобили, добавив их в сравнения",

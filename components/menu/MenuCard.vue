@@ -1,5 +1,5 @@
 <template>
-   <nuxt-link class="ma-garage-card" :to="item.disabled ? '#' : $localePath(item.url)">
+   <nuxt-link class="ma-garage-card" :to="$localePath(item.url)" v-if="!item.disabled">
       <div class="ma-garage-card__body" v-if="true">
          <div class="ma-garage-card--image">
             <img :src="`${item.image}`" v-if="item.auth === true" alt="">
@@ -11,6 +11,18 @@
          <p class="ma-garage-card__description">{{ $t(item.description) }}</p>
       </div>
    </nuxt-link>
+   <a :href="item.url" class="ma-garage-card" v-else-if="item.disabled && item.title === 'menu_call_center'">
+      <div class="ma-garage-card__body" v-if="true">
+         <div class="ma-garage-card--image">
+            <img :src="`${item.image}`" v-if="item.auth === true" alt="">
+            <img :src="`/menu/${item.image}`" v-else alt="">
+         </div>
+         <h5 class="ma-garage-card__title" v-if="item.auth === true">{{ item.title }}</h5>
+         <h5 class="ma-garage-card__title" v-else>{{ $t(item.title) }}</h5>
+
+         <p class="ma-garage-card__description">{{ $t(item.description) }}</p>
+      </div>
+   </a>
 </template>
 
 <script>
