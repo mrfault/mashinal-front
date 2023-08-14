@@ -2,7 +2,7 @@
    <div class="mobile-nav-new d-lg-none">
       <ul>
          <li v-for="menu in bottomMenus.filter(item => !item.hide)" :key="menu.title">
-            <nuxt-link :to="$localePath(menu.route)" :active-class="''" :exact-active-clas="'active'">
+            <nuxt-link :to="$localePath(menu.route)" @click="" :active-class="''" :exact-active-clas="'active'">
                <inline-svg :src="menu.icon" />
                <span>{{ $t(menu.title) }}</span>
             </nuxt-link>
@@ -20,6 +20,11 @@ export default {
 
    computed: {
       ...mapGetters(['countNewMessages'])
+   },
+   methods: {
+      toggleSidebarMenu() {
+         this.$root?.$refs?.MobileMenuNew?.toggleSidebarMenu(false);
+      }
    }
 }
 </script>

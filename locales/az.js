@@ -2759,6 +2759,7 @@ export default {
    "dark_mode": "Qaranlıq rejim",
    "notification_status": "Bildirişləri aktiv et",
    "select_language": "Dil seçimi",
+   "menu": "Menyu",
    "menu_login": "Giriş",
    "menu_login_desc": "Hesaba daxil ol",
    "menu_external_salon": "Sifarişlə avto",
