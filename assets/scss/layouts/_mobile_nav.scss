@@ -4,11 +4,10 @@
    position: fixed;
    left: 0;
    bottom: 0;
-   z-index: 10;
    background-image: url("/nav/light.svg");
    background-repeat: no-repeat;
    background-position: center center;
-
+   z-index: 3;
    ul{
       width: 100%;
       padding: 0;
