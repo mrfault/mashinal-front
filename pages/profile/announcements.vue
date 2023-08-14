@@ -27,10 +27,15 @@
             </div>
          </div>
          <div class="ma-announcements__body">
-            <h4 class="ma-subtitle--lg">{{ $t('my_vehicle_announcements') }}</h4>
+            <h4 v-if="!loading" class="ma-subtitle--lg">{{ $t('my_vehicle_announcements') }}</h4>
             <div id="announcementsContainer" :class="{'overflow-x-hidden': !myAnnouncements.length}"
                  class="ma-announcements__body--row" @mousedown.prevent="startDragging">
-               <div v-if="myAnnouncements.length" class="ma-announcements__body--row__inner">
+               <!--                                loading-->
+               <div v-if="loading">
+                  <loader/>
+               </div>
+               <div v-else-if="!loading && myAnnouncements && myAnnouncements.length"
+                    class="ma-announcements__body--row__inner">
                   <template v-for="(announcement,index) in myAnnouncements">
                      <div
                         v-if="activeTab == null || activeTab == announcement.status"
@@ -39,6 +44,7 @@
                         <grid-item
                            :key="announcement.id_unique +  '_' + index"
                            :announcement="announcement"
+                           :isLastChild="index === myAnnouncements.length - 1"
                            clickable
                            isProfilePage
                            show-monetization-actions
@@ -46,29 +52,29 @@
                            show-phone-count
                            show-status
                            track-views
-
                         />
                      </div>
                   </template>
                </div>
-
-               <no-results
-                  v-if="myAnnouncements.length === 0 || (activeTab !== null && !myAnnouncements.some(item => activeTab === item.status))"
-                  :type="$route.query.type == 2 ? 'part' : 'car'"
-                  :url="'/new-icons/no-car.svg'"
-                  darker
-               >
-                  <!--                  :text="statusReady !== '' ? '' : $t('add_an_ad_and_thousands_of_potential_buyers_will_see_it')"-->
-                  <!--                  <nuxt-link v-if="statusReady === ''" :to="$localePath('/sell')" class="btn btn&#45;&#45;green mt-2 mt-lg-3"-->
-                  <!--                             v-html="$t('to_sell')"/>-->
-               </no-results>
+               <template v-else>
+                  <no-results
+                     v-if="myAnnouncements.length === 0 || (activeTab !== null && !myAnnouncements.some(item => activeTab === item.status))"
+                     :type="$route.query.type == 2 ? 'part' : 'car'"
+                     :url="'/new-icons/no-car.svg'"
+                     darker
+                  >
+                  </no-results>
+               </template>
             </div>
 
             <!--            number plates-->
-            <h4 class="ma-subtitle--lg">{{ $t('my_car_number_announcements') }}</h4>
+            <h4 v-if="!loading" class="ma-subtitle--lg">{{ $t('my_car_number_announcements') }}</h4>
             <div id="platesContainer" :class="{'overflow-x-hidden': !allMyPlates.length}"
                  class="ma-announcements__body--row" @mousedown.prevent="startDragging">
-               <div v-if="allMyPlates.length" class="ma-announcements__body--row__inner">
+               <div v-if="loading" style="height: 420px !important;width:100%; display: flex;justify-content: center;">
+                  <loader/>
+               </div>
+               <div v-else-if="allMyPlates.length" class="ma-announcements__body--row__inner">
                   <template v-for="(item,index) in allMyPlates">
                      <div
                         v-if="activeTab == null || activeTab == item.status"
@@ -83,16 +89,18 @@
                   </template>
 
                </div>
-               <no-results
-                  v-if="
+               <div v-else>
+                  <no-results
+                     v-if="
                      allMyPlates.length === 0 ||
                      (activeTab !== null && !allMyPlates.some(item => activeTab === item.status))"
-                  :template="'new-img'"
-                  :text="$t('empty_plates')"
-                  :url="'/img/empty_plates.png'"
-                  :urlDarkMode="'/img/empty_plates_dark-mode.png'"
-                  darker
-               ></no-results>
+                     :template="'new-img'"
+                     :text="$t('empty_plates')"
+                     :url="'/img/empty_plates.png'"
+                     :urlDarkMode="'/img/empty_plates_dark-mode.png'"
+                     darker
+                  ></no-results>
+               </div>
             </div>
          </div>
       </div>
@@ -118,6 +126,7 @@ export default {
    data() {
       return {
          activeTab: null,
+         loading: false,
          announceItems: [
             {
                id: null,
@@ -140,7 +149,7 @@ export default {
                link: "/",
             },
             {
-               id: 0,
+               id: 7,
                title: 'timed_out',
                link: "/",
             },
@@ -202,18 +211,23 @@ export default {
          this.scrollTo('.pages-annoucements', [-15, -20]);
       },
 
-      changeTab(item) {
+      async changeTab(item) {
+         this.loading = true;
          this.activeTab = item.id;
-         this.getMyAllAnnouncements({status: item.id});
-         this.getMyPlates({status: item.id});
+         await this.getMyAllAnnouncements({status: item.id});
+         await this.getMyPlates({status: item.id});
+         this.loading = false;
       },
 
       async changePage(page = 1) {
+         this.loading = true;
          this.pending = true;
          await this.getMyAllAnnouncements({status: this.activeTab});
          this.statusReady = this.form.status;
          this.pending = false;
          this.scrollTo('.announcements-grid.paginated', [-15, -20]);
+         this.loading = false;
+
       },
       isValid(status) {
          return [0, 1, 2, 3].includes(status);
@@ -451,6 +465,14 @@ export default {
 
    }
 
+}
+
+
+.ma-announcements__body--row__inner, .ma-announcements__body--row__inner--item-plate {
+   .stratch-child-block {
+      height: 100% !important;
+      min-height: auto !important;
+   }
 }
 </style>
 

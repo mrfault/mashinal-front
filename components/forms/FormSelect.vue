@@ -511,9 +511,7 @@ export default {
          return value.key !== undefined ? value.key : value
       },
       getOptionName(option) {
-         return `${
-            this.$translateHard(option.name?.[this.locale]) ||
-            (this.translateOptions
+         return `${this.$translateHard(option.name?.[this.locale]) || (this.translateOptions
                ? this.$t(option.name)
                : this.$translateHard(option.name))
          }${this.suffix ? ' ' + this.suffix : ''}`

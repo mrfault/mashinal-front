@@ -24,6 +24,7 @@ export default {
 
 <style lang="scss">
    .banner {
+      margin-top: 32px;
       position: relative;
       width: 100%;
       height: 280px;
@@ -65,9 +66,9 @@ export default {
                   opacity: 0.9;
                }
 
-               span,i {
-                  margin-top: 3px;
-               }
+               //span, i {
+               //   margin-top: 3px;
+               //}
             }
          }
       }
@@ -89,6 +90,7 @@ export default {
 
    @media (max-width: 600px) {
       .banner {
+         margin-top: 0;
          width: 110%;
          height: 240px;
          margin: 0 -15px;

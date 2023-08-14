@@ -4,11 +4,8 @@
          <ul>
             <li v-for="menu in bottomMenus.filter(item => !item.hide)" :key="menu.title">
                <nuxt-link :to="$localePath(menu.route)" :class="{'pseudo-active': isPseudoActive(menu)}">
-<!--                  <icon :name="menu.icon" />-->
                   <inline-svg :src="menu.icon" />
-
                   <span>{{ $t(menu.title) }}</span>
-
                   <span v-if="menu.title === 'messages' && countNewMessages > 0" class="badge-counter">
                      {{ countNewMessages }}
                   </span>
@@ -20,8 +17,8 @@
 </template>
 
 <script>
-   import { MenusDataMixin } from '~/mixins/menus-data';
    import { mapGetters } from 'vuex';
+   import { MenusDataMixin } from '~/mixins/menus-data';
 
    export default {
       mixins: [MenusDataMixin],

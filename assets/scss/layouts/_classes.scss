@@ -1,3 +1,9 @@
+@media (max-width: 576px) {
+   .w-md-100 {
+      width: 100% !important;
+   }
+}
+
 .mb40 {
    margin-bottom: 40px !important;
 }
@@ -152,6 +158,10 @@ hr {
 
 .bg-white {
    background-color: #FFFFFF;
+}
+
+.bg-silver {
+   background-color: #f3f7fc;
 }
 
 .h-52 {
@@ -482,4 +492,8 @@ hr {
 
 .overflow-visible{
    overflow: visible !important;
+}
+
+.justify-csb{
+   justify-content: space-between;
 }

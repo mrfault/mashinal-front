@@ -43,9 +43,9 @@
 
          <grid
             class="mt-2"
-            v-if="monetizedCars.length"
+            v-if="monetizedCars?.length"
             :announcements="monetizedCars"
-            :numberOfAds="monetizedCars.length"
+            :numberOfAds="monetizedCars?.length"
             :hasContainer="false"
             escape-duplicates
          >
@@ -59,41 +59,46 @@
          </grid>
 
 <!--         <template v-if="!$route.query.saved">-->
-            <grid
-               v-if="carsAnnouncements.meta.total > 0"
-               :announcements="carsAnnouncements.data"
-               :paginate="$paginate(carsAnnouncements)"
-               :hasContainer="false"
-               :numberOfAds="carsAnnouncements.total"
-               :pending="pending"
-               @change-page="searchCars"
-               escape-duplicates
-            >
-               <template #cap>
-                  <Cap :className="'mb40'">
-                     <template #left>
-                        <h3 v-if="getCarDetails && getCarDetails.brand">
-                           {{ getCarDetails && getCarDetails.brand }}
-                           {{ getCarDetails && getCarDetails.model }}
-                           {{ getCarDetails && getCarDetails.generation && getCarDetails.generation[locale] }}
-                        </h3>
-                     </template>
+         <grid
+            v-if="carsAnnouncements?.meta?.total > 0"
+            :announcements="carsAnnouncements?.data"
+            :paginate="$paginate(carsAnnouncements)"
+            :hasContainer="false"
+            :numberOfAds="carsAnnouncements?.total"
+            :pending="pending"
+            @change-page="searchCars"
+            escape-duplicates
+         >
+            <template #cap>
+               <Cap :className="'mb40'">
+                  <template #left>
+                     <h3 v-if="getCarDetails && getCarDetails.brand">
+                        {{ getCarDetails && getCarDetails.brand }}
+                        {{ getCarDetails && getCarDetails.model }}
+                        {{ getCarDetails && getCarDetails.generation && getCarDetails.generation[locale] }}
+                     </h3>
 
-                     <template #right>
-                        <form-select
-                           :label="$t('sorting_2')"
-                           :options="sortItems"
-                           :clearPlaceholder="true"
-                           :clear-option="false"
-                           :allowClear="false"
-                           v-model="sorting"
-                        />
-                     </template>
-                  </Cap>
-               </template>
-            </grid>
+                     <h3 v-else>{{ $t('announcements') }}</h3>
+                  </template>
 
-            <no-results v-else />
+                  <template #right>
+                     <form-select
+                        :label="$t('sorting_2')"
+                        :options="sortItems"
+                        :clearPlaceholder="true"
+                        :clear-option="false"
+                        :allowClear="false"
+                        v-model="sorting"
+                     />
+                  </template>
+               </Cap>
+            </template>
+         </grid>
+
+         <no-results
+            :type="'car'"
+            v-else
+         />
 <!--         </template>-->
 
          <HandleIds :items="carsAnnouncements.data" />
@@ -164,8 +169,14 @@
          }
          let page = route.query.page || 1;
          let searchParams = { url: '/car', prefix: 'cars' }
-         if (!store.state.carsAnnouncements.total)
-            await store.dispatch('getGridSearch', {...searchParams, post, page})
+         if (!store.state.carsAnnouncements.total) await store.dispatch('getGridSearch', {...searchParams, post, page})
+
+         console.log('post', post)
+         // if (route.query.monetized) {
+         //    store.dispatch('fetchMonetizedAnnouncementsHome');
+         //    console.log('1')
+         // } else {
+         //    console.log('2')
 
             await Promise.all([
                store.dispatch('getBrandsOnlyExists'),
@@ -174,7 +185,7 @@
                store.dispatch('fetchBrandsList'),
                store.dispatch('getMotoOptions'),
                store.dispatch('getPopularOptions'),
-               // store.dispatch('fetchMonetizedCarsSearch'),
+               store.dispatch('fetchMonetizedCarsSearch', post),
                // store.dispatch('fetchMonetizedCars'),
 
                // get model options for brands
@@ -196,6 +207,7 @@
                      })
                   }),
             ]);
+         // }
 
          if ($auth.loggedIn) {
             await store.dispatch('fetchSavedSearch', {
@@ -261,12 +273,16 @@
          },
 
          getCarDetails() {
-            const carInfo = JSON.parse(this.$route.query.car_filter);
+            let carInfo;
 
-            for (let i = 0; i < this.brandsList.length; i++) {
-               if (this.brandsList[i].id === carInfo.additional_brands[0].brand) {
+            if (this.$route?.query?.car_filter) {
+               carInfo = JSON.parse(this.$route?.query?.car_filter);
+            }
+
+            for (let i = 0; i < this.brandsList?.length; i++) {
+               if (this.brandsList[i]?.id === carInfo?.additional_brands[0]?.brand) {
                   return {
-                     brand: this.brandsList[i].name,
+                     brand: this.brandsList[i]?.name,
                      model: carInfo?.additional_brands[0]?.model_name,
                      generation: carInfo?.additional_brands[0]?.generation_name
                   }
@@ -299,7 +315,7 @@
             return [
                {name: this.$t('all2'), key: zeroFirst ? 0 : 1},
                {name: this.$t('new'), key: zeroFirst ? 1 : 2},
-               {name: this.$t('S_H'), key: zeroFirst ? 2 : 3}
+               {name: this.$t('with_mileage_2'), key: zeroFirst ? 2 : 3}
                // {name: this.$t(this.meta.type === 'parts' ? 'S_H' : 'with_mileage'), key: zeroFirst ? 2 : 3}
             ];
          },
@@ -321,8 +337,6 @@
 
 <style lang="scss">
    .pages-cars-index {
-      margin-top: 32px;
-
       &__title {
          font-weight: 600;
          font-size: 32px;

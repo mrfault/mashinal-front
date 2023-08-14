@@ -1,8 +1,8 @@
 <template>
    <div class="form-gallery-new">
-      <div class="row">
+      <div class="row full-width p-0 m-0">
          <div class="col-md-12">
-            <h2 class="form-gallery-new-title">Digər fotoları yüklə</h2>
+            <h2 class="form-gallery-new-title">{{$t('upload_other_photos')}}</h2>
          </div>
          <div class="col-md-12">
             <div :class="itemClass" v-if="files.length < this.maxFiles">
@@ -25,7 +25,9 @@
          <div class="col-md-12">
             <draggable v-model="files" class="row" draggable=".draggable">
                <div class="col-md-6 draggable" v-for="file in files" :key="file.key" :class="itemClass">
-                  <loader v-if="file.loading" />
+                  <div class="form-gallery-new-item loader-data" v-if="file.loading">
+                     <loader />
+                  </div>
                   <template v-else>
                      <div class="form-gallery-new-item">
                         <div class="form-gallery-new-item-image">
@@ -35,9 +37,14 @@
                            <button class="form-gallery-new-item-remove" @click.stop="deleteFile(file.key)">
                               <inline-svg src="/icons/delete.svg"/>
                            </button>
-                           <button class="form-gallery-new-item-rotate" v-if="rotatable" @click.prevent="rotateFile(file.key)">
-                              <inline-svg src="/icons/reset.svg"  size="20"/>
-                           </button>
+                           <div>
+                              <button class="form-gallery-new-item-rotate" v-if="rotatable" @click.prevent="rotateFile(file.key, 'left')">
+                                 <inline-svg src="/icons/left-rotate.svg"  size="20"/>
+                              </button>
+                              <button class="form-gallery-new-item-rotate mirror-icon" v-if="rotatable" @click.prevent="rotateFile(file.key, 'right')">
+                                 <inline-svg src="/icons/left-rotate.svg"  size="20"/>
+                              </button>
+                           </div>
                         </div>
                      </div>
                   </template>
@@ -171,12 +178,12 @@ export default {
          }
 
       },
-      async rotateFile(key) {
+      async rotateFile(key, position = 'left') {
          const file = this.files.find(f => f.key === key)
          if (file) {
             this.setFilePropertyByKey(key, 'loading', true)
             try {
-               const { data } = await this.$axios.$get(`/media/${file.id}/rotate/right`);
+               const { data } = await this.$axios.$get(`/media/${file.id}/rotate/${position}`);
                this.setFilePropertyByKey(key, 'preview', data.thumb)
             } catch({response: {data: {data}}}) {
                this.clearErrors();
@@ -229,6 +236,7 @@ export default {
 </script>
 
 <style>
+
 .form-gallery-new{
    border-radius: 12px;
    border: 1px solid var(--gray-300, #CDD5DF);
@@ -253,7 +261,9 @@ export default {
    cursor: move;
    margin-bottom: 20px;
 }
-
+.form-gallery-new-item.loader-data{
+   height: 140px;
+}
 .form-gallery-new-item-remove{
    background: none;
    border: 0;
@@ -322,6 +332,9 @@ export default {
    margin-top: 10px;
 }
 
+.mirror-icon svg{
+   transform: scaleX(-1);
+}
 .form-gallery-new-item-information{
 
 }

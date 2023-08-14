@@ -32,7 +32,7 @@
          </button>
 
          <button class="btn btn-white bg-white ml-1" v-if="type === 'cover'" @click="croppaValue.chooseFile()">
-            Örtük şəklini dəyiş
+            {{$t('change_cover')}}
          </button>
 
          </span>

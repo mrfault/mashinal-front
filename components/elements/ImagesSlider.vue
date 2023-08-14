@@ -1,7 +1,7 @@
 <template>
    <div class="images-slider">
       <div class="toolbar">
-         <span>{{ currentSlide + 1 }} / {{ slides.length }}</span>
+<!--         <span>{{ currentSlide + 1 }} / {{ slides?.main.length }}</span>-->
 
          <div class="images-slider__close" @click.stop="$emit('close')">
             <icon name="cross" />
@@ -10,16 +10,17 @@
       </div>
 
       <div class="container wider">
-         <div :class="['row', { 'has-sidebar': hasSidebar }]" @click.stop>
-            <div class="col-auto">
+         <div :class="['images-slider__grid', { 'has-sidebar': hasSidebar }]" @click.stop>
+            <div class="images-slider__grid-item">
                <button
                   id="slider-prev"
                   class="btn"
                   @click.stop="thumbsPrev"
-                  v-if="slides.length > 6"
+                  v-if="slides?.length > 6"
                >
                   <icon name="chevron-up"/>
                </button>
+
                <div
                   class="swiper-container"
                   v-swiper:thumbsSwiper="thumbOps"
@@ -29,26 +30,27 @@
                      <div
                         class="swiper-slide"
                         :key="index"
-                        v-for="(slide, index) in slides"
+                        v-for="(slide, index) in slides?.thumbs"
                      >
                         <div
                            @click="changeSlide(index)"
-                           :style="{ backgroundImage: `url('${slide.main_inner}')` }"
+                           :style="{ backgroundImage: `url('${slide}')` }"
                         ></div>
                      </div>
                   </div>
                </div>
+
                <button
                   id="slider-next"
                   class="btn"
                   @click.stop="thumbsNext"
-                  v-if="slides.length > 6"
+                  v-if="slides?.length > 6"
                >
                   <icon name="chevron-down"/>
                </button>
             </div>
 
-            <div class="col-auto">
+            <div class="images-slider__grid-item">
                <div class="position-relative">
                   <div
                      id="images-swiper"
@@ -61,90 +63,89 @@
                         <div
                            class="swiper-slide"
                            :key="index"
-                           v-for="(slide, index) in slides"
+                           v-for="(slide, index) in slides.main"
                         >
                            <div class="swiper-slide-bg" @click.stop>
-<!--                              <div-->
-<!--                                 class="iframe"-->
-<!--                                 v-if="slides.types && slides.types[index] === 'youtube'"-->
-<!--                              >-->
-<!--                                 <iframe-->
-<!--                                    v-if="showIframe"-->
-<!--                                    :src="`https://www.youtube.com/embed/${slide.split('?v=')[1]}`"-->
-<!--                                    frameborder="0"-->
-<!--                                    allowfullscreen-->
-<!--                                 ></iframe>-->
-<!--                              </div>-->
-<!--                              <div-->
-<!--                                 class="video"-->
-<!--                                 v-else-if="slides.types && slides.types[index] === 'video'"-->
-<!--                              >-->
-<!--                                 <video ref="video" controls>-->
-<!--                                    <source :src="slide"/>-->
-<!--                                 </video>-->
-<!--                              </div>-->
-<!--                              <div-->
-<!--                                 class="position-relative"-->
-<!--                                 style="width: 100%;overflow: hidden;"-->
-<!--                                 v-else-if="-->
-<!--                        slides.types && slides.types[index] === 'custom'-->
-<!--                      "-->
-<!--                              >-->
-<!--                                 <no-ssr>-->
-<!--                                    <div v-if="announcement.interior_360" class="interior-switcher">-->
-<!--                                       <form-switch class="interior-exterior-switcher" auto-width-->
-<!--                                                    style="width: fit-content;pointer-events: all;"-->
-<!--                                                    v-model="showInterior" :options="interiorOptions"/>-->
-<!--                                    </div>-->
-<!--                                    <interior360-viewer :url="announcement.interior_360" v-if="showInterior"/>-->
-<!--                                    <vue-three-sixty-->
-<!--                                       @interiorChange="showInterior = !showInterior"-->
-<!--                                       :show-interior="showInterior"-->
-<!--                                       v-else-->
-<!--                                       showZoom-->
-<!--                                       disable-zoom-->
-<!--                                       :amount="announcement.images_360.length"-->
-<!--                                       buttonClass="d-none"-->
-<!--                                       :files="announcement.images_360"-->
-<!--                                    />-->
-<!--                                 </no-ssr>-->
-<!--                              </div>-->
+                              <div
+                                 class="iframe"
+                                 v-if="slides.types && slides.types[index] === 'youtube'"
+                              >
+                                 <iframe
+                                    v-if="showIframe"
+                                    :src="`https://www.youtube.com/embed/${slide.split('?v=')[1]}`"
+                                    frameborder="0"
+                                    allowfullscreen
+                                 ></iframe>
+                              </div>
+                              <div
+                                 class="video"
+                                 v-else-if="slides.types && slides.types[index] === 'video'"
+                              >
+                                 <video ref="video" controls>
+                                    <source :src="slide"/>
+                                 </video>
+                              </div>
+                              <div
+                                 class="position-relative"
+                                 style="width: 100%;overflow: hidden;"
+                                 v-else-if="slides.types && slides.types[index] === 'custom'"
+                              >
+                                 <no-ssr>
+                                    <div v-if="announcement.interior_360" class="interior-switcher">
+                                       <form-switch class="interior-exterior-switcher" auto-width
+                                                    style="width: fit-content;pointer-events: all;"
+                                                    v-model="showInterior" :options="interiorOptions"/>
+                                    </div>
+                                    <interior360-viewer :url="announcement.interior_360" v-if="showInterior"/>
+                                    <vue-three-sixty
+                                       @interiorChange="showInterior = !showInterior"
+                                       :show-interior="showInterior"
+                                       v-else
+                                       showZoom
+                                       disable-zoom
+                                       :amount="announcement.images_360.length"
+                                       buttonClass="d-none"
+                                       :files="announcement.images_360"
+                                    />
+                                 </no-ssr>
+                              </div>
 
-<!--                              <template v-else>-->
-                              asdsad
-                                 <img alt="car_img" :src="`${slide.main_inner}?width=944`" class="swiper-lazy"/>
-                                 <!--                      <loader />-->
-<!--                              </template>-->
+                              <template v-else>
+                                 <img alt="car_img" :src="`${slide}?width=944`" class="swiper-lazy"/>
+                                 <loader />
+                              </template>
                            </div>
                         </div>
                      </div>
                   </div>
+
                   <div class="slider-overlay">
                      <div class="slider-overlay_middle">
-                <span class="d-flex justify-content-between">
-                  <button
-                     id="slider-prev"
-                     class="btn-transparent"
-                     @click.stop="slidePrev"
-                  >
-                    <!-- <icon name="chevron-left" /> -->
-                    <inline-svg src="/icons/chevron-left.svg" :height="14"/>
-                  </button>
-                  <button
-                     id="slider-next"
-                     class="btn-transparent"
-                     @click.stop="slideNext"
-                  >
-                    <!-- <icon name="chevron-right" /> -->
-                    <inline-svg src="/icons/chevron-right.svg" :height="14"/>
-                  </button>
-                </span>
+                        <span class="d-flex justify-content-between">
+                           <button
+                              id="slider-prev"
+                              class="btn-transparent"
+                              @click.stop="slidePrev"
+                           >
+                          <!-- <icon name="chevron-left" /> -->
+                              <inline-svg src="/icons/chevron-left.svg" :height="14"/>
+                           </button>
+
+                           <button
+                              id="slider-next"
+                              class="btn-transparent"
+                              @click.stop="slideNext"
+                           >
+                              <!-- <icon name="chevron-right" /> -->
+                              <inline-svg src="/icons/chevron-right.svg" :height="14"/>
+                           </button>
+                      </span>
                      </div>
                   </div>
                </div>
             </div>
 
-            <div class="col-auto" v-if="hasSidebar">
+            <div class="images-slider__grid-item" v-if="hasSidebar">
                <slot name="sidebar"/>
             </div>
          </div>
@@ -265,6 +266,7 @@
 
       mounted() {
          window.addEventListener('keydown', this.handleEscapeKey);
+
          this.$nextTick(() => {
             this.imagesSwiper.thumbs.swiper = this.thumbsSwiper
             this.imagesSwiper.on('slideChange', () => {
@@ -272,11 +274,8 @@
                this.$refs.video?.[0]?.pause()
                this.$nextTick(() => {
                   this.showIframe = true
-
                   this.$emit('slide-change', this.imagesSwiper.realIndex)
                   this.updateTouchEvents()
-
-
                })
             })
             let swiperTouchStartX
@@ -316,6 +315,7 @@
       }
    }
 </script>
+
 <style>
 .interior-btn {
    display: flex;

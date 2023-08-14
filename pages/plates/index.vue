@@ -27,7 +27,7 @@
                         :options="getRegionNumbers"
                         :clear-placeholder="true"
                         :clear-option="false"
-                        v-model="form.region"
+                        v-model="form.serial_number"
                         has-search
                      />
 
@@ -116,6 +116,7 @@
                               :clearPlaceholder="true"
                               :clear-option="false"
                               :allowClear="false"
+                              :objectInValue="true"
                               v-model="form.sorting"
                            />
                         </template>
@@ -124,8 +125,8 @@
                </PlatesGrid>
 
                <pagination
-                  v-if="getRegistrationMarks?.meta?.last_page > 1"
-                  :page-count="getRegistrationMarks?.meta?.last_page"
+                  v-if="getRegistrationMarks?.meta?.total_pages > 1"
+                  :page-count="getRegistrationMarks?.meta?.total_pages"
                   :value="page"
                   @change-page="changePage"
                />
@@ -146,15 +147,17 @@
 </template>
 
 <script>
-   import { mapGetters } from "vuex";
-   import { minLength } from "vuelidate/lib/validators";
    import PlatesGrid from "~/components/announcements/PlatesGrid.vue";
    import NoResults from "~/components/elements/NoResults.vue";
    import HandleIds from "~/components/announcements/HandleIds.vue";
    import Cap from "~/components/elements/Cap.vue";
    import CustomDropdown from "~/components/elements/CustomDropdown.vue";
+   import { mapGetters } from "vuex";
+   import { minLength } from "vuelidate/lib/validators";
 
    export default {
+      name: 'PlatesPage',
+
       head() {
          return this.$headMeta({
             title: this.$t('registration_marks'),
@@ -184,7 +187,6 @@
             page: 1,
 
             form: {
-               region: '',
                serial_number: '',
                serial_letter1: '',
                serial_letter2: '',
@@ -193,7 +195,7 @@
                price_to: '',
                currency: '',
                region_id: '',
-               sorting: 'created_at_desc',
+               sorting: { key: 'created_at', value: 'desc', name: this.$t('show_by_date') }
             },
 
             numbers: [
@@ -229,9 +231,9 @@
                { id: 2, name: 'USD' }
             ],
             sortItems: [
-               { id: 'created_at_desc', name: this.$t('show_by_date') },
-               { id: 'price_asc', name: this.$t('show_cheap_first') },
-               { id: 'price_desc', name: this.$t('show_expensive_first') }
+               { key: 'created_at', value: 'desc', name: this.$t('show_by_date') },
+               { key: 'price', value: 'asc', name: this.$t('show_cheap_first') },
+               { key: 'price', value: 'desc', name: this.$t('show_expensive_first') }
             ]
          }
       },
@@ -240,73 +242,38 @@
          changePage(e) {
             this.$store.commit('mutate',{ property: 'loadingData', value: true });
             this.page = e;
-            this.scrollTo('.registrationMarks__filters', [-15, -20]);
-         }
-      },
-
-      watch: {
-         page() {
-            this.$store.dispatch('fetchRegistrationMarks', `?page=${this.page}`);
-
-            this.$router.push({
-               query: { filters: `?page=${this.page}` }
-            })
+            this.scrollTo('.registrationMarks__filters', [-15, -50]);
          },
-         form: {
-            handler() {
-               // Нужно поменять этот алгоритм! Сделать по быстрому! ---------------------------
-               let queryArray = [],
-                   query;
 
-               this.page = 1;
-               queryArray.push(`?page=1`);
+         setInitialValues() {
+            this.$route.query?.filters?.slice(1).split('&').forEach(query => {
+               if (query.split('=')[0] === 'page') this.page = +query.split('=')[1];
 
-               if (this.form.region) {
-                  queryArray.push(`&region=${this.form.region}`);
-                  this.form.serial_number = this.form.region.split('-')[0];
-               } else {
-                  this.form.serial_number = '';
-               }
-               if (this.form.serial_number) queryArray.push(`&serial_number=${this.form.serial_number}`);
-               if (this.form.serial_letter1) queryArray.push(`&serial_letter1=${this.form.serial_letter1}`);
-               if (this.form.serial_letter2) queryArray.push(`&serial_letter2=${this.form.serial_letter2}`);
-               if (this.form.car_number) queryArray.push(`&car_number=${this.form.car_number}`);
-               if (this.form.price_from) queryArray.push(`&price_from=${this.form.price_from}`);
-               if (this.form.price_to) queryArray.push(`&price_to=${this.form.price_to}`);
-               if (this.form.currency) queryArray.push(`&currency=${this.form.currency}`);
-               if (this.form.region_id) queryArray.push(`&region_id=${this.form.region_id}`);
-               if (this.form.sorting) queryArray.push(`&sorting=${this.form.sorting}`);
+               for (const item in this.form) {
+                  if (query.split('=')[0] === item) {
+                     if (item === 'region_id'|| item === 'currency') {
+                        this.form[item] = +query.split('=')[1];
+                     } else {
+                        this.form[item] = query.split('=')[1];
+                     }
+                  } else if (typeof this.form[item] === 'object' && query.split('=')[0] !== 'page') {
+                     console.log('w',this.form[item])
+                     console.log('e', query.split('='))
+                     if (query.split('=')[0] === 'sort_by') {
+                        this.form.sorting.key = query.split('=')[1]
+                     } else {
+                        this.form.sorting.value = query.split('=')[1]
+                     }
 
-               query = queryArray.join('');
-
-               clearTimeout(this.timeout);
-               this.timeout = setTimeout(() => {
-                  this.$store.dispatch('fetchRegistrationMarks', query);
-               }, 400);
-
-               this.$router.push({
-                  query: { filters: query }
-               })
-            },
-            deep: true
-            // Нужно поменять этот алгоритм! Сделать по быстрому! ---------------------------
-         },
-      },
-
-      mounted() {
-         this.$route.query?.filters?.split('&').forEach(query => {
-            this.page = Number(query.split('=')[1]);
-
-            for (const item in this.form) {
-               if (query.split('=')[0] === item) {
-                  if (item === 'region_id' || item === 'currency') {
-                     this.form[item] = Number(query.split('=')[1]);
-                  } else {
-                     this.form[item] = query.split('=')[1];
+                     this.sortItems.forEach(item => {
+                        if (item.key === this.form.sorting.key && item.value === this.form.sorting.value) {
+                           this.form.sorting.name = item.name;
+                        }
+                     });
                   }
                }
-            }
-         })
+            });
+         }
       },
 
       computed: {
@@ -322,9 +289,73 @@
          }
       },
 
+      watch: {
+         page() {
+            const query = new URLSearchParams();
+
+            for (const key in this.form) {
+               const value = this.form[key];
+
+               if (value !== '') {
+                  if (key !== 'sorting') {
+                     query.append(key, value);
+                  } else {
+                     query.append('sort_by', value.key);
+                     query.append('sort_order', value.value);
+                  }
+               }
+            }
+
+            this.$store.dispatch('fetchRegistrationMarks', `?page=${this.page}&${query.toString()}`);
+
+            this.$router.push({
+               query: { filters: `?page=${this.page}&${query.toString()}` }
+            })
+         },
+
+         form: {
+            deep: true,
+            handler: function () {
+               this.$store.commit('mutate',{ property: 'loadingData', value: true });
+
+               const query = new URLSearchParams();
+
+               for (const key in this.form) {
+                  const value = this.form[key];
+                  if (value !== '') {
+                     if (key === 'serial_number') {
+                        this.form.serial_number = this.form.serial_number.split('-')[0].replace(/\s/g, "");
+                        query.append('serial_number', value);
+                     } else if (key === 'sorting') {
+                        query.append('sort_by', value.key);
+                        query.append('sort_order', value.value);
+                     } else {
+                        query.append(key, value);
+                     }
+                  }
+               }
+
+               this.$router.push({
+                  query: { filters: `?page=1&${query.toString()}` }
+               })
+
+               clearTimeout(this.timeout);
+               this.timeout = setTimeout(() => {
+                  this.$store.dispatch('fetchRegistrationMarks', `?page=1&${query.toString()}`);
+               }, 300);
+
+               this.page = 1;
+            }
+         },
+      },
+
+      mounted() {
+         this.setInitialValues();
+      },
+
       async asyncData({ store }) {
          await store.dispatch('fetchRegionNumbers');
-         await store.dispatch('fetchRegistrationMarks', `?page=1&sorting=created_at_desc`);
+         await store.dispatch('fetchRegistrationMarks');
          await store.dispatch('getOptions');
       },
 
@@ -336,6 +367,28 @@
 
 <style lang="scss">
    .registrationMarks {
+      .breadcrumbs {
+         ul {
+            li {
+               font-weight: 500;
+               font-size: 16px;
+               line-height: 20px;
+               opacity: 0.9;
+               color: #FFFFFF;
+
+               i {
+                  &:before {
+                     color: #FFFFFF;
+                  }
+               }
+
+               .active {
+                  color: #FFFFFF;
+               }
+            }
+         }
+      }
+
       &__hero {
          position: relative;
          width: 100%;
@@ -360,27 +413,6 @@
             left: 64px;
             bottom: 48px;
             z-index: 2;
-
-            .breadcrumbs {
-               ul {
-                  li {
-                     font-weight: 500;
-                     font-size: 16px;
-                     line-height: 20px;
-                     opacity: 0.9;
-
-                     i {
-                        &:before {
-                           color: #FFFFFF;
-                        }
-                     }
-
-                     &.active {
-                        color: #FFFFFF;
-                     }
-                  }
-               }
-            }
          }
 
          &-title {
@@ -443,6 +475,8 @@
       }
 
       &.index {
+         padding-top: 32px;
+
          .pagination {
             li {
                button {

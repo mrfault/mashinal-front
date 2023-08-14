@@ -3,7 +3,7 @@
       <div :class="['profile-card salon-single-card overflow-hidden']">
          <div class="cover-with-avatar position-relative">
              <img
-                 :class="['cover-with-avatar__img z-index-1', {full : !salonSingle.gallery_thumbs.length}]"
+                 :class="['cover-with-avatar__img', {full : !salonSingle.gallery_thumbs.length}]"
                  :src="getCover(salonSingle.cover, salonSingle.type_id)"
                  alt="img"
              >
@@ -21,9 +21,11 @@
                   v-for="(item, i) in salonSingle.gallery_thumbs"
                   :style="{background: `url('${item}') center center / cover no-repeat`}"
                   @click="$nuxt.$emit('show-lightbox', i)"
-               >
-               </div>
-               <span class="count pointer-events-none" v-if="salonSingle.gallery_thumbs.length > 6">+ {{ salonSingle.gallery_thumbs.length - 6 }} {{ $t('image_small') }}</span>
+               />
+
+               <span class="count pointer-events-none" v-if="salonSingle.gallery_thumbs.length > 6">
+                  + {{ salonSingle.gallery_thumbs.length - 6 }} {{ $t('image_small') }}
+               </span>
             </div>
          </div>
 
@@ -32,7 +34,7 @@
                <div
                   class="salon-inner__details-logo"
                   :style="`background: url('${getLogo(salonSingle.logo)}') center center / cover no-repeat`"
-               ></div>
+               />
 
                <div class="salon-inner__details-info">
                   <h4 class="salon-inner__details-name">
@@ -107,32 +109,35 @@
          </div>
       </div>
 
-      <Cap>
-         <template #left>
-            <h3>{{ $t('auto_salon_ads') }}</h3>
-         </template>
-
-         <template #right>
-            <form-select
-               :label="$t('show_by_date')"
-               :options="sortItems"
-               :clearPlaceholder="true"
-               :clear-option="false"
-               v-model="sorting"
-            />
-         </template>
-      </Cap>
-
       <grid
-         v-if="salonSingle.announcements.data.length"
-         :announcements="salonSingle.announcements.data"
-         :paginate="$paginate(salonSingle.announcements)"
+         v-if="autosalonAnnouncementsId?.data?.length"
+         :announcements="autosalonAnnouncementsId?.data"
+         :paginate="$paginate(autosalonAnnouncementsId?.meta)"
          :pending="pending"
          @pending="pending = true"
          @change-page="changePage"
          escape-duplicates
          :needAutoScroll="true"
-      />
+         :hasContainer="false"
+      >
+         <template #cap>
+            <Cap>
+               <template #left>
+                  <h3>{{ $t('auto_salon_ads') }}</h3>
+               </template>
+
+<!--               <template #right>-->
+<!--                  <form-select-->
+<!--                     :label="$t('show_by_date')"-->
+<!--                     :options="sortItems"-->
+<!--                     :clearPlaceholder="true"-->
+<!--                     :clear-option="false"-->
+<!--                     v-model="sorting"-->
+<!--                  />-->
+<!--               </template>-->
+            </Cap>
+         </template>
+      </grid>
 
       <gallery
          v-if="salonSingle.gallery_urls.length"
@@ -144,8 +149,8 @@
 </template>
 
 <script>
-   import {mapGetters, mapActions} from 'vuex'
-   import {SalonsMixin} from '~/mixins/salons'
+   import { mapGetters, mapActions } from 'vuex'
+   import { SalonsMixin } from '~/mixins/salons'
    import Grid from '~/components/announcements/Grid'
    import Gallery from '~/components/announcements/inner/Gallery'
    import ThumbsGallery from '~/components/announcements/inner/ThumbsGallery'
@@ -176,7 +181,7 @@
       },
 
       computed: {
-         ...mapGetters(['salonSingle']),
+         ...mapGetters(['salonSingle', 'autosalonAnnouncementsId']),
 
          hasWorkingHours() {
             return !!this.getWorkingDays(
@@ -197,7 +202,7 @@
 
          isShop() {
             return this.routeName.includes('parts')
-         },
+         }
       },
 
       methods: {
@@ -394,6 +399,7 @@
             }
          }
       }
+
    }
 
    .border-padding-none {
@@ -407,6 +413,15 @@
       left: 25px !important;
       font-size: 14px !important;
       font-weight: 500;
+   }
+
+   .dark-mode {
+      .salon-inner {
+         table {
+            border: none;
+            background-color: unset;
+         }
+      }
    }
 
    @media (min-width: 992px) {

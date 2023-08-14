@@ -51,6 +51,7 @@
                   </template>
 
                   <template #right>
+<!--                     cars?monetized=true-->
                      <nuxt-link :to="$localePath('/cars')">
                         <span>{{ $t('see_all') }}</span>
                         <icon name="arrow-right"/>
@@ -174,7 +175,6 @@
       transition: 'fade-y-20',
 
       layout: 'search',
-
       middleware: 'payment_redirect',
 
       components: {
@@ -249,7 +249,7 @@
             store.dispatch('getBodyOptions'),
             store.dispatch('getMotoOptions'),
             store.dispatch('getOptions'),
-            store.dispatch('getColors'),
+            // store.dispatch('getColors'),
             // store.dispatch('getFavorites'),
          ])
          return {
@@ -281,7 +281,7 @@
             return [
                {name: this.$t('all2'), key: zeroFirst ? 0 : 1},
                {name: this.$t('new'), key: zeroFirst ? 1 : 2},
-               {name: this.$t('S_H'), key: zeroFirst ? 2 : 3}
+               {name: this.$t('with_mileage_2'), key: zeroFirst ? 2 : 3}
                // {name: this.$t(this.meta.type === 'parts' ? 'S_H' : 'with_mileage'), key: zeroFirst ? 2 : 3}
             ];
          },
@@ -431,7 +431,7 @@
    }
 
    .pages-index {
-      margin-top: 32px;
+      padding-top: 32px;
    }
 
    .dark-mode {

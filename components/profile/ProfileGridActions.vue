@@ -80,10 +80,13 @@
 export default {
    props: {
       announcement: Object,
+      dropdownId: {
+         type: String,
+         required: true,
+      },
    },
    data() {
       return {
-         isOpen: false,
          pending: false,
          showModal: false,
          showOptions: false,
@@ -130,29 +133,33 @@ export default {
             },
          ]
       },
+      isOpen() {
+         return this.$store.state.openDropdownId === this.dropdownId;
+      },
    },
    methods: {
       //dropdown
       toggleOpen(event) {
-
          event.stopPropagation();
          if (this.isMobileBreakpoint) {
             this.showOptions = true;
          } else {
-            this.isOpen = !this.isOpen;
-            if (this.isOpen) {
+            const isOpen = this.$store.state.openDropdownId === this.dropdownId;
+            this.$store.commit(isOpen ? 'closeDropdown' : 'setOpenDropdown', this.dropdownId);
+            if (!isOpen) {
                document.addEventListener('click', this.onClickOutside);
             }
          }
       },
       onClickOutside(event) {
          if (!this.$refs.actionsRef.contains(event.target)) {
-            this.isOpen = false;
+            this.$store.commit('closeDropdown');
             document.removeEventListener('click', this.onClickOutside);
          }
       },
 
       openModal(item) {
+         this.showOptions = false;
          this.selectedItem = item;
          this.showModal = true;
       },
@@ -171,6 +178,9 @@ export default {
             await this.$nuxt.refresh();
             this.$emit('deactivateMyAnnounement');
             this.$toasted.success(this.$t('vehicle_deactivated'))
+            this.closeModal();
+            this.$nuxt.refresh();
+            this.$store.commit('closeDropdown');
          } catch (e) {
             this.$toasted.error(this.$t('something_went_wrong'))
          }
@@ -179,10 +189,13 @@ export default {
       async deleteCar(event) {
          event.stopPropagation();
          try {
-            await this.$store.dispatch('deactivateMyAnnounement', this.announcement.id_unique);
+            await this.$store.dispatch('deleteMyAnnounementV2', this.announcement.id_unique);
             await this.$nuxt.refresh();
             this.$emit('deleteMyAnnounement');
             this.$toasted.success(this.$t('vehicle_deleted'))
+            this.closeModal();
+            this.$nuxt.refresh();
+            this.$store.commit('closeDropdown');
          } catch (e) {
             this.$toasted.error(this.$t('something_went_wrong'))
          }
@@ -193,6 +206,9 @@ export default {
             await this.$nuxt.refresh();
             this.$emit('restoredMyAnnounement');
             this.$toasted.success(this.$t('announcement_restored'))
+            this.closeModal();
+            this.$nuxt.refresh();
+            this.$store.commit('closeDropdown');
          } catch (e) {
             this.$toasted.error(this.$t('something_went_wrong'))
          }
@@ -245,9 +261,9 @@ export default {
       min-width: 152px;
       left: 0;
 
-      box-shadow: 8px 16px 32px 0px rgba(17,17,51,0.15);
-      -webkit-box-shadow: 8px 16px 32px 0px rgba(17,17,51,0.15);
-      -moz-box-shadow: 8px 16px 32px 0px rgba(17,17,51,0.15);
+      box-shadow: 8px 16px 32px 0px rgba(17, 17, 51, 0.15);
+      -webkit-box-shadow: 8px 16px 32px 0px rgba(17, 17, 51, 0.15);
+      -moz-box-shadow: 8px 16px 32px 0px rgba(17, 17, 51, 0.15);
 
       &--item {
          padding: 12px 8px;
@@ -255,6 +271,7 @@ export default {
          display: flex;
          align-items: center;
          border-radius: 8px;
+         cursor: pointer;
 
          svg {
             margin-right: 8px;
@@ -294,6 +311,18 @@ export default {
             margin-bottom: 10px;
          }
       }
+   }
+}
+
+.right-0{
+   left: auto;
+   right: 0;
+}
+
+.right-aligned-dropdown{
+   .announcement-actions__content{
+      left: auto;
+      right: 0;
    }
 }
 </style>

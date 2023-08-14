@@ -8,6 +8,8 @@ const getInitialState = () => ({
    loading: true,
    loadingData: false,
    colorMode: "light",
+   notificationStatus: "deactive",
+   currentLanguage: "az",
    partAnnouncements: {},
    breakpoint: null,
    newOfferCount: 0,
@@ -68,6 +70,10 @@ const getInitialState = () => ({
    plateNumbers: [],
    brandsList: [],
    monetizedCars: [],
+   autosalonAnnouncementsId: [],
+   motoGearbox: [],
+   motoTransmissions: [],
+   motoFuelTypes: [],
    mainPartsAnnouncements: {},
    carsAnnouncements: [],
    motoAnnouncements: [],
@@ -227,6 +233,12 @@ const getInitialState = () => ({
    mySavedPlates: [],
    registrationMark: [],
    handleIds: null,
+
+   //   dropdown
+   openDropdownId: null,
+
+   //usercabinet
+   userCabinetCars: []
 });
 
 export const state = () => getInitialState();
@@ -257,6 +269,10 @@ export const getters = {
    pageRef: s => s.pageRef,
    hideFooter: s => s.hideFooter,
    monetizedCars: s => s.monetizedCars,
+   autosalonAnnouncementsId: s => s.autosalonAnnouncementsId,
+   motoGearbox: s => s.motoGearbox,
+   motoTransmissions: s => s.motoTransmissions,
+   motoFuelTypes: s => s.motoFuelTypes,
    // saved search & favorites
    savedSearchList: s => s.savedSearchList,
    carModelsExclude: s => s.carModelsExclude,
@@ -426,7 +442,14 @@ export const getters = {
    offerGenerations: s => s.offer_generations,
 //  moderator
    partCategories: s => s.partCategories,
-   partFilters: s => s.partFilters
+   partFilters: s => s.partFilters,
+
+   openDropdownId: s => s.openDropdownId,
+
+
+
+//   usercabinet
+   userCabinetCars: s => s.userCabinetCars
 };
 
 const objectNotEmpty = (state, commit, property) => {
@@ -472,19 +495,44 @@ export const actions = {
       commit("mutate", {property: "brandsList", value: res});
    },
 
+   async fetchAutosalonAnnouncementsId({ commit }, id) {
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/autosalon/announcements/${id}`);
+      commit("mutate", { property: "autosalonAnnouncementsId", value: res });
+   },
+
+   async fetchPartsAnnouncementsId({ commit }, id) {
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/parts/announcements/${id}`);
+      commit("mutate", { property: "autosalonAnnouncementsId", value: res });
+   },
+
    async fetchMonetizedCars({ commit }) {
       const res = await this.$axios.$get('https://v2dev.mashin.al/api/v2/car/monetized-cars');
       commit("mutate", { property: "monetizedCars", value: res });
    },
 
    async fetchMonetizedCarsSearch({commit}, data = {}) {
-      const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/car/monetized`, data.data);
+      const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/car/monetized`, data);
       commit("mutate", { property: "monetizedCars", value: res });
    },
 
    async getAnnouncementInnerV2({commit}, id) {
       const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/car/${id}`);
       commit("mutate", {property: "announcement", value: res});
+   },
+
+   async getMotoGearboxV2({commit}) {
+      const res = await this.$axios.$get('https://v2dev.mashin.al/api/v2/moto/gearbox');
+      commit("mutate", {property: "motoGearbox", value: res});
+   },
+
+   async getMotoTransmissionsV2({commit}) {
+      const res = await this.$axios.$get('https://v2dev.mashin.al/api/v2/moto/transmissions');
+      commit("mutate", {property: "motoTransmissions", value: res});
+   },
+
+   async getMotoFuelTypesV2({commit}) {
+      const res = await this.$axios.$get('https://v2dev.mashin.al/api/v2/moto/fuel-types');
+      commit("mutate", {property: "motoFuelTypes", value: res});
    },
    // New API --------------------
 
@@ -516,17 +564,14 @@ export const actions = {
    },
 
    async fetchRegionNumbers({commit}) {
-      const res = await this.$axios.$get("/regions-and-serial-number")
-      commit("mutate", {property: "regionNumbers", value: res.data || []})
+      const res = await this.$axios.$get("https://v2dev.mashin.al/api/v2/regions/list-serial-number")
+      commit("mutate", {property: "regionNumbers", value: res || []})
    },
 
    async fetchRegistrationMarks({commit}, data = '') {
-      const res = await this.$axios.$get(`/plates${data}`);
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/plate-numbers${data}`);
 
-      if (res.data.length) {
-         commit("mutate", {property: "loadingData", value: false});
-      }
-
+      if (res.data.length) commit("mutate", {property: "loadingData", value: false});
       commit("mutate", {property: "registrationMarks", value: res || []});
    },
 
@@ -580,6 +625,9 @@ export const actions = {
    setColorMode({commit}, theme) {
       commit("mutate", {property: "colorMode", value: theme});
    },
+   setNotificationStatus({commit}, status) {
+      commit("mutate", {property: "notificationStatus", value: status});
+   },
    // Grid
    setGridBreakpoint({commit}, breakpoint) {
       commit("mutate", {property: "breakpoint", value: breakpoint});
@@ -589,7 +637,8 @@ export const actions = {
       commit("mutate", {property: "hideFooter", value: !show});
    },
    // Localization
-   async changeLocale({dispatch}, locale) {
+   async changeLocale({commit, dispatch}, locale) {
+      commit("mutate", {property: "currentLanguage", value: locale});
       let changed = locale !== this.$i18n.locale;
       this.$i18n.setLocale(locale);
       // update options in store
@@ -1137,7 +1186,6 @@ export const actions = {
       commit("mutate", {property: "temporaryLazyData", value: res});
    },
    async getInfiniteMainPartsPageSearch({commit, dispatch}, payload = {}) {
-      console.log('payload', payload)
       const body = payload.body ? {...payload.body} : {};
       if (body.announce_type) {
          body.is_new = body.announce_type === 1 ? true : false;
@@ -1226,6 +1274,11 @@ export const actions = {
       commit("mutate", {property: "announcement", value: res});
    },
 
+   async getPartsInnerV2({commit}, id) {
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/parts/${id}`);
+      commit("mutate", {property: "announcement", value: res});
+   },
+
    async getMyAnnouncement({commit}, id) {
       const res = await this.$axios.$get(`/announcement/edit/${id}`);
       commit("mutate", {property: "myAnnouncement", value: res});
@@ -1236,6 +1289,12 @@ export const actions = {
    },
    async deleteMyAnnounement({commit}, id) {
       await this.$axios.$delete(`/announcement/${id}/remove`);
+      commit("mutate", {property: "myAnnouncement", value: {}});
+   },
+   async deleteMyAnnounementV2({commit}, id) {
+      await this.$axios.$post(
+         `https://v2dev.mashin.al/api/v2/me/cars/${id}/delete`
+      );
       commit("mutate", {property: "myAnnouncement", value: {}});
    },
    // Car announcements
@@ -1400,7 +1459,8 @@ export const actions = {
          `/sell/${data.brand}/${data.model}/body/${data.body}/generation/${data.generation}/engine/${data.engine}/gearing/${data.gearing}/trns/${data.transmission}/modifications`
       );
       commit("mutate", {property: "sellModifications", value: res});
-   }, async getSellModificationsV2({commit}, data) {
+   },
+   async getSellModificationsV2({commit}, data) {
       const res = await this.$axios.$get(
          `https://v2dev.mashin.al/api/v2/car-catalog/${data.brand}/${data.model}/body/${data.body}/generation/${data.generation}/engine/${data.engine}/gearing/${data.gearing}/trns/${data.transmission}/modifications`
       );
@@ -1668,7 +1728,23 @@ export const actions = {
 
    async readOfferMessage({commit, state}, payload) {
       await this.$axios.$post("/offer/message/read/" + payload.id);
-   }
+   },
+
+   async UserCabinetCarsAdd({commit,state}, payload){
+      const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/me/cars/create?brand_id=${payload.brand_id}&model_id=${payload.model_id}&generation_id=${payload.generation_id}&car_type_id=${payload.car_type_id}&car_catalog_id=${payload.car_catalog_id}&vin=${payload.vin}&car_number=${payload.car_number}`);
+      // commit("mutate", {property: "userCabinetCars", value: res});
+   },
+   async UserCabinetCarsEdit({commit,state}, payload){
+      const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/me/cars/${payload.id}/update?brand_id=${payload.brand_id}&model_id=${payload.model_id}&generation_id=${payload.generation_id}&car_type_id=${payload.car_type_id}&car_catalog_id=${payload.car_catalog_id}&vin=${payload.vin}&car_number=${payload.car_number}`);
+   },
+   async UserCabinetCarsGetAll({commit,state}, payload){
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/me/cars`);
+      commit("mutate", {property: "userCabinetCars", value: res.data});
+   },
+   async UserCabinetCarDelete({commit,state}, payload){
+      const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/me/cars/${payload.id}/delete`);
+   },
+
 };
 export const mutations = {
    mutate: mutate(),
@@ -1676,6 +1752,13 @@ export const mutations = {
 
    offerAddFavorite(state) {
       state.offer.data.isFavorite = !state.offer.data.isFavorite
+   },
+
+   setOpenDropdown(state, dropdownId) {
+      state.openDropdownId = dropdownId;
+   },
+   closeDropdown(state) {
+      state.openDropdownId = null;
    },
 
    // messages

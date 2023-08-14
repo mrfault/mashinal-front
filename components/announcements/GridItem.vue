@@ -38,8 +38,10 @@
          </div>
       </div>
 
-      <div :class="['id'+announcement.id,{'overflow-visible isProfilePage': isProfilePage}]" class="announcements-grid__item" @click="goToAnnouncement">
-         <profile-grid-actions v-if="isProfilePage" :announcement="announcement" />
+      <div :class="['id'+announcement.id,{'overflow-visible isProfilePage': isProfilePage}]"
+           class="announcements-grid__item" @click="goToAnnouncement">
+         <profile-grid-actions v-if="isProfilePage" :announcement="announcement"
+                               :class="{'right-aligned-dropdown': isLastChild}" :dropdown-id="announcement.id_unique"/>
 
          <a
             v-if="clickable && !isMobileBreakpoint && !$env.DEV"
@@ -63,7 +65,7 @@
                <div class="item-overlay__top">
                   <div class="item-overlay__top--left">
                      <div
-                        v-if="announcement.is_auto_salon"
+                        v-if="isProfilePage"
                         :class="{
                         'activeStatus': announcement.status == 1,
                         'deactiveStatus': announcement.status == 3,
@@ -154,29 +156,53 @@
             </div>
 
             <div class="item-details__item">
-               {{ announcement.brand }} {{ announcement.model }}
+               <template v-if="announcement.brand || announcement.model">
+                  {{ announcement.brand }} {{ announcement.model }}
+               </template>
+
+               <template v-if="announcement.title">{{ announcement.title }}</template>
             </div>
 
             <div class="item-details__item">
                <span v-if="announcement.year">{{ announcement.year }} {{ $t('year') }}</span>
+
                <span v-if="announcement?.car_catalog?.capacity">
                   {{ announcement?.car_catalog?.capacity }} {{ $t('char_litre') }}
                </span>
-               <span>
+
+               <span v-if="announcement.mileage || announcement.mileage_measure">
                   {{ announcement.mileage }}
 
                   <template v-if="announcement.mileage_measure === 1">
                      {{ $t('char_kilometre') }}
                   </template>
                </span>
+
+               <span v-if="announcement?.description">{{ announcement?.description }}</span>
             </div>
 
-            <div class="item-details__item">
+            <div v-if="!isProfilePage" class="item-details__item">
                {{ announcement.created_at }}
+            </div>
+            <div v-if="isProfilePage" class="item-details__item d-flex justify-csb">
+               <span>
+                                 <inline-svg src="/new-icons/grid/cards/phone.svg"/>
+                  123
+               </span>
+               <span>
+                            <inline-svg src="/new-icons/grid/cards/eye.svg"/>
+                  123
+               </span>
+               <span>
+                   <inline-svg src="/new-icons/grid/cards/calendar.svg"/>
+                  {{ announcement.created_at }}
+               </span>
+
+
             </div>
          </div>
 
-         <div v-if="isProfilePage && announcement.status == 1" class="item-monetization">
+         <div v-if="isProfilePage" class="item-monetization">
             <monetization-button
                :announcement="announcement"
                :disabled="announcement.status !== 1"
@@ -192,6 +218,7 @@ import AddComparison from '~/components/announcements/AddComparison'
 import MonetizationButton from '~/components/announcements/MonetizationButton'
 import MonetizationStatsButton from '~/components/announcements/MonetizationStatsButton'
 import ProfileGridActions from "~/components/profile/ProfileGridActions";
+
 export default {
    props: {
       announcement: {},
@@ -211,6 +238,7 @@ export default {
          type: Boolean,
          default: false,
       },
+      isLastChild: Boolean,
    },
 
    components: {
@@ -396,7 +424,7 @@ export default {
    }
 }
 
-.item-monetization{
+.item-monetization {
    position: absolute;
    bottom: 12px;
    left: 12px;
@@ -404,8 +432,9 @@ export default {
    z-index: 2;
    padding: 0 !important;
 }
-.isProfilePage{
-   .item-details{
+
+.isProfilePage {
+   .item-details {
       padding-bottom: 70px;
       height: auto;
    }

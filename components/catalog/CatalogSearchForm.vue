@@ -73,48 +73,57 @@
                class="col-6 col-md-2 col-lg-1-5 mb-2 mb-lg-3-5"
                :class="{'col-md-3' : !collapse}"
             >
-               <form-select :label="$t('body_type')"
-                            v-model="form['body']"
-                            :clear-option-text="$t('anyone_other2')"
-                            :options="bodyOptions.main.default_options['body'].values"
-                            multiple
-                            name-in-value
-                            object-in-value
-                            translate-options
-                            @change="submitForm()"
-                            :clear-option="false"
-                            :clear-placeholder="true"
+               <form-select
+                  :label="$t('body_type')"
+                  v-model="form['body']"
+                  :options="bodyOptions.main.default_options['body'].values"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  multiple
+                  name-in-value
+                  translate-options
+                  @change="submitForm()"
                />
             </div>
 
             <template v-if="!collapsed">
                <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
-                  <form-select :label="$t('korobka')"
-                               v-model="form['korobka']"
-                               :options="bodyOptions.main.default_options['korobka'].values"
-                               multiple
-                               name-in-value
-                               object-in-value
-                               translate-options
-                               @change="submitForm()"
-                               :clear-option="false"
-                               :clear-placeholder="true"
+                  <form-select
+                     :label="$t('korobka')"
+                     v-model="form['korobka']"
+                     :options="bodyOptions.main.default_options['korobka'].values"
+                     :clear-placeholder="true"
+                     :clear-option="false"
+                     multiple
+                     name-in-value
+                     translate-options
+                     @change="submitForm()"
                   />
                </div>
                <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
-                  <form-select :label="$t('fuel')" v-model="form['tip-dvigatelya']"
-                               :options="bodyOptions.main.default_options['tip-dvigatelya'].values"
-                               multiple name-in-value object-in-value translate-options @change="submitForm()"
-                               :clear-option="false"
-                               :clear-placeholder="true"
+                  <form-select
+                     :label="$t('fuel')"
+                     v-model="form['tip-dvigatelya']"
+                     :options="bodyOptions.main.default_options['tip-dvigatelya'].values"
+                     :clear-placeholder="true"
+                     :clear-option="false"
+                     multiple
+                     name-in-value
+                     translate-options
+                     @change="submitForm()"
                   />
                </div>
                <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">
-                  <form-select :label="$t('privod')" v-model="form['privod']"
-                               :options="bodyOptions.main.default_options['privod'].values"
-                               multiple name-in-value object-in-value translate-options @change="submitForm()"
-                               :clear-option="false"
-                               :clear-placeholder="true"
+                  <form-select
+                     :label="$t('privod')"
+                     v-model="form['privod']"
+                     :options="bodyOptions.main.default_options['privod'].values"
+                     :clear-placeholder="true"
+                     :clear-option="false"
+                     multiple
+                     name-in-value
+                     translate-options
+                     @change="submitForm()"
                   />
                </div>
                <div class="col-6 col-lg-1-5 mb-2 mb-lg-3">

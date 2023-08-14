@@ -7,7 +7,7 @@
         <span>{{ title || $t('return_back') }}</span>
         <icon :name="actionIcon" @click.native.stop="$emit('action')" :class="['cursor-pointer', {'disabled':disableAction}]" v-if="actionIcon" />
         <icon name="check" @click.native.stop="$emit('accept')" class="cursor-pointer" v-else-if="showCheck" />
-        <icon name="check no-pointer-events opacity-0" v-else/>
+        <icon name="check no-pointer-events opacity-0" style="margin: 0" v-else/>
       </div>
     </div>
   </div>

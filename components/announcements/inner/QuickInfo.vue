@@ -1,6 +1,6 @@
 <template>
-   <div :class="['quick-info mb-lg-3', {'registration-marks' : type === 'registration-marks'}]">
-      <div class="registration-marks__number" v-if="type === 'registration-marks'">
+   <div :class="['quick-info mb-lg-3', {'registration-marks' : type === 'plates'}]">
+      <div class="registration-marks__number" v-if="type === 'plates'">
          <div class="divider">
             <img src="/icons/registrationMarks_icons.svg" alt="icons">
          </div>
@@ -12,7 +12,10 @@
          <span class="registration-marks__number-description">MASHIN.AL</span>
       </div>
 
-      <div class="quick-info__item">
+      <div
+         class="quick-info__item"
+         :class="{'registration-marks' : type === 'plates'}"
+      >
          <h1 class="quick-info__title" v-if="getAnnouncementTitle(announcement)">{{ getAnnouncementTitle(announcement) }}</h1>
 
          <div class="d-flex align-items-center justify-content-between">
@@ -69,17 +72,20 @@
                   v-if="
                      contact.user.active_announcements_count > 1 ||
                      announcement.is_part_salon ||
-                     announcement.is_autosalon ||
+                     announcement.is_auto_salon ||
                      announcement.is_external_salon
                   "
                >
                   <span v-if="announcement.is_part_salon">{{ $t('go_to_shop') }}</span>
 
-                  <span v-else-if="announcement.is_autosalon || announcement.is_external_salon">
+                  <span v-else-if="announcement.is_auto_salon || announcement.is_external_salon">
                      {{ $t('go_to_salon') }}
                   </span>
 
+
                   <span v-else>{{ $t('other_announcements_of_user') }}</span>
+<!--                  <pre>{{announcement.is_auto_salon}} - {{ announcement.is_external_salon }}</pre>-->
+
 
 <!--                  <icon name="chevron-right" />-->
                   <!-- <inline-svg src="/icons/chevron-right.svg" :height="14" /> -->
@@ -96,12 +102,23 @@
                <chat-button :announcement="announcement" has-after-login />
             </div>
 
-            <div class="col-7 mt-2 mt-lg-3" v-if="!isMobileBreakpoint">
-               <call-button-multiple v-if="announcement.is_autosalon" :phones="announcement.user.autosalon.phones" />
-               <call-button v-else :phone="contact.phone" />
+<!--            v-if="!isMobileBreakpoint"-->
+
+            <div class="col-7 mt-2 mt-lg-3" >
+               <call-button-multiple
+                  v-if="announcement?.is_auto_salon"
+                  :phones="announcement?.user?.autosalon?.phones"
+                  :announcement-id="announcement?.id_unique"
+               />
+
+               <call-button
+                  v-else
+                  :phone="contact?.phone"
+                  :announcement-id="announcement?.id_unique"
+               />
             </div>
 
-            <div class="col-12 mt-2 mt-lg-3" v-if="!isMobileBreakpoint && announcement.status === 2">
+            <div class="col-12 mt-2 mt-lg-3" v-if="!isMobileBreakpoint && announcement?.status === 2">
                <div class="status"> {{ $t('announcement_pending') }}</div>
             </div>
          </div>
@@ -145,14 +162,14 @@
 <!--      </template>-->
 
       <template
-         v-if="!brief &&(((announcement.status == 1 || announcement.has_monetization)) || needToPay)">
+         v-if="(((announcement.status == 1 || announcement.has_monetization)) || needToPay)">
 <!--         <hr class="mt-3"-->
 <!--             v-if="needToPay ||-->
 <!--             (!this.isMobileBreakpoint && announcement.has_monetization && $auth.loggedIn) ||-->
 <!--             (!this.isMobileBreakpoint && !announcement.has_monetization) && this.type !== 'registration-marks'"-->
 <!--         />-->
 
-         <div :class="{'mb-2 mb-lg-3': !needToPay }" v-if="type !== 'registration-marks'">
+         <div :class="{'mb-2 mb-lg-3': !needToPay }" v-if="type !== 'plates'">
             <pay-announcement-button
                :announcement="announcement"
                v-if="needToPay"
@@ -162,16 +179,43 @@
                :announcement="announcement"
                v-else-if="!this.isMobileBreakpoint && announcement.has_monetization && $auth.loggedIn && $auth.user.id === announcement.user_id && !needToPay"
             />
-
-            <monetization-button
-               class="h-52"
-               :announcement="announcement"
-               @openModal="openModal"
-            />
          </div>
       </template>
 
-      <div class="btns">
+      <div class="quick-info__item" v-if="brief">
+         <monetization-button
+            class="h-52"
+            :announcement="announcement"
+            @openModal="openModal"
+         />
+
+         <div class="btns">
+            <add-favorite
+               class="h-52"
+               :template="'btn'"
+               :text="'Seçilmiş et'"
+               :announcement="announcement"
+            />
+
+            <add-comparison
+               v-if="type !== 'plates'"
+               class="h-52"
+               :template="'btn'"
+               :text="$t('compare')"
+               :id="announcement.id_unique"
+            />
+
+            <edit-button
+               :announcement="announcement"
+               :type="type"
+               :className="'white h-52'"
+               v-if="showEditButton(announcement)"
+               @openModal="openModal"
+            />
+         </div>
+      </div>
+
+      <div class="btns" v-else>
          <add-favorite
             class="h-52"
             :template="'btn'"
@@ -180,14 +224,23 @@
          />
 
          <add-comparison
+            v-if="type !== 'plates'"
             class="h-52"
             :template="'btn'"
             :text="$t('compare')"
             :id="announcement.id_unique"
          />
+
+         <edit-button
+            :announcement="announcement"
+            :type="type"
+            :className="'white h-52'"
+            v-if="showEditButton(announcement)"
+            @openModal="openModal"
+         />
       </div>
 
-<!--      <template v-if="!brief && announcement.status != 2 && !(announcement.is_autosalon && announcement.status == 3)">-->
+<!--      <template v-if="!brief && announcement.status != 2 && !(announcement.is_auto_salon && announcement.status == 3)">-->
 <!--         <div class="row mt-n2 mt-lg-n3">-->
 <!--            <div class="col mt-2 mt-lg-3">-->
 <!--               <restore-button-->
@@ -203,12 +256,7 @@
 <!--            </div>-->
 <!--            -->
 <!--            <div class="col mt-2 mt-lg-3">-->
-<!--               <edit-button-->
-<!--                  :announcement="announcement"-->
-<!--                  :type="type"-->
-<!--                  v-if="showEditButton(announcement)"-->
-<!--                  @openModal="openModal"-->
-<!--               />-->
+
 <!--            </div>-->
 <!--         </div>-->
 <!--      </template>-->
@@ -274,7 +322,7 @@
          ...mapGetters(['announcement']),
 
          getAddress() {
-            return this.announcement.is_autosalon ? this.announcement.user?.autosalon?.address : this.announcement.is_part_salon ? this.announcement.user?.part_salon?.address : this.announcement.address
+            return this.announcement.is_auto_salon ? this.announcement.user?.autosalon?.address : this.announcement.is_part_salon ? this.announcement.user?.part_salon?.address : this.announcement.address
          },
 
          contact() {
@@ -309,7 +357,7 @@
             return false;
          },
          showEditButton(item) {
-            if (this.$auth.loggedIn == false) {
+            if (this.$auth.loggedIn === false) {
                return item.status == 1 || item.status == 2
             } else {
                return this.$auth.user.id == item.user.id && item.status != 5 && item.status !== 3;
@@ -345,6 +393,11 @@
          border-radius: 12px;
          border: 1px solid #CDD5DF;
          margin-bottom: 20px;
+
+         &.registration-marks {
+            margin-top: -1px;
+            border-radius: 0 0 12px 12px;
+         }
       }
 
       &__title {
@@ -436,16 +489,16 @@
 
       &.registration-marks {
          .registration-marks__number {
-            position: absolute;
-            top: 0;
-            left: 0;
+            position: relative;
+            //top: 0;
+            //left: 0;
             display: flex;
             align-items: center;
             width: 100%;
             padding: 0 11px;
-            border: 7px solid #121926;
+            border-radius: 12px 12px 0 0;
+            border: 8px solid #121926;
             border-bottom-width: 22px;
-            margin-bottom: 24px;
 
             &-description {
                position: absolute;
@@ -480,6 +533,11 @@
 
          .price {
             margin-top: 90px;
+         }
+
+         .quick-info__details {
+            padding: 8px 0;
+            border-top: 1px solid #E3E8EF;
          }
       }
    }

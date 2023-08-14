@@ -1,81 +1,83 @@
 <template>
-   <div class="pages-cars-id">
-      <div class="container">
-         <div class="announcements-inner">
-            <breadcrumbs :crumbs="crumbs">
-               <share-it type="publish"/>
+   <div class="plate-id">
+      <div class="bg-white">
+         <div class="container">
+            <div class="announcements-inner">
+               <breadcrumbs :crumbs="crumbs">
+<!--                  <share-it type="publish"/>-->
 
-               <span class="text-data">
-                  <icon name="eye" />
-                  {{ registrationMark.view_count }}
-                  <icon name="cursor" />
-                  {{ registrationMark.open_count }}
-                  <icon name="star" />
-                  {{ registrationMark.favorites_count }}
-               </span>
+<!--                  <span class="text-data">-->
+<!--                     <icon name="eye" />-->
+<!--                     {{ registrationMark.view_count }}-->
+<!--                     <icon name="cursor" />-->
+<!--                     {{ registrationMark.open_count }}-->
+<!--                     <icon name="star" />-->
+<!--                     {{ registrationMark.favorites_count }}-->
+<!--                  </span>-->
 
-               <span class="text-data">
-                  <icon name="calendar"/>
+<!--                  <span class="text-data">-->
+<!--                     <icon name="calendar"/>-->
+<!--   -->
+<!--                     {{ registrationMark.humanize_created_at }}-->
+<!--                  </span>-->
+               </breadcrumbs>
 
-                  {{ registrationMark.humanize_created_at }}
-               </span>
-            </breadcrumbs>
+               <div class="row flex-column flex-lg-row">
+                  <div class="col-auto">
+                     <div class="wrapp">
+                        <client-only>
+                           <div
+                              class="plate-id__registrationMark"
+                              :style="{ background: `url(/images/registration-marks/car_${count}.png) center center / contain no-repeat`}"
+                           >
+                              <div class="registrationMarks__number">
+                                 <div class="divider">
+                                    <img src="/icons/registrationMarks_icons.svg" alt="icons">
+                                 </div>
 
-            <div class="row flex-column flex-lg-row">
-               <div class="col-auto">
-                  <div class="wrapp">
-                     <client-only>
-                        <div
-                           class="pages-cars-id__registrationMark"
-                           :style="{ background: `url(/images/registration-marks/car_${count}.png) center center / contain no-repeat`}"
-                        >
-                           <div class="registrationMarks__number">
-                              <div class="divider">
-                                 <img src="/icons/registrationMarks_icons.svg" alt="icons">
+                                 <div class="divider">
+                                    <p>{{ registrationMark.car_number }}</p>
+                                 </div>
+
+                                 <span class="registrationMarks__number-description">MASHIN.AL</span>
                               </div>
 
-                              <div class="divider">
-                                 <p>{{ registrationMark.car_number }}</p>
-                              </div>
-
-                              <span class="registrationMarks__number-description">MASHIN.AL</span>
+                              <!--                           <add-favorite :announcement="registrationMark"  :type="'registrationMark'"/>-->
                            </div>
+                        </client-only>
+                     </div>
 
-                           <add-favorite :announcement="registrationMark"  :type="'registrationMark'"/>
-                        </div>
-                     </client-only>
+                     <comment :comment="registrationMark.comment" v-if="registrationMark.comment && !isMobileBreakpoint"></comment>
                   </div>
 
-                  <comment :comment="registrationMark.comment" v-if="registrationMark.comment && !isMobileBreakpoint"></comment>
-               </div>
-
-               <div class="col-auto">
-                  <quick-info type="registration-marks" />
+                  <div class="col-auto">
+                     <quick-info type="plates" />
+                  </div>
                </div>
             </div>
-
-            <PlatesGrid
-               :items="registrationMarks?.data"
-               :showFavoriteBtn="true"
-               v-if="registrationMarks?.data.length"
-            >
-               <template #head>
-                  <h4 class="registrationMarksGrid__title">{{ $t('registration_marks') }}</h4>
-
-                  <nuxt-link :to="$localePath('/plates')">
-                     <span>{{ $t('see_all') }}</span>
-
-                     <inline-svg :src="'/icons/arrow-right.svg'" :width="'15px'" />
-                  </nuxt-link>
-               </template>
-            </PlatesGrid>
-
-            <div v-if="isMobileBreakpoint && registrationMark.status != 3" class="mt-3 mt-lg-0">
-               <floating-cta :announcement="registrationMark"/>
-            </div>
-
-            <HandleIds :type="'plate'" :single="true" :items="[registrationMark.id]" />
          </div>
+      </div>
+
+      <div class="container">
+         <PlatesGrid
+            :items="registrationMarks?.data"
+            :showFavoriteBtn="true"
+            v-if="registrationMarks?.data.length"
+         >
+            <template #head>
+               <Cap :className="'mb40'">
+                  <template #left>
+                     <h3>{{ $t('relative_announcements') }}</h3>
+                  </template>
+               </Cap>
+            </template>
+         </PlatesGrid>
+
+         <div v-if="isMobileBreakpoint && registrationMark.status != 3" class="mt-3 mt-lg-0">
+            <floating-cta :announcement="registrationMark"/>
+         </div>
+
+         <HandleIds :type="'plate'" :single="true" :items="[registrationMark.id]" />
       </div>
    </div>
 </template>
@@ -88,6 +90,7 @@
    import PlatesGrid from "~/components/announcements/PlatesGrid.vue";
    import FloatingCta from "~/components/announcements/inner/FloatingCta.vue";
    import HandleIds from "~/components/announcements/HandleIds.vue";
+   import Cap from "~/components/elements/Cap.vue";
 
    export default {
       name: 'pages-marks-id',
@@ -98,7 +101,7 @@
          });
       },
 
-      middleware: ['auth_general'],
+      // middleware: ['auth_general'],
 
       components: {
          QuickInfo,
@@ -106,7 +109,8 @@
          AddFavorite,
          PlatesGrid,
          FloatingCta,
-         HandleIds
+         HandleIds,
+         Cap
       },
 
       nuxtI18n: {
@@ -163,7 +167,13 @@
 </script>
 
 <style lang="scss">
-   .pages-cars-id {
+   .plate-id {
+      //margin-top: -27px;
+
+      .bg-white {
+         padding-bottom: 56px;
+      }
+
       .wrapp {
          background-color: #FFFFFF;
          margin-bottom: 20px;
@@ -172,7 +182,9 @@
       &__registrationMark {
          position: relative;
          width: 100%;
-         height: 483px;
+         height: 600px;
+         border-radius: 12px;
+         border: 1px solid #CDD5DF;
 
          .white-background {
             position: absolute;
@@ -185,14 +197,13 @@
 
       .registrationMarks__number {
          position: absolute;
-         top: 297px;
-         left: 326px;
+         top: 345px;
+         left: 271px;
          display: flex;
          align-items: center;
          padding: 0 6px;
          border: 7px solid #121926;
          border-bottom-width: 14px;
-         margin-bottom: 24px;
          background-color: #FFFFFF;
          border-radius: 4px;
 
@@ -219,7 +230,7 @@
             p {
                font-family: 'DinMittelschriftgepraegt', sans-serif;
                font-weight: 400;
-               font-size: 32px;
+               font-size: 30px;
                line-height: 32px;
                letter-spacing: -0.5px;
                color: #1B2434;
@@ -229,7 +240,7 @@
       }
 
       .registrationMarksGrid {
-         margin-top: 48px;
+         margin-top: 56px;
 
          &__head {
             a {
@@ -249,15 +260,41 @@
       }
    }
 
+   .dark-mode {
+      .plate-id {
+         background-color: #1B2434;
+
+         .bg-white {
+            background-color: #121926 !important;
+         }
+
+         .quick-info {
+            .registration-marks__number {
+               border-color: #1B2434;
+            }
+         }
+
+         .quickInfoPrice {
+            &.plates {
+               p {
+                  color: #EEF2F6;
+               }
+            }
+         }
+      }
+   }
+
    @media (max-width: 1250px) {
-      .pages-cars-id {
+      .plate-id {
+         margin-top: -31px;
+
          &__registrationMark {
-            height: 371px;
+            height: 450px;
          }
 
          .registrationMarks__number {
-            top: 220px;
-            left: 205px;
+            top: 270px;
+            left: 285px;
             border-width: 5px;
             border-bottom-width: 12px;
 
@@ -277,7 +314,7 @@
                }
 
                p {
-                  font-size: 23px;
+                  font-size: 25px;
                   line-height: 27px;
                }
             }
@@ -285,19 +322,15 @@
       }
    }
 
-   @media (max-width: 1025px) {
-      .pages-cars-id {
-         .wrapp {
-            margin: 0 -25px;
+   @media (max-width: 1150px) {
+      .plate-id {
+         .announcement-comment {
+            margin-bottom: 20px;
          }
 
          .registrationMarks__number {
-            left: 200px;
-
-            p {
-               font-size: 21px;
-               line-height: 24px;
-            }
+            top: 275px;
+            left: 390px;
          }
 
          .quick-info {
@@ -326,8 +359,42 @@
       }
    }
 
+   @media (max-width: 992px) {
+      .plate-id {
+         &__registrationMark {
+            height: 400px;
+         }
+
+         .registrationMarks__number {
+            top: 240px;
+            left: 195px;
+         }
+      }
+   }
+
+   @media (max-width: 600px) {
+      .plate-id {
+         .quick-info {
+            &.registration-marks {
+               .registration-marks__number {
+                  .divider {
+                     p {
+                        font-size: 80px;
+                        line-height: 85px;
+                     }
+                  }
+               }
+
+               .price {
+                  margin-top: 110px;
+               }
+            }
+         }
+      }
+   }
+
    @media (max-width: 540px) {
-      .pages-cars-id {
+      .plate-id {
          .registrationMarks__number {
             left: 50%;
             transform: translateX(-50%);
@@ -345,7 +412,7 @@
                .registration-marks__number {
                   .divider {
                      p {
-                        font-size: 80px;
+                        font-size: 73px;
                         line-height: 80px;
                      }
                   }
@@ -355,10 +422,10 @@
       }
    }
 
-   @media (max-width: 480px) {
-      .pages-cars-id {
+   @media (max-width: 485px) {
+      .plate-id {
          .registrationMarks__number {
-            top: 218px;
+            top: 230px;
          }
 
          .quick-info {
@@ -366,8 +433,8 @@
                .registration-marks__number {
                   .divider {
                      p {
-                        font-size: 75px;
-                        line-height: 75px;
+                        font-size: 67px;
+                        line-height: 70px;
                      }
                   }
                }
@@ -376,10 +443,10 @@
       }
    }
 
-   @media (max-width: 440px) {
-      .pages-cars-id {
+   @media (max-width: 450px) {
+      .plate-id {
          .registrationMarks__number {
-            top: 216px;
+            top: 230px;
 
             .divider {
                img {
@@ -387,7 +454,7 @@
                }
 
                p {
-                  font-size: 19px;
+                  font-size: 17px;
                   line-height: 22px;
                }
             }
@@ -402,8 +469,8 @@
                      }
 
                      p {
-                        font-size: 70px;
-                        line-height: 70px;
+                        font-size: 63px;
+                        line-height: 68px;
                      }
                   }
                }
@@ -412,25 +479,36 @@
       }
    }
 
-   @media (max-width: 420px) {
-      .pages-cars-id {
+   @media (max-width: 430px) {
+      .plate-id {
          .registrationMarks__number {
-            top: 214px;
+            top: 225px;
+         }
 
-            .divider {
-               p {
-                  font-size: 18px;
-                  line-height: 20px;
+         .quick-info {
+            &.registration-marks {
+               .registration-marks__number {
+                  .divider {
+                     p {
+                        font-size: 60px;
+                        line-height: 65px;
+                     }
+                  }
                }
             }
          }
       }
    }
 
-   @media (max-width: 400px) {
-      .pages-cars-id {
+   @media (max-width: 405px) {
+      .plate-id {
          .registrationMarks__number {
-            top: 212px;
+            .divider {
+               p {
+                  font-size: 15px;
+                  line-height: 20px;
+               }
+            }
          }
 
          .quick-info {
@@ -442,8 +520,8 @@
                      }
 
                      p {
-                        font-size: 65px;
-                        line-height: 65px;
+                        font-size: 57px;
+                        line-height: 62px;
                      }
                   }
                }
@@ -456,12 +534,8 @@
       }
    }
 
-   @media (max-width: 375px) {
-      .pages-cars-id {
-         .registrationMarks__number {
-            top: 210px;
-         }
-
+   @media (max-width: 385px) {
+      .plate-id {
          .quick-info {
             &.registration-marks {
                .registration-marks__number {
@@ -471,8 +545,8 @@
                      }
 
                      p {
-                        font-size: 60px;
-                        line-height: 60px;
+                        font-size: 50px;
+                        line-height: 57px;
                      }
                   }
                }
@@ -485,8 +559,19 @@
       }
    }
 
-   @media (max-width: 355px) {
-      .pages-cars-id {
+   @media (max-width: 370px) {
+      .plate-id {
+         .registrationMarks__number {
+            top: 223px;
+
+            .divider {
+               p {
+                  font-size: 14px;
+                  line-height: 17px;
+               }
+            }
+         }
+
          .quick-info {
             &.registration-marks {
                .registration-marks__number {
@@ -496,14 +581,30 @@
                      }
 
                      p {
-                        font-size: 55px;
-                        line-height: 55px;
+                        font-size: 47px;
                      }
                   }
                }
 
                .price {
                   margin-top: 80px;
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 350px) {
+      .plate-id {
+         .quick-info {
+            &.registration-marks {
+               .registration-marks__number {
+                  .divider {
+
+                     p {
+                        font-size: 42px;
+                     }
+                  }
                }
             }
          }

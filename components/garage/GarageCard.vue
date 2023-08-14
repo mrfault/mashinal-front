@@ -1,5 +1,5 @@
 <template>
-   <nuxt-link class="ma-garage-card" :to="$localePath(item.url)">
+   <nuxt-link v-if="item.title !== 'logout' && item.title !== 'MashinPay'" class="ma-garage-card" :to="$localePath(item.url)">
 
       <div class="ma-garage-card__body" v-if="true">
 
@@ -11,12 +11,36 @@
          <p class="ma-garage-card__description">{{ $t(item.description) }}</p>
       </div>
    </nuxt-link>
+   <a v-else-if="item.title === 'MashinPay'" class="ma-garage-card" href="https://mashinpay.az/" target="_blank">
+      <div class="ma-garage-card__body" v-if="true">
+
+         <div class="ma-garage-card--image">
+            <img :src="`/new-icons/profile/${item.image}`" alt="">
+         </div>
+         <h5 class="ma-garage-card__title">{{ $t(item.title) }}</h5>
+
+         <p class="ma-garage-card__description">{{ $t(item.description) }}</p>
+      </div>
+   </a>
+   <a v-else class="ma-garage-card" @click="logout">
+      <div class="ma-garage-card__body" v-if="true">
+
+         <div class="ma-garage-card--image">
+            <img :src="`/new-icons/profile/${item.image}`" alt="">
+         </div>
+         <h5 class="ma-garage-card__title">{{ $t(item.title) }}</h5>
+
+         <p class="ma-garage-card__description">{{ $t(item.description) }}</p>
+      </div>
+   </a>
 </template>
 
 <script>
 import LetterOfAttorneyButton from '~/components/garage/loa/LetterOfAttorneyButton';
+import {UserDataMixin} from "~/mixins/user-data";
 
 export default {
+   mixins: [UserDataMixin],
    components: { LetterOfAttorneyButton },
 
    props: {

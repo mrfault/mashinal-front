@@ -57,6 +57,8 @@
                         {{ getCarDetails && getCarDetails.model }}
                         {{ getCarDetails && getCarDetails.generation && getCarDetails.generation[locale] }}
                      </h3>
+
+                     <h3 v-else>{{ $t('announcements') }}</h3>
                   </template>
 
                   <template #right>
@@ -129,7 +131,7 @@
       async asyncData({store, route}) {
          let post = {...JSON.parse(route.query.filter || '{}')};
          let page = route.query.page || 1;
-         let searchParams = {url: '/moto/motorcycle', prefix: 'moto'}
+         let searchParams = {url: '/moto', prefix: 'moto'}
 
          await Promise.all([
             store.dispatch('fetchAllAnnouncementsHome'),
@@ -138,7 +140,7 @@
             store.dispatch('getMotoOptions'),
             store.dispatch('getBodyOptions'),
             store.dispatch('getOptions'),
-            store.dispatch('getColors'),
+            // store.dispatch('getColors'),
             store.dispatch('getGridSearch', {...searchParams, post, page}),
             // get model options for brands
             ...Object.keys(post?.additional_brands || {})
@@ -183,7 +185,7 @@
             return [
                {name: this.$t('all2'), key: zeroFirst ? 0 : 1},
                {name: this.$t('new'), key: zeroFirst ? 1 : 2},
-               {name: this.$t('S_H'), key: zeroFirst ? 2 : 3}
+               {name: this.$t('with_mileage_2'), key: zeroFirst ? 2 : 3}
                // {name: this.$t(this.meta.type === 'parts' ? 'S_H' : 'with_mileage'), key: zeroFirst ? 2 : 3}
             ];
          },
@@ -235,7 +237,7 @@
 
 <style lang="scss" scoped>
    .pages-moto-index {
-      margin-top: 32px;
+      padding-top: 32px;
 
       .announcements-grid {
          margin-top: 30px;

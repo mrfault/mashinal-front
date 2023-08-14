@@ -335,7 +335,8 @@
 .ma-login-tab {
    display: flex;
    width: 100%;
-   height: 536px;
+   min-height: 536px;
+
    background: #fff;
 
    border-radius: 12px;
@@ -345,6 +346,7 @@
    &--form {
       width: 440px;
       height: 100%;
+      min-height: 536px;
       padding: 40px 40px 32px 40px;
       border: 1px solid rgba(#CDD5DF, .7);
       border-right: none;
@@ -439,12 +441,13 @@
 
 .send-again-text {
    margin-bottom: 0;
+   text-align: center;
 
    a {
       font: 500 16px/20px 'TTHoves';
       text-align: center;
       text-decoration: none;
-      color: #2970FF;
+      color: rgba(154, 164, 178, 1);
    }
 
    span {
@@ -465,8 +468,8 @@
 
 @media (max-width: 990px) {
    .send-again-text {
-      padding-top: 56px;
-      padding-bottom: 32px;
+      padding-top: 16px;
+      padding-bottom: 16px;
    }
 }
 
@@ -479,6 +482,12 @@
          border: none;
 
       }
+   }
+
+   .ma-sms__box input{
+      background: #121926;
+      border: 1px solid rgba(#697586,.5);
+      color: #fff;
    }
 
    .why-register {

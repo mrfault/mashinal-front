@@ -166,7 +166,6 @@ export default {
    },
    mounted() {
       if (this.getAgreements.length) {
-         console.log(this.getAgreements)
          this.showPackage = false;
       }
    },

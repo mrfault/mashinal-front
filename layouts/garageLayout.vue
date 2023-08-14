@@ -7,18 +7,18 @@
                <div class="ma-garage__nav">
                   <NuxtLink :to="$localePath('garage-services')" class="ma-garage__nav--profile">
                      <div class="ma-garage__nav--profile__avatar">
-                        <template v-if="user.avatar || user.autosalon.logo">
-                           <img :src="image" :alt="user.full_name"/>
+                        <template v-if="image">
+                           <img :src="image" :alt="user?.full_name"/>
                         </template>
-                        <h5 v-else class="ma-garage__nav--profile__name">{{ user.full_name.charAt(0) }}</h5>
+                        <h5 v-else class="ma-garage__nav--profile__name">{{ user?.full_name.charAt(0) }}</h5>
                      </div>
-                     <h5 class="ma-garage__nav--profile__name"> {{ user.full_name }}</h5>
+                     <h5 class="ma-garage__nav--profile__name"> {{ user?.full_name }}</h5>
                   </NuxtLink>
                   <template v-for="(item, index) in garageNavs">
                      <nuxt-link
                         v-if="!item.isButton"
                         :class="{'ma-garage-link-active': isRouteActive(item.link) }"
-                        :to="item.link"
+                        :to="$localePath(item.link)"
                         class="ma-garage__nav--item"
                      >
                         <inline-svg :src="`/new-icons/${item.icon}-new.svg`"/>
@@ -48,7 +48,7 @@
                      <div v-if="!isMobileBreakpoint" class="ma-garage__nav">
                         <div class="ma-garage__nav--profile">
                            <div class="ma-garage__nav--profile__avatar">
-                              <template v-if="user.avatar|| user.autosalon.logo">
+                              <template v-if="image">
                                  <img :src="image" :alt="user.full_name"/>
                               </template>
                               <h5 v-else class="ma-garage__nav--profile__name">{{ user.full_name.charAt(0) }}</h5>
@@ -57,7 +57,7 @@
                         </div>
                         <template v-for="(item) in garageNavs">
                            <nuxt-link v-if="!item.isButton" :to="item.link" class="ma-garage__nav--item">
-                              <!--                              <icon :name="item.icon"/>-->
+                              <!--<icon :name="item.icon"/>-->
                               <inline-svg :src="`/new-icons/${item.icon}-new.svg`"/>
                               <h6 class="ma-garage__nav--item__title">{{ item.title }}</h6>
                            </nuxt-link>
@@ -95,10 +95,12 @@ export default {
    },
    computed: {
       image() {
-         if (this.user.autosalon) {
-            return (this.user.autosalon.logo.includes('http') ? '' : 'https://dev.mashin.al/storage/') + this.user.autosalon.logo;
+         if (this.user?.autosalon) {
+            return (this.user?.autosalon?.logo.includes('http') ? '' : 'https://dev.mashin.al/storage/') + this.user?.autosalon?.logo;
+         } else if (this.user?.avatar){
+            return (this.user?.avatar?.includes('http') ? '' : 'https://dev.mashin.al/storage/') + this.user?.avatar;
          } else {
-            return (this.user.avatar.includes('http') ? '' : 'https://dev.mashin.al/storage/') + this.user.avatar;
+            return false;
          }
       },
       garageNavs() {
@@ -114,6 +116,11 @@ export default {
                   icon: 'layers',
                   link: '/profile/announcements?type=1',
                },
+               // {
+               //    icon: 'invoice',
+               //    title: this.$t('penalties'),
+               //    link: '/garage',
+               // },
                {
                   title: this.$t('my_balance'),
                   icon: 'wallet',
@@ -128,6 +135,11 @@ export default {
                   title: this.$t('agreements'),
                   icon: 'document-text',
                   link: '/profile/agreement',
+               },
+               {
+                  title: this.$t('my_autos'),
+                  icon: 'car',
+                  link: '/profile/automobiles/',
                },
                {
                   title: this.$t('sign_out'),
@@ -157,6 +169,11 @@ export default {
                   title: this.$t('my_account'),
                   icon: 'user',
                   link: '/profile/settings/',
+               },
+               {
+                  title: this.$t('my_autos'),
+                  icon: 'car',
+                  link: '/profile/automobiles/',
                },
                {
                   title: this.$t('sign_out'),
@@ -233,9 +250,32 @@ export default {
       .no-results{
          background: #1b2434 !important;
       }
+      .stratch-child-block{
+         height: 100%;
+      }
    }
    .ma-announcements__head{
       background: #1B2434;
+      overflow-y: auto !important;
+      &::-webkit-scrollbar {
+         width: 3px;
+         height: 7px;
+      }
+
+      /* Track */
+      &::-webkit-scrollbar-track {
+         background: transparent !important;
+      }
+
+      /* Handle */
+      &::-webkit-scrollbar-thumb {
+         background: rgb(206, 206, 206);
+      }
+
+      /* Handle on hover */
+      &::-webkit-scrollbar-thumb:hover {
+         background: #555;
+      }
       button{
          color: #fff;
       }

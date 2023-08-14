@@ -51,8 +51,12 @@
       }
    }
 
-   .swiper-slide {
-      background: $dark-2 !important;
+   .images-slider {
+      .slider-overlay_middle {
+         button {
+            background-color: $dark-light-new;
+         }
+      }
    }
 
    .map-sidebar {
@@ -124,7 +128,7 @@
    }
 
    .no-results {
-      background: $dark-1;
+      background: $dark-new;
    }
 
    h2.title-with-line {
@@ -761,6 +765,10 @@
             }
          }
       }
+   }
+
+   .bg-silver {
+      background-color: $dark-light-new;
    }
 }
 

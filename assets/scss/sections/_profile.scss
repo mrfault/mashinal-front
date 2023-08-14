@@ -1,6 +1,6 @@
 .profile-card {
    position: relative;
-   margin: 6px 0 32px 0;
+   margin-bottom: 32px;
 
    .edit-link {
       position: absolute;
@@ -421,6 +421,7 @@
 }
 
 .cover-with-avatar {
+   margin-top: 32px;
    position: relative;
    display: flex;
    align-content: center;

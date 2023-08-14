@@ -13,7 +13,7 @@
                   <div class="row">
                      <div class="col-12" v-if="false">
                         <form-select
-                           :label="$t('vehicle_type_2')"
+                           :label="$t('passenger_car')"
                            :options="vehicleTypes"
                            v-model="filled.vehicleType"
                            :invalid="$v.filled.vehicleType.$error"
@@ -97,6 +97,7 @@
                         <form-text-input
                            input-date
                            :placeholder="$t('production_year')"
+                           :invalid="$v.filled.productionYear.$error"
                            v-model="filled.productionYear"
                         />
                      </div>
@@ -222,11 +223,20 @@
 </template>
 
 <script>
+   import Models from '@/models'
    import { mapGetters } from 'vuex'
    import { required, requiredIf } from 'vuelidate/lib/validators'
-   import Models from '@/models'
 
    export default {
+      name: 'CalculatorCustoms',
+
+      head() {
+         return this.$headMeta({
+            title: this.$t('customs_calculator'),
+            // description: this.$t('meta-registration_marks')
+         });
+      },
+
       data() {
          return {
             vehicleTypes: [{name: this.$t('passenger_car'), id: 1}],
@@ -282,7 +292,7 @@
          },
 
          selectedVehicleType() {
-            return this.$t('vehicle_type_2')
+            return this.$t('passenger_car')
          }
       },
 
@@ -550,12 +560,22 @@
          },
 
          async submit() {
-            this.$v.$touch()
-            if (this.$v.$error) return
             try {
-               this.calculate()
-            } catch (e) {
+               this.$v.$touch();
+               if (this.$v.$error) {
+                  this.$toasted.error(this.$t('required_fields'));
+                  return;
+               }
 
+               this.calculate();
+
+               if (this.isMobileBreakpoint) {
+                  setTimeout(() => {
+                     this.scrollTo('.calculator__results', [-15]);
+                  }, 100)
+               }
+            } catch (e) {
+               console.error(e);
             }
          }
       },
@@ -583,17 +603,20 @@
             },
             isMoreThanOneYear: false,
             productionYear: {
-               required: requiredIf(function () {
-                  return this.filled.isMoreThanOneYear == true
-               }),
+               required
+               // required: requiredIf(function () {
+               //    return this.filled.isMoreThanOneYear === true
+               // }),
             },
          },
       }
    }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
    .calculator-customs {
+      padding-bottom: 120px;
+
       .card {
          padding: 32px 24px 24px;
 
@@ -603,6 +626,107 @@
             line-height: 28px;
             color: #1B2434;
             margin-bottom: 20px;
+         }
+      }
+
+      .calculator__results {
+         .vehicle-specs {
+            ul {
+               li {
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  gap: 20px;
+                  padding: 20px 0;
+                  border-bottom: 1px solid #E3E8EF;
+
+                  span {
+                     font-size: 16px;
+                     line-height: 20px;
+
+                     &:first-child {
+                        color: #364152;
+                        font-weight: 400;
+                     }
+
+                     &:last-child {
+                        color: #121926;
+                        font-weight: 500;
+                     }
+                  }
+               }
+            }
+
+            .sum {
+               display: flex;
+               align-items: center;
+               justify-content: space-between;
+               margin-top: 20px;
+
+               span {
+                  color: #121926;
+                  font-size: 20px;
+                  font-weight: 600;
+                  line-height: 24px;
+               }
+            }
+         }
+      }
+   }
+
+   .dark-mode {
+      .calculator-customs {
+         .vehicle-specs {
+            ul {
+               li {
+                  border-color: #4B5565;
+
+                  span {
+                     color: #9AA4B2 !important;
+                  }
+               }
+            }
+
+            .sum {
+               span {
+                  color: #EEF2F6 !important;
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 600px) {
+      .dark-mode {
+         .calculator-customs {
+            .calculator__inputs {
+               background-color: transparent;
+
+               .form-group {
+                  .select-menu_label {
+                     border-color: #364152;
+                     background-color: #1B2434 !important;
+                  }
+
+                  .text-input {
+                     input {
+                        border-color: #364152;
+                        background-color: #1B2434 !important;
+                     }
+                  }
+
+                  .checkbox-input {
+                     label {
+                        border-color: #364152;
+                        background-color: #1B2434 !important;
+
+                        .text-truncate {
+                           color: #CDD5DF;
+                        }
+                     }
+                  }
+               }
+            }
          }
       }
    }

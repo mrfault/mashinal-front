@@ -39,7 +39,7 @@
             <form-select
                :label="$t('from_year')"
                :options="getYearOptions(false, form.max_year)"
-               v-model="form.min_year"
+               v-model="form.year_from"
                :show-label-on-select="false"
                :clear-option="false"
                in-select-menu
@@ -48,7 +48,7 @@
             <form-select
                :label="$t('to')"
                :options="getYearOptions(form.min_year, false)"
-               v-model="form.max_year"
+               v-model="form.year_to"
                :show-label-on-select="false"
                :clear-option="false"
                in-select-menu
@@ -221,38 +221,63 @@
                has-search
             />
 
+<!--            <form-select-->
+<!--               v-model="form['box']"-->
+<!--               :options="motoOptions.config['box'].values.filter(value => value.key !== 0)"-->
+<!--               :multiple="motoOptions.config['box'].multiple &&-->
+<!--                  !motoOptions.config['box'].not_foreach &&-->
+<!--                  'box' !== 'tacts'-->
+<!--               "-->
+<!--               :name-in-value="-->
+<!--                  motoOptions.config['box'].multiple &&-->
+<!--                  !motoOptions.config['box'].not_foreach &&-->
+<!--                  'box' !== 'tacts'-->
+<!--               "-->
+<!--               :label="$t(motoOptions.config['box'].placeholder)"-->
+<!--               :translate-options="true"-->
+<!--               :clear-placeholder="true"-->
+<!--               :clear-option="false"-->
+<!--            />-->
+
             <form-select
-               v-model="form['box']"
-               :options="motoOptions.config['box'].values.filter(value => value.key !== 0)"
-               :multiple="motoOptions.config['box'].multiple &&
-                  !motoOptions.config['box'].not_foreach &&
-                  'box' !== 'tacts'
-               "
-               :name-in-value="
-                  motoOptions.config['box'].multiple &&
-                  !motoOptions.config['box'].not_foreach &&
-                  'box' !== 'tacts'
-               "
-               :label="$t(motoOptions.config['box'].placeholder)"
-               :translate-options="true"
+               :label="$t('box')"
+               :options="motoGearbox"
                :clear-placeholder="true"
                :clear-option="false"
+               :multiple="true"
+               v-model="form.box"
             />
 
-            <div>Yanacaq</div>
+            <form-select
+               :label="$t('toplivo')"
+               :options="motoFuelTypes"
+               :clear-placeholder="true"
+               :clear-option="false"
+               :multiple="true"
+               v-model="form.fuel_type"
+            />
 
-            <div class="d-flex">
-               <span>Zəmanətli</span>
+            <form-select
+               :label="$t('gearing')"
+               :options="motoTransmissions"
+               :clear-placeholder="true"
+               :clear-option="false"
+               :multiple="true"
+               v-model="form.gearing"
+            />
 
-               <form-checkbox
-                  :label="$t('external_moto')"
-                  :show-input="false"
-                  v-model="form.external_salon"
-                  input-name="savedSearch"
-               />
-            </div>
+<!--            <div class="d-flex">-->
+<!--               <span>Zəmanətli</span>-->
 
-            <div>Ötürücü</div>
+<!--               <form-checkbox-->
+<!--                  :label="$t('external_moto')"-->
+<!--                  :show-input="false"-->
+<!--                  v-model="form.external_salon"-->
+<!--                  input-name="savedSearch"-->
+<!--               />-->
+<!--            </div>-->
+
+<!--            <div>Ötürücü</div>-->
 
             <form-select
                v-model="form['customs']"
@@ -273,20 +298,20 @@
                :clear-option="false"
             />
 
-            <div class="checkboxes">
+<!--            <div class="checkboxes">-->
                <form-select
-                  v-model="form['status']"
+                  v-model="form['damaged']"
                   :options="motoOptions.config['used_ones'].values.filter(value => value.key !== 0)"
                   :multiple="
-                  motoOptions.config['used_ones'].multiple &&
-                  !motoOptions.config['used_ones'].not_foreach &&
-                  'status' !== 'tacts'
-               "
+                     motoOptions.config['used_ones'].multiple &&
+                     !motoOptions.config['used_ones'].not_foreach &&
+                     'status' !== 'tacts'
+                  "
                   :name-in-value="
-                  motoOptions.config['used_ones'].multiple &&
-                  !motoOptions.config['used_ones'].not_foreach &&
-                  'status' !== 'tacts'
-               "
+                     motoOptions.config['used_ones'].multiple &&
+                     !motoOptions.config['used_ones'].not_foreach &&
+                     'status' !== 'tacts'
+                  "
                   :label="$t(motoOptions.config['used_ones'].placeholder)"
                   :translate-options="true"
                   :clear-placeholder="true"
@@ -302,7 +327,7 @@
                   :clear-option="false"
                   multiple
                />
-            </div>
+<!--            </div>-->
 
             <div class="checkboxes">
                <form-checkbox
@@ -321,20 +346,20 @@
             </div>
          </template>
 
-         <button
-            type="button"
-            :class="[
-                'btn',
-                'full-width',
-                'btn--blue-new-light-2',
-                { 'pointer-events-none': pending },
-            ]"
-            @click="savedSearch = true; $nuxt.$emit('login-popup', 'saved-search')"
-         >
-            {{ $t('search_save') }}
+<!--         <button-->
+<!--            type="button"-->
+<!--            :class="[-->
+<!--                'btn',-->
+<!--                'full-width',-->
+<!--                'btn&#45;&#45;blue-new-light-2',-->
+<!--                { 'pointer-events-none': pending },-->
+<!--            ]"-->
+<!--            @click="savedSearch = true; $nuxt.$emit('login-popup', 'saved-search')"-->
+<!--         >-->
+<!--            {{ $t('search_save') }}-->
 
-            <inline-svg :src="'/icons/save-search.svg'" />
-         </button>
+<!--            <inline-svg :src="'/icons/save-search.svg'" />-->
+<!--         </button>-->
 
          <button
             type="button"
@@ -358,11 +383,12 @@
 <!--            </button>-->
 
             <button class="btn btn--grey-new-2 full-width" @click="showMore = !showMore">
-               <template v-if="!showMore">
-                  {{ hasValue ? $t('detail') : $t('advanced_search') }}
-               </template>
+<!--               <template v-if="!showMore">-->
+<!--                  {{ hasValue ? $t('detail') : $t('advanced_search') }}-->
+<!--               </template>-->
+               {{ $t('advanced_search') }}
 
-               <template v-else>{{ $t('less_3') }}</template>
+<!--               <template v-else>{{ $t('less_3') }}</template>-->
 
                <inline-svg :src="'/icons/setting-2.svg'" v-if="!showMore" />
 
@@ -418,6 +444,7 @@
    import ColorOptions from '~/components/options/ColorOptions';
    import { mapGetters, mapActions } from 'vuex';
    import { SearchMixin } from '~/mixins/search';
+   import {set} from "lodash/object";
 
    export default {
       components: {
@@ -462,15 +489,17 @@
                type: [],
                capacity_from: '',
                capacity_to: '',
-               min_year: '',
-               max_year: '',
+               year_from: '',
+               year_to: '',
                price_from: '',
                price_to: '',
                mileage_from: '',
                mileage_to: '',
                power_to: '',
                power_from: '',
-               status: '',
+               damaged: '',
+               gearing: [],
+               fuel_type: [],
                customs: '',
                region: '',
                exchange_possible: false,
@@ -481,7 +510,17 @@
       },
 
       computed: {
-         ...mapGetters(['motoOptions', 'motorcycleModels', 'scooterModels', 'atvModels', 'sellOptions', 'colors']),
+         ...mapGetters([
+            'motoOptions',
+            'motorcycleModels',
+            'scooterModels',
+            'atvModels',
+            'sellOptions',
+            'colors',
+            'motoGearbox',
+            'motoTransmissions',
+            'motoFuelTypes'
+         ]),
 
          // meta data
          meta() {
@@ -553,11 +592,12 @@
                this.form.power_from || this.form.power_to ||
                this.form.region || this.form.box.length ||
                this.form.external_salon || this.form.customs ||
-               this.form.status || this.form.colors.length ||
-               this.form.exchange_possible || this.form.credit
+               this.form.damaged || this.form.colors.length ||
+               this.form.exchange_possible || this.form.credit ||
+               this.form.gearing.length || this.form.fuel_type.length
                // this.form.with_video ||  this.form.korobka.length ||
                // this.form.engine_type.length || this.form.in_garanty ||
-               // this.form.body.length || this.form.gearing.length ||
+               // this.form.body.length  ||
                // this.form.damage || this.form.n_of_seats.length ||
                // this.form.colors.length || Object.values(this.form.all_options).length)
             )
@@ -590,6 +630,7 @@
                3: this.motoOptions.atv_brands
             }[parseInt(category) || 1];
          },
+
          models(category) {
             return {
                1: this.motorcycleModels,
@@ -597,12 +638,39 @@
                3: this.atvModels
             }[parseInt(category) || 1];
          },
+
+         initialValue() {
+            if (this.$route.query?.filter && JSON.parse(this.$route.query?.filter)?.box) {
+               this.form.box = JSON.parse(this.$route.query?.filter)?.box?.map((f) => f.key);
+            }
+
+            if (this.$route.query?.filter && JSON.parse(this.$route.query?.filter)?.fuel_type) {
+               this.form.fuel_type = JSON.parse(this.$route.query?.filter)?.fuel_type?.map((f) => f.key);
+            }
+
+            if (this.$route.query?.filter && JSON.parse(this.$route.query?.filter)?.gearing) {
+               this.form.gearing = JSON.parse(this.$route.query?.filter)?.gearing?.map((f) => f.key);
+            }
+         }
+      },
+
+      async fetch() {
+         await Promise.all([
+            this.$store.dispatch('getMotoGearboxV2'),
+            this.$store.dispatch('getMotoTransmissionsV2'),
+            this.$store.dispatch('getMotoFuelTypesV2'),
+            this.$store.dispatch('getColors')
+         ])
       },
 
       watch: {
          announceType(val) {
             this.form.announce_type = val;
          }
+      },
+
+      mounted() {
+         this.initialValue();
       }
    }
 </script>

@@ -12,7 +12,7 @@
                class="vehicle-specs__list-item"
                v-if="!(announcement.is_external_salon && spec.key === 'customs')"
                v-for="spec in ul"
-               :key="spec.key" :class="{'is-vin-number': (spec.key == 'vin')}"
+               :key="spec.key" :class="{'is-vin-number': (spec.key === 'vin')}"
             >
                <inline-svg
                   width="32px"
@@ -75,6 +75,16 @@
          ...mapGetters(['announcement', 'catalog', 'sellOptions', 'motoOptions']),
 
          announcementSpecs() {
+            let gearIcon;
+
+            if (this.gear?.type === 1) {
+               gearIcon = 'gearing_back';
+            } else if (this.gear?.type === 2) {
+               gearIcon = 'gearing_front'
+            } else {
+               gearIcon = 'gearing_4x4';
+            }
+
             const specs = [
                {
                   key: 'years', value: this.announcement.year,
@@ -106,7 +116,11 @@
                   key: 'guaranty',
                   value: (this.announcement.in_garanty || this.announcement.guaranty) && this.$t('in_garanty'),
                },
-               {key: 'com_equip_type', value: this.commercialType, for: ['commercial']},
+               {
+                  key: 'com_equip_type',
+                  value: this.commercialType,
+                  for: ['commercial']
+               },
                {
                   key: 'carcase',
                   value: this.bodyType, for: ['cars'],
@@ -126,7 +140,6 @@
                {key: 'the_number_of_measures', value: this.tact, for: ['moto']},
                {key: 'cylinder_block', value: this.cylinderBlock, for: ['moto']},
                {key: 'fuel_type', value: this.fuelType, for: ['moto']},
-
                {
                   key: 'box',
                   value: this.box,
@@ -134,8 +147,8 @@
                },
                {
                   key: 'privod',
-                  value: this.gear,
-                  icon: '/icons/gearing_front.svg'
+                  value: this.gear?.name,
+                  icon: `/icons/${gearIcon}.svg`
                },
                {
                   key: 'condition_2',
@@ -188,6 +201,7 @@
                {key: 'commercial_size', value: this.announcement.commercial_size}
 
             ];
+
             if (this.announcement.is_external_salon) {
                let index = specs.findIndex(item => item.key === 'region');
                delete specs[index]
@@ -203,8 +217,9 @@
 
             // Dynamic specs
             if (this.type === 'parts') {
-               Object.keys(this.announcement.filters).forEach(filter => {
-                  let value = this.announcement.filters[filter]
+               console.log('ssss', this.announcement)
+               Object.keys(this.announcement?.filters)?.forEach(filter => {
+                  let value = this.announcement?.filters[filter]
 
                   if (value) {
                      if (typeof value === 'boolean') {
@@ -226,6 +241,7 @@
 
                   }
                })
+
                if (mergedValues['shine_width'])
                   specs.push({
                      key: 'size',

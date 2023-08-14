@@ -44,6 +44,8 @@
 <!--                  <span>{{ $t('shops') }}</span>-->
 <!--               </h2>-->
 <!--            </div>-->
+            <salon-filters-form where="parts" :count="salonsFiltered.length"/>
+
             <div
                class="salon-card-list row mt-2 mt-lg-3 mb-n2 mb-lg-n3"
                v-if="salonsFiltered.length"
@@ -263,6 +265,6 @@
 
 <style lang="scss" scoped>
    .pages-parts-shops {
-      padding-bottom: 100px;
+      padding-bottom: 50px;
    }
 </style>
