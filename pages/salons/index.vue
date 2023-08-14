@@ -10,7 +10,7 @@
                   :bg="'/img/salon-bg.png'"
                   :title="$t('auto_salons')">
                   <template #content>
-                     <breadcrumbs class="light-color" :crumbs="crumbs"/>
+                     <breadcrumbs class="light-color" :crumbs="crumbs" />
                   </template>
                </Banner>
             </div>
@@ -104,7 +104,7 @@
             </div>
          </div>
 
-         <div :class="['pages-salons autosalon list-view bg-white']" v-if="!showMapsView">
+         <div :class="['pages-salons autosalon list-view bg-silver']" v-if="!showMapsView">
             <div class="container">
                <div class="row">
                   <div class="col-md-12">
@@ -217,7 +217,9 @@ export default {
       },
 
       salonsInView() {
-         return this.salonsFiltered.filter((salon) => {
+         let salons = this.salonsFiltered.filter(item => item.announcement_count > 0);
+
+         return salons.filter((salon) => {
             return this.salonsInBounds
                ? this.salonsInBounds.includes(salon.id)
                : true
