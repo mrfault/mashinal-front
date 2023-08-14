@@ -2786,6 +2786,16 @@ export default {
    "menu_settings": "Tənzimləmələr",
    "menu_settings_desc": "Qaranlıq rejim, dil və bildiriş ayarları və s.",
    "today": "Bu gün",
-   "vehiclePassportExpired": "Nəqliyyat vasitəsinin qeydiyyat şəhadətnaməsi dəyişdirilib"
+   "vehiclePassportExpired": "Nəqliyyat vasitəsinin qeydiyyat şəhadətnaməsi dəyişdirilib",
+   "customs_calculator_desc": "Tələb olunan məlumatlarını daxil etməklə avtomobilinizin gömrük rüsumunu hesablayın",
+   "helper_search_desc": "Hansı parametrlərdə avtomobil axtardığınızı daxil edin, bələdçi sizə bu işdə yardımçı olsun",
+   "fines_desc": "NV-nizi \"Qaraj\" bölməsinə əlavə etməklə, cərimələr haqqında dərhal məlumata sahib olursunuz.",
+   "alcometer_desc": "Hansı parametrlərdə avtomobil axtardığınızı daxil edin, bələdçi sizə bu işdə yardımçı olsun",
+   "comparisons_desc": "Axtarışınızı axtarış şablonlarına əlavə etməklə o parametrə uyğun yeni elana aid bildiriş əldə edəcəksiniz",
+   "my_searches_desc": "NV-nizi \"Qaraj\" bölməsinə əlavə etməklə, cərimələr haqqında dərhal məlumata sahib olursunuz.",
+   "visual_tire_calculator_desc": "Axtarışınızı axtarış şablonlarına əlavə etməklə o parametrə uyğun yeni elana aid bildiriş əldə edəcəksiniz",
+   "external_salon_desc": "Axtarışınızı axtarış şablonlarına əlavə etməklə o parametrə uyğun yeni elana aid bildiriş əldə edəcəksiniz",
+   "shops_desc": "Axtarışınızı axtarış şablonlarına əlavə etməklə o parametrə uyğun yeni elana aid bildiriş əldə edəcəksiniz",
+   "autocatalog_desc": "Lorem ipsum dolor sit amet consectetur. Fermentum euismod nunc massa tristique. Vitae nisi dignissim viverra neque nisl.",
 };
 
