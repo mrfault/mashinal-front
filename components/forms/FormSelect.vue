@@ -472,8 +472,8 @@ export default {
       imgKey: String,
       imgPlaceholder: String,
       invalid: Boolean,
-      shortNamesLabel: Boolean,
       checkOptionsOffset: Boolean,
+      shortNamesLabel: Boolean,
       wider: Boolean,
       hasCards: Boolean,
       limit: Number,
@@ -522,14 +522,20 @@ export default {
       },
       isSelected(option) {
          const value = this.getValue(option)
+
          const hasSameKey = this.nameInValue
             ? this.selectValue.key === value.key
             : this.selectValue === value
+
+         if(!this.multiple && this.objectInValue && this.selectValue instanceof Object) {
+            let key = Object.keys(this.selectValue)[0];
+
+            return value[key] === this.selectValue[key];
+         }
          const hasSameObj =
             this.selectValue instanceof Array &&
-            (this.nameInValue || this.objectInValue
-               ? this.selectValue.findIndex((val) => val && val.key == value.key) !==
-               -1
+            (this.nameInValue || this.objectInValue ?
+               this.selectValue.findIndex((val) => val && val.key == value.key) !== -1
                : this.selectValue.includes(value))
          return hasSameKey || hasSameObj
       },

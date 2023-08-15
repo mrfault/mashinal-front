@@ -160,14 +160,13 @@ export default {
                url: '/catalog',
                description: 'menu_auto_catalog_desc',
                row: 1,
-               auth: false
-               ,
+               auth: false,
                disabled: false
             },
             {
                title: 'menu_call_center',
                image: 'support.png',
-               url: '/',
+               url: 'tel:*8787',
                description: 'menu_call_center_desc',
                row: 1,
                auth: false,

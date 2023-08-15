@@ -7,7 +7,7 @@
          :toggle="showModal"
          @close="closeAndReset"
       >
-         <div class="ma-new-automobile__content">
+         <div :class="{'y-scroll': (form.modification && !isMobileBreakpoint)}" class="ma-new-automobile__content">
             <p v-if="!isEditing" class="ma-new-automobile__desc">{{ $t('add_new_auto_desc') }}</p>
             <div v-if="!isEditing" class="row">
                <!--               brand-->
@@ -78,6 +78,7 @@
                      :label="$t('modification')"
                      :options="modifications"
                      has-search
+                     @change="resetValidation"
                   />
                </div>
 
@@ -92,12 +93,15 @@
                      :placeholder="$t('car_number')"
                   />
                </div>
+               <!--               vin-->
                <div v-if="form.modification" class="col-12 mt-3">
-                  <form-text-input
-                     key="vin"
-                     v-model="form.vin"
-                     :placeholder="$t('vin_carcase_number')"
-                  />
+                     <form-text-input
+                        key="vin"
+                        v-model="form.vin"
+                        :placeholder="$t('vin_carcase_number')"
+                        :invalid="$v.form.vin.$error"
+                        :mask="$maskAlphaNumeric('*****************')"
+                     />
                </div>
 
             </div>
@@ -193,12 +197,13 @@
                      key="vin"
                      v-model="form.vin"
                      :placeholder="$t('vin_carcase_number')"
+                     :invalid="$v.form.vin.$error"
+                     :mask="$maskAlphaNumeric('*****************')"
                   />
                </div>
 
 
             </div>
-
          </div>
          <div class="row">
             <div class="col-12 mt-3">
@@ -288,7 +293,13 @@ export default {
          'getModificationsList',
       ]),
       closeAndReset() {
-         this.$emit("modalClosed", true)
+         this.$emit("modalClosed", true);
+         this.resetValidation();
+         this.pending = false;
+         this.$store.commit("mutate", {property: "carModels", value: []});
+         this.$store.commit("mutate", {property: "carGenerations", value: []});
+         this.$store.commit("mutate", {property: "modificationsList", value: []});
+         this.$store.commit("mutate", {property: "generationTypes", value: []});
          this.form = {
             brand: null,
             model: null,
@@ -321,6 +332,7 @@ export default {
          this.form.brandSlug = slug;
 
          this.form.generation = null;
+         this.$v.$reset();
 
          this.$store.commit("mutate", {property: "carModels", value: []});
          if (id) {
@@ -338,6 +350,7 @@ export default {
             name = model?.name || '';
          this.form.modelSlug = slug;
          let brand_slug = this.form.brandSlug
+         this.$v.$reset();
          this.$store.commit("mutate", {property: "carGenerations", value: []});
          if (id) {
             await this.getModelGenerationsArray({value: slug, brand_slug, index})
@@ -348,6 +361,7 @@ export default {
          this.pending = true;
          this.form.body = null;
          this.form.modification = null;
+         this.$v.$reset();
          if (this.carGenerations && this.carGenerations.length) {
             let generation = this.carGenerations[index].find(
                (option) => option.id == id,
@@ -363,9 +377,10 @@ export default {
          this.pending = false;
       },
       async setBody(id) {
+         this.$v.$reset();
          this.form.modification = null;
          this.pending = true;
-         this.$store.commit("mutate", {property: "modificationsList", vamlue: []});
+         this.$store.commit("mutate", {property: "modificationsList", value: []});
          if (id) {
             await this.$store.dispatch('comparison/getModifications', {
                car_type_id: id,
@@ -387,12 +402,17 @@ export default {
       async addCar() {
          this.$v.$touch();
          if (this.pending || this.$v.$error) {
+            console.log("this.pending || this.$v.$error")
             this.pending = false;
             return;
          } else {
+            console.log("this.pending || this.$v.$error else")
             try {
+            console.log("this.pending || this.$v.$error else try")
                this.pending = true;
                if (this.isEditing) {
+                  console.log("this.pending || this.$v.$error else try this.isEditing")
+
                   const res = await this.$store.dispatch('UserCabinetCarsEdit', {
                      id: this.announcement.id,
                      brand_id: this.form.brand,
@@ -404,6 +424,8 @@ export default {
                      car_number: this.form.car_number.replace(/-|[ ]/g, '')
                   });
                } else {
+                  console.log("this.pending || this.$v.$error else try this.isEditing")
+
                   const res = await this.$store.dispatch('UserCabinetCarsAdd', {
                      brand_id: this.form.brand,
                      model_id: this.form.model,
@@ -411,7 +433,7 @@ export default {
                      car_type_id: this.form.body,
                      car_catalog_id: this.form.modification,
                      vin: this.form.vin,
-                     car_number: this.form.car_number.replace(/-|[ ]/g, '')
+                     car_number: this.form.car_number?.replace(/-|[ ]/g, '') || null,
                   });
                }
                this.pending = false;
@@ -480,8 +502,11 @@ export default {
             car_type_id: this.announcement.car_type.id,
             generation_id: this.announcement.generation.id,
          });
-      }
+      },
 
+      resetValidation() {
+         this.$v.$reset();
+      }
 
    },
    validations: {
@@ -491,7 +516,16 @@ export default {
          generation: {required},
          body: {required},
          modification: {required},
-         car_number: {required}
+         car_number: {
+            required: requiredIf(function () {
+               return !this.form.vin
+            })
+         },
+         vin: {
+            required: requiredIf(function () {
+               return !this.form.car_number
+            })
+         },
       }
    },
    mounted() {
@@ -506,3 +540,31 @@ export default {
    },
 }
 </script>
+
+
+<style lang="scss">
+.y-scroll {
+   overflow-y: scroll;
+   overflow-x: hidden;
+
+   &::-webkit-scrollbar {
+      width: 3px;
+      height: 7px;
+   }
+
+   /* Track */
+   &::-webkit-scrollbar-track {
+      background: transparent !important;
+   }
+
+   /* Handle */
+   &::-webkit-scrollbar-thumb {
+      background: rgb(206, 206, 206);
+   }
+
+   /* Handle on hover */
+   &::-webkit-scrollbar-thumb:hover {
+      background: #555;
+   }
+}
+</style>

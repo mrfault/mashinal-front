@@ -47,7 +47,7 @@
 
       <!--         date change modal-->
       <modal-popup
-         :modal-class="{'car-info-modal': !isMobileBreakpoint, 'wider': isMobileBreakpoint}"
+         :modal-class="isMobileBreakpoint ? 'wider' : 'car-info-modal'"
          :overflow-hidden="false"
          :title="$t('insurance_end_date_text')"
          :toggle="openDateChangeModal"
@@ -62,7 +62,7 @@
             class="mb-2"
          />
          <span>{{ $t('date') }}</span>
-         <div class="d-flex">
+         <div class="ma-penalties-date-change-row">
             <form-select
                v-model="dateChangeForm.year"
                :allow-clear="false"
@@ -180,7 +180,7 @@ export default {
       capitalizeFirstLetter(string) {
          return string.charAt(0).toUpperCase() + string.slice(1);
       },
-      carActivatedMethod(){
+      carActivatedMethod() {
          console.log("carActivated ahey ahey")
          this.getAllCarsList();
          this.$nuxt.refresh();
@@ -238,6 +238,16 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="scss">
+.ma-penalties-date-change-row{
+   display: flex;
+}
+@media (max-width: 1149px) and (min-width: 992px) {
+   .ma-penalties-date-change-row {
+      .select-menu_dropdown {
+         bottom: 60px;
+         top: auto;
+      }
+   }
+}
 </style>

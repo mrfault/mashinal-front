@@ -56,6 +56,9 @@
                return this.$t('page_not_found_error');
                return this.$t('preventive_work');
          }
+      },
+      mounted(){
+         this.$axios.$get('https://dev.mashin.al/api/new-notifications-count')
       }
    }
 </script>

@@ -2768,7 +2768,7 @@ export default {
    "menu_spare_parts": "Ehtiyyat hissələri",
    "menu_spare_parts_desc": "İşlənmiş və ya yeni ehtiyyat hissələri al",
    "menu_auto_catalog": "Avtokataloq",
-   "menu_auto_catalog_desc": "Rəsmi salonlardan avtomobil sifariş et",
+   "menu_auto_catalog_desc": "Müxtəlif avtomobillərin texniki xüsusiyyətlərinə baxın",
    "menu_call_center": "Çağrı mərkəzi",
    "menu_call_center_desc": "Günün 24 saatı çağrı mərkəzimiz fəaliyyət göstərir",
    "menu_guide": "Bələdçi",
@@ -2782,13 +2782,16 @@ export default {
    "menu_shops": "Mağazalar",
    "menu_shops_desc": "Ehtiyyat hissələri satan mağazalar",
    "menu_messages": "Mesajlaşma",
-   "menu_messages_desc": "Satıcılara mesaj göndər",
+   "menu_messages_desc": "Mesaj göndərin",
    "menu_comparisons": "Müqayisələr",
-   "menu_comparisons_desc": "Avtomobilləri müqayisələrə əlavə etməklə müqayisə et",
+   "menu_comparisons_desc": "Avtomobilləri müqayisə edin",
    "menu_settings": "Tənzimləmələr",
-   "menu_settings_desc": "Qaranlıq rejim, dil və bildiriş ayarları və s.",
+   "menu_settings_desc": "Sistem parametrləri ",
    "today": "Bu gün",
    "vehiclePassportExpired": "Nəqliyyat vasitəsinin qeydiyyat şəhadətnaməsi dəyişdirilib",
+
+   "The given data was invalid.": "Daxil edilən məlumatlar yanlışdır",
+
    "customs_calculator_desc": "Tələb olunan məlumatlarını daxil etməklə avtomobilinizin gömrük rüsumunu hesablayın",
    "helper_search_desc": "Hansı parametrlərdə avtomobil axtardığınızı daxil edin, bələdçi sizə bu işdə yardımçı olsun",
    "fines_desc": "NV-nizi \"Qaraj\" bölməsinə əlavə etməklə, cərimələr haqqında dərhal məlumata sahib olursunuz.",
@@ -2799,5 +2802,6 @@ export default {
    "external_salon_desc": "Axtarışınızı axtarış şablonlarına əlavə etməklə o parametrə uyğun yeni elana aid bildiriş əldə edəcəksiniz",
    "shops_desc": "Axtarışınızı axtarış şablonlarına əlavə etməklə o parametrə uyğun yeni elana aid bildiriş əldə edəcəksiniz",
    "autocatalog_desc": "Lorem ipsum dolor sit amet consectetur. Fermentum euismod nunc massa tristique. Vitae nisi dignissim viverra neque nisl.",
+
 };
 

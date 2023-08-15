@@ -61,7 +61,7 @@ const getInitialState = () => ({
    // announcements
    myAnnouncements: {},
    myAnnouncementsV2: [],
-   myPlatesV2:[],
+   myPlatesV2: [],
    myAnnouncement: {},
    mainAnnouncements: {},
    mainMonetized: [],
@@ -447,7 +447,6 @@ export const getters = {
    partFilters: s => s.partFilters,
 
    openDropdownId: s => s.openDropdownId,
-
 
 
 //   usercabinet
@@ -1304,9 +1303,7 @@ export const actions = {
       commit("mutate", {property: "myAnnouncement", value: {}});
    },
    async deleteMyAnnounementV2({commit}, id) {
-      await this.$axios.$post(
-         `https://v2dev.mashin.al/api/v2/me/cars/${id}/delete`
-      );
+      await this.$axios.$delete(`/announcement/${id}/remove`);
       commit("mutate", {property: "myAnnouncement", value: {}});
    },
    // Car announcements
@@ -1558,10 +1555,20 @@ export const actions = {
       await this.$axios.$post(`/sell/part/post/publish`, form);
    },
    async carsPost({}, form) {
-      await this.$axios.$post(`/sell/post/publish?is_mobile=false`, form);
+      try {
+         const res = await this.$axios.$post(`/sell/post/publish?is_mobile=false`, form);
+         return res;
+      } catch (e) {
+
+      }
    },
    async motoPost({}, form) {
-      await this.$axios.$post(`/sell/moto/post/publish?is_mobile=false`, form);
+      try {
+         const res = await this.$axios.$post(`/sell/moto/post/publish?is_mobile=false`, form);
+         return res;
+      } catch (e) {
+
+      }
    },
    async motoEdit({}, {id, isMobile, form}) {
       await this.$axios.$post(`sell/moto/post/edit/${id}?is_mobile=${isMobile}`, form);
@@ -1743,7 +1750,7 @@ export const actions = {
    },
 
    async UserCabinetCarsAdd({commit,state}, payload){
-      const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/me/cars/create?brand_id=${payload.brand_id}&model_id=${payload.model_id}&generation_id=${payload.generation_id}&car_type_id=${payload.car_type_id}&car_catalog_id=${payload.car_catalog_id}&vin=${payload.vin}&car_number=${payload.car_number}`);
+      const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/me/cars/create`, payload );
       // commit("mutate", {property: "userCabinetCars", value: res});
    },
    async UserCabinetCarsEdit({commit,state}, payload){
