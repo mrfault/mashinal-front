@@ -186,7 +186,7 @@
             <form-numeric-input
                :placeholder="$t('price')"
                v-model="form.price"
-                        @change="announcement.price = $event ? $event + ' ' + (form.currency.name?.[locale] || 'AZN') : 0"
+               @change="announcement.price = $event ? $event + ' ' + (form.currency.name?.[locale] || 'AZN') : 0"
             />
             <div class="price_types">
                <toggle-group :items="priceTypes" v-slot="{ item }" @change="form.currency = $event.id">
@@ -227,6 +227,7 @@
                     // form.announce_type.title === 'cars' ? '__ - __ - ___' : '__ - _ - ___'
                     '__ - _ - ___'
                   "
+                  class="with-trailing"
                >
                   <template #default>
                      <inline-svg
@@ -250,6 +251,8 @@
                <form-text-input
                   v-model="form.vin"
                   :placeholder="$t('vin_carcase_number')"
+                  :mask="$maskAlphaNumeric('*****************')"
+                  class="with-trailing"
                >
                   <template #default>
                      <inline-svg
@@ -318,7 +321,7 @@
             </div>
          </div>
          <div class="comment">
-            <image-component :type="'moto'" :initial-form="form" :announcement="announcement" />
+            <image-component :type="'moto'" :initial-form="form" :announcement="announcement"/>
             <div class="comment_info">
                <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
                <p>{{ $t("add_image_section_warning") }}</p>
@@ -455,9 +458,8 @@ export default {
             category: this.form.type_of_moto.id,
             youtube: {"id": "", "thumb": ""}
          }
-         const formData = new FormData()
-         formData.append('data', JSON.stringify(newForm))
-         this.$emit("getForm", formData)
+
+         this.$emit("getForm", newForm)
       }
    },
 // {"volume":200,"engine":3,"cylinders":5,"drive":1,"fuel_type":2,"box":14,"number_of_vehicles":2,"used_ones":"","customed_ones":"","power":150,"end_date":"","auction":1,"country_id":null,"category":1,"selectedBrand":917,"selectedModel":9258,"selectedYear":2010,"selectedColor":28,"youtube":{"id":"","thumb":""},"mileage":40,"mileage_measure":1,"region_id":1,"address":"Baku, Sax Ismayil Xеtai Avenue, Azerbaijan","lat":40.39645130412052,"lng":49.86599707246074,"vin":"","price":7800,"owner_type":0,"currency":1,"car_number":"","show_car_number":0,"show_vin":0,"all_options":{},"comment":"qwertyu test","is_new":true,"beaten":true,"customs_clearance":true,"tradeable":true,"credit":true,"guaranty":true,"saved_images":[1512831,1512830,1512832],"btl_cookie":"","is_autosalon":false}
@@ -548,7 +550,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .moto_form {
    display: flex;
    flex-grow: 1;
@@ -557,6 +559,10 @@ export default {
 
    .full_grid {
       grid-column: 1/3;
+   }
+
+   .with-trailing input {
+      padding-right: 42px !important;
    }
 
    .divider {

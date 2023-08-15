@@ -61,7 +61,7 @@ const getInitialState = () => ({
    // announcements
    myAnnouncements: {},
    myAnnouncementsV2: [],
-   myPlatesV2:[],
+   myPlatesV2: [],
    myAnnouncement: {},
    mainAnnouncements: {},
    mainMonetized: [],
@@ -447,7 +447,6 @@ export const getters = {
    partFilters: s => s.partFilters,
 
    openDropdownId: s => s.openDropdownId,
-
 
 
 //   usercabinet
@@ -1551,10 +1550,20 @@ export const actions = {
       await this.$axios.$post(`/sell/part/post/publish`, form);
    },
    async carsPost({}, form) {
-      await this.$axios.$post(`/sell/post/publish?is_mobile=false`, form);
+      try {
+         const res = await this.$axios.$post(`/sell/post/publish?is_mobile=false`, form);
+         return res;
+      } catch (e) {
+
+      }
    },
    async motoPost({}, form) {
-      await this.$axios.$post(`/sell/moto/post/publish?is_mobile=false`, form);
+      try {
+         const res = await this.$axios.$post(`/sell/moto/post/publish?is_mobile=false`, form);
+         return res;
+      } catch (e) {
+
+      }
    },
    async motoEdit({}, {id, isMobile, form}) {
       await this.$axios.$post(`sell/moto/post/edit/${id}?is_mobile=${isMobile}`, form);
