@@ -124,6 +124,7 @@ input::-webkit-inner-spin-button {
       &.invalid {
          &:not(:focus) {
             color: $red-1;
+            border-color: $red-1;
          }
 
          padding-right: 34px;

@@ -239,7 +239,7 @@
             store.dispatch('fetchMonetizedAnnouncementsHome'),
             store.dispatch('fetchPartsAnnouncementsHome'),
             store.dispatch('fetchAllAnnouncementsHome'),
-            // store.dispatch('getAllOtherOptions', '2'),
+            store.dispatch('getAllOtherOptions', '2'),
             store.dispatch('fetchPlateNumbersHome'),
             store.dispatch('getBrandsOnlyExists'),
             store.dispatch('getPopularOptions'),
@@ -248,7 +248,10 @@
             store.dispatch('getBodyOptions'),
             store.dispatch('getMotoOptions'),
             store.dispatch('getOptions'),
-            // store.dispatch('getColors'),
+            store.dispatch('getMotoGearboxV2'),
+            store.dispatch('getMotoTransmissionsV2'),
+            store.dispatch('getMotoFuelTypesV2'),
+            store.dispatch('getColors'),
             // store.dispatch('getFavorites'),
          ])
          return {

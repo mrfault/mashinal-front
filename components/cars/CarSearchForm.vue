@@ -832,6 +832,12 @@
       },
 
       watch: {
+         '$route.query'() {
+            if (JSON.parse(this.$route.query?.car_filter)?.additional_brands) {
+               this.form.additional_brands = JSON.parse(this.$route.query?.car_filter)?.additional_brands;
+            }
+         },
+
          form: {
             handler() {
                if (!this.firstTimeUpdated) {
@@ -849,9 +855,13 @@
       },
 
       mounted() {
-         if (this.$route.query.car_filter) {
-            this.form.all_options = this.popularOptions?.filter((option) => Object.keys(JSON.parse(this.$route?.query?.car_filter)?.all_options).includes(option.name)).map((p) => ({...p, key: this.$t(p.label), slug: p.name, name: this.$t(p.label)
-            }))
+         // if (this.$route.query) {
+         //    console.log(this.$route.query);
+         // }
+
+         if (this.$route.query?.car_filter?.all_options) {
+            this.form.all_options = this.popularOptions?.filter((option) => Object.keys(JSON.parse(this.$route.query?.car_filter)?.all_options)?.includes(option.name))?.map((p) => ({...p, key: this.$t(p.label), slug: p.name, name: this.$t(p.label)
+            }));
          }
 
          this.$nuxt.$on('saved-search-created', () => {
@@ -1005,12 +1015,13 @@
          }
       },
 
-      async fetch() {
-         await Promise.all([
-            this.$store.dispatch('getColors'),
-            this.$store.dispatch('getAllOtherOptions', '2'),
-         ])
-      },
+      // async fetch() {
+      //    await Promise.all([
+            // this.$store.dispatch('getColors'),
+            // this.$store.dispatch('getBodyOptions'),
+            // this.$store.dispatch('getAllOtherOptions', '2'),
+         // ])
+      // },
 
       created() {
          this.$nuxt.$on('extend-options', this.goToSearch);
