@@ -1299,9 +1299,7 @@ export const actions = {
       commit("mutate", {property: "myAnnouncement", value: {}});
    },
    async deleteMyAnnounementV2({commit}, id) {
-      await this.$axios.$post(
-         `https://v2dev.mashin.al/api/v2/me/cars/${id}/delete`
-      );
+      await this.$axios.$delete(`/announcement/${id}/remove`);
       commit("mutate", {property: "myAnnouncement", value: {}});
    },
    // Car announcements
@@ -1738,7 +1736,7 @@ export const actions = {
    },
 
    async UserCabinetCarsAdd({commit,state}, payload){
-      const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/me/cars/create?brand_id=${payload.brand_id}&model_id=${payload.model_id}&generation_id=${payload.generation_id}&car_type_id=${payload.car_type_id}&car_catalog_id=${payload.car_catalog_id}&vin=${payload.vin}&car_number=${payload.car_number}`);
+      const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/me/cars/create`, payload );
       // commit("mutate", {property: "userCabinetCars", value: res});
    },
    async UserCabinetCarsEdit({commit,state}, payload){
