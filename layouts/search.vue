@@ -21,7 +21,9 @@ export default {
       SearchNav
    },
    mounted() {
-      this.$axios.$get('https://dev.mashin.al/api/new-notifications-count')
+      if (this.loggedIn) {
+         this.$axios.$get('https://dev.mashin.al/api/new-notifications-count')
+      }
    }
 }
 </script>
