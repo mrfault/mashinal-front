@@ -16,7 +16,6 @@
 
       components: { PageLayout },
 
-
       mounted(){
          this.$axios.$get('https://dev.mashin.al/api/new-notifications-count')
       }

@@ -379,7 +379,7 @@ export default {
    },
 
    mounted() {
-      console.log('this.announcement', this.announcement)
+      // console.log('this.announcement', this.announcement)
       this.$nuxt.$on('select-announcement', this.selectAnnouncement)
    },
 
