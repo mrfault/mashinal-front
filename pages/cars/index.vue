@@ -62,7 +62,7 @@
          <grid
             v-if="carsAnnouncements?.meta?.total > 0"
             :announcements="carsAnnouncements?.data"
-            :paginate="$paginate(carsAnnouncements)"
+            :paginate="carsAnnouncements?.meta"
             :hasContainer="false"
             :numberOfAds="carsAnnouncements?.total"
             :pending="pending"
@@ -178,11 +178,13 @@
          //    console.log('2')
 
             await Promise.all([
+               store.dispatch('getAllOtherOptions', '2'),
                store.dispatch('getBrandsOnlyExists'),
                store.dispatch('getBodyOptions'),
                store.dispatch('getOptions'),
                store.dispatch('fetchBrandsList'),
                store.dispatch('getMotoOptions'),
+               store.dispatch('getColors'),
                store.dispatch('getPopularOptions'),
                store.dispatch('fetchMonetizedCarsSearch', post),
                // store.dispatch('fetchMonetizedCars'),
@@ -240,12 +242,11 @@
             this.pending = true;
             await this.getGridSearch({...this.searchParams, post, page});
             await this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'cars', data: post });
-            // console.log('post', post)
             this.pending = false;
             if (page === 1) {
                this.scrollTo('.announcements-sorting');
             } else {
-               this.scrollTo('.announcements-grid.paginated', [-15, -20]);
+               this.scrollTo('.announcements-grid.paginated', [-50, -50]);
             }
          }
       },

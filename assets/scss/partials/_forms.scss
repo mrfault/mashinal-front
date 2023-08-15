@@ -124,6 +124,7 @@ input::-webkit-inner-spin-button {
       &.invalid {
          &:not(:focus) {
             color: $red-1;
+            border-color: $red-1;
          }
 
          padding-right: 34px;
@@ -259,6 +260,19 @@ input::-webkit-inner-spin-button {
    }
 }
 
+//.text-input.with-icons {
+//   display: flex;
+//   align-items: center;
+//   border: 1px solid #cdd5df;
+//
+//   input,
+//   textarea {
+//      border: none;
+//   }
+//}
+
+
+
 .checkbox-input {
    position: relative;
    user-select: none;
@@ -281,7 +295,7 @@ input::-webkit-inner-spin-button {
       }
 
       &.transparent {
-         background: transparent !important;
+         background: transparent;
       }
 
       &.has-popover {

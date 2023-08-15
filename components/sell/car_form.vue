@@ -301,6 +301,8 @@
                <form-text-input
                   v-model="form.vin"
                   :placeholder="$t('vin_carcase_number')"
+                  :mask="$maskAlphaNumeric('*****************')"
+                  class="with-trailing"
                >
                   <template #default>
                      <inline-svg
@@ -661,12 +663,16 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .cars_form {
    display: flex;
    flex-grow: 1;
    flex-direction: column;
    gap: 20px;
+
+   .with-trailing input {
+      padding-right: 42px !important;
+   }
 
    .body_type_grid_item {
       position: relative;
