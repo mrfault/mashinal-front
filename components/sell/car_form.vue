@@ -7,7 +7,7 @@
          :clear-placeholder="true"
          :clear-option="false"
          :new-label="false"
-         :object-in-value="true"
+         object-in-value
          has-search
          v-model="form.brand"
          @clear="clearFields(['model', 'year', 'body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])"
@@ -20,7 +20,7 @@
          :clear-placeholder="true"
          :clear-option="false"
          :new-label="false"
-         :object-in-value="true"
+         object-in-value
          has-search
          v-model="form.model"
          @clear="clearFields(['year', 'body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])"
@@ -170,6 +170,7 @@
          <div class="divider">
             <form-radio
                :id="'3'"
+               :type="'checkbox'"
                :label="$t('new')"
                input-name="is_new"
                v-model="form.is_new"
@@ -177,6 +178,7 @@
             />
             <form-radio
                :id="'4'"
+               :type="'checkbox'"
                :label="$t('broken')"
                input-name="beaten"
                v-model="form.beaten"
@@ -238,7 +240,7 @@
                :invalid="$v.form.price.$error"
             />
             <div class="price_types">
-               <toggle-group :items="priceTypes" v-slot="{ item }" @change="($event) => form.currency = $event">
+               <toggle-group :items="priceTypes" v-slot="{ item }" @change="form.currency = $event.id">
                   <div class="price_item">
                      <p>{{ item.name[locale] }}</p>
                   </div>
@@ -362,7 +364,7 @@ import PickOnMapButton from "~/components/elements/PickOnMapButton.vue";
 import {MenusDataMixin} from "~/mixins/menus-data";
 import {ToastErrorsMixin} from "~/mixins/toast-errors";
 import {mapActions, mapGetters} from "vuex";
-import {required} from "vuelidate/lib/validators";
+import {maxLength, required} from "vuelidate/lib/validators";
 import MaxLength from "vuelidate/lib/validators/maxLength";
 
 export default {
@@ -417,18 +419,18 @@ export default {
             is_matte: false,
             mileage: 0,
             mileage_type: 1,
-            is_new: "",
-            beaten: "",
-            customs_clearance: "",
-            guaranty: "",
+            is_new: false,
+            beaten: false,
+            customs_clearance: false,
+            guaranty: false,
             region_id: "",
             address: "",
             lat: 0,
             lng: 0,
             price: "",
-            currency: "",
-            tradeable: "",
-            credit: "",
+            currency: 1,
+            tradeable: false,
+            credit: false,
             car_number: "",
             show_car_number: "",
             vin: "",
@@ -444,6 +446,7 @@ export default {
    },
    methods: {
       ...mapActions(['getModels', 'getSellYears', 'getSellBody', 'getSellGenerationsV2', 'getSellEngines', 'getSellGearing', 'getSellTransmissions', 'getSellModificationsV2']),
+
       async onChangeBrand({slug}) {
          this.clearFields(['model', 'year', 'body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])
          this.announcement.brand = this.form.brand.name || this.$t('mark')
@@ -602,7 +605,7 @@ export default {
             generation_id: this.form.generation,
             car_body_type: this.form.body_type,
             gearing: this.form.gearing,
-            modification: this.form.modification,
+            car_catalog_id: this.form.modification,
             transmission: this.form.transmission,
             year: this.form.year,
             mileage: this.form.mileage,
@@ -618,8 +621,8 @@ export default {
             show_vin: this.form.show_vin,
             comment: this.form.comment,
             autogas: this.form.autogas,
-            is_new: this.form.is_new === 1,
-            beaten: this.form.beaten === 1,
+            is_new: this.form.is_new ? 1 : 0,
+            beaten: this.form.beaten ? 1 : 0,
             customs_clearance: this.form.customs_clearance,
             tradeable: this.form.tradeable,
             credit: this.form.credit,
@@ -632,12 +635,11 @@ export default {
             selectedColor: this.form.color,
             is_matte: this.form.is_matte,
             owner_type: 0,
-            region_id: this.form.region_id
-
+            region_id: this.form.region_id,
+            youtube:{"id":"0","thumb":""}
          }
-         const formData = new FormData()
-         formData.append('data', JSON.stringify(newForm))
-         this.$emit("getForm", formData)
+
+         this.$emit("getForm", newForm)
       },
 // {"end_date":"","auction":1,"country_id":null,"car_catalog_id":46273,"brand":"bmw","model":"5-series","generation_id":4782,"car_body_type":2,"gearing":"1","modification":"2","transmission":"1","capacity":"","power":"","year":2006,"youtube":{"id":"","thumb":""},"selectedColor":[23],"is_matte":false,"mileage":400,"mileage_measure":1,"region_id":1,"address":"","lat":0,"lng":0,"vin":"QWERTYUIASDFGHJJI","price":17500,"owner_type":0,"currency":1,"car_number":"","show_car_number":0,"show_vin":0,"part":{},"all_options":{"disc_types":2,"headlights":1,"usb":true,"camera_360":true,"a_headlights":true,"r_sensor":true,"bluetooth":true,"camera":true,"conditioner":1,"salon_material":6,"p_windows":1,"h_seats":1,"side_curtain":true,"tire_pressure_sensor":true,"p_assist_system":1,"abs":true,"luke":true,"c_locking":true,"n_of_seats":5,"s_ventilation":1,"opening_trunk_without_hands":true},"comment":"test test test","autogas":true,"is_new":true,"beaten":true,"customs_clearance":true,"tradeable":true,"credit":true,"guaranty":true,"saved_images":[1512806,1512808,1512807],"btl_cookie":"","is_autosalon":false}
    },
@@ -646,9 +648,9 @@ export default {
          color: {required},
          mileage: {
             required,
-            maxLength: MaxLength(function () {
-               return this.is_new && 500
-            }),
+            maxLength: maxLength(function () {
+               this.form.is_new ? 500 : 10000000
+            })
          },
          region_id: {required},
          address: {required},

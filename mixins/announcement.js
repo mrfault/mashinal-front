@@ -25,7 +25,7 @@ export const AnnouncementDataMixin = {
          if (!color.length && !color.id) return ' ';
          return color instanceof Array
             ? color.filter(color => color.name).map(color => color.name[this.locale]).join(', ') || ' '
-            : color.name?.[this.locale] || ' ';
+            : color.name || ' ';
       },
       box() {
          switch (this.type) {
@@ -47,9 +47,13 @@ export const AnnouncementDataMixin = {
          }
       },
       gear() {
+         console.log('this.type', this.catalog?.main[' '])
          switch (this.type) {
             case 'cars':
-               return this.$t('type_of_drive_values')[this.catalog.main[' ']['type_of_drive']];
+               return {
+                  name: this.$t('type_of_drive_values')[this.catalog.main[' ']['type_of_drive']],
+                  type: this.catalog.main[' '].type_of_drive
+               };
             case 'moto':
                if (!this.motoOptions.config) return false;
                return this.$t(getName(this.announcement.gear_id, this.motoOptions.config.drive.sell_values[this.motoTypeKey]));
@@ -194,7 +198,7 @@ export const AnnouncementDataMixin = {
          return this.announcement.weight && `${this.announcement.weight} ${this.$t('char_kilogramm')}`;
       },
       mileage() {
-         return `${this.announcement.humanize_mileage} ${this.$t('char_kilometre')}`;
+         return `${this.announcement.mileage} ${this.$t('char_kilometre')}`;
       },
       numberOfAxes() {
          return this.announcement.number_of_axles && `${this.announcement.number_of_axles} ${this.$t('axles')}`;

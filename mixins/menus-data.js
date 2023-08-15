@@ -167,6 +167,12 @@ export const MenusDataMixin = {
          ].includes(this.routeName);
       },
 
+      exceptions() {
+         return [
+            'calculator-customs', 'parts-shops-id'
+         ].includes(this.routeName);
+      },
+
       hasProfileData() {
          return [
             'profile', 'profile-settings'
@@ -180,9 +186,9 @@ export const MenusDataMixin = {
       },
 
       hasSearchFilters() {
-         // 'salons','external-salons'
          return [
-            'parts-shops',
+            // 'parts-shops',
+            '',
          ].includes(this.routeName);
       },
 

@@ -45,11 +45,13 @@
             :clear-option="false"
             :new-label="false"
             v-model="form.year"
+            @change="announcement.year = $event || '0000'"
          />
          <div class="divider">
             <form-numeric-input
                :placeholder="$t('engine_volume2')"
                v-model="form.volume"
+               @change="announcement.car_catalog.capacity = ($event / 1000).toFixed(1)"
             />
             <form-numeric-input
                :placeholder="$t('horse_power')"
@@ -184,8 +186,8 @@
             <form-numeric-input
                :placeholder="$t('price')"
                v-model="form.price"
+                        @change="announcement.price = $event ? $event + ' ' + (form.currency.name?.[locale] || 'AZN') : 0"
             />
-            <!--            @change="announcement.price = $event ? $event + (form.currency.name?.[locale] || 'AZN') : 0"-->
             <div class="price_types">
                <toggle-group :items="priceTypes" v-slot="{ item }" @change="form.currency = $event.id">
                   <div class="price_item">
@@ -385,18 +387,18 @@ export default {
             color: "",
             gearing: "",
             mileage: "",
-            mileage_type: "",
+            mileage_type: 1,
             is_new: false,
             beaten: false,
-            customs_clearance: "",
-            guaranty: "",
+            customs_clearance: false,
+            guaranty: false,
             region_id: "",
             address: "",
             lng: 0,
             lat: 0,
             price: "",
-            currency: "",
-            tradeable: "",
+            currency: 1,
+            tradeable: false,
             credit: false,
             car_number: "",
             show_car_number: false,
@@ -464,13 +466,13 @@ export default {
       async onChangeMotoType({value}) {
          this.form.brand = "";
          this.form.model = "";
-         this.clearFields(['brand', 'model'])
+         this.clearFields(['brand', 'model', 'year'])
          if (value) {
             await this.getMotoBrandsV2({value, whereHas: 1});
          }
       },
       async onChangeMotoBrand(val) {
-         this.clearFields(['model'])
+         this.clearFields(['model', 'year'])
          const value = this.form.type_of_moto.value;
          this.announcement.brand = this.form.brand.name || this.$t('mark')
          if (this.form.brand.name) {
@@ -479,6 +481,7 @@ export default {
       },
       onChangeMotoModel() {
          this.announcement.model = this.form.model.name || this.$t('model')
+         this.clearFields(['year'])
       },
       updateAddress(address) {
          this.form.address = address;

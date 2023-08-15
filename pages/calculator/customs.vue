@@ -97,6 +97,7 @@
                         <form-text-input
                            input-date
                            :placeholder="$t('production_year')"
+                           :invalid="$v.filled.productionYear.$error"
                            v-model="filled.productionYear"
                         />
                      </div>
@@ -227,6 +228,8 @@
    import { required, requiredIf } from 'vuelidate/lib/validators'
 
    export default {
+      name: 'CalculatorCustoms',
+
       head() {
          return this.$headMeta({
             title: this.$t('customs_calculator'),
@@ -241,7 +244,7 @@
                {name: this.$t('benzin'), id: 1},
                {name: this.$t('dizel'), id: 2},
                {name: this.$t('hybrid'), id: 3},
-               {name: this.$t('электро'), id: 4},
+               {name: this.$t('electrical'), id: 4},
             ],
             hybridEngineTypes: [
                {name: this.$t('benzin'), id: 1},
@@ -289,7 +292,7 @@
          },
 
          selectedVehicleType() {
-            return this.$t('vehicle_type_2')
+            return this.$t('passenger_car')
          }
       },
 
@@ -557,12 +560,22 @@
          },
 
          async submit() {
-            this.$v.$touch()
-            if (this.$v.$error) return
             try {
-               this.calculate()
-            } catch (e) {
+               this.$v.$touch();
+               if (this.$v.$error) {
+                  this.$toasted.error(this.$t('required_fields'));
+                  return;
+               }
 
+               this.calculate();
+
+               if (this.isMobileBreakpoint) {
+                  setTimeout(() => {
+                     this.scrollTo('.calculator__results', [-15]);
+                  }, 100)
+               }
+            } catch (e) {
+               console.error(e);
             }
          }
       },
@@ -590,16 +603,17 @@
             },
             isMoreThanOneYear: false,
             productionYear: {
-               required: requiredIf(function () {
-                  return this.filled.isMoreThanOneYear == true
-               }),
+               required
+               // required: requiredIf(function () {
+               //    return this.filled.isMoreThanOneYear === true
+               // }),
             },
          },
       }
    }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
    .calculator-customs {
       padding-bottom: 120px;
 
@@ -654,6 +668,69 @@
                   font-size: 20px;
                   font-weight: 600;
                   line-height: 24px;
+               }
+            }
+         }
+      }
+   }
+
+   .dark-mode {
+      .calculator-customs {
+         .vehicle-specs {
+            ul {
+               li {
+                  border-color: #4B5565;
+
+                  span {
+                     color: #9AA4B2 !important;
+                  }
+               }
+            }
+
+            .sum {
+               span {
+                  color: #EEF2F6 !important;
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 600px) {
+      .dark-mode {
+         .calculator-customs {
+            .calculator__inputs {
+               background-color: transparent;
+
+               .form-group {
+                  .select-menu {
+                     &:not(.invalid) {
+                        .select-menu_label {
+                           border-color: #364152;
+                           background-color: #1B2434 !important;
+                        }
+                     }
+                  }
+
+                  .text-input {
+                     input {
+                        &:not(.invalid) {
+                           border-color: #364152;
+                           background-color: #1B2434 !important;
+                        }
+                     }
+                  }
+
+                  .checkbox-input {
+                     label {
+                        border-color: #364152;
+                        background-color: #1B2434 !important;
+
+                        .text-truncate {
+                           color: #CDD5DF;
+                        }
+                     }
+                  }
                }
             }
          }

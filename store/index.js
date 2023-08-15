@@ -65,6 +65,7 @@ const getInitialState = () => ({
    myAnnouncement: {},
    mainAnnouncements: {},
    mainMonetized: [],
+   monetizedPage: [],
    carShowroom: [],
    partsHome: [],
    plateNumbers: [],
@@ -163,6 +164,7 @@ const getInitialState = () => ({
    salonSingle: {},
    mySalon: {},
    homePageSliders: {},
+   servicePackages: [],
    myAnnouncementCalls: {},
    myAnnouncementStats: {},
    mapView: false,
@@ -243,6 +245,7 @@ const getInitialState = () => ({
 export const state = () => getInitialState();
 
 export const getters = {
+   monetizedPage: s => s.monetizedPage,
    getAgreements: s => s.agreements,
    getResetForm: s => s.resetForm,
    getMainMonetized: s => s.mainMonetized,
@@ -254,6 +257,7 @@ export const getters = {
    getRegistrationMark: s => s.registrationMark,
    single_announce: s => s.single_announce,
    homePageSliders: s => s.homePageSliders,
+   servicePackages: s => s.servicePackages,
    loading: s => s.loading,
    loadingData: s => s.loadingData,
    colorMode: s => s.colorMode,
@@ -463,6 +467,11 @@ const objectNotEmpty = (state, commit, property) => {
 };
 export const actions = {
    // New API ++++++++++++++++++++
+   async fetchMonetizedAnnouncementsPage({commit}, page = 1) {
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/monetized-announcements?${page}`);
+      commit("mutate", {property: "monetizedPage", value: res});
+   },
+
    async fetchMonetizedAnnouncementsHome({commit}) {
       const res = await this.$axios.$get('https://v2dev.mashin.al/api/v2/monetized-announcements/home');
       commit("mutate", {property: "mainMonetized", value: res});
@@ -495,6 +504,11 @@ export const actions = {
 
    async fetchAutosalonAnnouncementsId({ commit }, id) {
       const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/autosalon/announcements/${id}`);
+      commit("mutate", { property: "autosalonAnnouncementsId", value: res });
+   },
+
+   async fetchPartsAnnouncementsId({ commit }, id) {
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/parts/announcements/${id}`);
       commit("mutate", { property: "autosalonAnnouncementsId", value: res });
    },
 
@@ -1267,6 +1281,11 @@ export const actions = {
       commit("mutate", {property: "announcement", value: res});
    },
 
+   async getPartsInnerV2({commit}, id) {
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/parts/${id}`);
+      commit("mutate", {property: "announcement", value: res});
+   },
+
    async getMyAnnouncement({commit}, id) {
       const res = await this.$axios.$get(`/announcement/edit/${id}`);
       commit("mutate", {property: "myAnnouncement", value: res});
@@ -1514,6 +1533,11 @@ export const actions = {
    async updateMySalon({}, {id, form}) {
       await this.$axios.$post(`/my/autosalon/${id}/edit`, form);
    },
+   async getServicePackages({commit}) {
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/promotion/list`);
+      commit("mutate", {property: "servicePackages", value: res});
+   },
+
    //SELL POSTS
    async plateNumbersPost({}, {is_mobile, form}) {
       try {
@@ -1538,8 +1562,11 @@ export const actions = {
    async carEdit({}, {id, isMobile, form}) {
       await this.$axios.$post(`sell/post/edit/${id}?is_mobile=${isMobile}`, form);
    },
-   async partEdit({}, {id, isMobile, form}) {
+   async partEdit({}, {id, form}) {
       await this.$axios.$post(`/sell/part/edit/${id}`, form);
+   },
+   async registrationMarkEdit({}, {id, form}) {
+      await this.$axios.$post(`/sell/plate/edit/${id}`, form);
    },
 
 

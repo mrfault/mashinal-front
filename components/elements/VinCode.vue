@@ -7,7 +7,7 @@
 
       <p class="vinCode__subtitle">Avtomobil almazdan əvvəl VIN kodunu yoxlamaq tövsiyyə olunur</p>
 
-      <button class="vinCode__btn">
+      <button class="vinCode__btn" @click="checkVin">
          <span>VIN kodu yoxla</span>
 
          <inline-svg src="/icons/search_new.svg" />
@@ -17,6 +17,12 @@
 
 <script>
    export default {
+      methods: {
+         checkVin() {
+            window.open(`https://www.google.com/search?q=${encodeURIComponent(this.vin)}`, "_blank");
+         }
+      },
+
       props: {
          vin: ''
       }
@@ -71,6 +77,35 @@
 
          &:hover {
             border-color: #84ADFF;
+         }
+      }
+   }
+
+   .dark-mode {
+      .vinCode {
+         border-color: #05603A;
+         background-color: #1B2434;
+
+         &__title {
+            color: #EEF2F6;
+         }
+
+         &__subtitle {
+            color: #EEF2F6;
+         }
+
+         &__btn {
+            color: #EEF2F6;
+            border-color: #121926;
+            background-color: #121926;
+
+            span {
+               color: #EEF2F6;
+            }
+
+            &:hover {
+               border-color: #84ADFF;
+            }
          }
       }
    }

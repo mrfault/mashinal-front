@@ -2,9 +2,12 @@
    <div class="mobile-nav-new d-lg-none">
       <ul>
          <li v-for="menu in bottomMenus.filter(item => !item.hide)" :key="menu.title">
-            <nuxt-link :to="$localePath(menu.route)" :class="{'active': isPseudoActive(menu)}">
+            <nuxt-link :to="$localePath(menu.route)" @click="toggleSidebarMenu()" :active-class="''" :exact-active-clas="'active'">
                <inline-svg :src="menu.icon" />
                <span>{{ $t(menu.title) }}</span>
+               <span v-if="menu.title === 'messages' && countNewMessages > 0" class="badge-counter">
+                  {{ countNewMessages }}
+               </span>
             </nuxt-link>
          </li>
       </ul>
@@ -21,13 +24,9 @@ export default {
    computed: {
       ...mapGetters(['countNewMessages'])
    },
-
    methods: {
-      isPseudoActive(menu) {
-         return (this.hasSearchNav && menu.title === 'main')
-            || (this.routeName === 'profile-messages' && menu.title === 'messages')
-            || (this.routeName === 'garage' && menu.title === 'garage')
-            || (this.routeName?.includes('catalog') && menu.title === 'catalog');
+      toggleSidebarMenu() {
+         this.$root?.$refs?.MobileMenuNew?.toggleSidebarMenu(false);
       }
    }
 }

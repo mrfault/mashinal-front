@@ -10,20 +10,31 @@
                   :bg="'/img/salon-bg.png'"
                   :title="$t('auto_salons')">
                   <template #content>
-                     <breadcrumbs class="light-color" :crumbs="crumbs"/>
+                     <breadcrumbs class="light-color" :crumbs="crumbs" />
                   </template>
                </Banner>
+
+               <salon-filters-form
+                  v-show="searchFormType === 0"
+                  @filter="salonFilter"
+                  :count="(!mapView ? salonsFiltered : salonsInView).length"
+               />
             </div>
 
-            <div class="container" v-if="!showMapsView">
+            <div class="container officialDealerships" v-if="!showMapsView">
                <div class="row">
                   <div class="col-md-12">
                      <Cap>
                         <template #left>
                            <h3>{{ $t('official_salons_3') }} ({{ officialSalons.length }})</h3>
                         </template>
+
                         <template #right>
-                           <p class="d-flex align-items-center" @click="setView()">
+                           <p
+                              class="d-flex align-items-center"
+                              @click="setView()"
+                              v-if="salonsFiltered.filter(item => item.announcement_count > 0).filter(a => a.is_official).length"
+                           >
                               <span v-if="!isMobileBreakpoint">{{ $t('show_on_map') }}</span>
                               <span v-else>{{ $t('map') }}</span>
                               <inline-svg :src="'/icons/location_2.svg'"/>
@@ -49,16 +60,19 @@
                   </div>
                </div>
             </div>
+
             <div class="container mt-5" v-else>
                <div class="row">
                   <div class="col-md-12">
                      <Cap>
                         <template #left>
-                           <h3>{{ $t('auto_salons') }} ({{ officialSalons.length }})</h3>
+                           <h3 v-if="!showMapsView">{{ $t('auto_salons') }} ({{ salonsFiltered.filter(item => item.announcement_count > 0).filter(a => a.is_official).length }})</h3>
+                           <h3 v-else>{{ $t('auto_salons') }} ({{ salonsInView.length }})</h3>
                         </template>
+
                         <template #right>
                            <p class="d-flex align-items-center" @click="setView()">
-                              <span v-if="!isMobileBreakpoint">{{ $t('show_on_site') }}</span>
+                              <span v-if="!isMobileBreakpoint">{{ $t('show_on_list') }}</span>
                               <span v-else>{{ $t('list') }}</span>
                               <inline-svg :src="'/icons/list1.svg'"/>
                            </p>
@@ -103,16 +117,20 @@
             </div>
          </div>
 
-         <div :class="['pages-salons autosalon list-view bg-white']" v-if="!showMapsView">
+         <div :class="['pages-salons autosalon list-view bg-silver']" v-if="!showMapsView">
             <div class="container">
                <div class="row">
                   <div class="col-md-12">
                      <Cap>
                         <template #left>
-                           <h3>{{ $t('auto_salons') }} ({{ nonOfficialSalons.length }})</h3>
+                           <h3>{{ $t('auto_salons') }} ({{ salonsFiltered.filter(item => item.announcement_count > 0).filter(a => !a.is_official).length }})</h3>
                         </template>
                         <template #right>
-                           <p class="d-flex align-items-center" @click="setView()">
+                           <p
+                              class="d-flex align-items-center"
+                              @click="setView()"
+                              v-if="salonsFiltered.filter(item => item.announcement_count > 0).filter(a => !a.is_official).length"
+                           >
                               <span v-if="!isMobileBreakpoint">{{ $t('show_on_map') }}</span>
                               <span v-else>{{ $t('map') }}</span>
                               <inline-svg :src="'/icons/location_2.svg'" />
@@ -212,11 +230,13 @@ export default {
          return this.salonsFiltered.filter(item => item.is_official).sort((a, b) => a.name.localeCompare(b.name));
       },
       crumbs() {
-         return [{name: this.$t('auto_salons')}]
+         return [{ name: this.$t('auto_salons') }]
       },
 
       salonsInView() {
-         return this.salonsFiltered.filter((salon) => {
+         let salons = this.salonsFiltered.filter(item => item.announcement_count > 0);
+
+         return salons.filter((salon) => {
             return this.salonsInBounds
                ? this.salonsInBounds.includes(salon.id)
                : true
@@ -237,10 +257,13 @@ export default {
          'updateSalonsInBounds',
          'updateSalonsSearchFilters',
          'updateSalonsFilters',
+         'setMapView'
       ]),
+
       setView() {
          this.showMapsView = !this.showMapsView;
       },
+
       toggleSearch() {
          this.showSearch = !this.showSearch
       },
@@ -250,6 +273,20 @@ export default {
             this.$nuxt.$emit('showMapEvent', this.mapView)
             window.dispatchEvent(new Event('scroll'));
          });
+      },
+
+      salonFilter() {
+         setTimeout(() => {
+            if (this.officialSalons?.length) {
+               this.scrollTo('.officialDealerships', [60, 60]);
+            } else if (this.salonsFiltered?.filter(item => item.announcement_count > 0)?.filter(a => !a.is_official)?.length) {
+               this.scrollTo('.autosalon', [60, 60]);
+            } else {
+               this.scrollTo('.salon-filters-form', [-50, -50]);
+            }
+         }, 200);
+
+         this.showSearch = false
       }
    },
 
@@ -279,10 +316,6 @@ export default {
       overflow: hidden;
 
       .pages-salons {
-         &:first-child {
-            padding-top: 32px;
-         }
-
          &.list-view {
             .container {
                &:last-child {
@@ -388,10 +421,6 @@ export default {
          overflow: hidden;
 
          .pages-salons {
-            &:first-child {
-               padding-top: 0;
-            }
-
             &.list-view {
                padding-bottom: 32px;
 

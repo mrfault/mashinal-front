@@ -171,7 +171,6 @@
          let searchParams = { url: '/car', prefix: 'cars' }
          if (!store.state.carsAnnouncements.total) await store.dispatch('getGridSearch', {...searchParams, post, page})
 
-         console.log('post', post)
          // if (route.query.monetized) {
          //    store.dispatch('fetchMonetizedAnnouncementsHome');
          //    console.log('1')
@@ -315,7 +314,7 @@
             return [
                {name: this.$t('all2'), key: zeroFirst ? 0 : 1},
                {name: this.$t('new'), key: zeroFirst ? 1 : 2},
-               {name: this.$t('S_H'), key: zeroFirst ? 2 : 3}
+               {name: this.$t('with_mileage_2'), key: zeroFirst ? 2 : 3}
                // {name: this.$t(this.meta.type === 'parts' ? 'S_H' : 'with_mileage'), key: zeroFirst ? 2 : 3}
             ];
          },
@@ -337,7 +336,7 @@
 
 <style lang="scss">
    .pages-cars-index {
-      padding-top: 32px;
+      margin-top: 32px;
 
       &__title {
          font-weight: 600;

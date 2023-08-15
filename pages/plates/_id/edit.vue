@@ -7,13 +7,12 @@
             <div class="card">
                <form class="add_announce_form">
                   <registration_mark isEdit :announcement="announcement" :isReady="isReady"
-                             @getForm="getPartForm($event)" />
+                             @getForm="getPlateForm($event)" />
                   <button type="button" @click="onClick()" class="btn full-width btn--pale-green-outline active">
                      {{ $t("place_announcement") }}
                   </button>
                </form>
                <div class="vehicle_card_info" v-if="!isMobileBreakpoint">
-
                </div>
             </div>
          </div>
@@ -25,12 +24,10 @@
 import {mapActions, mapGetters} from "vuex";
 import {minLength, required} from "vuelidate/lib/validators";
 import { PaymentMixin } from '~/mixins/payment';
-import Part_form from "~/components/sell/part_form.vue";
-import GridItem from "~/components/announcements/GridItem.vue";
 import Registration_mark from "~/components/sell/registration_mark.vue";
 
 export default {
-   components: {Registration_mark, GridItem, Part_form},
+   components: {Registration_mark},
    nuxtI18n: {
       paths: {
          az: '/qeydiyyat-nishani/elan/:id/redakte'
@@ -76,11 +73,11 @@ export default {
       //       console.error(err)
       //    }
       // }
-         ...mapActions(['partEdit']),
-         async getPartForm(form) {
+         ...mapActions(['registrationMarkEdit']),
+         async getPlateForm(form) {
 
             try {
-               await this.partEdit({id: this.$route.params.id.slice(0, -1), form})
+               await this.registrationMarkEdit({id: this.$route.params.id.slice(0, -1), form})
                this.$router.push(this.$localePath('/profile/announcements'))
             }catch(e){}
          },

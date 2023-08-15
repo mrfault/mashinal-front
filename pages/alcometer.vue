@@ -527,7 +527,7 @@
          },
 
          calculate() {
-            this.showGraphs = true
+            this.showGraphs = true;
             try {
                let r
                if (this.form.gender === 'm') {
@@ -540,13 +540,13 @@
                if (isNaN(M) || !M) {
                   this.form.mass = 70
                }
-               var T = parseFloat(this.form.time)
+               let T = parseFloat(this.form.time)
                if (isNaN(T) || !T) {
                   this.form.time = 0
                }
-               var v = parseInt(this.form.drinkValue1)
-               var k = parseInt(this.form.drinkType1)
-               var A = 0
+               let v = parseInt(this.form.drinkValue1)
+               let k = parseInt(this.form.drinkType1)
+               let A = 0
 
                if (isNaN(v) || !v) v = 0
                if (isNaN(k) || !k) k = 0
@@ -564,20 +564,20 @@
                if (isNaN(k) || !k) k = 0
                A += (v * k) / 100
                A *= 0.79384
-               var C = 0.68 * (A / M / r - 0.13 * T)
+               let C = 0.68 * (A / M / r - 0.13 * T)
                if (C < 0) C = 0
                this.concentration = this.nrm(C, 1000)
                this.concentrProm = this.nrm(C / 0.45, 1000)
                this.diag(C)
 
-               var rul = 0
-               var Cor = C
+               let rul = 0
+               let Cor = C
                while (C > this.diagramValues[1]) {
                   rul++
                   C = 0.8 * (A / M / r - 0.13 * (T + rul))
                }
                this.timeToDrive = rul
-               //if (Cor > 8) f.rul.value = f.rul.value + '';
+               // if (Cor > 8) f.rul.value = f.rul.value + '';
 
                // if (this.showGraphs && !this.isMobileBreakpoint) {
                //    setTimeout(() => {
@@ -599,13 +599,13 @@
          },
 
          nrm(val, to) {
-            var t = Math.round(val * to)
-            var tt = t / to
+            let t = Math.round(val * to)
+            let tt = t / to
             return tt.toFixed(2)
          },
 
          diag(doza) {
-            for (var i = 0; i < this.diagramValues.length; i++) {
+            for (let i = 0; i < this.diagramValues.length; i++) {
                if (doza <= this.diagramValues[i])
                   return (this.diagValue = this.diag2[i])
             }
@@ -777,7 +777,7 @@
 
          &.ru {
             .ma-alco-card__list {
-               //margin-top: 50px;
+               margin-top: 50px;
                flex-wrap: wrap;
 
                &-item {

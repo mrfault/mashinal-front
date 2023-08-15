@@ -1,11 +1,11 @@
 <template>
-   <div class="pages-cars-id">
+   <div class="pages-cars-id product-inner">
       <div class="bg-white">
          <div class="container">
             <breadcrumbs :crumbs="crumbs" />
 
-            <div class="pages-cars-id__info">
-               <div class="pages-cars-id__info-left">
+            <div class="product-inner__info">
+               <div class="product-inner__info-left">
                   <client-only>
                      <gallery>
                         <quick-info type="cars" brief />
@@ -18,7 +18,7 @@
 
                   <announcement-specs type="cars"/>
 
-                  <comment :comment="announcement.comment" />
+                  <comment v-if="announcement.comment" :comment="announcement.comment" />
 
                   <car-complects :options="getComplectOptions" v-if="hasComplects"/>
 
@@ -32,7 +32,7 @@
                   </template>
                </div>
 
-               <div class="pages-cars-id__info-right">
+               <div class="product-inner__info-right">
                   <quick-info type="cars"/>
 
                   <site-banner v-if="!isMobileBreakpoint" class="mb-3" type="in-announcement"/>
@@ -185,9 +185,7 @@
 </script>
 
 <style lang="scss">
-   .pages-cars-id {
-      //margin-top: -30px;
-
+   .product-inner {
       .bg-white {
          padding: 5px 0 32px 0;
       }
@@ -207,7 +205,7 @@
    }
 
    .dark-mode {
-      .pages-cars-id {
+      .product-inner {
          .bg-white {
             background-color: transparent;
          }
@@ -215,7 +213,7 @@
    }
 
    @media (max-width: 1150px) {
-      .pages-cars-id {
+      .product-inner {
          &__info {
             grid-template-columns: 560px 348px;
 
@@ -229,7 +227,7 @@
    }
 
    @media (max-width: 992px) {
-      .pages-cars-id {
+      .product-inner {
          &__info {
             display: flex;
             flex-direction: column;
@@ -240,7 +238,7 @@
    }
 
    @media (max-width: 600px) {
-      .pages-cars-id {
+      .product-inner {
          &__info {
             .inner-gallery {
                .swiper-slide-bg {
