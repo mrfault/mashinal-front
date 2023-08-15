@@ -2716,4 +2716,9 @@ export default {
    "vehicle_is_processing":"ТС в процессе",
    "stop_subscription_desc1": "Уверены ли вы,что хотите отписаться?",
    "no_payment_history": "Нет истории оплат",
+   "add_vehicle_desc" :"За каждое добавленное ТС ежемесячно будет взиматься 1 AZN (ƏDV включен)",
+   "remove_bookmark":"Удалить ТС",
+   "info saved":"Информация сохранена",
+   "the_given_data_":"Неверные данные",
+   "The given data was invalid.": "Неверные данные",
 };

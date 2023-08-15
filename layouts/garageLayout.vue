@@ -87,8 +87,8 @@ export default {
    name: 'garage',
    middleware: ['main'],
    mixins: [MenusDataMixin, UserDataMixin],
-   mounted() {
-      console.log("user", this.user)
+   mounted(){
+      this.$axios.$get('https://dev.mashin.al/api/new-notifications-count')
    },
    components: {
       PageLayout

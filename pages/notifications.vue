@@ -9,7 +9,7 @@
                v-for="item in getNotificationsList"
                :date="getDateString(item)" :link="getRoutePath(item)"
                :notification="item"
-               :page="page"
+               :page="notifications.current_page"
             />
          </template>
 

@@ -2776,6 +2776,7 @@ export default {
    "menu_settings": "Tənzimləmələr",
    "menu_settings_desc": "Qaranlıq rejim, dil və bildiriş ayarları və s.",
    "today": "Bu gün",
-   "vehiclePassportExpired": "Nəqliyyat vasitəsinin qeydiyyat şəhadətnaməsi dəyişdirilib"
+   "vehiclePassportExpired": "Nəqliyyat vasitəsinin qeydiyyat şəhadətnaməsi dəyişdirilib",
+   "The given data was invalid.": "Daxil edilən məlumatlar yanlışdır",
 };
 

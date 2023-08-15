@@ -153,8 +153,8 @@ export default {
       },
 
       openEditModal(item) {
+         this.showOptions = false;
          this.$emit('openEditModal', true);
-
       },
 
       editAnnounce() {
@@ -165,7 +165,7 @@ export default {
          return;
       },
       async deleteAnnounce() {
-         await this.$store.dispatch('UserCabinetCarDelete', {id: this.announcement.id})
+         await this.$store.dispatch('deleteMyAnnounement',  this.announcement.id)
          this.$toasted.success(this.$t('car_deleted'));
          this.closeModal();
          this.$nuxt.refresh();
