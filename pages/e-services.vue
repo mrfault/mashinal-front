@@ -53,7 +53,7 @@
             tabs: [
                {
                   title: this.$t('customs_calculator'),
-                  description: 'Tələb olunan məlumatlarını daxil etməklə avtomobilinizin gömrük rüsumunu hesablayın',
+                  description: this.$t('customs_calculator_desc'),
                   // description: this.$t('dollar_course'),
                   value: '1 $ = 1.7₼',
                   // icon: 'customs-calculator-police',
@@ -64,7 +64,7 @@
                },
                {
                   title: this.$t('helper_search'),
-                  description: 'Hansı parametrlərdə avtomobil axtardığınızı daxil edin, bələdçi sizə bu işdə yardımçı olsun',
+                  description: this.$t('helper_search_desc'),
                   value: null,
                   // icon: 'helper-tab',
                   url: '/cars/assistant',
@@ -74,7 +74,7 @@
                },
                {
                   title: this.$t('fines'),
-                  description: 'NV-nizi "Qaraj" bölməsinə əlavə etməklə, cərimələr haqqında dərhal məlumata sahib olursunuz.',
+                  description: this.$t('fines_desc'),
                   value: null,
                   // icon: 'receipe',
                   url: '/garage',
@@ -84,7 +84,7 @@
                },
                {
                   title: this.$t('alcometer'),
-                  description: 'Hansı parametrlərdə avtomobil axtardığınızı daxil edin, bələdçi sizə bu işdə yardımçı olsun',
+                  description: this.$t('alcometer_desc'),
                   value: null,
                   // icon: 'alco',
                   url: '/alcometer',
@@ -94,7 +94,7 @@
                },
                {
                   title: this.$t('comparisons'),
-                  description: 'Axtarışınızı axtarış şablonlarına əlavə etməklə o parametrə uyğun yeni elana aid bildiriş əldə edəcəksiniz',
+                  description: this.$t('comparisons_desc'),
                   value: null,
                   // icon: 'comparisons',
                   url: '/comparison',
@@ -104,7 +104,7 @@
                },
                {
                   title: this.$t('my_searches'),
-                  description: 'NV-nizi "Qaraj" bölməsinə əlavə etməklə, cərimələr haqqında dərhal məlumata sahib olursunuz.',
+                  description: this.$t('my_searches_desc'),
                   value: null,
                   // icon: 'template',
                   url: '/profile/templates',
@@ -114,7 +114,7 @@
                },
                {
                   title: this.$t('visual_tire_calculator'),
-                  description: 'Axtarışınızı axtarış şablonlarına əlavə etməklə o parametrə uyğun yeni elana aid bildiriş əldə edəcəksiniz',
+                  description: this.$t('visual_tire_calculator_desc'),
                   value: null,
                   // icon: 'part-2',
                   url: '/tiremeter',
@@ -124,17 +124,17 @@
                },
                {
                   title: this.$t('external_salon'),
-                  description: 'Axtarışınızı axtarış şablonlarına əlavə etməklə o parametrə uyğun yeni elana aid bildiriş əldə edəcəksiniz',
+                  description: this.$t('external_salon_desc'),
                   value: null,
                   // icon: 'part-2',
                   url: '/external-salons',
                   // hasAction: false,
-                  image: 'tire-calculator',
+                  image: 'external-salons',
                   isAvailable: true,
                },
                // {
                //    title: this.$t('shops'),
-               //    description: 'Axtarışınızı axtarış şablonlarına əlavə etməklə o parametrə uyğun yeni elana aid bildiriş əldə edəcəksiniz',
+               //    description: this.$t('shops_desc'),
                //    value: null,
                //    // icon: 'part-2',
                //    url: '/parts/shops',

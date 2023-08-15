@@ -1049,6 +1049,18 @@ input::-webkit-inner-spin-button {
          }
       }
    }
+
+   &.custom {
+      .form-group {
+         &:first-child {
+            width: 55%;
+         }
+
+         &:last-child {
+            width: 45%;
+         }
+      }
+   }
 }
 
 .text-input.no-bg input,

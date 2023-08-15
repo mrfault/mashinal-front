@@ -21,8 +21,8 @@
       </div>
 
       <pagination
-         v-if="paginate && paginate.last_page > 1"
-         :page-count="paginate.last_page"
+         v-if="paginate && paginate.total > 1"
+         :page-count="paginate.total_pages"
          :value="paginate.current_page"
          @change-page="changePage"
       />

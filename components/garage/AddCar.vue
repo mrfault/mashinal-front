@@ -45,7 +45,7 @@
             <form-text-input
                v-model="form.tech_id"
                :invalid="$v.form.tech_id.$error"
-               :mask="$maskAlphaNumeric('********')"
+               :mask="$maskAlphaNumeric('*****************')"
                :placeholder="$t('tech_id')"
                class="mb-2 mb-lg-3"
             />

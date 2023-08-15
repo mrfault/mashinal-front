@@ -703,15 +703,21 @@
                background-color: transparent;
 
                .form-group {
-                  .select-menu_label {
-                     border-color: #364152;
-                     background-color: #1B2434 !important;
+                  .select-menu {
+                     &:not(.invalid) {
+                        .select-menu_label {
+                           border-color: #364152;
+                           background-color: #1B2434 !important;
+                        }
+                     }
                   }
 
                   .text-input {
                      input {
-                        border-color: #364152;
-                        background-color: #1B2434 !important;
+                        &:not(.invalid) {
+                           border-color: #364152;
+                           background-color: #1B2434 !important;
+                        }
                      }
                   }
 

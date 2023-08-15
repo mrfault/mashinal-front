@@ -51,8 +51,7 @@
                   </template>
 
                   <template #right>
-<!--                     cars?monetized=true-->
-                     <nuxt-link :to="$localePath('/cars')">
+                     <nuxt-link :to="$localePath('/featured-ads')">
                         <span>{{ $t('see_all') }}</span>
                         <icon name="arrow-right"/>
                      </nuxt-link>
@@ -240,7 +239,7 @@
             store.dispatch('fetchMonetizedAnnouncementsHome'),
             store.dispatch('fetchPartsAnnouncementsHome'),
             store.dispatch('fetchAllAnnouncementsHome'),
-            store.dispatch('getAllOtherOptions', '2'),
+            // store.dispatch('getAllOtherOptions', '2'),
             store.dispatch('fetchPlateNumbersHome'),
             store.dispatch('getBrandsOnlyExists'),
             store.dispatch('getPopularOptions'),

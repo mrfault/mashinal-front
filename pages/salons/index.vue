@@ -14,21 +14,21 @@
                   </template>
                </Banner>
 
-               <pre>{{  }}</pre>
                <salon-filters-form
                   v-show="searchFormType === 0"
-                  @filter="showSearch = false"
+                  @filter="salonFilter"
                   :count="(!mapView ? salonsFiltered : salonsInView).length"
                />
             </div>
 
-            <div class="container" v-if="!showMapsView">
+            <div class="container officialDealerships" v-if="!showMapsView">
                <div class="row">
                   <div class="col-md-12">
                      <Cap>
                         <template #left>
                            <h3>{{ $t('official_salons_3') }} ({{ officialSalons.length }})</h3>
                         </template>
+
                         <template #right>
                            <p
                               class="d-flex align-items-center"
@@ -66,11 +66,13 @@
                   <div class="col-md-12">
                      <Cap>
                         <template #left>
-                           <h3>{{ $t('auto_salons') }} ({{ salonsFiltered.filter(item => item.announcement_count > 0).filter(a => a.is_official).length }})</h3>
+                           <h3 v-if="!showMapsView">{{ $t('auto_salons') }} ({{ salonsFiltered.filter(item => item.announcement_count > 0).filter(a => a.is_official).length }})</h3>
+                           <h3 v-else>{{ $t('auto_salons') }} ({{ salonsInView.length }})</h3>
                         </template>
+
                         <template #right>
                            <p class="d-flex align-items-center" @click="setView()">
-                              <span v-if="!isMobileBreakpoint">{{ $t('show_on_site') }}</span>
+                              <span v-if="!isMobileBreakpoint">{{ $t('show_on_list') }}</span>
                               <span v-else>{{ $t('list') }}</span>
                               <inline-svg :src="'/icons/list1.svg'"/>
                            </p>
@@ -255,10 +257,13 @@ export default {
          'updateSalonsInBounds',
          'updateSalonsSearchFilters',
          'updateSalonsFilters',
+         'setMapView'
       ]),
+
       setView() {
          this.showMapsView = !this.showMapsView;
       },
+
       toggleSearch() {
          this.showSearch = !this.showSearch
       },
@@ -268,6 +273,20 @@ export default {
             this.$nuxt.$emit('showMapEvent', this.mapView)
             window.dispatchEvent(new Event('scroll'));
          });
+      },
+
+      salonFilter() {
+         setTimeout(() => {
+            if (this.officialSalons?.length) {
+               this.scrollTo('.officialDealerships', [60, 60]);
+            } else if (this.salonsFiltered?.filter(item => item.announcement_count > 0)?.filter(a => !a.is_official)?.length) {
+               this.scrollTo('.autosalon', [60, 60]);
+            } else {
+               this.scrollTo('.salon-filters-form', [-50, -50]);
+            }
+         }, 200);
+
+         this.showSearch = false
       }
    },
 

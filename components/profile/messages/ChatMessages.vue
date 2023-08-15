@@ -186,6 +186,7 @@ import FsLightbox from 'fslightbox-vue';
 import MessageItem from '~/components/profile/messages/MessageItem';
 import MessageSend from '~/components/profile/messages/MessageSend';
 import ImageSliderMessage from '~/components/elements/ImageSliderMessage';
+import ImageSlider from '~/components/elements/ImagesSlider';
 
 export default {
    props: {
@@ -200,6 +201,7 @@ export default {
       FsLightbox,
       MessageItem,
       MessageSend,
+      ImageSlider,
       ImageSliderMessage
    },
    created() {

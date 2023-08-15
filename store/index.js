@@ -65,6 +65,7 @@ const getInitialState = () => ({
    myAnnouncement: {},
    mainAnnouncements: {},
    mainMonetized: [],
+   monetizedPage: [],
    carShowroom: [],
    partsHome: [],
    plateNumbers: [],
@@ -244,6 +245,7 @@ const getInitialState = () => ({
 export const state = () => getInitialState();
 
 export const getters = {
+   monetizedPage: s => s.monetizedPage,
    getAgreements: s => s.agreements,
    getResetForm: s => s.resetForm,
    getMainMonetized: s => s.mainMonetized,
@@ -464,6 +466,11 @@ const objectNotEmpty = (state, commit, property) => {
 };
 export const actions = {
    // New API ++++++++++++++++++++
+   async fetchMonetizedAnnouncementsPage({commit}, page = 1) {
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/monetized-announcements?${page}`);
+      commit("mutate", {property: "monetizedPage", value: res});
+   },
+
    async fetchMonetizedAnnouncementsHome({commit}) {
       const res = await this.$axios.$get('https://v2dev.mashin.al/api/v2/monetized-announcements/home');
       commit("mutate", {property: "mainMonetized", value: res});
@@ -494,24 +501,24 @@ export const actions = {
       commit("mutate", {property: "brandsList", value: res});
    },
 
-   async fetchAutosalonAnnouncementsId({commit}, id) {
+   async fetchAutosalonAnnouncementsId({ commit }, id) {
       const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/autosalon/announcements/${id}`);
-      commit("mutate", {property: "autosalonAnnouncementsId", value: res});
+      commit("mutate", { property: "autosalonAnnouncementsId", value: res });
    },
 
-   async fetchPartsAnnouncementsId({commit}, id) {
+   async fetchPartsAnnouncementsId({ commit }, id) {
       const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/parts/announcements/${id}`);
-      commit("mutate", {property: "autosalonAnnouncementsId", value: res});
+      commit("mutate", { property: "autosalonAnnouncementsId", value: res });
    },
 
-   async fetchMonetizedCars({commit}) {
+   async fetchMonetizedCars({ commit }) {
       const res = await this.$axios.$get('https://v2dev.mashin.al/api/v2/car/monetized-cars');
-      commit("mutate", {property: "monetizedCars", value: res});
+      commit("mutate", { property: "monetizedCars", value: res });
    },
 
    async fetchMonetizedCarsSearch({commit}, data = {}) {
       const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/car/monetized`, data);
-      commit("mutate", {property: "monetizedCars", value: res});
+      commit("mutate", { property: "monetizedCars", value: res });
    },
 
    async getAnnouncementInnerV2({commit}, id) {
@@ -1291,9 +1298,7 @@ export const actions = {
       commit("mutate", {property: "myAnnouncement", value: {}});
    },
    async deleteMyAnnounementV2({commit}, id) {
-      await this.$axios.$post(
-         `https://v2dev.mashin.al/api/v2/me/cars/${id}/delete`
-      );
+      await this.$axios.$delete(`/announcement/${id}/remove`);
       commit("mutate", {property: "myAnnouncement", value: {}});
    },
    // Car announcements
@@ -1739,18 +1744,18 @@ export const actions = {
       await this.$axios.$post("/offer/message/read/" + payload.id);
    },
 
-   async UserCabinetCarsAdd({commit, state}, payload) {
-      const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/me/cars/create?brand_id=${payload.brand_id}&model_id=${payload.model_id}&generation_id=${payload.generation_id}&car_type_id=${payload.car_type_id}&car_catalog_id=${payload.car_catalog_id}&vin=${payload.vin}&car_number=${payload.car_number}`);
+   async UserCabinetCarsAdd({commit,state}, payload){
+      const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/me/cars/create`, payload );
       // commit("mutate", {property: "userCabinetCars", value: res});
    },
-   async UserCabinetCarsEdit({commit, state}, payload) {
+   async UserCabinetCarsEdit({commit,state}, payload){
       const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/me/cars/${payload.id}/update?brand_id=${payload.brand_id}&model_id=${payload.model_id}&generation_id=${payload.generation_id}&car_type_id=${payload.car_type_id}&car_catalog_id=${payload.car_catalog_id}&vin=${payload.vin}&car_number=${payload.car_number}`);
    },
-   async UserCabinetCarsGetAll({commit, state}, payload) {
+   async UserCabinetCarsGetAll({commit,state}, payload){
       const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/me/cars`);
       commit("mutate", {property: "userCabinetCars", value: res.data});
    },
-   async UserCabinetCarDelete({commit, state}, payload) {
+   async UserCabinetCarDelete({commit,state}, payload){
       const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/me/cars/${payload.id}/delete`);
    },
 

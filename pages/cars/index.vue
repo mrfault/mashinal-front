@@ -171,7 +171,6 @@
          let searchParams = { url: '/car', prefix: 'cars' }
          if (!store.state.carsAnnouncements.total) await store.dispatch('getGridSearch', {...searchParams, post, page})
 
-         console.log('post', post)
          // if (route.query.monetized) {
          //    store.dispatch('fetchMonetizedAnnouncementsHome');
          //    console.log('1')
@@ -337,6 +336,8 @@
 
 <style lang="scss">
    .pages-cars-index {
+      margin-top: 32px;
+
       &__title {
          font-weight: 600;
          font-size: 32px;
