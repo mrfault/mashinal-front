@@ -129,7 +129,7 @@
                   // icon: 'part-2',
                   url: '/external-salons',
                   // hasAction: false,
-                  image: 'tire-calculator',
+                  image: 'external-salons',
                   isAvailable: true,
                },
                // {
