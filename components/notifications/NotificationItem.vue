@@ -1,11 +1,11 @@
 <template>
    <div
-      :class="{'ma-notification__inactive': !notification.read_at}"
+      :class="{'ma-notification__inactive': notification.read_at}"
       class="ma-notification"
       @click.prevent="gotoLink"
    >
       <div class="ma-notification__icon">
-         <inline-svg v-if="notification.read_at" src="/new-icons/notification.svg"/>
+         <inline-svg v-if="!notification.read_at" src="/new-icons/notification.svg"/>
          <inline-svg v-else src="/new-icons/notification-read.svg"/>
       </div>
       <div class="ma-notification__content">
@@ -31,10 +31,21 @@ export default {
    },
    methods: {
       gotoLink() {
-         const routePath = this.link;
-         window.open(routePath, '_blank');
-         this.$store.dispatch('getNotifications', this.page);
-         this.$nuxt.refresh()
+         const bodyText = this.notification.body;
+
+         const linkRegex = /<a\s+(?:[^>]*?\s+)?href=(["'])(.*?)\1/i;
+         const match = bodyText.match(linkRegex);
+
+         if (match && match[2]) {
+            const href = match[2];
+            window.open(href, '_blank');
+         } else {
+            // Handle case when no valid link is found
+            const routePath = this.link;
+            window.open(routePath, '_blank');
+            this.$store.dispatch('getNotifications', this.page);
+            this.$nuxt.refresh();
+         }
       }
    }
 }
@@ -53,7 +64,7 @@ export default {
    background: #fff;
    margin-bottom: 16px;
 
-   &:hover{
+   &:hover {
       background: rgba(#2970FF, .1);
    }
 
@@ -110,7 +121,6 @@ export default {
 
    .ma-notification {
       background: #1B2434;
-
 
 
       &__content {

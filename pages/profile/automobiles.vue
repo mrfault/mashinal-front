@@ -65,7 +65,6 @@ export default {
          this.isEditing = true;
          this.selectedCar = item;
          this.showModal = true;
-
       },
       closeModal(){
          this.showModal = false;
