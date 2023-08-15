@@ -5,7 +5,7 @@
             <portal-target name="breadcrumbs"/>
             <div class="ma-garage">
                <div class="ma-garage__nav">
-                  <NuxtLink :to="$localePath('garage-services')" class="ma-garage__nav--profile">
+                  <NuxtLink :to="$localePath('garage-services')" class="ma-garage__nav--profile" >
                      <div class="ma-garage__nav--profile__avatar">
                         <template v-if="image">
                            <img :src="image" :alt="user?.full_name"/>
@@ -19,6 +19,8 @@
                         v-if="!item.isButton"
                         :class="{'ma-garage-link-active': isRouteActive(item.link) }"
                         :to="$localePath(item.link)"
+                        :active-class="''"
+                        :exact-active-clas="'active'"
                         class="ma-garage__nav--item"
                      >
                         <inline-svg :src="`/new-icons/${item.icon}-new.svg`"/>
