@@ -187,7 +187,7 @@ export default {
       color: #9AA4B2!important;
    }
    .border-bottom{
-      border-bottom: 1px solid #1b2434!important;
+      border-bottom: 1px solid #9AA4B2!important;
    }
 }
 .dark-mode {
@@ -200,7 +200,7 @@ export default {
          color: #9AA4B2!important;
       }
       .border-bottom{
-         border-bottom: 1px solid #1b2434!important;
+         border-bottom: 1px solid #9AA4B2!important;
       }
    }
 }
