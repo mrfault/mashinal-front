@@ -5,6 +5,9 @@
             <nuxt-link :to="$localePath(menu.route)" @click="toggleSidebarMenu()" :active-class="''" :exact-active-clas="'active'">
                <inline-svg :src="menu.icon" />
                <span>{{ $t(menu.title) }}</span>
+               <span v-if="menu.title === 'messages' && countNewMessages > 0" class="badge-counter">
+                  {{ countNewMessages }}
+               </span>
             </nuxt-link>
          </li>
       </ul>

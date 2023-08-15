@@ -202,42 +202,35 @@
                   <div class="row align-items-center">
                      <div class="col-lg-10 position-static">
                         <ul class="menu position-relative">
-                           <li
-                              v-for="menu in navbarMenus"
+                           <li v-for="menu in navbarMenus"
                               :key="menu.title"
                               @mouseover="menu.children ? (hoverMenu = true) : ''"
                               @mouseleave="hoverMenu = false, activeCategory = 0"
                               v-if="(user.children && user.children.length) || user.parent_id ? !['eservices','salons','shops'].includes(menu.title) :true"
-                              :class="{ dropdown: menu.children }"
-                           >
+                              :class="{ dropdown: menu.children }">
                               <nuxt-link
                                  class="external_salon_hover"
                                  style="position: relative"
-                                 :to="$localePath(menu.route)"
-                              >
-
-<!--                              <icon -->
-<!--                                 v-if="menu.icon !== 'external-tab'"-->
-<!--                                 style="font-size: 20px; margin-right: 10px;"-->
-<!--                                 class="no-transform "-->
-<!--                                 :name="menu.icon"-->
-<!--                              />-->
-
-<!--                                 <inline-svg-->
-<!--                                    class="no-transform "-->
-<!--                                    style="width: 20px; fill:inherit; margin-right: 10px;" v-else-->
-<!--                                    src="/img/external_salon.svg"-->
-<!--                                 />-->
-
+                                 :active-class="''"
+                                 :exact-active-clas="'active'"
+                                 :to="$localePath(menu.route)">
+                                 <!--<icon -->
+                                 <!--   v-if="menu.icon !== 'external-tab'"-->
+                                 <!--   style="font-size: 20px; margin-right: 10px;"-->
+                                 <!--   class="no-transform "-->
+                                 <!--   :name="menu.icon"-->
+                                 <!--/>-->
+                                 <!--<inline-svg-->
+                                 <!--   class="no-transform "-->
+                                 <!--   style="width: 20px; fill:inherit; margin-right: 10px;" v-else-->
+                                 <!--   src="/img/external_salon.svg"-->
+                                 <!--/>-->
                                  {{ $t(menu.title) }}
-
                                  <icon name="chevron-down" v-if="menu.children"/>
-
                                  <IconNovelties v-if="menu.with_badge" />
-
-<!--                                 <span style="position: absolute; top: 3px; right: 0; display: flex;">-->
-<!--                                    <inline-svg style="width: 31px;" v-if="menu.icon === 'external-tab'" src="/img/new_badge.svg"/>-->
-<!--                                 </span>-->
+                                 <!--<span style="position: absolute; top: 3px; right: 0; display: flex;">-->
+                                 <!--   <inline-svg style="width: 31px;" v-if="menu.icon === 'external-tab'" src="/img/new_badge.svg"/>-->
+                                 <!--</span>-->
                               </nuxt-link>
 
                               <div
@@ -478,5 +471,9 @@ export default {
       //right: 50px;
       //margin-left: 10px;
    }
+}
+
+.page-header .navbar .menu > li a.active, .page-header .navbar .menu > li a.exact-active {
+   color: #F81734;
 }
 </style>
