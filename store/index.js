@@ -1281,6 +1281,11 @@ export const actions = {
       commit("mutate", {property: "announcement", value: res});
    },
 
+   async getMotoInnerV2({commit}, id) {
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/moto/motorcycle/${id}`);
+      commit("mutate", {property: "announcement", value: res});
+   },
+
    async getPartsInnerV2({commit}, id) {
       const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/parts/${id}`);
       commit("mutate", {property: "announcement", value: res});

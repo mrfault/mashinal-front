@@ -13,11 +13,20 @@
 </template>
 
 <script>
+   // import { SearchMixin } from "~/mixins/search";
+
    export default {
+      // mixins: [SearchMixin],
+
+      data() {
+        return {
+           // watch: false
+        }
+      },
+
       methods: {
          async searchBrand(brand) {
             let url = {
-               "sorting": "created_at_desc",
                "additional_brands": {
                   "0":{ "brand": brand.id, "brand_slug": brand.slug },
                   "1":{},
@@ -26,17 +35,36 @@
                   "4":{}
                },
                "announce_type": 1,
-               "currency":1
+               "currency": 1
             }
 
-            this.$router.push({
+            await this.$router.push({
                path: 'masinlar',
                query: { car_filter: JSON.stringify(url) }
             }, () => {
-               window.location.reload();
-               this.scrollTo('.announcements-grid', [0, 0], 1000);
-            })
+               this.scrollTo('.announcements-grid', [-60, -60]);
+               // setTimeout(() => {
+               //    this.$router.push({
+               //       path: 'masinlar',
+               //       query: { car_filter: JSON.stringify(url), watch: 'true' }
+               //    });
+               // }, 300)
+            });
+
+            // this.watch = true;
          }
+      },
+
+      watch: {
+         '$route.query'() {
+            // if (this.$route.query?.watch === 'true') {
+               let post = JSON.parse(this.$route.query?.car_filter || '{}');
+               let page = this.$route.query?.page || 1;
+
+               this.$store.dispatch('getGridSearch', { url: '/car', prefix: 'cars', post, page });
+               this.$store.dispatch('fetchMonetizedCarsSearch', post);
+            // }
+        }
       },
 
       props: {
