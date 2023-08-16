@@ -112,8 +112,7 @@
           <h2 v-if="showResults" class="title-with-line full-width mb-2">
             <span>{{ $t('result_of_calculation') }}</span>
           </h2>
-          <table v-if="showResults" class="ma-tiremeter__results-table"
-          >
+          <table v-if="showResults" class="ma-tiremeter__results-table">
             <tr class="ma-tiremeter__results-table--header">
               <th>{{ $t('dimensions_tire') }}</th>
               <th>{{ $t('previous_version') }}</th>

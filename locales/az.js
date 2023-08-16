@@ -2469,7 +2469,7 @@ export default {
    alcometer: "Alkotest",
    alcometer_descr:
       "İçkili vəziyyətdə avtomobili idarə etmək qadağandır. Bu, sizin və başqalarının həyatını riskə atır. Lorem ipsum dolor sit amet consectur emprario merbaken ",
-
+   dimensions_tire: "Ölçülər",
    visual_tire_calculator: "Vizual şin kalkulyatoru",
    size_of_old_tire: "Köhnə şinin ölçüsü",
    size_of_new_tire: "Yeni şinin ölçüsü",
