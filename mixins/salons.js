@@ -6,8 +6,6 @@ export const SalonsMixin = {
             : `/img/salon-logo-${this.colorMode}.jpg`
       },
       getCover(cover, type) {
-         console.log(`/img/salon-cover-${type}-${this.colorMode}${this.isMobileBreakpoint ? '-m' : ''}.jpg`)
-
          return cover
             ? this.$withBaseUrl(cover)
             : `/img/salon-cover-${type}-${this.colorMode}${this.isMobileBreakpoint ? '-m' : ''}.jpg`

@@ -439,6 +439,32 @@
    .dark-mode {
       .filters-container {
          background-color: #1B2434;
+
+         &__head {
+            .announce_types {
+               .btn {
+                  &:hover {
+                     background-color: #155EEF !important;
+
+                     span {
+                        color: #FFFFFF !important;
+                     }
+                  }
+               }
+            }
+
+            .no-bg {
+               .btn {
+                  &:hover {
+                     border-color: #155EEF !important;
+
+                     span {
+                        color: #FFFFFF !important;
+                     }
+                  }
+               }
+            }
+         }
       }
    }
 

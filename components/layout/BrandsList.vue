@@ -39,31 +39,21 @@
             }
 
             await this.$router.push({
-               path: 'masinlar',
+               path: '/cars',
                query: { car_filter: JSON.stringify(url) }
             }, () => {
                this.scrollTo('.announcements-grid', [-60, -60]);
-               // setTimeout(() => {
-               //    this.$router.push({
-               //       path: 'masinlar',
-               //       query: { car_filter: JSON.stringify(url), watch: 'true' }
-               //    });
-               // }, 300)
             });
-
-            // this.watch = true;
          }
       },
 
       watch: {
          '$route.query'() {
-            // if (this.$route.query?.watch === 'true') {
-               let post = JSON.parse(this.$route.query?.car_filter || '{}');
-               let page = this.$route.query?.page || 1;
+            let post = JSON.parse(this.$route.query?.car_filter || '{}');
+            let page = this.$route.query?.page || 1;
 
-               this.$store.dispatch('getGridSearch', { url: '/car', prefix: 'cars', post, page });
-               this.$store.dispatch('fetchMonetizedCarsSearch', post);
-            // }
+            this.$store.dispatch('getGridSearch', { url: '/car', prefix: 'cars', post, page });
+            this.$store.dispatch('fetchMonetizedCarsSearch', post);
         }
       },
 
