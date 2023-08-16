@@ -7,7 +7,7 @@
       <div class="ma-automobile-card__content">
          <h4 class="ma-automobile-card__content--brand">{{ item.brand.name }} {{ item.model.name }}
             {{ item.generation.start_year }}-{{ item.generation.end_year }}</h4>
-         <p class="ma-automobile-card__content--desc">{{ $t(item.car_type.name) }} / {{ 2.4 }}L / {{ 'benzin' }}</p>
+         <p class="ma-automobile-card__content--desc">{{ $t(card_desc_1) }} / {{ 2.4 }}L / {{ $t('benzin') }}</p>
       </div>
       <automobile-card-actions @openEditModal="openEditModal(item)" :announcement="item" :dropdown-id="item.id"/>
    </div>
@@ -28,6 +28,11 @@ export default {
       openEditModal(item){
          console.log("card openEditModal")
          this.$emit('openEditModal',item)
+      }
+   },
+   computed:{
+      card_desc_1(){
+         return this.item.car_type.name
       }
    }
 }
