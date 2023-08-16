@@ -832,9 +832,13 @@
       },
 
       watch: {
-         '$route.query'() {
-            if (JSON.parse(this.$route.query?.car_filter)?.additional_brands) {
-               this.form.additional_brands = JSON.parse(this.$route.query?.car_filter)?.additional_brands;
+         '$route.query'(val) {
+            try {
+               if (val?.car_filter && JSON.parse(val?.car_filter)?.additional_brands) {
+                  this.form.additional_brands = JSON.parse(val?.car_filter)?.additional_brands;
+               }
+            } catch (e) {
+               console.log(e)
             }
          },
 

@@ -5,6 +5,7 @@
             :announcements="announcements?.data"
             :paginate="announcements?.meta"
             :hasContainer="false"
+            :pending="pending"
             @change-page="changePage"
          >
             <template #cap>
@@ -15,9 +16,6 @@
                </Cap>
             </template>
          </grid>
-
-         <pre>{{announcements?.meta}}</pre>
-
       </div>
    </div>
 </template>
@@ -47,15 +45,19 @@
 
       components: { Grid, Cap },
 
+      data() {
+        return {
+           pending: false
+        }
+      },
+
       methods: {
          async changePage(page = 1) {
             page = this.$route.query.page || 1;
 
-
-            // this.pending = true;
+            this.pending = true;
             await this.$store.dispatch('fetchMonetizedAnnouncementsPage', `page=${page}`);
-            // console.log('post', post)
-            // this.pending = false;
+            this.pending = false;
 
             this.scrollTo('.monetizedPage', [-25]);
          }

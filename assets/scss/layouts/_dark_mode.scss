@@ -955,6 +955,10 @@
 
    .form-merged {
       border-color: $dark-new !important;
+
+      &:hover {
+         border-color: $blue-2-new !important;
+      }
    }
 
    .checkbox-input .checkbox,
