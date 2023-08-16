@@ -79,6 +79,7 @@
                         </template>
                      </Cap>
                   </div>
+
                   <div class="col-md-12 mt-5 mb-5">
                      <div class="row flex-column-reverse flex-lg-row">
                         <div class="col-md-4">
@@ -90,6 +91,7 @@
                               </div>
                            </div>
                         </div>
+
                         <div class="col-md-8 mb-lg-0 mb-2">
                            <div class="map-viewer">
                               <div v-if="!isMobileBreakpoint">
@@ -101,6 +103,7 @@
                                     @balloon-click="$router.push($localePath(`/salons/${$event}`))"
                                  />
                               </div>
+
                               <template v-else>
                                  <div>
                                     <clustered-map
@@ -284,7 +287,7 @@ export default {
             } else {
                this.scrollTo('.salon-filters-form', [-50, -50]);
             }
-         }, 200);
+         }, 1000);
 
          this.showSearch = false
       }
