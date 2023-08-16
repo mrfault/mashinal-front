@@ -207,8 +207,9 @@
 
             try {
                const res = await this.$axios.$post(`${api}?is_mobile=${this.isMobileBreakpoint}`, data);
-
+               this.openModal = false;
                if (!res?.data?.redirect_url) {
+
                   await this.$nuxt.refresh();
                   await this.updatePaidStatus({
                      type: 'success',
@@ -219,7 +220,7 @@
                   await this.handlePayment(res, this.$localePath('/agreement'));
 
                }
-               this.pending = this.openModal = false;
+               this.pending = false;
             } catch (error) {
                this.pending = false;
 

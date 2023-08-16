@@ -38,7 +38,7 @@
                   <div
                      v-else
                      :class="['swiper-slide-bg', { 'youtube-play': showYtVideo(index) }]"
-                     :style="`background-image:url(${showYtVideo(index) ? getYtVideoImage('hq') : slide}?width=834)`"
+                     :style="`background-image:url(${showYtVideo(index) ? getYtVideoImage('hq') : slide}&width=834)`"
                   >
                      <!--              <loader />-->
                   </div>
