@@ -20,7 +20,7 @@
                   />
                   <p v-html="$t('mobile_info', {phone: '+' + user.phone})"/>
                </div>
-               <h2>Elan melumatlari</h2>
+               <h2 class="card_title">{{ announceTitle }}</h2>
                <div class="card_container">
                   <form class="add_announce_form">
 
@@ -82,6 +82,53 @@
                               <inline-svg class="contacts_info_svg info_svg" :src="'/icons/info.svg'"/>
                               <p>{{ $t("contacts_registration_info") }}</p>
                            </div>
+
+                           <div class="service_packages">
+                              <div
+                                 :class="['package', 'standard_package', form.add_monetization === 0 ? 'selected': '' ]"
+                                 @click="form.add_monetization = 0">
+                                 <div class="title">
+                                    <inline-svg class="stars_svg" :src="'/icons/stars.svg'"/>
+                                    <p>{{ $t('standard_announce') }}</p>
+                                 </div>
+                                 <ul class="content">
+                                    <li class="content_list" v-for="sp in servicePackages?.standard" :key="sp.id">
+                                       <inline-svg :class="sp.status ? 'active' : 'check_svg'"
+                                                   :src="'/icons/filled_circled_check.svg'"/>
+                                       {{ sp.text }}
+                                    </li>
+                                 </ul>
+                                 <div class="package_price">
+                                    <p>{{ $t('free_for_30_days') }}</p>
+                                 </div>
+                              </div>
+                              <div
+                                 :class="['package', 'premium_package', form.add_monetization === 1 ? 'selected': '' ]"
+                                 @click="form.add_monetization = 1">
+                                 <div class="sale_effect">
+                                    <p>x3</p>
+                                    <span>daha <br> tez sat</span>
+                                 </div>
+                                 <div class="title">
+                                    <inline-svg class="stars_svg" :src="'/icons/promote_square.svg'"/>
+                                    <p>{{ $t('paid_announce') }}</p>
+
+                                 </div>
+                                 <ul class="content">
+                                    <li class="content_list" v-for="sp in servicePackages?.premium" :key="sp.id">
+                                       <inline-svg :class="sp.status ? 'active' : 'check_svg'"
+                                                   :src="'/icons/filled_circled_check.svg'"/>
+                                       {{ sp.text }}
+                                    </li>
+                                 </ul>
+                                 <div class="package_price">
+                                    <p><span>{{ $t('discount_message') }}</span>{{ $t('total_count_message') }}</p>
+                                    <div class="badge">
+                                       <p>-40% {{ $t('cheap') }}</p>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
                            <button type="button" @click="onClick()"
                                    class="btn full-width btn--pale-green-outline active">
                               {{ authStep === "notLoggedIn" ? $t("enter_sms_code") : $t("place_announcement") }}
@@ -92,54 +139,11 @@
                               <nuxt-link :to="`/page/${getRulesPage.slug[locale]}`"
                                          @click.native.prevent="showRules = true"
                                          event="">
-                                 <strong>{{ $t('general_rules') }}</strong>
+                                 <strong style="text-decoration: underline">{{ $t('general_rules') }}</strong>
                               </nuxt-link>
                            </p>
                         </div>
-                        <div class="service_packages">
-                           <div :class="['package', 'standard_package', form.add_monetization === 0 ? 'selected': '' ]"
-                                @click="form.add_monetization = 0">
-                              <div class="title">
-                                 <inline-svg class="stars_svg" :src="'/icons/stars.svg'"/>
-                                 <p>{{ $t('standard_announce') }}</p>
-                              </div>
-                              <ul class="content">
-                                 <li class="content_list" v-for="sp in servicePackages?.standard" :key="sp.id">
-                                    <inline-svg :class="sp.status ? 'active' : 'check_svg'"
-                                                :src="'/icons/filled_circled_check.svg'"/>
-                                    {{ sp.text }}
-                                 </li>
-                              </ul>
-                              <div class="package_price">
-                                 <p>{{ $t('free_for_30_days') }}</p>
-                              </div>
-                           </div>
-                           <div :class="['package', 'premium_package', form.add_monetization === 1 ? 'selected': '' ]"
-                                @click="form.add_monetization = 1">
-                              <div class="sale_effect">
-                                 <p>x3</p>
-                                 <span>daha <br> tez sat</span>
-                              </div>
-                              <div class="title">
-                                 <inline-svg class="stars_svg" :src="'/icons/promote_square.svg'"/>
-                                 <p>{{ $t('paid_announce') }}</p>
 
-                              </div>
-                              <ul class="content">
-                                 <li class="content_list" v-for="sp in servicePackages?.premium" :key="sp.id">
-                                    <inline-svg :class="sp.status ? 'active' : 'check_svg'"
-                                                :src="'/icons/filled_circled_check.svg'"/>
-                                    {{ sp.text }}
-                                 </li>
-                              </ul>
-                              <div class="package_price">
-                                 <p><span>{{ $t('discount_message') }}</span>{{ $t('total_count_message') }}</p>
-                                 <div class="badge">
-                                    <p>-40% {{ $t('cheap') }}</p>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
                         <modal-popup
                            :modal-class="'wider'"
                            :toggle="showRules"
@@ -221,6 +225,7 @@ export default {
          submitShow: false,
          showRules: false,
          isReady: false,
+         announceTitle: "",
          announcement: {
             image: "",
             show_vin: true,
@@ -237,38 +242,6 @@ export default {
          },
          form: {
             announce_type: "",
-            // moto_type: "",
-            // commercial_vehicle_type: "",
-            // brand: "",
-            // model: "",
-            // year: "",
-            // body_type: "",
-            // fuel_type: "",
-            // autogas: "",
-            // transmission: "",
-            // gearing: "",
-            // modification: "",
-            // color: "",
-            // mileage: 0,
-            // mileage_type: "",
-            // beaten: "",
-            // customs_clearance: "",
-            // guaranty: "",
-            // region_id: "",
-            // address: "",
-            // lat: 0,
-            // lng: 0,
-            // tradeable: "",
-            // credit: "",
-            // car_number: "",
-            // show_car_number: "",
-            // vin: "",
-            // show_vin: "",
-            // comment: "",
-            // saved_images: [],
-            // name: "",
-            // email: "",
-            // phone: "",
             add_monetization: 0
          },
          authForm: {
@@ -424,6 +397,7 @@ export default {
       }
    },
    async mounted() {
+      this.announceTitle = this.$t('place_an_ad')
       if (Object.values(this.user).length) {
          this.authForm.name = this.user.full_name
          this.authForm.email = this.user.email
@@ -439,11 +413,18 @@ export default {
          this.submitShow = false
          switch (this.form.announce_type.title) {
             case "cars":
+               this.announceTitle = this.$t('vehicle_info')
                return this.announcement.image = "/img/car_default.svg"
             case "moto":
+               this.announceTitle = this.$t('vehicle_info')
                return this.announcement.image = "/img/motorbike.svg"
+            case "parts":
+               return this.announceTitle = this.$t('part_info')
             case "registration_marks":
+               this.announceTitle = this.$t('registration_mark_info')
                return this.submitShow = true
+            default:
+               this.announceTitle = this.$t('place_an_ad')
          }
       }
    },
@@ -487,6 +468,11 @@ export default {
          display: flex;
          flex-direction: column;
          gap: 20px;
+
+         &_title {
+            font-size: 24px;
+            font-weight: 600;
+         }
 
          .add_announce_info {
             display: flex;
@@ -561,137 +547,139 @@ export default {
                      background-color: #EEF2F6;
                      border-radius: 8px;
                   }
-               }
 
-               .service_packages {
-                  display: flex;
-                  gap: 16px;
-
-                  .package {
-                     position: relative;
-                     flex-grow: 1;
+                  .service_packages {
                      display: flex;
-                     flex-direction: column;
                      gap: 16px;
-                     padding: 20px 16px;
-                     border: 1px solid #CDD5DF;
-                     border-radius: 12px;
-                     overflow: hidden;
-                     cursor: pointer;
 
-                     .title {
-
+                     .package {
+                        position: relative;
+                        flex-grow: 1;
                         display: flex;
-                        align-items: center;
-                        gap: 8px;
-                        padding-bottom: 20px;
-                        border-bottom: 1px solid #CDD5DF;
+                        flex-direction: column;
+                        gap: 16px;
+                        padding: 20px 16px;
+                        border: 1px solid #CDD5DF;
+                        border-radius: 12px;
+                        overflow: hidden;
+                        cursor: pointer;
 
+                        .title {
 
-                        p {
-                           font-size: 16px;
-                           font-weight: 700;
-                        }
-
-                        .stars_svg {
-                           width: 24px;
-                           height: 24px;
-                           color: #0A77E8;
-                        }
-                     }
-
-                     .sale_effect {
-                        width: 100%;
-                        position: absolute;
-                        top: 14px;
-                        left: 74px;
-                        background-color: #D1E0FF;
-                        display: flex;
-                        align-items: center;
-                        gap: 2px;
-                        justify-content: center;
-                        transform: rotate(45deg);
-                        padding: 2px 0;
-
-                        p {
-                           font-size: 17px;
-                           font-weight: 600;
-                        }
-
-                        span {
-                           line-height: 13px;
-                           font-size: 11px;
-                           font-weight: 600;
-                        }
-                     }
-
-                     .content {
-
-                        &_list {
-                           padding: 20px 0;
                            display: flex;
                            align-items: center;
-                           gap: 12px;
+                           gap: 8px;
+                           padding-bottom: 20px;
+                           border-bottom: 1px solid #CDD5DF;
 
-                           .check_svg {
-                              color: #CDD5DF;
 
+                           p {
+                              font-size: 16px;
+                              font-weight: 700;
                            }
 
-                           .active {
-                              color: #12B76A;
+                           .stars_svg {
+                              width: 24px;
+                              height: 24px;
+                              color: #0A77E8;
                            }
-                        }
-                     }
-
-                     .package_price {
-                        position: relative;
-                        padding: 4px 8px;
-                        height: 56px;
-                        margin-top: auto;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        border-radius: 8px;
-                        background-color: #D1E0FF;
-                        font-size: 15px;
-                        font-weight: 700;
-                        text-align: center;
-
-                        span {
-                           display: block;
-                           font-size: 11px;
-                           font-weight: 500;
-                        }
-
-                        .badge {
-                           position: absolute;
-                           top: -21px;
-                           right: 8px;
-                           background-color: #F81734;
-                           padding: 4px 6px;
-                           border-radius: 6px;
-                           color: #fff;
-                           font-size: 13px;
-                           font-weight: 600;
-                        }
-                     }
-
-                     &.selected {
-                        border-color: #004EEB;
-
-                        .package_price {
-                           background-color: #004EEB;
-                           color: #fff;
                         }
 
                         .sale_effect {
-                           background-color: #004EEB;
-                           color: #fff;
+                           width: 100%;
+                           position: absolute;
+                           top: 14px;
+                           left: 74px;
+                           background-color: #D1E0FF;
+                           display: flex;
+                           align-items: center;
+                           gap: 2px;
+                           justify-content: center;
+                           transform: rotate(45deg);
+                           padding: 2px 0;
+
+                           p {
+                              font-size: 17px;
+                              font-weight: 600;
+                           }
+
+                           span {
+                              line-height: 13px;
+                              font-size: 11px;
+                              font-weight: 600;
+                           }
+                        }
+
+                        .content {
+
+                           &_list {
+                              padding: 20px 0;
+                              display: flex;
+                              align-items: center;
+                              gap: 12px;
+
+                              .check_svg {
+                                 color: #CDD5DF;
+
+                              }
+
+                              .active {
+                                 color: #12B76A;
+                              }
+                           }
+                        }
+
+                        .package_price {
+                           position: relative;
+                           padding: 4px 8px;
+                           height: 56px;
+                           margin-top: auto;
+                           display: flex;
+                           justify-content: center;
+                           align-items: center;
+                           border-radius: 8px;
+                           background-color: #D1E0FF;
+                           font-size: 15px;
+                           font-weight: 700;
+                           text-align: center;
+
+                           span {
+                              display: block;
+                              font-size: 11px;
+                              font-weight: 500;
+                           }
+
+                           .badge {
+                              position: absolute;
+                              top: -21px;
+                              right: 8px;
+                              background-color: #F81734;
+                              padding: 4px 6px;
+                              border-radius: 6px;
+                              color: #fff;
+                              font-size: 13px;
+                              font-weight: 600;
+                           }
+                        }
+
+                        &.selected {
+                           border-color: #004EEB;
+
+                           .package_price {
+                              background-color: #004EEB;
+                              color: #fff;
+                           }
+
+                           .sale_effect {
+                              background-color: #004EEB;
+                              color: #fff;
+                           }
                         }
                      }
                   }
                }
+
+
             }
 
             .vehicle_card_info {
@@ -810,8 +798,11 @@ export default {
 
 
          .card {
-            &_container {
+            .add_announce_info {
+               background-color: #364152;
+            }
 
+            &_container {
                .add_announce_form {
                   .info_svg {
                      color: #4B5565 !important;
@@ -825,15 +816,22 @@ export default {
                      }
                   }
 
-                  .add_announce_info {
-                     background-color: #364152;
-                  }
 
                   .contacts {
 
                      &_info {
                         background-color: #364152;
                      }
+                  }
+               }
+
+               .vehicle_card_info {
+                  &_description {
+                     background-color: #00359E;
+                  }
+
+                  &_help {
+                     background-color: #364152;
                   }
                }
             }

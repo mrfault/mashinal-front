@@ -382,7 +382,7 @@ export const SearchMixin = {
       getCustomsOptions() {
          return [
             {name: this.$t('cleared'), key: 1},
-            {name: this.$t('not_cleared2'), key: 2}
+            {name: this.$t('not_cleared'), key: 2}
          ];
       },
 

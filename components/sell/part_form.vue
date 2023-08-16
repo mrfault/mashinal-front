@@ -264,15 +264,15 @@ export default {
          priceTypes: [
             {
                id: 1,
-               name: {az: "AZN", ru: "AZN ru", en: "AZN en"},
+               name: {az: "AZN", ru: "AZN"},
             },
             {
                id: 2,
-               name: {az: "USD", ru: "USD ru", en: "USD en"},
+               name: {az: "USD", ru: "USD"},
             },
             {
                id: 3,
-               name: {az: "EUR", ru: "EUR ru", en: "EUR en"},
+               name: {az: "EUR", ru: "EUR"},
             },
          ],
          form: {
