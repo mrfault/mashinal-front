@@ -12,7 +12,7 @@
           <a class="catalog-grid_item" :href="$localePath(getLink(item))" @click.prevent="handleItemClick(item)">
             <div class="card">
               <div class="item-img">
-                <img :src="getImage(item)+'?width=224'" :alt="getTitle(item)" v-if="getImage(item)" />
+                <img :src="getImage(item)+'&width=224'" :alt="getTitle(item)" v-if="getImage(item)" />
                 <img src="/img/car.svg" alt="" class="no-img" v-else/>
               </div>
               <h3 class="text-truncate" v-html="getTitle(item)"></h3>
