@@ -38,10 +38,16 @@
          </div>
       </div>
 
-      <div :class="['id'+announcement.id,{'overflow-visible isProfilePage': isProfilePage}]"
-           class="announcements-grid__item" @click="goToAnnouncement">
-         <profile-grid-actions v-if="isProfilePage" :announcement="announcement"
-                               :class="{'right-aligned-dropdown': isLastChild}" :dropdown-id="announcement.id_unique"/>
+      <div
+         class="announcements-grid__item" @click="goToAnnouncement"
+         :class="['id'+announcement.id,{'overflow-visible isProfilePage': isProfilePage}]"
+      >
+         <profile-grid-actions
+            v-if="isProfilePage"
+            :announcement="announcement"
+            :class="{'right-aligned-dropdown': isLastChild}"
+            :dropdown-id="announcement.id_unique"
+         />
 
          <a
             v-if="clickable && !isMobileBreakpoint && !$env.DEV"
@@ -66,26 +72,19 @@
                   <div class="item-overlay__top--left">
                      <div
                         :class="{
-                        'activeStatus': announcement.status == 1,
-                        'deactiveStatus': announcement.status == 3,
-                        'consideration': announcement.status == 2,
-                        'rejectedStatus': announcement.status == 0,
+                           'activeStatus': announcement.status == 1,
+                           'deactiveStatus': announcement.status == 3,
+                           'consideration': announcement.status == 2,
+                           'rejectedStatus': announcement.status == 0,
                         }"
                         class="item-overlay__top--left_item"
                      >
                         <template v-if="announcement.is_auto_salon && !isProfilePage">{{ $t('salon') }}</template>
                         <template v-else-if="!isProfilePage">{{ $t('salon') }}</template>
-                        <template v-else-if="isProfilePage && announcement.status == 0">{{
-                              $t('rejected_many')
-                           }}
-                        </template>
+                        <template v-else-if="isProfilePage && announcement.status == 0">{{ $t('rejected_many') }}</template>
                         <template v-else-if="isProfilePage && announcement.status == 1">{{ $t('active') }}</template>
-                        <template v-else-if="isProfilePage && announcement.status == 2">{{
-                              $t('under_consideration')
-                           }}
-                        </template>
+                        <template v-else-if="isProfilePage && announcement.status == 2">{{ $t('under_consideration') }}</template>
                         <template v-else-if="isProfilePage && announcement.status == 3">{{ $t('inactive') }}</template>
-
                      </div>
 
                      <div
@@ -104,8 +103,6 @@
                         v-if="!isProfilePage"
                         :announcement="announcement"
                      />
-
-
                   </div>
                </div>
 
@@ -257,9 +254,9 @@ export default {
    computed: {
       getType() {
          let item = this.announcement
-         if (item.moto_brand) return 'Motorcycle'
+         if (item.type === "motorcycle") return 'Motorcycle'
          else if (item.scooter_brand) return 'Scooter'
-         else if (item.moto_atv_brand) return 'Atv'
+         else if (item.type === "moto_atv") return 'Atv'
          else if (item.commercial_brand) return 'Commercial'
          else if (item.car_catalog) return 'Car'
          else if (item.title) return 'Part'
@@ -371,7 +368,7 @@ export default {
             (announcement.status == 2 ||
                announcement.status == 5 ||
                announcement.status == 3) &&
-            (announcement.is_autosalon == true ||
+            (announcement.is_auto_salon == true ||
                announcement.is_part_salon == true)
          ) {
             return true
@@ -382,6 +379,7 @@ export default {
    },
 
    mounted() {
+      // console.log('this.announcement', this.announcement)
       this.$nuxt.$on('select-announcement', this.selectAnnouncement)
    },
 

@@ -640,14 +640,14 @@
          }
       },
 
-      async fetch() {
-         await Promise.all([
-            this.$store.dispatch('getMotoGearboxV2'),
-            this.$store.dispatch('getMotoTransmissionsV2'),
-            this.$store.dispatch('getMotoFuelTypesV2'),
-            this.$store.dispatch('getColors')
-         ])
-      },
+      // async fetch() {
+      //    await Promise.all([
+            // this.$store.dispatch('getMotoGearboxV2'),
+            // this.$store.dispatch('getMotoTransmissionsV2'),
+            // this.$store.dispatch('getMotoFuelTypesV2'),
+            // this.$store.dispatch('getColors')
+         // ])
+      // },
 
       watch: {
          announceType(val) {
