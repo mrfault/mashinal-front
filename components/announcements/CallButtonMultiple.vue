@@ -59,7 +59,14 @@ export default {
   },
   methods: {
     handleClick() {
-      if (this.callAtOnce) {
+       if (!this.showPhone) {
+          this.showPhone = true;
+          this.trackCall(1);
+       } else {
+          window.location.href = `tel:+${this.phone}`;
+          this.trackCall(2);
+       }
+     /* if (this.callAtOnce) {
         window.location.href = `tel:+${this.phone}`;
         this.trackCall(2);
       } else {
@@ -77,7 +84,7 @@ export default {
             0,
             '00994555501571'
          );
-      }
+      }*/
     },
     trackCall(n) {
       this.fbTrack('Call ' + n);
