@@ -27,6 +27,7 @@
                         :options="getRegionNumbers"
                         :clear-placeholder="true"
                         :clear-option="false"
+                        :new-label="false"
                         v-model="form.serial_number"
                         has-search
                      />

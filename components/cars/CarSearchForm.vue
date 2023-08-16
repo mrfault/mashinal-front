@@ -336,7 +336,7 @@
 
                   <form-select
                      :label="$t('parameters')"
-                     :options="popularOptions.map((p) => ({...p, key: $t(p.label), slug: p.name, name: $t(p.label)}))"
+                     :options="form.all_options = popularOptions.map((p) => ({...p, key: $t(p.label), slug: p.name, name: $t(p.label)}))"
                      :clear-placeholder="true"
                      :clear-option="false"
                      object-in-value
@@ -758,6 +758,16 @@
             'colors',
             'popularOptions'
          ]),
+
+         parameters: {
+            get() {
+               return this.form.all_options;
+            },
+            set(val) {
+               console.log('22222222', val)
+               return this.form.all_options = this.popularOptions.map((p) => ({...p, key: this.$t(p.label), slug: p.name, name: this.$t(p.label)}));
+            }
+         },
 
          getExcludeCount() {
             return Object.values(this.form.exclude_additional_brands).filter(item => item.brand).length;
