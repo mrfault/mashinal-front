@@ -475,7 +475,6 @@ export default {
    clear_search2: "Axtarışı sıfırla",
    cleared: "Gömrükdən keçmiş",
    not_cleared: "Gömrükdən keçməyib",
-   not_cleared2: "Gömrükdən keçməyib",
    close: "Bağlamaq",
    close2: "Bağla",
    co2_emissions: "Emissiyalar CO2 q/km",
@@ -2689,6 +2688,9 @@ export default {
    let_us_know: "Bizə məlumat ver",
    negotiable_price: "Qiymət razılaşma yolu ilə",
    enter_keywords: "Açar sözləri daxil edin",
+   vehicle_info: "Nəqliyyat vasitəsinin məlumatları",
+   part_info: "Ehtiyyat hissəsinin məlumatları",
+   registration_mark_info: "Qeydiyyat nişanı elanı yerləşdir",
 
    "download_invoice": "Endir",
    "protocol_amount": "Cərimə məbləği",
@@ -2728,6 +2730,7 @@ export default {
    package_information: "Paket məlumatlarım",
    package_refresh: "Paketi yenilə",
    package_current: "Mövcud paket",
+
 
    "remove_announcement": "Elanı sil",
    "remove_message": "Mesajı sil",
