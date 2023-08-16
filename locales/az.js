@@ -475,7 +475,6 @@ export default {
    clear_search2: "Axtarışı sıfırla",
    cleared: "Gömrükdən keçmiş",
    not_cleared: "Gömrükdən keçməyib",
-   not_cleared2: "Gömrükdən keçməyib",
    close: "Bağlamaq",
    close2: "Bağla",
    co2_emissions: "Emissiyalar CO2 q/km",
@@ -2689,6 +2688,9 @@ export default {
    let_us_know: "Bizə məlumat ver",
    negotiable_price: "Qiymət razılaşma yolu ilə",
    enter_keywords: "Açar sözləri daxil edin",
+   vehicle_info: "Nəqliyyat vasitəsinin məlumatları",
+   part_info: "Ehtiyyat hissəsinin məlumatları",
+   registration_mark_info: "Qeydiyyat nişanı elanı yerləşdir",
 
    "download_invoice": "Endir",
    "protocol_amount": "Cərimə məbləği",
@@ -2721,6 +2723,7 @@ export default {
 
    "subscription_registration_date_on_site": "Saytda abunəliyin qeydiyyat tarixi",
    "subscription_registration_end_date_on_site": "Saytda abunəliyin bitmə tarixi",
+   "subscription_registration_end_date_on_site2": "Saytda abunəliyin bitmə tarixi",
 
    "edition": "Düzəliş",
 
@@ -2728,6 +2731,7 @@ export default {
    package_information: "Paket məlumatlarım",
    package_refresh: "Paketi yenilə",
    package_current: "Mövcud paket",
+
 
    "remove_announcement": "Elanı sil",
    "remove_message": "Mesajı sil",
@@ -2802,6 +2806,8 @@ export default {
    "external_salon_desc": "Axtarışınızı axtarış şablonlarına əlavə etməklə o parametrə uyğun yeni elana aid bildiriş əldə edəcəksiniz",
    "shops_desc": "Axtarışınızı axtarış şablonlarına əlavə etməklə o parametrə uyğun yeni elana aid bildiriş əldə edəcəksiniz",
    "autocatalog_desc": "Lorem ipsum dolor sit amet consectetur. Fermentum euismod nunc massa tristique. Vitae nisi dignissim viverra neque nisl.",
+
+   "vin_or_car_number_is_mandatory": "Vin və ya avtomobilin nömrəsi məcburidir",
 
 };
 

@@ -78,21 +78,23 @@
                            'rejectedStatus': announcement.status == 0,
                         }"
                         class="item-overlay__top--left_item"
+                        v-if="announcement.is_auto_salon || announcement.is_external_salon && !isProfilePage"
                      >
                         <template v-if="announcement.is_auto_salon && !isProfilePage">{{ $t('salon') }}</template>
-                        <template v-else-if="!isProfilePage">{{ $t('salon') }}</template>
+                        <template v-else-if="announcement.is_external_salon && !isProfilePage">{{ $t('external_salon') }}</template>
+<!--                        <template v-else-if="!isProfilePage">{{ $t('salon') }}</template>-->
                         <template v-else-if="isProfilePage && announcement.status == 0">{{ $t('rejected_many') }}</template>
                         <template v-else-if="isProfilePage && announcement.status == 1">{{ $t('active') }}</template>
                         <template v-else-if="isProfilePage && announcement.status == 2">{{ $t('under_consideration') }}</template>
                         <template v-else-if="isProfilePage && announcement.status == 3">{{ $t('inactive') }}</template>
                      </div>
 
-                     <div
-                        v-if="announcement.is_external_salon && !isProfilePage"
-                        class="item-overlay__top--left_item"
-                     >
-                        {{ $t('external') }}
-                     </div>
+<!--                     <div-->
+<!--                        v-if="announcement.is_external_salon && !isProfilePage"-->
+<!--                        class="item-overlay__top&#45;&#45;left_item"-->
+<!--                     >-->
+<!--                        {{ $t('external') }}-->
+<!--                     </div>-->
                   </div>
 
                   <div
@@ -193,8 +195,6 @@
                    <inline-svg src="/new-icons/grid/cards/calendar.svg"/>
                   {{ announcement.created_at }}
                </span>
-
-
             </div>
          </div>
 
@@ -379,7 +379,7 @@ export default {
    },
 
    mounted() {
-      console.log('this.announcement', this.announcement)
+      // console.log('this.announcement', this.announcement)
       this.$nuxt.$on('select-announcement', this.selectAnnouncement)
    },
 

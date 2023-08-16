@@ -187,7 +187,7 @@
             </div>
             <div v-if="carsList.length  && selectedCar && selectedCar.sync_status !== 1"
                  class="w-100 d-flex flex-wrap justify-content-center">
-               <no-results/>
+               <no-results no-text/>
                <h2 class="ma-title--md w-100 text-center">{{ $t('vehicle_is_processing') }}</h2>
             </div>
          </div>

@@ -33,29 +33,35 @@ export const SearchMixin = {
             }
          }
 
-         if (form?.all_options) {
-            form.all_options =  form?.all_options?.reduce((acc, curr) => {
-               acc[curr.slug] = curr?.selected_key ? curr?.selected_key : true;
-               return acc;
-            }, {});
-         }
+         console.log('form?.all_options', form?.all_options)
 
-         if (form?.box) {
-            form.box = form?.box?.map(item => {
-               return { key: item }
-            });
-         }
+         try {
+            if (form?.all_options) {
+               form.all_options = form?.all_options?.reduce((acc, curr) => {
+                  acc[curr?.slug] = curr?.selected_key ? curr?.selected_key : true;
+                  return acc;
+               }, {});
+            }
 
-         if (form?.fuel_type) {
-            form.fuel_type = form?.fuel_type?.map(item => {
-               return { key: item }
-            });
-         }
+            if (form?.box) {
+               form.box = form?.box?.map(item => {
+                  return { key: item }
+               });
+            }
 
-         if (form?.gearing) {
-            form.gearing = form?.gearing?.map(item => {
-               return { key: item }
-            });
+            if (form?.fuel_type) {
+               form.fuel_type = form?.fuel_type?.map(item => {
+                  return { key: item }
+               });
+            }
+
+            if (form?.gearing) {
+               form.gearing = form?.gearing?.map(item => {
+                  return { key: item }
+               });
+            }
+         } catch (e) {
+            console.log(e)
          }
 
          return form;
@@ -376,7 +382,7 @@ export const SearchMixin = {
       getCustomsOptions() {
          return [
             {name: this.$t('cleared'), key: 1},
-            {name: this.$t('not_cleared2'), key: 2}
+            {name: this.$t('not_cleared'), key: 2}
          ];
       },
 

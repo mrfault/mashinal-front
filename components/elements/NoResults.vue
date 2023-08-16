@@ -1,20 +1,20 @@
 <template>
    <div class="no-results" v-if="!template" :class="{'darker-no-results': darker}">
       <img :src="`/img/${type}.svg`" alt=""/>
-      <span>{{ text || $t('no_results_found') }}</span>
+      <span v-if="!noText">{{ text || $t('no_results_found') }}</span>
       <slot/>
    </div>
 
    <div class="no-results" v-else-if="template === 'new'" :class="{'darker-no-results': darker}">
       <inline-svg :src="url" />
-      <span>{{ text || $t('no_results_found') }}</span>
+      <span v-if="!noText">{{ text || $t('no_results_found') }}</span>
       <slot/>
    </div>
 
    <div class="no-results" v-else-if="template === 'new-img'" :class="{'darker-no-results': darker}">
       <img v-if="!isDarkMode" class="light-mode" :src="url" alt="img">
       <img v-if="isDarkMode" class="dark-mode" :src="urlDarkMode" alt="img">
-      <span>{{ text || $t('no_results_found') }}</span>
+      <span v-if="!noText">{{ text || $t('no_results_found') }}</span>
       <slot/>
    </div>
 </template>
@@ -47,6 +47,7 @@ export default {
          type: String,
          default: ''
       },
+      noText: Boolean,
 
    }
 }
