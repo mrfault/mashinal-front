@@ -52,10 +52,10 @@
             <template #cap>
                <Cap :className="'mb40'">
                   <template #left>
-                     <h3 v-if="getCarDetails && getCarDetails.brand">
-                        {{ getCarDetails && getCarDetails.brand }}
-                        {{ getCarDetails && getCarDetails.model }}
-                        {{ getCarDetails && getCarDetails.generation && getCarDetails.generation[locale] }}
+                     <h3 v-if="getCarDetails && getCarDetails?.brand">
+                        {{ getCarDetails && getCarDetails?.brand }}
+                        {{ getCarDetails && getCarDetails?.model }}
+                        {{ getCarDetails && getCarDetails?.generation && getCarDetails?.generation[locale] }}
                      </h3>
 
                      <h3 v-else>{{ $t('announcements') }}</h3>
@@ -139,8 +139,11 @@
             store.dispatch('fetchBrandsList'),
             store.dispatch('getMotoOptions'),
             store.dispatch('getBodyOptions'),
+            store.dispatch('getMotoGearboxV2'),
             store.dispatch('getOptions'),
-            // store.dispatch('getColors'),
+            store.dispatch('getColors'),
+            store.dispatch('getMotoTransmissionsV2'),
+            store.dispatch('getMotoFuelTypesV2'),
             store.dispatch('getGridSearch', {...searchParams, post, page}),
             // get model options for brands
             ...Object.keys(post?.additional_brands || {})
@@ -198,14 +201,16 @@
          },
 
          getCarDetails() {
-            const carInfo = JSON.parse(this.$route.query.filter);
+            if (this.$route?.query?.filter) {
+               const carInfo = JSON.parse(this.$route.query?.filter);
 
-            for (let i = 0; i < this.brandsList.length; i++) {
-               if (this.brandsList[i].id === carInfo.additional_brands[0].brand) {
-                  return {
-                     brand: this.brandsList[i].name,
-                     model: carInfo?.additional_brands[0]?.model_name,
-                     generation: carInfo?.additional_brands[0]?.generation_name
+               for (let i = 0; i < this.brandsList?.length; i++) {
+                  if (this.brandsList[i]?.id === carInfo?.additional_brands[0]?.brand) {
+                     return {
+                        brand: this.brandsList[i]?.name,
+                        model: carInfo?.additional_brands[0]?.model_name,
+                        generation: carInfo?.additional_brands[0]?.generation_name
+                     }
                   }
                }
             }
@@ -223,7 +228,7 @@
       mounted() {
          this.searchType = 2;
 
-         if (!Object.keys(this.$route.query).length) {
+         if (!Object.keys(this.$route.query)?.length) {
             this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'moto' });
          }
       },

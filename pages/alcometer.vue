@@ -11,121 +11,140 @@
                   <h2 class="alco-form__title mb-5">
                      <span>{{ $t('alcometer') }}</span>
                   </h2>
-
-                  <form-select
-                     v-model="form.drinkType1"
-                     :options="drinkTypes"
-                     :label="$t('drink_type')"
-                     :clearOption="false"
-                     :allowClear="false"
-                     :invalid="$v.form.drinkType1.$error"
-                  />
-
-                  <form-select
-                     v-model="form.drinkValue1"
-                     :options="drinkAmounts"
-                     :label="$t('amount_of_ml')"
-                     :clearOption="false"
-                     :disabled="disabledDrinkValue1"
-                     :allowClear="false"
-                     :invalid="$v.form.drinkValue1.$error && !disabledDrinkValue1"
-                  />
-
-                  <template v-if="drinksCount > 1">
+<!--<pre>{{drinksCounts}}</pre>-->
+<!--<pre>{{form}}</pre>-->
+                  <div class="alco-form__inner">
                      <form-select
-                        v-model="form.drinkType2"
+                        v-model="form.drinkType1"
                         :options="drinkTypes"
                         :label="$t('drink_type')"
                         :clearOption="false"
-                        :disabled="
-                          form.drinkType1 == null ||
-                          form.drinkType1 == '' ||
-                          form.drinkValue1 == null ||
-                          form.drinkValue1 == ''
-                        "
-                        :allowClear="form.drinkType3 == null || form.drinkType3 == ''"
-                        :showLabelOnSelect="false"
+                        :allowClear="false"
+                        :invalid="$v.form.drinkType1.$error"
                      />
 
                      <form-select
-                        v-model="form.drinkValue2"
+                        v-model="form.drinkValue1"
                         :options="drinkAmounts"
                         :label="$t('amount_of_ml')"
                         :clearOption="false"
-                        :disabled="disabledDrinkValue2"
+                        :disabled="disabledDrinkValue1"
                         :allowClear="false"
-                        :invalid="$v.form.drinkValue2.$error && !disabledDrinkValue2"
-                        :showLabelOnSelect="false"
-                     />
-                  </template>
-
-                  <template v-if="drinksCount > 2">
-                     <form-select
-                        v-model="form.drinkType3"
-                        :options="drinkTypes"
-                        :label="$t('drink_type')"
-                        :clearOption="false"
-                        :disabled="
-                       form.drinkType2 == null ||
-                       form.drinkType2 == '' ||
-                       form.drinkValue2 == null ||
-                       form.drinkValue2 == ''
-                     "
-                        :showLabelOnSelect="false"
+                        :invalid="$v.form.drinkValue1.$error && !disabledDrinkValue1"
                      />
 
+                     <div class="alco-form__group" v-if="drinksCounts.includes(1)">
+<!--                        :disabled="-->
+<!--                        form.drinkType1 == null ||-->
+<!--                        form.drinkType1 == '' ||-->
+<!--                        form.drinkValue1 == null ||-->
+<!--                        form.drinkValue1 == ''-->
+<!--                        "-->
+                        <div class="alco-form__group-item">
+                           <form-select
+                              v-model="form.drinkType2"
+                              :options="drinkTypes"
+                              :label="$t('drink_type')"
+                              :clearOption="false"
+                              :invalid="$v.form.drinkType2.$error"
+                              :allowClear="form.drinkType3 == null || form.drinkType3 === ''"
+                              :showLabelOnSelect="false"
+                           />
+
+                           <form-select
+                              v-model="form.drinkValue2"
+                              :options="drinkAmounts"
+                              :label="$t('amount_of_ml')"
+                              :clearOption="false"
+                              :disabled="disabledDrinkValue2"
+                              :allowClear="false"
+                              :invalid="$v.form.drinkValue2.$error && !disabledDrinkValue2"
+                              :showLabelOnSelect="false"
+                           />
+                        </div>
+
+                        <div
+                           class="alco-form__group-delete"
+                           @click="deleteDrinks(1)"
+                        >Sil</div>
+                     </div>
+
+                     <div class="alco-form__group" v-if="drinksCounts.includes(2)">
+                        <div class="alco-form__group-item">
+<!--                           :disabled="drinksCounts.length < 1 &&-->
+<!--                           (form.drinkType2 == null ||-->
+<!--                           form.drinkType2 == '' ||-->
+<!--                           form.drinkValue2 == null ||-->
+<!--                           form.drinkValue2 == '')-->
+<!--                           "-->
+                           <form-select
+                              v-model="form.drinkType3"
+                              :options="drinkTypes"
+                              :label="$t('drink_type')"
+                              :clearOption="false"
+                              :invalid="$v.form.drinkType3.$error"
+                              :showLabelOnSelect="false"
+                           />
+
+                           <form-select
+                              v-model="form.drinkValue3"
+                              :options="drinkAmounts"
+                              :label="$t('amount_of_ml')"
+                              :allowClear="false"
+                              :clearOption="false"
+                              :disabled="disabledDrinkValue3"
+                              :invalid="$v.form.drinkValue3.$error && !disabledDrinkValue3"
+                              :showLabelOnSelect="false"
+                           />
+                        </div>
+
+                        <div
+                           class="alco-form__group-delete"
+                           @click="deleteDrinks(2)"
+                        >Sil</div>
+                     </div>
+
+                     <div class="row">
+                        <form-select
+                           class="col-6"
+                           v-model="form.gender"
+                           :options="genders"
+                           :label="$t('your_gender')"
+                           :allowClear="false"
+                           :clearOption="false"
+                           :showLabelOnSelect="false"
+                           :invalid="$v.form.gender.$error"
+                        />
+
+                        <form-select
+                           class="col-6 mt-0"
+                           v-model="form.mass"
+                           :options="massOptions"
+                           :allow-clear="false"
+                           :label="$t('your_weight')"
+                           :clear-option="false"
+                           :invalid="$v.form.mass.$error"
+                        />
+                     </div>
+
                      <form-select
-                        v-model="form.drinkValue3"
-                        :options="drinkAmounts"
-                        :label="$t('amount_of_ml')"
+                        v-model="form.time"
+                        :options="hours"
+                        :label="$t('hour_2')"
                         :allowClear="false"
-                        :clearOption="false"
-                        :disabled="disabledDrinkValue3"
-                        :invalid="$v.form.drinkValue3.$error && !disabledDrinkValue3"
-                        :showLabelOnSelect="false"
-                     />
-                  </template>
-
-                  <div class="row mt-3">
-                     <form-select
-                        class="col-6"
-                        v-model="form.gender"
-                        :options="genders"
-                        :label="$t('your_gender')"
-                        :allowClear="false"
-                        :clearOption="false"
-                        :showLabelOnSelect="false"
-                        :invalid="$v.form.gender.$error"
-                     />
-
-                     <form-select
-                        class="col-6 mt-0"
-                        v-model="form.mass"
-                        :options="massOptions"
-                        :allow-clear="false"
-                        :label="$t('your_weight')"
                         :clear-option="false"
-                        :invalid="$v.form.mass.$error"
+                        :invalid="$v.form.time.$error"
                      />
+
+                     <button class="btn btn--grey-new full-width" @click="showDrinks" v-if="drinksCounts.length < 2">
+                        {{ $t('add_another_drink') }}
+                        <span>+</span>
+                     </button>
+
+                     <button class="btn btn--pale-green-outline full-width" @click="submit()">
+                        {{ $t('when_may_i_can_drive') }}
+                     </button>
                   </div>
-
-                  <form-select
-                     v-model="form.time"
-                     :options="hours"
-                     :label="$t('hour_2')"
-                     :allowClear="false"
-                     :clear-option="false"
-                     :invalid="$v.form.time.$error"
-                  />
-
-                  <button class="btn btn--grey-new full-width mt-3" @click="showDrinks" v-if="drinksCount < 3">
-                     {{ $t('add_another_drink') }}
-                     <span>+</span>
-                  </button>
-
-                  <button class="btn btn--pale-green-outline full-width mt-3" @click="submit()">
-                     {{ $t('when_may_i_can_drive') }}
-                  </button>
                </div>
             </div>
 
@@ -205,7 +224,7 @@
 
       data() {
          return {
-            drinksCount: 1,
+            drinksCounts: [],
             showInterior: true,
             crumbs: [
                { name: this.$t('eservices2'), route: '/e-services' },
@@ -481,6 +500,16 @@
                   return this.form.drinkType3
                }),
             },
+            drinkType2: {
+               required: requiredIf(function () {
+                  return this.drinksCounts.length > 0
+               }),
+            },
+            drinkType3: {
+               required: requiredIf(function () {
+                  return this.drinksCounts.length > 1 && this.form.drinkValue2 !== null
+               }),
+            },
             gender: { required },
             mass: { required },
             time: { required }
@@ -523,7 +552,23 @@
 
       methods: {
          showDrinks() {
-            this.drinksCount ++;
+            if (!this.drinksCounts.length) {
+               this.drinksCounts.push(1);
+            } else if (this.drinksCounts.includes(1)) {
+               this.drinksCounts.push(2);
+            } else {
+               this.drinksCounts.push(1);
+            }
+         },
+
+         deleteDrinks(id) {
+            this.drinksCounts = this.drinksCounts.filter(item => item !== id);
+
+            if (id === 1) {
+               this.form.drinkValue2 = this.form.drinkType2 = null;
+            } else {
+               this.form.drinkValue3 = this.form.drinkType3 = null;
+            }
          },
 
          calculate() {
@@ -713,6 +758,12 @@
             color: #121926;
          }
 
+         &__inner {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+         }
+
          &__img {
             width: 80%;
             margin: 52px auto 0 auto;
@@ -737,6 +788,36 @@
             }
          }
 
+         &__group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+
+            &-item {
+               display: flex;
+               flex-direction: column;
+               gap: 20px;
+               width: 100%;
+            }
+
+            &-delete {
+               border-radius: 8px;
+               border: 1px solid #CDD5DF;
+               cursor: pointer;
+               color: #1B2434;
+               font-size: 16px;
+               font-weight: 400;
+               line-height: 20px;
+               padding: 16px;
+               transition: all .3s;
+
+               &:hover {
+                  border-color: #155EEF;
+               }
+            }
+         }
+
          h5 {
             font-weight: 600;
             font-size: 24px;
@@ -745,11 +826,11 @@
             margin-bottom: 16px;
          }
 
-         .form-group {
-            &:not(:first-child) {
-               margin-top: 20px;
-            }
-         }
+         //.form-group {
+         //   &:not(:first-child) {
+         //      margin-top: 20px;
+         //   }
+         //}
 
          .btn {
             height: 52px;

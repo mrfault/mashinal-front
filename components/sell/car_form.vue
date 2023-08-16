@@ -200,7 +200,7 @@
          <div class="divider">
             <form-checkbox
                v-model="form.customs_clearance"
-               :label="$t('not_cleared2')"
+               :label="$t('not_cleared')"
                input-name="customs_clearance"
                transparent
             />
@@ -212,6 +212,7 @@
             />
          </div>
          <form-select
+            v-if="!user.autosalon"
             :label="$t('city_of_sale')"
             :options="sellOptions.regions"
             :clear-placeholder="true"
@@ -220,7 +221,7 @@
             v-model="form.region_id"
             :invalid="$v.form.region_id.$error"
          />
-         <div class="divider">
+         <div class="divider" v-if="!user.autosalon">
             <form-text-input
                key="address"
                v-model="form.address"
@@ -229,7 +230,7 @@
             />
             <pick-on-map-button :lat="form.lat" :lng="form.lng" :address="form.address"
                                 @change-address="updateAddress" @change-latlng="updateLatLng">
-               <form-text-input :placeholder="$t('address')" icon-name="placeholder" v-model="form.address"/>
+               <form-text-input :placeholder="$t('address')" v-model="form.address"/>
             </pick-on-map-button>
          </div>
          <div class="divider">
@@ -328,7 +329,7 @@
          <form-select
             :label="$t('other_parameters')"
             v-model="form.other_parameters"
-            :options="popularOptions.map((p) => ({...p, key: $t(p.label), slug: p.name, name: $t(p.label)}))"
+            :options="otherParameters"
             :clear-placeholder="true"
             :clear-option="false"
             object-in-value
@@ -374,6 +375,9 @@ export default {
    mixins: [MenusDataMixin, ToastErrorsMixin],
    computed: {
       ...mapGetters(['brands', 'models', 'sellYears', 'sellBody', "sellGenerationsV2", "sellEngines", "sellGearing", "sellTransmissions", "sellModificationsV2", "colors", "popularOptions", 'sellOptions']),
+      otherParameters() {
+         return this.popularOptions.map((p) => ({...p, key: this.$t(p.label), slug: p.name, name: this.$t(p.label)}))
+      }
    },
    props: {
       announcement: {
@@ -395,15 +399,15 @@ export default {
          priceTypes: [
             {
                id: 1,
-               name: {az: "AZN", ru: "AZN ru", en: "AZN en"},
+               name: {az: "AZN", ru: "AZN"},
             },
             {
                id: 2,
-               name: {az: "USD", ru: "USD ru", en: "USD en"},
+               name: {az: "USD", ru: "USD"},
             },
             {
                id: 3,
-               name: {az: "EUR", ru: "EUR ru", en: "EUR en"},
+               name: {az: "EUR", ru: "EUR"},
             },
          ],
          form: {
@@ -426,7 +430,7 @@ export default {
             customs_clearance: false,
             guaranty: false,
             region_id: "",
-            address: "",
+            address: "Bakı",
             lat: 0,
             lng: 0,
             price: "",
@@ -809,6 +813,20 @@ export default {
          display: flex;
          align-items: center;
          gap: 10px;
+      }
+   }
+}
+
+.dark-mode {
+   .cars_form {
+      .body_type_grid_item {
+
+         &_inner {
+
+            .body_imgs {
+               filter: invert(48%) sepia(15%) saturate(490%) hue-rotate(176deg) brightness(90%) contrast(83%);
+            }
+         }
       }
    }
 }

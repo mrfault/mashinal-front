@@ -152,7 +152,7 @@
          <div class="divider">
             <form-checkbox
                v-model="form.customs_clearance"
-               :label="$t('not_cleared2')"
+               :label="$t('not_cleared')"
                input-name="customs_clearance"
                transparent
             />
@@ -164,6 +164,7 @@
             />
          </div>
          <form-select
+            v-if="!user.autosalon"
             :label="$t('city_of_sale')"
             :options="sellOptions.regions"
             :clear-placeholder="true"
@@ -171,7 +172,7 @@
             :new-label="false"
             v-model="form.region_id"
          />
-         <div class="divider">
+         <div class="divider" v-if="!user.autosalon">
             <form-text-input
                key="address"
                v-model="form.address"
@@ -179,7 +180,7 @@
             />
             <pick-on-map-button :lat="form.lat" :lng="form.lng" :address="form.address"
                                 @change-address="updateAddress" @change-latlng="updateLatLng">
-               <form-text-input :placeholder="$t('address')" icon-name="placeholder" v-model="form.address"/>
+               <form-text-input :placeholder="$t('address')" v-model="form.address"/>
             </pick-on-map-button>
          </div>
          <div class="divider">
@@ -367,15 +368,15 @@ export default {
          priceTypes: [
             {
                id: 1,
-               name: {az: "AZN", ru: "AZN ru", en: "AZN en"},
+               name: {az: "AZN", ru: "AZN"},
             },
             {
                id: 2,
-               name: {az: "USD", ru: "USD ru", en: "USD en"},
+               name: {az: "USD", ru: "USD"},
             },
             {
                id: 3,
-               name: {az: "EUR", ru: "EUR ru", en: "EUR en"},
+               name: {az: "EUR", ru: "EUR"},
             },
          ],
          form: {
@@ -396,7 +397,7 @@ export default {
             customs_clearance: false,
             guaranty: false,
             region_id: "",
-            address: "",
+            address: "Bakı",
             lng: 0,
             lat: 0,
             price: "",

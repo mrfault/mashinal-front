@@ -124,6 +124,7 @@ input::-webkit-inner-spin-button {
       &.invalid {
          &:not(:focus) {
             color: $red-1;
+            border-color: $red-1;
          }
 
          padding-right: 34px;
@@ -793,7 +794,7 @@ input::-webkit-inner-spin-button {
          }
 
          .color {
-            width: 24px;
+            min-width: 24px;
             height: 24px;
             border-radius: 50%;
             margin-right: 10px;
@@ -827,6 +828,14 @@ input::-webkit-inner-spin-button {
 
                &:nth-child(3) {
                   max-width: 87px;
+               }
+            }
+         }
+
+         .select-menu_dropdown-option {
+            &.selected {
+               &:hover {
+                  //background-color: transparent !important;
                }
             }
          }
@@ -870,10 +879,6 @@ input::-webkit-inner-spin-button {
          //&:first-child {
          //   border-top: 0;
          //}
-
-         &:not(.disabled):hover {
-            background-color: transparent !important;
-         }
 
          .img {
             width: 28px;

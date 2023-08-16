@@ -208,6 +208,11 @@
                               @click.stop="selectValue = option"
                            >
                               <div
+                                 class="color"
+                                 v-if="option?.code"
+                                 :style="{ backgroundColor: `${option.code }`}"
+                              ></div>
+                              <div
                                  class="img"
                                  v-if="imgKey && (!hasCards || (hasCards && option[imgKey]))"
                               >

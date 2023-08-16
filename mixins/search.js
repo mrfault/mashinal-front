@@ -13,7 +13,7 @@ export const SearchMixin = {
 
       getFormData() {
          let requiredKeys = [];
-         if (this.meta.type === 'cars') requiredKeys.push('all_options');
+         if (this.meta?.type === 'cars') requiredKeys.push('all_options');
          let form = {};
          for (let property in this.form) {
             let value = this.form[property];
@@ -33,29 +33,35 @@ export const SearchMixin = {
             }
          }
 
-         if (form.all_options) {
-            form.all_options =  form.all_options.reduce((acc, curr) => {
-               acc[curr.slug] = curr.selected_key ? curr.selected_key : true;
-               return acc;
-            }, {});
-         }
+         console.log('form?.all_options', form?.all_options)
 
-         if (form.box) {
-            form.box = form.box.map(item => {
-               return { key: item }
-            });
-         }
+         try {
+            if (form?.all_options) {
+               form.all_options = form?.all_options?.reduce((acc, curr) => {
+                  acc[curr?.slug] = curr?.selected_key ? curr?.selected_key : true;
+                  return acc;
+               }, {});
+            }
 
-         if (form.fuel_type) {
-            form.fuel_type = form.fuel_type.map(item => {
-               return { key: item }
-            });
-         }
+            if (form?.box) {
+               form.box = form?.box?.map(item => {
+                  return { key: item }
+               });
+            }
 
-         if (form.gearing) {
-            form.gearing = form.gearing.map(item => {
-               return { key: item }
-            });
+            if (form?.fuel_type) {
+               form.fuel_type = form?.fuel_type?.map(item => {
+                  return { key: item }
+               });
+            }
+
+            if (form?.gearing) {
+               form.gearing = form?.gearing?.map(item => {
+                  return { key: item }
+               });
+            }
+         } catch (e) {
+            console.log(e)
          }
 
          return form;
@@ -75,22 +81,22 @@ export const SearchMixin = {
          }
          // update dynamic filter values
          this.$nextTick(() => {
-            if (this.meta.type === 'cars') {
+            if (this.meta?.type === 'cars') {
                this.$nuxt.$emit('change-car-filters');
-            } else if (this.meta.type === 'commercial') {
+            } else if (this.meta?.type === 'commercial') {
                this.$nuxt.$emit('change-commercial-filters');
             }
          });
       },
 
       parseFormData() {
-         this.setFormData(JSON.parse(this.$route.query[this.meta.param] || '{}'));
-         if (this.form.additional_brands) {
-            let keys = Object.keys(this.form.additional_brands).filter(key => this.form.additional_brands[key].category || this.form.additional_brands[key].brand);
+         this.setFormData(JSON.parse(this.$route.query[this.meta?.param] || '{}'));
+         if (this.form?.additional_brands) {
+            let keys = Object.keys(this.form?.additional_brands)?.filter(key => this.form?.additional_brands[key]?.category || this.form?.additional_brands[key]?.brand);
             if (keys.length) this.rows = [...keys];
          }
-         if (this.form.exclude_additional_brands) {
-            let keys = Object.keys(this.form.exclude_additional_brands).filter(key => this.form.exclude_additional_brands[key].category || this.form.exclude_additional_brands[key].brand);
+         if (this.form?.exclude_additional_brands) {
+            let keys = Object.keys(this.form?.exclude_additional_brands)?.filter(key => this.form?.exclude_additional_brands[key]?.category || this.form?.exclude_additional_brands[key]?.brand);
             if (keys.length) this.excludeRows = [...keys];
          }
       },
@@ -108,15 +114,10 @@ export const SearchMixin = {
                this.$set(this.form, key, '');
             });
 
-            console.log('form1', this.form);
-
             ['body', 'korobka', 'engine_type', 'gearing', 'n_of_seats', 'colors']
                .map(key => {
                   this.$set(this.form, key, []);
                });
-
-            console.log('form2', this.form);
-
 
             ['credit', 'exchange_possible', 'is_matte', 'in_garanty', 'with_video']
                .map(key => {
@@ -148,6 +149,7 @@ export const SearchMixin = {
             }, {
                acceleration_to: 7
             }];
+
             this.formAssistant.packs.map(i => {
                Object.keys(packsOptions[i]).map(key => {
                   this.$set(this.form, key, packsOptions[i][key]);
@@ -165,15 +167,9 @@ export const SearchMixin = {
             this.gtagTrack('AW-600951956/Qeu4CILAyPIBEJSZx54C');
          } catch (e) {}
 
-         // let aaa = this.getFormData().fuel_type.map(item => {
-         //    return [...item.key]
-         // })
-
-         // console.log(aaa)
-         // console.log('getFormData', this.getFormData().fuel_type)
          // update route query params and search announcements
-         let searchQuery = `${this.meta.param}=${encodeURI(JSON.stringify(this.getFormData()))}`;
-         let searchUrl = `${this.$localePath(this.meta.path)}?${searchQuery}`;
+         let searchQuery = `${this.meta?.param}=${encodeURI(JSON.stringify(this.getFormData()))}`;
+         let searchUrl = `${this.$localePath(this.meta?.path)}?${searchQuery}`;
          let searchSame = decodeURIComponent(searchUrl) === decodeURIComponent(this.$route.fullPath);
 
          this.$emit('pending');
@@ -320,7 +316,6 @@ export const SearchMixin = {
             } else {
                let searchFilter = JSON.stringify(this.getFormData());
 
-               console.log('searchFilter', searchFilter)
                // save search
                this.createSavedSearch({
                   search_type: this.meta.type,
@@ -387,7 +382,7 @@ export const SearchMixin = {
       getCustomsOptions() {
          return [
             {name: this.$t('cleared'), key: 1},
-            {name: this.$t('not_cleared2'), key: 2}
+            {name: this.$t('not_cleared'), key: 2}
          ];
       },
 
@@ -420,7 +415,7 @@ export const SearchMixin = {
       this.togglePopStateListener(true);
       this.$nuxt.$on('prevent-popstate', this.togglePopStateListener);
       this.$nuxt.$on('after-login', this.handleAfterLogin);
-      if (['moto', 'commercial'].includes(this.meta.type)) {
+      if (['moto', 'commercial'].includes(this.meta?.type)) {
          this.$nuxt.$on('extend-options', this.extendOptions);
       }
    },
@@ -429,7 +424,7 @@ export const SearchMixin = {
       this.togglePopStateListener(false);
       this.$nuxt.$off('prevent-popstate', this.togglePopStateListener);
       this.$nuxt.$off('after-login', this.handleAfterLogin);
-      if (['moto', 'commercial'].includes(this.meta.type)) {
+      if (['moto', 'commercial'].includes(this.meta?.type)) {
          this.$nuxt.$off('extend-options', this.extendOptions);
       }
    }

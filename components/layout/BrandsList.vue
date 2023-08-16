@@ -13,11 +13,20 @@
 </template>
 
 <script>
+   // import { SearchMixin } from "~/mixins/search";
+
    export default {
+      // mixins: [SearchMixin],
+
+      data() {
+        return {
+           // watch: false
+        }
+      },
+
       methods: {
          async searchBrand(brand) {
             let url = {
-               "sorting": "created_at_desc",
                "additional_brands": {
                   "0":{ "brand": brand.id, "brand_slug": brand.slug },
                   "1":{},
@@ -26,17 +35,26 @@
                   "4":{}
                },
                "announce_type": 1,
-               "currency":1
+               "currency": 1
             }
 
-            this.$router.push({
-               path: 'masinlar',
+            await this.$router.push({
+               path: '/cars',
                query: { car_filter: JSON.stringify(url) }
             }, () => {
-               window.location.reload();
-               this.scrollTo('.announcements-grid', [0, 0], 1000);
-            })
+               this.scrollTo('.announcements-grid', [-60, -60]);
+            });
          }
+      },
+
+      watch: {
+         '$route.query'() {
+            let post = JSON.parse(this.$route.query?.car_filter || '{}');
+            let page = this.$route.query?.page || 1;
+
+            this.$store.dispatch('getGridSearch', { url: '/car', prefix: 'cars', post, page });
+            this.$store.dispatch('fetchMonetizedCarsSearch', post);
+        }
       },
 
       props: {

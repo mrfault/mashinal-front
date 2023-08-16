@@ -112,7 +112,7 @@
       <grid
          v-if="autosalonAnnouncementsId?.data?.length"
          :announcements="autosalonAnnouncementsId?.data"
-         :paginate="$paginate(autosalonAnnouncementsId?.meta)"
+         :paginate="autosalonAnnouncementsId?.meta"
          :pending="pending"
          @pending="pending = true"
          @change-page="changePage"
