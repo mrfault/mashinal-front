@@ -2721,6 +2721,7 @@ export default {
 
    "subscription_registration_date_on_site": "Saytda abunəliyin qeydiyyat tarixi",
    "subscription_registration_end_date_on_site": "Saytda abunəliyin bitmə tarixi",
+   "subscription_registration_end_date_on_site2": "Saytda abunəliyin bitmə tarixi",
 
    "edition": "Düzəliş",
 
@@ -2802,6 +2803,8 @@ export default {
    "external_salon_desc": "Axtarışınızı axtarış şablonlarına əlavə etməklə o parametrə uyğun yeni elana aid bildiriş əldə edəcəksiniz",
    "shops_desc": "Axtarışınızı axtarış şablonlarına əlavə etməklə o parametrə uyğun yeni elana aid bildiriş əldə edəcəksiniz",
    "autocatalog_desc": "Lorem ipsum dolor sit amet consectetur. Fermentum euismod nunc massa tristique. Vitae nisi dignissim viverra neque nisl.",
+
+   "vin_or_car_number_is_mandatory": "Vin və ya avtomobilin nömrəsi məcburidir",
 
 };
 
