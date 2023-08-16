@@ -45,7 +45,6 @@
                                  :input-placeholder="$t('your_gender')"
                                  v-model="form.gender"
                                  :new-label="false"
-                                 has-search
                               />
                            </div>
                            <div class="col-md-12 pb-3">
@@ -123,6 +122,8 @@ export default {
    async asyncData({$auth, app}) {
       await $auth.fetchUser();
 
+      console.log('$auth.user.gender', $auth.user.gender)
+
       return {
          form: {
             old: '',
@@ -130,7 +131,7 @@ export default {
             password_confirmation: '',
             name: $auth.user.name || '',
             lastname: $auth.user.lastname || '',
-            gender: $auth.user.gender || 0,
+            gender: $auth.user.gender || '',
             birthday: app.$moment($auth.user.birthday || null).format('DD.MM.YYYY'),
             avatar: null
          }
