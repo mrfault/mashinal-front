@@ -20,7 +20,7 @@
                   />
                   <p v-html="$t('mobile_info', {phone: '+' + user.phone})"/>
                </div>
-               <h2>Elan melumatlari</h2>
+               <h2 class="card_title">{{ announceTitle }}</h2>
                <div class="card_container">
                   <form class="add_announce_form">
 
@@ -221,6 +221,7 @@ export default {
          submitShow: false,
          showRules: false,
          isReady: false,
+         announceTitle: "Elan yerlesdir",
          announcement: {
             image: "",
             show_vin: true,
@@ -237,38 +238,6 @@ export default {
          },
          form: {
             announce_type: "",
-            // moto_type: "",
-            // commercial_vehicle_type: "",
-            // brand: "",
-            // model: "",
-            // year: "",
-            // body_type: "",
-            // fuel_type: "",
-            // autogas: "",
-            // transmission: "",
-            // gearing: "",
-            // modification: "",
-            // color: "",
-            // mileage: 0,
-            // mileage_type: "",
-            // beaten: "",
-            // customs_clearance: "",
-            // guaranty: "",
-            // region_id: "",
-            // address: "",
-            // lat: 0,
-            // lng: 0,
-            // tradeable: "",
-            // credit: "",
-            // car_number: "",
-            // show_car_number: "",
-            // vin: "",
-            // show_vin: "",
-            // comment: "",
-            // saved_images: [],
-            // name: "",
-            // email: "",
-            // phone: "",
             add_monetization: 0
          },
          authForm: {
@@ -439,10 +408,15 @@ export default {
          this.submitShow = false
          switch (this.form.announce_type.title) {
             case "cars":
+               this.announceTitle = "Nəqliyyat vasitəsinin məlumatları"
                return this.announcement.image = "/img/car_default.svg"
             case "moto":
+               this.announceTitle = "Nəqliyyat vasitəsinin məlumatları"
                return this.announcement.image = "/img/motorbike.svg"
+            case "parts":
+               return this.announceTitle = "Ehtiyyat hissəsinin məlumatları"
             case "registration_marks":
+               this.announceTitle = "Qeydiyyat nişanı məlumatları"
                return this.submitShow = true
          }
       }
@@ -487,6 +461,11 @@ export default {
          display: flex;
          flex-direction: column;
          gap: 20px;
+
+         &_title {
+            font-size: 24px;
+            font-weight: 600;
+         }
 
          .add_announce_info {
             display: flex;
