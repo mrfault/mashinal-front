@@ -2809,5 +2809,9 @@ export default {
 
    "vin_or_car_number_is_mandatory": "Vin və ya avtomobilin nömrəsi məcburidir",
 
+   "vehicle_deleted": "Elan silinib",
+
+   "announcement_cannot_monetization": "Elan önə çəkilə bilməz"
+
 };
 

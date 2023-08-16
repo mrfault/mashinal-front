@@ -105,7 +105,7 @@ export default {
             {
                name: 'inactive_make',
                icon: 'fi_minus-circle.svg',
-               show: this.announcement.status == 1,
+               show: this.announcement.status == 1 ,
                method: this.openModal,
                modalTitle: 'are_you_sure_you_want_to_deactivate_the_announcement',
 
@@ -173,6 +173,7 @@ export default {
       },
 
       async deactivate(event) {
+         this.pending = true;
          try {
             await this.$store.dispatch('deactivateMyAnnounement', this.announcement.id_unique);
             await this.$nuxt.refresh();
@@ -180,14 +181,17 @@ export default {
             this.$toasted.success(this.$t('vehicle_deactivated'))
             this.closeModal();
             this.$nuxt.refresh();
+            this.pending = false;
             this.$store.commit('closeDropdown');
          } catch (e) {
             this.$toasted.error(this.$t('something_went_wrong'))
+            this.pending = false;
          }
 
       },
       async deleteCar(event) {
          event.stopPropagation();
+         this.pending = true;
          try {
             await this.$store.dispatch('deleteMyAnnounementV2', this.announcement.id_unique);
             await this.$nuxt.refresh();
@@ -195,8 +199,10 @@ export default {
             this.$toasted.success(this.$t('vehicle_deleted'))
             this.closeModal();
             this.$nuxt.refresh();
+            this.pending = false;
             this.$store.commit('closeDropdown');
          } catch (e) {
+            this.pending = false;
             this.$toasted.error(this.$t('something_went_wrong'))
          }
       },
