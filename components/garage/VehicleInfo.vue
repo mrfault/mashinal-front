@@ -15,7 +15,7 @@
                      <div v-for="(value,key) in spec" class="ma-penalties__card--car-specs__item">
                         <p v-if="key == 'auth_date'">{{ $t('subscription_registration_date_on_site') }}</p>
                         <p v-else-if="key == 'auth_end_date'">{{
-                              $t('subscription_registration_end_date_on_site')
+                              $t('subscription_registration_end_date_on_site2')
                            }}</p>
                         <p v-else v-html="$t(key)"></p>
                         <strong>
@@ -61,7 +61,7 @@
             :options="companies"
             class="mb-2"
          />
-         <span>{{ $t('date') }}</span>
+         <div class="mb-1">{{ $t('date') }}</div>
          <div class="ma-penalties-date-change-row">
             <form-select
                v-model="dateChangeForm.year"
