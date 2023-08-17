@@ -2758,7 +2758,7 @@ export default {
    "this_field_is_mandatory": "Bu xana məcburidir",
    "given_data_is_not_matching_car_number": "Yazdığınız nömrə qeyd etdiyiniz avtomobil məlumatlarına uyğun deyil",
    "details_of_search": "Axtarışın detalları",
-   "my_car_desc": "Avtomobilinizi əlavə edin və daim yeniliklərdən xəbəriniz olsun",
+   "my_car_desc": "Lorem impusum dolor set amon",
    "info_saved": "Məlumatlar yadda saxlanıldı",
    "site_settings": "Tənzimləmələr",
    "dark_mode": "Qaranlıq rejim",
@@ -2810,5 +2810,7 @@ export default {
    "vin_or_car_number_is_mandatory": "Vin və ya avtomobilin nömrəsi məcburidir",
    "mashin_pay": "Mashin pay",
    "mashin_pay_desc": "MashinPay.az keç",
+   "vehicle_deleted": "Elan silinib",
+   "announcement_cannot_monetization": "Elan önə çəkilə bilməz",
 };
 
