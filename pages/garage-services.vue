@@ -305,10 +305,10 @@ export default {
                row: 1,
             },
             {
-               title: 'MashinPay',
+               title: 'mashin_pay',
                image: 'mashinpay.png',
                url: '/',
-               description: 'Lorem ipsum dolor sit amet consectetu. Ipsum nunc tincidun utred lorempus.',
+               description: 'mashin_pay_desc',
                row: 2,
             },
             {
