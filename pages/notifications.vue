@@ -1,37 +1,41 @@
 <template>
-   <div class="container px-0">
-      <breadcrumbs :crumbs="crumbs"/>
-      <div class="ma-notifications">
+   <div>
+      <div class="container">
+         <breadcrumbs :crumbs="crumbs"/>
          <h2 class="ma-notifications__title">{{ $t('notifications') }}</h2>
-
-         <template v-if="notifications.data.length && getNotificationsList.length">
-            <NotificationItem
-               v-for="item in getNotificationsList"
-               :date="getDateString(item)" :link="getRoutePath(item)"
-               :notification="item"
-               :page="notifications.current_page"
-            />
-         </template>
-
-         <div v-else>
-            <not-found :text="$t('notification_not_found')" img-src="/img/notification_icon.png" textClass="text-black">
-               <nuxt-link :to="$localePath('/')" class="btn btn--green">
-                  <icon name="arrow-left"/>
-                  {{ $t('back_to_home') }}
-               </nuxt-link>
-            </not-found>
-         </div>
-
-         <pagination
-            v-if="notifications && notifications.last_page > 1"
-            :page-count="notifications.last_page"
-            :value="notifications.current_page"
-            @change-page="changePage"
-         />
-
-
       </div>
+      <div class="container " :class="{'px-0':isMobileBreakpoint}">
+         <div class="ma-notifications">
 
+            <template v-if="notifications.data.length && getNotificationsList.length">
+               <NotificationItem
+                  v-for="item in getNotificationsList"
+                  :date="getDateString(item)" :link="getRoutePath(item)"
+                  :notification="item"
+                  :page="notifications.current_page"
+               />
+            </template>
+
+            <div v-else>
+               <not-found :text="$t('notification_not_found')" img-src="/img/notification_icon.png"
+                          textClass="text-black">
+                  <nuxt-link :to="$localePath('/')" class="btn btn--green">
+                     <icon name="arrow-left"/>
+                     {{ $t('back_to_home') }}
+                  </nuxt-link>
+               </not-found>
+            </div>
+
+            <pagination
+               v-if="notifications && notifications.last_page > 1"
+               :page-count="notifications.last_page"
+               :value="notifications.current_page"
+               @change-page="changePage"
+            />
+
+
+         </div>
+      </div>
       <div v-if="false">
          <div v-if="notifications.data.length" class="card d-flex justify-content-between mb-2"
               style="padding:20px 25px">
@@ -195,7 +199,7 @@ export default {
                case '/announcement_details' :
                   return this.$localePath(this.getAnnounceTypePath(n.notifiable_type) + '/' + n.value)
                case '/garage_bnb' :
-                  return this.$localePath('/garage')
+                  return this.$localePath(`/garage?id=${n.notifiable.id}`)
                case '/balance' :
                   return this.$localePath('/profile/balance')
                case '/business_profiles' :
