@@ -70,7 +70,7 @@
    .brandsList {
       padding: 56px 0;
       background-color: #FFFFFF;
-
+      border-top: 1px solid #eee;
       &__inner {
          display: flex;
          justify-content: space-between;

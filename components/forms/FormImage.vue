@@ -54,8 +54,7 @@
          :title="$t('remove_image')"
          @close="showConfirm = false"
       >
-         <p>{{ $t('are_you_sure') }}</p>
-         <hr/>
+         <p class="mb-3">{{ $t('are_you_sure') }}</p>
          <form class="form" @submit.prevent="removeImage" novalidate>
             <div class="row">
                <div class="col">
