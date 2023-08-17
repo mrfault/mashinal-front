@@ -1,11 +1,9 @@
 <template>
    <div class="add_announce">
       <div class="container">
-         <h1 class="add_announce_title">Yeni elan</h1>
+         <h1 class="add_announce_title">{{ $t('new_announce') }}</h1>
          <div class="announce_container">
-
             <div class="card">
-
                <div class="add_announce_info">
                   <inline-svg
                      :src="'/icons/stars.svg'"
@@ -23,10 +21,9 @@
                <h2 class="card_title">{{ announceTitle }}</h2>
                <div class="card_container">
                   <form class="add_announce_form">
-
                      <form-select
                         :label="$t('announcement_type')"
-                        :options="searchMenus.map((menu) => ({...menu,name: $t(menu.title)}))"
+                        :options="searchMenus.filter((menu) => menu.id !== 3).map((menu) => ({...menu,name: $t(menu.title)}))"
                         :clear-placeholder="true"
                         :clear-option="false"
                         :new-label="false"
@@ -53,11 +50,13 @@
                         <div class="contacts">
                            <h2>{{ $t("contact_information") }}</h2>
                            <form-text-input
+                              :class="{form_error: $v.authForm.name.$error}"
                               v-model="authForm.name"
                               :placeholder="$t('your_name') + '*'"
                               :invalid="$v.authForm.name.$error"
                            />
                            <form-text-input
+                              :class="{form_error: $v.authForm.email.$error}"
                               v-model="authForm.email"
                               :placeholder="$t('email')"
                               :mask="$maskEmail()"
@@ -66,6 +65,7 @@
 
                            <form-text-input
                               v-if="!Object.values(user).length"
+                              :class="{form_error: $v.authForm.phone.$error}"
                               key="phone"
                               :placeholder="$t('mobile_phone_number') + '*'"
                               v-model="authForm.phone"
@@ -74,6 +74,7 @@
                            />
                            <form-text-input
                               v-if="authStep === 'handleOTP'"
+                              :class="{form_error: $v.authForm.code.$error}"
                               :placeholder="$t('otp') + '*'"
                               v-model="authForm.code"
                               :invalid="$v.authForm.code.$error"
@@ -178,10 +179,15 @@
                      </template>
                   </div>
                </div>
-
-
             </div>
-            <div class="form_navigation" v-if="!isMobileBreakpoint"></div>
+            <div class="form_navigation" v-if="!isMobileBreakpoint">
+               <ul>
+                  <li v-for="(nav) in navigationData" :key="nav.id">
+                     <inline-svg :class="['nav_svg', {active: nav.isActive}]" :src="'/icons/filled_circled_check.svg'"/>
+                     {{ nav.title }}
+                  </li>
+               </ul>
+            </div>
          </div>
       </div>
    </div>
@@ -226,6 +232,20 @@ export default {
          showRules: false,
          isReady: false,
          announceTitle: "",
+         navigationData: [
+            {
+               id: 1, title: "Elan məlumatları", isActive: true
+            },
+            {
+               id: 2, title: "Elanın təsviri", isActive: false
+            },
+            {
+               id: 3, title: "Şəkillər", isActive: false
+            },
+            {
+               id: 4, title: "Hesab məlumatları", isActive: false
+            }
+         ],
          announcement: {
             image: "",
             show_vin: true,
@@ -252,7 +272,6 @@ export default {
          },
          authStep: ""
       };
-      // {"end_date":"","auction":1,"country_id":null,"car_catalog_id":46273,"brand":"bmw","model":"5-series","generation_id":4782,"car_body_type":2,"gearing":"1","modification":"2","transmission":"1","capacity":"","power":"","year":2006,"youtube":{"id":"","thumb":""},"selectedColor":[23],"is_matte":false,"mileage":287000,"mileage_measure":1,"region_id":1,"address":"","lat":0,"lng":0,"vin":"","price":20000,"owner_type":0,"currency":1,"car_number":"77 - BZ - 351","show_car_number":1,"show_vin":0,"part":{},"all_options":{"camera":true,"usb":true,"luke":true,"abs":true,"headlights":1,"c_locking":true},"comment":"test test","autogas":false,"is_new":false,"beaten":false,"customs_clearance":false,"tradeable":false,"credit":false,"guaranty":false,"saved_images":[1512580,1512581,1512582,1512583],"btl_cookie":"","is_autosalon":false}
    },
    async asyncData({store}) {
       await store.dispatch('getServicePackages')
@@ -310,7 +329,7 @@ export default {
             formData.append('data', JSON.stringify(newForm))
             const res = await this.motoPost(formData);
 
-            if (res?.redirect_url) {
+            if (res?.data?.redirect_url) {
                this.handlePayment(res, false, this.$t('car_added'), 'v2')
                this.$router.push(this.$localePath('/profile/announcements'))
             } else {
@@ -329,9 +348,13 @@ export default {
 
       async getRegistrationMarksForm(form) {
          try {
-            const res = await this.plateNumbersPost({is_mobile: false, form});
+            const newForm = {...form, add_monetization: this.form.add_monetization};
+            const formData = new FormData()
+            formData.append('data', JSON.stringify(newForm))
+            const res = await this.plateNumbersPost({is_mobile: false, formData});
             if (res?.redirect_url) {
                this.handlePayment(res, false, this.$t('car_added'), 'v2')
+               this.$router.push(this.$localePath('/profile/announcements'))
             } else {
                this.$router.push(this.$localePath('/profile/announcements'), () => {
                   this.updatePaidStatus({
@@ -357,7 +380,14 @@ export default {
 
       onClick() {
          this.$v.authForm.$touch()
-         if (this.$v.authForm.$error) return;
+         setTimeout(() => {
+            this.scrollTo('.form_error', [-50, -50])
+         });
+         if (this.$v.authForm.$error) {
+            this.$toasted.error(this.$t('required_fields'));
+            return;
+         }
+
          if (this.authStep === "loggedIn") {
             this.isReady = !this.isReady
          } else if (this.authStep === "notLoggedIn") {
@@ -365,7 +395,6 @@ export default {
          } else {
             this.onOTPVerification()
          }
-
       },
       async onPhoneVerification() {
          try {
@@ -731,15 +760,38 @@ export default {
       }
 
       .form_navigation {
-         height: 300px;
          min-width: 300px;
-         background-color: red;
          flex-grow: 1;
+
+         ul {
+            display: flex;
+            flex-direction: column;
+
+            li {
+               display: flex;
+               align-items: center;
+               gap: 8px;
+               font-size: 16px;
+               font-weight: 500;
+               padding: 10px 0;
+
+               .nav_svg {
+                  min-width: 32px;
+                  min-height: 32px;
+                  color: #CDD5DF;
+
+                  &.active {
+                     color: #12B76A;
+                  }
+               }
+            }
+
+         }
       }
 
       .divider {
          display: grid;
-         grid-template-columns: repeat(2, 1fr);
+         grid-template-columns: repeat(2, calc(50% - 8px));
          gap: 16px;
 
          .mileage_types {
@@ -759,7 +811,7 @@ export default {
                align-items: center;
                justify-content: center;
                height: 52px;
-               padding: 0 16px;
+               padding: 0 8px;
             }
          }
 
@@ -844,6 +896,45 @@ export default {
 @media (max-width: 1150px) {
    .form_navigation {
       display: none;
+   }
+}
+
+@media (max-width: 485px) {
+   .add_announce {
+      padding: 24px 0 32px 0;
+
+      &_title {
+         font-size: 24px;
+         font-weight: 700;
+         margin-bottom: 16px;
+      }
+
+      .announce_container {
+         .divider {
+
+            &.mobile-column {
+               display: flex;
+               flex-direction: column;
+            }
+         }
+
+         .card {
+            &_title {
+               font-size: 20px;
+            }
+
+            &_container {
+               .add_announce_form {
+                  .contacts {
+                     .service_packages {
+                        flex-direction: column;
+                     }
+                  }
+               }
+            }
+
+         }
+      }
    }
 }
 </style>

@@ -2810,5 +2810,7 @@ export default {
    "vin_or_car_number_is_mandatory": "Vin və ya avtomobilin nömrəsi məcburidir",
    "mashin_pay": "Mashin pay",
    "mashin_pay_desc": "MashinPay.az keç",
+   "vehicle_deleted": "Elan silinib",
+   "announcement_cannot_monetization": "Elan önə çəkilə bilməz"
 };
 

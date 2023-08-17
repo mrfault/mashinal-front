@@ -1,9 +1,9 @@
 <template>
    <div class="part_form">
-      <div class="divider">
+      <div class="divider mobile-column">
          <form-select
             :label="$t('category')"
-            :options="partCategories.map((part) => ({...part, name: part.name[locale]}))"
+            :options="partCategories.filter((part) => ![18, 39].includes(part.id)).map((part) => ({...part, name: part.name[locale]}))"
             :clear-placeholder="true"
             :clear-option="false"
             :new-label="false"
@@ -39,6 +39,8 @@
             key="title"
             v-model="form.title"
             :placeholder="$t('title_max_character', {max: 25})"
+            :class="{form_error: $v.form.title.$error}"
+            :invalid="$v.form.title.$error"
          />
          <form-text-input
             key="product_code"
@@ -109,9 +111,8 @@
                   v-model="form.weight"
                />
             </div>
-            <!--               :invalid="$v.form.price.$error"-->
          </template>
-         <div class="divider">
+         <div class="divider" v-if="hasComponent('thorns') || (form.category_id !== 27 && hasComponent('height'))">
             <form-select
                v-if="hasComponent('thorns')"
                :label="$t('thorns')"
@@ -129,12 +130,14 @@
                :clear-option="false"
                :new-label="false"
                v-model="form.height"
+               :class="{form_error: $v.form.height.$error}"
                :invalid="$v.form.height.$error"
             />
          </div>
-         <div class="divider">
+         <div class="divider" v-if="hasComponent('number_of_mounting_holes') || hasComponent('shine_width') || hasComponent('diameter')">
             <form-select
                v-if="hasComponent('number_of_mounting_holes')"
+               :class="{form_error: $v.form.number_of_mounting_holes.$error}"
                :label="$t('number_of_mounting_holes')"
                :options="partFilters?.filters.find((f) => f.key === 'number_of_mounting_holes').values"
                :clear-placeholder="true"
@@ -145,6 +148,7 @@
             />
             <form-select
                v-if="hasComponent('shine_width')"
+               :class="{form_error: $v.form.shine_width.$error}"
                :label="$t('shine_width')"
                :options="partFilters?.filters.find((f) => f.key === 'shine_width').values"
                :clear-placeholder="true"
@@ -155,6 +159,7 @@
             />
             <form-select
                v-if="hasComponent('diameter')"
+               :class="{form_error: $v.form.diameter.$error}"
                :label="$t('diameter')"
                :options="partFilters?.filters.find((f) => f.key === 'diameter').values"
                :clear-placeholder="true"
@@ -164,7 +169,7 @@
                :invalid="$v.form.diameter.$error"
             />
          </div>
-         <div class="divider">
+         <div class="divider mobile-column">
             <form-checkbox
                v-model="form.have_delivery"
                :label="$t('have_delivery')"
@@ -178,10 +183,11 @@
                transparent
             />
          </div>
-         <div class="divider">
+         <div class="divider mobile-column">
             <form-numeric-input
                :placeholder="$t('price')"
                v-model="form.price"
+               :class="{form_error: $v.form.price.$error}"
                :invalid="$v.form.price.$error"
             />
             <!--            @change="announcement.price = $event ? $event + (form.currency.name?.[locale] || 'AZN') : 0"-->
@@ -222,7 +228,7 @@
                <p>{{ $t("sell_parts_keywords_info") }}</p>
             </div>
          </div>
-         <div class="part_form_with_info">
+         <div class="part_form_with_info" :class="{form_error: $v.form.saved_images.$error}">
             <image-component :type="'parts'" :initial-form="form"/>
             <div class="part_form_with_info_inner">
                <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
@@ -372,7 +378,13 @@ export default {
       },
       isReady() {
          this.$v.form.$touch()
-         if (this.$v.form.$error) return;
+         setTimeout(() => {
+            this.scrollTo('.form_error', [-50, -50])
+         });
+         if (this.$v.form.$error) {
+            this.$toasted.error(this.$t('required_fields'));
+            return;
+         }
          const newForm = {
             product_code: this.form.product_code,
             title: this.form.title,
@@ -406,43 +418,43 @@ export default {
       }
    },
 
-   validations: {
-      form: {
-         title: {
-            required,
-            maxLength: maxLength(25)
-         },
-         description: {maxLength: maxLength(3000)},
-         is_new: {required},
-         is_original: {required},
-         price: {
-            required: requiredIf(function () {
-               return !this.form.is_negotiable
-            })
-         },
-         region_id: {required},
-         diameter: {
-            required: requiredIf(function () {
-               return this.hasComponent('diameter')
-            })
-         },
-         height: {
-            required: requiredIf(function () {
-               return this.hasComponent('height')
-            })
-         },
-         shine_width: {
-            required: requiredIf(function () {
-               return this.hasComponent('shine_width')
-            })
-         },
-         number_of_mounting_holes: {
-            required: requiredIf(function () {
-               return this.hasComponent('number_of_mounting_holes')
-            })
-         },
-         saved_images: {
-            required
+   validations() {
+      return {
+         form: {
+            title: {
+               required,
+               maxLength: maxLength(25)
+            },
+            description: {maxLength: maxLength(3000)},
+            price: {
+               required: requiredIf(function () {
+                  return !this.form.is_negotiable
+               })
+            },
+            region_id: {required},
+            diameter: {
+               required: requiredIf(function () {
+                  return this.hasComponent('diameter')
+               })
+            },
+            height: {
+               required: requiredIf(function () {
+                  return this.form.category_id !== 27 && this.hasComponent('height')
+               })
+            },
+            shine_width: {
+               required: requiredIf(function () {
+                  return this.hasComponent('shine_width')
+               })
+            },
+            number_of_mounting_holes: {
+               required: requiredIf(function () {
+                  return this.hasComponent('number_of_mounting_holes')
+               })
+            },
+            saved_images: {
+               required
+            }
          }
       }
    }
@@ -487,7 +499,7 @@ export default {
          gap: 10px;
 
          .isInvalid {
-             color: red
+            color: red
          }
 
          svg {

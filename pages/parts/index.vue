@@ -11,73 +11,80 @@
             </template>
          </Banner>
 
-<!--         <breadcrumbs :crumbs="crumbs"/>-->
-
-<!--         <categories class="d-none d-lg-flex"/>-->
-
          <part-search-form
             :pending="pending"
             @pending="pending = true"
             @submit="searchParts"
          />
-         <!--      <banners v-if="!searchActive" reverse />-->
 
-         <Cap>
-            <template #left>
-               <h3>{{ $t('announcements') }}</h3>
+         <grid
+            v-if="partsMonetized?.length"
+            :announcements="partsMonetized"
+            :pending="pending"
+            :has-container="false"
+            @change-page="changePage"
+         >
+            <template #cap>
+               <Cap :className="'mb40'">
+                  <template #left>
+                     <h3>{{ $t('featured_ads') }}</h3>
+                  </template>
+
+                  <!--            <template #right>-->
+                  <!--               <form-select-->
+                  <!--                  :label="$t('sorting_2')"-->
+                  <!--                  :options="sortItems"-->
+                  <!--                  :clearPlaceholder="true"-->
+                  <!--                  :clear-option="false"-->
+                  <!--                  :allowClear="false"-->
+                  <!--                  v-model="sorting"-->
+                  <!--               />-->
+                  <!--            </template>-->
+               </Cap>
             </template>
+         </grid>
 
-            <template #right>
-               <form-select
-                  :label="$t('sorting_2')"
-                  :options="sortItems"
-                  :clearPlaceholder="true"
-                  :clear-option="false"
-                  :allowClear="false"
-                  v-model="sorting"
-               />
+         <grid
+            v-if="parts?.data?.length"
+            :announcements="parts?.data"
+            :pending="pending"
+            :paginate="parts?.meta"
+            :has-container="false"
+            @change-page="changePage"
+         >
+            <template #cap>
+               <Cap :className="'mb40'">
+                  <template #left>
+                     <h3>{{ $t('announcements') }}</h3>
+                  </template>
+
+                  <!--            <template #right>-->
+                  <!--               <form-select-->
+                  <!--                  :label="$t('sorting_2')"-->
+                  <!--                  :options="sortItems"-->
+                  <!--                  :clearPlaceholder="true"-->
+                  <!--                  :clear-option="false"-->
+                  <!--                  :allowClear="false"-->
+                  <!--                  v-model="sorting"-->
+                  <!--               />-->
+                  <!--            </template>-->
+               </Cap>
             </template>
-         </Cap>
-
-         <div class="announcements-content">
-            <site-banner type="in-part-spare" v-if="isMobileBreakpoint"/>
-            <no-results v-if="showNotFound" type="part"/>
-
-<!--            <grid-->
-<!--               v-if="getMainMonetized.length"-->
-<!--               :announcements="getMainMonetized"-->
-<!--               :title="$t('featured_ads')"-->
-<!--               :show-title="true"-->
-<!--               escape-duplicates-->
-<!--            />-->
-
-            <Cap v-if="showNotFound">
-               <template #left>
-                  <h3>{{ $t('other_announcements') }}</h3>
-               </template>
-            </Cap>
-
-            <grid
-               v-if="showNotFound ? otherAnnouncements.length : partAnnouncements.total"
-               :announcements="showNotFound ? otherAnnouncements : partAnnouncements.data"
-               :pending="pending"
-               escape-duplicates
-            />
-         </div>
+         </grid>
 
          <!-- <div class="infinityLoader">
            Loading...
          </div> -->
 
-         <infinite-loading
-            :key="refreshInfinity"
-            :action-data="JSON.parse(this.$route.query.parts_filter || '{}')"
-            action="getInfiniteMainPartsPageSearchWithoutMutate"
-            getter="partAnnouncements"
-            :per-page="40"
-         />
+<!--         <infinite-loading-->
+<!--            :key="refreshInfinity"-->
+<!--            :action-data="JSON.parse(this.$route.query.parts_filter || '{}')"-->
+<!--            action="getInfiniteMainPartsPageSearchWithoutMutate"-->
+<!--            getter="partAnnouncements"-->
+<!--            :per-page="40"-->
+<!--         />-->
 
-         <HandleIds :type="'parts'" :items="partAnnouncements.data" />
+<!--         <HandleIds :type="'parts'" :items="partAnnouncements.data" />-->
       </div>
    </div>
 </template>
@@ -138,7 +145,8 @@
 
       async asyncData({store}) {
          await Promise.all([
-            store.dispatch('getInfiniteMainPartsPageSearch'),
+            store.dispatch('fetchPartsAnnouncements'),
+            store.dispatch('fetchPartMonetized')
          ])
 
          return {
@@ -147,15 +155,15 @@
       },
 
       mounted() {
-         if (this.$route.query.parts_filter) {
-            this.searchParts();
-            this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'parts' });
-         }
+         // if (this.$route.query.parts_filter) {
+         //    this.searchParts();
+         //    this.$store.dispatch('fetchPartsAnnouncements', { type: 'parts' });
+         // }
          //window.addEventListener('scroll', this.getNextAnnouncements)
       },
 
       methods: {
-         ...mapActions(['fetchAllAnnouncementsHome']),
+         // ...mapActions(['fetchAllAnnouncementsHome']),
 
          async searchParts() {
             this.refreshInfinity++;
@@ -168,37 +176,49 @@
             await this.$store.dispatch('parts/setSearchActive', true)
             this.scrollTo('.announcements-content', [0, -30])
          },
+
+         async changePage(page = 1) {
+            page = this.$route.query.page || 1;
+
+            this.pending = true;
+            await this.$store.dispatch('fetchPartsAnnouncements', page);
+            this.pending = false;
+
+            this.scrollTo('.announcements-content', [-125, -125]);
+         }
       },
 
       computed: {
          ...mapGetters({
-            partAnnouncements: 'partAnnouncements',
-            otherAnnouncements: 'parts/otherAnnouncements',
-            pagination: 'parts/pagination',
-            otherAnnouncementsPagination: 'parts/otherAnnouncementsPagination',
-            searchActive: 'parts/searchActive',
-            showNotFound: 'parts/showNotFound',
-            mainPartsAnnouncements: 'mainPartsAnnouncements',
-            getMainMonetized: 'getMainMonetized'
+            // partAnnouncements: 'partAnnouncements',
+            // otherAnnouncements: 'parts/otherAnnouncements',
+            // pagination: 'parts/pagination',
+            // otherAnnouncementsPagination: 'parts/otherAnnouncementsPagination',
+            // searchActive: 'parts/searchActive',
+            // showNotFound: 'parts/showNotFound',
+            // mainPartsAnnouncements: 'mainPartsAnnouncements',
+            // getMainMonetized: 'getMainMonetized',
+            partsMonetized: 'partsV2Monetized',
+            parts: 'partsV2',
          }),
 
          crumbs() {
-            return [{name: this.$t('all_parts')}]
+            return [{ name: this.$t('all_parts') }]
          },
       },
 
-      watch: {
-         sorting(val) {
-            if (val === '') {
-               this.$store.dispatch('getInfiniteMainPartsPageSearch', { params: { sorting: 'created_at_desc' }});
-            } else {
-               this.$store.dispatch('getInfiniteMainPartsPageSearch', { params: {sorting: this.sorting} });
-            }
-         }
-      },
+      // watch: {
+      //    sorting(val) {
+      //       if (val === '') {
+      //          this.$store.dispatch('getInfiniteMainPartsPageSearch', { params: { sorting: 'created_at_desc' }});
+      //       } else {
+      //          this.$store.dispatch('getInfiniteMainPartsPageSearch', { params: {sorting: this.sorting} });
+      //       }
+      //    }
+      // },
 
       beforeDestroy() {
-         this.mutate({property: 'temporaryLazyData', value: {}});
+         // this.mutate({property: 'temporaryLazyData', value: {}});
 
          //window.removeEventListener('scroll', this.getNextAnnouncements)
       }
@@ -207,9 +227,11 @@
 
 <style lang="scss">
    .pages-parts-index {
-      .announcements-grid {
-         margin: 32px -15px 0 -15px;
-      }
+      padding-bottom: 120px;
+
+      //.announcements-grid {
+      //   margin: 32px -15px 0 -15px;
+      //}
    }
 
    .dark-mode {

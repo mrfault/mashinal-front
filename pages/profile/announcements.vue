@@ -6,7 +6,7 @@
       <div class="container">
          <div class="ma-announcements">
             <h2 class="ma-title--md">{{ $t('my_announces') }}</h2>
-            <div v-if="showTopCards" class="ma-announcements__top-cards">
+            <div v-if="user.autosalon" class="ma-announcements__top-cards">
                <div v-for="(item,index) in topCards" :key="index + 8923764" class="ma-announcements__top-card">
                   <div class="ma-announcements__top-card--image">
                      <inline-svg :src="`/new-icons/announcements/${item.image}.svg`"/>
@@ -212,6 +212,7 @@ export default {
       },
 
       async changeTab(item) {
+         this.$store.commit('closeDropdown');
          this.loading = true;
          this.activeTab = item.id;
          await this.getMyAllAnnouncements({status: item.id});
@@ -220,6 +221,7 @@ export default {
       },
 
       async changePage(page = 1) {
+         this.$store.commit('closeDropdown');
          this.loading = true;
          this.pending = true;
          await this.getMyAllAnnouncements({status: this.activeTab});

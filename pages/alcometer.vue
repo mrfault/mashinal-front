@@ -51,22 +51,22 @@
                               :showLabelOnSelect="false"
                            />
 
-                           <form-select
-                              v-model="form.drinkValue2"
-                              :options="drinkAmounts"
-                              :label="$t('amount_of_ml')"
-                              :clearOption="false"
-                              :disabled="disabledDrinkValue2"
-                              :allowClear="false"
-                              :invalid="$v.form.drinkValue2.$error && !disabledDrinkValue2"
-                              :showLabelOnSelect="false"
-                           />
+                           <div
+                              class="alco-form__group-delete"
+                              @click="deleteDrinks(1)"
+                           >Sil</div>
                         </div>
 
-                        <div
-                           class="alco-form__group-delete"
-                           @click="deleteDrinks(1)"
-                        >Sil</div>
+                        <form-select
+                           v-model="form.drinkValue2"
+                           :options="drinkAmounts"
+                           :label="$t('amount_of_ml')"
+                           :clearOption="false"
+                           :disabled="disabledDrinkValue2"
+                           :allowClear="false"
+                           :invalid="$v.form.drinkValue2.$error && !disabledDrinkValue2"
+                           :showLabelOnSelect="false"
+                        />
                      </div>
 
                      <div class="alco-form__group" v-if="drinksCounts.includes(2)">
@@ -86,22 +86,22 @@
                               :showLabelOnSelect="false"
                            />
 
-                           <form-select
-                              v-model="form.drinkValue3"
-                              :options="drinkAmounts"
-                              :label="$t('amount_of_ml')"
-                              :allowClear="false"
-                              :clearOption="false"
-                              :disabled="disabledDrinkValue3"
-                              :invalid="$v.form.drinkValue3.$error && !disabledDrinkValue3"
-                              :showLabelOnSelect="false"
-                           />
+                           <div
+                              class="alco-form__group-delete"
+                              @click="deleteDrinks(2)"
+                           >Sil</div>
                         </div>
 
-                        <div
-                           class="alco-form__group-delete"
-                           @click="deleteDrinks(2)"
-                        >Sil</div>
+                        <form-select
+                           v-model="form.drinkValue3"
+                           :options="drinkAmounts"
+                           :label="$t('amount_of_ml')"
+                           :allowClear="false"
+                           :clearOption="false"
+                           :disabled="disabledDrinkValue3"
+                           :invalid="$v.form.drinkValue3.$error && !disabledDrinkValue3"
+                           :showLabelOnSelect="false"
+                        />
                      </div>
 
                      <div class="row">
@@ -790,14 +790,12 @@
 
          &__group {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
+            flex-direction: column;
+            gap: 19px;
 
             &-item {
                display: flex;
-               flex-direction: column;
-               gap: 20px;
+               gap: 12px;
                width: 100%;
             }
 

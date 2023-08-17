@@ -1,12 +1,10 @@
 <template>
-   <component
-      :is="tag"
+   <button
       :class="{
       [classes]: classes,
       [`btn btn--${className} full-width`]: !classes,
       'disabled': disabled
     }"
-
       @click="openPaymentModal"
    >
       <div :class="['d-flex align-items-center', {'disabled': disabled}]">
@@ -103,7 +101,7 @@
             @open="showPaymentModal = false"
          />
       </div>
-   </component>
+   </button>
 </template>
 
 <script>
@@ -279,15 +277,14 @@ export default {
       },
 
       openPaymentModal(e) {
-
-         if (this.announcement.status != 1) {
-            e.stopPropagation()
-            this.$toasted.error('announcement_cannot_monetization')
-            return;
-
-         } else {
+         if (!this.disabled) {
             e.stopPropagation();
             this.showPaymentModal = true;
+         }
+         if (this.disabled) {
+            e.stopPropagation()
+            console.log("./.././")
+            // e.stopPropagation()
          }
       },
 
@@ -317,12 +314,6 @@ export default {
       cursor: context-menu;
       opacity: 50%;
       pointer-events: all;
-      .btn--red-opacity-2:hover{
-         color: #fff;
-         border-radius: 8px;
-         border: none;
-         background-color: rgba(248, 23, 52, 0.72);
-      }
    }
 }
 </style>
