@@ -336,7 +336,7 @@
 
                   <form-select
                      :label="$t('parameters')"
-                     :options="form.all_options = popularOptions.map((p) => ({...p, key: $t(p.label), slug: p.name, name: $t(p.label)}))"
+                     :options="parameters"
                      :clear-placeholder="true"
                      :clear-option="false"
                      object-in-value
@@ -759,14 +759,8 @@
             'popularOptions'
          ]),
 
-         parameters: {
-            get() {
-               return this.form.all_options;
-            },
-            set(val) {
-               console.log('22222222', val)
-               return this.form.all_options = this.popularOptions.map((p) => ({...p, key: this.$t(p.label), slug: p.name, name: this.$t(p.label)}));
-            }
+         parameters() {
+            return this.popularOptions.map((p) => ({...p, key: this.$t(p.label), slug: p.name, name: this.$t(p.label)}));
          },
 
          getExcludeCount() {
@@ -869,11 +863,7 @@
       },
 
       mounted() {
-         // if (this.$route.query) {
-         //    console.log(this.$route.query);
-         // }
-
-         if (this.$route.query?.car_filter?.all_options) {
+         if (this.$route.query?.car_filter && JSON.parse(this.$route.query?.car_filter)?.all_options) {
             this.form.all_options = this.popularOptions?.filter((option) => Object.keys(JSON.parse(this.$route.query?.car_filter)?.all_options)?.includes(option.name))?.map((p) => ({...p, key: this.$t(p.label), slug: p.name, name: this.$t(p.label)
             }));
          }
