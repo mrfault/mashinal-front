@@ -127,6 +127,7 @@
       <template v-if="isEdit || (form.modification && sellModificationsV2.length)">
          <div class="divider">
             <form-select
+               :class="{form_error: $v.form.color.$error}"
                :label="$t('color')"
                :options="colors"
                :clear-placeholder="true"
@@ -143,8 +144,9 @@
                transparent
             />
          </div>
-         <div class="divider">
+         <div class="divider mobile-column">
             <form-numeric-input
+               :class="{form_error: $v.form.mileage.$error}"
                :placeholder="$t('mileage')"
                v-model="form.mileage"
                @change="announcement.mileage = $event || 0"
@@ -197,7 +199,7 @@
                </template>
             </form-radio>
          </div>
-         <div class="divider">
+         <div class="divider mobile-column">
             <form-checkbox
                v-model="form.customs_clearance"
                :label="$t('not_cleared')"
@@ -213,6 +215,7 @@
          </div>
          <form-select
             v-if="!user.autosalon"
+            :class="{form_error: $v.form.region_id.$error}"
             :label="$t('city_of_sale')"
             :options="sellOptions.regions"
             :clear-placeholder="true"
@@ -223,6 +226,7 @@
          />
          <div class="divider" v-if="!user.autosalon">
             <form-text-input
+               :class="{form_error: $v.form.address.$error}"
                key="address"
                v-model="form.address"
                :placeholder="$t('address')"
@@ -233,8 +237,9 @@
                <form-text-input :placeholder="$t('address')" v-model="form.address"/>
             </pick-on-map-button>
          </div>
-         <div class="divider">
+         <div class="divider mobile-column">
             <form-numeric-input
+               :class="{form_error: $v.form.price.$error}"
                :placeholder="$t('price')"
                v-model="form.price"
                @change="!isEdit && (announcement.price = $event ? $event + (form.currency.name?.[locale] || 'AZN') : 0)"
@@ -248,7 +253,7 @@
                </toggle-group>
             </div>
          </div>
-         <div class="divider">
+         <div class="divider mobile-column">
             <form-checkbox
                v-model="form.tradeable"
                :label="$t('tradeable')"
@@ -268,17 +273,13 @@
             <p class="mb-1">{{ $t("license_plate_number") }}</p>
             <div class="divider">
                <form-text-input
+                  :class="{form_error: $v.form.car_number.$error}"
                   v-model="form.car_number"
                   input-class="car-number-show-popover"
                   img-src="/icons/circled_flag.svg"
-                  :mask="
-                    // form.announce_type.title === 'cars' ? '99 - AA - 999' : '99 - A{1,2} - 999'
-                    '99 - AA - 999'
-                  "
-                  :placeholder="
-                    // form.announce_type.title === 'cars' ? '__ - __ - ___' : '__ - _ - ___'
-                    '__ - __ - ___'
-                  "
+                  :mask="'99 - AA - 999'"
+                  placeholder="__ - __ - ___"
+                  :invalid="$v.form.car_number.$error"
                >
                   <template #default>
                      <inline-svg
@@ -347,11 +348,11 @@
                <p>{{ $t("additional_info_warning") }}</p>
             </div>
          </div>
-         <div class="comment">
+         <div class="comment" :class="{form_error: $v.form.saved_images.$error}">
             <image-component :type="'cars'" :initial-form="form"/>
             <div class="comment_info">
                <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
-               <p>{{ $t("add_image_section_warning") }}</p>
+               <p :class="{invalid_paragraph: $v.form.saved_images.$error}">{{ $t("add_image_section_warning") }}</p>
             </div>
          </div>
       </template>
@@ -367,7 +368,7 @@ import PickOnMapButton from "~/components/elements/PickOnMapButton.vue";
 import {MenusDataMixin} from "~/mixins/menus-data";
 import {ToastErrorsMixin} from "~/mixins/toast-errors";
 import {mapActions, mapGetters} from "vuex";
-import {maxLength, required} from "vuelidate/lib/validators";
+import {maxLength, maxValue, minLength, required, requiredIf} from "vuelidate/lib/validators";
 import MaxLength from "vuelidate/lib/validators/maxLength";
 
 export default {
@@ -377,6 +378,9 @@ export default {
       ...mapGetters(['brands', 'models', 'sellYears', 'sellBody', "sellGenerationsV2", "sellEngines", "sellGearing", "sellTransmissions", "sellModificationsV2", "colors", "popularOptions", 'sellOptions']),
       otherParameters() {
          return this.popularOptions.map((p) => ({...p, key: this.$t(p.label), slug: p.name, name: this.$t(p.label)}))
+      },
+      mileageValidator() {
+         return this.form.is_new ? 500 : 10000000
       }
    },
    props: {
@@ -423,7 +427,7 @@ export default {
             modification: "",
             color: [],
             is_matte: false,
-            mileage: 0,
+            mileage: '',
             mileage_type: 1,
             is_new: false,
             beaten: false,
@@ -550,7 +554,7 @@ export default {
          keys.forEach((key) => {
             this.form[key] = ""
          })
-      }
+      },
    },
    mounted() {
       if (this.isEdit) {
@@ -605,6 +609,13 @@ export default {
       },
       isReady() {
          this.$v.form.$touch()
+         setTimeout(() => {
+            this.scrollTo('.form_error', [-50, -50])
+         });
+         if (this.$v.form.$error) {
+            this.$toasted.error(this.$t('required_fields'));
+            return;
+         }
          const newForm = {
             brand: this.form.brand.slug,
             model: this.form.model.slug,
@@ -642,25 +653,30 @@ export default {
             is_matte: this.form.is_matte,
             owner_type: 0,
             region_id: this.form.region_id,
-            youtube:{"id":"0","thumb":""}
+            youtube: {"id": "0", "thumb": ""}
          }
 
          this.$emit("getForm", newForm)
       },
-// {"end_date":"","auction":1,"country_id":null,"car_catalog_id":46273,"brand":"bmw","model":"5-series","generation_id":4782,"car_body_type":2,"gearing":"1","modification":"2","transmission":"1","capacity":"","power":"","year":2006,"youtube":{"id":"","thumb":""},"selectedColor":[23],"is_matte":false,"mileage":400,"mileage_measure":1,"region_id":1,"address":"","lat":0,"lng":0,"vin":"QWERTYUIASDFGHJJI","price":17500,"owner_type":0,"currency":1,"car_number":"","show_car_number":0,"show_vin":0,"part":{},"all_options":{"disc_types":2,"headlights":1,"usb":true,"camera_360":true,"a_headlights":true,"r_sensor":true,"bluetooth":true,"camera":true,"conditioner":1,"salon_material":6,"p_windows":1,"h_seats":1,"side_curtain":true,"tire_pressure_sensor":true,"p_assist_system":1,"abs":true,"luke":true,"c_locking":true,"n_of_seats":5,"s_ventilation":1,"opening_trunk_without_hands":true},"comment":"test test test","autogas":true,"is_new":true,"beaten":true,"customs_clearance":true,"tradeable":true,"credit":true,"guaranty":true,"saved_images":[1512806,1512808,1512807],"btl_cookie":"","is_autosalon":false}
    },
-   validations: {
-      form: {
-         color: {required},
-         mileage: {
-            required,
-            maxLength: maxLength(function () {
-               this.form.is_new ? 500 : 10000000
-            })
-         },
-         region_id: {required},
-         address: {required},
-         price: {required},
+   validations() {
+      return {
+         form: {
+            color: {required},
+            mileage: {
+               required,
+               maxValue: maxValue(this.form.is_new ? 500 : 100000)
+            },
+            car_number: {
+               required: requiredIf(function () {
+                  return !this.form.vin
+               })
+            },
+            region_id: {required},
+            address: {required},
+            price: {required},
+            saved_images: {required, minLength: minLength(3)}
+         }
       }
    }
 
@@ -693,8 +709,7 @@ export default {
          gap: 8px;
 
          .body_imgs {
-            width: 150px;
-            height: 50px;
+            width: 100%;
          }
 
          .check_icon {
@@ -770,9 +785,6 @@ export default {
    }
 
    .divider {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
 
       .mileage_types {
          display: flex;
@@ -813,6 +825,10 @@ export default {
          display: flex;
          align-items: center;
          gap: 10px;
+
+         .invalid_paragraph {
+            color: red
+         }
       }
    }
 }

@@ -2,6 +2,7 @@
    <div class="registration_mark_form">
       <form-select
          :label="$t('region_2')"
+         :class="{form_error: $v.form.car_number.region_id.$error}"
          :options="getRegionNumbers.map((rn) => ({...rn, id: rn.serial_number}))"
          :clear-placeholder="true"
          :clear-option="false"
@@ -14,6 +15,7 @@
       <div class="car_number">
          <form-select
             :label="$t('letter')"
+            :class="{form_error: $v.form.car_number.first.$error}"
             :options="numbers"
             :clear-placeholder="true"
             :clear-option="false"
@@ -35,15 +37,17 @@
          />
          <form-numeric-input
             :placeholder="$t('000')"
+            :class="{form_error: $v.form.car_number.number.$error}"
             v-model="form.car_number.number"
             :maxlength="3"
             :invalid="$v.form.car_number.number.$error"
             :disabled="isEdit"
          />
       </div>
-      <div class="divider">
+      <div class="divider mobile-column">
          <form-numeric-input
             :placeholder="$t('price')"
+            :class="{form_error: $v.form.price.$error}"
             v-model="form.price"
             :invalid="$v.form.price.$error"
          />
@@ -63,7 +67,9 @@
          input-name="is_negotiable"
          transparent
       />
-      <form-select :label="$t('region')" :options="sellOptions.regions"
+      <form-select :label="$t('region')"
+                   :class="{form_error: $v.form.region_id.$error}"
+                   :options="sellOptions.regions"
                    v-model="form.region_id"
                    has-search
                    :invalid="$v.form.region_id.$error"
@@ -183,26 +189,34 @@ export default {
    watch: {
       isReady() {
          this.$v.form.$touch()
-         if (this.$v.form.$error) return;
+         setTimeout(() => {
+            this.scrollTo('.form_error', [-50, -50])
+         });
+         if (this.$v.form.$error) {
+            this.$toasted.error(this.$t('required_fields'));
+            return;
+         }
          const {region_id, first, second, number} = this.form.car_number;
          const car_number = `${region_id} -  ${first + second} - ${number}`
          const body = {...this.form, price: this.form.is_negotiable ? null : this.form.price, car_number}
          this.$emit("getForm", body)
       }
    },
-   validations: {
-      form: {
-         car_number: {
+   validations() {
+      return {
+         form: {
+            car_number: {
+               region_id: {required},
+               first: {required},
+               number: {required}
+            },
+            price: {
+               required: requiredIf(function () {
+                  return !this.form.is_negotiable
+               })
+            },
             region_id: {required},
-            first: {required},
-            number: {required}
-         },
-         price: {
-            required: requiredIf(function () {
-               return !this.form.is_negotiable
-            })
-         },
-         region_id: {required},
+         }
       }
    }
 }
