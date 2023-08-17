@@ -180,6 +180,7 @@
       border: 1px solid #CDD5DF;
       border-radius: 8px;
       background-color: #FFFFFF;
+      transition: all .3s;
 
       .label {
          margin-top: -3px;
@@ -211,6 +212,10 @@
          padding: 0;
          border: none;
          outline: none;
+      }
+
+      &:hover {
+         border-color: #155EEF;
       }
 
       &.dropdown {
@@ -335,6 +340,14 @@
                   }
                }
             }
+         }
+      }
+   }
+
+   .dark-mode {
+      .minMaxSearch {
+         &:hover {
+            border-color: #155EEF !important;
          }
       }
    }

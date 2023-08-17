@@ -104,7 +104,17 @@
                      />
                </div>
 
+               <small class="text-red pl-2 pt-1" v-if="showVinOrCarNumberError">{{ $t('vin_or_car_number_is_mandatory')}}</small>
+
+               <div class="col-12 mt-3">
+                  <button
+                     :class="['btn btn--green w-100',{pending}]"
+                     @click="addCar">{{ $t('save') }}
+                  </button>
+               </div>
+
             </div>
+
             <div v-if="isEditing" class="row">
                <!--               brand-->
                <div v-if="brandsList && brandsList.length" class="col-12">
@@ -116,7 +126,7 @@
                      :invalid="$v.form.brand.$error"
                      :label="$t('mark')"
                      :options="brandsList"
-                     disabled
+                     :disabled="isEditing"
                      has-search
                      @change="setBrand($event, 0)"
                   />
@@ -131,7 +141,7 @@
                      :invalid="$v.form.model.$error"
                      :label="$t('model')"
                      :options="carModels"
-                     disabled
+                     :disabled="isEditing"
                      has-search
                      @change="setModel($event, 0)"
                   />
@@ -146,7 +156,7 @@
                      :invalid="$v.form.generation.$error"
                      :label="$t('generation')"
                      :options="generations"
-                     disabled
+                     :disabled="isEditing"
                      has-search
                      @change="setGeneration($event, 0)"
 
@@ -162,7 +172,7 @@
                      :invalid="$v.form.body.$error"
                      :label="$t('body_type')"
                      :options="generationTypes"
-                     disabled
+                     :disabled="isEditing"
                      has-search
                      @change="setBody($event, 0)"
                   />
@@ -177,7 +187,7 @@
                      :invalid="$v.form.modification.$error"
                      :label="$t('modification')"
                      :options="modifications"
-                     disabled
+                     :disabled="isEditing"
                      has-search
                   />
                </div>
@@ -202,15 +212,14 @@
                   />
                </div>
 
+               <small class="text-red pl-2 pt-1" v-if="showVinOrCarNumberError">{{ $t('vin_or_car_number_is_mandatory')}}</small>
 
-            </div>
-         </div>
-         <div class="row">
-            <div class="col-12 mt-3">
-               <button
-                  :class="['btn btn--green w-100',{pending}]"
-                  @click="addCar">{{ $t('save') }}
-               </button>
+               <div class="col-12 mt-3">
+                  <button
+                     :class="['btn btn--green w-100',{pending}]"
+                     @click="addCar">{{ $t('save') }}
+                  </button>
+               </div>
             </div>
          </div>
       </modal-popup>
@@ -248,6 +257,7 @@ export default {
             generation: [],
          },
          pending: false,
+         showVinOrCarNumberError: false,
       }
    },
    mixins: [ToastErrorsMixin],
@@ -402,10 +412,13 @@ export default {
       async addCar() {
          this.$v.$touch();
          if (this.pending || this.$v.$error) {
-            console.log("this.pending || this.$v.$error")
+            if (!this.form.car_number && !this.form.vin){
+               this.showVinOrCarNumberError = true;
+            }
             this.pending = false;
             return;
          } else {
+            this.showVinOrCarNumberError = false;
             console.log("this.pending || this.$v.$error else")
             try {
             console.log("this.pending || this.$v.$error else try")

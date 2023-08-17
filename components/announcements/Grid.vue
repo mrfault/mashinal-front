@@ -20,6 +20,7 @@
          </div>
       </div>
 
+<!--      <pre>{{paginate}}</pre>-->
       <pagination
          v-if="paginate && paginate.total_pages > 1"
          :page-count="paginate.total_pages"

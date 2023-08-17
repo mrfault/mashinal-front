@@ -66,6 +66,7 @@
                   'favorite' + this.announcement.id_unique,
                )
             } else {
+               console.log('this.announcement.id_unique', this.announcement.id_unique)
                await this.addToFavorites(this.announcement.id_unique);
                await this.getNotViewedFavorites();
                if (this.type === 'announcement') await this.$store.dispatch('getAnnouncementInnerV2', this.announcement.id);
