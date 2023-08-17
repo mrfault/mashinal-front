@@ -68,6 +68,8 @@ const getInitialState = () => ({
    monetizedPage: [],
    carShowroom: [],
    partsHome: [],
+   partsV2: [],
+   partsV2Monetized: [],
    plateNumbers: [],
    brandsList: [],
    monetizedCars: [],
@@ -328,6 +330,8 @@ export const getters = {
    carShowroom: s => s.carShowroom,
    plateNumbers: s => s.plateNumbers,
    partsHome: s => s.partsHome,
+   partsV2: s => s.partsV2,
+   partsV2Monetized: s => s.partsV2Monetized,
    brandsList: s => s.brandsList,
    mainPartsAnnouncements: s => s.mainPartsAnnouncements,
    myAnnouncements: s => s.myAnnouncements,
@@ -494,6 +498,16 @@ export const actions = {
    async fetchPartsAnnouncementsHome({commit}) {
       const res = await this.$axios.$get('https://v2dev.mashin.al/api/v2/parts/home');
       commit("mutate", {property: "partsHome", value: res});
+   },
+
+   async fetchPartsAnnouncements({commit}, page = 1) {
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/parts?page=${page}`);
+      commit("mutate", {property: "partsV2", value: res});
+   },
+
+   async fetchPartMonetized({commit}, page = 1) {
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/parts/monetized`);
+      commit("mutate", {property: "partsV2Monetized", value: res});
    },
 
    async fetchBrandsList({commit}) {

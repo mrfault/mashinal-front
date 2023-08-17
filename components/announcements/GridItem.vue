@@ -105,6 +105,7 @@
                         v-if="!isProfilePage"
                         :announcement="announcement"
                      />
+<!--                     <pre>{{announcement}}</pre>-->
                   </div>
                </div>
 
