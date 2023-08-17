@@ -39,11 +39,12 @@
       </div>
 
       <div
-         class="announcements-grid__item" @click="goToAnnouncement"
          :class="['id'+announcement.id,{'overflow-visible isProfilePage': isProfilePage}]"
+         class="announcements-grid__item"
+         @click="goToAnnouncement"
       >
          <profile-grid-actions
-            v-if="isProfilePage"
+            v-if="isProfilePage && announcement.status !==2"
             :announcement="announcement"
             :class="{'right-aligned-dropdown': isLastChild}"
             :dropdown-id="announcement.id_unique"
@@ -71,6 +72,15 @@
                <div class="item-overlay__top">
                   <div class="item-overlay__top--left">
                      <div
+                        class="item-overlay__top--left_item"
+                        v-if="(announcement.is_auto_salon || announcement.is_external_salon) && !isProfilePage"
+                     >
+                        <template v-if="announcement.is_auto_salon">{{ $t('salon') }}</template>
+                        <template v-else-if="announcement.is_external_salon">{{ $t('external_salon') }}</template>
+                     </div>
+
+                     <div
+                        v-if="isProfilePage"
                         :class="{
                            'activeStatus': announcement.status == 1,
                            'deactiveStatus': announcement.status == 3,
@@ -78,23 +88,18 @@
                            'rejectedStatus': announcement.status == 0,
                         }"
                         class="item-overlay__top--left_item"
-                        v-if="announcement.is_auto_salon || announcement.is_external_salon && !isProfilePage"
                      >
-                        <template v-if="announcement.is_auto_salon && !isProfilePage">{{ $t('salon') }}</template>
-                        <template v-else-if="announcement.is_external_salon && !isProfilePage">{{ $t('external_salon') }}</template>
-<!--                        <template v-else-if="!isProfilePage">{{ $t('salon') }}</template>-->
-                        <template v-else-if="isProfilePage && announcement.status == 0">{{ $t('rejected_many') }}</template>
+                        <template v-if="isProfilePage && announcement.status == 0">
+                           {{ $t('rejected_many') }}
+                        </template>
                         <template v-else-if="isProfilePage && announcement.status == 1">{{ $t('active') }}</template>
-                        <template v-else-if="isProfilePage && announcement.status == 2">{{ $t('under_consideration') }}</template>
-                        <template v-else-if="isProfilePage && announcement.status == 3">{{ $t('inactive') }}</template>
+                        <template v-else-if="isProfilePage && announcement.status == 2">
+                           {{ $t('under_consideration') }}
+                        </template>
+                        <template v-else-if="isProfilePage && announcement.status == 3">
+                           {{ $t('inactive') }}
+                        </template>
                      </div>
-
-<!--                     <div-->
-<!--                        v-if="announcement.is_external_salon && !isProfilePage"-->
-<!--                        class="item-overlay__top&#45;&#45;left_item"-->
-<!--                     >-->
-<!--                        {{ $t('external') }}-->
-<!--                     </div>-->
                   </div>
 
                   <div
@@ -331,6 +336,10 @@ export default {
       },
 
       goToAnnouncement(event) {
+
+         this.$store.commit('closeDropdown');
+
+
          if (!this.clickable) return;
 
          if (this.trackViews) {
@@ -346,7 +355,7 @@ export default {
 
          if (!this.isMobileBreakpoint) {
             this.$router.push(this.getLink);
-         }else if (this.isMobileBreakpoint && this.isProfilePage){
+         } else if (this.isMobileBreakpoint && this.isProfilePage) {
             event.stopPropagation();
             event.preventDefault();
             this.$router.push(this.getLink);
