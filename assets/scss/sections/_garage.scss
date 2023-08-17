@@ -338,10 +338,33 @@
 .garage_protocol-info {
    display: flex;
    flex-direction: column;
-   min-height: 630px;
-   max-height: calc(100vh - 300px);
-   overflow-y: scroll;
-   overflow-x: hidden;
+
+
+   .vehicle-specs{
+      max-height: calc(100vh - 400px);
+      overflow-y: scroll;
+      overflow-x: hidden;
+
+      &::-webkit-scrollbar {
+         width: 5px;
+         height: 7px;
+      }
+
+      /* Track */
+      &::-webkit-scrollbar-track {
+         background: transparent !important;
+      }
+
+      /* Handle */
+      &::-webkit-scrollbar-thumb {
+         background: rgb(206, 206, 206);
+      }
+
+      /* Handle on hover */
+      &::-webkit-scrollbar-thumb:hover {
+         background: #555;
+      }
+   }
 }
 
 .dark-mode {

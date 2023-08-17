@@ -112,6 +112,7 @@
                  show: showOptions,
                  custom,
                  'custom-checkboxes': customCheckboxes,
+                 'showMenuUp' :showMenuUp
                }]"
             >
                <template v-if="showOptions">
@@ -482,6 +483,7 @@ export default {
       wider: Boolean,
       hasCards: Boolean,
       limit: Number,
+      showMenuUp:Boolean,
    },
    data() {
       return {
@@ -842,3 +844,10 @@ export default {
    },
 }
 </script>
+
+<style>
+   .select-menu_dropdown{
+   bottom: 60px !important;
+   top: auto !important;
+}
+</style>
