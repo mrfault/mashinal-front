@@ -275,6 +275,18 @@ export default {
             brandSlug: null,
             modelSlug: null,
          },
+         form1: {
+            brand: 129,
+            model: 488,
+            generation: 4787,
+            generationType: null,
+            body: 12,
+            modification: 47708,
+            vin: null,
+            car_number: null,
+            brandSlug: "bmw",
+            modelSlug: "3-series"
+         },
          list: {
             generation: [],
          },
@@ -624,5 +636,10 @@ export default {
    @media (max-width: 1149px) and (min-width: 701px) {
       width: 690px;
    }
+}
+
+.showMenuUp {
+   bottom: 60px !important;
+   top: auto !important;
 }
 </style>
