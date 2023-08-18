@@ -282,7 +282,7 @@ export default {
 
          if (this.announcement.status != 1) {
             e.stopPropagation()
-            this.$toasted.error('announcement_cannot_monetization')
+            // this.$toasted.error('announcement_cannot_monetization')
             return;
 
          } else {
@@ -313,15 +313,21 @@ export default {
 
 <style lang="scss">
 .btn--red-opacity-2 {
+   svg{
+      margin-left: 9px;
+   }
    &.disabled {
       cursor: context-menu;
       opacity: 50%;
       pointer-events: all;
-      .btn--red-opacity-2:hover{
-         color: #fff;
-         border-radius: 8px;
-         border: none;
-         background-color: rgba(248, 23, 52, 0.72);
+      @media (min-width: 992px){
+         .btn--red-opacity-2:hover {
+            color: #fff;
+            border-radius: 8px;
+            border: none;
+            background-color: rgba(248, 23, 52, 0.72);
+         }
+
       }
    }
 }

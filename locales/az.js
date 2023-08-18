@@ -2812,6 +2812,9 @@ export default {
    "mashin_pay": "Mashin pay",
    "mashin_pay_desc": "MashinPay.az keç",
    "vehicle_deleted": "Elan silinib",
-   "announcement_cannot_monetization": "Elan önə çəkilə bilməz"
+   "announcement_cannot_monetization": "Elan önə çəkilə bilməz",
+   "universal, 5 qapı": "Universal, 5 qapı",
+   "liftbek": "Liftbek",
+   "L": "L"
 };
 
