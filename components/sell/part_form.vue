@@ -189,6 +189,7 @@
                v-model="form.price"
                :class="{form_error: $v.form.price.$error}"
                :invalid="$v.form.price.$error"
+               @change="form.is_negotiable = false"
             />
             <!--            @change="announcement.price = $event ? $event + (form.currency.name?.[locale] || 'AZN') : 0"-->
             <div class="price_types">
@@ -204,6 +205,7 @@
             :label="$t('negotiable_price')"
             input-name="is_negotiable"
             transparent
+            @change="$event && (form.price = '')"
          />
          <form-select v-if="Object.values(partFilters).length" :label="$t('region')" :options="partFilters?.regions"
                       v-model="form.region_id"
@@ -371,9 +373,11 @@ export default {
    },
    watch: {
       'form.brand_id'() {
+         this.$emit("navigationProgress", {id: 1, status: !!this.form.brand_id})
          this.$emit("done", !!((this.form.brand_id) && Object.values(this.partFilters).length))
       },
       'form.sub_category_id'() {
+         this.$emit("navigationProgress", {id: 1, status: !!this.form.sub_category_id})
          this.$emit("done", !!((this.form.sub_category_id) && Object.values(this.partFilters).length))
       },
       isReady() {

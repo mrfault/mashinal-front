@@ -515,24 +515,24 @@ export const actions = {
       commit("mutate", {property: "brandsList", value: res});
    },
 
-   async fetchAutosalonAnnouncementsId({ commit }, id) {
+   async fetchAutosalonAnnouncementsId({commit}, id) {
       const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/autosalon/announcements/${id}`);
-      commit("mutate", { property: "autosalonAnnouncementsId", value: res });
+      commit("mutate", {property: "autosalonAnnouncementsId", value: res});
    },
 
-   async fetchPartsAnnouncementsId({ commit }, id) {
+   async fetchPartsAnnouncementsId({commit}, id) {
       const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/parts/announcements/${id}`);
-      commit("mutate", { property: "autosalonAnnouncementsId", value: res });
+      commit("mutate", {property: "autosalonAnnouncementsId", value: res});
    },
 
-   async fetchMonetizedCars({ commit }) {
+   async fetchMonetizedCars({commit}) {
       const res = await this.$axios.$get('https://v2dev.mashin.al/api/v2/car/monetized-cars');
-      commit("mutate", { property: "monetizedCars", value: res });
+      commit("mutate", {property: "monetizedCars", value: res});
    },
 
    async fetchMonetizedCarsSearch({commit}, data = {}) {
       const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/car/monetized`, data);
-      commit("mutate", { property: "monetizedCars", value: res });
+      commit("mutate", {property: "monetizedCars", value: res});
    },
 
    async getAnnouncementInnerV2({commit}, id) {
@@ -1566,23 +1566,21 @@ export const actions = {
       }
    },
    async partsPost({}, form) {
-      await this.$axios.$post(`/sell/part/post/publish`, form);
+      try {
+         const res = await this.$axios.$post(`/sell/part/post/publish`, form);
+         return res;
+      } catch (e) {
+
+      }
    },
    async carsPost({}, form) {
-      try {
          const res = await this.$axios.$post(`/sell/post/publish?is_mobile=false`, form);
          return res;
-      } catch (e) {
-
-      }
    },
    async motoPost({}, form) {
-      try {
          const res = await this.$axios.$post(`/sell/moto/post/publish?is_mobile=false`, form);
          return res;
-      } catch (e) {
 
-      }
    },
    async motoEdit({}, {id, isMobile, form}) {
       await this.$axios.$post(`sell/moto/post/edit/${id}?is_mobile=${isMobile}`, form);
@@ -1763,18 +1761,18 @@ export const actions = {
       await this.$axios.$post("/offer/message/read/" + payload.id);
    },
 
-   async UserCabinetCarsAdd({commit,state}, payload){
-      const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/me/cars/create`, payload );
+   async UserCabinetCarsAdd({commit, state}, payload) {
+      const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/me/cars/create`, payload);
       // commit("mutate", {property: "userCabinetCars", value: res});
    },
-   async UserCabinetCarsEdit({commit,state}, payload){
+   async UserCabinetCarsEdit({commit, state}, payload) {
       const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/me/cars/${payload.id}/update?brand_id=${payload.brand_id}&model_id=${payload.model_id}&generation_id=${payload.generation_id}&car_type_id=${payload.car_type_id}&car_catalog_id=${payload.car_catalog_id}&vin=${payload.vin}&car_number=${payload.car_number}`);
    },
-   async UserCabinetCarsGetAll({commit,state}, payload){
+   async UserCabinetCarsGetAll({commit, state}, payload) {
       const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/me/cars`);
       commit("mutate", {property: "userCabinetCars", value: res.data});
    },
-   async UserCabinetCarDelete({commit,state}, payload){
+   async UserCabinetCarDelete({commit, state}, payload) {
       const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/me/cars/${payload.id}/delete`);
    },
 
