@@ -56,7 +56,7 @@
             :class="['quick-info__contact', { 'cursor-pointer': !!contact.link }]"
             @click.stop="handleContactClick"
          >
-            <div :class="['quick-info__contact-img', { 'is-online': contact.user.is_online }]">
+            <div :class="['quick-info__contact-img', { 'is-online': contact?.user?.is_online }]">
                <img :src="contact.img" alt="user_logo"/>
             </div>
 
@@ -65,7 +65,7 @@
 
                <address v-if="announcement.status !== 3 && getAddress">{{ getAddress }}</address>
 
-               <p class="text-red" v-else>{{ $t('sold') }}</p>
+               <p class="text-red" v-else-if="announcement.status === 3">{{ $t('sold') }}</p>
 
                <nuxt-link
                   :to="contact.link"
@@ -224,7 +224,7 @@
          />
 
          <add-comparison
-            v-if="type !== 'plates'"
+            v-if="type !== 'plates' && type !== 'parts'"
             class="h-52"
             :template="'btn'"
             :text="$t('compare')"
@@ -322,7 +322,7 @@
          ...mapGetters(['announcement']),
 
          getAddress() {
-            return this.announcement.is_auto_salon ? this.announcement.user?.autosalon?.address : this.announcement.is_part_salon ? this.announcement.user?.part_salon?.address : this.announcement.address
+            return this.announcement.is_auto_salon ? this.announcement.user?.auto_salon?.address : this.announcement.is_part_salon ? this.announcement.user?.part_salon?.address : this.announcement.address
          },
 
          contact() {

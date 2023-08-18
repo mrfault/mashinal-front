@@ -889,15 +889,15 @@
       line-height: 20px;
       color: #4B5565;
       cursor: pointer;
-      border-radius: 8px;
+      border-bottom: 3px solid transparent;
 
       &:not(:first-child) {
          margin-left: 20px;
       }
 
       &.active {
-         color: $white;
-         background-color: #155EEF;
+         color: #1B2434;
+         border-bottom: 3px solid #155EEF;
       }
    }
 }

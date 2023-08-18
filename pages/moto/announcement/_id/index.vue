@@ -1,32 +1,37 @@
 <template>
-   <div class="pages-moto-id">
-      <div class="container">
-         <div class="announcements-inner">
-<!--            <breadcrumbs :crumbs="crumbs" />-->
+   <div class="pages-moto-id product-inner">
+      <div class="bg-white">
+         <div class="container">
+            <div class="announcements-inner">
+               <breadcrumbs :crumbs="crumbs" />
 
-<!--            <div class="row flex-column flex-lg-row">-->
-<!--               <div class="col-auto">-->
-<!--                  <gallery>-->
-<!--                     <quick-info type="moto" brief/>-->
-<!--                     <announcement-specs type="moto" brief/>-->
-<!--                  </gallery>-->
-<!--                  <comment :comment="announcement.comment" v-if="!isMobileBreakpoint">-->
-<!--                     <template #before>-->
-<!--                        <thumbs-gallery/>-->
-<!--                     </template>-->
-<!--                  </comment>-->
-<!--               </div>-->
-<!--               <div class="col-auto">-->
-<!--                  <quick-info type="moto"/>-->
-<!--                  <site-banner v-if="!isMobileBreakpoint" class="mb-3" type="in-announcement"/>-->
-<!--                  <announcement-specs type="moto"/>-->
-<!--                  <comment :comment="announcement.comment" v-if="isMobileBreakpoint"/>-->
-<!--               </div>-->
-<!--            </div>-->
+               <div class="product-inner__info">
+                  <div class="product-inner__info-left">
+                     <gallery>
+                        <quick-info type="moto" brief/>
+                     </gallery>
 
-<!--            <relatives/>-->
+                     <announcement-specs type="moto" brief/>
 
-            <HandleIds :single="true" :type="'motorcycles'" :items="[announcement.id]"/>
+                     <comment :comment="announcement.comment" v-if="!isMobileBreakpoint">
+                        <template #before>
+                           <thumbs-gallery/>
+                        </template>
+                     </comment>
+                  </div>
+
+                  <div class="product-inner__info-right">
+                     <quick-info type="moto"/>
+<!--                     <site-banner v-if="!isMobileBreakpoint" class="mb-3" type="in-announcement"/>-->
+<!--                     <announcement-specs type="moto"/>-->
+<!--                     <comment :comment="announcement.comment" v-if="isMobileBreakpoint"/>-->
+                  </div>
+               </div>
+
+<!--               <relatives/>-->
+
+               <HandleIds :single="true" :type="'motorcycles'" :items="[announcement.id]"/>
+            </div>
          </div>
       </div>
    </div>
@@ -123,21 +128,21 @@
          ...mapGetters(['announcement']),
 
          motoBrand() {
-            return this.announcement.moto_brand || this.announcement.moto_atv_brand || this.announcement.scooter_brand;
+            return this.announcement?.brand?.name || this.announcement?.moto_atv_brand || this.announcement?.scooter_brand;
          },
 
          motoModel() {
-            return this.announcement.moto_model || this.announcement.moto_atv_model || this.announcement.scooter_model;
+            return this.announcement?.model?.name || this.announcement?.moto_atv_model || this.announcement?.scooter_model;
          },
 
-         // crumbs() {
-         //    return [
-         //       {name: this.$t('moto'), route: '/moto'},
-         //       {name: this.motoBrand.name, route: this.getFilterLink('brand')},
-         //       {name: this.motoModel.name, route: this.getFilterLink('brand-model')},
-         //       {name: '#' + this.announcement.id_unique}
-         //    ]
-         // }
+         crumbs() {
+            return [
+               {name: this.$t('moto'), route: '/moto'},
+               {name: this.motoBrand, route: this.getFilterLink('brand')},
+               {name: this.motoModel, route: this.getFilterLink('brand-model')},
+               {name: '#' + this.announcement.id_unique}
+            ]
+         }
       }
    }
 </script>

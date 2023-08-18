@@ -261,7 +261,7 @@ export default {
                title: this.user.full_name,
                image: this.image,
                url: '/garage-services',
-               description: 'menu_login_desc',
+               description: 'garage_services',
                row: 1,
                auth: true,
                disabled: false

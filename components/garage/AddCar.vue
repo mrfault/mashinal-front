@@ -38,6 +38,8 @@
                   <input
                      v-model="form.car_number"
                      v-mask="'99 - A{1,2} - 999'"
+                     :class="{'invalid':$v.form.car_number.$error}"
+                     :invalid="$v.form.car_number.$error"
                      :placeholder="$t('car_number')"
                      @input="filterRussianLetters">
                </div>
@@ -297,16 +299,20 @@ export default {
          //    tech_id: '',
          // }
       },
-      resetForm(){
+      resetForm() {
          this.form = {
             car_number: '',
             tech_id: '',
          }
       },
-      closeAndReset(){
+      closeAndReset() {
          this.showPaymentModal = false
          this.closeModal();
          this.resetForm();
+         this.resetValidation();
+      },
+      resetValidation() {
+         this.$v.$reset();
       }
    },
    data() {

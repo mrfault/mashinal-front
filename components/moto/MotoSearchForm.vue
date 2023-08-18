@@ -38,7 +38,7 @@
          <div class="form-merged">
             <form-select
                :label="$t('from_year')"
-               :options="getYearOptions(false, form.max_year)"
+               :options="getYearOptions(false, form.year_to)"
                v-model="form.year_from"
                :show-label-on-select="false"
                :clear-option="false"
@@ -47,7 +47,7 @@
 
             <form-select
                :label="$t('to')"
-               :options="getYearOptions(form.min_year, false)"
+               :options="getYearOptions(form.year_from, false)"
                v-model="form.year_to"
                :show-label-on-select="false"
                :clear-option="false"
@@ -444,6 +444,10 @@
             type: Number,
             default: 0
          },
+         sorting: {
+            type: Object,
+            default() { return {} }
+         },
          announceType: {
             type: Number,
             default: 1
@@ -461,7 +465,9 @@
             showMore: false,
             rows: ['0'],
             form: {
-               sorting: 'created_at_desc',
+               moto_type: '',
+               sort_by: 'created_at',
+               sort_order: 'desc',
                additional_brands: {0: {}, 1: {}, 2: {}, 3: {}, 4: {}},
                announce_type: 1,
                currency: 1,
@@ -640,18 +646,33 @@
          }
       },
 
-      // async fetch() {
-      //    await Promise.all([
-            // this.$store.dispatch('getMotoGearboxV2'),
-            // this.$store.dispatch('getMotoTransmissionsV2'),
-            // this.$store.dispatch('getMotoFuelTypesV2'),
+      async fetch() {
+         await Promise.all([
+            this.$store.dispatch('getMotoGearboxV2'),
+            this.$store.dispatch('getMotoTransmissionsV2'),
+            this.$store.dispatch('getMotoFuelTypesV2'),
             // this.$store.dispatch('getColors')
-         // ])
-      // },
+         ])
+      },
 
       watch: {
          announceType(val) {
             this.form.announce_type = val;
+         },
+
+         sorting(val) {
+            this.form.sort_by = val.key;
+            this.form.sort_order = val.value;
+            this.submitForm();
+         },
+
+         'form.additional_brands': {
+            deep: true,
+            handler(val) {
+               if (val[0].category === 1) this.form.moto_type = 'motorcycle';
+               else if (val[0].category === 2) this.form.moto_type = 'scooter';
+               else if (val[0].category === 3) this.form.moto_type = 'moto_atv';
+            }
          }
       },
 

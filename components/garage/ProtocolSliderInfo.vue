@@ -3,11 +3,11 @@
       <div class="card garage_protocol-info">
          <div class="w-100">
             <div class="garage_protocol-titles">
-               <h2 class="ma-subtitle--lg" style="margin-bottom: 12px">{{
-                     $t('penalty_info')
-                  }}</h2>
+               <h2 class="ma-subtitle--lg" style="margin-bottom: 12px">
+                  {{ $t('penalty_info') }}
+               </h2>
             </div>
-<!--            --------------------------------------->
+            <!--            --------------------------------------->
 
             <div class="vehicle-specs">
                <div class="asd">
@@ -101,10 +101,10 @@
 <script>
 
 export default {
-   props:{
+   props: {
       protocol: Object,
    },
-   methods:{
+   methods: {
       getTitle(protocol) {
          return `${protocol.protocol_series || ''}${protocol.protocol_number}`;
       },
@@ -139,7 +139,7 @@ export default {
 </script>
 
 <style scoped>
-.images-slider .vehicle-specs{
+.images-slider .vehicle-specs {
    display: block;
 }
 </style>

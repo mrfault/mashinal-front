@@ -52,8 +52,8 @@
             let post = JSON.parse(this.$route.query?.car_filter || '{}');
             let page = this.$route.query?.page || 1;
 
-            this.$store.dispatch('getGridSearch', { url: '/car', prefix: 'cars', post, page });
-            this.$store.dispatch('fetchMonetizedCarsSearch', post);
+            // this.$store.dispatch('getGridSearch', { url: '/car', prefix: 'cars', post, page });
+            // this.$store.dispatch('fetchMonetizedCarsSearch', post);
         }
       },
 
@@ -70,7 +70,7 @@
    .brandsList {
       padding: 56px 0;
       background-color: #FFFFFF;
-
+      border-top: 1px solid #eee;
       &__inner {
          display: flex;
          justify-content: space-between;

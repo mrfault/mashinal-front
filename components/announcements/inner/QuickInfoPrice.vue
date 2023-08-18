@@ -12,10 +12,13 @@
                />
             </div>
 
-            <div class="quickInfoPrice__main">
-               <p>~ {{ announcement?.price_converted }}</p>
-               <p>~ {{ announcement?.price_converted }}</p>
-            </div>
+            <ul class="quickInfoPrice__main">
+               <li
+                  class="quickInfoPrice__main-item"
+                  v-for="(price, i) in announcement?.price_converted"
+                  :key="i"
+               >~ {{ price }}</li>
+            </ul>
          </template>
 
          <template v-else>
@@ -61,7 +64,6 @@
 
          &:hover {
             height: max-content;
-            z-index: 1000;
             box-shadow: 0 5px 16px -8px rgba(0,0,0,1);
 
             .quickInfoPrice__head {
@@ -71,8 +73,6 @@
             }
 
             .quickInfoPrice__main {
-               z-index: 1000;
-
                opacity: 1;
                visibility: visible;
             }
@@ -107,7 +107,10 @@
             border-bottom-right-radius: 8px;
             background-color: #FFFFFF;
 
-            p {
+            &-item {
+               display: flex;
+               align-items: center;
+
                font-size: 20px;
                font-weight: 600;
                line-height: 24px;
@@ -127,12 +130,14 @@
             margin: 0;
             padding: 0 0 18px 0;
             cursor: initial;
+            background-color: transparent;
 
             p {
                font-size: 24px;
                font-weight: 600;
                line-height: 28px;
                color: #1B2434;
+               white-space: nowrap;
             }
 
             &:hover {
@@ -160,7 +165,7 @@
             &__main {
                background-color: #364152;
 
-               p {
+               &-item {
                   color: #EEF2F6;
                }
             }
@@ -171,9 +176,19 @@
                .quickInfoPrice__main {
                   background-color: #1B2434 !important;
 
-                  p {
+                  &-item {
                      color: #CDD5DF !important;
                   }
+               }
+            }
+
+            &.plates {
+               &:hover {
+                  background-color: transparent !important;
+               }
+
+               p {
+                  color: #EEF2F6;
                }
             }
          }

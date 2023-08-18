@@ -51,6 +51,8 @@
                />
             </div>
 
+<!--            <pre>{{getSourcesFsLightbox?.map(item => item.main_inner)}}</pre>-->
+
             <div class="gallery-overlay_middle">
                <span class="d-flex justify-content-between">
                   <button id="gallery-prev" class="btn-sq" @click.stop="slidePrev">
@@ -92,20 +94,18 @@
          </div>
 
          <div class="inner-gallery-lightbox" v-touch:swipe.top="handleSwipeTop">
-            <template v-if="isMobileBreakpoint">
-               <FsLightbox
-                  :zoomIncrement="0"
-                  :toggler="toggleFsLightbox"
-                  :sources="getSourcesFsLightbox"
-                  :types="slides.types"
-                  :slide="currentSlide + 1"
-                  :key="lightboxKey"
-                  :onClose="refreshLightbox"
-                  :onBeforeClose="onBeforeClose"
-                  :disableThumbs="true"
-                  :onSlideChange="changeLightboxSlide"
-               />
-            </template>
+            <FsLightbox
+               v-if="isMobileBreakpoint"
+               :zoomIncrement="0"
+               :toggler="toggleFsLightbox"
+               :sources="getSourcesFsLightbox?.map(item => item.main_inner)"
+               :slide="currentSlide + 1"
+               :key="lightboxKey"
+               :onClose="refreshLightbox"
+               :onBeforeClose="onBeforeClose"
+               :disableThumbs="true"
+               :onSlideChange="changeLightboxSlide"
+            />
 
             <transition-group name="fade">
                <template v-if="(showLightbox && isMobileBreakpoint) || (!isMobileBreakpoint && showImagesSlider)">
@@ -120,19 +120,24 @@
                   >
                      <div class="inner-gallery-lightbox-footer">
                         <template v-if="where === 'announcement'">
-                           <h3>{{ getAnnouncementTitle(announcement) }}</h3>
-                           <h4>{{ announcement.price }}</h4>
-
-                           <div class="row" v-if="announcement.status != 3">
-                              <div class="col" v-if="canSendMessage(announcement)">
-                                 <chat-button
-                                    :announcement="announcement"
-                                    :className="'white-outline'"
-                                 />
+                           <div class="inner" v-if="announcement.status != 3">
+<!--                              <div class="col" v-if="canSendMessage(announcement)">-->
+<!--                                 <chat-button-->
+<!--                                    :announcement="announcement"-->
+<!--                                    :className="'white-outline'"-->
+<!--                                 />-->
+<!--                              </div>-->
+                              <div class="inner__item">
+                                 <h3>{{ getAnnouncementTitle(announcement) }}</h3>
+                                 <h4>{{ announcement.price }}</h4>
                               </div>
 
-                              <div class="col">
-                                 <call-button :phone="announcement.user.phone"/>
+                              <div class="inner__item">
+                                 <call-button
+                                    :phone="announcement?.user?.phone"
+                                    :announcement-id="announcement?.id_unique"
+                                    circle
+                                 />
                               </div>
                            </div>
                         </template>
@@ -144,8 +149,7 @@
                      </div>
                   </div>
 
-                  <div class="blur-bg_slider" :key="2">
-<!--                     <pre>{{slides}}</pre>-->
+                  <div class="blur-bg_slider" :key="2"  v-if="!isMobileBreakpoint">
                      <images-slider
                         :announcement="announcement"
                         :current-slide="currentSlide"
@@ -334,9 +338,6 @@
          },
 
          getSourcesFsLightbox() {
-            console.log('announcement', this.announcement)
-            console.log('slides', this.slides)
-
             if (this.slides.types[0] === 'custom') {
                return [
                   {
@@ -345,11 +346,11 @@
                         onFsLightBox: true,
                         url: this.announcement?.media?.interior_360,
                         files: this.announcement?.media?.images_360,
-                        amount: this.announcement?.media?.images_360.length,
+                        amount: this.announcement?.media?.images_360?.length,
                         fromFsPopup: true,
                      },
                   },
-                  ...this.announcement?.media?.main.slice(1, this.announcement?.media?.main.length),
+                  ...this.announcement?.media?.main?.slice(1, this.announcement?.media?.main?.length),
                ]
             }
             return this.announcement?.media?.main

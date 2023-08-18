@@ -263,11 +263,11 @@
 .fslightbox-slide-btn {
    width: 40px;
    height: 40px;
-   border-radius: 4px;
+   border-radius: 50%;
    display: flex;
    align-items: center;
    justify-content: center;
-   background: rgba($dark-blue-1, 0.15);
+   background: #121926A3;
    transition: .3s background;
 
    &:hover {
@@ -466,6 +466,12 @@
    }
 }
 
+@media (min-width: 768px) {
+   .fslightbox-caption-inner {
+      padding: 30px 25px;
+   }
+}
+
 .fslightbox-caption-active {
    opacity: 1;
    z-index: 3;
@@ -546,9 +552,9 @@
       border-radius: 4px;
    }
 
-   .fslightbox-slide-btn-container-previous {
-      padding-left: 30px;
-   }
+   //.fslightbox-slide-btn-container-previous {
+   //   padding-left: 30px;
+   //}
 
    .fslightbox-slide-btn-container-next {
       padding-right: 30px;

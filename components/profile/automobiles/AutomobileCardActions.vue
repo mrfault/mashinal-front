@@ -74,7 +74,7 @@
 export default {
    props: {
       announcement: Object,
-      dropdownId: String,
+      dropdownId: Number,
    },
    data() {
       return {

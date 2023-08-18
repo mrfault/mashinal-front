@@ -303,6 +303,7 @@ export default {
    methods: {
       carDataChanged(item) {
          setTimeout(() => {
+            this.$route.query.id = item.id;
             this.refreshCarData()
          }, 1500)
       },

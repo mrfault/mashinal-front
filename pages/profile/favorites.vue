@@ -22,6 +22,7 @@
                   :paginate="$paginate(favoriteAnnouncements)"
                   :pending="pending"
                   :watch-route="true"
+                  :has-container="false"
                   @change-page="changePage"
                />
 

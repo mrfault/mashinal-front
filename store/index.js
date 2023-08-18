@@ -501,13 +501,62 @@ export const actions = {
    },
 
    async fetchPartsAnnouncements({commit}, page = 1) {
-      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/parts?page=${page}`);
+      const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/parts?page=${page}`);
       commit("mutate", {property: "partsV2", value: res});
    },
 
-   async fetchPartMonetized({commit}, page = 1) {
-      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/parts/monetized`);
+   async fetchPartMonetized({commit}, payload = {}) {
+      const body = payload.body ? {...payload.body} : {};
+      if (body.announce_type) {
+         body.is_new = body.announce_type === 1 ? true : false;
+      }
+      delete body.announce_type;
+
+      // const config = {
+      //    params: {
+      //       ...(payload.params ? payload.params : {}),
+      //       page: payload?.params?.page || 1
+      //    }
+      // };
+
+      const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/parts/monetized`, body, payload?.params?.page || 1);
       commit("mutate", {property: "partsV2Monetized", value: res});
+   },
+
+   async getInfiniteMainPartsPageSearch({commit, dispatch}, payload = {}) {
+      const body = payload.body ? {...payload.body} : {};
+      if (body.announce_type) {
+         body.is_new = body.announce_type === 1 ? true : false;
+      }
+      delete body.announce_type;
+
+      // const config = {
+      //    params: {
+      //       ...(payload.params ? payload.params : {}),
+      //       page: payload?.params?.page || 1
+      //    }
+      // };
+      const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/parts`, body, payload?.params?.page || 1);
+
+      commit("parts/mutate", {
+         property: "showNotFound",
+         value: res.total === 0
+      });
+
+      if (res.total === 0) {
+         await dispatch("parts/getOtherAnnouncements");
+      } else {
+         commit("parts/mutate", {
+            property: "otherAnnouncementsPagination",
+            value: {}
+         });
+         commit("parts/setAnnouncements", {
+            announcements: [],
+            property: "otherAnnouncements"
+         });
+      }
+      commit("mutate", {property: "partsV2", value: res});
+      // commit("mutate", {property: "partAnnouncements", value: res});
    },
 
    async fetchBrandsList({commit}) {
@@ -1205,39 +1254,7 @@ export const actions = {
 
       commit("mutate", {property: "temporaryLazyData", value: res});
    },
-   async getInfiniteMainPartsPageSearch({commit, dispatch}, payload = {}) {
-      const body = payload.body ? {...payload.body} : {};
-      if (body.announce_type) {
-         body.is_new = body.announce_type === 1 ? true : false;
-      }
-      delete body.announce_type;
 
-      const config = {
-         params: {
-            ...(payload.params ? payload.params : {}),
-            page: payload?.params?.page || 1
-         }
-      };
-      const res = await this.$axios.$post(`/grid/part`, body, config);
-      commit("parts/mutate", {
-         property: "showNotFound",
-         value: res.total === 0
-      });
-
-      if (res.total === 0) {
-         await dispatch("parts/getOtherAnnouncements");
-      } else {
-         commit("parts/mutate", {
-            property: "otherAnnouncementsPagination",
-            value: {}
-         });
-         commit("parts/setAnnouncements", {
-            announcements: [],
-            property: "otherAnnouncements"
-         });
-      }
-      commit("mutate", {property: "partAnnouncements", value: res});
-   },
    async getGridSearch({commit, dispatch}, data) {
       const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2${data.url}?page=${data.page || 1}`, data.post);
       commit("mutate", {property: data.prefix + "Announcements", value: res});

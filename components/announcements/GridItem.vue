@@ -58,7 +58,6 @@
             @click.stop
          >
             <!--        <span class="sr-only">{{ getAnnouncementTitle(announcement) }}</span>-->
-
          </a>
 
          <div
@@ -336,9 +335,7 @@ export default {
       },
 
       goToAnnouncement(event) {
-
          this.$store.commit('closeDropdown');
-
 
          if (!this.clickable) return;
 
@@ -355,12 +352,11 @@ export default {
 
          if (!this.isMobileBreakpoint) {
             this.$router.push(this.getLink);
-         } else if (this.isMobileBreakpoint && this.isProfilePage) {
+         } else if (this.isMobileBreakpoint) {
             event.stopPropagation();
             event.preventDefault();
             this.$router.push(this.getLink);
          }
-
       },
 
       handleChange(value) {
