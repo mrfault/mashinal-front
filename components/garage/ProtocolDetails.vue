@@ -116,7 +116,7 @@
                   />
                </template>
 
-
+               <!--desktop-->
                <template v-if="!isMobileBreakpoint">
                   <transition-group name="fade">
                      <template v-if="showSliderTemplate">
@@ -128,12 +128,12 @@
                         </div>
 
 
-                        <!--                  desktop-->
-                        <div v-if="!isMobileBreakpoint" :key="1" class="blur-bg_slider">
+                        <div v-if="!isMobileBreakpoint" :key="1" class="blur-bg_slider protocol-desktop-slider">
                            <images-slider
                               :current-slide="currentSlide"
                               :has-sidebar="true"
                               :slides="slides"
+                              is-protocol-media
                               isProtocol
                               @close="closeLightbox"
                               @slide-change="currentSlide = $event"
@@ -363,4 +363,39 @@ export default {
    // }
 }
 </script>
+
+<style lang="scss">
+.protocol-details-component {
+   .protocol-desktop-slider {
+      .swiper-wrapper {
+         .protocolVideoThumb {
+            background-position: center;
+            background-size: cover;
+            background-color: #cacaca;
+            background-image: url('/images/video-placeholder.png');
+         }
+         .protocolImageThumb {
+            background-position: center;
+            background-size: cover;
+            background-color: #cacaca;
+         }
+
+      }
+   }
+}
+
+.ma-protocol-media {
+   &__center {
+      .swiper-slide-bg {
+         justify-content: flex-start !important;
+         height: auto;
+      }
+   }
+
+   .slider-overlay_middle {
+      margin: 100px 24px;
+   }
+
+}
+</style>
 
