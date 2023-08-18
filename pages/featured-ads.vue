@@ -59,7 +59,9 @@
             await this.$store.dispatch('fetchMonetizedAnnouncementsPage', `page=${page}`);
             this.pending = false;
 
-            this.scrollTo('.monetizedPage', [-25]);
+            // setTimeout(() => {
+               this.scrollTo('.announcements-grid', [-70, -200]);
+            // }, 100)
          }
       },
 

@@ -501,7 +501,7 @@ export const actions = {
    },
 
    async fetchPartsAnnouncements({commit}, page = 1) {
-      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/parts?page=${page}`);
+      const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/parts?page=${page}`);
       commit("mutate", {property: "partsV2", value: res});
    },
 
@@ -1164,8 +1164,9 @@ export const actions = {
    },
 
    async fetchInfiniteMainMonetized({commit}, data = {}) {
-      const res = await this.$axios.$post(`/grid/monetized-${data.type}`, data.data);
-      commit("mutate", {property: "mainMonetized", value: res});
+      const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/parts/monetized`, data);
+      // commit("mutate", {property: "mainMonetized", value: res});
+      commit("mutate", {property: "partsV2Monetized", value: res});
    },
 
    async getInfiniteMainSearchWithoutMutate({commit, dispatch}, data = {}) {
@@ -1218,7 +1219,7 @@ export const actions = {
             page: payload?.params?.page || 1
          }
       };
-      const res = await this.$axios.$post(`/grid/part`, body, config);
+      const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/parts`, body, config);
       commit("parts/mutate", {
          property: "showNotFound",
          value: res.total === 0
@@ -1236,7 +1237,8 @@ export const actions = {
             property: "otherAnnouncements"
          });
       }
-      commit("mutate", {property: "partAnnouncements", value: res});
+      commit("mutate", {property: "partsV2", value: res});
+      // commit("mutate", {property: "partAnnouncements", value: res});
    },
    async getGridSearch({commit, dispatch}, data) {
       const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2${data.url}?page=${data.page || 1}`, data.post);

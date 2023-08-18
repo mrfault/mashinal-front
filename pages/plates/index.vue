@@ -258,8 +258,6 @@
                         this.form[item] = query.split('=')[1];
                      }
                   } else if (typeof this.form[item] === 'object' && query.split('=')[0] !== 'page') {
-                     console.log('w',this.form[item])
-                     console.log('e', query.split('='))
                      if (query.split('=')[0] === 'sort_by') {
                         this.form.sorting.key = query.split('=')[1]
                      } else {

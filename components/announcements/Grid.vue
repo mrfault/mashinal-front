@@ -20,7 +20,6 @@
          </div>
       </div>
 
-<!--      <pre>{{paginate}}</pre>-->
       <pagination
          v-if="paginate && paginate.total_pages > 1"
          :page-count="paginate.total_pages"
@@ -53,10 +52,6 @@
          numberOfAds: [Number, String],
          iconName: String,
          showAll: String,
-         // showTitle: {
-         //    type: Boolean,
-         //    default: true,
-         // },
          trackViews: {
             type: Boolean,
             default: true,

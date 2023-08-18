@@ -24,7 +24,7 @@
             dominant-baseline="middle"
             fill="#F81734"
             text-anchor="middle"
-            x="50%"
+            x="48%"
             y="280"
          >
             {{ $t('intoxication') }}
@@ -48,8 +48,8 @@
             dominant-baseline="middle"
             fill="#F81734"
             text-anchor="middle"
-            x="50%"
-            y="310"
+            x="48%"
+            y="320"
          >
             {{ $t(speedometerText) }}
          </text>
@@ -484,8 +484,9 @@
       }
 
       &__promil--text {
+         margin-top: 5px;
          font-weight: 600;
-         font-size: 18px;
+         font-size: 19px;
          line-height: 22px;
          fill: #121926;
       }

@@ -598,7 +598,8 @@
 
 @include media-max-width('lg') {
    .announcements-grid {
-      &_item {
+      &__item {
+         max-width: 296px;
          //.item-details {
          //   padding: 7px 10px 10px;
          //   // h3 {

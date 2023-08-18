@@ -56,7 +56,7 @@
             :class="['quick-info__contact', { 'cursor-pointer': !!contact.link }]"
             @click.stop="handleContactClick"
          >
-            <div :class="['quick-info__contact-img', { 'is-online': contact.user.is_online }]">
+            <div :class="['quick-info__contact-img', { 'is-online': contact?.user?.is_online }]">
                <img :src="contact.img" alt="user_logo"/>
             </div>
 
@@ -224,7 +224,7 @@
          />
 
          <add-comparison
-            v-if="type !== 'plates'"
+            v-if="type !== 'plates' && type !== 'parts'"
             class="h-52"
             :template="'btn'"
             :text="$t('compare')"

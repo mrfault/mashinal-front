@@ -23,8 +23,8 @@
             <car-search-form
                v-if="searchType === 1"
                :only-saved-search="!!$route.query.saved || false"
-               :total-count="$paginate(carsAnnouncements).total"
                :pending="pending"
+               :sorting="sorting"
                @pending="pending = true"
                @submit="searchCars"
             />
@@ -32,7 +32,6 @@
             <moto-search-form
                v-else
                :pending="pending"
-               :total-count="$paginate(motoAnnouncements).total"
                @pending="pending = true"
                :announceType="announceType"
                :category="{}"
@@ -58,7 +57,6 @@
             </template>
          </grid>
 
-<!--         <template v-if="!$route.query.saved">-->
          <grid
             v-if="carsAnnouncements?.meta?.total > 0"
             :announcements="carsAnnouncements?.data"
@@ -72,13 +70,15 @@
             <template #cap>
                <Cap :className="'mb40'">
                   <template #left>
-                     <h3 v-if="getCarDetails && getCarDetails.brand">
-                        {{ getCarDetails && getCarDetails.brand }}
-                        {{ getCarDetails && getCarDetails.model }}
-                        {{ getCarDetails && getCarDetails.generation && getCarDetails.generation[locale] }}
-                     </h3>
+                     <h3>
+                        <template v-if="getCarDetails && getCarDetails.brand">
+                           {{ getCarDetails && getCarDetails.brand }}
+                           {{ getCarDetails && getCarDetails.model }}
+                           {{ getCarDetails && getCarDetails.generation && getCarDetails.generation[locale] }}
+                        </template>
 
-                     <h3 v-else>{{ $t('announcements') }}</h3>
+                        <template v-else>{{ $t('announcements') }}</template>
+                     </h3>
                   </template>
 
                   <template #right>
@@ -88,6 +88,8 @@
                         :clearPlaceholder="true"
                         :clear-option="false"
                         :allowClear="false"
+                        :objectInValue="true"
+                        @change="searchCars"
                         v-model="sorting"
                      />
                   </template>
@@ -99,7 +101,6 @@
             :type="'car'"
             v-else
          />
-<!--         </template>-->
 
          <HandleIds :items="carsAnnouncements.data" />
       </div>
@@ -108,6 +109,7 @@
 
 <script>
    import { mapGetters, mapActions } from 'vuex';
+   import { SearchMixin } from '~/mixins/search';
    import CarSearchForm from '~/components/cars/CarSearchForm';
    import MotoSearchForm from "~/components/moto/MotoSearchForm.vue";
    import Grid from '~/components/announcements/Grid';
@@ -120,6 +122,8 @@
       name: 'pages-cars-index',
 
       layout: 'search',
+
+      mixins: [SearchMixin],
 
       components: {
          CarSearchForm,
@@ -150,7 +154,14 @@
         return {
            announceType: 1,
            searchType: 1,
-           sorting: ''
+           sorting: { key: 'created_at', value: 'desc', name: this.$t('show_by_date') },
+           sortItems: [
+              { key: 'created_at', value: 'desc', name: this.$t('show_by_date') },
+              { key: 'price', value: 'asc', name: this.$t('show_cheap_first') },
+              { key: 'price', value: 'desc', name: this.$t('show_expensive_first') },
+              { key: 'mileage', value: 'desc', name: this.$t('mileage') },
+              { key: 'year', value: 'desc', name: this.$t('years') }
+           ]
         }
       },
 
@@ -228,6 +239,13 @@
          if (!Object.keys(this.$route.query).length) {
             this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'cars' });
          }
+
+         if (this.$route.query.car_filter) {
+            let filters = JSON.parse(this.$route.query.car_filter)
+
+            this.sorting.key = filters.sort_by;
+            this.sorting.value = filters.sort_order;
+         }
       },
 
       methods: {
@@ -236,18 +254,22 @@
          async searchCars(page = 1, with_panorama = false) {
             page = this.$route.query.page || 1;
             let post = JSON.parse(this.$route.query.car_filter || '{}');
+
             if (with_panorama) {
-               post = {...post, with_video: true}
+               post = { ...post, with_video: true }
+            } else {
+               post = { ...post, sort_by: post.sort_by, sort_order: post.sort_order }
             }
+
             this.pending = true;
             await this.getGridSearch({...this.searchParams, post, page});
             await this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'cars', data: post });
             this.pending = false;
-            if (page === 1) {
-               this.scrollTo('.announcements-sorting');
-            } else {
-               this.scrollTo('.announcements-grid.paginated', [-50, -50]);
-            }
+            // if (page === 1) {
+            //    this.scrollTo('.announcements-sorting');
+            // } else {
+            //    this.scrollTo('.announcements-grid.paginated', [-50, -50]);
+            // }
          }
       },
 
@@ -275,16 +297,16 @@
          getCarDetails() {
             let carInfo;
 
-            if (this.$route?.query?.car_filter) {
-               carInfo = JSON.parse(this.$route?.query?.car_filter);
-            }
+            if (this.$route?.query?.car_filter) carInfo = JSON.parse(this.$route?.query?.car_filter);
 
-            for (let i = 0; i < this.brandsList?.length; i++) {
-               if (this.brandsList[i]?.id === carInfo?.additional_brands[0]?.brand) {
-                  return {
-                     brand: this.brandsList[i]?.name,
-                     model: carInfo?.additional_brands[0]?.model_name,
-                     generation: carInfo?.additional_brands[0]?.generation_name
+            if (!carInfo?.additional_brands[1]?.brand) {
+               for (let i = 0; i < this.brandsList?.length; i++) {
+                  if (this.brandsList[i]?.id === carInfo?.additional_brands[0]?.brand) {
+                     return {
+                        brand: this.brandsList[i]?.name,
+                        model: carInfo?.additional_brands[0]?.model_name,
+                        generation: carInfo?.additional_brands[0]?.generation_name
+                     }
                   }
                }
             }
@@ -302,13 +324,15 @@
             }
          },
 
-         sortItems() {
-            return [
-               { id: 'created_at_desc', name: this.$t('show_by_date') },
-               { id: 'price_asc', name: this.$t('show_cheap_first') },
-               { id: 'price_desc', name: this.$t('show_expensive_first') }
-            ]
-         },
+         // sortItems() {
+         //    return [
+         //       { key: 'created_at', value: 'desc', name: this.$t('show_by_date') },
+         //       { key: 'price', value: 'asc', name: this.$t('show_cheap_first') },
+         //       { key: 'price', value: 'desc', name: this.$t('show_expensive_first') },
+         //       { key: 'mileage', value: 'desc', name: this.$t('mileage') },
+         //       { key: 'year', value: 'desc', name: this.$t('years') }
+         //    ]
+         // },
 
          getMileageOptions() {
             let zeroFirst;

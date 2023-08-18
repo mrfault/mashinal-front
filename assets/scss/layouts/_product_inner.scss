@@ -1,0 +1,63 @@
+.product-inner {
+   .bg-white {
+      padding-bottom: 32px;
+   }
+
+   &__info {
+      display: grid;
+      grid-template-columns: 716px 348px;
+      gap: 20px;
+
+      .inner-thumbs-gallery,
+      .vehicle-specs,
+      .announcement-comment,
+      .car-complects {
+         margin-top: 20px;
+      }
+   }
+}
+
+.dark-mode {
+   .product-inner {
+      .bg-white {
+         background-color: transparent;
+      }
+   }
+}
+
+@media (max-width: 1150px) {
+   .product-inner {
+      &__info {
+         grid-template-columns: 560px 348px;
+
+         .inner-gallery {
+            .swiper-slide-bg {
+               height: 400px;
+            }
+         }
+      }
+   }
+}
+
+@media (max-width: 992px) {
+   .product-inner {
+      &__info {
+         display: flex;
+         flex-direction: column;
+         grid-template-columns: unset;
+
+      }
+   }
+}
+
+@media (max-width: 600px) {
+   .product-inner {
+      &__info {
+         .inner-gallery {
+            .swiper-slide-bg {
+               height: 332px;
+            }
+         }
+      }
+   }
+}

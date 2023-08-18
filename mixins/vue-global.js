@@ -62,8 +62,7 @@ Vue.use({
             },
             // other
             scrollTo(el, offset = 0, duration = 500, container = 'body') {
-               if (document.body.classList.contains('mobile-screen-open'))
-                  container = '.mobile-screen > .container';
+               if (document.body.classList.contains('mobile-screen-open')) container = '.mobile-screen > .container';
 
                if (el === 0) el = 'body';
 
@@ -71,12 +70,15 @@ Vue.use({
 
                if (typeof offset === 'object') offset = this.isMobileBreakpoint ? offset[0] : offset[1];
 
-               offset += (this.isMobileBreakpoint ? -60 : -141);
+               console.log('el', el)
+               // offset = (this.isMobileBreakpoint ? -60 : -141);
                this.$scrollTo(el, duration, {offset, container});
             },
+
             scrollReset() {
                window.scrollTo(0, 0);
             },
+
             setBodyOverflow(value = 'auto', className) {
                let bodyEl = document.body;
                if (!bodyEl) return;
@@ -89,6 +91,7 @@ Vue.use({
                (mobileScreenOpen ? mobileScreen : bodyEl).style.overflowX = value === 'scroll' ? 'auto' : value;
                (mobileScreenOpen ? mobileScreen : bodyEl).style.overflowY = value;
             },
+
             getParentByClassName(el, className) {
                el = typeof el === 'string' ? document.querySelector(el) : el;
                for (; el && el !== document; el = el.parentNode) {
@@ -96,6 +99,7 @@ Vue.use({
                }
                return null;
             },
+
             getAnnouncementBrandName(item) {
                if (item.car_catalog) return (item.car_catalog.brand || item.brand).name;
                else if (item.scooter_brand) return item.scooter_brand.name;
@@ -122,37 +126,37 @@ Vue.use({
                return (brand || '') + ' ' + (model || '');
             },
             getAnnouncementContact(item) {
-               let img = item.user.avatar,
-                  name = item.user.full_name,
+               let img = item?.user?.avatar,
+                  name = item?.user?.full_name,
                   link = false;
 
-               if (item.is_autosalon) {
-                  img = item.user.autosalon?.logo;
-                  link = this.$localePath(`/salons/${item.user.autosalon.slug}`);
-                  name = item.user.autosalon.name || item.user.full_name;
-               } else if (item.is_external_salon) {
-                  img = item.user.external_salon?.logo;
-                  link = this.$localePath(`/external-salons/${item.user.external_salon.slug}`);
-                  name = item.user.external_salon.name || item.user.full_name;
-               } else if (item.is_part_salon) {
-                  img = item.user.part_salon?.logo;
-                  link = this.$localePath(`/parts/shops/${item.user.part_salon.slug}`);
-                  name = item.user.part_salon.name || item.user.full_name;
-               } else if (item.user.active_announcements_count > 1) {
-                  link = this.$localePath(`/user/${item.user.id}/announcements`);
+               if (item?.is_auto_salon) {
+                  img = item?.user?.is_auto_salon?.logo;
+                  link = this.$localePath(`/salons/${item?.user?.is_auto_salon?.slug}`);
+                  name = item?.user?.is_auto_salon?.name || item?.user?.full_name;
+               } else if (item?.is_external_salon) {
+                  img = item?.user?.external_salon?.logo;
+                  link = this.$localePath(`/external-salons/${item?.user?.external_salon?.slug}`);
+                  name = item?.user?.external_salon?.name || item?.user?.full_name;
+               } else if (item?.is_part_salon) {
+                  img = item?.user?.part_salon?.logo;
+                  link = this.$localePath(`/parts/shops/${item?.user?.part_salon?.slug}`);
+                  name = item?.user?.part_salon?.name || item?.user?.full_name;
+               } else if (item?.user?.active_announcements_count > 1) {
+                  link = this.$localePath(`/user/${item?.user?.id}/announcements`);
                } else {
-                  link = this.$localePath(`/user/${item.user.id}/announcements`);
+                  link = this.$localePath(`/user/${item?.user?.id}/announcements`);
                }
 
                return {
                   type: 'user',
-                  user: item.user,
-                  id: item.user.id,
+                  user: item?.user,
+                  id: item?.user?.id,
                   name: name,
                   link: link,
-                  phone: item.user.phone,
-                  address: item.address,
-                  img: (item.is_autosalon || item.is_part_salon || item.is_external_salon)
+                  phone: item?.user?.phone,
+                  address: item?.address,
+                  img: (item?.is_auto_salon || item?.is_part_salon || item?.is_external_salon)
                      ? (!img || img?.includes('/images/') ? `/img/salon-logo-${this.colorMode}.jpg` : this.$withBaseUrl(img))
                      : (this.$withBaseUrl(img, '/storage/') || '/img/user.jpg'),
                   lat: item.latitude ? parseFloat(item.latitude) : 0,
