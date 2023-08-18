@@ -6,13 +6,14 @@
 
       <div class="registrationMarksGrid__items">
          <PlatesGridItem
-            v-for="item in filteredItems"
-            :key="item.id"
+            v-for="(item, i) in filteredItems"
+            :key="item.id + (escapeDuplicates ? '_' + i : '')"
             :item="item"
             :moreInfo="moreInfo"
             :short-date="shortDate"
             :showFavoriteBtn="showFavoriteBtn"
             :checkbox="checkbox"
+            :escapeDuplicates="true"
          />
       </div>
    </div>
@@ -54,6 +55,8 @@
             type: Boolean,
             default: false
          },
+
+         escapeDuplicates: Boolean,
 
          showFavoriteBtn: {
             type: Boolean,

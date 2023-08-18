@@ -796,6 +796,7 @@ export default {
    fast_info: "7 saniyədən tez<br/>(100 km/s-dək)",
    "Faux leather": "Süni dəri",
    favorites: "Seçilmişlər",
+   favorites_ads: "Seçilmiş elanlar",
    features_1_title: "Vahid biznes paket",
    features_2_title: "1 illik limitsiz elan sayı",
    features_3_title: "Aylıq ödəniş",
