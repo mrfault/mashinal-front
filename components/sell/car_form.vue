@@ -379,9 +379,6 @@ export default {
       otherParameters() {
          return this.popularOptions.map((p) => ({...p, key: this.$t(p.label), slug: p.name, name: this.$t(p.label)}))
       },
-      mileageValidator() {
-         return this.form.is_new ? 500 : 10000000
-      }
    },
    props: {
       announcement: {
@@ -395,6 +392,9 @@ export default {
       isEdit: {
          type: Boolean,
          default: false
+      },
+      navigationProgress: {
+         type: Object
       }
    },
    data() {
@@ -442,9 +442,9 @@ export default {
             tradeable: false,
             credit: false,
             car_number: "",
-            show_car_number: "",
+            show_car_number: false,
             vin: "",
-            show_vin: "",
+            show_vin: false,
             other_parameters: [],
             comment: "",
             saved_images: [],
@@ -602,10 +602,11 @@ export default {
    },
    watch: {
       'form.modification'() {
+         this.$emit("navigationProgress", {id: 1, status: !!this.form.modification})
          this.$emit("done", !!(this.form.modification && this.sellModificationsV2.length))
       },
-      "form.other_parameters"() {
-         console.log(this.form.other_parameters)
+      "form.saved_images"() {
+         this.$emit("navigationProgress", {id: 3, status: this.form.saved_images.length > 2})
       },
       isReady() {
          this.$v.form.$touch()
@@ -659,6 +660,16 @@ export default {
          this.$emit("getForm", newForm)
       },
    },
+   updated() {
+      const announceDescription = ['brand',
+         'color',
+         'mileage',
+         'car_number',
+         'address',
+         'price'].every((key) => this.form[key]) && (!this.user.autosalon ? this.form.region_id : true)
+      this.$emit("navigationProgress", {id: 2, status: announceDescription})
+
+   },
    validations() {
       return {
          form: {
@@ -672,7 +683,11 @@ export default {
                   return !this.form.vin
                })
             },
-            region_id: {required},
+            region_id: {
+               required: requiredIf(function () {
+                  return !this.user.autosalon
+               })
+            },
             address: {required},
             price: {required},
             saved_images: {required, minLength: minLength(3)}
