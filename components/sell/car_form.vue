@@ -450,7 +450,10 @@ export default {
             saved_images: [],
             name: "",
             email: "",
-            phone: ""
+            phone: "",
+            // country_id: "",
+            // auction: false,
+            // date: "",
          },
       }
    },
