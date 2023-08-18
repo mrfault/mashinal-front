@@ -282,7 +282,7 @@ export default {
 
          if (this.announcement.status != 1) {
             e.stopPropagation()
-            this.$toasted.error('announcement_cannot_monetization')
+            this.$toasted.error($t('announcement_cannot_monetization'))
             return;
 
          } else {

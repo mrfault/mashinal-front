@@ -637,4 +637,9 @@ export default {
       width: 690px;
    }
 }
+
+.showMenuUp {
+   bottom: 60px !important;
+   top: auto !important;
+}
 </style>
