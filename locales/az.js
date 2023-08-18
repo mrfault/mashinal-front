@@ -2715,11 +2715,11 @@ export default {
    "add_vehicle": "Nəqliyyat vasitəsi əlavə et",
    "add_vehicle_desc": "Hər əlavə etdiyiniz NV-nə görə aylıq 1 AZN ₼ (ƏDV daxil) məbləğ tutulacaq.",
    "no_vehicle_found": "Sizin əlavə edilmiş nəqliyyat vasitəniz yoxdur",
-   'profile_balance_desc': "Rəsmi salonlardan avtomobil sifariş et",
-   'profile_settings_desc': "Qaranlıq rejim, dil və bildiriş ayarları və s.",
+   'profile_balance_desc': "Balansınızı yoxlayın",
+   'profile_settings_desc': "Sistem parametrləri",
    "logout_account_desc": "Hesabdan çıxış et",
-   "garage_penalties_desc": "Cərimələr, gömrük kalkulyatoru, bələdçi, alkotester, vizual şin kalkulyatoru",
-   "garage_account_desc": "Официальный представитель и другие автосалоны",
+   "garage_penalties_desc": "Сərimələrinizdən daim xəbərdar olun",
+   "garage_account_desc": "Hesab məlumatlarını dəyişdirin",
 
 
    "subscription_registration_date_on_site": "Saytda abunəliyin qeydiyyat tarixi",
@@ -2759,7 +2759,7 @@ export default {
    "this_field_is_mandatory": "Bu xana məcburidir",
    "given_data_is_not_matching_car_number": "Yazdığınız nömrə qeyd etdiyiniz avtomobil məlumatlarına uyğun deyil",
    "details_of_search": "Axtarışın detalları",
-   "my_car_desc": "Lorem impusum dolor set amon",
+   "my_car_desc": "Avtomobilinizi əlavə edin və daim yeniliklərdən xəbəriniz olsun",
    "info_saved": "Məlumatlar yadda saxlanıldı",
    "site_settings": "Tənzimləmələr",
    "dark_mode": "Qaranlıq rejim",
@@ -2809,10 +2809,9 @@ export default {
    "autocatalog_desc": "Lorem ipsum dolor sit amet consectetur. Fermentum euismod nunc massa tristique. Vitae nisi dignissim viverra neque nisl.",
 
    "vin_or_car_number_is_mandatory": "Vin və ya avtomobilin nömrəsi məcburidir",
-
+   "mashin_pay": "Mashin pay",
+   "mashin_pay_desc": "MashinPay.az keç",
    "vehicle_deleted": "Elan silinib",
-
    "announcement_cannot_monetization": "Elan önə çəkilə bilməz"
-
 };
 

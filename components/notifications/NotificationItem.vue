@@ -38,11 +38,15 @@ export default {
 
          if (match && match[2]) {
             const href = match[2];
-            window.open(href, '_blank');
+            // window.open(href, '_blank');
+            console.log("href", href)
+            this.$router.push(href)
          } else {
             // Handle case when no valid link is found
             const routePath = this.link;
-            window.open(routePath, '_blank');
+            // window.open(routePath, '_blank');
+            console.log("href else", routePath)
+            this.$router.push(routePath)
             this.$store.dispatch('getNotifications', this.page);
             this.$nuxt.refresh();
          }
@@ -63,6 +67,7 @@ export default {
    width: 100%;
    background: #fff;
    margin-bottom: 16px;
+   transition: 0.2s ease-in-out;
 
    &:hover {
       background: rgba(#2970FF, .1);

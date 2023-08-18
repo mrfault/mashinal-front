@@ -39,6 +39,7 @@
       <template v-if="isEdit || form.model && motoModelsV2.length">
          <form-select
             v-if="sellOptions.years"
+            :class="{form_error: $v.form.year.$error}"
             :label="$t('prod_year')"
             :options="sellOptions?.years"
             :clear-placeholder="true"
@@ -46,6 +47,7 @@
             :new-label="false"
             v-model="form.year"
             @change="announcement.year = $event || '0000'"
+            :invalid="$v.form.year.$error"
          />
          <div class="divider">
             <form-numeric-input
@@ -79,13 +81,14 @@
          </div>
          <div class="divider">
             <form-select
-               :class="{full_grid: !motoOptions?.config?.drive?.sell_values[form.type_of_moto.id]?.length}"
+               :class="{full_grid: !motoOptions?.config?.drive?.sell_values[form.type_of_moto.id]?.length, form_error: $v.form.color.$error}"
                :label="$t('color')"
                :options="colors"
                :clear-placeholder="true"
                :clear-option="false"
                :new-label="false"
                v-model="form.color"
+               :invalid="$v.form.color.$error"
             />
 
             <form-select
@@ -98,11 +101,13 @@
                v-model="form.gearing"
             />
          </div>
-         <div class="divider">
+         <div class="divider mobile-column">
             <form-numeric-input
                :placeholder="$t('mileage')"
+               :class="{form_error: $v.form.mileage.$error}"
                v-model="form.mileage"
                @change="announcement.mileage = $event || 0"
+               :invalid="$v.form.mileage.$error"
             />
             <div class="mileage_types">
                <form-radio
@@ -124,6 +129,7 @@
          <div class="divider">
             <form-radio
                :id="'3'"
+               :type="'checkbox'"
                :label="$t('new')"
                input-name="is_new"
                v-model="form.is_new"
@@ -131,6 +137,7 @@
             />
             <form-radio
                :id="'4'"
+               :type="'checkbox'"
                :label="$t('broken')"
                input-name="beaten"
                v-model="form.beaten"
@@ -149,7 +156,7 @@
                </template>
             </form-radio>
          </div>
-         <div class="divider">
+         <div class="divider mobile-column">
             <form-checkbox
                v-model="form.customs_clearance"
                :label="$t('not_cleared')"
@@ -165,12 +172,15 @@
          </div>
          <form-select
             v-if="!user.autosalon"
+            :class="{form_error: $v.form.region_id.$error}"
             :label="$t('city_of_sale')"
             :options="sellOptions.regions"
             :clear-placeholder="true"
             :clear-option="false"
             :new-label="false"
+            has-search
             v-model="form.region_id"
+            :invalid="$v.form.region_id.$error"
          />
          <div class="divider" v-if="!user.autosalon">
             <form-text-input
@@ -183,11 +193,13 @@
                <form-text-input :placeholder="$t('address')" v-model="form.address"/>
             </pick-on-map-button>
          </div>
-         <div class="divider">
+         <div class="divider mobile-column">
             <form-numeric-input
                :placeholder="$t('price')"
+               :class="{form_error: $v.form.price.$error}"
                v-model="form.price"
                @change="announcement.price = $event ? $event + ' ' + (form.currency.name?.[locale] || 'AZN') : 0"
+               :invalid="$v.form.price.$error"
             />
             <div class="price_types">
                <toggle-group :items="priceTypes" v-slot="{ item }" @change="form.currency = $event.id">
@@ -197,21 +209,19 @@
                </toggle-group>
             </div>
          </div>
-         <div class="divider">
+         <div class="divider mobile-column">
             <form-checkbox
                v-model="form.tradeable"
                :label="$t('tradeable')"
                input-name="tradeable"
                transparent
             />
-            <!--            @change="announcement.tradeable = $event"-->
             <form-checkbox
                v-model="form.credit"
                :label="$t('credit_possible')"
                input-name="credit"
                transparent
             />
-            <!--            @change="announcement.credit = $event"-->
          </div>
          <div>
             <p class="mb-1">{{ $t("license_plate_number") }}</p>
@@ -220,17 +230,13 @@
                   v-model="form.car_number"
                   input-class="car-number-show-popover"
                   img-src="/icons/circled_flag.svg"
-                  :mask="
-                    // form.announce_type.title === 'cars' ? '99 - AA - 999' : '99 - A{1,2} - 999'
-                    '99 - A - 999'
-                  "
-                  :placeholder="
-                    // form.announce_type.title === 'cars' ? '__ - __ - ___' : '__ - _ - ___'
-                    '__ - _ - ___'
-                  "
+                  :mask="'99 - A - 999'"
+                  placeholder="__ - _ - ___"
                   class="with-trailing"
+                  :class="{form_error: $v.form.car_number.$error}"
+                  :invalid="$v.form.car_number.$error"
                >
-                  <template #default>
+                  <template #default v-if="!$v.form.car_number.$error">
                      <inline-svg
                         class="car_number_suffix"
                         :src="'/icons/info.svg'"
@@ -273,19 +279,8 @@
                   input-name="show_vin"
                   transparent
                />
-               <!--               @change="this.announcement.show_vin = $event"-->
             </div>
          </div>
-         <!--      <form-select-->
-         <!--         :label="$t('other_parameters')"-->
-         <!--         v-model="form.other_parameters"-->
-         <!--         :options="popularOptions.map((p) => ({...p, key: $t(p.label), name: $t(p.label)}))"-->
-         <!--         :clear-placeholder="true"-->
-         <!--         :clear-option="false"-->
-         <!--         name-in-value-->
-         <!--         translate-options-->
-         <!--         multiple-->
-         <!--      />-->
          <form-select
             :label="$t('engine_power_system')"
             :options="motoOptions?.config?.engine?.sell_values[form.type_of_moto.id]?.map((f) => ({...f, name: $t(f.name)}))"
@@ -321,11 +316,11 @@
                <p>{{ $t("additional_info_warning") }}</p>
             </div>
          </div>
-         <div class="comment">
+         <div class="comment" :class="{form_error: $v.form.saved_images.$error}">
             <image-component :type="'moto'" :initial-form="form" :announcement="announcement"/>
             <div class="comment_info">
                <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
-               <p>{{ $t("add_image_section_warning") }}</p>
+               <p :class="{invalid_paragraph: $v.form.saved_images.$error}">{{ $t("add_image_section_warning") }}</p>
             </div>
          </div>
       </template>
@@ -339,7 +334,7 @@ import PickOnMapButton from "~/components/elements/PickOnMapButton.vue";
 import {MenusDataMixin} from "~/mixins/menus-data";
 import {ToastErrorsMixin} from "~/mixins/toast-errors";
 import ImageComponent from "~/pages/sell/image-component.vue";
-import {required} from "vuelidate/lib/validators";
+import {maxValue, minLength, required, requiredIf} from "vuelidate/lib/validators";
 
 export default {
    components: {ImageComponent, PickOnMapButton, ToggleGroup},
@@ -421,7 +416,14 @@ export default {
          this.$emit("done", !!(this.form.model && this.motoModelsV2.length))
       },
       isReady() {
-         // this.$v.form.$touch()
+         this.$v.form.$touch()
+         setTimeout(() => {
+            this.scrollTo('.form_error', [-50, -50])
+         });
+         if (this.$v.form.$error) {
+            this.$toasted.error(this.$t('required_fields'));
+            return;
+         }
          const newForm = {
             selectedBrand: this.form.brand.id,
             selectedModel: this.form.model.id,
@@ -463,7 +465,7 @@ export default {
          this.$emit("getForm", newForm)
       }
    },
-// {"volume":200,"engine":3,"cylinders":5,"drive":1,"fuel_type":2,"box":14,"number_of_vehicles":2,"used_ones":"","customed_ones":"","power":150,"end_date":"","auction":1,"country_id":null,"category":1,"selectedBrand":917,"selectedModel":9258,"selectedYear":2010,"selectedColor":28,"youtube":{"id":"","thumb":""},"mileage":40,"mileage_measure":1,"region_id":1,"address":"Baku, Sax Ismayil Xеtai Avenue, Azerbaijan","lat":40.39645130412052,"lng":49.86599707246074,"vin":"","price":7800,"owner_type":0,"currency":1,"car_number":"","show_car_number":0,"show_vin":0,"all_options":{},"comment":"qwertyu test","is_new":true,"beaten":true,"customs_clearance":true,"tradeable":true,"credit":true,"guaranty":true,"saved_images":[1512831,1512830,1512832],"btl_cookie":"","is_autosalon":false}
+
    methods: {
       ...mapActions(['getMotoBrandsV2', 'getMotoModelsV2', 'getMotoOptions']),
       async onChangeMotoType({value}) {
@@ -540,12 +542,27 @@ export default {
          this.form.comment = this.announcement.comment
       }
    },
-   validations: {
-      form: {
-         car_number: {required},
-         price: {required},
-         region_id: {required},
-         is_new: {required}
+   validations() {
+      return {
+         form: {
+            year: {required},
+            color: {required},
+            mileage: {
+               required,
+               maxValue: maxValue(this.form.is_new ? 500 : 100000)
+            },
+            car_number: {
+               required: requiredIf(function () {
+                  return !this.form.vin
+               })
+            },
+
+            price: {required},
+            region_id: {required: requiredIf(function () {
+               return !this.user.autosalon
+            })},
+            saved_images: {required, minLength: minLength(3)}
+         }
       }
    }
 }
@@ -567,9 +584,6 @@ export default {
    }
 
    .divider {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
 
       .mileage_types {
          display: flex;
@@ -610,7 +624,28 @@ export default {
          display: flex;
          align-items: center;
          gap: 10px;
+
+         .invalid_paragraph {
+            color: red
+         }
       }
    }
 }
+
+@media (max-width: 485px) {
+   .moto_form {
+      .divider {
+
+         .price_types {
+            .toggle_container {
+               gap: 8px !important;
+            }
+            .price_item {
+               padding: 0 8px;
+            }
+         }
+      }
+
+
+   }}
 </style>
