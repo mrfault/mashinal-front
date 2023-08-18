@@ -355,7 +355,9 @@ export default {
 
          if (!this.isMobileBreakpoint) {
             this.$router.push(this.getLink);
-         } else if (this.isMobileBreakpoint && this.isProfilePage) {
+         }
+
+         if (this.isMobileBreakpoint) {
             event.stopPropagation();
             event.preventDefault();
             this.$router.push(this.getLink);
