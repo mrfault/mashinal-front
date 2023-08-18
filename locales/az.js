@@ -2137,6 +2137,7 @@ export default {
    with_mileage: "İşlənmiş",
    with_mileage_2: "Sürülmüş",
    with_new: "yenilərin",
+   used: "İşlənmiş",
    with_significant_damage_to_body_elements_that_do_not_move_on_their_own:
       "Öz-özünə hərəkət etməyən ban hissələrinə əhəmiyyətli dərəcədə ziyan vurmaqla.",
    with_video: "360&deg;",

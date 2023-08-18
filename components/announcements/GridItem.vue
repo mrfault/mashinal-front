@@ -58,7 +58,6 @@
             @click.stop
          >
             <!--        <span class="sr-only">{{ getAnnouncementTitle(announcement) }}</span>-->
-
          </a>
 
          <div
@@ -336,9 +335,7 @@ export default {
       },
 
       goToAnnouncement(event) {
-
          this.$store.commit('closeDropdown');
-
 
          if (!this.clickable) return;
 
@@ -360,7 +357,6 @@ export default {
             event.preventDefault();
             this.$router.push(this.getLink);
          }
-
       },
 
       handleChange(value) {

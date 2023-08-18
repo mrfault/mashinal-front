@@ -23,7 +23,6 @@
             <car-search-form
                v-if="searchType === 1"
                :pending="pending"
-               :total-count="$paginate(mainAnnouncements).total"
                :announceType="announceType"
                @pending="pending = true"
             />
@@ -248,9 +247,9 @@
             store.dispatch('getBodyOptions'),
             store.dispatch('getMotoOptions'),
             store.dispatch('getOptions'),
-            store.dispatch('getMotoGearboxV2'),
-            store.dispatch('getMotoTransmissionsV2'),
-            store.dispatch('getMotoFuelTypesV2'),
+            // store.dispatch('getMotoGearboxV2'),
+            // store.dispatch('getMotoTransmissionsV2'),
+            // store.dispatch('getMotoFuelTypesV2'),
             store.dispatch('getColors'),
             // store.dispatch('getFavorites'),
          ])
@@ -283,7 +282,7 @@
             return [
                {name: this.$t('all2'), key: zeroFirst ? 0 : 1},
                {name: this.$t('new'), key: zeroFirst ? 1 : 2},
-               {name: this.$t('s_h'), key: zeroFirst ? 2 : 3}
+               {name: this.$t('with_mileage_2'), key: zeroFirst ? 2 : 3}
                // {name: this.$t(this.meta.type === 'parts' ? 'S_H' : 'with_mileage'), key: zeroFirst ? 2 : 3}
             ];
          },

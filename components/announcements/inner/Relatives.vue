@@ -44,21 +44,21 @@
          ...mapGetters(['announcement', 'relativeAnnouncements', 'shopAnnouncements']),
 
          isShop() {
-            if (this.announcement.is_part_salon) return true;
-            else if (this.announcement.is_autosalon)
-               return this.announcement.user.autosalon.possible_announce_count > 5 || this.announcement.user.autosalon.possible_announce_count == 0
-            else if (this.announcement.is_external_salon)
-               return (this.announcement.user.external_salon.possible_announce_count > 5 || this.announcement.user.external_salon.possible_announce_count == 0);
+            if (this.announcement?.is_part_salon) return true;
+            else if (this.announcement?.is_auto_salon)
+               return this.announcement?.user?.auto_salon?.possible_announce_count > 5 || this.announcement?.user?.auto_salon?.possible_announce_count == 0
+            else if (this.announcement?.is_external_salon)
+               return (this.announcement?.user?.external_salon?.possible_announce_count > 5 || this.announcement?.user?.external_salon?.possible_announce_count == 0);
             return false
          },
 
          title() {
-            if (this.announcement.is_part_salon)
-               return this.$t('shop_other_announcements', {name: this.announcement.user.part_salon.name});
-            else if (this.announcement.is_autosalon && (this.announcement.user.autosalon.possible_announce_count > 5 || this.announcement.user.autosalon.possible_announce_count == 0))
-               return this.$t('salon_other_announcements', {name: this.announcement.user.autosalon.name});
-            else if (this.announcement.is_external_salon && (this.announcement.user.external_salon.possible_announce_count > 5 || this.announcement.user.external_salon.possible_announce_count == 0))
-               return this.$t('salon_other_announcements', {name: this.announcement.user.external_salon.name});
+            if (this.announcement?.is_part_salon)
+               return this.$t('shop_other_announcements', {name: this.announcement?.user?.part_salon?.name});
+            else if (this.announcement?.is_auto_salon && (this.announcement?.user?.auto_salon?.possible_announce_count > 5 || this.announcement?.user?.auto_salon?.possible_announce_count == 0))
+               return this.$t('salon_other_announcements', {name: this.announcement?.user?.auto_salon?.name});
+            else if (this.announcement?.is_external_salon && (this.announcement?.user?.external_salon?.possible_announce_count > 5 || this.announcement?.user?.external_salon?.possible_announce_count == 0))
+               return this.$t('salon_other_announcements', {name: this.announcement?.user?.external_salon?.name});
             return this.$t('relative_announcements');
          }
       },

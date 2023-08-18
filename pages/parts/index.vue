@@ -170,11 +170,11 @@
             this.mutate({property: 'temporaryLazyData', value: {}});
             const data = JSON.parse(this.$route.query.parts_filter || '{}')
             this.pending = true
-            await this.$store.dispatch('getInfiniteMainPartsPageSearch', {body: data})
-            await this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'parts', data: data });
+            await this.$store.dispatch('getInfiniteMainPartsPageSearch', { body: data })
+            // await this.$store.dispatch('fetchInfiniteMainMonetized', data);
             this.pending = false
             await this.$store.dispatch('parts/setSearchActive', true)
-            this.scrollTo('.announcements-content', [0, -30])
+            this.scrollTo('.announcements-grid', [0, -140])
          },
 
          async changePage(page = 1) {
@@ -184,7 +184,7 @@
             await this.$store.dispatch('fetchPartsAnnouncements', page);
             this.pending = false;
 
-            this.scrollTo('.announcements-content', [-125, -125]);
+            this.scrollTo('.announcements-grid', [-80, -200]);
          }
       },
 
