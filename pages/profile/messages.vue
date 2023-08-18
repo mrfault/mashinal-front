@@ -8,8 +8,8 @@
          :is="isMobileBreakpoint ? 'mobile-screen' : 'div'"
          :bar-title="$t('messages')"
          @back="$router.push(pageRef || $localePath('/profile/messages'))"
-         height-auto>
-
+         height-auto
+      >
          <div :class="['messages', {'empty': !messages.length, 'no-send-input': activeGroupInterlocutor.id == 3}]">
             <div class="row flex-lg-nowrap">
                <div class="col-auto" v-if="!isMobileBreakpoint || activeGroupId === false">
@@ -76,6 +76,7 @@
                      </div>
                   </div>
                </div>
+
                <div class="col-auto" v-if="!isMobileBreakpoint || activeGroupId !== false">
                   <div class="card messages-card">
                      <chat-messages
@@ -93,6 +94,7 @@
                   </div>
                </div>
             </div>
+
             <modal-popup
                v-if="getInterlocutor(activeModalGroup)"
                :toggle="showControlsModal"
@@ -112,7 +114,6 @@
                </ul>
             </modal-popup>
          </div>
-
       </component>
    </div>
 </template>

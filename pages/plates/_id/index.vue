@@ -73,9 +73,9 @@
             </template>
          </PlatesGrid>
 
-         <div v-if="isMobileBreakpoint && registrationMark.status != 3" class="mt-3 mt-lg-0">
-            <floating-cta :announcement="registrationMark"/>
-         </div>
+<!--         <div v-if="isMobileBreakpoint && registrationMark.status != 3" class="mt-3 mt-lg-0">-->
+<!--            <floating-cta :announcement="registrationMark"/>-->
+<!--         </div>-->
 
          <HandleIds :type="'plate'" :single="true" :items="[registrationMark.id]" />
       </div>
@@ -168,7 +168,7 @@
 
 <style lang="scss">
    .plate-id {
-      //margin-top: -27px;
+      padding-bottom: 20px;
 
       .bg-white {
          padding-bottom: 56px;
@@ -185,6 +185,7 @@
          height: 600px;
          border-radius: 12px;
          border: 1px solid #CDD5DF;
+         overflow: hidden;
 
          .white-background {
             position: absolute;
@@ -264,6 +265,10 @@
       .plate-id {
          background-color: #1B2434;
 
+         &__registrationMark {
+            border-color: transparent;
+         }
+
          .bg-white {
             background-color: #121926 !important;
          }
@@ -281,12 +286,19 @@
                }
             }
          }
+
+         .announcements-inner {
+            .wrapp {
+               background-color: #1B2434;
+               overflow: hidden;
+               border-radius: 12px;
+            }
+         }
       }
    }
 
    @media (max-width: 1250px) {
       .plate-id {
-         margin-top: -31px;
 
          &__registrationMark {
             height: 450px;

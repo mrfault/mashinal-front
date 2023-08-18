@@ -77,7 +77,7 @@
                   <div class="col-6 col-md-3">
                      <button
                         type="button"
-                        :class="['btn h-52', 'full-width', 'btn--new-dark-green']"
+                        :class="['btn h-52', 'full-width', 'btn--new-dark-green', {pending}]"
                         @click="submitForm"
                      >
                         {{ $t('find') }}

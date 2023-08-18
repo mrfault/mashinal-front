@@ -52,8 +52,8 @@
             let post = JSON.parse(this.$route.query?.car_filter || '{}');
             let page = this.$route.query?.page || 1;
 
-            this.$store.dispatch('getGridSearch', { url: '/car', prefix: 'cars', post, page });
-            this.$store.dispatch('fetchMonetizedCarsSearch', post);
+            // this.$store.dispatch('getGridSearch', { url: '/car', prefix: 'cars', post, page });
+            // this.$store.dispatch('fetchMonetizedCarsSearch', post);
         }
       },
 
