@@ -385,7 +385,7 @@
          }
 
          &__btn {
-            border-color: transparent;
+            border-color: #E3E8EF;
             background-color: transparent;
 
             &:hover {
@@ -419,6 +419,10 @@
 
          &__btn {
             padding: 14px;
+
+            span {
+               font-size: 14px;
+            }
          }
       }
    }

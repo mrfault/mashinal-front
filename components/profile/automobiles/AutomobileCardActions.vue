@@ -1,186 +1,131 @@
 <template>
-   <div class="automobile-card-actions">
-      <div ref="actionsRef" class="announcement-actions ">
-         <div class="announcement-actions__button" @click="toggleOpen">
-            <inline-svg src="/new-icons/dots-vertical-new.svg"/>
-         </div>
-         <div v-if="isOpen" class="announcement-actions__content">
-            <template v-for="(item, index) in options">
-               <div :key="index" class="announcement-actions__content--item" @click="item.method(item)">
-                  <inline-svg :src="`/new-icons/grid/${item.icon}`"/>
-                  <p>{{ $t(item.name) }}</p>
-               </div>
-            </template>
-         </div>
-
-         <modal-popup
-            :modal-class="!isMobileBreakpoint ? 'midsize': 'larger'"
-            :title="$t(modal.title)"
-            :toggle="showOptions"
-            @close="showOptions = false">
-            <div>
-               <div class="w-100">
-
-                  <div class="announcement-actions__content--item w-100"
-                       @click="openEditModal(options[0])">
-                     <inline-svg :src="`/new-icons/grid/${options[0].icon}`"/>
-                     <p>{{ $t(options[0].name) }}</p>
-                  </div>
-                  <div class="announcement-actions__content--item w-100"
-                       @click="openDeleteModal(options[1])">
-                     <inline-svg :src="`/new-icons/grid/${options[1].icon}`"/>
-                     <p>{{ $t(options[1].name) }}</p>
-                  </div>
-               </div>
-
-            </div>
-
-            <!--         options-->
-         </modal-popup>
-
-         <!--      delete-->
-         <modal-popup
-            :modal-class="!isMobileBreakpoint ? 'midsize': 'larger'"
-            :title="$t(selectedItem.modalTitle)"
-            :toggle="showDeleteModal"
-            @close="closeModal">
-            <div class="remove-vehicle-modal">
-               <div class="protocol-payment-modal__actions">
-                  <button
-                     :class="{ 'pointer-events-none': pending }"
-                     class="btn btn--white btn-dark-text"
-                     type="button"
-                     @click="showDeleteModal = false"
-                  >
-                     {{ $t('reject') }}
-                  </button>
-                  <button
-                     :class="{ 'pointer-events-none': pending }"
-                     class="btn btn--white btn-dark-text"
-                     type="button"
-                     @click="deleteAnnounce"
-                  >
-                     {{ $t('delete') }}
-                  </button>
-               </div>
-
-            </div>
-         </modal-popup>
+   <div class="ma-automobile-card" :key="keyItem">
+      <div class="ma-automobile-card__image">
+         <img :src="item.generation.image"
+              @error="$event.target.src = '/placeholder-car.png'">
       </div>
+      <div class="ma-automobile-card__content">
+         <h4 class="ma-automobile-card__content--brand">{{ item.brand.name }} {{ item.model.name }}
+            {{ item.generation.start_year }}-{{ item.generation.end_year }}</h4>
+         <p class="ma-automobile-card__content--desc">{{ card_desc_1 }} / {{ item.car_catalog.capacity }}{{$t('L')}} / {{ $t(fuel) }}</p>
+      </div>
+      <automobile-card-actions @openEditModal="openEditModal(item)" :announcement="item" :dropdown-id="item.id"/>
    </div>
 </template>
 
 <script>
+import AutomobileCardActions from "~/components/profile/automobiles/AutomobileCardActions";
+
 export default {
    props: {
-      announcement: Object,
-      dropdownId: Number,
+      item: Object,
+      keyItem: Number,
    },
-   data() {
-      return {
-         pending: false,
-         showDeleteModal: false,
-         showOptions: false,
-         modal: {
-            title: '',
-            buttonText: '',
-            method: null,
-         },
-         selectedItem: {}
-      };
+   components: {
+      AutomobileCardActions
    },
-   computed: {
-      isOpen() {
-         return this.$store.state.openDropdownId === this.dropdownId;
-      },
-      options() {
-         return [
-            // {
-            //    name: 'details_of_search',
-            //    icon: 'eye.svg',
-            //    method: this.openDetails,
-            //    modalTitle: 'are_you_sure_you_want_to_deactivate_the_announcement',
-            //
-            // },
-            {
-               name: 'edit',
-               icon: 'fi_check-square.svg',
-               method: this.openEditModal,
-            },
-            {
-               name: 'remove_bookmark',
-               icon: 'trash.svg',
-               show: true,
-               method: this.openDeleteModal,
-               modalTitle: 'are_you_sure_you_want_to_delete_the_car'
-            },
-         ]
-      },
-   },
-   methods: {
-      //dropdown
-      toggleOpen(event) {
-         event.stopPropagation();
-         if (this.isMobileBreakpoint) {
-            this.showOptions = true;
-         } else {
-            const isOpen = this.$store.state.openDropdownId === this.dropdownId;
-            this.$store.commit(isOpen ? 'closeDropdown' : 'setOpenDropdown', this.dropdownId);
-            if (!isOpen) {
-               document.addEventListener('click', this.onClickOutside);
-            }
-         }
-      },
-      onClickOutside(event) {
-         if (!this.$refs.actionsRef.contains(event.target)) {
-            this.$store.commit('closeDropdown');
-            document.removeEventListener('click', this.onClickOutside);
-         }
+   methods:{
+      openEditModal(item){
+         console.log("card openEditModal")
+         this.$emit('openEditModal',item)
       },
 
-      openDeleteModal(item) {
-         this.showOptions = false;
-         this.selectedItem = item;
-         this.showDeleteModal = true;
-      },
-      closeModal() {
-         this.showDeleteModal = false;
-         this.modal = {
-            title: '',
-            buttonText: '',
-            method: null,
-         }
-      },
-
-      openEditModal(item) {
-         this.showOptions = false;
-         this.$emit('openEditModal', true);
-      },
-
-      editAnnounce() {
-         return
-      },
-
-      openDetails() {
-         return;
-      },
-      async deleteAnnounce() {
-         await this.$store.dispatch('deleteMyAnnounement',  this.announcement.id)
-         this.$toasted.success(this.$t('car_deleted'));
-         this.closeModal();
-         this.$nuxt.refresh();
-         this.isOpen = false;
-      }
 
    },
-};
+   computed:{
+      card_desc_1(){
+         return this.$t(this.item.car_type.name.toLocaleLowerCase())
+      },
+      fuel(){
+         return this.$t('engine_values')[this.item.car_catalog.main["  "]['engine']]
+      },
+
+   }
+}
 </script>
 
-
 <style lang="scss">
+.ma-automobile-card {
+   width: 100%;
+   min-height: 104px;
+   border: 1px solid rgba(154, 164, 178, 1);
+   border-radius: 12px;
+   padding: 16px;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   overflow: visible;
+
+   &__image {
+      width: 104px;
+      height: 72px;
+      border-radius: 8px;
+      box-sizing: border-box;
+      overflow: hidden;
+      background: rgba(#cacaca, 0.3);
+
+      img {
+         width: 100%;
+         height: 100%;
+         object-fit: cover;
+      }
+   }
+
+   &__content {
+      padding: 0 16px;
+      width: calc(100% - 104px - 24px);
+
+      &--brand {
+         font: 600 18px/22px 'TTHoves';
+         color: #1b2434;
+         margin-bottom: 4px;
+      }
+
+      &--desc {
+         font: 400 18px/22px 'TTHoves';
+         color: #364152;
+         //text-transform: capitalize;
+      }
+   }
+
+   &__actions {
+   }
+}
+
+.dark-mode{
+   .ma-automobile-card {
+      border: 1px solid #364152;
+      background:  #364152;
+
+      &__image {
+         background: #364152;
+
+         img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+         }
+      }
+
+      &__content {
+         padding: 0 16px;
+         width: calc(100% - 104px - 24px);
+
+         &--brand {
+            color: #fff;
+         }
+
+         &--desc {
+            color: #fff;
+         }
+      }
+
+
+   }
+}
+
 .automobile-card-actions {
    position: relative;
-
    .announcement-actions {
       height: 100%;
       position: initial;
@@ -242,6 +187,4 @@ export default {
       }
    }
 }
-
-
 </style>
