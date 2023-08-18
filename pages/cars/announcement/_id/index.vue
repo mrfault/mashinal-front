@@ -169,12 +169,13 @@
             return false
          },
          crumbs() {
+            console.log('this.catalog', this.catalog)
             return [
                {name: this.$t('cars'), route: '/cars'},
                {name: this.catalog?.brand?.name, route: this.getFilterLink('brand')},
                {name: this.catalog?.model?.name, route: this.getFilterLink('brand-model')},
                {
-                  name: this.$translateHard(this.catalog?.generation?.name[this.locale]),
+                  name: this.$translateHard(this.catalog?.generation?.name),
                   route: this.getFilterLink('brand-model-generation')
                },
                {name: '#' + this.announcement.id_unique}

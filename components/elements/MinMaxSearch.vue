@@ -151,16 +151,22 @@
       },
 
       mounted() {
-         this.items[0].placeholder = this.placeholder[0];
-         this.items[1].placeholder = this.placeholder[1];
+         setTimeout(() => {
+            this.items[0].placeholder = this.placeholder[0];
+            this.items[1].placeholder = this.placeholder[1];
 
-         this.initialOptions = this.options;
+            // this.initialOptions = this.options;
 
-         this.items[0].value = this.selectedValue.min;
-         this.items[1].value = this.selectedValue.max;
+            // this.options[0].value
 
-         this.dropdownItems.min = this.selectedValue.min;
-         this.dropdownItems.max = this.selectedValue.max;
+            this.options[0].value = this.selectedValue.min;
+            this.options[1].value = this.selectedValue.max;
+
+            // this.dropdownItems.min = this.selectedValue.min;
+            // this.dropdownItems.max = this.selectedValue.max;
+
+            console.log('selectedValue', this.selectedValue)
+         }, 500)
 
          window.addEventListener('click', this.close);
       },

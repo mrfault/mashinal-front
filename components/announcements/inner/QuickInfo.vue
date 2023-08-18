@@ -65,7 +65,7 @@
 
                <address v-if="announcement.status !== 3 && getAddress">{{ getAddress }}</address>
 
-               <p class="text-red" v-else>{{ $t('sold') }}</p>
+               <p class="text-red" v-else-if="announcement.status === 3">{{ $t('sold') }}</p>
 
                <nuxt-link
                   :to="contact.link"
@@ -322,7 +322,7 @@
          ...mapGetters(['announcement']),
 
          getAddress() {
-            return this.announcement.is_auto_salon ? this.announcement.user?.autosalon?.address : this.announcement.is_part_salon ? this.announcement.user?.part_salon?.address : this.announcement.address
+            return this.announcement.is_auto_salon ? this.announcement.user?.auto_salon?.address : this.announcement.is_part_salon ? this.announcement.user?.part_salon?.address : this.announcement.address
          },
 
          contact() {
