@@ -16,13 +16,13 @@
 
             <span :class="['text-truncate', { 'full-width': hasSearch }]">
                <template v-if="hasCards && getSelectedOptions[0]">
-                  <span class="d-flex align-items-center" v-if="getSelectedOptions[0]">
+                  <span v-if="getSelectedOptions[0]" class="d-flex align-items-center">
                      <img
-                        :src="getSelectedOptions[0].icon"
                         :alt="getSelectedOptions[0].brand"
-                        width="32"
-                        height="16"
+                        :src="getSelectedOptions[0].icon"
                         class="mr-1"
+                        height="16"
+                        width="32"
                      />
                      <span class="placeholder">{{ getSelectedOptions[0].name.slice(10) }}</span>
                   </span>
@@ -34,13 +34,13 @@
                   <span class="search-input">
 <!--                     <span class="placeholder">{{ label }}</span>-->
                      <input
-                        type="text"
                         ref="searchInput"
-                        :placeholder="inputPlaceholder"
-                        :maxlength="searchInputLength"
                         v-model="search"
-                        @keyup.enter="handleSearchSubmit"
+                        :maxlength="searchInputLength"
+                        :placeholder="inputPlaceholder"
+                        type="text"
                         @input="handleInput"
+                        @keyup.enter="handleSearchSubmit"
                         @click.stop
                      />
                   </span>
@@ -48,16 +48,16 @@
 
                <template v-else>
                   <template v-if="newLabel">
-                     <span class="label" v-if="label !== getLabelText">{{ label }}</span>
+                     <span v-if="label !== getLabelText" class="label">{{ label }}</span>
 
                      <span
-                        class="counter"
                         v-if="multiple && selectValue.length > 1 && !shortNamesLabel"
+                        class="counter"
                      >{{ $t('selected') }}: {{ selectValue.length }}</span>
 
                      <span
-                        :class="['value', {'top' : label !== getLabelText}]"
                         v-else
+                        :class="['value', {'top' : label !== getLabelText}]"
                      >{{ getLabelText }}</span>
                   </template>
 
@@ -67,24 +67,24 @@
                </template>
             </span>
 
-<!--           <span-->
-<!--              class="counter"-->
-<!--              v-if="multiple && selectValue.length > 1 && !shortNamesLabel"-->
-<!--           >-->
-<!--             {{ $t('selected') }}: {{ selectValue.length }}-->
-<!--           </span>-->
-<!--           <span class="counter" v-else-if="custom && values.count">-->
-<!--             {{ values.count }}-->
-<!--           </span>-->
+            <!--           <span-->
+            <!--              class="counter"-->
+            <!--              v-if="multiple && selectValue.length > 1 && !shortNamesLabel"-->
+            <!--           >-->
+            <!--             {{ $t('selected') }}: {{ selectValue.length }}-->
+            <!--           </span>-->
+            <!--           <span class="counter" v-else-if="custom && values.count">-->
+            <!--             {{ values.count }}-->
+            <!--           </span>-->
 
            <icon
-              name="cross"
               v-if="allowClear && !hasNoValue"
-              @click.native.stop="clearSelect"
               class="cursor-pointer"
+              name="cross"
+              @click.native.stop="clearSelect"
            />
-<!--             <inline-svg src="/icons/cross.svg" height="14" v-if="allowClear && !hasNoValue" @click.native.stop="clearSelect" class="cursor-pointer" />-->
-           <icon :name="iconName" v-if="hasNoValue || !allowClear" />
+            <!--             <inline-svg src="/icons/cross.svg" height="14" v-if="allowClear && !hasNoValue" @click.native.stop="clearSelect" class="cursor-pointer" />-->
+           <icon v-if="hasNoValue || !allowClear" :name="iconName"/>
          </span>
          <!--         <icon-->
          <!--            :class="[-->
@@ -94,15 +94,15 @@
          <!--            name="triangle"-->
          <!--            v-if="showOptions"-->
          <!--         />-->
-         <portal to="mobile-dropdown" v-if="isMobileBreakpoint">
+         <portal v-if="isMobileBreakpoint" to="mobile-dropdown">
             <action-bar
-               class="priority-1"
+               v-if="showOptions && isMobileBreakpoint && !inSelectMenu"
+               :show-check="(custom || multiple) && !hasNoValue"
                :title="getActionBarText"
                :useBack="false"
-               v-if="showOptions && isMobileBreakpoint && !inSelectMenu"
-               @back="showOptions = false"
+               class="priority-1"
                @accept="showOptions = false"
-               :show-check="(custom || multiple) && !hasNoValue"
+               @back="showOptions = false"
             />
             <div
                :class="[
@@ -112,41 +112,41 @@
                  show: showOptions,
                  custom,
                  'custom-checkboxes': customCheckboxes,
-                 'showMenuUp' :showMenuUp
+
                }]"
             >
                <template v-if="showOptions">
-                  <div class="my-3" v-if="hasSearch && !hasGenerations" @click.stop>
+                  <div v-if="hasSearch && !hasGenerations" class="my-3" @click.stop>
                      <div class="container">
                         <form-text-input
                            v-model="search"
                            :placeholder="$t('search')"
                            block-class="placeholder-lighter"
                         />
-<!--                        icon-name="search"-->
+                        <!--                        icon-name="search"-->
                      </div>
                   </div>
-                  <div class="container" v-if="custom">
+                  <div v-if="custom" class="container">
                      <slot/>
                   </div>
                   <vue-scroll
-                     :ops="scrollOps"
-                     ref="vsMob"
                      v-else
                      :key="vsKey"
+                     ref="vsMob"
+                     :ops="scrollOps"
                      @handle-scroll-complete="handleScroll"
                      @handle-scroll="handleScroll"
                   >
                      <div class="container">
-<!--                        marat-->
-<!--                        <div class="select-menu_dropdown-option clear-search" @click="selectGeneration = ''">-->
-<!--                           <div class="text-truncate">-->
-<!--                              <inline-svg :src="'/icons/close.svg'" :width="'10px'" :height="'10px'"/>-->
-<!--                              <span>{{ $t('clear_search') }}</span>-->
-<!--                           </div>-->
-<!--                        </div>-->
+                        <!--                        marat-->
+                        <!--                        <div class="select-menu_dropdown-option clear-search" @click="selectGeneration = ''">-->
+                        <!--                           <div class="text-truncate">-->
+                        <!--                              <inline-svg :src="'/icons/close.svg'" :width="'10px'" :height="'10px'"/>-->
+                        <!--                              <span>{{ $t('clear_search') }}</span>-->
+                        <!--                           </div>-->
+                        <!--                        </div>-->
 
-                        <div class="row pt-3" v-if="popularOptions && !search">
+                        <div v-if="popularOptions && !search" class="row pt-3">
                            <div
                               v-for="option in $sortBy(getFilteredOptions, (a, b) =>
                                     popularOptions.indexOf(b.id) -
@@ -156,10 +156,10 @@
                               class="col-4 popular-option"
                               @click.stop="selectValue = option"
                            >
-                              <div class="img" v-if="imgKey">
+                              <div v-if="imgKey" class="img">
                                  <img
-                                    :src="$withBaseUrl(option[imgKey]) || imgPlaceholder"
                                     :alt="getOptionName(option)"
+                                    :src="$withBaseUrl(option[imgKey]) || imgPlaceholder"
                                  />
                               </div>
                               <div class="text-truncate">
@@ -168,22 +168,22 @@
                            </div>
                         </div>
                         <div
-                           class="mt-2"
                            v-if="hasGenerations && getFilteredOptions.length"
+                           class="mt-2"
                         >
                            <form-buttons
                               v-model="selectGeneration"
-                              :options="getFilteredOptions"
                               :btn-class="'primary-outline select-generation'"
                               :group-by="2"
+                              :options="getFilteredOptions"
                            >
                               <template #custom="{ button }">
                                  <div
-                                    :style="getGenerationStyle(button)"
                                     :class="[
                           'generation-bg',
                           { 'no-img': !!getGenerationStyle(button).noImg },
                         ]"
+                                    :style="getGenerationStyle(button)"
                                  ></div>
                                  <div class="generation-info">
                                     <span>
@@ -209,26 +209,26 @@
                               @click.stop="selectValue = option"
                            >
                               <div
-                                 class="color"
                                  v-if="option?.code"
                                  :style="{ backgroundColor: `${option.code }`}"
+                                 class="color"
                               ></div>
                               <div
-                                 class="img"
                                  v-if="imgKey && (!hasCards || (hasCards && option[imgKey]))"
+                                 class="img"
                               >
                                  <img
-                                    :src="$withBaseUrl(option[imgKey]) || imgPlaceholder"
                                     :alt="getOptionName(option)"
+                                    :src="$withBaseUrl(option[imgKey]) || imgPlaceholder"
                                  />
                               </div>
                               <div class="text-truncate">
                                  <span>{{ getOptionName(option) }}</span>
                               </div>
-                              <icon name="check" v-if="isSelected(option)"/>
+                              <icon v-if="isSelected(option)" name="check"/>
                            </div>
                         </template>
-                        <div class="select-menu_dropdown-option disabled" v-else>
+                        <div v-else class="select-menu_dropdown-option disabled">
                            <div class="text-truncate">
                               <span>{{ $t('no_results_found') }}</span>
                            </div>
@@ -241,14 +241,15 @@
 
          <template v-else>
             <!--            `anchor-${anchor} anchor-${placeOptionsAbove ? 'top' : 'bottom'}`,-->
-            <div :class="['select-menu_dropdown',
+            <div ref="dropdownOptions"
+                 :class="['select-menu_dropdown',
                {
                  show: showOptions,
                  custom,
                  'custom-checkboxes': customCheckboxes,
+                       'showMenuUp' :showMenuUp
                }
             ]"
-                 ref="dropdownOptions"
                  @mouseenter="addScrollStopToBody()"
                  @mouseleave="removeScrollStopToBody()"
             >
@@ -258,14 +259,14 @@
                   </div>
 
                   <vue-scroll
-                     :ops="scrollOps"
-                     ref="vs"
                      v-else
                      :key="vsKey"
+                     ref="vs"
+                     :ops="scrollOps"
                      @handle-scroll-complete="handleScroll"
                      @handle-scroll="handleScroll"
                   >
-                     <div class="row pt-3" v-if="popularOptions && !search">
+                     <div v-if="popularOptions && !search" class="row pt-3">
                         <div
                            v-for="option in $sortBy(
                              getFilteredOptions,
@@ -274,10 +275,10 @@
                            class="col-4 popular-option"
                            @click.stop="selectValue = option"
                         >
-                           <div class="img" v-if="imgKey">
+                           <div v-if="imgKey" class="img">
                               <img
-                                 :src="$withBaseUrl(option[imgKey]) || imgPlaceholder"
                                  :alt="getOptionName(option)"
+                                 :src="$withBaseUrl(option[imgKey]) || imgPlaceholder"
                               />
                            </div>
                            <div class="text-truncate">
@@ -287,21 +288,21 @@
                         </div>
                      </div>
 
-<!--                     <div class="select-menu_dropdown-option clear-search" @click="selectGeneration = ''">-->
-<!--                        <div class="text-truncate" v-if="!clearOptionMin">-->
-<!--                           <inline-svg :src="'/icons/close.svg'" :width="'10px'" :height="'10px'"/>-->
-<!--                           <span>{{ $t('clear_search') }}</span>-->
-<!--                        </div>-->
-<!--                        <div class="text-truncate" v-else>-->
-<!--                           <span>{{ $t('delete') }}</span>-->
-<!--                        </div>-->
-<!--                     </div>-->
+                     <!--                     <div class="select-menu_dropdown-option clear-search" @click="selectGeneration = ''">-->
+                     <!--                        <div class="text-truncate" v-if="!clearOptionMin">-->
+                     <!--                           <inline-svg :src="'/icons/close.svg'" :width="'10px'" :height="'10px'"/>-->
+                     <!--                           <span>{{ $t('clear_search') }}</span>-->
+                     <!--                        </div>-->
+                     <!--                        <div class="text-truncate" v-else>-->
+                     <!--                           <span>{{ $t('delete') }}</span>-->
+                     <!--                        </div>-->
+                     <!--                     </div>-->
 
                      <template v-for="(option, index) in getFilteredOptions">
                         <template v-if="hasCards && index !== 0">
                            <div
-                              :class="{'pl-2 pr-2': index !== getFilteredOptions.length - 1}"
                               :key="`hr_${index}`"
+                              :class="{'pl-2 pr-2': index !== getFilteredOptions.length - 1}"
                            >
                               <hr class="mb-0 mt-0"/>
                            </div>
@@ -322,13 +323,13 @@
                            <template v-if="hasCards">
                               <div class="d-flex full-width">
                                  <div
-                                    class="card-brand-img mr-1"
                                     v-if="imgKey && option.brand"
+                                    class="card-brand-img mr-1"
                                  >
                                     <div class="img">
                                        <img
-                                          :src="$withBaseUrl(option[imgKey])"
                                           :alt="getOptionName(option)"
+                                          :src="$withBaseUrl(option[imgKey])"
                                        />
                                     </div>
                                  </div>
@@ -342,31 +343,31 @@
                            </template>
 
                            <template v-else>
-                              <div class="img" v-if="imgKey">
+                              <div v-if="imgKey" class="img">
                                  <img
-                                    :src="$withBaseUrl(option[imgKey]) || imgPlaceholder"
                                     :alt="getOptionName(option)"
+                                    :src="$withBaseUrl(option[imgKey]) || imgPlaceholder"
 
                                  />
                               </div>
 
                               <div
-                                 class="color"
                                  v-if="option?.code"
                                  :style="{ backgroundColor: `${option.code }`}"
+                                 class="color"
                               ></div>
 
                               <div class="text-truncate">
                                  <span>{{ getOptionName(option) }}</span>
                               </div>
                            </template>
-                           <icon name="check" v-if="isSelected(option)"/>
+                           <icon v-if="isSelected(option)" name="check"/>
                         </div>
                      </template>
 
                      <div
-                        class="select-menu_dropdown-option disabled"
                         v-if="!getFilteredOptions.length"
+                        class="select-menu_dropdown-option disabled"
                      >
                         <div class="text-truncate">
                            <span>{{ $t('no_results_found') }}</span>
@@ -483,7 +484,7 @@ export default {
       wider: Boolean,
       hasCards: Boolean,
       limit: Number,
-      showMenuUp:Boolean,
+      showMenuUp: Boolean,
    },
    data() {
       return {
@@ -519,8 +520,8 @@ export default {
       },
       getOptionName(option) {
          return `${this.$translateHard(option.name?.[this.locale]) || (this.translateOptions
-               ? this.$t(option.name)
-               : this.$translateHard(option.name))
+            ? this.$t(option.name)
+            : this.$translateHard(option.name))
          }${this.suffix ? ' ' + this.suffix : ''}`
       },
       getOptionKey(option) {
@@ -534,7 +535,7 @@ export default {
             ? this.selectValue.key === value.key
             : this.selectValue === value
 
-         if(!this.multiple && this.objectInValue && this.selectValue instanceof Object) {
+         if (!this.multiple && this.objectInValue && this.selectValue instanceof Object) {
             let key = Object.keys(this.selectValue)[0];
 
             return value[key] === this.selectValue[key];
@@ -647,7 +648,7 @@ export default {
          if (!this.search || !this.hasSearch) return this.getOptions;
 
          return this.options.filter((option) =>
-           this.$search(this.getOptionName(option), this.search),
+            this.$search(this.getOptionName(option), this.search),
          )
 
          // console.log('this.search', this.search)
@@ -677,8 +678,8 @@ export default {
                value = `${this.$readNumber(this.values.from, read)} — ${this.$readNumber(this.values.to, read)}`
             else if (this.values.from || this.values.to)
                value = `${this.values.showPreposition
-                     ? this.$t(!this.values.from ? 'to' : 'from') + ' '
-                     : ''
+                  ? this.$t(!this.values.from ? 'to' : 'from') + ' '
+                  : ''
                }${this.$readNumber(this.values.from || this.values.to, read)}`
             else if (this.values.from === 0 || this.values.to === 0)
                value = `${this.$t(this.values.to === 0 ? 'to' : 'from')} 0`
@@ -845,9 +846,4 @@ export default {
 }
 </script>
 
-<style>
-   .select-menu_dropdown{
-   bottom: 60px !important;
-   top: auto !important;
-}
-</style>
+
