@@ -156,7 +156,8 @@ export default {
    computed: {
       ...mapGetters({
          user: 'user',
-         bankingCards: 'bankingCards/bankingCards'
+         bankingCards: 'bankingCards/bankingCards',
+         monetizationPriceList: 'monetizationPriceList',
       }),
 
       totalBalance() {
@@ -294,33 +295,32 @@ export default {
       handlePaymentType(id) {
          this.paymentMethod = 'card';
          this.paymentType = id;
-      }
+      },
+      async getPriceList() {
+         await this.$store.dispatch('getMonetizationPriceList')
+         this.priceList = this.monetizationPriceList;
+         this.price.value = this.monetizationPriceList[0].price;
+         this.day.value = this.monetizationPriceList[0].days;
+      },
    },
 
    created() {
-      this.$axios.$get('/monetization/price/list').then((res) => {
-         this.priceList = res;
-         this.price.value = res[0].price;
-         this.day.value = res[0].days;
-
-         /*      this.price.min = this.pricesForPlan[0]
-               this.price.value = this.pricesForPlan[2]
-               this.price.max = this.pricesForPlan[this.pricesForPlan.length - 1]*/
-      })
+      this.getPriceList()
    }
 }
 </script>
 
 <style lang="scss">
 .btn--red-opacity-2 {
-   svg{
+   svg {
       margin-left: 9px;
    }
+
    &.disabled {
       cursor: context-menu;
       opacity: 50%;
       pointer-events: all;
-      @media (min-width: 992px){
+      @media (min-width: 992px) {
          .btn--red-opacity-2:hover {
             color: #fff;
             border-radius: 8px;

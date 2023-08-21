@@ -2767,4 +2767,5 @@ export default {
    "mashin_pay_desc": "Перейти в MashinPay.az",
    "vehicle_deleted": "Объявление удалено",
    "info_saved":"Информация сохранена",
+   '\"Avtomobilin nömrəsi\" artıq mövcuddur.': '«Номер автомобиля» уже существует.'
 };

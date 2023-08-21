@@ -14,11 +14,11 @@
          </div>
       </div>
       <new-automobile
-         :showModal="showModal"
          :announcement="selectedCar"
          :is-editing="isEditing"
-         @carEdited="getAllCars"
+         :showModal="showModal"
          @carAdded="getAllCars"
+         @carEdited="getAllCars"
          @modalClosed="closeModal"
       />
    </div>
@@ -49,24 +49,34 @@ export default {
       AutomobileCard,
       NewAutomobile
    },
-   async asyncData({store}) {
-      await store.dispatch('UserCabinetCarsGetAll');
-   },
+   // async asyncData({store}) {
+   //    await store.dispatch('UserCabinetCarsGetAll');
+   // },
    methods: {
-      async getAllCars() {
-         await this.$store.dispatch('UserCabinetCarsGetAll');
-         this.selectedCar = null;
+      getAllCars() {
+         this.$store.commit("mutate", {property: "userCabinetCars", value: []});
+         for (let currentPage = 1; currentPage < 10; currentPage++) {
+
+            console.log('START ALL CARS')
+            setTimeout(() => {
+               let res = this.$store.dispatch('UserCabinetCarsGetAll', currentPage);
+               console.log(res?.data)
+
+            }, 1000)
+         }
+
+
       },
-      openNewCarModal(){
-        this.isEditing = false;
-        this.showModal = true;
+      openNewCarModal() {
+         this.isEditing = false;
+         this.showModal = true;
       },
       openEditModal(item) {
          this.isEditing = true;
          this.selectedCar = item;
          this.showModal = true;
       },
-      closeModal(){
+      closeModal() {
          this.showModal = false;
          this.isEditing = false;
       }
@@ -84,6 +94,9 @@ export default {
          'userCabinetCars'
       ])
    },
+   mounted() {
+      this.getAllCars();
+   }
 
 }
 </script>
