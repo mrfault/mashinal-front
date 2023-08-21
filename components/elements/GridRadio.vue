@@ -3,6 +3,7 @@
       <label v-if="label">{{ label }}</label>
       <div class="grid_container">
          <div
+            :id="item.id"
             :class="['grid_item', { active: selected === item.id }]"
             v-for="item in items"
             :key="item.id"
@@ -25,6 +26,10 @@ export default {
       label: {
          type: String,
       },
+      defaultValue: {
+         type: [Number, String],
+         default: 1
+      },
       items: Array,
    },
    data() {
@@ -37,7 +42,16 @@ export default {
          this.selected = id;
          this.$emit("change", id);
       },
+
    },
+   mounted() {
+      this.selected = this.defaultValue;
+   },
+   watch: {
+      defaultValue() {
+         this.selected = this.defaultValue;
+      }
+   }
 };
 </script>
 

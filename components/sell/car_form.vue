@@ -36,10 +36,11 @@
          has-search
          v-model="form.year"
          @clear="clearFields(['body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])"
-         @change="onChangeYear()"
+         @change="onChangeYear"
       />
       <grid-radio
          v-if="form.year && sellBody.length"
+         :default-value="form.body_type || ''"
          :label="$t('body_type')"
          :items="form.year ? sellBody : []"
          v-slot="{ item }"
@@ -52,6 +53,7 @@
       </grid-radio>
       <grid-radio
          v-if="form.body_type && sellGenerationsV2.length"
+         :default-value="form.generation || ''"
          :label="$t('generation')"
          :items="form.body_type ? sellGenerationsV2 : []"
          v-slot="{ item }"
@@ -89,6 +91,7 @@
       />
       <toggle-group
          v-if="form.fuel_type && sellGearing.length"
+         :default-value="form.gearing || ''"
          :label="$t('type_of_drive')"
          :items="sellGearing.map((typeOfDrive) => ({id: typeOfDrive.type_of_drive, name: $t('type_of_drive_values')[typeOfDrive.type_of_drive]}))"
          v-slot="{ item }"
@@ -115,12 +118,15 @@
          :options="sellModificationsV2.map((o) => ({
               name: o.title,
               key: o.id,
+              capacity: o.capacity
             }))"
          :clear-placeholder="true"
          :clear-option="false"
          :translate-options="false"
+         object-in-value
          :new-label="false"
          v-model="form.modification"
+         @change="announcement.car_catalog.capacity = form.modification.capacity"
       />
       <!--      v-if="form.modification"-->
 
@@ -149,9 +155,9 @@
                :class="{form_error: $v.form.mileage.$error}"
                :placeholder="$t('mileage')"
                v-model="form.mileage"
-               @change="announcement.mileage = $event || 0"
                :invalid="$v.form.mileage.$error"
             />
+            <!--               @change="announcement.mileage = $event ? $event  + ' ' + mileageTypeName : 0"-->
             <div class="mileage_types">
                <form-radio
                   :id="'1'"
@@ -199,7 +205,7 @@
                </template>
             </form-radio>
          </div>
-         <div class="divider mobile-column">
+         <div class="divider mobile-column" v-if="!user.external_salon">
             <form-checkbox
                v-model="form.customs_clearance"
                :label="$t('not_cleared')"
@@ -214,7 +220,7 @@
             />
          </div>
          <form-select
-            v-if="!user.autosalon"
+            v-if="!user.autosalon && !user.external_salon"
             :class="{form_error: $v.form.region_id.$error}"
             :label="$t('city_of_sale')"
             :options="sellOptions.regions"
@@ -224,7 +230,18 @@
             v-model="form.region_id"
             :invalid="$v.form.region_id.$error"
          />
-         <div class="divider" v-if="!user.autosalon">
+         <form-select
+            v-if="user.external_salon"
+            :class="{form_error: $v.form.country_id.$error}"
+            :label="$t('sale_region_country')"
+            :options="sellOptions.countries"
+            :clear-placeholder="true"
+            :clear-option="false"
+            :new-label="false"
+            v-model="form.country_id"
+            :invalid="$v.form.country_id.$error"
+         />
+         <div class="divider" v-if="!user.autosalon && !user.external_salon">
             <form-text-input
                :class="{form_error: $v.form.address.$error}"
                key="address"
@@ -253,7 +270,33 @@
                </toggle-group>
             </div>
          </div>
-         <div class="divider mobile-column">
+         <div class="divider" v-if="user.external_salon">
+            <form-radio
+               :id="'5'"
+               :label="$t('auction')"
+               input-name="auction"
+               v-model="form.auction"
+               :radio-value="1"
+            />
+            <form-radio
+               :id="'6'"
+               :label="$t('sell')"
+               input-name="auction"
+               v-model="form.auction"
+               :radio-value="0"
+            />
+         </div>
+         <form-text-input
+            v-if="user.external_salon && form.auction === 1"
+            @change="removeError('end_date')"
+            date-type="datetime"
+            value-type="datetime"
+            date-format="DD.MM.YYYY HH:00"
+            v-model="form.end_date"
+            :placeholder="$t('announcement_end_date')"
+            input-date
+         />
+         <div class="divider mobile-column" v-if="!user.external_salon">
             <form-checkbox
                v-model="form.tradeable"
                :label="$t('tradeable')"
@@ -269,9 +312,9 @@
                @change="announcement.credit = $event"
             />
          </div>
-         <div>
+         <div v-if="!user.external_salon">
             <p class="mb-1">{{ $t("license_plate_number") }}</p>
-            <div class="divider">
+            <div class="divider mobile-column">
                <form-text-input
                   :class="{form_error: $v.form.car_number.$error}"
                   v-model="form.car_number"
@@ -299,7 +342,7 @@
          </div>
          <div>
             <p class="mb-1">{{ $t("vin_carcase_number") }}</p>
-            <div class="divider">
+            <div class="divider mobile-column">
                <form-text-input
                   v-model="form.vin"
                   :placeholder="$t('vin_carcase_number')"
@@ -379,6 +422,9 @@ export default {
       otherParameters() {
          return this.popularOptions.map((p) => ({...p, key: this.$t(p.label), slug: p.name, name: this.$t(p.label)}))
       },
+      mileageTypeName() {
+         return this.form.mileage_type === 1 ? this.$t('km') : this.$t('ml')
+      }
    },
    props: {
       announcement: {
@@ -433,8 +479,8 @@ export default {
             beaten: false,
             customs_clearance: false,
             guaranty: false,
-            region_id: "",
-            address: "Bakı",
+            region_id: 1,
+            address: "",
             lat: 0,
             lng: 0,
             price: "",
@@ -451,9 +497,9 @@ export default {
             name: "",
             email: "",
             phone: "",
-            // country_id: "",
-            // auction: false,
-            // date: "",
+            country_id: "",
+            auction: 1,
+            end_date: "",
          },
       }
    },
@@ -472,8 +518,15 @@ export default {
          const brand = this.form.brand.slug
          const model = this.form.model.slug
          this.announcement.model = this.form.model.name || this.$t('model')
-         if (this.form.model.name) {
-            await this.getSellYears({brand, model});
+         if (brand && this.form.model.name) {
+            try {
+               await this.getSellYears({brand, model});
+            } catch (e) {
+            }
+            if (this.sellYears.years.length === 1) {
+               this.form.year = this.sellYears.years[0]
+               await this.onChangeYear()
+            }
          }
       },
       async onChangeYear() {
@@ -482,8 +535,15 @@ export default {
          const model = this.form.model.slug
          const year = this.form.year
          this.announcement.year = this.form.year || "0000"
-         if (this.form.year) {
-            await this.getSellBody({brand, model, year});
+         if (brand && model && this.form.year) {
+            try {
+               await this.getSellBody({brand, model, year});
+            } catch (e) {
+            }
+            if (this.sellBody.length === 1) {
+               this.form.body_type = this.sellBody[0].id
+               await this.onChangeBody(this.sellBody[0].id)
+            }
          }
       },
       async onChangeBody(body) {
@@ -492,8 +552,15 @@ export default {
          const model = this.form.model.slug
          const year = this.form.year
          this.form.body_type = body || ""
-         if (body) {
-            await this.getSellGenerationsV2({brand, model, year, body});
+         if (brand && model && year && body) {
+            try {
+               await this.getSellGenerationsV2({brand, model, year, body});
+            } catch (e) {
+            }
+            if (this.sellGenerationsV2.length === 1) {
+               this.form.generation = this.sellGenerationsV2[0].id
+               await this.onChangeGeneration(this.sellGenerationsV2[0].id)
+            }
          }
       },
       async onChangeGeneration(generation) {
@@ -503,8 +570,15 @@ export default {
          const year = this.form.year
          const body = this.form.body_type
          this.form.generation = generation || "";
-         if (generation) {
-            await this.getSellEngines({brand, model, year, body, generation});
+         if (brand && model && year && body && generation) {
+            try {
+               await this.getSellEngines({brand, model, year, body, generation});
+            } catch (e) {
+            }
+            if (this.sellEngines.length === 1) {
+               this.form.fuel_type = this.sellEngines[0].engine
+               await this.onChangeFuelType(this.sellEngines[0].engine)
+            }
          }
       },
       async onChangeFuelType(engine) {
@@ -515,8 +589,15 @@ export default {
          const body = this.form.body_type
          const generation = this.form.generation
          this.form.fuel_type = engine || "";
-         if (engine) {
-            await this.getSellGearing({brand, model, year, body, generation, engine});
+         if (brand && model && year && body && generation && engine) {
+            try {
+               await this.getSellGearing({brand, model, year, body, generation, engine});
+            } catch (e) {
+            }
+            if (this.sellGearing.length === 1) {
+               this.form.gearing = this.sellGearing[0].type_of_drive
+               await this.onChangeGearing({id: this.sellGearing[0].type_of_drive})
+            }
          }
       },
       async onChangeGearing(gearing) {
@@ -528,8 +609,15 @@ export default {
          const engine = this.form.fuel_type
          const generation = this.form.generation
          this.form.gearing = gearing.id || ""
-         if (gearing.id) {
-            await this.getSellTransmissions({brand, model, year, body, generation, engine, gearing: gearing.id});
+         if (brand && model && year && body && generation && engine && gearing.id) {
+            try {
+               await this.getSellTransmissions({brand, model, year, body, generation, engine, gearing: gearing.id});
+            } catch (e) {
+            }
+            if (this.sellTransmissions.length === 1) {
+               this.form.transmission = this.sellTransmissions[0].box
+               await this.onChangeTransmission(this.sellTransmissions[0].box)
+            }
          }
       },
       async onChangeTransmission(transmission) {
@@ -541,8 +629,19 @@ export default {
          const engine = this.form.fuel_type
          const generation = this.form.generation
          const gearing = this.form.gearing
-         if (transmission) {
-            await this.getSellModificationsV2({brand, model, year, body, generation, engine, gearing, transmission});
+         if (brand && model && year && body && generation && engine && gearing && transmission) {
+            try {
+               await this.getSellModificationsV2({brand, model, year, body, generation, engine, gearing, transmission});
+            } catch (e) {
+            }
+            if (this.sellModificationsV2.length === 1) {
+               this.announcement.car_catalog.capacity = this.sellModificationsV2[0].capacity
+               this.form.modification = this.sellModificationsV2.map((o) => ({
+                  name: o.title,
+                  key: o.id,
+                  capacity: o.capacity
+               }))[0]
+            }
          }
       },
       updateAddress(address) {
@@ -604,6 +703,20 @@ export default {
 
    },
    watch: {
+      'form.mileage_type'() {
+         this.announcement.mileage = this.form.mileage ? this.form.mileage + ' ' + (this.form.mileage_type === 1 ? this.$t('km') : this.$t('ml')) : 0
+      },
+      'form.mileage'() {
+         console.log(this.announcement)
+         this.isEdit ? this.$store.commit('mutate', {
+               property: 'announcement',
+               value: {
+                  ...this.announcement,
+                  mileage: this.form.mileage ? this.form.mileage + ' ' + (this.form.mileage_type === 1 ? this.$t('km') : this.$t('ml')) : 0
+               }
+            }) :
+            this.announcement.mileage = this.form.mileage ? this.form.mileage + ' ' + (this.form.mileage_type === 1 ? this.$t('km') : this.$t('ml')) : 0
+      },
       'form.modification'() {
          this.$emit("navigationProgress", {id: 1, status: !!this.form.modification})
          this.$emit("done", !!(this.form.modification && this.sellModificationsV2.length))
@@ -614,22 +727,22 @@ export default {
       isReady() {
          this.$v.form.$touch()
          setTimeout(() => {
-            this.scrollTo('.form_error', [-50, -50])
+            this.scrollTo('.form_error', -190)
          });
          if (this.$v.form.$error) {
             this.$toasted.error(this.$t('required_fields'));
             return;
          }
-         const newForm = {
+         let newForm = {
             brand: this.form.brand.slug,
             model: this.form.model.slug,
             generation_id: this.form.generation,
             car_body_type: this.form.body_type,
             gearing: this.form.gearing,
-            car_catalog_id: this.form.modification,
+            car_catalog_id: this.form.modification.key,
             transmission: this.form.transmission,
             year: this.form.year,
-            mileage: this.form.mileage,
+            mileage: this.form.mileage || 0,
             mileage_measure: this.form.mileage_type,
             address: this.form.address,
             lat: this.form.lat,
@@ -656,8 +769,17 @@ export default {
             selectedColor: this.form.color,
             is_matte: this.form.is_matte,
             owner_type: 0,
-            region_id: this.form.region_id,
             youtube: {"id": "0", "thumb": ""}
+         }
+
+         if (this.user.external_salon) {
+            newForm = {
+               ...newForm, country_id: this.form.country_id,
+               auction: this.form.auction,
+               end_date: this.form.end_date
+            }
+         } else {
+            newForm = {...newForm, region_id: this.form.region_id}
          }
 
          this.$emit("getForm", newForm)
@@ -678,20 +800,31 @@ export default {
          form: {
             color: {required},
             mileage: {
-               required,
-               maxValue: maxValue(this.form.is_new ? 500 : 100000)
+               required: requiredIf(function () {
+                  return !this.form.is_new
+               }),
+               maxValue: maxValue(this.form.is_new ? 500 : 10000000)
             },
             car_number: {
                required: requiredIf(function () {
-                  return !this.form.vin
+                  return !this.form.vin && !this.user.external_salon
                })
             },
             region_id: {
                required: requiredIf(function () {
-                  return !this.user.autosalon
+                  return !this.user.autosalon && !this.user.external_salon
                })
             },
-            address: {required},
+            country_id: {
+               required: requiredIf(function () {
+                  return !!this.user.external_salon
+               })
+            },
+            address: {
+               required: requiredIf(function () {
+                  return !this.user.autosalon && !this.user.external_salon
+               })
+            },
             price: {required},
             saved_images: {required, minLength: minLength(3)}
          }

@@ -864,16 +864,20 @@
                   color: $white;
                }
 
-               .btn-favorite {
-                  background-image: url('../../static/icons/star-favorite2-white-border-min.svg') !important;
+               &:not(:has(.btn-favorite-active)) {
+                  .btn-favorite {
+                     background-image: url('../../static/icons/star-favorite2-white-border-min.svg') !important;
+                  }
+
+                  &:hover {
+                     button {
+                        background-image: url('../../static/icons/star-favorite2-active-min.svg') !important;
+                     }
+                  }
                }
 
                &:hover {
                   border-color: $blue-2-new;
-
-                  button {
-                     background-image: url('../../static/icons/star-favorite2-active-min.svg') !important;
-                  }
                }
             }
 

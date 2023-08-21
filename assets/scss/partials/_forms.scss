@@ -985,7 +985,7 @@ input::-webkit-inner-spin-button {
    }
 
    &:has(.form-group .select-menu .select-menu_label.active) {
-      border-color: $blue-new;
+      border-color: $blue-new !important;
    }
 
    &:has(.form-buttons) {

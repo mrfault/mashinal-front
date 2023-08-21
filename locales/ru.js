@@ -92,6 +92,7 @@ export default {
    add_description: "Добавить описание",
    add_email: "Добавить E-mail",
    add_feedback: "Добавить отзыв",
+   add_favorite: "Добавить в избранные",
    add_image: "Добавить изображение",
    add_keywords: "Добавить теги...",
    add_logo_image: "Добавьте лого",
@@ -2029,7 +2030,6 @@ export default {
    unblock_user: "Разблокировать пользователя",
    under_consideration: "На рассмотрении",
    universal: "Универсал",
-   "universal, 5 qapı": "Универсал, 5 дверей",
    unlimited_count: "неограниченное количество",
    paid_ads: "Платные объявления",
    paid_services: "Платные услуги",
@@ -2117,7 +2117,6 @@ export default {
    with_mileage: "С пробегом",
    with_mileage_2: "С пробегом",
    with_new: "новых",
-   used: "Использованные",
    with_significant_damage_to_body_elements_that_do_not_move_on_their_own:
       "С существенными повреждениями кузовных элементов, не передвигающиеся своим ходом.",
    with_video: "360&deg;",
@@ -2587,7 +2586,7 @@ export default {
    ad_sorting: "Сортировка объявлений",
    terminal_popup_title: "Правила пополнения баланса через терминалы:",
    plate_announce_key: "Размещено объявление",
-   other_parameters: "Прочее параметры",
+   other_parameters: "Прочие параметры",
    additional_info: "Дополнительная информация",
    additional_info_warning:
       "Запрещено писать ссылки, электронные письма, цены и предложения услуг в информационном разделе.",
@@ -2763,9 +2762,9 @@ export default {
    // "Miniven": "Минивэн",
 
    "vin_or_car_number_is_mandatory": "VIN или номер автомобиля обязательны",
+   "vehicle_deleted": "Объявление удалено",
    "mashin_pay": "Mashin pay",
    "mashin_pay_desc": "Перейти в MashinPay.az",
-   "vehicle_deleted": "Объявление удалено",
    "info_saved":"Информация сохранена",
    '\"Avtomobilin nömrəsi\" artıq mövcuddur.': '«Номер автомобиля» уже существует.'
 };

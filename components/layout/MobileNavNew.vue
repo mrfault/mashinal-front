@@ -2,12 +2,23 @@
    <div class="mobile-nav-new d-lg-none">
       <ul>
          <li v-for="menu in bottomMenus.filter(item => !item.hide)" :key="menu.title">
-            <nuxt-link :to="$localePath(menu.route)" @click="toggleSidebarMenu()" :active-class="''" :exact-active-clas="'active'">
+            <nuxt-link
+               class="position-relative"
+               :to="$localePath(menu.route)"
+               @click="toggleSidebarMenu()"
+               :active-class="''"
+               :exact-active-clas="'active'"
+            >
                <inline-svg :src="menu.icon" />
                <span>{{ $t(menu.title) }}</span>
-               <span v-if="menu.title === 'messages' && countNewMessages > 0" class="badge-counter">
-                  {{ countNewMessages }}
-               </span>
+
+               <template v-if="menu.title === 'messages' && countNewMessages > 0">
+                  <span class="badge-counter">{{ countNewMessages }}</span>
+               </template>
+
+               <template v-else-if="menu.title === 'favorites' && notViewedFavorites > 0">
+                  <span class="badge-counter">{{ notViewedFavorites }}</span>
+               </template>
             </nuxt-link>
          </li>
       </ul>
@@ -22,7 +33,7 @@ export default {
    mixins: [MenusDataMixin],
 
    computed: {
-      ...mapGetters(['countNewMessages'])
+      ...mapGetters(['countNewMessages', 'notViewedFavorites'])
    },
    methods: {
       toggleSidebarMenu() {

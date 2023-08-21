@@ -47,7 +47,8 @@
 
       computed: {
          callAtOnce() {
-            return this.showPhone || this.isMobileBreakpoint;
+            // return this.showPhone || this.isMobileBreakpoint;
+            return this.showPhone;
          },
 
          id() {

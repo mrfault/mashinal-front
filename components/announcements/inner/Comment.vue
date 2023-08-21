@@ -1,6 +1,6 @@
 <template>
    <div class="announcement-comment">
-      <h2 class="announcement-comment__title">Əlavə məlumatlar</h2>
+      <h2 class="announcement-comment__title">{{ $t('additional_info') }}</h2>
 
       <p class="announcement-comment__comment">{{ comment.trim() }}</p>
    </div>

@@ -4,7 +4,9 @@
       class="btn-transparent btn-favorite"
       :class="{'btn-favorite-active': isAdded, 'white-border' : whiteBorder}"
       @click.stop="handleClick()"
-   />
+   >
+<!--      {{announcement.id}}-->
+   </button>
 
    <div
       v-else-if="template === 'btn'"
@@ -80,8 +82,7 @@
                         },
                      },
                   })
-               }
-               else {
+               } else {
                   this.$toasted.success(this.$t('my_favorites_removed'))
                }
             }
@@ -97,6 +98,8 @@
          ...mapGetters(['favorites']),
 
          isAdded() {
+            console.log('this.favorites', this.favorites)
+            console.log('this.announcement.id_unique', this.announcement.id_unique)
             return this.favorites.includes(this.announcement.id_unique);
          },
       },
@@ -144,6 +147,8 @@
          font-size: 14px;
          color: #364152;
          margin-right: 5px;
+         text-wrap: wrap;
+         text-align: center;
       }
 
       button {

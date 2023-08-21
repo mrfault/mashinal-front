@@ -234,6 +234,7 @@ const getInitialState = () => ({
    registrationMarks: [],
    myPlates: [],
    mySavedPlates: [],
+   mySavedParts: [],
    registrationMark: [],
    handleIds: null,
 
@@ -256,6 +257,7 @@ export const getters = {
    getUserRegistrationMarks: s => s.userRegistrationMarks,
    getMyPlates: s => s.myPlates,
    getMySavedPlates: s => s.mySavedPlates,
+   getMySavedParts: s => s.mySavedParts,
    getRegionNumbers: s => s.regionNumbers,
    getRegistrationMarks: s => s.registrationMarks,
    getRegistrationMark: s => s.registrationMark,
@@ -667,8 +669,13 @@ export const actions = {
    },
 
    async fetchMySavedPlates({commit}, data = '') {
-      const res = await this.$axios.$get(`/my/saved/plates${data}`)
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/me/bookmarks/plate-numbers${data}`)
       commit("mutate", {property: "mySavedPlates", value: res || []})
+   },
+
+   async fetchMySavedParts({commit}, data = '') {
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/me/bookmarks/parts${data}`)
+      commit("mutate", {property: "mySavedParts", value: res || []})
    },
 
    async nuxtServerInit({dispatch, commit}) {
@@ -818,9 +825,7 @@ export const actions = {
       await this.$axios.$post(`/announce/${id}/favorite`);
    },
    async getFavoriteAnnouncements({commit}, data = {}) {
-      const res = await this.$axios.$get(
-         `/my/saved/all-announce?page=${data.page || 1}`
-      );
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/me/bookmarks?page=${data.page || 1}`);
       commit("mutate", {property: "favoriteAnnouncements", value: res});
    },
    async getNotViewedFavorites({commit}) {
@@ -1580,20 +1585,12 @@ export const actions = {
 
    //SELL POSTS
    async plateNumbersPost({}, {is_mobile, form}) {
-      try {
          const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/plate-numbers/post?is_mobile=${is_mobile}`, form);
          return res;
-      } catch (e) {
-
-      }
    },
    async partsPost({}, form) {
-      try {
          const res = await this.$axios.$post(`/sell/part/post/publish`, form);
          return res;
-      } catch (e) {
-
-      }
    },
    async carsPost({}, form) {
       const res = await this.$axios.$post(`/sell/post/publish?is_mobile=false`, form);

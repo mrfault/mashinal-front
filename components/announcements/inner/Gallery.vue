@@ -149,7 +149,7 @@
                      </div>
                   </div>
 
-                  <div class="blur-bg_slider" :key="2"  v-if="!isMobileBreakpoint">
+                  <div class="blur-bg_slider" :key="2" v-if="!isMobileBreakpoint">
                      <images-slider
                         :announcement="announcement"
                         :current-slide="currentSlide"

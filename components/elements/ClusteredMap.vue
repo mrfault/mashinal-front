@@ -188,7 +188,7 @@
                this.cacheMapCenter = this.map.getCenter();
                if (filter) this.setFilters();
                this.centerUpdated = true;
-               this.map.setZoom(10);
+               this.map.setZoom(9);
             }, (err) => {
                this.centerUpdated = true;
             });
