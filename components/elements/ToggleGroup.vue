@@ -21,7 +21,7 @@ export default {
          type: String,
       },
       defaultValue: {
-         type: Number,
+         type: [Number, String],
          default: 1
       },
       items: Array,
@@ -39,6 +39,11 @@ export default {
    },
    mounted() {
       this.selected = this.defaultValue;
+   },
+   watch: {
+      defaultValue() {
+         this.selected = this.defaultValue;
+      }
    }
 };
 </script>

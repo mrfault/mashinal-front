@@ -108,7 +108,7 @@
                :placeholder="$t('mileage')"
                :class="{form_error: $v.form.mileage.$error}"
                v-model="form.mileage"
-               @change="announcement.mileage = $event || 0"
+               @change="announcement.mileage = $event ? $event  + ' ' + mileageTypeName : 0"
                :invalid="$v.form.mileage.$error"
             />
             <div class="mileage_types">
@@ -227,7 +227,7 @@
          </div>
          <div>
             <p class="mb-1">{{ $t("license_plate_number") }}</p>
-            <div class="divider">
+            <div class="divider mobile-column">
                <form-text-input
                   v-model="form.car_number"
                   input-class="car-number-show-popover"
@@ -256,7 +256,7 @@
          </div>
          <div>
             <p class="mb-1">{{ $t("vin_carcase_number") }}</p>
-            <div class="divider">
+            <div class="divider mobile-column">
                <form-text-input
                   v-model="form.vin"
                   :placeholder="$t('vin_carcase_number')"
@@ -343,6 +343,9 @@ export default {
    mixins: [MenusDataMixin, ToastErrorsMixin],
    computed: {
       ...mapGetters(['motoOptionsV2', 'motoBrands', 'motoModelsV2', 'sellOptions', 'colors', 'motoOptions', 'popularOptions']),
+      mileageTypeName() {
+         return this.form.mileage_type === 1 ? this.$t('km') : this.$t('ml')
+      }
    },
    props: {
       announcement: {
@@ -393,8 +396,8 @@ export default {
             beaten: false,
             customs_clearance: false,
             guaranty: false,
-            region_id: "",
-            address: "Bakı",
+            region_id: 1,
+            address: "",
             lng: 0,
             lat: 0,
             price: "",
@@ -414,6 +417,9 @@ export default {
       }
    },
    watch: {
+      'form.mileage_type'() {
+         this.announcement.mileage = this.form.mileage ? this.form.mileage + ' ' + (this.form.mileage_type === 1 ? this.$t('km') : this.$t('ml')) : 0
+      },
       'form.model'() {
          this.$emit("navigationProgress", {id: 1, status: !!this.form.model})
          this.$emit("done", !!(this.form.model && this.motoModelsV2.length))
@@ -435,7 +441,7 @@ export default {
       isReady() {
          this.$v.form.$touch()
          setTimeout(() => {
-            this.scrollTo('.form_error', [-50, -50])
+            this.scrollTo('.form_error', -190)
          });
          if (this.$v.form.$error) {
             this.$toasted.error(this.$t('required_fields'));
@@ -447,7 +453,7 @@ export default {
             selectedYear: this.form.year,
             selectedColor: this.form.color,
             box: this.form.box,
-            mileage: this.form.mileage,
+            mileage: this.form.mileage || 0,
             mileage_measure: this.form.mileage_type,
             region_id: this.form.region_id,
             address: this.form.address,
@@ -566,19 +572,25 @@ export default {
             color: {required},
             volume: {required},
             mileage: {
-               required,
-               maxValue: maxValue(this.form.is_new ? 500 : 100000)
+               required: requiredIf(function () {
+                  return !this.form.is_new
+               }),
+               maxValue: maxValue(this.form.is_new ? 500 : 10000000)
             },
             car_number: {
                required: requiredIf(function () {
-                  return !this.form.vin
+                  return !this.form.vin && !this.user.external_salon
                })
             },
-
             price: {required},
             region_id: {
                required: requiredIf(function () {
-                  return !this.user.autosalon
+                  return !this.user.autosalon && !this.user.external_salon
+               })
+            },
+            country_id: {
+               required: requiredIf(function () {
+                  return !!this.user.external_salon
                })
             },
             saved_images: {required, minLength: minLength(3)}

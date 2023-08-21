@@ -130,7 +130,7 @@ export default {
             price: "",
             currency_id: 1,
             is_negotiable: false,
-            region_id: "",
+            region_id: 1,
             comment: ""
 
          },
@@ -196,14 +196,14 @@ export default {
       isReady() {
          this.$v.form.$touch()
          setTimeout(() => {
-            this.scrollTo('.form_error', [-50, -50])
+            this.scrollTo('.form_error', -190)
          });
          if (this.$v.form.$error) {
             this.$toasted.error(this.$t('required_fields'));
             return;
          }
          const {region_id, first, second, number} = this.form.car_number;
-         const car_number = `${region_id} -  ${first + second} - ${number}`
+         const car_number = `${region_id.split(" -")[0]} -  ${first + second} - ${number}`
          const body = {...this.form, price: this.form.is_negotiable ? null : this.form.price, car_number}
          this.$emit("getForm", body)
       }

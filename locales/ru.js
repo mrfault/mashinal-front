@@ -2586,7 +2586,7 @@ export default {
    ad_sorting: "Сортировка объявлений",
    terminal_popup_title: "Правила пополнения баланса через терминалы:",
    plate_announce_key: "Размещено объявление",
-   other_parameters: "Прочее параметры",
+   other_parameters: "Прочие параметры",
    additional_info: "Дополнительная информация",
    additional_info_warning:
       "Запрещено писать ссылки, электронные письма, цены и предложения услуг в информационном разделе.",

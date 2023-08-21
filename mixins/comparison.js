@@ -12,6 +12,7 @@ export const ComparisonMixin = {
       });
     },
     isAllSpecsSame(values) {
+       console.log(values)
       return new Set(values).size === 1
     },
     filteredSpecs(specs) {

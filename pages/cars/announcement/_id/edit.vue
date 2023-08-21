@@ -134,9 +134,10 @@ export default {
    methods: {
       ...mapActions(['carEdit']),
       async getCarForm(form) {
-
+         const formData = new FormData()
+         formData.append('data', JSON.stringify(form))
          try {
-            await this.carEdit({id: this.$route.params.id.slice(0, -1), isMobile: this.isMobileBreakpoint, form})
+            await this.carEdit({id: this.$route.params.id.slice(0, -1), isMobile: this.isMobileBreakpoint, form: formData})
             this.$router.push(this.$localePath('/profile/announcements'))
          }catch(e){}
       },
@@ -144,28 +145,402 @@ export default {
          // this.$v.form.$touch()
          // if (this.$v.authForm.$error) return;
          this.isReady = !this.isReady
-
-
       },
    }
 }
 </script>
 
-<style lang="scss" scoped>
-.announce_container {
-   display: flex;
-   column-gap: 16px;
+<style lang="scss">
+.pages-announcement-edit {
+   padding-bottom: 80px;
 
-   .card {
-      flex-grow: 3;
+   .btn {
+      height: 52px;
+   }
+
+   .announce_container {
       display: flex;
-      gap: 68px;
+      column-gap: 16px;
 
-      .add_announce_form {
+      .card {
+         flex-grow: 3;
          display: flex;
-         flex-grow: 1;
-         flex-direction: column;
          gap: 20px;
+
+         &_title {
+            font-size: 24px;
+            font-weight: 600;
+         }
+
+         .add_announce_info {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            gap: 12px;
+            background-color: #EEF2F6;
+            border-radius: 12px;
+
+
+            &_svg {
+               min-width: 32px;
+               min-height: 32px;
+               color: #155EEF;
+            }
+         }
+
+         .add_announce_form {
+            display: flex;
+            flex-grow: 1;
+            flex-direction: column;
+            gap: 20px;
+
+            .divider {
+               display: grid;
+               grid-template-columns: repeat(2, calc(50% - 8px));
+               gap: 16px;
+
+               .mileage_types {
+                  display: flex;
+                  gap: 16px;
+               }
+
+               .map_btn {
+                  width: 24px;
+                  height: 24px;
+                  color: #155eef;
+               }
+
+               .price_types {
+                  .price_item {
+                     display: flex;
+                     align-items: center;
+                     justify-content: center;
+                     height: 52px;
+                     padding: 0 8px;
+                  }
+               }
+
+               .car_number_suffix {
+                  position: absolute;
+                  top: 50%;
+                  transform: translateY(-50%);
+                  right: 16px;
+               }
+            }
+
+
+            .contacts {
+               display: flex;
+               flex-direction: column;
+               gap: 16px;
+               margin-top: 24px;
+
+               svg {
+                  min-width: 24px;
+                  min-height: 24px;
+               }
+
+               h2 {
+                  margin-bottom: 24px;
+               }
+
+               &_info {
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  padding: 12px 16px;
+                  background-color: #EEF2F6;
+                  border-radius: 8px;
+               }
+
+               .service_packages {
+                  display: flex;
+                  gap: 16px;
+
+                  .package {
+                     position: relative;
+                     flex-grow: 1;
+                     display: flex;
+                     flex-direction: column;
+                     gap: 16px;
+                     padding: 20px 16px;
+                     border: 1px solid #CDD5DF;
+                     border-radius: 12px;
+                     overflow: hidden;
+                     cursor: pointer;
+
+                     .title {
+
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        padding-bottom: 20px;
+                        border-bottom: 1px solid #CDD5DF;
+
+
+                        p {
+                           font-size: 16px;
+                           font-weight: 700;
+                        }
+
+                        .stars_svg {
+                           width: 24px;
+                           height: 24px;
+                           color: #0A77E8;
+                        }
+                     }
+
+                     .sale_effect {
+                        width: 100%;
+                        position: absolute;
+                        top: 14px;
+                        left: 74px;
+                        background-color: #D1E0FF;
+                        display: flex;
+                        align-items: center;
+                        gap: 2px;
+                        justify-content: center;
+                        transform: rotate(45deg);
+                        padding: 2px 0;
+
+                        p {
+                           font-size: 17px;
+                           font-weight: 600;
+                        }
+
+                        span {
+                           line-height: 13px;
+                           font-size: 11px;
+                           font-weight: 600;
+                        }
+                     }
+
+                     .content {
+
+                        &_list {
+                           padding: 20px 0;
+                           display: flex;
+                           align-items: center;
+                           gap: 12px;
+
+                           .check_svg {
+                              color: #CDD5DF;
+
+                           }
+
+                           .active {
+                              color: #12B76A;
+                           }
+                        }
+                     }
+
+                     .package_price {
+                        position: relative;
+                        padding: 4px 8px;
+                        height: 56px;
+                        margin-top: auto;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        border-radius: 8px;
+                        background-color: #D1E0FF;
+                        font-size: 15px;
+                        font-weight: 700;
+                        text-align: center;
+
+                        span {
+                           display: block;
+                           font-size: 11px;
+                           font-weight: 500;
+                        }
+
+                        .badge {
+                           position: absolute;
+                           top: -21px;
+                           right: 8px;
+                           background-color: #F81734;
+                           padding: 4px 6px;
+                           border-radius: 6px;
+                           color: #fff;
+                           font-size: 13px;
+                           font-weight: 600;
+                        }
+                     }
+
+                     &.selected {
+                        border-color: #004EEB;
+
+                        .package_price {
+                           background-color: #004EEB;
+                           color: #fff;
+                        }
+
+                        .sale_effect {
+                           background-color: #004EEB;
+                           color: #fff;
+                        }
+                     }
+                  }
+               }
+            }
+         }
+
+         .vehicle_card_info {
+            position: sticky;
+            top: 128px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            height: min-content;
+            width: 260px;
+            min-width: 260px;
+
+            &_description {
+               background-color: #EEF2F6;
+               border-radius: 8px;
+               padding: 10px;
+               text-align: center;
+            }
+
+            &_help {
+               display: flex;
+               padding: 16px 12px;
+               flex-direction: column;
+               gap: 16px;
+               border-radius: 12px;
+               border: 1px solid #CDD5DF;
+               background-color: #F8FAFC;
+
+               &_inner {
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+
+                  svg {
+                     min-width: 24px;
+                     min-height: 24px;
+                  }
+               }
+            }
+
+            .item-bg {
+               background-repeat: no-repeat;
+               background-size: inherit;
+            }
+         }
+
+
+      }
+
+
+      .beaten_suffix {
+         position: relative;
+         z-index: 1;
+         margin-left: auto;
+         cursor: progress;
+      }
+
+      .comment {
+         &_info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+         }
+      }
+   }
+}
+
+.dark-mode {
+   .pages-announcement-edit {
+      .btn {
+         height: 52px;
+      }
+
+      .announce_container {
+
+
+         .card {
+
+
+            .add_announce_form {
+               .info_svg {
+                  color: #4B5565 !important;
+               }
+
+               .checkbox-input input:checked ~ label {
+                  background-color: #121926 !important;
+
+                  .checkbox {
+                     background: #121926 !important;
+                  }
+               }
+
+
+               .contacts {
+
+                  &_info {
+                     background-color: #364152;
+                  }
+               }
+            }
+
+            .vehicle_card_info {
+               &_description {
+                  background-color: #00359E;
+               }
+
+               &_help {
+                  background-color: #364152;
+               }
+            }
+
+
+         }
+      }
+   }
+}
+
+@media (max-width: 1150px) {
+   .form_navigation {
+      display: none;
+   }
+}
+
+@media (max-width: 485px) {
+   .pages-announcement-edit {
+      padding: 24px 0 32px 0;
+
+      &_title {
+         font-size: 24px;
+         font-weight: 700;
+         margin-bottom: 16px;
+      }
+
+      .announce_container {
+         .divider {
+
+            &.mobile-column {
+               display: flex !important;
+               flex-direction: column;
+            }
+         }
+
+         .card {
+            &_title {
+               font-size: 20px;
+            }
+
+            &_container {
+               .add_announce_form {
+                  .contacts {
+                     .service_packages {
+                        flex-direction: column;
+                     }
+                  }
+               }
+            }
+
+         }
       }
    }
 }
