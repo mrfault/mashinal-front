@@ -8,7 +8,7 @@
          </div>
       </div>
 
-      <div class="row" v-if="!showResults">
+      <div class="row" v-if="showInformation">
          <div class="col-md-12 col-xs-12 p-1 pl-lg-1 pr-lg-1">
             <div class="card">
                <div class="row">
@@ -564,6 +564,7 @@ export default {
       return {
          showResults: false,
          showTextResults: false,
+         showInformation: true,
          tireWidth: [
             {
                name: '30',
@@ -1155,7 +1156,8 @@ export default {
       },
       async submit() {
          await this.findTextResults()
-         this.showResults = true
+         this.showInformation = false;
+         this.showResults = true;
 
          this.speedometerErrorPercentageForTextResults = this.speedometerErrorPercentage
          if (this.isMobileBreakpoint) {
@@ -1249,6 +1251,7 @@ export default {
 
 .card {
    padding: 32px;
+   min-height: 425px;
 }
 
 .card-title {
