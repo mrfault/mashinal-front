@@ -415,6 +415,13 @@ export default {
             &:first-child {
                background-color: #121926 !important;
             }
+
+
+            &.autosalon {
+               .no-results {
+                  background-color: transparent;
+               }
+            }
          }
       }
    }

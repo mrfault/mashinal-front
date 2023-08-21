@@ -873,31 +873,56 @@
          height: calc(100vw / 4 - 4px);
       }
    }
+
+   .pages-favorites {
+      &__title {
+         font-size: 24px !important;
+      }
+   }
 }
 
-.tabs {
-   display: flex;
-   align-items: center;
-   list-style: none;
-   margin: 0;
-   padding: 0;
+.tabsWrapper {
+   overflow-x: auto;
+   .tabs {
+      display: flex;
+      align-items: center;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      min-width: 550px;
 
-   &__item {
-      padding: 12px;
-      font-weight: 500;
-      font-size: 16px;
-      line-height: 20px;
-      color: #4B5565;
-      cursor: pointer;
-      border-bottom: 3px solid transparent;
+      &__item {
+         padding: 12px;
+         font-weight: 500;
+         font-size: 16px;
+         line-height: 20px;
+         color: #4B5565;
+         cursor: pointer;
+         white-space: nowrap;
+         border-bottom: 3px solid transparent;
 
-      &:not(:first-child) {
-         margin-left: 20px;
+         &:not(:first-child) {
+            margin-left: 20px;
+         }
+
+         &.active {
+            color: #1B2434;
+            border-bottom: 3px solid #155EEF;
+         }
       }
+   }
+}
 
-      &.active {
-         color: #1B2434;
-         border-bottom: 3px solid #155EEF;
+.dark-mode {
+   .tabsWrapper {
+      .tabs {
+         &__item {
+            color: $white-2-new;
+
+            &.active {
+               color: $grey-1-new;
+            }
+         }
       }
    }
 }
@@ -910,11 +935,11 @@
          margin: 0;
       }
 
-      .registrationMarksGrid {
-         &__items {
-            margin: 0 0 0 -20px;
-         }
-      }
+      //.registrationMarksGrid {
+      //   &__items {
+      //      margin: 0 0 0 -20px;
+      //   }
+      //}
    }
 }
 

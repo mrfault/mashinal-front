@@ -187,6 +187,7 @@
             <div v-if="!isProfilePage" class="item-details__item">
                {{ announcement.created_at }}
             </div>
+
             <div v-if="isProfilePage" class="item-details__item d-flex justify-csb">
                <span>
                                  <inline-svg src="/new-icons/grid/cards/phone.svg"/>

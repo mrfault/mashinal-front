@@ -93,6 +93,7 @@ export default {
    add_description: "Təsviri əlavə et",
    add_email: "E-poçt ünvanı əlavə et",
    add_feedback: "Rəy əlavə et",
+   add_favorite: "Seçilmiş et",
    add_image: "Şəkil əlavə et",
    add_keywords: "Açar sözlər əlavə edin...",
    add_logo_image: "Loqo yükləyin",
@@ -796,6 +797,7 @@ export default {
    fast_info: "7 saniyədən tez<br/>(100 km/s-dək)",
    "Faux leather": "Süni dəri",
    favorites: "Seçilmişlər",
+   favorites_ads: "Seçilmiş elanlar",
    features_1_title: "Vahid biznes paket",
    features_2_title: "1 illik limitsiz elan sayı",
    features_3_title: "Aylıq ödəniş",
@@ -1423,6 +1425,7 @@ export default {
    paint_type: "Növ",
    painted: "Boyanmış",
    "Panoramic roof / windshield": "Panorama dam / ön şüşə",
+   main_parameters: "Əsas parametrlər",
    parameter: "parametr",
    parameters: "Parametrlər",
    park_radar: "Park radarı",
@@ -2450,6 +2453,7 @@ export default {
    auction: "Auksion",
    sell: "Satış",
    end_date: "Son tarix",
+   announcement_info: "Avtomobilin məlumatları\n",
    announcement_end_date: "Elanın son tarixi",
    country: "Ölkə",
    dont_drink_so_much: "Bir də bu qədər içmə",
@@ -2812,6 +2816,9 @@ export default {
    "mashin_pay": "Mashin pay",
    "mashin_pay_desc": "MashinPay.az keç",
    "vehicle_deleted": "Elan silinib",
-   "announcement_cannot_monetization": "Elan önə çəkilə bilməz"
+   "announcement_cannot_monetization": "Elan önə çəkilə bilməz",
+   "universal, 5 qapı": "Universal, 5 qapı",
+   "liftbek": "Liftbek",
+   "L": "L"
 };
 

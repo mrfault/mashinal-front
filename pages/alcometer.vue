@@ -53,7 +53,7 @@
                            <div
                               class="alco-form__group-delete"
                               @click="deleteDrinks(1)"
-                           >Sil</div>
+                           >{{ $t('delete') }}</div>
                         </div>
 
                         <form-select
@@ -88,7 +88,7 @@
                            <div
                               class="alco-form__group-delete"
                               @click="deleteDrinks(2)"
-                           >Sil</div>
+                           >{{ $t('delete') }}</div>
                         </div>
 
                         <form-select
@@ -571,6 +571,9 @@
          },
 
          calculate() {
+            // this.$v.form.$touch();
+            // if (this.$v.form.$error) return;
+
             this.showGraphs = true;
             try {
                let r
@@ -623,10 +626,12 @@
                this.timeToDrive = rul
                // if (Cor > 8) f.rul.value = f.rul.value + '';
 
-               // if (this.showGraphs && !this.isMobileBreakpoint) {
+               if (this.isMobileBreakpoint) {
                   setTimeout(() => {
+                     console.log('sdsad')
                      this.scrollTo('.alco-form.result', [-80, 0]);
                   }, 100)
+               }
                // } else if (this.showGraphs && this.isMobileBreakpoint) {
                //    setTimeout(() => {
                //       window.scrollTo({top: 2500, behavior: 'smooth'})
@@ -858,7 +863,7 @@
 
          &.ru {
             .ma-alco-card__list {
-               margin-top: 50px;
+               margin-top: 80px;
                flex-wrap: wrap;
 
                &-item {
@@ -902,9 +907,11 @@
                   }
                }
 
+
                h5 {
                   display: flex;
                   align-items: center;
+                  justify-content: center;
                   white-space: nowrap;
                   font-weight: 400;
                   font-size: 14px;
@@ -1036,7 +1043,7 @@
 
          .ma-alco-card {
             &__list {
-               margin-top: 50px;
+               margin-top: 50px !important;
                flex-wrap: wrap;
 
                &-item {
@@ -1148,7 +1155,7 @@
 
          .ma-alco-card {
             &__list {
-               margin-top: 30px;
+               margin-top: 30px !important;
             }
          }
       }
@@ -1170,7 +1177,7 @@
 
          .ma-alco-card {
             &__list {
-               margin-top: 20px;
+               margin-top: 20px !important;
 
                &-item {
                   padding: 16px;
@@ -1195,6 +1202,15 @@
          .ma-alco-card {
             &__list {
                margin-top: 10px;
+            }
+         }
+
+         .alco-form {
+            &.ru {
+               .ma-alco-card__list {
+                  margin-top: 0 !important;
+                  flex-wrap: wrap;
+               }
             }
          }
       }

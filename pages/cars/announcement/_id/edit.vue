@@ -64,6 +64,9 @@ export default {
          store.dispatch('getMyAnnouncement', route.params.id)
       ]);
 
+      console.log('announcement', store.state.myAnnouncement)
+
+
       const announcement = store.state.myAnnouncement;
       const catalog = announcement.car_catalog;
 

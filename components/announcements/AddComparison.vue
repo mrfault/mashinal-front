@@ -13,7 +13,7 @@
       :class="[`btn--${btnClass}`]"
       @click.stop="handleClick()"
    >
-      <span>{{ text }}</span>
+      <span v-if="text">{{ text }}</span>
 
       <button
          v-if="template === 'btn'"

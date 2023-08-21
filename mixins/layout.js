@@ -171,12 +171,8 @@ export const LayoutMixin = {
 
                if (message.offer_id == this.$store.state.current_offer_id) {
                   this.$store.commit('appendOfferMessage', message)
-
                   this.$store.dispatch('readOfferMessage', {id: message.id})
-
-
                }
-
 
                if (message.files.length > 1) {
                   const sleep = () => {

@@ -372,6 +372,7 @@ export default {
          'notViewedSavedSearch',
          'homePageSliders',
       ]),
+
       image() {
          if (this.user?.autosalon) {
             return (this.user?.autosalon?.logo.includes('http') ? '' : 'https://dev.mashin.al/storage/') + this.user?.autosalon?.logo;
