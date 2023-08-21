@@ -2767,8 +2767,8 @@ export default {
    // "Miniven": "Минивэн",
 
    "vin_or_car_number_is_mandatory": "VIN или номер автомобиля обязательны",
+   "vehicle_deleted": "Объявление удалено",
    "mashin_pay": "Mashin pay",
    "mashin_pay_desc": "Перейти в MashinPay.az",
-   "vehicle_deleted": "Объявление удалено",
    "info_saved":"Информация сохранена",
 };
