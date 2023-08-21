@@ -1,4 +1,4 @@
-.mobile-nav-new{
+.mobile-nav-new {
    height: 64px;
    width: 100%;
    position: fixed;
@@ -8,6 +8,7 @@
    background-repeat: no-repeat;
    background-position: center center;
    z-index: 3;
+
    ul{
       width: 100%;
       padding: 0;
@@ -95,6 +96,10 @@
    &:after {
       right: 0;
    }
+
+   .badge-counter {
+      position: absolute !important;
+   }
 }
 
 .dark-mode{
@@ -121,6 +126,55 @@
                color: #fff;
             }
          }
+      }
+   }
+}
+
+@media (max-width: 1150px) {
+   .mobile-nav-new {
+      .badge-counter {
+         top: -10px;
+         right: 85px;
+      }
+   }
+}
+
+@media (max-width: 992px) {
+   .mobile-nav-new {
+      .badge-counter {
+         right: 70px;
+      }
+   }
+}
+
+@media (max-width: 768px) {
+   .mobile-nav-new {
+      .badge-counter {
+         right: 50px;
+      }
+   }
+}
+
+@media (max-width: 600px) {
+   .mobile-nav-new {
+      .badge-counter {
+         right: 30px;
+      }
+   }
+}
+
+@media (max-width: 500px) {
+   .mobile-nav-new {
+      .badge-counter {
+         right: 20px;
+      }
+   }
+}
+
+@media (max-width: 400px) {
+   .mobile-nav-new {
+      .badge-counter {
+         right: 10px;
       }
    }
 }

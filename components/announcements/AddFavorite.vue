@@ -2,9 +2,11 @@
    <button
       v-if="template === 'icon'"
       class="btn-transparent btn-favorite"
-      :class="{'!btn-favorite-active': isAdded, 'white-border' : whiteBorder}"
+      :class="{'btn-favorite-active': isAdded, 'white-border' : whiteBorder}"
       @click.stop="handleClick()"
-   />
+   >
+<!--      {{announcement.id}}-->
+   </button>
 
    <div
       v-else-if="template === 'btn'"
@@ -96,6 +98,8 @@
          ...mapGetters(['favorites']),
 
          isAdded() {
+            console.log('this.favorites', this.favorites)
+            console.log('this.announcement.id_unique', this.announcement.id_unique)
             return this.favorites.includes(this.announcement.id_unique);
          },
       },
