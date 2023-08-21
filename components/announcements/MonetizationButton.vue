@@ -160,22 +160,22 @@ export default {
       }),
 
       totalBalance() {
-         let balance = this.user ? this.user.balance : 0;
-         if (this.user && this.user?.id === this.announcement?.user_id) {
-            if (this.announcement.is_autosalon)
-               return this.$sum(balance, this.announcement.user.autosalon.balance)
-            else if (this.announcement.is_part_salon)
-               return this.$sum(balance, this.announcement.user.part_salon.balance)
-            else if (this.announcement.is_external_salon)
-               return this.$sum(balance, this.announcement.user.external_salon.balance)
+         let balance = this.user ? this.user?.balance : 0;
+         if (this.user && this.user?.id === this.announcement?.user.id) {
+            if (this.announcement?.is_auto_salon)
+               return this.$sum(balance, this.announcement?.user?.auto_salon?.balance)
+            else if (this.announcement?.is_part_salon)
+               return this.$sum(balance, this.announcement?.user?.part_salon?.balance)
+            else if (this.announcement?.is_external_salon)
+               return this.$sum(balance, this.announcement?.user?.external_salon?.balance)
             return balance
          } else {
-            if (this.user.autosalon)
-               return this.$sum(balance, this.user.autosalon.balance)
-            else if (this.user.part_salon)
-               return this.$sum(balance, this.user.part_salon.balance)
-            else if (this.user.external_salon)
-               return this.$sum(balance, this.user.external_salon.balance)
+            if (this.user?.autosalon)
+               return this.$sum(balance, this.user?.auto_salon?.balance)
+            else if (this.user?.part_salon)
+               return this.$sum(balance, this.user?.part_salon?.balance)
+            else if (this.user?.external_salon)
+               return this.$sum(balance, this.user?.external_salon?.balance)
             return balance
          }
 
@@ -282,7 +282,7 @@ export default {
 
          if (this.announcement.status != 1) {
             e.stopPropagation()
-            this.$toasted.error('announcement_cannot_monetization')
+            // this.$toasted.error('announcement_cannot_monetization')
             return;
 
          } else {
@@ -313,15 +313,21 @@ export default {
 
 <style lang="scss">
 .btn--red-opacity-2 {
+   svg{
+      margin-left: 9px;
+   }
    &.disabled {
       cursor: context-menu;
       opacity: 50%;
       pointer-events: all;
-      .btn--red-opacity-2:hover{
-         color: #fff;
-         border-radius: 8px;
-         border: none;
-         background-color: rgba(248, 23, 52, 0.72);
+      @media (min-width: 992px){
+         .btn--red-opacity-2:hover {
+            color: #fff;
+            border-radius: 8px;
+            border: none;
+            background-color: rgba(248, 23, 52, 0.72);
+         }
+
       }
    }
 }

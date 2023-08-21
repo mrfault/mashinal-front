@@ -58,7 +58,6 @@
             @click.stop
          >
             <!--        <span class="sr-only">{{ getAnnouncementTitle(announcement) }}</span>-->
-
          </a>
 
          <div
@@ -188,6 +187,7 @@
             <div v-if="!isProfilePage" class="item-details__item">
                {{ announcement.created_at }}
             </div>
+
             <div v-if="isProfilePage" class="item-details__item d-flex justify-csb">
                <span>
                                  <inline-svg src="/new-icons/grid/cards/phone.svg"/>
@@ -336,9 +336,7 @@ export default {
       },
 
       goToAnnouncement(event) {
-
          this.$store.commit('closeDropdown');
-
 
          if (!this.clickable) return;
 
@@ -355,12 +353,11 @@ export default {
 
          if (!this.isMobileBreakpoint) {
             this.$router.push(this.getLink);
-         } else if (this.isMobileBreakpoint && this.isProfilePage) {
+         } else if (this.isMobileBreakpoint) {
             event.stopPropagation();
             event.preventDefault();
             this.$router.push(this.getLink);
          }
-
       },
 
       handleChange(value) {

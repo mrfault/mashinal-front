@@ -176,19 +176,27 @@ export const SearchMixin = {
 
          if (searchSame) {
             this.$emit('submit');
+            // this.scrollTo('.breadcrumbs');
+            console.log('1')
          } else {
             let prevRouteName = this.routeName;
             this.$router.push(searchUrl, () => {
                this.$emit('submit');
-               // for ex. when routing from / to /cars
+
                if (this.routeName !== prevRouteName) {
                   if (scroll) {
                      setTimeout(() => {
-                        this.scrollTo('.announcements-grid');
-                     }, 100);
+                        this.scrollTo('.breadcrumbs', [-56, -96]);
+                        console.log('2')
+                     }, 500);
                   }
+               } else {
+                  setTimeout(() => {
+                     this.scrollTo('.breadcrumbs', [-56, -96]);
+                     console.log('3')
+                  }, 500);
                }
-               // look for a saved search
+
                if (this.loggedIn && this.meta.type === 'cars') {
                   this.fetchSavedSearch({search_url: `${this.meta.path}?${searchQuery}`});
                }
@@ -352,7 +360,7 @@ export const SearchMixin = {
          return [
             {name: this.$t('all2'), key: zeroFirst ? 0 : 1},
             {name: this.$t('new'), key: zeroFirst ? 1 : 2},
-            {name: this.$t('with_mileage_2'), key: zeroFirst ? 2 : 3}
+            {name: this.$t('used'), key: zeroFirst ? 2 : 3}
             // {name: this.$t(this.meta.type === 'parts' ? 'S_H' : 'with_mileage'), key: zeroFirst ? 2 : 3}
          ];
       },
@@ -387,6 +395,11 @@ export const SearchMixin = {
       },
 
       getSortingOptions() {
+         // return [
+         //    { key: 'created_at', value: 'desc', name: this.$t('show_by_date') },
+         //    { key: 'price', value: 'asc', name: this.$t('show_cheap_first') },
+         //    { key: 'price', value: 'desc', name: this.$t('show_expensive_first') }
+         // ]
          return [
             {name: this.$t('show_by_date'), key: 'created_at_desc'},
             {name: this.$t('show_expensive_first'), key: 'price_desc'},

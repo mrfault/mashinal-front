@@ -10,7 +10,7 @@
          >
             <li
                class="vehicle-specs__list-item"
-               v-if="!(announcement.is_external_salon && spec.key === 'customs')"
+               v-if="!(announcement.is_external_salon && spec.key === 'customs') && spec.value"
                v-for="spec in ul"
                :key="spec.key" :class="{'is-vin-number': (spec.key === 'vin')}"
             >
@@ -58,8 +58,7 @@
    export default {
       props: {
          title: {
-            type: String,
-            default: 'Avtomobilin məlumatları'
+            type: String
          },
          type: String,
          brief: Boolean
@@ -262,6 +261,7 @@
          },
 
          catalogLink() {
+            console.log('this.catalog', this.catalog)
             let path = this.catalog && `/catalog/${this.catalog.brand.slug}/${this.catalog.model.slug}/${this.catalog.generation.id}/${this.catalog.car_type.id}/mod/${this.catalog.id}`;
             return path && this.$localePath(path);
          }
@@ -310,6 +310,10 @@
 
             &:not(:first-child) {
                margin-top: 24px;
+            }
+
+            svg {
+               min-width: 32px;
             }
          }
 
@@ -385,7 +389,7 @@
          }
 
          &__btn {
-            border-color: transparent;
+            border-color: #E3E8EF;
             background-color: transparent;
 
             &:hover {
@@ -410,6 +414,14 @@
          &__inner {
             flex-direction: column;
          }
+
+         &__list {
+            &:not(:first-child) {
+               &:before {
+                  display: none;
+               }
+            }
+         }
       }
    }
 
@@ -419,6 +431,10 @@
 
          &__btn {
             padding: 14px;
+
+            span {
+               font-size: 14px;
+            }
          }
       }
    }

@@ -33,6 +33,7 @@
                :total-count="$paginate(motoAnnouncements).total"
                :pending="pending"
                :category="{}"
+               :sorting="sorting"
                @pending="pending = true"
                @submit="searchMoto"
             />
@@ -68,6 +69,8 @@
                         :clearPlaceholder="true"
                         :clear-option="false"
                         :allowClear="false"
+                        :objectInValue="true"
+                        @change="searchMoto"
                         v-model="sorting"
                      />
                   </template>
@@ -124,7 +127,14 @@
          return {
             announceType: 1,
             searchType: 1,
-            sorting: ''
+            sorting: { key: 'created_at', value: 'desc', name: this.$t('show_by_date') },
+            sortItems: [
+               { key: 'created_at', value: 'desc', name: this.$t('show_by_date') },
+               { key: 'price', value: 'asc', name: this.$t('show_cheap_first') },
+               { key: 'price', value: 'desc', name: this.$t('show_expensive_first') },
+               { key: 'mileage', value: 'desc', name: this.$t('mileage') },
+               { key: 'year', value: 'desc', name: this.$t('years') }
+            ]
          }
       },
 
@@ -166,11 +176,13 @@
          async searchMoto(page = 1) {
             page = this.$route.query.page || 1;
             let post = JSON.parse(this.$route.query.filter || '{}');
+            post = { ...post, sort_by: post.sort_by, sort_order: post.sort_order }
+
             this.pending = true;
             await this.getGridSearch({...this.searchParams, post, page});
             await this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'moto', data: post });
             this.pending = false;
-            this.scrollTo('.announcements-grid.paginated', [-15, -20]);
+            // this.scrollTo('.announcements-grid.paginated', [-15, -20]);
          }
       },
 
@@ -216,13 +228,13 @@
             }
          },
 
-         sortItems() {
-            return [
-               { id: 'created_at_desc', name: this.$t('show_by_date') },
-               { id: 'price_asc', name: this.$t('show_cheap_first') },
-               { id: 'price_desc', name: this.$t('show_expensive_first') }
-            ]
-         }
+         // sortItems() {
+         //    return [
+         //       { id: 'created_at_desc', name: this.$t('show_by_date') },
+         //       { id: 'price_asc', name: this.$t('show_cheap_first') },
+         //       { id: 'price_desc', name: this.$t('show_expensive_first') }
+         //    ]
+         // }
       },
 
       mounted() {

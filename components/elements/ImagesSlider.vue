@@ -1,10 +1,10 @@
 <template>
-   <div class="images-slider">
+   <div class="images-slider" :class="{'ma-protocol-media': isProtocolMedia}">
       <div class="toolbar">
-<!--         <span>{{ currentSlide + 1 }} / {{ slides?.main.length }}</span>-->
+         <!--         <span>{{ currentSlide + 1 }} / {{ slides?.main.length }}</span>-->
 
          <div class="images-slider__close" @click.stop="$emit('close')">
-            <icon name="cross" />
+            <icon name="cross"/>
             <!-- <inline-svg src="/icons/cross.svg" height="14" /> -->
          </div>
       </div>
@@ -13,38 +13,44 @@
          <div :class="['images-slider__grid', { 'has-sidebar': hasSidebar }]" @click.stop>
             <div class="images-slider__grid-item">
                <button
+                  v-if="slides?.length > 6"
                   id="slider-prev"
                   class="btn"
                   @click.stop="thumbsPrev"
-                  v-if="slides?.length > 6"
                >
                   <icon name="chevron-up"/>
                </button>
 
                <div
-                  class="swiper-container"
-                  v-swiper:thumbsSwiper="thumbOps"
                   ref="thumbsSwiper"
+                  v-swiper:thumbsSwiper="thumbOps"
+                  class="swiper-container"
                >
                   <div class="swiper-wrapper">
                      <div
-                        class="swiper-slide"
-                        :key="index"
                         v-for="(slide, index) in slides?.thumbs"
+                        :key="index"
+                        class="swiper-slide"
+
                      >
+                        <div class="protocolVideoThumb" v-if="slides.types[index] == 'video' && isProtocolMedia"
+                             @click="changeSlide(index)"
+                        />
                         <div
-                           @click="changeSlide(index)"
+                           v-else
                            :style="{ backgroundImage: `url('${slide}')` }"
+                           :class="{'protocolImageThumb': isProtocolMedia}"
+                           @click="changeSlide(index)"
                         ></div>
                      </div>
                   </div>
                </div>
 
                <button
+                  v-if="slides?.length > 6"
                   id="slider-next"
                   class="btn"
                   @click.stop="thumbsNext"
-                  v-if="slides?.length > 6"
                >
                   <icon name="chevron-down"/>
                </button>
@@ -54,65 +60,66 @@
                <div class="position-relative">
                   <div
                      id="images-swiper"
-                     class="swiper-container"
-                     v-swiper:imagesSwiper="swiperOps"
                      ref="imagesSwiper"
+                     v-swiper:imagesSwiper="swiperOps"
                      :auto-update="false"
+                     class="swiper-container"
                   >
                      <div class="swiper-wrapper">
                         <div
-                           class="swiper-slide"
-                           :key="index"
                            v-for="(slide, index) in slides.main"
+                           :key="index"
+                           class="swiper-slide"
+                           :class="{'ma-protocol-media__center': isProtocolMedia}"
                         >
                            <div class="swiper-slide-bg" @click.stop>
                               <div
-                                 class="iframe"
                                  v-if="slides.types && slides.types[index] === 'youtube'"
+                                 class="iframe"
                               >
                                  <iframe
                                     v-if="showIframe"
                                     :src="`https://www.youtube.com/embed/${slide.split('?v=')[1]}`"
-                                    frameborder="0"
                                     allowfullscreen
+                                    frameborder="0"
                                  ></iframe>
                               </div>
                               <div
-                                 class="video"
                                  v-else-if="slides.types && slides.types[index] === 'video'"
+                                 class="video"
                               >
                                  <video ref="video" controls>
                                     <source :src="slide"/>
                                  </video>
                               </div>
                               <div
+                                 v-else-if="slides.types && slides.types[index] === 'custom'"
                                  class="position-relative"
                                  style="width: 100%;overflow: hidden;"
-                                 v-else-if="slides.types && slides.types[index] === 'custom'"
                               >
                                  <no-ssr>
                                     <div v-if="announcement.interior_360" class="interior-switcher">
-                                       <form-switch class="interior-exterior-switcher" auto-width
-                                                    style="width: fit-content;pointer-events: all;"
-                                                    v-model="showInterior" :options="interiorOptions"/>
+                                       <form-switch v-model="showInterior" :options="interiorOptions"
+                                                    auto-width
+                                                    class="interior-exterior-switcher" style="width: fit-content;pointer-events: all;"/>
                                     </div>
-                                    <interior360-viewer :url="announcement.interior_360" v-if="showInterior"/>
+                                    <interior360-viewer v-if="showInterior" :url="announcement.interior_360"/>
                                     <vue-three-sixty
-                                       @interiorChange="showInterior = !showInterior"
-                                       :show-interior="showInterior"
                                        v-else
-                                       showZoom
-                                       disable-zoom
                                        :amount="announcement.images_360.length"
-                                       buttonClass="d-none"
                                        :files="announcement.images_360"
+                                       :show-interior="showInterior"
+                                       buttonClass="d-none"
+                                       disable-zoom
+                                       showZoom
+                                       @interiorChange="showInterior = !showInterior"
                                     />
                                  </no-ssr>
                               </div>
 
                               <template v-else>
-                                 <img alt="car_img" :src="`${slide}?width=944`" class="swiper-lazy"/>
-                                 <loader />
+                                 <img :src="`${slide}?width=944`" alt="car_img" class="swiper-lazy"/>
+                                 <loader/>
                               </template>
                            </div>
                         </div>
@@ -128,7 +135,7 @@
                               @click.stop="slidePrev"
                            >
                           <!-- <icon name="chevron-left" /> -->
-                              <inline-svg src="/icons/chevron-left.svg" :height="14"/>
+                              <inline-svg :height="14" src="/icons/chevron-left.svg"/>
                            </button>
 
                            <button
@@ -137,7 +144,7 @@
                               @click.stop="slideNext"
                            >
                               <!-- <icon name="chevron-right" /> -->
-                              <inline-svg src="/icons/chevron-right.svg" :height="14"/>
+                              <inline-svg :height="14" src="/icons/chevron-right.svg"/>
                            </button>
                       </span>
                      </div>
@@ -145,7 +152,7 @@
                </div>
             </div>
 
-            <div class="images-slider__grid-item" v-if="hasSidebar">
+            <div v-if="hasSidebar" class="images-slider__grid-item">
                <slot name="sidebar"/>
             </div>
          </div>
@@ -154,166 +161,167 @@
 </template>
 
 <script>
-   import Interior360Viewer from "~/components/Interior360Viewer";
+import Interior360Viewer from "~/components/Interior360Viewer";
 
-   export default {
-      components: {
-         Interior360Viewer
-      },
+export default {
+   components: {
+      Interior360Viewer
+   },
 
-      props: {
-         slides: [],
-         announcement: {},
-         currentSlide: Number,
-         hasSidebar: Boolean,
-      },
+   props: {
+      slides: [],
+      announcement: {},
+      currentSlide: Number,
+      hasSidebar: Boolean,
+      isProtocolMedia: Boolean,
+   },
 
-      data() {
-         return {
-            showFirst: false,
-            showInterior: false,
-            zoom: 0,
-            swiperOps: {
-               initialSlide: this.currentSlide,
-               allowTouchMove: false,
-               effect: 'fade',
-               fadeEffect: {
-                  crossFade: true,
-               },
-               loop: false,
-               preloadImages: false,
-               lazy: {
-                  loadPrevNext: false,
-                  preloaderClass: 'loader',
-               },
-               keyboard: {
-                  enabled: true,
-               },
+   data() {
+      return {
+         showFirst: false,
+         showInterior: false,
+         zoom: 0,
+         swiperOps: {
+            initialSlide: this.currentSlide,
+            allowTouchMove: false,
+            effect: 'fade',
+            fadeEffect: {
+               crossFade: true,
             },
-            thumbOps: {
-               initialSlide: this.currentSlide,
-               direction: 'vertical',
-               slidesPerView: 'auto',
-               spaceBetween: 20,
-               keyboard: {
-                  enabled: true,
-                  pageUpDown: true,
-               },
+            loop: false,
+            preloadImages: false,
+            lazy: {
+               loadPrevNext: false,
+               preloaderClass: 'loader',
             },
-            showIframe: true,
+            keyboard: {
+               enabled: true,
+            },
+         },
+         thumbOps: {
+            initialSlide: this.currentSlide,
+            direction: 'vertical',
+            slidesPerView: 'auto',
+            spaceBetween: 20,
+            keyboard: {
+               enabled: true,
+               pageUpDown: true,
+            },
+         },
+         showIframe: true,
+      }
+   },
+
+   methods: {
+      slidePrev() {
+         if (this.imagesSwiper.activeIndex === 0) {
+            this.imagesSwiper.slideTo(this.slides.main.length - 1)
+         } else this.imagesSwiper.slidePrev()
+
+         this.updateTouchEvents()
+      },
+      slideNext() {
+         if (this.slides.main.length - 1 === this.imagesSwiper.activeIndex) {
+            this.imagesSwiper.slideTo(0)
+         } else this.imagesSwiper.slideNext()
+
+         this.updateTouchEvents()
+      },
+      thumbsPrev() {
+         this.thumbsSwiper.slidePrev()
+      },
+      updateTouchEvents() {
+         if (this.imagesSwiper.activeIndex > 0) {
+            this.imagesSwiper.allowTouchMove = true
+         } else {
+            this.imagesSwiper.allowTouchMove = false
          }
       },
-
-      methods: {
-         slidePrev() {
-            if (this.imagesSwiper.activeIndex === 0) {
-               this.imagesSwiper.slideTo(this.slides.main.length - 1)
-            } else this.imagesSwiper.slidePrev()
-
-            this.updateTouchEvents()
-         },
-         slideNext() {
-            if (this.slides.main.length - 1 === this.imagesSwiper.activeIndex) {
-               this.imagesSwiper.slideTo(0)
-            } else this.imagesSwiper.slideNext()
-
-            this.updateTouchEvents()
-         },
-         thumbsPrev() {
-            this.thumbsSwiper.slidePrev()
-         },
-         updateTouchEvents() {
-            if (this.imagesSwiper.activeIndex > 0) {
-               this.imagesSwiper.allowTouchMove = true
-            } else {
-               this.imagesSwiper.allowTouchMove = false
-            }
-         },
-         thumbsNext() {
-            this.thumbsSwiper.slideNext()
-         },
-         changeSlide(index) {
-            this.imagesSwiper.slideTo(index, 0)
-         },
-         handleEscapeKey(e) {
-            if (e.key === 'Escape') {
-               this.$emit('close')
-            }
-            // if(e.key === "ArrowLeft") {
-            //   this.slidePrev();
-            //   //Left arrow pressed
-            // }
-
-            if (e.key === "ArrowRight" && this.slides.main.length - 1 === this.imagesSwiper.activeIndex) {
-               if (this.showFirst) {
-                  this.imagesSwiper.slideTo(0);
-                  this.showFirst = false;
-               } else {
-                  this.showFirst = true;
-               }
-            }
-
-            if (e.key === "ArrowLeft" && this.imagesSwiper.activeIndex === 0) {
-               if (this.showFirst) {
-                  this.imagesSwiper.slideTo(this.slides.main.length - 1)
-                  this.showFirst = false;
-               } else {
-                  this.showFirst = true;
-               }
-            }
-         },
+      thumbsNext() {
+         this.thumbsSwiper.slideNext()
       },
+      changeSlide(index) {
+         this.imagesSwiper.slideTo(index, 0)
+      },
+      handleEscapeKey(e) {
+         if (e.key === 'Escape') {
+            this.$emit('close')
+         }
+         // if(e.key === "ArrowLeft") {
+         //   this.slidePrev();
+         //   //Left arrow pressed
+         // }
 
-      mounted() {
-         window.addEventListener('keydown', this.handleEscapeKey);
+         if (e.key === "ArrowRight" && this.slides.main.length - 1 === this.imagesSwiper.activeIndex) {
+            if (this.showFirst) {
+               this.imagesSwiper.slideTo(0);
+               this.showFirst = false;
+            } else {
+               this.showFirst = true;
+            }
+         }
 
-         this.$nextTick(() => {
-            this.imagesSwiper.thumbs.swiper = this.thumbsSwiper
-            this.imagesSwiper.on('slideChange', () => {
-               this.showIframe = false
-               this.$refs.video?.[0]?.pause()
-               this.$nextTick(() => {
-                  this.showIframe = true
-                  this.$emit('slide-change', this.imagesSwiper.realIndex)
-                  this.updateTouchEvents()
-               })
-            })
-            let swiperTouchStartX
-            this.imagesSwiper.on('touchStart', (e) => {
-               if (e.type === 'touchstart') {
-                  swiperTouchStartX = e.touches[0].clientX
-               } else {
-                  swiperTouchStartX = e.clientX
-               }
-            })
+         if (e.key === "ArrowLeft" && this.imagesSwiper.activeIndex === 0) {
+            if (this.showFirst) {
+               this.imagesSwiper.slideTo(this.slides.main.length - 1)
+               this.showFirst = false;
+            } else {
+               this.showFirst = true;
+            }
+         }
+      },
+   },
 
-            this.imagesSwiper.on('touchEnd', (e) => {
-               const tolerance = 100
-               const totalSlidesLen = this.imagesSwiper.slides.length
+   mounted() {
+      window.addEventListener('keydown', this.handleEscapeKey);
 
-               const diff = (() => {
-                  if (e.type === 'touchend') {
-                     return e.changedTouches[0].clientX - swiperTouchStartX
-                  } else {
-                     return e.clientX - swiperTouchStartX
-                  }
-               })()
-
-               if (this.imagesSwiper.isBeginning && diff >= tolerance) {
-                  //this.gallerySwiper.slideTo(totalSlidesLen - 1);
-               } else if (this.imagesSwiper.isEnd && diff <= -tolerance) {
-                  setTimeout(() => {
-                     this.imagesSwiper.slideTo(0)
-                  }, 1)
-               }
+      this.$nextTick(() => {
+         this.imagesSwiper.thumbs.swiper = this.thumbsSwiper
+         this.imagesSwiper.on('slideChange', () => {
+            this.showIframe = false
+            this.$refs.video?.[0]?.pause()
+            this.$nextTick(() => {
+               this.showIframe = true
+               this.$emit('slide-change', this.imagesSwiper.realIndex)
+               this.updateTouchEvents()
             })
          })
-      },
+         let swiperTouchStartX
+         this.imagesSwiper.on('touchStart', (e) => {
+            if (e.type === 'touchstart') {
+               swiperTouchStartX = e.touches[0].clientX
+            } else {
+               swiperTouchStartX = e.clientX
+            }
+         })
 
-      beforeDestroy() {
-         window.removeEventListener('keydown', this.handleEscapeKey)
-      }
+         this.imagesSwiper.on('touchEnd', (e) => {
+            const tolerance = 100
+            const totalSlidesLen = this.imagesSwiper.slides.length
+
+            const diff = (() => {
+               if (e.type === 'touchend') {
+                  return e.changedTouches[0].clientX - swiperTouchStartX
+               } else {
+                  return e.clientX - swiperTouchStartX
+               }
+            })()
+
+            if (this.imagesSwiper.isBeginning && diff >= tolerance) {
+               //this.gallerySwiper.slideTo(totalSlidesLen - 1);
+            } else if (this.imagesSwiper.isEnd && diff <= -tolerance) {
+               setTimeout(() => {
+                  this.imagesSwiper.slideTo(0)
+               }, 1)
+            }
+         })
+      })
+   },
+
+   beforeDestroy() {
+      window.removeEventListener('keydown', this.handleEscapeKey)
    }
+}
 </script>
 
 <style>

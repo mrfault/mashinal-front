@@ -6,16 +6,13 @@
 
             <div class="product-inner__info">
                <div class="product-inner__info-left">
-<!--                  <client-only>-->
+                  <client-only>
                      <gallery>
                         <quick-info type="parts" brief />
-                        <!--                     <site-banner v-if="!isMobileBreakpoint" class="mb-3" type="in-announcement"/>-->
-
-                        <announcement-specs type="parts" brief/>
                      </gallery>
-<!--                  </client-only>-->
+                  </client-only>
 
-<!--                  <announcement-specs type="parts" />-->
+                  <announcement-specs type="parts" />
 
                   <comment :comment="announcement.comment" v-if="announcement.comment">
                      <template #before>
@@ -38,17 +35,6 @@
                   <quick-info type="parts"/>
 
                   <site-banner v-if="!isMobileBreakpoint" class="mb-3" type="in-announcement"/>
-
-<!--                  <announcement-specs type="parts"/>-->
-
-                  <!--                  <keywords-->
-                  <!--                     class="card mb-lg-3"-->
-                  <!--                     :title="$t('keywords')"-->
-                  <!--                     :keywords="announcement.tags"-->
-                  <!--                     label="name"-->
-                  <!--                     clickable-->
-                  <!--                     @click="keywordOnClick"-->
-                  <!--                  />-->
                </div>
             </div>
          </div>
@@ -146,24 +132,3 @@
       },
    }
 </script>
-
-<style lang="scss">
-   .product-inner {
-      .bg-white {
-         padding: 5px 0 32px 0;
-      }
-
-      &__info {
-         display: grid;
-         grid-template-columns: 716px 348px;
-         gap: 20px;
-
-         .inner-thumbs-gallery,
-         .vehicle-specs,
-         .announcement-comment,
-         .car-complects {
-            margin-top: 20px;
-         }
-      }
-   }
-</style>

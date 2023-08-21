@@ -7,7 +7,7 @@
       <div class="ma-automobile-card__content">
          <h4 class="ma-automobile-card__content--brand">{{ item.brand.name }} {{ item.model.name }}
             {{ item.generation.start_year }}-{{ item.generation.end_year }}</h4>
-         <p class="ma-automobile-card__content--desc">{{ $t(card_desc_1) }} / {{ 2.4 }}L / {{ $t('benzin') }}</p>
+         <p class="ma-automobile-card__content--desc">{{ card_desc_1 }} / {{ item.car_catalog.capacity }}{{$t('L')}} / {{ $t(fuel) }}</p>
       </div>
       <automobile-card-actions @openEditModal="openEditModal(item)" :announcement="item" :dropdown-id="item.id"/>
    </div>
@@ -28,12 +28,18 @@ export default {
       openEditModal(item){
          console.log("card openEditModal")
          this.$emit('openEditModal',item)
-      }
+      },
+
+
    },
    computed:{
       card_desc_1(){
-         return this.item.car_type.name
-      }
+         return this.$t(this.item.car_type.name.toLocaleLowerCase())
+      },
+      fuel(){
+         return this.$t('engine_values')[this.item.car_catalog.main["  "]['engine']]
+      },
+
    }
 }
 </script>
@@ -61,7 +67,7 @@ export default {
       img {
          width: 100%;
          height: 100%;
-         object-fit: contain;
+         object-fit: cover;
       }
    }
 
@@ -78,6 +84,7 @@ export default {
       &--desc {
          font: 400 18px/22px 'TTHoves';
          color: #364152;
+         //text-transform: capitalize;
       }
    }
 
@@ -96,7 +103,7 @@ export default {
          img {
             width: 100%;
             height: 100%;
-            object-fit: contain;
+            object-fit: cover;
          }
       }
 

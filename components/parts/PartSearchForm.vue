@@ -25,7 +25,7 @@
                   <div class="col-12 col-md-6" :class="{'mb-3': isMobileBreakpoint}">
                      <form-text-input
                         :placeholder="$t('part_name')"
-                        v-model="form.text"
+                        v-model="form.title"
                         @keyup.native.enter="submitForm"
                      />
                   </div>
@@ -42,6 +42,7 @@
                   <div class="col-6 col-md-3">
                      <MinMaxSearch
                         :options="minMaxOptions"
+                        :selectedValue="{ min: form.price_from, max: form.price_to }"
                         @change="minMaxValue"
                      />
 
@@ -77,7 +78,7 @@
                   <div class="col-6 col-md-3">
                      <button
                         type="button"
-                        :class="['btn h-52', 'full-width', 'btn--new-dark-green']"
+                        :class="['btn h-52', 'full-width', 'btn--new-dark-green', {pending}]"
                         @click="submitForm"
                      >
                         {{ $t('find') }}
@@ -206,6 +207,10 @@
             type: Boolean,
             required: true
          },
+         sorting: {
+            type: Object,
+            default() { return {} }
+         },
          category: {
             type: Object,
             required: false,
@@ -243,7 +248,7 @@
                price_from: '',
                price_to: '',
                currency: 1,
-               text: '',
+               title: '',
                sort: '',
                ...additionalProperties
             },
@@ -270,6 +275,22 @@
 
       mounted() {
          this.wheelCategoryType = this.wheelCategoryTypes.find(t => this.$localePath(t.path) === this.$route.path)?.key || 0
+
+         if (this.$route.query?.parts_filter) {
+            let filters = JSON.parse(this.$route.query.parts_filter)
+
+            for (const key in filters) {
+               for (const form in this.form) {
+                  if (key === form) {
+                     this.form[form] = filters[key]
+                  }
+               }
+            }
+            // console.log('filters', filters)
+            // console.log('form', this.form)
+            // this.sorting.key = filters.sort_by;
+            // this.sorting.value = filters.sort_order;
+         }
       },
 
       methods: {
@@ -386,6 +407,12 @@
             if (val !== null) {
                this.wheelCategoryTypeOnChange(val)
             }
+         },
+
+         sorting(val) {
+            this.form.sort_by = val.key;
+            this.form.sort_order = val.value;
+            this.submitForm();
          }
       }
    }

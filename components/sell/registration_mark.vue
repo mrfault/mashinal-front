@@ -50,6 +50,7 @@
             :class="{form_error: $v.form.price.$error}"
             v-model="form.price"
             :invalid="$v.form.price.$error"
+            @change="form.is_negotiable = false"
          />
          <!--            @change="announcement.price = $event ? $event + (form.currency.name?.[locale] || 'AZN') : 0"-->
          <div class="price_types">
@@ -66,13 +67,18 @@
          :label="$t('negotiable_price')"
          input-name="is_negotiable"
          transparent
+         @change="$event && (form.price = '')"
       />
-      <form-select :label="$t('region')"
-                   :class="{form_error: $v.form.region_id.$error}"
-                   :options="sellOptions.regions"
-                   v-model="form.region_id"
-                   has-search
-                   :invalid="$v.form.region_id.$error"
+      <form-select
+         :label="$t('region')"
+         :class="{form_error: $v.form.region_id.$error}"
+         :options="sellOptions.regions"
+         v-model="form.region_id"
+         :clear-placeholder="true"
+         :clear-option="false"
+         :new-label="false"
+         has-search
+         :invalid="$v.form.region_id.$error"
       />
       <div class="registration_mark_form_with_info">
          <form-textarea

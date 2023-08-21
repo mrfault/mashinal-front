@@ -10,13 +10,13 @@
                      <gallery>
                         <quick-info type="cars" brief />
 
-                        <announcement-specs type="cars" brief />
+<!--                        <announcement-specs type="cars" brief />-->
                      </gallery>
                   </client-only>
 
                   <thumbs-gallery />
 
-                  <announcement-specs type="cars"/>
+                  <announcement-specs type="cars" :title="$t('announcement_info')" brief />
 
                   <comment v-if="announcement.comment" :comment="announcement.comment" />
 
@@ -169,12 +169,13 @@
             return false
          },
          crumbs() {
+            console.log('this.catalog', this.catalog)
             return [
                {name: this.$t('cars'), route: '/cars'},
                {name: this.catalog?.brand?.name, route: this.getFilterLink('brand')},
                {name: this.catalog?.model?.name, route: this.getFilterLink('brand-model')},
                {
-                  name: this.$translateHard(this.catalog?.generation?.name[this.locale]),
+                  name: this.$translateHard(this.catalog?.generation?.name),
                   route: this.getFilterLink('brand-model-generation')
                },
                {name: '#' + this.announcement.id_unique}
@@ -183,69 +184,3 @@
       }
    }
 </script>
-
-<style lang="scss">
-   .product-inner {
-      .bg-white {
-         padding: 5px 0 32px 0;
-      }
-
-      &__info {
-         display: grid;
-         grid-template-columns: 716px 348px;
-         gap: 20px;
-
-         .inner-thumbs-gallery,
-         .vehicle-specs,
-         .announcement-comment,
-         .car-complects {
-            margin-top: 20px;
-         }
-      }
-   }
-
-   .dark-mode {
-      .product-inner {
-         .bg-white {
-            background-color: transparent;
-         }
-      }
-   }
-
-   @media (max-width: 1150px) {
-      .product-inner {
-         &__info {
-            grid-template-columns: 560px 348px;
-
-            .inner-gallery {
-               .swiper-slide-bg {
-                  height: 400px;
-               }
-            }
-         }
-      }
-   }
-
-   @media (max-width: 992px) {
-      .product-inner {
-         &__info {
-            display: flex;
-            flex-direction: column;
-            grid-template-columns: unset;
-
-         }
-      }
-   }
-
-   @media (max-width: 600px) {
-      .product-inner {
-         &__info {
-            .inner-gallery {
-               .swiper-slide-bg {
-                  height: 332px;
-               }
-            }
-         }
-      }
-   }
-</style>

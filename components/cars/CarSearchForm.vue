@@ -503,37 +503,38 @@
          </template>
       </div>
 
-      <div
-         v-if="!onlySavedSearch"
-         class="announcements-sorting"
-         v-show="routeName !== 'index' && totalCount && !(advanced || assistant)"
-      >
-         <div class="row">
-            <div class="col-6 ml-auto col-lg-2 mt-3 mt-lg-5 mb-n6 mb-lg-n1">
-               <div class="form-info no-bg text-green" v-if="isMobileBreakpoint">
-                  {{ $readPlural(totalCount, $t('plural_forms_announcements')) }}
-               </div>
-            </div>
-            <!--            <div class="col-6 col-lg-2 mt-3 mt-lg-5 mb-n6 mb-lg-n1">-->
-            <!--               <button @click="showExcludeModal = true;" type="button" class="btn btn&#45;&#45;dark-blue full-width">-->
-            <!--                  {{ $t('exclude') }}-->
-            <!--                  <template v-if="getExcludeCount">({{ getExcludeCount }})</template>-->
-            <!--               </button>-->
-            <!--            </div>-->
-            <div class="col-6 col-lg-2 mt-3 mt-lg-5 mb-n6 mb-lg-n1">
-               <form-select
-                  :label="$t('sorting')"
-                  :options="getSortingOptions"
-                  v-model="form.sorting"
-                  @change="submitForm"
-                  :allow-clear="false"
-                  :clear-option="false"
-                  skip-select-first
-                  has-no-bg
-               />
-            </div>
-         </div>
-      </div>
+<!--      <div-->
+<!--         v-if="!onlySavedSearch && routeName !== 'index'"-->
+<!--         class="announcements-sorting"-->
+<!--      >-->
+<!--&lt;!&ndash;         v-show="routeName !== 'index' && totalCount && !(advanced || assistant)"&ndash;&gt;-->
+
+<!--         <div class="row">-->
+<!--&lt;!&ndash;            <div class="col-6 ml-auto col-lg-2 mt-3 mt-lg-5 mb-n6 mb-lg-n1">&ndash;&gt;-->
+<!--&lt;!&ndash;               <div class="form-info no-bg text-green" v-if="isMobileBreakpoint">&ndash;&gt;-->
+<!--&lt;!&ndash;                  {{ $readPlural(totalCount, $t('plural_forms_announcements')) }}&ndash;&gt;-->
+<!--&lt;!&ndash;               </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--            &lt;!&ndash;            <div class="col-6 col-lg-2 mt-3 mt-lg-5 mb-n6 mb-lg-n1">&ndash;&gt;-->
+<!--            &lt;!&ndash;               <button @click="showExcludeModal = true;" type="button" class="btn btn&#45;&#45;dark-blue full-width">&ndash;&gt;-->
+<!--            &lt;!&ndash;                  {{ $t('exclude') }}&ndash;&gt;-->
+<!--            &lt;!&ndash;                  <template v-if="getExcludeCount">({{ getExcludeCount }})</template>&ndash;&gt;-->
+<!--            &lt;!&ndash;               </button>&ndash;&gt;-->
+<!--            &lt;!&ndash;            </div>&ndash;&gt;-->
+<!--            <div class="col-6 col-lg-2 mt-3 mt-lg-5 mb-n6 mb-lg-n1">-->
+<!--               <form-select-->
+<!--                  :label="$t('sorting')"-->
+<!--                  :options="getSortingOptions"-->
+<!--                  v-model="form.sorting"-->
+<!--                  @change="submitForm"-->
+<!--                  :allow-clear="false"-->
+<!--                  :clear-option="false"-->
+<!--                  skip-select-first-->
+<!--                  has-no-bg-->
+<!--               />-->
+<!--            </div>-->
+<!--         </div>-->
+<!--      </div>-->
 
       <modal-popup
          :modal-class="'exclude-popup'"
@@ -670,6 +671,10 @@
             type: Number,
             default: 0,
          },
+         sorting: {
+            type: Object,
+            default() { return {} }
+         },
          announceType: {
             type: Number,
             default: 1,
@@ -705,7 +710,8 @@
             interval: 1440,
             searchType: 1,
             form: {
-               sorting: 'created_at_desc',
+               sort_by: 'created_at',
+               sort_order: 'desc',
                additional_brands: {0: {}, 1: {}, 2: {}, 3: {}, 4: {}},
                exclude_additional_brands: {0: {}, 1: {}, 2: {}, 3: {}, 4: {}},
                all_options: [],
@@ -714,7 +720,7 @@
                currency: 1,
                min_capacity: '',
                max_capacity: '',
-               year_form: '',
+               year_from: '',
                year_to: '',
                price_from: '',
                price_to: '',
@@ -859,6 +865,12 @@
 
          announceType(val) {
             this.form.announce_type = val;
+         },
+
+         sorting(val) {
+            this.form.sort_by = val.key;
+            this.form.sort_order = val.value;
+            this.submitForm();
          }
       },
 

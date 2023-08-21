@@ -1,16 +1,20 @@
 <template>
    <div class="pages-favorites">
       <div class="container">
-         <breadcrumbs :crumbs="crumbs"/>
+         <breadcrumbs :crumbs="crumbs" />
 
-         <ul class="tabs">
-            <li
-               :class="['tabs__item', {'active' : tab.id === activeTab }]"
-               v-for="tab in tabs"
-               :key="tab.id"
-               @click="activeTab = tab.id"
-            >{{ tab.name }}</li>
-         </ul>
+         <h2 class="pages-favorites__title">{{ this.$t('favorites_ads') }}</h2>
+
+         <div class="tabsWrapper">
+            <ul class="tabs">
+               <li
+                  :class="['tabs__item', {'active' : tab.id === activeTab }]"
+                  v-for="tab in tabs"
+                  :key="tab.id"
+                  @click="activeTab = tab.id"
+               >{{ tab.name }}</li>
+            </ul>
+         </div>
 
          <div class="tabContent">
             <div class="tabContent__item" v-if="activeTab === 1">
@@ -22,6 +26,8 @@
                   :paginate="$paginate(favoriteAnnouncements)"
                   :pending="pending"
                   :watch-route="true"
+                  :has-container="false"
+                  :escapeDuplicates="true"
                   @change-page="changePage"
                />
 
@@ -35,9 +41,33 @@
             </div>
 
             <div class="tabContent__item" v-if="activeTab === 2">
+               <!--         :title="$t('favorites')"-->
+               <!--         :show-title="isMobileBreakpoint"-->
+               <grid
+                  v-if="getMySavedParts?.data?.length"
+                  :announcements="getMySavedParts?.data"
+                  :paginate="getMySavedParts?.meta"
+                  :pending="pending"
+                  :watch-route="true"
+                  :has-container="false"
+                  :escapeDuplicates="true"
+                  @change-page="changePage"
+               />
+
+               <no-results :text="$t('no_favorites')" v-else>
+                  <nuxt-link class="active btn btn--pale-green-outline d-flex full-width mt-2"
+                             style="max-width: 200px;"
+                             :to="$localePath('/')">
+                     <i aria-hidden="true" class="icon-plus-circle"></i> {{ $t('my_favorites_add') }}
+                  </nuxt-link>
+               </no-results>
+            </div>
+
+            <div class="tabContent__item" v-if="activeTab === 3">
                <PlatesGrid
                   :items="getMySavedPlates.data"
                   :showFavoriteBtn="true"
+                  :escapeDuplicates="true"
                >
                </PlatesGrid>
 
@@ -108,7 +138,8 @@
 
          await Promise.all([
             store.dispatch('getFavoriteAnnouncements', {page}),
-            store.dispatch('fetchMySavedPlates')
+            store.dispatch('fetchMySavedPlates'),
+            store.dispatch('fetchMySavedParts'),
          ]);
 
          return {
@@ -161,7 +192,7 @@
       },
 
       computed: {
-         ...mapGetters(['favoriteAnnouncements', 'getMySavedPlates']),
+         ...mapGetters(['favoriteAnnouncements', 'getMySavedPlates', 'getMySavedParts']),
 
          crumbs() {
             return [
@@ -172,7 +203,8 @@
          tabs() {
             return [
                { id: 1, name: this.$t('vehicles') },
-               { id: 2, name: this.$t('registration_badges_2') }
+               { id: 2, name: this.$t('menu_spare_parts') },
+               { id: 3, name: this.$t('registration_badges_2') }
             ]
          }
       },
@@ -192,8 +224,22 @@
    }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
    .pages-favorites {
+      &__title {
+         color: #121926;
+         font-size: 28px;
+         font-weight: 700;
+         line-height: 32px;
+         margin-bottom: 32px;
+      }
 
+      .registrationMarksGrid {
+         margin-top: 0;
+
+         &__items {
+            margin-top: 0;
+         }
+      }
    }
 </style>

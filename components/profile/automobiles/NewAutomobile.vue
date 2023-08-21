@@ -1,7 +1,7 @@
 <template>
    <div class="ma-new-automobile">
       <modal-popup
-         :modal-class="!isMobileBreakpoint ? 'midsize': 'larger'"
+         :modal-class="'newAutoModalClasses'"
          :overflow-hidden="isMobileBreakpoint"
          :title="isEditing ? $t('edit') : $t('add_new_auto')"
          :toggle="showModal"
@@ -11,8 +11,9 @@
             <p v-if="!isEditing" class="ma-new-automobile__desc">{{ $t('add_new_auto_desc') }}</p>
             <div v-if="!isEditing" class="row">
                <!--               brand-->
-               <div v-if="brandsList && brandsList.length" class="col-12">
+               <div v-if="brandsList && brandsList.length" class="col-12 col-md-6 col-lg-12">
                   <form-select
+
                      v-model="form.brand"
                      :clear-option="false"
                      :clear-placeholder="true"
@@ -25,7 +26,8 @@
                   />
                </div>
                <!--               model-->
-               <div v-if="form.brand && carModelsList && carModelsList.length" class="col-12 mt-3">
+               <div v-if="form.brand && carModelsList && carModelsList.length"
+                    class="col-12 col-md-6 col-lg-12 mt-3 mt-md-0 mt-lg-3 mb-0 mb-md-3 mb-lg-0">
                   <form-select
                      v-model="form.model"
                      :clear-option="false"
@@ -35,11 +37,13 @@
                      :label="$t('model')"
                      :options="carModelsList"
                      has-search
+                     showMenuUp
                      @change="setModel($event, 0)"
                   />
                </div>
                <!--               generation-->
-               <div v-if="form.model && generations && generations[0] && generations[0].length" class="col-12 mt-3">
+               <div v-if="form.model && generations && generations[0] && generations[0].length"
+                    class="col-12 col-md-6 col-lg-12 mt-3 mt-md-0 mt-lg-3 mb-0 mb-md-3 mb-lg-0">
                   <form-select
                      v-model="form.generation"
                      :clear-option="false"
@@ -49,12 +53,14 @@
                      :label="$t('generation')"
                      :options="generations[0]"
                      has-search
+                     showMenuUp
                      @change="setGeneration($event, 0)"
 
                   />
                </div>
                <!--               body-->
-               <div v-if="form.generation && generationTypes && generationTypes.length" class="col-12 mt-3">
+               <div v-if="form.generation && generationTypes && generationTypes.length"
+                    class="col-12 col-md-6 col-lg-12 mt-3 mt-md-0 mt-lg-3 mb-0 mb-md-3 mb-lg-0">
                   <form-select
                      v-model="form.body"
                      :clear-option="false"
@@ -64,11 +70,13 @@
                      :label="$t('body_type')"
                      :options="generationTypes"
                      has-search
+                     showMenuUp
                      @change="setBody($event, 0)"
                   />
                </div>
                <!--               modifications-->
-               <div v-if="form.body && modifications && modifications.length" class="col-12 mt-3">
+               <div v-if="form.body && modifications && modifications.length"
+                    class="col-12 col-md-6 col-lg-12 mt-3 mt-md-0 mt-lg-3 mb-0 mb-md-3 mb-lg-0">
                   <form-select
                      v-model="form.modification"
                      :clear-option="false"
@@ -78,13 +86,15 @@
                      :label="$t('modification')"
                      :options="modifications"
                      has-search
+                     showMenuUp
                      @change="resetValidation"
                   />
                </div>
 
 
                <!--               car_number-->
-               <div v-if="form.modification" class="col-12 mt-3">
+               <div v-if="form.modification"
+                    class="col-12 col-md-6 col-lg-12 mt-3 mt-md-0 mt-lg-3 mb-0 mb-md-3 mb-lg-0">
                   <form-text-input
                      key="car_number"
                      v-model="form.car_number"
@@ -94,19 +104,21 @@
                   />
                </div>
                <!--               vin-->
-               <div v-if="form.modification" class="col-12 mt-3">
-                     <form-text-input
-                        key="vin"
-                        v-model="form.vin"
-                        :placeholder="$t('vin_carcase_number')"
-                        :invalid="$v.form.vin.$error"
-                        :mask="$maskAlphaNumeric('*****************')"
-                     />
+               <div v-if="form.modification"
+                    class="col-12 col-md-6 col-lg-12 mt-3 mt-md-0 mt-lg-3 mb-0 mb-md-3 mb-lg-0">
+                  <form-text-input
+                     key="vin"
+                     v-model="form.vin"
+                     :invalid="$v.form.vin.$error"
+                     :mask="$maskAlphaNumeric('*****************')"
+                     :placeholder="$t('vin_carcase_number')"
+                  />
                </div>
 
-               <small class="text-red pl-2 pt-1" v-if="showVinOrCarNumberError">{{ $t('vin_or_car_number_is_mandatory')}}</small>
+               <small v-if="showVinOrCarNumberError"
+                      class="text-red pl-2 pt-1">{{ $t('vin_or_car_number_is_mandatory') }}</small>
 
-               <div class="col-12 mt-3">
+               <div class="col-12 col-md-6 col-lg-12 mt-3 mt-md-0 mt-lg-3 mb-0 mb-md-3 mb-lg-0">
                   <button
                      :class="['btn btn--green w-100',{pending}]"
                      @click="addCar">{{ $t('save') }}
@@ -117,83 +129,92 @@
 
             <div v-if="isEditing" class="row">
                <!--               brand-->
-               <div v-if="brandsList && brandsList.length" class="col-12">
+               <div v-if="brandsList && brandsList.length" class="col-12 col-md-6 col-lg-12">
                   <form-select
+
                      v-model="form.brand"
                      :clear-option="false"
                      :clear-placeholder="true"
+                     :disabled="isEditing"
                      :input-placeholder="$t('mark_search')"
                      :invalid="$v.form.brand.$error"
                      :label="$t('mark')"
                      :options="brandsList"
-                     :disabled="isEditing"
                      has-search
                      @change="setBrand($event, 0)"
                   />
                </div>
                <!--               model-->
-               <div v-if="form.brand && carModels && carModels.length" class="col-12 mt-3">
+               <div v-if="form.brand && carModels && carModels.length"
+                    class="col-12 col-md-6 col-lg-12 mt-3 mt-md-0 mt-lg-3 mb-0 mb-md-3 mb-lg-0">
                   <form-select
                      v-model="form.model"
                      :clear-option="false"
                      :clear-placeholder="true"
+                     :disabled="isEditing"
                      :input-placeholder="$t('model')"
                      :invalid="$v.form.model.$error"
                      :label="$t('model')"
                      :options="carModels"
-                     :disabled="isEditing"
                      has-search
+                     showMenuUp
                      @change="setModel($event, 0)"
                   />
                </div>
                <!--               generation-->
-               <div v-if="form.model  && generations && generations.length" class="col-12 mt-3">
+               <div v-if="form.model  && generations && generations.length"
+                    class="col-12 col-md-6 col-lg-12 mt-3 mt-md-0 mt-lg-3 mb-0 mb-md-3 mb-lg-0">
                   <form-select
                      v-model="form.generation"
                      :clear-option="false"
                      :clear-placeholder="true"
+                     :disabled="isEditing"
                      :input-placeholder="$t('generation')"
                      :invalid="$v.form.generation.$error"
                      :label="$t('generation')"
                      :options="generations"
-                     :disabled="isEditing"
                      has-search
+                     showMenuUp
                      @change="setGeneration($event, 0)"
 
                   />
                </div>
                <!--               body-->
-               <div v-if="form.generation && generationTypes && generationTypes.length" class="col-12 mt-3">
+               <div v-if="form.generation && generationTypes && generationTypes.length"
+                    class="col-12 col-md-6 col-lg-12 mt-3 mt-md-0 mt-lg-3 mb-0 mb-md-3 mb-lg-0">
                   <form-select
                      v-model="form.body"
                      :clear-option="false"
                      :clear-placeholder="true"
+                     :disabled="isEditing"
                      :input-placeholder="$t('body_type')"
                      :invalid="$v.form.body.$error"
                      :label="$t('body_type')"
                      :options="generationTypes"
-                     :disabled="isEditing"
                      has-search
+                     showMenuUp
                      @change="setBody($event, 0)"
                   />
                </div>
                <!--               modifications-->
-               <div v-if="form.body && modifications && modifications.length" class="col-12 mt-3">
+               <div v-if="form.body && modifications && modifications.length"
+                    class="col-12 col-md-6 col-lg-12 mt-3 mt-md-0 mt-lg-3 mb-0 mb-md-3 mb-lg-0">
                   <form-select
                      v-model="form.modification"
                      :clear-option="false"
                      :clear-placeholder="true"
+                     :disabled="isEditing"
                      :input-placeholder="$t('modification')"
                      :invalid="$v.form.modification.$error"
                      :label="$t('modification')"
                      :options="modifications"
-                     :disabled="isEditing"
                      has-search
+                     showMenuUp
                   />
                </div>
 
                <!--               car_number-->
-               <div class="col-12 mt-3">
+               <div class="col-12 col-md-6 col-lg-12 mt-3 mt-md-0 mt-lg-3 mb-0 mb-md-3 mb-lg-0">
                   <form-text-input
                      key="car_number"
                      v-model="form.car_number"
@@ -202,19 +223,20 @@
                      :placeholder="$t('car_number')"
                   />
                </div>
-               <div class="col-12 mt-3">
+               <div class="col-12 col-md-6 col-lg-12 mt-3 mt-md-0 mt-lg-3 mb-0 mb-md-3 mb-lg-0">
                   <form-text-input
                      key="vin"
                      v-model="form.vin"
-                     :placeholder="$t('vin_carcase_number')"
                      :invalid="$v.form.vin.$error"
                      :mask="$maskAlphaNumeric('*****************')"
+                     :placeholder="$t('vin_carcase_number')"
                   />
                </div>
 
-               <small class="text-red pl-2 pt-1" v-if="showVinOrCarNumberError">{{ $t('vin_or_car_number_is_mandatory')}}</small>
+               <small v-if="showVinOrCarNumberError"
+                      class="text-red pl-2 pt-1">{{ $t('vin_or_car_number_is_mandatory') }}</small>
 
-               <div class="col-12 mt-3">
+               <div class="col-12 col-md-6 col-lg-12 mt-3 mt-md-0 mt-lg-3 mb-0 mb-md-3 mb-lg-0">
                   <button
                      :class="['btn btn--green w-100',{pending}]"
                      @click="addCar">{{ $t('save') }}
@@ -252,6 +274,18 @@ export default {
 
             brandSlug: null,
             modelSlug: null,
+         },
+         form1: {
+            brand: 129,
+            model: 488,
+            generation: 4787,
+            generationType: null,
+            body: 12,
+            modification: 47708,
+            vin: null,
+            car_number: null,
+            brandSlug: "bmw",
+            modelSlug: "3-series"
          },
          list: {
             generation: [],
@@ -294,6 +328,15 @@ export default {
             this.form.modification &&
             this.form.car_number
       },
+      // modalClasses(){
+      //    if (window.screen.innerWidth < '600px'){
+      //       return 'midsize'
+      //    }else if (window.screen.innerWidth > '599px' && window.screen.innerWidth < '1000px'){
+      //       return 'larger'
+      //    }else{
+      //       return 'midsize'
+      //    }
+      // }
    },
    methods: {
       ...mapActions(['getModelsArray',
@@ -412,7 +455,7 @@ export default {
       async addCar() {
          this.$v.$touch();
          if (this.pending || this.$v.$error) {
-            if (!this.form.car_number && !this.form.vin){
+            if (!this.form.car_number && !this.form.vin) {
                this.showVinOrCarNumberError = true;
             }
             this.pending = false;
@@ -421,7 +464,7 @@ export default {
             this.showVinOrCarNumberError = false;
             console.log("this.pending || this.$v.$error else")
             try {
-            console.log("this.pending || this.$v.$error else try")
+               console.log("this.pending || this.$v.$error else try")
                this.pending = true;
                if (this.isEditing) {
                   console.log("this.pending || this.$v.$error else try this.isEditing")
@@ -579,5 +622,24 @@ export default {
    &::-webkit-scrollbar-thumb:hover {
       background: #555;
    }
+}
+
+.ma-new-automobile {
+
+}
+
+.newAutoModalClasses {
+   width: 476px;
+   @media (max-width: 700px) {
+      width: 100%;
+   }
+   @media (max-width: 1149px) and (min-width: 701px) {
+      width: 690px;
+   }
+}
+
+.showMenuUp {
+   bottom: 60px !important;
+   top: auto !important;
 }
 </style>
