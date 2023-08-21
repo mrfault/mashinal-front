@@ -38,6 +38,8 @@
                   <input
                      v-model="form.car_number"
                      v-mask="'99 - A{1,2} - 999'"
+                     :class="{'invalid':$v.form.car_number.$error}"
+                     :invalid="$v.form.car_number.$error"
                      :placeholder="$t('car_number')"
                      @input="filterRussianLetters">
                </div>
@@ -45,9 +47,9 @@
             <form-text-input
                v-model="form.tech_id"
                :invalid="$v.form.tech_id.$error"
-               :mask="$maskAlphaNumeric('*****************')"
                :placeholder="$t('tech_id')"
                class="mb-2 mb-lg-3"
+               maxlength="8"
             />
             <p class="remove-vehicle-modal__text-with-info" style="margin-bottom: 24px">
                <inline-svg src="/icons/info-1.svg"/>
@@ -168,7 +170,7 @@
 <script>
 import {mapActions, mapGetters} from 'vuex'
 import {PaymentMixin} from '~/mixins/payment'
-import {required} from 'vuelidate/lib/validators'
+import {required, requiredIf, minLength} from 'vuelidate/lib/validators'
 import AsanLoginButton from '~/components/buttons/AsanLoginButton'
 import AnimatedSpinner from '~/components/elements/AnimatedSpinner'
 import asan_login from '~/mixins/asan_login'
@@ -228,8 +230,8 @@ export default {
          this.pending = true
          try {
             const res = await this.checkNewCar({
-               ...this.form,
                car_number: this.form.car_number.replace(/-|[ ]/g, ''),
+               tech_id: this.form.tech_id.replace('_', '')
             })
             this.pending = false
             if (res.data?.price) {
@@ -245,7 +247,7 @@ export default {
       async payForCar() {
          if (this.pending) return
          this.pending = true
-         this.form.car_number = this.form.car_number.replace(/-|[ ]/g, '')
+         this.form.car_number = this.form.car_number.replace("_", '')
          try {
             const res = await this.registerNewCar({
                vehicles: [{...this.form}],
@@ -297,16 +299,20 @@ export default {
          //    tech_id: '',
          // }
       },
-      resetForm(){
+      resetForm() {
          this.form = {
             car_number: '',
             tech_id: '',
          }
       },
-      closeAndReset(){
+      closeAndReset() {
          this.showPaymentModal = false
          this.closeModal();
          this.resetForm();
+         this.resetValidation();
+      },
+      resetValidation() {
+         this.$v.$reset();
       }
    },
    data() {
@@ -318,7 +324,7 @@ export default {
          hasAsanLoginCopy: false,
          redirectPath: 'garage',
          form: {
-            car_number: '',
+            car_number: '11cs123',
             tech_id: '',
          },
       }
@@ -326,7 +332,9 @@ export default {
    validations: {
       form: {
          car_number: {required},
-         tech_id: {required},
+         tech_id: {
+            required
+         },
       },
    },
    computed: {

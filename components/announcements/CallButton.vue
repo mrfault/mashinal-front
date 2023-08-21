@@ -1,17 +1,26 @@
 <template>
    <button
-      :class="['call-button btn full-width', `btn--${callAtOnce ? '' : 'new-'}green`]"
+      :class="[
+         'call-button btn full-width',
+         `btn--${callAtOnce ? '' : 'new-'}green`,
+         {'circle' : circle}
+      ]"
       @click.stop="handleClick"
    >
-<!--      <icon name="phone-call"/>-->
-      <template v-if="callAtOnce">
-         <span v-mask="$maskPhone(true)" v-if="!isMobileBreakpoint">+{{ phone }}</span>
-         <span v-else>{{ $t('make_a_call') }}</span>
+      <template v-if="circle">
+         <inline-svg src="/icons/phone_new.svg" />
       </template>
 
       <template v-else>
-        <span>{{ $t('show_number') }}</span>
-        <span>+994 {{ String(phone).slice(3, 8).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') }} ** **</span>
+         <template v-if="callAtOnce">
+            <span v-mask="$maskPhone(true)" v-if="!isMobileBreakpoint">+{{ phone }}</span>
+            <span v-else>{{ $t('make_a_call') }}</span>
+         </template>
+
+         <template v-else>
+            <span>{{ $t('show_number') }}</span>
+            <span>+994 {{ String(phone).slice(3, 8).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') }} ** **</span>
+         </template>
       </template>
    </button>
 </template>
@@ -23,6 +32,10 @@
          announcementId: {
             type: [String, Number],
             required: false
+         },
+         circle: {
+            type: Boolean,
+            default: false
          }
       },
 
@@ -34,7 +47,8 @@
 
       computed: {
          callAtOnce() {
-            return this.showPhone || this.isMobileBreakpoint;
+            // return this.showPhone || this.isMobileBreakpoint;
+            return this.showPhone;
          },
 
          id() {
@@ -44,6 +58,7 @@
 
       methods: {
          handleClick() {
+            console.log(this.phone)
             if (this.callAtOnce) {
                window.location.href = `tel:+${this.phone}`;
                this.trackCall(2);
@@ -74,10 +89,24 @@
    }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
    .call-button {
       flex-direction: column;
       height: 56px;
+
+      &.circle {
+         display: block;
+         width: 56px;
+         height: 56px;
+         border-radius: 50%;
+         margin-left: auto;
+
+         svg {
+            path {
+               fill: #FFFFFF;
+            }
+         }
+      }
    }
 
    .dark-mode {

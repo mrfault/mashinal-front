@@ -51,9 +51,11 @@
          />
          <div class="divider">
             <form-numeric-input
+               :class="{form_error: $v.form.volume.$error}"
                :placeholder="$t('engine_volume2')"
                v-model="form.volume"
                @change="announcement.car_catalog.capacity = ($event / 1000).toFixed(1)"
+               :invalid="$v.form.volume.$error"
             />
             <form-numeric-input
                :placeholder="$t('horse_power')"
@@ -413,7 +415,22 @@ export default {
    },
    watch: {
       'form.model'() {
+         this.$emit("navigationProgress", {id: 1, status: !!this.form.model})
          this.$emit("done", !!(this.form.model && this.motoModelsV2.length))
+      },
+      "form.saved_images"() {
+         this.$emit("navigationProgress", {id: 3, status: this.form.saved_images.length > 2})
+      },
+      form: {
+         deep: true,
+         handler() {
+            const announceDescription = ['year',
+               'color',
+               'volume',
+               'mileage',
+               'car_number', 'price'].every((key) => this.form[key]) && (!this.user.autosalon ? this.form.region_id : true)
+            this.$emit("navigationProgress", {id: 2, status: announceDescription})
+         }
       },
       isReady() {
          this.$v.form.$touch()
@@ -450,14 +467,14 @@ export default {
             credit: this.form.credit,
             guaranty: this.form.guaranty,
             saved_images: this.form.saved_images,
-            drive: this.form.gearing,
+            drive: this.form.gearing || 0,
             fuel_type: this.form.fuel,
             owner_type: 0,
             volume: this.form.volume,
             power: this.form.power,
-            engine: this.form.engine,
-            cylinders: this.form.cylinders,
-            number_of_vehicles: this.form.number_of_vehicles,
+            engine: this.form.engine || 0,
+            cylinders: this.form.cylinders || 0,
+            number_of_vehicles: this.form.number_of_vehicles || 0,
             category: this.form.type_of_moto.id,
             youtube: {"id": "", "thumb": ""}
          }
@@ -547,6 +564,7 @@ export default {
          form: {
             year: {required},
             color: {required},
+            volume: {required},
             mileage: {
                required,
                maxValue: maxValue(this.form.is_new ? 500 : 100000)
@@ -558,9 +576,11 @@ export default {
             },
 
             price: {required},
-            region_id: {required: requiredIf(function () {
-               return !this.user.autosalon
-            })},
+            region_id: {
+               required: requiredIf(function () {
+                  return !this.user.autosalon
+               })
+            },
             saved_images: {required, minLength: minLength(3)}
          }
       }
@@ -640,6 +660,7 @@ export default {
             .toggle_container {
                gap: 8px !important;
             }
+
             .price_item {
                padding: 0 8px;
             }
@@ -647,5 +668,6 @@ export default {
       }
 
 
-   }}
+   }
+}
 </style>

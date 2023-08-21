@@ -124,6 +124,7 @@
                      :disableThumbs="true"
                      :onSlideChange="changeLightboxSlide"/>
                </template>
+
                <transition-group name="fade">
                   <template v-if="(showLightbox && isMobileBreakpoint) || (!isMobileBreakpoint && showImagesSlider)">
                      <div class="blur-bg" :key="0">

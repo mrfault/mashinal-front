@@ -38,7 +38,7 @@
                     class="ma-announcements__body--row__inner">
                   <template v-for="(announcement,index) in myAnnouncements">
                      <div
-                        v-if="activeTab == null || activeTab == announcement.status"
+
                         class="ma-announcements__body--row__inner--item-plate"
                      >
                         <grid-item
@@ -77,7 +77,6 @@
                <div v-else-if="allMyPlates.length" class="ma-announcements__body--row__inner">
                   <template v-for="(item,index) in allMyPlates">
                      <div
-                        v-if="activeTab == null || activeTab == item.status"
                         class="ma-announcements__body--row__inner--item-plate"
                      >
                         <plates-grid-item
@@ -151,6 +150,11 @@ export default {
             {
                id: 7,
                title: 'timed_out',
+               link: "/",
+            },
+            {
+               id: 0,
+               title: 'rejected_many',
                link: "/",
             },
          ],

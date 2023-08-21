@@ -36,12 +36,15 @@
 
                      <car_form v-if="form.announce_type.title === 'cars'" :announcement="announcement"
                                :isReady="isReady"
+                               @navigationProgress="navigationData.find((nav) => nav.id === $event.id).isActive = $event.status"
                                @getForm="getCarForm($event)" @done="submitShow = $event"/>
                      <moto_form v-if="form.announce_type.title === 'moto'" :announcement="announcement"
                                 :isReady="isReady"
+                                @navigationProgress="navigationData.find((nav) => nav.id === $event.id).isActive = $event.status"
                                 @getForm="getMotoForm($event)" @done="submitShow = $event"/>
                      <part_form v-if="form.announce_type.title === 'parts'" :announcement="announcement"
                                 @changeType="onChangePartType($event)"
+                                @navigationProgress="navigationData.find((nav) => nav.id === $event.id).isActive = $event.status"
                                 :isReady="isReady" @getForm="getPartForm($event)" @done="submitShow = $event"/>
                      <registration_mark v-if="form.announce_type.title === 'registration_marks'" :isReady="isReady"
                                         @getForm="getRegistrationMarksForm($event)"/>
@@ -234,7 +237,7 @@ export default {
          announceTitle: "",
          navigationData: [
             {
-               id: 1, title: "Elan məlumatları", isActive: true
+               id: 1, title: "Elan məlumatları", isActive: false
             },
             {
                id: 2, title: "Elanın təsviri", isActive: false
@@ -302,9 +305,9 @@ export default {
       },
       async getCarForm(form) {
          try {
-            const newForm = {...form, add_monetization: this.form.add_monetization};
             const formData = new FormData()
-            formData.append('data', JSON.stringify(newForm))
+            formData.append('data', JSON.stringify(form))
+            formData.append('add_monetization', this.form.add_monetization)
             const res = await this.carsPost(formData);
             if (res?.data?.redirect_url) {
                this.handlePayment(res, false, this.$t('car_added'), 'v2')
@@ -324,11 +327,10 @@ export default {
       },
       async getMotoForm(form) {
          try {
-            const newForm = {...form, add_monetization: this.form.add_monetization};
             const formData = new FormData()
-            formData.append('data', JSON.stringify(newForm))
+            formData.append('data', JSON.stringify(form))
+            formData.append('add_monetization', this.form.add_monetization)
             const res = await this.motoPost(formData);
-
             if (res?.data?.redirect_url) {
                this.handlePayment(res, false, this.$t('car_added'), 'v2')
                this.$router.push(this.$localePath('/profile/announcements'))
@@ -342,15 +344,16 @@ export default {
 
                });
             }
+
          } catch (e) {
          }
       },
 
       async getRegistrationMarksForm(form) {
          try {
-            const newForm = {...form, add_monetization: this.form.add_monetization};
             const formData = new FormData()
-            formData.append('data', JSON.stringify(newForm))
+            formData.append('data', JSON.stringify(form))
+            formData.append('add_monetization', this.form.add_monetization)
             const res = await this.plateNumbersPost({is_mobile: false, formData});
             if (res?.redirect_url) {
                this.handlePayment(res, false, this.$t('car_added'), 'v2')
@@ -372,7 +375,21 @@ export default {
          try {
             const formData = new FormData()
             formData.append('data', JSON.stringify(form))
-            await this.partsPost(formData);
+            formData.append('add_monetization', this.form.add_monetization)
+            const res = await this.partsPost(formData);
+            if (res?.data?.redirect_url) {
+               this.handlePayment(res, false, this.$t('car_added'), 'v2')
+               this.$router.push(this.$localePath('/profile/announcements'))
+            } else {
+               this.$router.push(this.$localePath('/profile/announcements'), () => {
+                  this.updatePaidStatus({
+                     type: 'success',
+                     text: this.$t('announcement_paid'),
+                     title: this.$t('success_payment')
+                  });
+
+               });
+            }
             this.$router.push(this.$localePath('/profile/announcements'))
          } catch (e) {
          }
@@ -440,6 +457,7 @@ export default {
    watch: {
       'form.announce_type'() {
          this.submitShow = false
+         this.navigationData.forEach((nav) => nav.id !== 4 && (nav.isActive = false))
          switch (this.form.announce_type.title) {
             case "cars":
                this.announceTitle = this.$t('vehicle_info')
@@ -455,7 +473,18 @@ export default {
             default:
                this.announceTitle = this.$t('place_an_ad')
          }
+      },
+      authForm: {
+         deep: true,
+         handler() {
+            const accControl = this.loggedIn ? ['name',
+               'email'].every((key) => this.authForm[key]) : ['name',
+               'email',
+               'phone'].every((key) => this.authForm[key])
+            this.navigationData.find((nav) => nav.id === 4).isActive = accControl
+         }
       }
+
    },
    validations: {
       authForm: {
@@ -760,7 +789,10 @@ export default {
       }
 
       .form_navigation {
+         position: sticky;
+         top: 188px;
          min-width: 300px;
+         height: min-content;
          flex-grow: 1;
 
          ul {

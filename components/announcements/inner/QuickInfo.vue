@@ -56,7 +56,7 @@
             :class="['quick-info__contact', { 'cursor-pointer': !!contact.link }]"
             @click.stop="handleContactClick"
          >
-            <div :class="['quick-info__contact-img', { 'is-online': contact.user.is_online }]">
+            <div :class="['quick-info__contact-img', { 'is-online': contact?.user?.is_online }]">
                <img :src="contact.img" alt="user_logo"/>
             </div>
 
@@ -65,8 +65,9 @@
 
                <address v-if="announcement.status !== 3 && getAddress">{{ getAddress }}</address>
 
-               <p class="text-red" v-else>{{ $t('sold') }}</p>
+               <p class="text-red" v-else-if="announcement.status === 3">{{ $t('sold') }}</p>
 
+<!--               <pre>{{contact}}</pre>-->
                <nuxt-link
                   :to="contact.link"
                   v-if="
@@ -81,7 +82,6 @@
                   <span v-else-if="announcement.is_auto_salon || announcement.is_external_salon">
                      {{ $t('go_to_salon') }}
                   </span>
-
 
                   <span v-else>{{ $t('other_announcements_of_user') }}</span>
 <!--                  <pre>{{announcement.is_auto_salon}} - {{ announcement.is_external_salon }}</pre>-->
@@ -102,12 +102,10 @@
                <chat-button :announcement="announcement" has-after-login />
             </div>
 
-<!--            v-if="!isMobileBreakpoint"-->
-
             <div class="col-7 mt-2 mt-lg-3" >
                <call-button-multiple
                   v-if="announcement?.is_auto_salon"
-                  :phones="announcement?.user?.autosalon?.phones"
+                  :phones="announcement?.user?.auto_salon?.phones"
                   :announcement-id="announcement?.id_unique"
                />
 
@@ -161,8 +159,7 @@
 <!--         </div>-->
 <!--      </template>-->
 
-      <template
-         v-if="(((announcement.status == 1 || announcement.has_monetization)) || needToPay)">
+      <template v-if="(((announcement.status == 1 || announcement.has_monetization)) || needToPay)">
 <!--         <hr class="mt-3"-->
 <!--             v-if="needToPay ||-->
 <!--             (!this.isMobileBreakpoint && announcement.has_monetization && $auth.loggedIn) ||-->
@@ -182,49 +179,55 @@
          </div>
       </template>
 
-      <div class="quick-info__item" v-if="brief">
-         <monetization-button
-            class="h-52"
-            :announcement="announcement"
-            @openModal="openModal"
-         />
+<!--      <div class="quick-info__item" v-if="brief">-->
+<!--         <monetization-button-->
+<!--            class="h-52"-->
+<!--            :announcement="announcement"-->
+<!--            @openModal="openModal"-->
+<!--         />-->
 
-         <div class="btns">
-            <add-favorite
-               class="h-52"
-               :template="'btn'"
-               :text="'Seçilmiş et'"
-               :announcement="announcement"
-            />
+<!--         <div class="btns">-->
+<!--            <add-favorite-->
+<!--               class="h-52"-->
+<!--               :template="'btn'"-->
+<!--               :text="$t('add_favorite')"-->
+<!--               :announcement="announcement"-->
+<!--            />-->
 
-            <add-comparison
-               v-if="type !== 'plates'"
-               class="h-52"
-               :template="'btn'"
-               :text="$t('compare')"
-               :id="announcement.id_unique"
-            />
+<!--            <add-comparison-->
+<!--               v-if="type !== 'plates' && type !== 'parts'"-->
+<!--               class="h-52"-->
+<!--               :template="'btn'"-->
+<!--               :text="$t('compare')"-->
+<!--               :id="announcement.id_unique"-->
+<!--            />-->
 
-            <edit-button
-               :announcement="announcement"
-               :type="type"
-               :className="'white h-52'"
-               v-if="showEditButton(announcement)"
-               @openModal="openModal"
-            />
-         </div>
-      </div>
+<!--            <edit-button-->
+<!--               :announcement="announcement"-->
+<!--               :type="type"-->
+<!--               :className="'white h-52'"-->
+<!--               v-if="showEditButton(announcement)"-->
+<!--               @openModal="openModal"-->
+<!--            />-->
+<!--         </div>-->
+<!--      </div>-->
 
-      <div class="btns" v-else>
+      <monetization-button
+         class="h-52 mb-3"
+         :announcement="announcement"
+         @openModal="openModal"
+      />
+
+      <div class="btns">
          <add-favorite
             class="h-52"
             :template="'btn'"
-            :text="'Seçilmiş et'"
+            :text="$t('add_favorite')"
             :announcement="announcement"
          />
 
          <add-comparison
-            v-if="type !== 'plates'"
+            v-if="type !== 'plates' && type !== 'parts'"
             class="h-52"
             :template="'btn'"
             :text="$t('compare')"
@@ -322,7 +325,7 @@
          ...mapGetters(['announcement']),
 
          getAddress() {
-            return this.announcement.is_auto_salon ? this.announcement.user?.autosalon?.address : this.announcement.is_part_salon ? this.announcement.user?.part_salon?.address : this.announcement.address
+            return this.announcement.is_auto_salon ? this.announcement.user?.auto_salon?.address : this.announcement.is_part_salon ? this.announcement.user?.part_salon?.address : this.announcement.address
          },
 
          contact() {
@@ -364,6 +367,7 @@
             }
          },
          openModal() {
+            console.log('sadsad')
             this.showModal = true
          },
          closeModal() {

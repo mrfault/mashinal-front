@@ -11,8 +11,7 @@
                   <h2 class="alco-form__title mb-5">
                      <span>{{ $t('alcometer') }}</span>
                   </h2>
-<!--<pre>{{drinksCounts}}</pre>-->
-<!--<pre>{{form}}</pre>-->
+
                   <div class="alco-form__inner">
                      <form-select
                         v-model="form.drinkType1"
@@ -572,6 +571,9 @@
          },
 
          calculate() {
+            // this.$v.form.$touch();
+            // if (this.$v.form.$error) return;
+
             this.showGraphs = true;
             try {
                let r
@@ -624,10 +626,12 @@
                this.timeToDrive = rul
                // if (Cor > 8) f.rul.value = f.rul.value + '';
 
-               // if (this.showGraphs && !this.isMobileBreakpoint) {
-               //    setTimeout(() => {
-               //       window.scrollTo({top: 500, behavior: 'smooth'})
-               //    }, 1000)
+               if (this.isMobileBreakpoint) {
+                  setTimeout(() => {
+                     console.log('sdsad')
+                     this.scrollTo('.alco-form.result', [-80, 0]);
+                  }, 100)
+               }
                // } else if (this.showGraphs && this.isMobileBreakpoint) {
                //    setTimeout(() => {
                //       window.scrollTo({top: 2500, behavior: 'smooth'})
@@ -659,6 +663,9 @@
 
          submit() {
             this.$v.form.$touch();
+            setTimeout(() => {
+               this.scrollTo('.invalid', [-75, -190]);
+            }, 100);
             if (this.$v.$invalid) return;
 
             this.calculate();
@@ -856,7 +863,7 @@
 
          &.ru {
             .ma-alco-card__list {
-               margin-top: 50px;
+               margin-top: 80px;
                flex-wrap: wrap;
 
                &-item {
@@ -866,6 +873,10 @@
                      width: 100%;
                      text-align: center;
                      margin-bottom: 20px;
+
+                     h5 {
+                        justify-content: center;
+                     }
                   }
                }
             }
@@ -911,7 +922,7 @@
                      min-width: 20px;
                      max-width: 20px;
                      margin-left: 7px;
-                     cursor: pointer;
+                     //cursor: pointer;
                   }
                }
 
@@ -923,6 +934,10 @@
                }
             }
          }
+      }
+
+      .ma-alcometer__promil--title {
+         font-size: 18px;
       }
    }
 
@@ -940,6 +955,14 @@
                   path {
                      fill: #697586;
                   }
+               }
+            }
+
+            &__group {
+               &-delete {
+                  color: #9AA4B2;
+                  border-color: transparent;
+                  background-color: #121926;
                }
             }
 
@@ -1018,7 +1041,7 @@
 
          .ma-alco-card {
             &__list {
-               margin-top: 50px;
+               margin-top: 50px !important;
                flex-wrap: wrap;
 
                &-item {
@@ -1090,6 +1113,18 @@
             }
          }
       }
+
+      .dark-mode {
+         .alcometer-page {
+            .select-menu_label {
+               background-color: #1b2434 !important;
+            }
+
+            .alco-form__group-delete {
+               background-color: #1b2434 !important;
+            }
+         }
+      }
    }
 
    @media (max-width: 530px) {
@@ -1118,7 +1153,7 @@
 
          .ma-alco-card {
             &__list {
-               margin-top: 30px;
+               margin-top: 30px !important;
             }
          }
       }
@@ -1140,7 +1175,7 @@
 
          .ma-alco-card {
             &__list {
-               margin-top: 20px;
+               margin-top: 20px !important;
 
                &-item {
                   padding: 16px;
@@ -1165,6 +1200,15 @@
          .ma-alco-card {
             &__list {
                margin-top: 10px;
+            }
+         }
+
+         .alco-form {
+            &.ru {
+               .ma-alco-card__list {
+                  margin-top: 0 !important;
+                  flex-wrap: wrap;
+               }
             }
          }
       }

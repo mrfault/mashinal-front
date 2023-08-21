@@ -2,7 +2,7 @@
    <button
       v-if="template === 'icon'"
       class="btn-transparent btn-favorite"
-      :class="{'btn-favorite-active': isAdded, 'white-border' : whiteBorder}"
+      :class="{'!btn-favorite-active': isAdded, 'white-border' : whiteBorder}"
       @click.stop="handleClick()"
    />
 
@@ -66,7 +66,6 @@
                   'favorite' + this.announcement.id_unique,
                )
             } else {
-               console.log('this.announcement.id_unique', this.announcement.id_unique)
                await this.addToFavorites(this.announcement.id_unique);
                await this.getNotViewedFavorites();
                if (this.type === 'announcement') await this.$store.dispatch('getAnnouncementInnerV2', this.announcement.id);
@@ -81,8 +80,7 @@
                         },
                      },
                   })
-               }
-               else {
+               } else {
                   this.$toasted.success(this.$t('my_favorites_removed'))
                }
             }
@@ -145,6 +143,8 @@
          font-size: 14px;
          color: #364152;
          margin-right: 5px;
+         text-wrap: wrap;
+         text-align: center;
       }
 
       button {

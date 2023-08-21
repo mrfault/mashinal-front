@@ -281,13 +281,13 @@ export default {
       salonFilter() {
          setTimeout(() => {
             if (this.officialSalons?.length) {
-               this.scrollTo('.officialDealerships', [60, 60]);
+               this.scrollTo('.officialDealerships', [-40, -90]);
             } else if (this.salonsFiltered?.filter(item => item.announcement_count > 0)?.filter(a => !a.is_official)?.length) {
-               this.scrollTo('.autosalon', [60, 60]);
+               this.scrollTo('.autosalon', [-40, -70]);
             } else {
-               this.scrollTo('.salon-filters-form', [-50, -50]);
+               this.scrollTo('.salon-filters-form', [-50, -10]);
             }
-         }, 1000);
+         }, 200);
 
          this.showSearch = false
       }
@@ -415,6 +415,13 @@ export default {
             &:first-child {
                background-color: #121926 !important;
             }
+
+
+            &.autosalon {
+               .no-results {
+                  background-color: transparent;
+               }
+            }
          }
       }
    }
@@ -425,7 +432,7 @@ export default {
 
          .pages-salons {
             &.list-view {
-               padding-bottom: 32px;
+               //padding-bottom: 32px;
 
                .container {
                   &:last-child {

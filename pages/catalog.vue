@@ -1,14 +1,16 @@
 <template>
    <div class="pages-catalog">
       <div class="container">
-<!--         <breadcrumbs :crumbs="crumbs">-->
-<!--            <share-it type="publish" v-if="$route.params.body"/>-->
-<!--         </breadcrumbs>-->
+         <breadcrumbs
+            :crumbs="crumbs"
+            v-if="$route.params.body"
+         />
 
          <Banner
             class="mb-5"
             :bg="'/img/salon-bg.png'"
             :title="$t('autocatalog')"
+            v-else
          >
             <template #content>
                <breadcrumbs class="light-color" :crumbs="crumbs"/>
@@ -241,6 +243,8 @@
 
 <style lang="scss">
    .pages-catalog {
+      padding-bottom: 120px;
+
       .cap {
          margin: 56px 0 32px 0;
 

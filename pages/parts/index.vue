@@ -7,12 +7,13 @@
             :title="$t('parts')"
          >
             <template #content>
-               <breadcrumbs :crumbs="crumbs"/>
+               <breadcrumbs :crumbs="crumbs" />
             </template>
          </Banner>
 
          <part-search-form
             :pending="pending"
+            :sorting="sorting"
             @pending="pending = true"
             @submit="searchParts"
          />
@@ -22,7 +23,6 @@
             :announcements="partsMonetized"
             :pending="pending"
             :has-container="false"
-            @change-page="changePage"
          >
             <template #cap>
                <Cap :className="'mb40'">
@@ -50,7 +50,6 @@
             :pending="pending"
             :paginate="parts?.meta"
             :has-container="false"
-            @change-page="changePage"
          >
             <template #cap>
                <Cap :className="'mb40'">
@@ -58,31 +57,25 @@
                      <h3>{{ $t('announcements') }}</h3>
                   </template>
 
-                  <!--            <template #right>-->
-                  <!--               <form-select-->
-                  <!--                  :label="$t('sorting_2')"-->
-                  <!--                  :options="sortItems"-->
-                  <!--                  :clearPlaceholder="true"-->
-                  <!--                  :clear-option="false"-->
-                  <!--                  :allowClear="false"-->
-                  <!--                  v-model="sorting"-->
-                  <!--               />-->
-                  <!--            </template>-->
+                  <template #right>
+                     <form-select
+                        :label="$t('sorting_2')"
+                        :options="sortItems"
+                        :clearPlaceholder="true"
+                        :clear-option="false"
+                        :allowClear="false"
+                        :objectInValue="true"
+                        v-model="sorting"
+                     />
+                  </template>
                </Cap>
             </template>
          </grid>
 
-         <!-- <div class="infinityLoader">
-           Loading...
-         </div> -->
-
-<!--         <infinite-loading-->
-<!--            :key="refreshInfinity"-->
-<!--            :action-data="JSON.parse(this.$route.query.parts_filter || '{}')"-->
-<!--            action="getInfiniteMainPartsPageSearchWithoutMutate"-->
-<!--            getter="partAnnouncements"-->
-<!--            :per-page="40"-->
-<!--         />-->
+         <no-results
+            :type="'car'"
+            v-else
+         />
 
 <!--         <HandleIds :type="'parts'" :items="partAnnouncements.data" />-->
       </div>
@@ -121,12 +114,12 @@
 
       data() {
          return {
-            refreshInfinity: 0,
-            sorting: 'created_at_desc',
+            // refreshInfinity: 0,
+            sorting: { key: 'created_at', value: 'desc', name: this.$t('show_by_date') },
             sortItems: [
-               { id: 'created_at_desc', name: this.$t('show_by_date') },
-               { id: 'price_asc', name: this.$t('show_cheap_first') },
-               { id: 'price_desc', name: this.$t('show_expensive_first') }
+               { key: 'created_at', value: 'desc', name: this.$t('show_by_date') },
+               { key: 'price', value: 'asc', name: this.$t('show_cheap_first') },
+               { key: 'price', value: 'desc', name: this.$t('show_expensive_first') }
             ]
          }
       },
@@ -160,31 +153,28 @@
          //    this.$store.dispatch('fetchPartsAnnouncements', { type: 'parts' });
          // }
          //window.addEventListener('scroll', this.getNextAnnouncements)
+
+         // if (this.$route.query.parts_filter) {
+         //    let filters = JSON.parse(this.$route.query.parts_filter)
+         //
+         //    this.sorting.key = filters.sort_by;
+         //    this.sorting.value = filters.sort_order;
+         // }
       },
 
       methods: {
          // ...mapActions(['fetchAllAnnouncementsHome']),
 
          async searchParts() {
-            this.refreshInfinity++;
-            this.mutate({property: 'temporaryLazyData', value: {}});
-            const data = JSON.parse(this.$route.query.parts_filter || '{}')
+            // this.refreshInfinity++;
+            // this.mutate({ property: 'temporaryLazyData', value: {} });
             this.pending = true
-            await this.$store.dispatch('getInfiniteMainPartsPageSearch', {body: data})
-            await this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'parts', data: data });
+            const data = JSON.parse(this.$route.query.parts_filter || '{}')
+            await this.$store.dispatch('getInfiniteMainPartsPageSearch', { body: data })
+            await this.$store.dispatch('fetchPartMonetized', { body: data });
             this.pending = false
-            await this.$store.dispatch('parts/setSearchActive', true)
-            this.scrollTo('.announcements-content', [0, -30])
-         },
-
-         async changePage(page = 1) {
-            page = this.$route.query.page || 1;
-
-            this.pending = true;
-            await this.$store.dispatch('fetchPartsAnnouncements', page);
-            this.pending = false;
-
-            this.scrollTo('.announcements-content', [-125, -125]);
+            // await this.$store.dispatch('parts/setSearchActive', true)
+            this.scrollTo('.announcements-grid', [0, -140])
          }
       },
 
@@ -206,16 +196,6 @@
             return [{ name: this.$t('all_parts') }]
          },
       },
-
-      // watch: {
-      //    sorting(val) {
-      //       if (val === '') {
-      //          this.$store.dispatch('getInfiniteMainPartsPageSearch', { params: { sorting: 'created_at_desc' }});
-      //       } else {
-      //          this.$store.dispatch('getInfiniteMainPartsPageSearch', { params: {sorting: this.sorting} });
-      //       }
-      //    }
-      // },
 
       beforeDestroy() {
          // this.mutate({property: 'temporaryLazyData', value: {}});

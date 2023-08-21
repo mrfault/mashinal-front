@@ -44,14 +44,12 @@
 
          gotoRoute() {
             if (this.$auth.loggedIn) {
-               if (this.announcement.user_id === this.$auth.user.id && this.announcement.status != 3) {
+               if (this.announcement.user.id === this.$auth.user.id && this.announcement.status != 3) {
                   this.$router.push(this.path)
                } else {
                   this.$toasted.error('Sizin düzəliş etmə hüququnuz yoxdur')
                }
-            }
-            //--------------------------
-            else {
+            } else {
                // this.changeEditPath(this.$route.params.id);
                // this.changeEditing(true);
                // this.changeEditPostAuthor(this.announcement.user_id);

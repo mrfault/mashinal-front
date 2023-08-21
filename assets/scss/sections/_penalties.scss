@@ -168,7 +168,7 @@
                      justify-content: space-between;
 
                      .btn--light-green, .protocol-details-component {
-                        width: calc(50% - 8px);
+                        min-width: calc(50% - 8px);
                      }
                   }
                }
@@ -772,6 +772,14 @@
       }
    }
 
+}
+
+.dark-mode {
+   .ma-penalties__card--body__penalties--item {
+      h6 {
+         color: #fff;
+      }
+   }
 }
 
 
