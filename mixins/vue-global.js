@@ -70,7 +70,6 @@ Vue.use({
 
                if (typeof offset === 'object') offset = this.isMobileBreakpoint ? offset[0] : offset[1];
 
-               console.log('el', el)
                // offset = (this.isMobileBreakpoint ? -60 : -141);
                this.$scrollTo(el, duration, {offset, container});
             },
@@ -126,9 +125,10 @@ Vue.use({
                return (brand || '') + ' ' + (model || '');
             },
             getAnnouncementContact(item) {
+               console.log('item', item)
                let img = item?.user?.avatar,
-                  name = item?.user?.full_name,
-                  link = false;
+                   name = item?.user?.full_name,
+                   link = false;
 
                if (item?.is_auto_salon) {
                   img = item?.user?.is_auto_salon?.logo;

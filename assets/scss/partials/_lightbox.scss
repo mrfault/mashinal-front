@@ -519,6 +519,18 @@
          transition: 0s;
          opacity: 0;
       }
+
+      .images-slider {
+         .quickInfoPriceWrapper {
+            .quickInfoPrice {
+               &__main {
+                  &-item {
+                     color: #CDD5DF !important;
+                  }
+               }
+            }
+         }
+      }
    }
 
    &_announcement-info {

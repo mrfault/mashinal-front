@@ -72,7 +72,7 @@ export const AnnouncementDataMixin = {
       engine() {
          switch (this.type) {
             case 'cars':
-               return this.catalog.main['  ']['moshchnost'] + this.$t('char_h_power') + ' / ' + this.$t('engine_values')[this.catalog.main['  ']['engine']];
+               return this.catalog.main['  ']['moshchnost'] + ' ' + this.$t('char_h_power') + ' / ' + this.$t('engine_values')[this.catalog.main['  ']['engine']];
             case 'moto':
                if (!this.motoOptions.config) return false;
                return this.$t(getName(this.announcement.engine_type_id, this.motoOptions.config.engine.sell_values[this.motoTypeKey]));

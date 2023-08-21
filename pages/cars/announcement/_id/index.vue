@@ -10,13 +10,13 @@
                      <gallery>
                         <quick-info type="cars" brief />
 
-                        <announcement-specs type="cars" brief />
+<!--                        <announcement-specs type="cars" brief />-->
                      </gallery>
                   </client-only>
 
                   <thumbs-gallery />
 
-                  <announcement-specs type="cars"/>
+                  <announcement-specs type="cars" :title="$t('announcement_info')" brief />
 
                   <comment v-if="announcement.comment" :comment="announcement.comment" />
 
