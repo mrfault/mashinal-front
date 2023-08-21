@@ -263,12 +263,15 @@ export default {
    computed: {
       getType() {
          let item = this.announcement
+
+         console.log('item', item)
+
          if (item.type === "motorcycle") return 'Motorcycle'
-         else if (item.scooter_brand) return 'Scooter'
+         else if (item.type === "scooter") return 'Scooter'
          else if (item.type === "moto_atv") return 'Atv'
          else if (item.commercial_brand) return 'Commercial'
-         else if (item.car_catalog) return 'Car'
-         else if (item.title) return 'Part'
+         else if (item.type === "light_vehicle") return 'Car'
+         else if (item.type === "part" || item.title) return 'Part'
          return ''
       },
 
