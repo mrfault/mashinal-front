@@ -1,6 +1,6 @@
 <template>
    <div class="car-complects">
-      <h2 class="car-complects__title">Digər parametrlər</h2>
+      <h2 class="car-complects__title">{{ $t('other_parameters') }}</h2>
 
       <template v-if="tagSellOptions.length">
 <!--         <collapse-content-->
