@@ -324,7 +324,7 @@ export default {
          hasAsanLoginCopy: false,
          redirectPath: 'garage',
          form: {
-            car_number: '11cs123',
+            car_number: '',
             tech_id: '',
          },
       }
@@ -362,6 +362,14 @@ export default {
       this.form = {
          car_number: '',
          tech_id: '',
+      }
+   },
+   watch:{
+      'form.tech_id':{
+         deep: true,
+         handler(newVal){
+            this.form.tech_id = newVal.toUpperCase();
+         }
       }
    }
 }

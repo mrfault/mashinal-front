@@ -44,7 +44,7 @@ export default {
                "pitch": 0,
                "hfov": 100,
                "avoidShowingBackground": false,
-               "backgroundColor": [0,0,0],
+               "backgroundColor": [0,0,0]
             });
 
             clearInterval(interval);

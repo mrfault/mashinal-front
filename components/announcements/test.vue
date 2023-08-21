@@ -156,26 +156,27 @@ export default {
    computed: {
       ...mapGetters({
          user: 'user',
-         bankingCards: 'bankingCards/bankingCards'
+         bankingCards: 'bankingCards/bankingCards',
+         monetizationPriceList: 'monetizationPriceList',
       }),
 
       totalBalance() {
-         let balance = this.user ? this.user.balance : 0;
-         if (this.user && this.user?.id === this.announcement?.user_id) {
-            if (this.announcement.is_autosalon)
-               return this.$sum(balance, this.announcement.user.autosalon.balance)
-            else if (this.announcement.is_part_salon)
-               return this.$sum(balance, this.announcement.user.part_salon.balance)
-            else if (this.announcement.is_external_salon)
-               return this.$sum(balance, this.announcement.user.external_salon.balance)
+         let balance = this.user ? this.user?.balance : 0;
+         if (this.user && this.user?.id === this.announcement?.user.id) {
+            if (this.announcement?.is_auto_salon)
+               return this.$sum(balance, this.announcement?.user?.auto_salon?.balance)
+            else if (this.announcement?.is_part_salon)
+               return this.$sum(balance, this.announcement?.user?.part_salon?.balance)
+            else if (this.announcement?.is_external_salon)
+               return this.$sum(balance, this.announcement?.user?.external_salon?.balance)
             return balance
          } else {
-            if (this.user.autosalon)
-               return this.$sum(balance, this.user.autosalon.balance)
-            else if (this.user.part_salon)
-               return this.$sum(balance, this.user.part_salon.balance)
-            else if (this.user.external_salon)
-               return this.$sum(balance, this.user.external_salon.balance)
+            if (this.user?.autosalon)
+               return this.$sum(balance, this.user?.auto_salon?.balance)
+            else if (this.user?.part_salon)
+               return this.$sum(balance, this.user?.part_salon?.balance)
+            else if (this.user?.external_salon)
+               return this.$sum(balance, this.user?.external_salon?.balance)
             return balance
          }
 
@@ -294,33 +295,32 @@ export default {
       handlePaymentType(id) {
          this.paymentMethod = 'card';
          this.paymentType = id;
-      }
-   },
-
-   created() {
-      this.$axios.$get('/monetization/price/list').then((res) => {
+      },
+      async getPriceList() {
+         const res = await this.$store.dispatch('getMonetizationPriceList')
          this.priceList = res;
          this.price.value = res[0].price;
          this.day.value = res[0].days;
+      },
+   },
 
-         /*      this.price.min = this.pricesForPlan[0]
-               this.price.value = this.pricesForPlan[2]
-               this.price.max = this.pricesForPlan[this.pricesForPlan.length - 1]*/
-      })
+   created() {
+      this.getPriceList()
    }
 }
 </script>
 
 <style lang="scss">
 .btn--red-opacity-2 {
-   svg{
+   svg {
       margin-left: 9px;
    }
+
    &.disabled {
       cursor: context-menu;
       opacity: 50%;
       pointer-events: all;
-      @media (min-width: 992px){
+      @media (min-width: 992px) {
          .btn--red-opacity-2:hover {
             color: #fff;
             border-radius: 8px;

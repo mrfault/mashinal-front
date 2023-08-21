@@ -7,8 +7,8 @@
          :toggle="showModal"
          @close="closeAndReset"
       >
-         <div :class="{'y-scroll': (form.modification && !isMobileBreakpoint)}" class="ma-new-automobile__content">
-            <p v-if="!isEditing" class="ma-new-automobile__desc">{{ $t('add_new_auto_desc') }}</p>
+         <div :class="{'y-scroll': (form.modification && !isMobileBreakpoint)}" class="ma-new-automobile__content" id="maNewAutomobileContent">
+            <p v-if="!isEditing && !form.brand" class="ma-new-automobile__desc">{{ $t('add_new_auto_desc') }}</p>
             <div v-if="!isEditing" class="row">
                <!--               brand-->
                <div v-if="brandsList && brandsList.length" class="col-12 col-md-6 col-lg-12">
@@ -87,7 +87,7 @@
                      :options="modifications"
                      has-search
                      showMenuUp
-                     @change="resetValidation"
+                     @change="setModification"
                   />
                </div>
 
@@ -276,16 +276,16 @@ export default {
             modelSlug: null,
          },
          form1: {
-            brand: 129,
-            model: 488,
-            generation: 4787,
+            brand: 117,
+            model: 701,
+            generation: 2759,
             generationType: null,
-            body: 12,
-            modification: 47708,
+            body: 2,
+            modification: 43046,
             vin: null,
-            car_number: null,
-            brandSlug: "bmw",
-            modelSlug: "3-series"
+            car_number: "77 - CF - 131",
+            brandSlug: "mercedes-benz",
+            modelSlug: "e-"
          },
          list: {
             generation: [],
@@ -428,6 +428,7 @@ export default {
                generation: this.form.generation
             })
          this.pending = false;
+         document.getElementById("maNewAutomobileContent").scrollTo({top:100, behavior: "smooth"});
       },
       async setBody(id) {
          this.$v.$reset();
@@ -442,6 +443,12 @@ export default {
             this.pending = false;
          }
 
+         document.getElementById("maNewAutomobileContent").scrollTo({top:100, behavior: "smooth"});
+
+      },
+      setModification(){
+         this.resetValidation();
+         document.getElementById("maNewAutomobileContent").scrollTo({bottom: -100, behavior: "smooth"});
       },
 
       power(item) {
@@ -455,19 +462,16 @@ export default {
       async addCar() {
          this.$v.$touch();
          if (this.pending || this.$v.$error) {
-            if (!this.form.car_number && !this.form.vin) {
+            if (!this.form.car_number && !this.form.vin && this.form.modification) {
                this.showVinOrCarNumberError = true;
             }
             this.pending = false;
             return;
          } else {
             this.showVinOrCarNumberError = false;
-            console.log("this.pending || this.$v.$error else")
             try {
-               console.log("this.pending || this.$v.$error else try")
                this.pending = true;
                if (this.isEditing) {
-                  console.log("this.pending || this.$v.$error else try this.isEditing")
 
                   const res = await this.$store.dispatch('UserCabinetCarsEdit', {
                      id: this.announcement.id,
@@ -480,7 +484,6 @@ export default {
                      car_number: this.form.car_number.replace(/-|[ ]/g, '')
                   });
                } else {
-                  console.log("this.pending || this.$v.$error else try this.isEditing")
 
                   const res = await this.$store.dispatch('UserCabinetCarsAdd', {
                      brand_id: this.form.brand,
@@ -497,7 +500,10 @@ export default {
                this.$emit('carAdded', true)
                this.$nuxt.refresh();
                this.$toasted.success(this.$t('info_saved'));
+               this.$toasted.error(this.$t('info_saved'));
+
             } catch (error) {
+
                if (error.response && error.response.status) {
                   if (error.response.status == 422) {
                      this.$toasted.error(this.$t('given_data_is_not_matching_car_number'));
