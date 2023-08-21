@@ -87,7 +87,8 @@
                               <p>{{ $t("contacts_registration_info") }}</p>
                            </div>
 
-                           <div class="service_packages">
+                           <div class="service_packages"
+                                v-if="form.announce_type.title === 'cars' || form.announce_type.title === 'moto'">
                               <div
                                  :class="['package', 'standard_package', form.add_monetization === 0 ? 'selected': '' ]"
                                  @click="form.add_monetization = 0">
@@ -351,12 +352,10 @@ export default {
 
       async getRegistrationMarksForm(form) {
          try {
-            const formData = new FormData()
-            formData.append('data', JSON.stringify(form))
-            formData.append('add_monetization', this.form.add_monetization)
-            const res = await this.plateNumbersPost({is_mobile: false, formData});
+            const res = await this.plateNumbersPost({is_mobile: false, form});
             if (res?.redirect_url) {
-               this.handlePayment(res, false, this.$t('car_added'), 'v2')
+               const response = {data: {...res}}
+               this.handlePayment(response, false, this.$t('car_added'), 'v2')
                this.$router.push(this.$localePath('/profile/announcements'))
             } else {
                this.$router.push(this.$localePath('/profile/announcements'), () => {
@@ -375,7 +374,6 @@ export default {
          try {
             const formData = new FormData()
             formData.append('data', JSON.stringify(form))
-            formData.append('add_monetization', this.form.add_monetization)
             const res = await this.partsPost(formData);
             if (res?.data?.redirect_url) {
                this.handlePayment(res, false, this.$t('car_added'), 'v2')
@@ -646,8 +644,8 @@ export default {
                         .sale_effect {
                            width: 100%;
                            position: absolute;
-                           top: 14px;
-                           left: 74px;
+                           top: 3%;
+                           right: -41%;
                            background-color: #D1E0FF;
                            display: flex;
                            align-items: center;

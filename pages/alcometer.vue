@@ -53,7 +53,7 @@
                            <div
                               class="alco-form__group-delete"
                               @click="deleteDrinks(1)"
-                           >Sil</div>
+                           >{{ $t('delete') }}</div>
                         </div>
 
                         <form-select
@@ -88,7 +88,7 @@
                            <div
                               class="alco-form__group-delete"
                               @click="deleteDrinks(2)"
-                           >Sil</div>
+                           >{{ $t('delete') }}</div>
                         </div>
 
                         <form-select
@@ -907,9 +907,11 @@
                   }
                }
 
+
                h5 {
                   display: flex;
                   align-items: center;
+                  justify-content: center;
                   white-space: nowrap;
                   font-weight: 400;
                   font-size: 14px;

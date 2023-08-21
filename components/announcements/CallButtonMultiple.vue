@@ -59,13 +59,40 @@
       },
 
       methods: {
+         // handleClick() {
+         //    if (this.callAtOnce) {
+         //       window.location.href = `tel:+${this.phone}`;
+         //       this.trackCall(2);
+         //    } else {
+         //       this.showPhone = true;
+         //       this.trackCall(1);
+         //    }
+         // },
+
          handleClick() {
+            /*    if (!this.showPhone) {
+                   this.showPhone = true;
+                   this.trackCall(1);
+                } else {
+                   window.location.href = `tel:+${this.phone}`;
+                   this.trackCall(2);
+                }*/
             if (this.callAtOnce) {
                window.location.href = `tel:+${this.phone}`;
                this.trackCall(2);
             } else {
                this.showPhone = true;
+               this.showSinglePhone = true;
                this.trackCall(1);
+
+               window.getManualClassifiedNumber(
+                  ringostat_announce,
+                  (number) => {
+                     console.log(number);
+                     this.singlePhone = number?.numberWithoutMask.replace('+','')
+
+                  }, 0, `00${this.phone}`
+               );
             }
          },
 
