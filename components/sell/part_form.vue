@@ -134,7 +134,8 @@
                :invalid="$v.form.height.$error"
             />
          </div>
-         <div class="divider" v-if="hasComponent('number_of_mounting_holes') || hasComponent('shine_width') || hasComponent('diameter')">
+         <div class="divider"
+              v-if="hasComponent('number_of_mounting_holes') || hasComponent('shine_width') || hasComponent('diameter')">
             <form-select
                v-if="hasComponent('number_of_mounting_holes')"
                :class="{form_error: $v.form.number_of_mounting_holes.$error}"
@@ -193,7 +194,7 @@
             />
             <!--            @change="announcement.price = $event ? $event + (form.currency.name?.[locale] || 'AZN') : 0"-->
             <div class="price_types">
-               <toggle-group :items="priceTypes" v-slot="{ item }" @change="form.currency = $event">
+               <toggle-group :items="priceTypes" v-slot="{ item }" @change="form.currency = $event.id">
                   <div class="price_item">
                      <p>{{ item.name[locale] }}</p>
                   </div>
@@ -207,8 +208,13 @@
             transparent
             @change="$event && (form.price = '')"
          />
-         <form-select v-if="Object.values(partFilters).length" :label="$t('region')" :options="partFilters?.regions"
+         <form-select v-if="Object.values(partFilters).length"
+                      :label="$t('region')"
+                      :options="partFilters?.regions"
                       v-model="form.region_id"
+                      :clear-placeholder="true"
+                      :clear-option="false"
+                      :new-label="false"
                       has-search
                       :invalid="$v.form.region_id.$error"
          />
@@ -383,7 +389,7 @@ export default {
       isReady() {
          this.$v.form.$touch()
          setTimeout(() => {
-            this.scrollTo('.form_error', [-50, -50])
+            this.scrollTo('.form_error', -190)
          });
          if (this.$v.form.$error) {
             this.$toasted.error(this.$t('required_fields'));

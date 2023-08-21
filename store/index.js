@@ -1580,20 +1580,12 @@ export const actions = {
 
    //SELL POSTS
    async plateNumbersPost({}, {is_mobile, form}) {
-      try {
          const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/plate-numbers/post?is_mobile=${is_mobile}`, form);
          return res;
-      } catch (e) {
-
-      }
    },
    async partsPost({}, form) {
-      try {
          const res = await this.$axios.$post(`/sell/part/post/publish`, form);
          return res;
-      } catch (e) {
-
-      }
    },
    async carsPost({}, form) {
          const res = await this.$axios.$post(`/sell/post/publish?is_mobile=false`, form);
