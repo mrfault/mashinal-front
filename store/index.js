@@ -242,7 +242,9 @@ const getInitialState = () => ({
    openDropdownId: null,
 
    //usercabinet
-   userCabinetCars: []
+   userCabinetCars: [],
+
+   monetizationPriceList: [],
 });
 
 export const state = () => getInitialState();
@@ -456,7 +458,10 @@ export const getters = {
 
 
 //   usercabinet
-   userCabinetCars: s => s.userCabinetCars
+   userCabinetCars: s => s.userCabinetCars,
+
+ //monetization
+   monetizationPriceList: s => s.monetizationPriceList,
 };
 
 const objectNotEmpty = (state, commit, property) => {
@@ -1580,28 +1585,20 @@ export const actions = {
 
    //SELL POSTS
    async plateNumbersPost({}, {is_mobile, form}) {
-      try {
          const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/plate-numbers/post?is_mobile=${is_mobile}`, form);
          return res;
-      } catch (e) {
-
-      }
    },
    async partsPost({}, form) {
-      try {
          const res = await this.$axios.$post(`/sell/part/post/publish`, form);
          return res;
-      } catch (e) {
-
-      }
    },
    async carsPost({}, form) {
-         const res = await this.$axios.$post(`/sell/post/publish?is_mobile=false`, form);
-         return res;
+      const res = await this.$axios.$post(`/sell/post/publish?is_mobile=false`, form);
+      return res;
    },
    async motoPost({}, form) {
-         const res = await this.$axios.$post(`/sell/moto/post/publish?is_mobile=false`, form);
-         return res;
+      const res = await this.$axios.$post(`/sell/moto/post/publish?is_mobile=false`, form);
+      return res;
 
    },
    async motoEdit({}, {id, isMobile, form}) {
@@ -1791,17 +1788,29 @@ export const actions = {
       const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/me/cars/${payload.id}/update?brand_id=${payload.brand_id}&model_id=${payload.model_id}&generation_id=${payload.generation_id}&car_type_id=${payload.car_type_id}&car_catalog_id=${payload.car_catalog_id}&vin=${payload.vin}&car_number=${payload.car_number}`);
    },
    async UserCabinetCarsGetAll({commit, state}, payload) {
-      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/me/cars`);
-      commit("mutate", {property: "userCabinetCars", value: res.data});
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/me/cars?page=${payload}`);
+      const newData = res.data; // Data from the current page
+
+      commit("append", {property: "userCabinetCars", value: newData});
    },
    async UserCabinetCarDelete({commit, state}, payload) {
       const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/me/cars/${payload.id}/delete`);
    },
 
+   async getMonetizationPriceList({commit, state}, payload) {
+      const res = await this.$axios.$get('/monetization/price/list')
+      commit("mutate", {property: "monetizationPriceList", value: res});
+
+   }
+
 };
 export const mutations = {
    mutate: mutate(),
    reset: reset(getInitialState()),
+
+   append(state, {property, value}) {
+      state[property] = state[property].concat(value);
+   },
 
    offerAddFavorite(state) {
       state.offer.data.isFavorite = !state.offer.data.isFavorite

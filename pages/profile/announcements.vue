@@ -144,11 +144,11 @@ export default {
             },
             {
                id: 3,
-               title: 'inactive',
+               title: 'sold',
                link: "/",
             },
             {
-               id: 7,
+               id: 4,
                title: 'timed_out',
                link: "/",
             },

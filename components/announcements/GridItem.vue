@@ -96,7 +96,10 @@
                            {{ $t('under_consideration') }}
                         </template>
                         <template v-else-if="isProfilePage && announcement.status == 3">
-                           {{ $t('inactive') }}
+                           {{ $t('sold') }}
+                        </template>
+                        <template v-else-if="isProfilePage && announcement.status == 4">
+                           {{ $t('timed_out') }}
                         </template>
                      </div>
                   </div>
