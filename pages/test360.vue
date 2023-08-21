@@ -33,8 +33,18 @@ export default {
                "panorama": "http://10.20.120.187:3000/360/test2.png",
                "autoLoad": true,
                "autoRotate": -8,
-               "compass": true,
-               "northOffset": 247.5
+               "compass": false,
+               "autoRotateInactivityDelay": 5,
+               "mouseZoom": false,
+               "keyboardZoom": false,
+               "showZoomCtrl": false,
+               "showControls": false,
+               "draggable": false,
+               "yaw": 0,
+               "pitch": 0,
+               "hfov": 100,
+               "avoidShowingBackground": false,
+               "backgroundColor": [0,0,0],
             });
 
             clearInterval(interval);
