@@ -2822,6 +2822,7 @@ export default {
    "universal, 5 qapı": "Universal, 5 qapı",
    "liftbek": "Liftbek",
    "L": "L",
-   '\"Avtomobilin nömrəsi\" artıq mövcuddur.': 'Avtomobilin nömrəsi artıq mövcuddur.'
+   '\"Avtomobilin nömrəsi\" artıq mövcuddur.': 'Avtomobilin nömrəsi artıq mövcuddur.',
+   'Sistem tərəfindən balans artırılması':'Sistem tərəfindən balans artırılması',
 };
 

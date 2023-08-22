@@ -92,7 +92,7 @@
             <template v-for="(item,index) in paymentMethodOptions">
                <form-radio
                   v-model="paymentMethod"
-                  :disabled="!user.balance"
+                  :disabled="!user.balance && index == 1"
                   :group-by="2"
                   :label="$t(item.name)"
                   :radio-value="item.key"

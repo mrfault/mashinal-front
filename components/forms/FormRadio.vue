@@ -1,5 +1,5 @@
 <template>
-  <div class="form-group">
+  <div class="form-group" :class="{'disabled': disabled}">
     <div class="radio-input">
       <input
         class="sr-only"
@@ -87,3 +87,14 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.form-group{
+   &.disabled{
+      label{
+         cursor: context-menu;
+         opacity: 50%;
+      }
+   }
+}
+</style>
