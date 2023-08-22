@@ -139,6 +139,10 @@ input::-webkit-inner-spin-button {
          -webkit-text-fill-color: $grey-3;
          opacity: 1;
       }
+
+      &:hover{
+         border-color: $blue-new;
+      }
    }
 
    &.placeholder-lighter {
