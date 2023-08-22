@@ -152,7 +152,7 @@
                </div>
             </div>
 
-            <div v-if="hasSidebar" class="images-slider__grid-item">
+            <div class="images-slider__grid-item" v-if="hasSidebar" >
                <slot name="sidebar"/>
             </div>
          </div>
