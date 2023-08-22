@@ -658,6 +658,23 @@
             }
          }
       }
+
+      .wrapp {
+         padding: 24px;
+         border-radius: 12px;
+         background-color: #121926;
+
+         .btns {
+            margin-top: 0;
+         }
+
+         .btn--red-opacity-2 {
+            color: #fff;
+            border-radius: 8px;
+            border: none;
+            background-color: rgba(248, 23, 52, 0.72);
+         }
+      }
    }
 
    &__close {
