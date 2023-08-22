@@ -170,6 +170,8 @@ export default {
          this.closeModal();
          this.$nuxt.refresh();
          this.isOpen = false;
+         this.$emit('automobileDeleted',true)
+         this.$store.commit('closeDropdown');
       }
 
    },

@@ -250,7 +250,10 @@ export default {
          this.form.car_number = this.form.car_number.replace("_", '')
          try {
             const res = await this.registerNewCar({
-               vehicles: [{...this.form}],
+               vehicles: [{
+                  car_number: this.form.car_number.replace(/-|[ ]/g, ''),
+                  tech_id: this.form.tech_id,
+               }],
                card_id: this.bankingCard,
                pay_type: this.paymentMethod,
                is_mobile: this.isMobileBreakpoint,

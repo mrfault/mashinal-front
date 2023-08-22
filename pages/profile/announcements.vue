@@ -83,6 +83,8 @@
                            :key="index"
                            :item="item"
                            moreInfo
+                           is-profile-page
+                           :isLastChild="index === allMyPlates.length - 1"
                         />
                      </div>
                   </template>

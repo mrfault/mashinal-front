@@ -9,7 +9,7 @@
             {{ item.generation.start_year }}-{{ item.generation.end_year }}</h4>
          <p class="ma-automobile-card__content--desc">{{ card_desc_1 }} / {{ item.car_catalog.capacity }}{{$t('L')}} / {{ $t(fuel) }}</p>
       </div>
-      <automobile-card-actions @openEditModal="openEditModal(item)" :announcement="item" :dropdown-id="item.id"/>
+      <automobile-card-actions @automobileDeleted="automobileDeleted" @openEditModal="openEditModal(item)" :announcement="item" :dropdown-id="item.id"/>
    </div>
 </template>
 
@@ -28,7 +28,12 @@ export default {
       openEditModal(item){
          console.log("card openEditModal")
          this.$emit('openEditModal',item)
+         this.$store.commit('closeDropdown');
       },
+      automobileDeleted(){
+         this.$emit('automobileDeleted',true)
+         this.$store.commit('closeDropdown');
+      }
 
 
    },

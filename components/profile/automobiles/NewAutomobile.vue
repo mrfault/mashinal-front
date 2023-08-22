@@ -460,6 +460,7 @@ export default {
       },
 
       async addCar() {
+         this.$store.commit('closeDropdown');
          this.$v.$touch();
          if (this.pending || this.$v.$error) {
             if (!this.form.car_number && !this.form.vin && this.form.modification) {
@@ -516,6 +517,7 @@ export default {
                this.pending = false;
             }
          }
+         this.pending = false
       },
       async editCar() {
          this.$emit('carEdited', true)
