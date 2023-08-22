@@ -36,10 +36,11 @@
             :disabled="isEdit"
          />
          <form-numeric-input
-            :placeholder="$t('000')"
+            placeholder="000"
             :class="{form_error: $v.form.car_number.number.$error}"
             v-model="form.car_number.number"
             :maxlength="3"
+            :float="true"
             :invalid="$v.form.car_number.number.$error"
             :disabled="isEdit"
          />

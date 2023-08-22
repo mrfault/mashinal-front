@@ -1,46 +1,13 @@
 <template>
   <div class="car-option-packs row" >
-    <div class="col-6 col-lg-3 mb-2 mb-lg-3">
-      <div :class="['pack-item',{'active': selected.includes(0)}]" @click="selected = 0">
+    <div class="col-6 col-lg-6 mb-2 mb-lg-3" v-for="pack in packs" :key="pack.id">
+      <div :class="['pack-item',{'active': selected.includes(pack.id)}]" @click="selected = pack.id">
         <div class="pack-icon">
-          <icon name="seat"/>
+          <icon :name="pack.icon"/>
         </div>
         <div class="pack-info">
-          <strong>{{$t('vmestitelniy')}}</strong>
-          <span v-html="$t('vmestitelniy_info')"></span>
-        </div>
-      </div>
-    </div>
-    <div class="col-6 col-lg-3 mb-2 mb-lg-3">
-      <div :class="['pack-item',{'active': selected.includes(1)}]" @click="selected = 1">
-        <div class="pack-icon">
-          <icon name="car-gearing"/>
-        </div>
-        <div class="pack-info">
-          <strong>{{$t('proxodimiy')}}</strong>
-          <span v-html="$t('proxodimiy_info')"></span>
-        </div>
-      </div>
-    </div>
-    <div class="col-6 col-lg-3 mb-2 mb-lg-3">
-      <div :class="['pack-item',{'active': selected.includes(2)}]" @click="selected = 2">
-        <div class="pack-icon">
-          <icon name="oil"/>
-        </div>
-        <div class="pack-info">
-          <strong>{{$t('economic')}}</strong>
-          <span v-html="$t('economic_info')"></span>
-        </div>
-      </div>
-    </div>
-    <div class="col-6 col-lg-3 mb-2 mb-lg-3">
-      <div :class="['pack-item',{'active': selected.includes(3)}]" @click="selected = 3">
-        <div class="pack-icon">
-          <icon name="dashboard"/>
-        </div>
-        <div class="pack-info">
-          <strong>{{$t('fast')}}</strong>
-          <span v-html="$t('fast_info')"></span>
+          <strong>{{$t(pack.name)}}</strong>
+          <span v-html="$t(pack.description)"></span>
         </div>
       </div>
     </div>
@@ -65,6 +32,36 @@ export default {
         this.$emit('input', value);
       }
     }
-  }
+  },
+   data() {
+     return {
+        packs: [
+           {
+              id: 0,
+              name: 'vmestitelniy',
+              description: "vmestitelniy_info",
+              icon: 'seat'
+           },
+           {
+              id: 1,
+              name: 'proxodimiy',
+              description: "proxodimiy_info",
+              icon: 'car-gearing'
+           },
+           {
+              id: 2,
+              name: 'economic',
+              description: "economic_info",
+              icon: 'oil'
+           },
+           {
+              id: 3,
+              name: 'fast',
+              description: "fast_info",
+              icon: 'seat'
+           },
+        ]
+     }
+   }
 }
 </script>

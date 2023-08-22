@@ -118,7 +118,7 @@
                               </div>
 
                               <template v-else>
-                                 <img alt="car_img" :src="`${slide}?width=944`" class="swiper-lazy" />
+                                 <img alt="car_img" :src="`${slide}&width=944`" class="swiper-lazy" />
                                  <!--                      <loader />-->
                               </template>
                            </div>

@@ -1,15 +1,16 @@
 <template>
   <div class="form-group">
     <div class="range-slider">
-      <vue-slider 
-        v-model="rangeValue" 
-        :min="min" 
-        :max="max" 
+      <vue-slider
+        v-model="rangeValue"
+        :min="min"
+        :max="max"
         :data="data || null"
-        :interval="step" 
+        :interval="step"
         :enable-cross="false"
         :tooltip="'always'"
         :min-range="step"
+        :tooltip-placement="['top', 'bottom']"
       >
         <template #tooltip="{ value }">
           <div :class="['tooltip', { 'in-right': max === value, 'in-left': min === value }]">

@@ -1,6 +1,6 @@
 <template>
   <div :class="['car-body-shortcuts','row',{'has-value': !!Object.keys(value).length}]">
-    <div class="col-6 col-lg-auto mb-2 mb-lg-3" v-for="(shortcut, index) in shortcuts" :key="index">
+    <div class="col-6 mb-2 mb-lg-3" v-for="(shortcut, index) in shortcuts" :key="index">
       <div :class="['shortcut', {'active': !!selected[index]}]" @click="selected = index">
         <img class="full-width" :src="`/img/car-body-shortcuts/${index + 1}.png`" :alt="$t(shortcut.name)" />
         <span>{{ $t(shortcut.name) }}</span>
