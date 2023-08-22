@@ -351,7 +351,7 @@
    }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 
 .card {
    padding: 22px;
@@ -482,6 +482,7 @@
    background-color: transparent;
    border-bottom: 3px solid transparent;
    border-radius: 0;
+   padding: 10px 15px;
 }
 .tabs .tabs__item.active {
    color: #4B5565;

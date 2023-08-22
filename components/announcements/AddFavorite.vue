@@ -70,8 +70,9 @@
             } else {
                await this.addToFavorites(this.announcement.id_unique);
                await this.getNotViewedFavorites();
-               if (this.type === 'announcement') await this.$store.dispatch('getAnnouncementInnerV2', this.announcement.id);
+               // if (this.type === 'announcement') await this.$store.dispatch('getAnnouncementInnerV2', this.announcement.id);
                await this.$store.dispatch('fetchMySavedPlates');
+               await this.$store.dispatch('fetchMySavedParts')
                this.$nuxt.$emit('favorites-updated');
                if (this.isAdded) {
                   this.$toasted.success(this.$t('my_favorites_added'), {
@@ -98,8 +99,8 @@
          ...mapGetters(['favorites']),
 
          isAdded() {
-            console.log('this.favorites', this.favorites)
-            console.log('this.announcement.id_unique', this.announcement.id_unique)
+            // console.log('this.favorites', this.favorites)
+            // console.log('this.announcement.id_unique', this.announcement.id_unique)
             return this.favorites.includes(this.announcement.id_unique);
          },
       },

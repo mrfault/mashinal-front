@@ -13,7 +13,7 @@
                </form>
                <div class="vehicle_card_info" v-if="!isMobileBreakpoint">
                   <template>
-                     <grid-item :announcement="announcement"/>
+                     <grid-item :announcement="previewForm"/>
                   </template>
                </div>
             </div>
@@ -51,6 +51,20 @@ export default {
    },
    data() {
       return {
+         previewForm: {
+            image: "",
+            show_vin: true,
+            has_360: true,
+            price: "0 AZN",
+            tradeable: false,
+            credit: false,
+            brand: "Marka",
+            model: "Model",
+            year: "0000",
+            mileage: 0,
+            car_catalog: {capacity: "0"},
+            created_at: ""
+         },
          isReady: false
       }
    },
@@ -63,10 +77,6 @@ export default {
          store.dispatch('getPopularOptions'),
          store.dispatch('getMyAnnouncement', route.params.id)
       ]);
-
-      console.log('announcement', store.state.myAnnouncement)
-
-
       const announcement = store.state.myAnnouncement;
       const catalog = announcement.car_catalog;
 
@@ -144,12 +154,34 @@ export default {
             this.$router.push(this.$localePath('/profile/announcements'))
          }catch(e){}
       },
+
       onClick() {
          // this.$v.form.$touch()
          // if (this.$v.authForm.$error) return;
          this.isReady = !this.isReady
       },
-   }
+   },
+   mounted() {
+      this.previewForm = {
+         image: this.announcement.media[0],
+         show_vin: this.announcement.show_vin,
+         has_360: true,
+         price: this.announcement.price_int,
+         tradeable: false,
+         credit: this.announcement.credit,
+         brand: this.announcement.brand.name,
+         model: this.announcement.model.name,
+         year: this.announcement.year,
+         mileage: this.announcement.mileage,
+         car_catalog: {capacity: this.announcement.car_catalog.capacity},
+         created_at: this.announcement.created_at
+      }
+      // console.log("test", this.announcement)
+      // // this.previewForm = {
+      // //    image
+      // // }
+
+   },
 }
 </script>
 

@@ -118,7 +118,7 @@
                               </div>
 
                               <template v-else>
-                                 <img :src="`${slide}?width=944`" alt="car_img" class="swiper-lazy"/>
+                                 <img :src="`${slide}&width=944`" alt="car_img" class="swiper-lazy"/>
                                  <loader/>
                               </template>
                            </div>
@@ -152,7 +152,7 @@
                </div>
             </div>
 
-            <div v-if="hasSidebar" class="images-slider__grid-item">
+            <div class="images-slider__grid-item" v-if="hasSidebar" >
                <slot name="sidebar"/>
             </div>
          </div>

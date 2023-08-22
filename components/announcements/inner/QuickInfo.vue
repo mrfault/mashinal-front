@@ -212,36 +212,39 @@
 <!--         </div>-->
 <!--      </div>-->
 
-      <monetization-button
-         class="h-52 mb-3"
-         :announcement="announcement"
-         @openModal="openModal"
-      />
-
-      <div class="btns">
-         <add-favorite
-            class="h-52"
-            :template="'btn'"
-            :text="$t('add_favorite')"
+      <div class="wrapp">
+         <monetization-button
+            class="h-52 mb-3"
             :announcement="announcement"
-         />
-
-         <add-comparison
-            v-if="type !== 'plates' && type !== 'parts'"
-            class="h-52"
-            :template="'btn'"
-            :text="$t('compare')"
-            :id="announcement.id_unique"
-         />
-
-         <edit-button
-            :announcement="announcement"
-            :type="type"
-            :className="'white h-52'"
-            v-if="showEditButton(announcement)"
             @openModal="openModal"
          />
+
+         <div class="btns">
+            <add-favorite
+               class="h-52"
+               :template="'btn'"
+               :text="$t('add_favorite')"
+               :announcement="announcement"
+            />
+
+            <add-comparison
+               v-if="type !== 'plates' && type !== 'parts'"
+               class="h-52"
+               :template="'btn'"
+               :text="$t('compare')"
+               :id="announcement.id_unique"
+            />
+
+            <edit-button
+               :announcement="announcement"
+               :type="type"
+               :className="'white h-52'"
+               v-if="showEditButton(announcement)"
+               @openModal="openModal"
+            />
+         </div>
       </div>
+
 
 <!--      <template v-if="!brief && announcement.status != 2 && !(announcement.is_auto_salon && announcement.status == 3)">-->
 <!--         <div class="row mt-n2 mt-lg-n3">-->
@@ -402,6 +405,11 @@
             margin-top: -1px;
             border-radius: 0 0 12px 12px;
          }
+
+         &.btns {
+            padding: 0;
+            border: none;
+         }
       }
 
       &__title {
@@ -551,6 +559,10 @@
          &__item {
             border-color: #1B2434;
             background-color: #1B2434;
+
+            //.favorite-btn {
+            //   background-color: #121926 !important;
+            //}
          }
 
          &__contact {
