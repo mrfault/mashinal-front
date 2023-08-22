@@ -504,144 +504,144 @@
          </template>
       </div>
 
-      <div :class="[
-          'row',          {
-            'stick-to-bottom pt-2 pt-lg-3 pb-2 pb-lg-3 mb-n2 mb-lg-n3': advanced,          },
-        ]">
-         <div class="col-12">
-            <div
-               :class="[              'row',
-              {                'flex-column-reverse flex-lg-row': !assistant,
-                'align-items-end': assistant,              },
-            ]">
-               <div class="col-lg-6" v-if="assistant">
-                  <form-range
-                     v-model="formAssistant.price" :min="5000"
-                     :max="100000" :step="5000"
-                  >
-                     <div class="row mt-2 mt-lg-3 mb-2 mb-lg-0">
-                        <div class="col-6">
-                           <div class="form-info">
-                              {{ $readNumber(formAssistant.price[0]) }} ₼
-                           </div>
-                        </div>
-                        <div class="col-6">
-                           <div class="form-info"> {{ $readNumber(formAssistant.price[1]) }} ₼
-                           </div>
-                        </div>
-                     </div>
-                  </form-range>
-               </div>
-               <div class="col-lg-12 col-xl-8" v-else>
-                  <div class="row">
-                     <template v-if="!advanced && !assistant && !isMobileBreakpoint">
-                        <div class="col-lg-3 mb-lg-0">
-                           <form-select :label="$t('korobka')"
-                                        v-model="form.korobka" :options="
-                        bodyOptions.main.default_options['korobka'].values                      "
-                                        multiple name-in-value
-                                        translate-options/>
-                        </div>
-                        <div class="col-lg-3 mb-lg-0">
-                           <form-select :label="$t('mileage')"
-                                        custom :suffix="$t('char_kilometre')"
-                                        :values="{ from: form.mileage_from, to: form.mileage_to }"
-                                        @clear=";(form.mileage_from = ''), (form.mileage_to = '')"
-                           >
-                              <div class="form-merged">
-                                 <form-numeric-input :placeholder="$t('from')"
-                                                     v-model="form.mileage_from" :suffix="$t('char_kilometre')"
-                                 />
-                                 <form-numeric-input
-                                    :placeholder="$t('to')" v-model="form.mileage_to"
-                                    :suffix="$t('char_kilometre')"/>
-                              </div>
-                           </form-select>
-                        </div>
-                        <div
-                           class="col-6 col-lg-3 mb-2 mb-lg-3" v-if="!isMobileBreakpoint && !advanced"
-                        >
-                           <form-checkbox
-                              :label="$t('external_salon')" v-model="form.external_salon"
-                              input-name="external_salon"/>
-                        </div><!--                  <div
-                    class="col-6 col-lg-3 mb-2 mb-lg-3"                    v-if="!isMobileBreakpoint && !advanced"
-                  >                    <div class="form-info text-green">
-                      {{ $readPlural(totalCount, $t('plural_forms_announcements')) }}                    </div>
-                  </div>-->                </template>
-                     <template v-if="!onlySavedSearch">
-                        <div class="col-lg-3 mt-2 mt-lg-0 mb-3"
-                             v-show="searchApplied">
-                           <form-checkbox :label="$t('search_save')"
-                                          v-model="savedSearch" skip-truncate
-                                          input-name="savedSearch" transparent
-                                          :disabled="!loggedIn" @try="$nuxt.$emit('login-popup','saved-search')"
-                           />
-                        </div>
-                     </template>
-                  </div>
-               </div>
-               <div
-                  v-if="!onlySavedSearch"
-                  :class="[{ 'col-lg-6 col-xl-4 mt-lg-2 mt-xl-0 offset-lg-6 offset-xl-0': !assistant, 'col-lg-6': assistant }]"
-               >
-                  <div
-                     :class="[                  'row',
-                  {                    'mb-1 mb-lg-0': !searchApplied && !(advanced || assistant),
-                  },                ]"
-                  >
-                     <div class="col-6">
-                        <button type="button"
-                                :class="[                      'btn',
-                      'full-width',                      'btn--red-outline',
-                      { 'pointer-events-none': pending },                    ]"
-                                @click="resetForm(!(advanced || assistant))">
-                           <icon name="reset"/>
-                           {{ $t('clear_search') }}
-                        </button>
-                     </div>
-                     <div class="col-6">
-                        <button
-                           type="button" :class="['btn', 'full-width', 'btn--green', { pending }]"
-                           @click="submitForm()">
-                           <icon name="search"/>
-                           {{ $t('find') }}
-                        </button>
-                     </div>
-                  </div>
-               </div>
-               <div v-else
-                    :class="[{ 'col-lg-4': !assistant, 'col-lg-6': assistant }]">
-                  <div :class="[
-                  'row',                  {
-                    'mb-1 mb-lg-0': !searchApplied && !(advanced || assistant),                  },
-                ]">
-                     <div class="col-6">
-                        <button
-                           type="button" :class="[
-                      'btn',                      'full-width',
-                      'btn--red-outline',                      { 'pointer-events-none': pending },
-                    ]" @click="resetForm(!(advanced || assistant))"
-                        >
-                           <icon name="reset"/>
-                           {{ $t('clear_search') }}
-                        </button>
-                     </div>
-                     <div class="col-6">
-                        <button type="button"
-                                :class="[                      'btn',
-                      'full-width',                      'btn--green',
-                      { pending, 'btn-disabled': !searchAppliedCustom },                    ]"
-                                @click="saveSearch">
-                           <icon name="search"/>
-                           {{ $t('search_and_save') }}
-                        </button>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
+<!--      <div :class="[-->
+<!--          'row',          {-->
+<!--            'stick-to-bottom pt-2 pt-lg-3 pb-2 pb-lg-3 mb-n2 mb-lg-n3': advanced,          },-->
+<!--        ]">-->
+<!--         <div class="col-12">-->
+<!--            <div-->
+<!--               :class="[              'row',-->
+<!--              {                'flex-column-reverse flex-lg-row': !assistant,-->
+<!--                'align-items-end': assistant,              },-->
+<!--            ]">-->
+<!--               <div class="col-lg-6" v-if="assistant">-->
+<!--                  <form-range-->
+<!--                     v-model="formAssistant.price" :min="5000"-->
+<!--                     :max="100000" :step="5000"-->
+<!--                  >-->
+<!--                     <div class="row mt-2 mt-lg-3 mb-2 mb-lg-0">-->
+<!--                        <div class="col-6">-->
+<!--                           <div class="form-info">-->
+<!--                              {{ $readNumber(formAssistant.price[0]) }} ₼-->
+<!--                           </div>-->
+<!--                        </div>-->
+<!--                        <div class="col-6">-->
+<!--                           <div class="form-info"> {{ $readNumber(formAssistant.price[1]) }} ₼-->
+<!--                           </div>-->
+<!--                        </div>-->
+<!--                     </div>-->
+<!--                  </form-range>-->
+<!--               </div>-->
+<!--               <div class="col-lg-12 col-xl-8" v-else>-->
+<!--                  <div class="row">-->
+<!--                     <template v-if="!advanced && !assistant && !isMobileBreakpoint">-->
+<!--                        <div class="col-lg-3 mb-lg-0">-->
+<!--                           <form-select :label="$t('korobka')"-->
+<!--                                        v-model="form.korobka" :options="-->
+<!--                        bodyOptions.main.default_options['korobka'].values                      "-->
+<!--                                        multiple name-in-value-->
+<!--                                        translate-options/>-->
+<!--                        </div>-->
+<!--                        <div class="col-lg-3 mb-lg-0">-->
+<!--                           <form-select :label="$t('mileage')"-->
+<!--                                        custom :suffix="$t('char_kilometre')"-->
+<!--                                        :values="{ from: form.mileage_from, to: form.mileage_to }"-->
+<!--                                        @clear=";(form.mileage_from = ''), (form.mileage_to = '')"-->
+<!--                           >-->
+<!--                              <div class="form-merged">-->
+<!--                                 <form-numeric-input :placeholder="$t('from')"-->
+<!--                                                     v-model="form.mileage_from" :suffix="$t('char_kilometre')"-->
+<!--                                 />-->
+<!--                                 <form-numeric-input-->
+<!--                                    :placeholder="$t('to')" v-model="form.mileage_to"-->
+<!--                                    :suffix="$t('char_kilometre')"/>-->
+<!--                              </div>-->
+<!--                           </form-select>-->
+<!--                        </div>-->
+<!--                        <div-->
+<!--                           class="col-6 col-lg-3 mb-2 mb-lg-3" v-if="!isMobileBreakpoint && !advanced"-->
+<!--                        >-->
+<!--                           <form-checkbox-->
+<!--                              :label="$t('external_salon')" v-model="form.external_salon"-->
+<!--                              input-name="external_salon"/>-->
+<!--                        </div>&lt;!&ndash;                  <div-->
+<!--                    class="col-6 col-lg-3 mb-2 mb-lg-3"                    v-if="!isMobileBreakpoint && !advanced"-->
+<!--                  >                    <div class="form-info text-green">-->
+<!--                      {{ $readPlural(totalCount, $t('plural_forms_announcements')) }}                    </div>-->
+<!--                  </div>&ndash;&gt;                </template>-->
+<!--                     <template v-if="!onlySavedSearch">-->
+<!--                        <div class="col-lg-3 mt-2 mt-lg-0 mb-3"-->
+<!--                             v-show="searchApplied">-->
+<!--                           <form-checkbox :label="$t('search_save')"-->
+<!--                                          v-model="savedSearch" skip-truncate-->
+<!--                                          input-name="savedSearch" transparent-->
+<!--                                          :disabled="!loggedIn" @try="$nuxt.$emit('login-popup','saved-search')"-->
+<!--                           />-->
+<!--                        </div>-->
+<!--                     </template>-->
+<!--                  </div>-->
+<!--               </div>-->
+<!--               <div-->
+<!--                  v-if="!onlySavedSearch"-->
+<!--                  :class="[{ 'col-lg-6 col-xl-4 mt-lg-2 mt-xl-0 offset-lg-6 offset-xl-0': !assistant, 'col-lg-6': assistant }]"-->
+<!--               >-->
+<!--                  <div-->
+<!--                     :class="[                  'row',-->
+<!--                  {                    'mb-1 mb-lg-0': !searchApplied && !(advanced || assistant),-->
+<!--                  },                ]"-->
+<!--                  >-->
+<!--                     <div class="col-6">-->
+<!--                        <button type="button"-->
+<!--                                :class="[                      'btn',-->
+<!--                      'full-width',                      'btn&#45;&#45;red-outline',-->
+<!--                      { 'pointer-events-none': pending },                    ]"-->
+<!--                                @click="resetForm(!(advanced || assistant))">-->
+<!--                           <icon name="reset"/>-->
+<!--                           {{ $t('clear_search') }}-->
+<!--                        </button>-->
+<!--                     </div>-->
+<!--                     <div class="col-6">-->
+<!--                        <button-->
+<!--                           type="button" :class="['btn', 'full-width', 'btn&#45;&#45;green', { pending }]"-->
+<!--                           @click="submitForm()">-->
+<!--                           <icon name="search"/>-->
+<!--                           {{ $t('find') }}-->
+<!--                        </button>-->
+<!--                     </div>-->
+<!--                  </div>-->
+<!--               </div>-->
+<!--               <div v-else-->
+<!--                    :class="[{ 'col-lg-4': !assistant, 'col-lg-6': assistant }]">-->
+<!--                  <div :class="[-->
+<!--                  'row',                  {-->
+<!--                    'mb-1 mb-lg-0': !searchApplied && !(advanced || assistant),                  },-->
+<!--                ]">-->
+<!--                     <div class="col-6">-->
+<!--                        <button-->
+<!--                           type="button" :class="[-->
+<!--                      'btn',                      'full-width',-->
+<!--                      'btn&#45;&#45;red-outline',                      { 'pointer-events-none': pending },-->
+<!--                    ]" @click="resetForm(!(advanced || assistant))"-->
+<!--                        >-->
+<!--                           <icon name="reset"/>-->
+<!--                           {{ $t('clear_search') }}-->
+<!--                        </button>-->
+<!--                     </div>-->
+<!--                     <div class="col-6">-->
+<!--                        <button type="button"-->
+<!--                                :class="[                      'btn',-->
+<!--                      'full-width',                      'btn&#45;&#45;green',-->
+<!--                      { pending, 'btn-disabled': !searchAppliedCustom },                    ]"-->
+<!--                                @click="saveSearch">-->
+<!--                           <icon name="search"/>-->
+<!--                           {{ $t('search_and_save') }}-->
+<!--                        </button>-->
+<!--                     </div>-->
+<!--                  </div>-->
+<!--               </div>-->
+<!--            </div>-->
+<!--         </div>-->
+<!--      </div>-->
 
       <!--      <div-->
       <!--         v-if=" !onlySavedSearch && routeName !==
