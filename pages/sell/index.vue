@@ -57,6 +57,7 @@
                               v-model="authForm.name"
                               :placeholder="$t('your_name') + '*'"
                               :invalid="$v.authForm.name.$error"
+                              :disabled="loggedIn"
                            />
                            <form-text-input
                               :class="{form_error: $v.authForm.email.$error}"
@@ -112,7 +113,7 @@
                                  @click="form.add_monetization = 1">
                                  <div class="sale_effect">
                                     <p>x3</p>
-                                    <span>daha <br> tez sat</span>
+                                    <span v-html="$t('x3morefaster')"></span>
                                  </div>
                                  <div class="title">
                                     <inline-svg class="stars_svg" :src="'/icons/promote_square.svg'"/>
@@ -129,7 +130,7 @@
                                  <div class="package_price">
                                     <p><span>{{ $t('discount_message') }}</span>{{ $t('total_count_message') }}</p>
                                     <div class="badge">
-                                       <p>-40% {{ $t('cheap') }}</p>
+                                       <p style="text-transform: lowercase">40% {{ $t('discount') }}</p>
                                     </div>
                                  </div>
                               </div>
@@ -148,7 +149,6 @@
                               </nuxt-link>
                            </p>
                         </div>
-
                         <modal-popup
                            :modal-class="'wider'"
                            :toggle="showRules"
@@ -166,6 +166,7 @@
                         <div class="bg-white">
                            <grid-item
                               v-if="form.announce_type.title === 'cars' ||  form.announce_type.title === 'moto' || announcement.image"
+                              style="pointer-events: none"
                               :announcement="announcement"/>
                         </div>
                         <div class="vehicle_card_info_description">
@@ -644,8 +645,8 @@ export default {
                         .sale_effect {
                            width: 100%;
                            position: absolute;
-                           top: 3%;
-                           right: -41%;
+                           top: 2%;
+                           right: -35%;
                            background-color: #D1E0FF;
                            display: flex;
                            align-items: center;
@@ -904,24 +905,61 @@ export default {
                      &_info {
                         background-color: #364152;
                      }
-                  }
-               }
 
-               .vehicle_card_info {
-                  &_description {
-                     background-color: #00359E;
-                  }
+                     .service_packages {
+                        display: flex;
+                        gap: 16px;
 
-                  &_help {
-                     background-color: #364152;
+                        .package {
+                           background-color: #364152;
+
+                           .content {
+                              &_list {
+                                 color: #CDD5DF;
+
+                                 svg {
+                                    color: #CDD5DF;
+
+                                    &.active {
+                                       color: #12B76A;
+                                    }
+                                 }
+                              }
+                           }
+
+                           .sale_effect {
+                              background-color: #697586;
+
+                           }
+
+
+
+                        }
+
+                        .package_price {
+                           background-color: #697586;
+                        }
+
+                     }
                   }
                }
             }
 
+            .vehicle_card_info {
+               &_description {
+                  background-color: #00359E;
+               }
+
+               &_help {
+                  background-color: #364152;
+               }
+            }
          }
+
       }
    }
 }
+
 
 @media (max-width: 1150px) {
    .form_navigation {

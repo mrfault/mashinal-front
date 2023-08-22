@@ -1,23 +1,21 @@
 <template>
   <div class="pages-cars-assistant">
-    <div class="container"> 
+    <div class="container">
       <breadcrumbs :crumbs="crumbs" />
-      <car-search-form 
-        :assistant="true"
-        :pending="pending"
-        @pending="pending = true"
-      />
+      <car-guide />
     </div>
   </div>
 </template>
 
 <script>
 import CarSearchForm from '~/components/cars/CarSearchForm';
+import CarGuide from "~/components/cars/CarGuide.vue";
 
 export default {
   name: 'pages-cars-assistant',
   layout: 'search',
   components: {
+     CarGuide,
     CarSearchForm
   },
   nuxtI18n: {
