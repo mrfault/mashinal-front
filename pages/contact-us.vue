@@ -199,6 +199,7 @@
 
 <style lang="scss" scoped>
    .pages-contact-us {
+      padding-bottom: 32px;
       &__title {
          font-weight: 700;
          font-size: 28px;
@@ -242,6 +243,7 @@
          }
       }
    }
+
 
    .dark-mode {
       .pages-contact-us {
