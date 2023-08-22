@@ -2768,5 +2768,6 @@ export default {
    "mashin_pay": "Mashin pay",
    "mashin_pay_desc": "Перейти в MashinPay.az",
    "info_saved":"Информация сохранена",
-   '\"Avtomobilin nömrəsi\" artıq mövcuddur.': '«Номер автомобиля» уже существует.'
+   '\"Avtomobilin nömrəsi\" artıq mövcuddur.': '«Номер автомобиля» уже существует.',
+   'Sistem tərəfindən balans artırılması': 'Системное пополнение баланса',
 };
