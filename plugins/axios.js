@@ -40,13 +40,13 @@ export default function ({app, store, error, $axios}) {
             window.location.reload();
          }
       } else if (code === 422) {
-         if (err.response.data.data.car_number) {
-            app.$toast.error(app.i18n.t(err.response.data.data.car_number[0]))
-            console.log(err.response.data.data.car_number)
-         }
-         else{
-         app.$toast.error(app.i18n.t(err.response.data.message));
-
+         console.log(err.response.data)
+         if (err.response.data.data) {
+            Object.values(err.response.data.data).forEach((val) => {
+               app.$toast.error(app.i18n.t(val[0]))
+            })
+         } else {
+            app.$toast.error(app.i18n.t(err.response.data.message));
          }
       } else if (![433].includes(code)) {
          if (process.client) {

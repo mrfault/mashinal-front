@@ -54,7 +54,7 @@ export default {
    acoustic_type: "Тип",
    activate: "Активировать",
    active: "Активные",
-   active_2: "Активна",
+   active_2: "Активно",
    Active: "Активная",
    "Active power steering": "Активный усилитель руля",
    ad_active: "Активна",
