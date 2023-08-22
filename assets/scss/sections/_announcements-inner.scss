@@ -675,6 +675,19 @@
             background-color: rgba(248, 23, 52, 0.72);
          }
       }
+
+      .favorite-btn, .compare-btn {
+         border: 1px solid transparent;
+         background-color: #1B2434;
+
+         span {
+            color: #FFFFFF;
+         }
+
+         &:hover {
+            border-color: #84ADFF !important;
+         }
+      }
    }
 
    &__close {
@@ -1151,6 +1164,12 @@
       .quick-info {
          &__item {
             background-color: $dark-new;
+         }
+      }
+
+      &__grid {
+         .chat-button {
+            background-color: #030A17 !important;
          }
       }
    }
