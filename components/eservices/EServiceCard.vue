@@ -6,9 +6,9 @@
 
       <div class="e-service__body">
 
-         <div class="e-service__card--image">
-            <img :src="`/new-icons/profile/${item.image}`" alt="">
-         </div>
+         <!--<div class="e-service__card--image">
+            <img :src="`/card-icons/new/${item.image}.svg`" alt="">
+         </div>-->
          <h5 class="e-service__title">{{ $t(item.title) }}</h5>
 
          <p class="e-service__description">{{ $t(item.description) }}</p>

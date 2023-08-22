@@ -793,7 +793,6 @@ export default {
    fast_info: "Менее 7 секунд<br/>до 100 км/ч",
    "Faux leather": "Искусственная кожа",
    favorites: "Избранные",
-   favorites_ads: "Избранные объявления",
    features_1_title: "Единый бизнес пакет",
    features_2_title: "Безлимитный на один год",
    features_3_title: "Ежемесячная оплата",
@@ -1410,7 +1409,6 @@ export default {
    paint_type: "Тип",
    painted: "Окрашено",
    "Panoramic roof / windshield": "Панорамная крыша / лобовое стекло",
-   main_parameters: "Основные параметры",
    parameter: "параметр",
    parameters: "Параметры",
    park_radar: "Парктроник",
@@ -2033,7 +2031,6 @@ export default {
    unblock_user: "Разблокировать пользователя",
    under_consideration: "На рассмотрении",
    universal: "Универсал",
-   "universal, 5 qapı": "Универсал, 5 дверей",
    unlimited_count: "неограниченное количество",
    paid_ads: "Платные объявления",
    paid_services: "Платные услуги",
@@ -2121,7 +2118,6 @@ export default {
    with_mileage: "С пробегом",
    with_mileage_2: "С пробегом",
    with_new: "новых",
-   used: "Использованные",
    with_significant_damage_to_body_elements_that_do_not_move_on_their_own:
       "С существенными повреждениями кузовных элементов, не передвигающиеся своим ходом.",
    with_video: "360&deg;",
@@ -2453,7 +2449,7 @@ export default {
    milligrams_per_liter_of_inhaled_air:
       "миллиграмм на литр выдыхаемого воздуха",
    degree_of_intoxication: "Степень опьянения",
-   intoxication: "Опьянение",
+   intoxication: "Опьянения",
    may_drive: "За руль можно сесть через",
    after_hours: "часов",
    ml: "мл",
@@ -2462,7 +2458,6 @@ export default {
    auction: "Аукцион",
    sell: "Продажа",
    end_date: "Дата окончания",
-   announcement_info: "Информация о транспортном средстве",
    announcement_end_date: "Дата окончания объявления",
    country: "Страна",
    dont_drink_so_much: "Не пей так много",
@@ -2773,4 +2768,5 @@ export default {
    "mashin_pay": "Mashin pay",
    "mashin_pay_desc": "Перейти в MashinPay.az",
    "info_saved":"Информация сохранена",
+   '\"Avtomobilin nömrəsi\" artıq mövcuddur.': '«Номер автомобиля» уже существует.'
 };

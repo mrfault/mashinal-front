@@ -92,7 +92,7 @@
 <style lang="scss">
    .call-button {
       flex-direction: column;
-      height: 56px;
+      height: 56px !important;
 
       &.circle {
          display: block;

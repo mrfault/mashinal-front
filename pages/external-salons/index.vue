@@ -90,11 +90,11 @@
          ...mapGetters(['salonsFiltered', 'salonsInBounds', 'mapView']),
 
          nonOfficialSalons() {
-            return this.salonsFiltered.filter(item => !item.is_official);
+            return this.salonsFiltered.filter(item => item.announcement_count > 0).filter(item => !item.is_official);
          },
 
          officialSalons() {
-            return this.salonsFiltered.filter(item => item.is_official).sort((a, b) => a.name.localeCompare(b.name));
+            return this.salonsFiltered.filter(item => item.announcement_count > 0).filter(item => item.is_official).sort((a, b) => a.name.localeCompare(b.name));
          },
 
          crumbs() {
