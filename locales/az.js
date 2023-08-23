@@ -691,6 +691,7 @@ export default {
    "Disc size": "Disklərin ölçüsü",
    "Disc types": "Disklərin növü",
    discount: "Endirim",
+   price_range: "Qiymət aralığı",
    discounts_on_options: "Opsiyalara endirim",
    display: "Displey",
    dizel: "Dizel",
