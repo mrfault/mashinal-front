@@ -42,15 +42,8 @@
                window.location.href = `tel:+${this.phone}`;
                this.trackCall(2);
             } else {
-               console.log('easy job')
                this.showPhone = true;
                this.trackCall(1);
-               console.log('ringostat_announce', ringostat_announce);
-               window.getManualClassifiedNumber(ringostat_announce, function (number) {
-
-                  console.log('Hello',number)
-
-               },0, this.phone);
             }
          },
 
