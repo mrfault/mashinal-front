@@ -19,7 +19,8 @@ export default {
     onFsLightBox: {
       type: Boolean,
       default: false,
-    }
+    },
+
   },
   data() {
     return {

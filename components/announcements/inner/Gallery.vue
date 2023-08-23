@@ -16,9 +16,11 @@
                   <div
                      style="width: 100%;"
                      v-if="
-                index === 0 &&
-                announcement.images_360 &&
+                index === 0 && ((
+                   announcement.images_360 &&
                 announcement.images_360.length
+                ) || announcement.interior_360)
+
               "
                   >
                      <div class="position-relative">
@@ -353,6 +355,21 @@ export default {
                ...this.slides.main.slice(1, this.slides.main.length),
             ]
          }
+         if (this.slides.types[0] === 'custom_interior') {
+            return [
+               {
+                  component: 'interior360-viewer',
+                  props: {
+                     onFsLightBox: false,
+                     url: this.announcement.interior_360,
+                     files: this.announcement.images_360,
+                     amount: this.announcement.images_360.length,
+                     fromFsPopup: true,
+                  },
+               },
+               ...this.slides.main.slice(1, this.slides.main.length),
+            ]
+         }
          return this.slides.main
       },
 
@@ -361,7 +378,8 @@ export default {
             main = [],
             types = [],
             hasVideo = false,
-            has360 = false
+            has360 = false,
+            hasInteriorOnly = false;
          if (this.where === 'catalog') {
             thumbs = this.getMediaByKey(this.media, 'thumb')
             main = this.getMediaByKey(this.media, 'main')
@@ -381,21 +399,30 @@ export default {
             }
             if (
                this.announcement.images_360 &&
-               this.announcement.images_360.length
+                  this.announcement.images_360.length
             ) {
                thumbs.splice(0, 0, this.announcement.images_360[0])
                main.splice(0, 0, this.announcement.images_360[0])
                has360 = true
+            }
+            else if ( (this.announcement.images_360 && !this.announcement.images_360.length) ||
+               this.announcement.interior_360
+            ) {
+               thumbs.splice(0, 0, this.announcement.interior_360)
+               main.splice(0, 0, this.announcement.interior_360)
+               hasInteriorOnly = true
             }
             //360 here
          } else if (this.where === 'salon') {
             thumbs = this.media[1]
             main = this.media[0]
          }
+
          types = [...main.map((_) => 'image')]
 
          if (hasVideo) types.splice(1, 0, 'youtube')
          if (has360) types.splice(0, 0, 'custom')
+         if (hasInteriorOnly) types.splice(0, 0, 'custom_interior')
          return {thumbs, main, types}
       },
    },
@@ -407,6 +434,10 @@ export default {
       },
    },
    mounted() {
+
+      if(this.announcement.images_360 && !this.announcement.images_360.length) {
+         this.showInterior = true;
+      }
       let swiperTouchStartX
 
       this.$nextTick(() => {
