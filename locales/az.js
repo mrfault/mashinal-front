@@ -2815,7 +2815,7 @@ export default {
    "shops_desc": "Axtarışınızı axtarış şablonlarına əlavə etməklə o parametrə uyğun yeni elana aid bildiriş əldə edəcəksiniz",
    "autocatalog_desc": "Lorem ipsum dolor sit amet consectetur. Fermentum euismod nunc massa tristique. Vitae nisi dignissim viverra neque nisl.",
 
-   "vin_or_car_number_is_mandatory": "Vin və ya avtomobilin nömrəsi məcburidir",
+   "vin_or_car_number_is_mandatory": "VIN və ya QN nömrəsini əlave edin",
    "mashin_pay": "Mashin pay",
    "mashin_pay_desc": "MashinPay.az keç",
    "vehicle_deleted": "Elan silinib",
