@@ -92,7 +92,7 @@
             <template v-for="(item,index) in paymentMethodOptions">
                <form-radio
                   v-model="paymentMethod"
-                  :disabled="!user.balance"
+                  :disabled="!user.balance && index == 1"
                   :group-by="2"
                   :label="$t(item.name)"
                   :radio-value="item.key"
@@ -250,7 +250,10 @@ export default {
          this.form.car_number = this.form.car_number.replace("_", '')
          try {
             const res = await this.registerNewCar({
-               vehicles: [{...this.form}],
+               vehicles: [{
+                  car_number: this.form.car_number.replace(/-|[ ]/g, ''),
+                  tech_id: this.form.tech_id,
+               }],
                card_id: this.bankingCard,
                pay_type: this.paymentMethod,
                is_mobile: this.isMobileBreakpoint,

@@ -343,6 +343,7 @@ export default {
    brand_name: "Markanın adı",
    standard_announce: "Sadə elan",
    paid_announce: "Ödənişli elan",
+   x3morefaster: 'daha <br> tez sat',
    free_for_30_days: "30 gün PULSUZ",
    discount_message: "10 gün reklam 10 AZN yox",
    total_count_message: "CƏMİ 6 AZN",
@@ -690,6 +691,7 @@ export default {
    "Disc size": "Disklərin ölçüsü",
    "Disc types": "Disklərin növü",
    discount: "Endirim",
+   price_range: "Qiymət aralığı",
    discounts_on_options: "Opsiyalara endirim",
    display: "Displey",
    dizel: "Dizel",
@@ -2684,6 +2686,7 @@ export default {
    sell_item_commercial_2: "Arxa görünüş",
    sell_item_commercial_3: "Yan görünüşü",
    add_image_section_warning: "Minimum – 3 şəkil (ön, sağ və sol görüntüsü mütləqdir).",
+   add_image_max_warning: "Maximum - 20 şəkil",
    contacts_registration_info: "Nömrə SMS-kod ilə təsdiqləndikdən sonra elan yoxlamaya göndəriləcək və kabinetə əlavə olunacaq.",
    enter_sms_code: "SMS-kodu göndər",
    add_announce_info: "Siz 1 ay ərzində minik, moto və ticari avtomobillər kateqoriyasında <strong>3 pulsuz elan</strong>, ehtiyat hissələri kateqoriyasında limitsiz sayda <strong>pulsuz elan</strong> yerləşdirə bilərsiniz. Qeydiyyat nişanı elanının qiyməti 1 AZN-dir.",
@@ -2812,13 +2815,15 @@ export default {
    "shops_desc": "Axtarışınızı axtarış şablonlarına əlavə etməklə o parametrə uyğun yeni elana aid bildiriş əldə edəcəksiniz",
    "autocatalog_desc": "Lorem ipsum dolor sit amet consectetur. Fermentum euismod nunc massa tristique. Vitae nisi dignissim viverra neque nisl.",
 
-   "vin_or_car_number_is_mandatory": "Vin və ya avtomobilin nömrəsi məcburidir",
+   "vin_or_car_number_is_mandatory": "VIN və ya QN nömrəsini əlave edin",
    "mashin_pay": "Mashin pay",
    "mashin_pay_desc": "MashinPay.az keç",
    "vehicle_deleted": "Elan silinib",
    "announcement_cannot_monetization": "Elan önə çəkilə bilməz",
    "universal, 5 qapı": "Universal, 5 qapı",
    "liftbek": "Liftbek",
-   "L": "L"
+   "L": "L",
+   '\"Avtomobilin nömrəsi\" artıq mövcuddur.': 'Avtomobilin nömrəsi artıq mövcuddur.',
+   'Sistem tərəfindən balans artırılması':'Sistem tərəfindən balans artırılması',
 };
 

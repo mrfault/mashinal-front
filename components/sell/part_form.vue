@@ -240,7 +240,10 @@
             <image-component :type="'parts'" :initial-form="form"/>
             <div class="part_form_with_info_inner">
                <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
-               <p :class="{isInvalid: $v.form.saved_images.$error}">{{ $t("part_images_info") }}</p>
+               <div class="warning_texts">
+                  <p :class="{isInvalid: $v.form.saved_images.$error}">{{ $t("part_images_info") }}</p>
+                  <p :class="{isInvalid: $v.form.saved_images.$error}">{{ $t("add_image_max_warning") }}</p>
+               </div>
             </div>
          </div>
       </template>

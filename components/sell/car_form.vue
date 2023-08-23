@@ -154,6 +154,7 @@
             <form-numeric-input
                :class="{form_error: $v.form.mileage.$error}"
                :placeholder="$t('mileage')"
+               :max-value="form.is_new ? (form.mileage_type === 1 ? 500 : 311) : 10000000"
                v-model="form.mileage"
                :invalid="$v.form.mileage.$error"
             />
@@ -161,13 +162,13 @@
             <div class="mileage_types">
                <form-radio
                   :id="'1'"
-                  :label="$t('km')"
+                  :label="$t('char_kilometre')"
                   input-name="mileage"
                   v-model="form.mileage_type"
                   :radio-value="1"
                />
                <form-radio
-                  :id="'2'"
+                  :id="'52'"
                   :label="$t('ml')"
                   input-name="mileage"
                   v-model="form.mileage_type"
@@ -183,6 +184,7 @@
                input-name="is_new"
                v-model="form.is_new"
                :radio-value="1"
+               @change="onChangeIsNew"
             />
             <form-radio
                :id="'4'"
@@ -259,11 +261,11 @@
                :class="{form_error: $v.form.price.$error}"
                :placeholder="$t('price')"
                v-model="form.price"
-               @change="!isEdit && (announcement.price = $event ? $event + (form.currency.name?.[locale] || 'AZN') : 0)"
+               @change="!isEdit && (announcement.price = $event ? $event + ' ' + (form.currency.name?.[locale] || priceTypes.find((pr) => pr.id === form.currency).name?.[locale]) : 0)"
                :invalid="$v.form.price.$error"
             />
             <div class="price_types">
-               <toggle-group :items="priceTypes" v-slot="{ item }" @change="form.currency = $event.id">
+               <toggle-group :items="priceTypes" :default-value="form.currency || 1" v-slot="{ item }" @change="toggleCurrency">
                   <div class="price_item">
                      <p>{{ item.name[locale] }}</p>
                   </div>
@@ -323,15 +325,7 @@
                   :mask="'99 - AA - 999'"
                   placeholder="__ - __ - ___"
                   :invalid="$v.form.car_number.$error"
-               >
-                  <template #default>
-                     <inline-svg
-                        class="car_number_suffix"
-                        :src="'/icons/info.svg'"
-                        v-tooltip="$t('real-car-number-will-make-post-faster')"
-                     />
-                  </template>
-               </form-text-input>
+               />
                <form-checkbox
                   v-model="form.show_car_number"
                   :label="$t('show_on_site')"
@@ -344,23 +338,12 @@
             <p class="mb-1">{{ $t("vin_carcase_number") }}</p>
             <div class="divider mobile-column">
                <form-text-input
+                  :class="{form_error: $v.form.vin.$error}"
                   v-model="form.vin"
                   :placeholder="$t('vin_carcase_number')"
                   :mask="$maskAlphaNumeric('*****************')"
-                  class="with-trailing"
-               >
-                  <template #default>
-                     <inline-svg
-                        class="car_number_suffix"
-                        :src="'/icons/info.svg'"
-                        v-tooltip="
-                        $t(
-                          'with_significant_damage_to_body_elements_that_do_not_move_on_their_own'
-                        )
-                      "
-                     />
-                  </template>
-               </form-text-input>
+                  :invalid="$v.form.vin.$error"
+               />
                <form-checkbox
                   v-model="form.show_vin"
                   :label="$t('show_on_site')"
@@ -392,10 +375,13 @@
             </div>
          </div>
          <div class="comment" :class="{form_error: $v.form.saved_images.$error}">
-            <image-component :type="'cars'" :initial-form="form"/>
+            <image-component :type="'cars'" :initial-form="form" :announcement="announcement" />
             <div class="comment_info">
                <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
-               <p :class="{invalid_paragraph: $v.form.saved_images.$error}">{{ $t("add_image_section_warning") }}</p>
+               <div class="warning_texts">
+                  <p :class="{invalid_paragraph: $v.form.saved_images.$error}">{{ $t("add_image_section_warning") }}</p>
+                  <p :class="{invalid_paragraph: $v.form.saved_images.$error}">{{ $t("add_image_max_warning") }}</p>
+               </div>
             </div>
          </div>
       </template>
@@ -423,8 +409,12 @@ export default {
          return this.popularOptions.map((p) => ({...p, key: this.$t(p.label), slug: p.name, name: this.$t(p.label)}))
       },
       mileageTypeName() {
-         return this.form.mileage_type === 1 ? this.$t('km') : this.$t('ml')
-      }
+         return this.form.mileage_type === 1 ? this.$t('char_kilometre') : this.$t('ml')
+      },
+      // defaultImages() {
+      //    console.log(this.announcement.media)
+      //    return this.announcement ? this.announcement.media
+      // }
    },
    props: {
       announcement: {
@@ -644,6 +634,20 @@ export default {
             }
          }
       },
+      onChangeIsNew(isnew) {
+         if (isnew) {
+            if (this.form.mileage_type === 1 && this.form.mileage > 500) {
+               this.form.mileage = 500
+            }
+            if (this.form.mileage_type === 2 && this.form.mileage > 311) {
+               this.form.mileage = 311
+            }
+         }
+      },
+      toggleCurrency(currency) {
+         this.form.currency = currency.id
+         !this.isEdit && (this.announcement.price = this.form.price ? this.form.price + ' ' + (currency.name?.[this.locale] || 'AZN') : 0)
+      },
       updateAddress(address) {
          this.form.address = address;
          this.removeError('address');
@@ -704,18 +708,31 @@ export default {
    },
    watch: {
       'form.mileage_type'() {
-         this.announcement.mileage = this.form.mileage ? this.form.mileage + ' ' + (this.form.mileage_type === 1 ? this.$t('km') : this.$t('ml')) : 0
+         this.isEdit ? this.$store.commit('mutate', {
+            property: 'announcement',
+            value: {
+               ...this.announcement,
+               mileage: this.form.mileage ? this.form.mileage + ' ' + (this.form.mileage_type === 1 ? this.$t('char_kilometre') : this.$t('ml')) : 0
+            }
+         }) : this.announcement.mileage = this.form.mileage ? this.form.mileage + ' ' + (this.form.mileage_type === 1 ? this.$t('char_kilometre') : this.$t('ml')) : 0
+         if (this.form.is_new) {
+            if (this.form.mileage_type === 1 && this.form.mileage > 500) {
+               this.form.mileage = 500
+            }
+            if (this.form.mileage_type === 2 && this.form.mileage > 311) {
+               this.form.mileage = 311
+            }
+         }
       },
       'form.mileage'() {
-         console.log(this.announcement)
          this.isEdit ? this.$store.commit('mutate', {
                property: 'announcement',
                value: {
                   ...this.announcement,
-                  mileage: this.form.mileage ? this.form.mileage + ' ' + (this.form.mileage_type === 1 ? this.$t('km') : this.$t('ml')) : 0
+                  mileage: this.form.mileage ? this.form.mileage + ' ' + (this.form.mileage_type === 1 ? this.$t('char_kilometre') : this.$t('ml')) : 0
                }
             }) :
-            this.announcement.mileage = this.form.mileage ? this.form.mileage + ' ' + (this.form.mileage_type === 1 ? this.$t('km') : this.$t('ml')) : 0
+            this.announcement.mileage = this.form.mileage ? this.form.mileage + ' ' + (this.form.mileage_type === 1 ? this.$t('char_kilometre') : this.$t('ml')) : 0
       },
       'form.modification'() {
          this.$emit("navigationProgress", {id: 1, status: !!this.form.modification})
@@ -756,7 +773,7 @@ export default {
             comment: this.form.comment,
             autogas: this.form.autogas,
             is_new: this.form.is_new ? 1 : 0,
-            beaten: this.form.beaten ? 1 : 0,
+            beaten: this.form.beaten,
             customs_clearance: this.form.customs_clearance,
             tradeable: this.form.tradeable,
             credit: this.form.credit,
@@ -807,7 +824,7 @@ export default {
             },
             car_number: {
                required: requiredIf(function () {
-                  return !this.form.vin && !this.user.external_salon
+                  return !this.form.vin && !this.user.external_salon && !this.user.autosalon
                })
             },
             region_id: {
@@ -823,6 +840,11 @@ export default {
             address: {
                required: requiredIf(function () {
                   return !this.user.autosalon && !this.user.external_salon
+               })
+            },
+            vin: {
+               required: requiredIf(function () {
+                  return this.form.customs_clearance
                })
             },
             price: {required},

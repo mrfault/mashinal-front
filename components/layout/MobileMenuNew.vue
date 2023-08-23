@@ -166,11 +166,11 @@ export default {
             {
                title: 'menu_call_center',
                image: 'support.png',
-               url: 'tel:*8787',
+               url: '/contact-us',
                description: 'menu_call_center_desc',
                row: 1,
                auth: false,
-               disabled: true
+               disabled: false
             },
             {
                title: 'menu_guide',

@@ -1,5 +1,6 @@
 <template>
-   <div class="registrationMarksGridItem" @click="goToRegistrationMark(item?.id_unique)">
+   <div :class="{'position-relative': isProfilePage}" class="registrationMarksGridItem"
+        @click="goToRegistrationMark(item?.id_unique, $event)">
       <div class="registrationMarksGridItem__head">
          <div class="divider">
             <inline-svg src="/icons/registrationMarks_icons.svg"/>
@@ -10,9 +11,20 @@
          </div>
       </div>
 
+      <!--      <span v-if="isProfilePage" style="position: relative; width: 28px; height: 24px;">-->
+      <profile-grid-actions
+         v-if="isProfilePage && item.status !==2"
+         :announcement="item"
+         :class="{'right-aligned-dropdown': isLastChild}"
+         :dropdown-id="item.id_unique"
+         is-number-plate
+      />
+      <!--            </span>-->
+
       <div class="registrationMarksGridItem__main">
          <div class="divider">
             <p>{{ item?.price }}</p>
+
 
             <add-favorite v-if="showFavoriteBtn" :announcement="item" :whiteBorder="false"/>
 
@@ -67,8 +79,9 @@
          </div>
 
          <div v-if="moreInfo" class="divider">
-            <div :class="{'green': item.status === 1,'yellow': item.status === 2,'pink': item.status === 3,'pink': item.status === 7}"
-                 class="registrationMarksGridItem__status">
+            <div
+               :class="{'green': item.status === 1,'yellow': item.status === 2,'pink': item.status === 3,'pink': item.status === 7}"
+               class="registrationMarksGridItem__status">
                <span v-if="item.status === 0">{{ $t('rejected_2') }}</span>
                <span v-else-if="item.status === 1">{{ $t('active_2') }}</span>
                <span v-else-if="item.status === 2">{{ $t('under_consideration_2') }}</span>
@@ -82,10 +95,12 @@
 
 <script>
 import AddFavorite from '~/components/announcements/AddFavorite'
+import ProfileGridActions from "~/components/profile/ProfileGridActions";
 
 export default {
    components: {
-      AddFavorite
+      AddFavorite,
+      ProfileGridActions
    },
 
    data() {
@@ -120,12 +135,18 @@ export default {
       checkbox: {
          type: Boolean,
          default: false
-      }
+      },
+      isProfilePage: Boolean,
+      isLastChild: Boolean,
    },
 
    methods: {
-      goToRegistrationMark(id) {
+      goToRegistrationMark(id, event) {
+         // this.$store.commit('closeDropdown');
+         event.stopPropagation();
+         event.preventDefault();
          this.$router.push(this.localePath(`/plates/${id}`));
+
       },
 
       modifiedDate(date) {
@@ -431,7 +452,6 @@ export default {
 .dark-mode {
    .registrationMarksGridItem__status {
       span {
-
          color: #121926 !important;
       }
    }
