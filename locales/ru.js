@@ -2770,4 +2770,11 @@ export default {
    "info_saved":"Информация сохранена",
    '\"Avtomobilin nömrəsi\" artıq mövcuddur.': '«Номер автомобиля» уже существует.',
    'Sistem tərəfindən balans artırılması': 'Системное пополнение баланса',
+
+   "balance_personal_title": "Личный баланс",
+   "balance_personal_description": "Сумма, поступившая на лицевой счет доступными способами оплаты",
+   "balance_package_title": "Баланс пакета",
+   "balance_package_description": "Сумма, переведенная в рамках пакета (после оплаты счета)",
+   "balance_present_title": "Бонусный баланс",
+   "balance_present_description": "Сумма получена в виде подарочных бонусов. Бонус действителен в течение 30 дней.",
 };
