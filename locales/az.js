@@ -2825,5 +2825,12 @@ export default {
    "L": "L",
    '\"Avtomobilin nömrəsi\" artıq mövcuddur.': 'Avtomobilin nömrəsi artıq mövcuddur.',
    'Sistem tərəfindən balans artırılması':'Sistem tərəfindən balans artırılması',
+
+   "balance_personal_title": "Şəxsi balans",
+   "balance_personal_description": "Şəxsi hesaba mümkün ödəniş üsulları vasitəsilə qoyulan məbləğ",
+   "balance_package_title": "Paket balansı",
+   "balance_package_description": "Paket çərçivəsində köçürülmüş məbləğ (invoys ödənildikdən sonra)",
+   "balance_present_title": "Bonus balansı",
+   "balance_present_description": "Hədiyyə bonuslara şəklində əldə olunmuş məbləğ. Bonusun istifadə müddəti 30 gün",
 };
 
