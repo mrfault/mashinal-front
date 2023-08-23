@@ -1,12 +1,13 @@
 <template>
-   <div ref="actionsRef" class="announcement-actions">
+   <div ref="actionsRef" :class="{'isNumberPlate':isNumberPlate}" class="announcement-actions">
       <div class="announcement-actions__button" @click.prevent="toggleOpen">
          <inline-svg src="/new-icons/fi_more-horizontal.svg"/>
       </div>
       <div v-if="isOpen" class="announcement-actions__content">
          <template v-for="(item, index) in options">
 
-            <div v-if="item.show" :key="index" class="announcement-actions__content--item" @click="item.method(item)">
+            <div v-if="item.show" :key="index" class="announcement-actions__content--item"
+                 @click.stop="item.method(item, $event)">
                <inline-svg :src="`/new-icons/grid/${item.icon}`"/>
                <p>{{ $t(item.name) }}</p>
             </div>
@@ -84,6 +85,7 @@ export default {
          type: String,
          required: true,
       },
+      isNumberPlate: Boolean,
    },
    data() {
       return {
@@ -105,7 +107,7 @@ export default {
             {
                name: 'inactive_make',
                icon: 'fi_minus-circle.svg',
-               show: this.announcement.status == 1 ,
+               show: this.announcement.status == 1,
                method: this.openModal,
                modalTitle: 'are_you_sure_you_want_to_deactivate_the_announcement',
 
@@ -221,16 +223,21 @@ export default {
       },
 
       editVehicle() {
-         if (this.announcement.type == 'Motorcycle' || this.announcement.type == 'Scooter' || this.announcement.type == 'Atv') {
-            this.type = 'moto'
-         } else if (this.announcement.type == 'Commercial') {
-            this.type = 'commercial'
-         } else if (this.announcement.type == 'Part') {
-            this.type = 'parts'
-         } else {
-            this.type = 'cars'
+         if (this.isNumberPlate) {
+            this.$router.push(this.$localePath(`/plates/announcements/${this.announcement.id_unique}/edit`))
          }
-         this.$router.push(this.$localePath(`/${this.type}/announcement/${this.announcement.id_unique}/edit`))
+         if (!this.isNumberPlate) {
+            if (this.announcement.type == 'Motorcycle' || this.announcement.type == 'Scooter' || this.announcement.type == 'Atv') {
+               this.type = 'moto'
+            } else if (this.announcement.type == 'Commercial') {
+               this.type = 'commercial'
+            } else if (this.announcement.type == 'Part') {
+               this.type = 'parts'
+            } else if (this.type = 'cars') {
+
+               this.$router.push(this.$localePath(`/${this.type}/announcement/${this.announcement.id_unique}/edit`))
+            }
+         }
       }
 
    },
@@ -320,15 +327,27 @@ export default {
    }
 }
 
-.right-0{
+.right-0 {
    left: auto;
    right: 0;
 }
 
-.right-aligned-dropdown{
-   .announcement-actions__content{
+.right-aligned-dropdown {
+   .announcement-actions__content {
       left: auto;
       right: 0;
+   }
+}
+
+.isNumberPlate {
+   //
+   //position: relative;
+   top: 65px;
+   right: 16px;
+
+   .announcement-actions__content {
+      top: -27px;
+      left: -161px;
    }
 }
 </style>

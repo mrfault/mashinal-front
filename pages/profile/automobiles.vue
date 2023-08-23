@@ -2,7 +2,7 @@
    <div class="ma-autos">
       <h2 class="ma-title--md">{{ $t('my_autos') }}</h2>
       <p class="ma-autos--subtitle">{{ $t('my_autos_desc') }}</p>
-      <div class="ma-autos__content">
+      <div v-if="!pending" class="ma-autos__content">
          <div class="ma-autos__content--item">
             <button class="ma-new-automobile__button" @click="showModal = true">
                {{ $t('add_new_auto') }}
@@ -10,8 +10,12 @@
             </button>
          </div>
          <div v-for="(item,index) in userCabinetCars" class="ma-autos__content--item">
-            <automobile-card :item="item" :keyItem="index" @openEditModal="openEditModal(item)"/>
+            <automobile-card :item="item" :keyItem="index" @automobileDeleted="automobileDeleted"
+                             @openEditModal="openEditModal(item)"/>
          </div>
+      </div>
+      <div v-if="pending" class="w-100">
+         <loader/>
       </div>
       <new-automobile
          :announcement="selectedCar"
@@ -53,17 +57,17 @@ export default {
    //    await store.dispatch('UserCabinetCarsGetAll');
    // },
    methods: {
-      getAllCars() {
+      async getAllCars() {
+         this.pending = true
          this.$store.commit("mutate", {property: "userCabinetCars", value: []});
-         for (let currentPage = 1; currentPage < 10; currentPage++) {
 
-            console.log('START ALL CARS')
-            setTimeout(() => {
-               let res = this.$store.dispatch('UserCabinetCarsGetAll', currentPage);
-               console.log(res?.data)
-
-            }, 1000)
+         for (let currentPage = 1; currentPage < 5;) {
+            // setTimeout(() => {
+            await this.$store.dispatch('UserCabinetCarsGetAll', currentPage);
+            currentPage++
+            // }, 1000)
          }
+         this.pending = false;
 
 
       },
@@ -79,6 +83,11 @@ export default {
       closeModal() {
          this.showModal = false;
          this.isEditing = false;
+      },
+      automobileDeleted() {
+         console.log("automobiles deleted")
+         this.getAllCars()
+         this.$nuxt.refresh();
       }
    },
    data() {
@@ -87,6 +96,7 @@ export default {
          selectedCar: null,
          showModal: false,
          isEditing: false,
+         pending: false,
       }
    },
    computed: {

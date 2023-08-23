@@ -2822,6 +2822,8 @@ export default {
    "announcement_cannot_monetization": "Elan önə çəkilə bilməz",
    "universal, 5 qapı": "Universal, 5 qapı",
    "liftbek": "Liftbek",
-   "L": "L"
+   "L": "L",
+   '\"Avtomobilin nömrəsi\" artıq mövcuddur.': 'Avtomobilin nömrəsi artıq mövcuddur.',
+   'Sistem tərəfindən balans artırılması':'Sistem tərəfindən balans artırılması',
 };
 
