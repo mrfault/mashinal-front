@@ -264,7 +264,6 @@ export default {
       getType() {
          let item = this.announcement
 
-         console.log('item', item)
 
          if (item.type === "motorcycle") return 'Motorcycle'
          else if (item.type === "scooter") return 'Scooter'
@@ -392,7 +391,6 @@ export default {
    },
 
    mounted() {
-      // console.log('this.announcement', this.announcement)
       this.$nuxt.$on('select-announcement', this.selectAnnouncement)
    },
 
