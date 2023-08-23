@@ -26,9 +26,9 @@
 
          path() {
             if (this.type === 'registration-marks') {
-               return this.$localePath(`/${this.type}/${this.$route.params.id}/edit`);
+               return this.$localePath(`/${this.type}/${this.$route.params.id_unique}/edit`);
             } else {
-               return this.$localePath(`/${this.type}/announcement/${this.$route.params.id}/edit`);
+               return this.$localePath(`/${this.type}/announcement/${this.$route.params.id_unique}/edit`);
             }
          }
       },

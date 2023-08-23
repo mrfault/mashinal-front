@@ -794,6 +794,7 @@ export default {
    fast_info: "Менее 7 секунд<br/>до 100 км/ч",
    "Faux leather": "Искусственная кожа",
    favorites: "Избранные",
+   favorites_ads: "Избранные объявления",
    features_1_title: "Единый бизнес пакет",
    features_2_title: "Безлимитный на один год",
    features_3_title: "Ежемесячная оплата",
