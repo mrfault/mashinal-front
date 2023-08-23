@@ -117,6 +117,18 @@
                       </no-ssr>
                     </div>
 
+                     <div
+                      class="position-relative"
+                      style="width: 100%;overflow: hidden;"
+                      v-else-if="
+                        slides.types && slides.types[index] === 'custom_interior'
+                      "
+                    >
+                      <no-ssr>
+                        <interior360-viewer :url="announcement.interior_360"/>
+                      </no-ssr>
+                    </div>
+
                     <template v-else>
                       <img alt="car_img" :src="`${slide}&width=944`" class="swiper-lazy" />
 <!--                      <loader />-->
