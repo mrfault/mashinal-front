@@ -66,7 +66,6 @@
                               :mask="$maskEmail()"
                               :invalid="$v.authForm.email.$error"
                            />
-
                            <form-text-input
                               v-if="!Object.values(user).length"
                               :class="{form_error: $v.authForm.phone.$error}"
@@ -931,7 +930,6 @@ export default {
                               background-color: #697586;
 
                            }
-
 
 
                         }
