@@ -683,6 +683,7 @@ export default {
    "Disc size": "Размер дисков",
    "Disc types": "Тип дисков",
    discount: "Скидка",
+   price_range: "Ценовой диапазон",
    discounts_on_options: "Скидки на опции",
    display: "Дисплей",
    dizel: "Дизель",
