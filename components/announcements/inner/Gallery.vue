@@ -405,9 +405,7 @@ export default {
                main.splice(0, 0, this.announcement.images_360[0])
                has360 = true
             }
-            else if ( (this.announcement.images_360 && !this.announcement.images_360.length) ||
-               this.announcement.interior_360
-            ) {
+            else if ( this.announcement.interior_360) {
                thumbs.splice(0, 0, this.announcement.interior_360)
                main.splice(0, 0, this.announcement.interior_360)
                hasInteriorOnly = true
