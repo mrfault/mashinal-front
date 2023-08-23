@@ -169,7 +169,7 @@
             return false
          },
          crumbs() {
-            console.log('this.catalog', this.catalog)
+            // console.log('this.catalog', this.catalog)
             return [
                {name: this.$t('cars'), route: '/cars'},
                {name: this.catalog?.brand?.name, route: this.getFilterLink('brand')},

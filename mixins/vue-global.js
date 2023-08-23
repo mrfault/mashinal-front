@@ -125,7 +125,7 @@ Vue.use({
                return (brand || '') + ' ' + (model || '');
             },
             getAnnouncementContact(item) {
-               console.log('item', item)
+               // console.log('item', item)
                let img = item?.user?.avatar,
                    name = item?.user?.full_name,
                    link = false;

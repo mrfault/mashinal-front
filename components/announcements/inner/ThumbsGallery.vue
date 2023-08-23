@@ -2,16 +2,15 @@
    <div class="inner-thumbs-gallery d-none d-sm-block">
       <div class="swiper-container" v-swiper:thumbsSwiper="swiperOps">
          <div class="swiper-wrapper">
-            <div class="swiper-slide" :key="index" v-for="(slide, index) in announcement?.media?.main">
+            <div class="swiper-slide" :key="index" v-for="(slide, index) in thumbs">
                <div
                   @click="$nuxt.$emit('show-lightbox', index)"
                   @mouseenter="$nuxt.$emit('show-gallery-slide', index)"
-                  :class="[
-                     'swiper-slide-bg',
-                  ]"
-                  :style="{backgroundImage: `url('${slide.main_inner}')` }"
+                  :class="['swiper-slide-bg']"
+                  :style="{backgroundImage: `url('${slide}')` }"
                   role="img"
-                  aria-label="">
+                  aria-label=""
+               >
 
 <!--                  <span-->
 <!--                     class="image-360-pin"-->
@@ -54,39 +53,39 @@
       },
 
       methods: {
-         // getMediaByKey(media, key) {
-         //    console.log('media', media)
-         //    console.log('key', key)
-         //    key = media.main[key] ? key : Object.keys(media.main)[0];
-         //    console.log('sdsd', media.main[key].map(item => this.$withBaseUrl(item)))
-         //    return media.main[key] instanceof Array ? media.main[key].map(item => this.$withBaseUrl(item)) : [];
-         // }
+         getMediaByKey(media, key) {
+            // console.log('media', media)
+            console.log('key', key)
+
+            key = media[key] ? key : Object.keys(media)[0];
+            console.log('aaaa', media[key] instanceof Array ? media[key].map(item => this.$withBaseUrl(item)) : [])
+
+            return media[key] instanceof Array ? media[key].map(item => this.$withBaseUrl(item)) : [];
+         }
       },
 
       computed: {
          ...mapGetters(['announcement']),
 
-         // thumbs() {
-         //    let thumbs = [];
-         //    if (this.where === 'catalog') {
-         //       thumbs = this.getMediaByKey(this.media, 'thumb');
-         //    } else if (this.where === 'announcement') {
-         //       let media = this.announcement.media;
-         //       let yt_video = this.announcement.youtube_id;
-         //       if (media.length === 0) return [];
-         //       thumbs = this.getMediaByKey(media, 'thumb_inner');
-         //       if (yt_video) {
-         //          thumbs.splice(1, 0, `https://img.youtube.com/vi/${yt_video}/hqdefault.jpg`);
-         //       }
-         //
-         //       if (this.announcement.images_360 && this.announcement.images_360.length) {
-         //          thumbs.splice(0, 0, this.announcement.images_360[0])
-         //       }
-         //    } else if (this.where === 'salon') {
-         //       return this.media;
-         //    }
-         //    return thumbs;
-         // }
+         thumbs() {
+            let thumbs = [];
+            if (this.where === 'catalog') {
+               thumbs = this.getMediaByKey(this.media, 'thumb');
+            } else if (this.where === 'announcement') {
+               let media = this.announcement.media.main
+               if (media?.length === 0) return []
+               thumbs = media.map((item) => {
+                  return item.thumb;
+               })
+
+               if (this.announcement.images_360 && this.announcement.images_360.length) {
+                  thumbs.splice(0, 0, this.announcement.images_360[0])
+               }
+            } else if (this.where === 'salon') {
+               return this.media;
+            }
+            return thumbs;
+         }
       },
 
       mounted() {
