@@ -24,7 +24,7 @@ export const AnnouncementDataMixin = {
          let color = this.announcement.colors || this.announcement.color || {};
          if (!color.length && !color.id) return ' ';
          return color instanceof Array
-            ? color.filter(color => color.name).map(color => color.name[this.locale]).join(', ') || ' '
+            ? color.filter(color => color.name).map(color => color.name).join(', ') || ' '
             : color.name || ' ';
       },
       box() {
