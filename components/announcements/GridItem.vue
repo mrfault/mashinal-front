@@ -179,9 +179,9 @@
                <span v-if="announcement.mileage || announcement.mileage_measure">
                   {{ announcement.mileage }}
 
-                  <template v-if="announcement.mileage_measure === 1">
+<!--                  <template v-if="announcement.mileage_measure === 1">-->
                      {{ $t('char_kilometre') }}
-                  </template>
+<!--                  </template>-->
                </span>
 
                <span v-if="announcement?.description">{{ announcement?.description }}</span>
@@ -197,10 +197,9 @@
                   <p>{{ announcement.show_phone_number_count || 0 }}</p>
 
                </span>
-               <span  class="ma-announcement-card__stats">
-                            <inline-svg src="/new-icons/grid/cards/eye.svg"/>
+               <span class="ma-announcement-card__stats">
+                   <inline-svg src="/new-icons/grid/cards/eye.svg"/>
                   <p>{{ announcement.view_count || 0 }}</p>
-
                </span>
                <span  class="ma-announcement-card__stats">
                    <inline-svg src="/new-icons/grid/cards/calendar.svg"/>

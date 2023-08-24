@@ -1016,7 +1016,7 @@ export default {
       },
 
       sorting(val) {
-         this.form.sort_by = val.key;
+         this.form.sort_by = val.key.split('_')[0];
          this.form.sort_order = val.value;
          this.submitForm();
       }
