@@ -12,6 +12,7 @@ export const SearchMixin = {
       ...mapActions(['fetchSavedSearch', 'createSavedSearch', 'deleteSavedSearch', 'getNotViewedSavedSearch']),
 
       getFormData() {
+         console.log('this.form', this.form)
          let requiredKeys = [];
          if (this.meta?.type === 'cars') requiredKeys.push('all_options');
          let form = {};
@@ -33,8 +34,6 @@ export const SearchMixin = {
             }
          }
 
-         // console.log('form?.all_options', form?.all_options)
-
          try {
             if (form?.all_options) {
                form.all_options = form?.all_options?.reduce((acc, curr) => {
@@ -55,7 +54,8 @@ export const SearchMixin = {
                });
             }
 
-            if (form?.gearing) {
+
+            if (this.form.drive && form?.gearing) {
                form.gearing = form?.gearing?.map(item => {
                   return { key: item }
                });
@@ -176,8 +176,6 @@ export const SearchMixin = {
 
          if (searchSame) {
             this.$emit('submit');
-            // this.scrollTo('.breadcrumbs');
-            console.log('1')
          } else {
             let prevRouteName = this.routeName;
             this.$router.push(searchUrl, () => {
@@ -187,13 +185,11 @@ export const SearchMixin = {
                   if (scroll) {
                      setTimeout(() => {
                         this.scrollTo('.breadcrumbs', [-56, -96]);
-                        console.log('2')
                      }, 500);
                   }
                } else {
                   setTimeout(() => {
                      this.scrollTo('.breadcrumbs', [-56, -96]);
-                     console.log('3')
                   }, 500);
                }
 
@@ -313,6 +309,7 @@ export const SearchMixin = {
          get() {
             return !!this.singleSavedSearch.id;
          },
+
          set() {
             if (!this.loggedIn) return;
             if (this.singleSavedSearch.id) {
