@@ -182,8 +182,8 @@
                                          {{
                                              row.provider === 'balance' ||
                                              row.operation_key === 'ad_stopped'
-                                                ? 'ALM'
-                                                : '₼'
+                                                ? 'AZN'
+                                                : 'AZN'
                                           }}
                                        </span>
                                  </td>
@@ -246,11 +246,12 @@ import BankingCards from '~/components/payments/BankingCards'
 import BankingCardNew from '~/components/payments/BankingCardNew'
 import {PaymentMixin} from '~/mixins/payment'
 import ComeBack from "~/components/elements/ComeBack.vue";
+import {UserDataMixin} from "~/mixins/user-data";
 
 export default {
    name: 'pages-profile-balance',
    middleware: 'auth_general',
-   mixins: [PaymentMixin],
+   mixins: [PaymentMixin, UserDataMixin],
    layout: 'garageLayout',
    components: {
       ComeBack,
@@ -275,7 +276,7 @@ export default {
          openModal: false,
          activeFilter: 0,
          refreshInfinity: 0,
-
+         bonusBalance: false,
          swiperOps: {
             init: false,
             slidesPerView: 1.3,
@@ -287,7 +288,7 @@ export default {
             autoHeight: false,
             breakpoints: {
                1024: {
-                  slidesPerView: 2,
+                  slidesPerView: 1,
                   centeredSlides: false,
                   initialSlide: 0,
                   touchRatio: 0
@@ -328,15 +329,18 @@ export default {
          )
       },
       balances() {
-         return [
+         let data =  [
             {
                id: 1,
                title: this.$t('balance_personal_title'),
                description: this.$t('balance_personal_description'),
                class: "card-custom card-balance",
                balance: this.$readNumber(this.user.balance),
-            },
-            {
+            }
+         ];
+
+         if (this.user.can_be_autosalon) {
+            data.push({
                id: 2,
                title: this.$t('balance_package_title'),
                description: this.$t('balance_package_description'),
@@ -346,15 +350,28 @@ export default {
                   this.user.part_salon?.balance || 0,
                   this.user.external_salon?.balance || 0,
                ))
-            },
-            // {
-            //    id: 3,
-            //    title: this.$t('balance_present_title'),
-            //    description: this.$t('balance_present_description'),
-            //    class: "card-custom card-bonus-balance",
-            //    balance: 0,
-            // }
-         ];
+            });
+         }
+
+         if (this.bonusBalance) {
+            data.push({
+               id: 3,
+               title: this.$t('balance_present_title'),
+               description: this.$t('balance_present_description'),
+               class: "card-custom card-bonus-balance",
+               balance: 0,
+            });
+         }
+
+         if (data.length > 1) {
+            this.swiperOps.breakpoints["1024"].slidesPerView = 2;
+         }
+
+         if (data.length > 2) {
+            this.swiperOps.breakpoints["1024"].slidesPerView = 3;
+         }
+
+         return data;
       },
    },
    methods: {
