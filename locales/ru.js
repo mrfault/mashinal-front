@@ -2779,4 +2779,5 @@ export default {
    "balance_package_description": "Сумма, переведенная в рамках пакета (после оплаты счета)",
    "balance_present_title": "Бонусный баланс",
    "balance_present_description": "Сумма получена в виде подарочных бонусов. Бонус действителен в течение 30 дней.",
+   "Vin or car number is required": "Введите ВИН или номер",
 };

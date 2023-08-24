@@ -2832,5 +2832,6 @@ export default {
    "balance_package_description": "Paket çərçivəsində köçürülmüş məbləğ (invoys ödənildikdən sonra)",
    "balance_present_title": "Bonus balansı",
    "balance_present_description": "Hədiyyə bonuslara şəklində əldə olunmuş məbləğ. Bonusun istifadə müddəti 30 gün",
+   "Vin or car number is required": "VIN və ya QN nömrəsini əlavə edin",
 };
 
