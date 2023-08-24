@@ -38,7 +38,6 @@
                     class="ma-announcements__body--row__inner">
                   <template v-for="(announcement,index) in myAnnouncements">
                      <div
-
                         class="ma-announcements__body--row__inner--item-plate"
                      >
                         <grid-item
@@ -78,6 +77,7 @@
                   <template v-for="(item,index) in allMyPlates">
                      <div
                         class="ma-announcements__body--row__inner--item-plate"
+
                      >
                         <plates-grid-item
                            :key="index"
@@ -85,6 +85,7 @@
                            :item="item"
                            is-profile-page
                            moreInfo
+
                         />
                      </div>
                   </template>

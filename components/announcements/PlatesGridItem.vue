@@ -57,25 +57,43 @@
                </span>
             </p>
 
-            <p v-else class="d-flex align-items-center justify-content-between w-100">
+            <p v-if="false" class="d-flex align-items-center justify-content-between w-100">
                <span class="d-flex align-items-center">
                   <inline-svg :height="'20px'" :src="'/icons/calendar-2.svg'" :width="'20px'"/>
 
                   <span>{{ modifiedDate(item?.humanize_created_at) }}</span>
                </span>
 
-               <span class="d-flex align-items-center">
+               <span class="d-flex align-items-center" v-if="item.status !== 2">
                   <inline-svg :height="'20px'" :src="'/icons/eye-2.svg'" :width="'20px'"/>
 
                   <span>{{ item?.view_count }}</span>
                </span>
 
-               <span class="d-flex align-items-center">
+               <span class="d-flex align-items-center" v-if="item.status !== 2">
                   <inline-svg :height="'20px'" :src="'/icons/phone-2.svg'" :width="'20px'"/>
 
                   <span>{{ item?.show_phone_number_count }}</span>
                </span>
             </p>
+
+            <div v-if="moreInfo" class="w-100 item-details__item d-flex justify-csb">
+               <span class="ma-announcement-card__stats">
+                                 <inline-svg src="/new-icons/grid/cards/phone.svg"/>
+                  <p>{{ item.show_phone_number_count || 0 }}</p>
+
+               </span>
+               <span  class="ma-announcement-card__stats">
+                            <inline-svg src="/new-icons/grid/cards/eye.svg"/>
+                  <p>{{ item.view_count || 0 }}</p>
+
+               </span>
+               <span  class="ma-announcement-card__stats">
+                   <inline-svg src="/new-icons/grid/cards/calendar.svg"/>
+                  <p> {{ modifiedDate(item?.humanize_created_at) }}</p>
+
+               </span>
+            </div>
          </div>
 
          <div v-if="moreInfo" class="divider">
@@ -142,7 +160,7 @@ export default {
 
    methods: {
       goToRegistrationMark(id, event) {
-         // this.$store.commit('closeDropdown');
+
          event.stopPropagation();
          event.preventDefault();
          this.$router.push(this.localePath(`/plates/${id}`));
