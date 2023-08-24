@@ -128,16 +128,20 @@
 
       &.white-border {
          background-image: url('../../static/icons/star-favorite2-white-border.svg');
+
+         &:hover {
+            background-image: url('../../static/icons/star-favorite2-active.svg');
+         }
+      }
+
+      &.btn-favorite-active {
+         background-image: url('../../static/icons/star-favorite2-active.svg');
       }
 
       span {
          width: 100%;
          height: 100%;
       }
-   }
-
-   .btn-favorite-active {
-      background-image: url('../../static/icons/star-favorite2-active.svg') !important;
    }
 
    .favorite-btn {
@@ -153,10 +157,12 @@
       }
 
       button {
-         background-image: url('../../static/icons/star-favorite2-black-border.svg') !important;
+         &.white-border {
+            background-image: url('../../static/icons/star-favorite2-black-border.svg');
+         }
 
          &.btn-favorite-active {
-            background-image: url('../../static/icons/star-favorite2-active-min.svg') !important;
+            background-image: url('../../static/icons/star-favorite2-active-min.svg');
          }
       }
 
@@ -177,11 +183,17 @@
          }
 
          .btn-favorite {
-            background-image: url('../../static/icons/star-favorite2-white-border-min.svg') !important;
+            background-image: url('../../static/icons/star-favorite2-white-border-min.svg');
          }
 
          &:hover {
             button {
+               background-image: url('../../static/icons/star-favorite2-active-min.svg') !important;
+            }
+         }
+
+         button {
+            &.btn-favorite-active {
                background-image: url('../../static/icons/star-favorite2-active-min.svg') !important;
             }
          }

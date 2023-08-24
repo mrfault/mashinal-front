@@ -688,6 +688,16 @@
             border-color: #84ADFF !important;
          }
       }
+
+      .favorite-btn {
+         button {
+            background-image: url('../../static/icons/star-favorite2-white-border-min.svg') !important;
+
+            &.btn-favorite-active {
+               background-image: url('../../static/icons/star-favorite2-active-min.svg') !important;
+            }
+         }
+      }
    }
 
    &__close {
