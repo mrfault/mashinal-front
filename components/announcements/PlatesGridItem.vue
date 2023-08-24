@@ -18,6 +18,7 @@
          :class="{'right-aligned-dropdown': isLastChild}"
          :dropdown-id="item.id_unique"
          is-number-plate
+         @refreshData="getActiveTabAnnouncements"
       />
       <!--            </span>-->
 
@@ -64,13 +65,13 @@
                   <span>{{ modifiedDate(item?.humanize_created_at) }}</span>
                </span>
 
-               <span class="d-flex align-items-center" v-if="item.status !== 2">
+               <span v-if="item.status !== 2" class="d-flex align-items-center">
                   <inline-svg :height="'20px'" :src="'/icons/eye-2.svg'" :width="'20px'"/>
 
                   <span>{{ item?.view_count }}</span>
                </span>
 
-               <span class="d-flex align-items-center" v-if="item.status !== 2">
+               <span v-if="item.status !== 2" class="d-flex align-items-center">
                   <inline-svg :height="'20px'" :src="'/icons/phone-2.svg'" :width="'20px'"/>
 
                   <span>{{ item?.show_phone_number_count }}</span>
@@ -83,12 +84,12 @@
                   <p>{{ item.show_phone_number_count || 0 }}</p>
 
                </span>
-               <span  class="ma-announcement-card__stats">
+               <span class="ma-announcement-card__stats">
                             <inline-svg src="/new-icons/grid/cards/eye.svg"/>
                   <p>{{ item.view_count || 0 }}</p>
 
                </span>
-               <span  class="ma-announcement-card__stats">
+               <span class="ma-announcement-card__stats">
                    <inline-svg src="/new-icons/grid/cards/calendar.svg"/>
                   <p> {{ modifiedDate(item?.humanize_created_at) }}</p>
 
@@ -156,6 +157,7 @@ export default {
       },
       isProfilePage: Boolean,
       isLastChild: Boolean,
+      activeTab: Number,
    },
 
    methods: {
@@ -174,6 +176,10 @@ export default {
       handleChange(item) {
          this.$nuxt.$emit('select-mark', item.id_unique);
          // this.$nuxt.$emit('select-announcement', this.item.id_unique, value, true);
+      },
+
+      getActiveTabAnnouncements() {
+         this.$store.dispatch('getMyAllAnnouncementsV2', {status: this.activeTab})
       }
    }
 }

@@ -51,6 +51,7 @@
                            show-phone-count
                            show-status
                            track-views
+                           :activeTab="activeTab"
                         />
                      </div>
                   </template>
@@ -85,6 +86,7 @@
                            :item="item"
                            is-profile-page
                            moreInfo
+                           :activeTab="activeTab"
 
                         />
                      </div>
@@ -192,6 +194,7 @@ export default {
 
       const platesContainer = document.getElementById('platesContainer');
       platesContainer.addEventListener('mousedown', this.startDragging);
+
 
 
    },
