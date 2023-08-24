@@ -48,6 +48,7 @@
             :announcement="announcement"
             :class="{'right-aligned-dropdown': isLastChild}"
             :dropdown-id="announcement.id_unique"
+            @refreshData="getActiveTabAnnouncements"
          />
 
          <a
@@ -179,9 +180,9 @@
                <span v-if="announcement.mileage || announcement.mileage_measure">
                   {{ announcement.mileage }}
 
-<!--                  <template v-if="announcement.mileage_measure === 1">-->
+                  <template v-if="announcement.mileage_measure === 1">
                      {{ $t('char_kilometre') }}
-<!--                  </template>-->
+                  </template>
                </span>
 
                <span v-if="announcement?.description">{{ announcement?.description }}</span>
@@ -198,10 +199,11 @@
 
                </span>
                <span class="ma-announcement-card__stats">
-                   <inline-svg src="/new-icons/grid/cards/eye.svg"/>
+                            <inline-svg src="/new-icons/grid/cards/eye.svg"/>
                   <p>{{ announcement.view_count || 0 }}</p>
+
                </span>
-               <span  class="ma-announcement-card__stats">
+               <span class="ma-announcement-card__stats">
                    <inline-svg src="/new-icons/grid/cards/calendar.svg"/>
                   <p> {{ announcement.created_at }}</p>
 
@@ -246,6 +248,7 @@ export default {
          default: false,
       },
       isLastChild: Boolean,
+      activeTab: Number,
    },
 
    components: {
@@ -391,6 +394,10 @@ export default {
             return false
          }
       },
+
+      getActiveTabAnnouncements() {
+         this.$store.dispatch('getMyAllAnnouncementsV2', {status: this.activeTab})
+      }
    },
 
    mounted() {
@@ -457,15 +464,17 @@ export default {
    }
 }
 
-.ma-announcement-card__stats{
+.ma-announcement-card__stats {
    display: flex;
    align-items: center;
-   p{
+
+   p {
       padding-left: 4px;
       margin: 0;
       font: 400 15px/22px 'TTHoves';
    }
-   svg{
+
+   svg {
       height: 28px;
    }
 }

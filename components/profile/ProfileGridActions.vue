@@ -121,7 +121,7 @@ export default {
             },
             {
                name: 'edit',
-               icon: 'notification.svg',
+               icon: 'fi_check-square.svg',
                show: this.announcement.status == 1 || this.announcement.status == 0,
                method: this.editVehicle,
             },
@@ -179,11 +179,9 @@ export default {
          this.pending = true;
          try {
             await this.$store.dispatch('deactivateMyAnnounement', this.announcement.id_unique);
-            await this.$nuxt.refresh();
-            this.$emit('deactivateMyAnnounement');
+            this.$emit('refreshData');
             this.$toasted.success(this.$t('vehicle_deactivated'))
             this.closeModal();
-            this.$nuxt.refresh();
             this.pending = false;
             this.$store.commit('closeDropdown');
          } catch (e) {
@@ -197,11 +195,10 @@ export default {
          this.pending = true;
          try {
             await this.$store.dispatch('deleteMyAnnounementV2', this.announcement.id_unique);
-            await this.$nuxt.refresh();
+            this.$emit('refreshData');
             this.$emit('deleteMyAnnounement');
             this.$toasted.success(this.$t('vehicle_deleted'))
             this.closeModal();
-            this.$nuxt.refresh();
             this.pending = false;
             this.$store.commit('closeDropdown');
          } catch (e) {
@@ -212,11 +209,11 @@ export default {
       async restore() {
          try {
             await this.$axios.$get(`/restore/${this.announcement.id_unique}?is_mobile=${this.isMobileBreakpoint}`)
-            await this.$nuxt.refresh();
+            this.$emit('refreshData');
+
             this.$emit('restoredMyAnnounement');
             this.$toasted.success(this.$t('announcement_restored'))
             this.closeModal();
-            this.$nuxt.refresh();
             this.$store.commit('closeDropdown');
          } catch (e) {
             this.$toasted.error(this.$t('something_went_wrong'))

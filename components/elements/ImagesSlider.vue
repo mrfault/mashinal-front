@@ -116,6 +116,10 @@
                                     />
                                  </no-ssr>
                               </div>
+                              <template v-else-if="isProtocolMedia">
+                                 <img :src="`${slide}`" alt="car_img" class="swiper-lazy"/>
+                                 <loader/>
+                              </template>
 
                               <template v-else>
                                  <pre>{{slides}}</pre>
