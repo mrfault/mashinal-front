@@ -115,15 +115,14 @@ export default {
             {
                name: 'restore_free',
                icon: 'fi_check-square.svg',
-               show: this.announcement.status == 3,
+               show: this.announcement.status == 3 && !this.isNumberPlate,
                method: this.restore,
                modalTitle: 'restore_announcement'
             },
-
             {
                name: 'edit',
                icon: 'notification.svg',
-               show: this.announcement.status == 1,
+               show: this.announcement.status == 1 || this.announcement.status == 0,
                method: this.editVehicle,
             },
             {
@@ -161,6 +160,7 @@ export default {
       },
 
       openModal(item) {
+         this.$store.commit('closeDropdown');
          this.showOptions = false;
          this.selectedItem = item;
          this.showModal = true;
@@ -175,6 +175,7 @@ export default {
       },
 
       async deactivate(event) {
+         this.$store.commit('closeDropdown');
          this.pending = true;
          try {
             await this.$store.dispatch('deactivateMyAnnounement', this.announcement.id_unique);
@@ -223,8 +224,9 @@ export default {
       },
 
       editVehicle() {
+         this.$store.commit('closeDropdown');
          if (this.isNumberPlate) {
-            this.$router.push(this.$localePath(`/plates/announcements/${this.announcement.id_unique}/edit`))
+            this.$router.push(this.$localePath(`/plates/${this.announcement.id_unique}/edit`))
          }
          if (!this.isNumberPlate) {
             if (this.announcement.type == 'Motorcycle' || this.announcement.type == 'Scooter' || this.announcement.type == 'Atv') {

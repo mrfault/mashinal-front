@@ -71,8 +71,8 @@
                <div class="item-overlay__top">
                   <div class="item-overlay__top--left">
                      <div
-                        class="item-overlay__top--left_item"
                         v-if="(announcement.is_auto_salon || announcement.is_external_salon) && !isProfilePage"
+                        class="item-overlay__top--left_item"
                      >
                         <template v-if="announcement.is_auto_salon">{{ $t('salon') }}</template>
                         <template v-else-if="announcement.is_external_salon">{{ $t('external_salon') }}</template>
@@ -112,7 +112,7 @@
                         v-if="!isProfilePage"
                         :announcement="announcement"
                      />
-<!--                     <pre>{{announcement}}</pre>-->
+                     <!--                     <pre>{{announcement}}</pre>-->
                   </div>
                </div>
 
@@ -192,17 +192,20 @@
             </div>
 
             <div v-if="isProfilePage" class="item-details__item d-flex justify-csb">
-               <span>
+               <span class="ma-announcement-card__stats">
                                  <inline-svg src="/new-icons/grid/cards/phone.svg"/>
-                  123
+                  <p>{{ announcement.show_phone_number_count || 0 }}</p>
+
                </span>
-               <span>
+               <span  class="ma-announcement-card__stats">
                             <inline-svg src="/new-icons/grid/cards/eye.svg"/>
-                  123
+                  <p>{{ announcement.view_count || 0 }}</p>
+
                </span>
-               <span>
+               <span  class="ma-announcement-card__stats">
                    <inline-svg src="/new-icons/grid/cards/calendar.svg"/>
-                  {{ announcement.created_at }}
+                  <p> {{ announcement.created_at }}</p>
+
                </span>
             </div>
          </div>
@@ -450,6 +453,19 @@ export default {
    .item-details {
       padding-bottom: 70px;
       height: auto;
+   }
+}
+
+.ma-announcement-card__stats{
+   display: flex;
+   align-items: center;
+   p{
+      padding-left: 4px;
+      margin: 0;
+      font: 400 15px/22px 'TTHoves';
+   }
+   svg{
+      height: 28px;
    }
 }
 </style>
