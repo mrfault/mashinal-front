@@ -1,6 +1,7 @@
 <template>
    <div class="inner-gallery">
       <div class="position-relative">
+<!--         <pre>{{slides}}</pre>-->
          <div
             class="swiper-container"
             v-swiper:gallerySwiper="swiperOps"
@@ -363,6 +364,9 @@
             if (this.where === 'catalog') {
                thumbs = this.getMediaByKey(this.media, 'thumb')
                main = this.getMediaByKey(this.media, 'main')
+
+               console.log('thumbs', thumbs)
+               console.log('main', main)
             } else if (this.where === 'announcement') {
                let media = this.announcement.media.main
                if (media?.length === 0) return []
