@@ -349,4 +349,17 @@ export default {
       left: -161px;
    }
 }
+
+@media (max-width: 599px){
+   .isNumberPlate{
+      top: 50px;
+      right: 6px;
+   }
+}
+@media (max-width: 425px){
+   .isNumberPlate{
+      top: 44px;
+      right: 0px;
+   }
+}
 </style>
