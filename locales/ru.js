@@ -2738,6 +2738,10 @@ export default {
 
    "add_vehicle_desc": "За каждое добавленное ТС ежемесячно будет взиматься 1 AZN (ƏDV включен)",
    "remove_bookmark": "Удалить ТС",
+   "delete_template": "Удалить шаблон",
+   "template_details": "Детали шаблона",
+   "edit_notifications": "Редактировать уведомления",
+   "template_delete_warning": "Вы уверены, что хотите удалить выбранный шаблон?",
    "info saved": "Информация сохранена",
    "the_given_data_": "Неверные данные",
    "The given data was invalid.": "Неверные данные",

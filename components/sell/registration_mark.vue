@@ -276,4 +276,23 @@ export default {
       }
    }
 }
+
+@media (max-width: 485px) {
+   .registration_mark_form {
+      .divider {
+
+         .price_types {
+            .toggle_container {
+               gap: 8px !important;
+            }
+
+            .price_item {
+               padding: 0 8px;
+            }
+         }
+      }
+
+
+   }
+}
 </style>

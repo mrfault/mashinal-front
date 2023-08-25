@@ -162,7 +162,9 @@
                      </template>
 
                   </form>
-                  <div class="vehicle_card_info" v-if="!isMobileBreakpoint">
+                  <div
+                     :class="['vehicle_card_info', {default_imgs: announcement.image.startsWith('/img/') || partPreview.image.startsWith('/img/') }]"
+                     v-if="!isMobileBreakpoint">
                      <template
                         v-if="form.announce_type.title !== 'registration_marks' && form.announce_type !== '' && (announcement.image || partPreview.image)">
                         <div class="bg-white">
@@ -801,9 +803,12 @@ export default {
                   }
                }
 
-               .item-bg {
-                  background-repeat: no-repeat;
-                  background-size: inherit;
+               &.default_imgs {
+
+                  .item-bg {
+                     background-repeat: no-repeat;
+                     background-size: inherit;
+                  }
                }
             }
          }
