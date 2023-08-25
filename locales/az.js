@@ -2455,7 +2455,7 @@ export default {
    auction: "Auksion",
    sell: "Satış",
    end_date: "Son tarix",
-   announcement_info: "Avtomobilin məlumatları\n",
+   announcement_info: "Avtomobilin məlumatları",
    announcement_end_date: "Elanın son tarixi",
    country: "Ölkə",
    dont_drink_so_much: "Bir də bu qədər içmə",

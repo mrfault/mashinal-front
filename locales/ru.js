@@ -2460,6 +2460,7 @@ export default {
    auction: "Аукцион",
    sell: "Продажа",
    end_date: "Дата окончания",
+   announcement_info: "Информация объявления",
    announcement_end_date: "Дата окончания объявления",
    country: "Страна",
    dont_drink_so_much: "Не пей так много",
