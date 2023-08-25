@@ -518,7 +518,9 @@ export default {
    background-size: 56px 56px;
 }
 
-
+.select-menu_dropdown-option.card-option{
+   width: 100%!important;
+}
 .card {
    padding: 22px;
    border-radius: 12px;
@@ -722,6 +724,12 @@ export default {
    .amount-input {
       background: #121926 !important;
       border-radius: 8px;
+   }
+
+   .card-custom.card-balance,
+   .card-custom.card-package-balance,
+   .card-custom.card-bonus-balance {
+      opacity: .7;
    }
 }
 
