@@ -25,10 +25,10 @@
          ...mapGetters(['editPath']),
 
          path() {
-            if (this.type === 'registration-marks') {
-               return this.$localePath(`/${this.type}/${this.$route.params.id_unique}/edit`);
+            if (this.type === 'plates') {
+               return this.$localePath(`/${this.type}/${this.$route.params.id}/edit`);
             } else {
-               return this.$localePath(`/${this.type}/announcement/${this.$route.params.id_unique}/edit`);
+               return this.$localePath(`/${this.type}/announcement/${this.$route.params.id}/edit`);
             }
          }
       },
