@@ -1,20 +1,21 @@
 <template>
    <div class="pages-announcement-edit">
       <div class="container">
-         <breadcrumbs :crumbs="crumbs" />
+         <breadcrumbs :crumbs="crumbs"/>
          <div class="announce_container">
             <div class="card">
                <form class="add_announce_form">
                   <car_form isEdit :announcement="announcement" :isReady="isReady"
-                             @getForm="getCarForm($event)" />
+                            :preview="previewForm"
+                            @getForm="getCarForm($event)"/>
                   <button type="button" @click="onClick()" class="btn full-width btn--pale-green-outline active">
                      {{ $t("place_announcement") }}
                   </button>
                </form>
                <div class="vehicle_card_info" v-if="!isMobileBreakpoint">
-                  <template>
+                  <client-only>
                      <grid-item :announcement="previewForm"/>
-                  </template>
+                  </client-only>
                </div>
             </div>
          </div>
@@ -23,7 +24,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import {mapGetters, mapActions} from 'vuex';
 
 import SellLastStep from '~/components/sell/SellLastStep';
 import SellPreview from '~/components/sell/SellPreview';
@@ -68,8 +69,8 @@ export default {
          isReady: false
       }
    },
-   async asyncData({ store, route, app }) {
-      store.dispatch('setSellPreviewData', { value: {} });
+   async asyncData({store, route, app}) {
+      store.dispatch('setSellPreviewData', {value: {}});
       await Promise.all([
          store.dispatch('getOptions'),
          store.dispatch('getColors'),
@@ -138,9 +139,9 @@ export default {
 
       crumbs() {
          return [
-            { name: this.$t('my_announces'), route: `/profile/announcements` },
-            { name: `#${this.announcement.id_unique}`, route: `/cars/announcement/${this.$route.params.id}` },
-            { name: this.$t('edit_ad') }
+            {name: this.$t('my_announces'), route: `/profile/announcements`},
+            {name: `#${this.announcement.id_unique}`, route: `/cars/announcement/${this.$route.params.id}`},
+            {name: this.$t('edit_ad')}
          ]
       }
    },
@@ -150,14 +151,28 @@ export default {
          const formData = new FormData()
          formData.append('data', JSON.stringify(form))
          try {
-            await this.carEdit({id: this.$route.params.id.slice(0, -1), isMobile: this.isMobileBreakpoint, form: formData})
+            await this.carEdit({
+               id: this.$route.params.id.slice(0, -1),
+               isMobile: this.isMobileBreakpoint,
+               form: formData
+            })
             this.$router.push(this.$localePath('/profile/announcements'))
-         }catch(e){}
+         } catch (e) {
+         }
       },
-
+      getCurrencyName() {
+         switch(this.announcement.currency_id) {
+            case 1:
+               return 'AZN';
+            case 2:
+               return 'USD';
+            case 3:
+               return 'EUR';
+            default:
+               return 'AZN'
+         }
+      },
       onClick() {
-         // this.$v.form.$touch()
-         // if (this.$v.authForm.$error) return;
          this.isReady = !this.isReady
       },
    },
@@ -166,21 +181,16 @@ export default {
          image: this.announcement.media[0],
          show_vin: this.announcement.show_vin,
          has_360: true,
-         price: this.announcement.price_int,
-         tradeable: false,
+         price: this.announcement.price_int + ' ' + this.getCurrencyName(),
+         tradeable: this.announcement.exchange_possible,
          credit: this.announcement.credit,
          brand: this.announcement.brand.name,
          model: this.announcement.model.name,
          year: this.announcement.year,
          mileage: this.announcement.mileage,
          car_catalog: {capacity: this.announcement.car_catalog.capacity},
-         created_at: this.announcement.created_at
+         created_at: this.$formatDate(this.announcement.created_at, 'D.MM.YYYY')[this.locale]
       }
-      // console.log("test", this.announcement)
-      // // this.previewForm = {
-      // //    image
-      // // }
-
    },
 }
 </script>

@@ -63,7 +63,7 @@
 
          <div
             v-if="!showGallery"
-            v-lazy:background-image="getImage+'&width=308'"
+            v-lazy:background-image="getImage+'?width=308'"
             :aria-label="getAnnouncementTitle(announcement)"
             class="item-bg"
             role="img"

@@ -79,7 +79,7 @@ export default {
                values: {
                   acceleration_to: 7
                },
-               icon: 'seat'
+               icon: 'dashboard'
             },
          ]
       }

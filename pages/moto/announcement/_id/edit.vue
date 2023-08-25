@@ -5,16 +5,16 @@
          <div class="announce_container">
             <div class="card">
                <form class="add_announce_form">
-                  <moto_form isEdit :announcement="announcement" :isReady="isReady"
+                  <moto_form isEdit :announcement="announcement" :preview="previewForm" :isReady="isReady"
                              @getForm="getMotoForm($event)"/>
                   <button type="button" @click="onClick()" class="btn full-width btn--pale-green-outline active">
                      {{ $t("place_announcement") }}
                   </button>
                </form>
                <div class="vehicle_card_info" v-if="!isMobileBreakpoint">
-                  <template>
-                     <grid-item :announcement="announcement"/>
-                  </template>
+                     <client-only>
+                        <grid-item :announcement="previewForm"/>
+                     </client-only>
                </div>
             </div>
          </div>
@@ -53,6 +53,20 @@ export default {
    },
    data() {
       return {
+         previewForm: {
+            image: "",
+            show_vin: true,
+            has_360: true,
+            price: "0 AZN",
+            tradeable: 0,
+            credit: false,
+            brand: "Marka",
+            model: "Model",
+            year: "0000",
+            mileage: 0,
+            car_catalog: {capacity: "0"},
+            created_at: ""
+         },
          isReady: false
       }
    },
@@ -68,9 +82,9 @@ export default {
       const announcement = store.state.myAnnouncement;
 
       let category;
-      if (announcement.moto_brand) category = '1';
-      else if (announcement.scooter_brand) category = '2';
-      else if (announcement.moto_atv_brand) category = '3';
+      if (announcement?.moto_brand) category = '1';
+      else if (announcement?.scooter_brand) category = '2';
+      else if (announcement?.moto_atv_brand) category = '3';
 
       return {
          lastStepKey: 0,
@@ -135,22 +149,62 @@ export default {
    },
    methods: {
       ...mapActions(['motoEdit']),
+      getMainImage(img) {
+         this.previewForm.image = img
+      },
       async getMotoForm(form) {
-
+         const formData = new FormData()
+         formData.append('data', JSON.stringify(form))
          try {
-            await this.motoEdit({id: this.$route.params.id.slice(0, -1), isMobile: this.isMobileBreakpoint, form})
+            await this.motoEdit({id: this.$route.params.id.slice(0, -1), isMobile: this.isMobileBreakpoint, form: formData})
             this.$router.push(this.$localePath('/profile/announcements'))
          } catch (e) {
          }
       },
       onClick() {
-         // this.$v.form.$touch()
-         // if (this.$v.authForm.$error) return;
          this.isReady = !this.isReady
-
-
       },
-   }
+      getCurrencyName() {
+         switch(this.announcement.currency_id) {
+            case 1:
+               return 'AZN';
+            case 2:
+               return 'USD';
+            case 3:
+               return 'EUR';
+            default:
+               return 'AZN'
+         }
+      },
+      getNamesByCategory() {
+         switch(this.announcement.type_of_moto) {
+            case 1:
+               return 'moto';
+            case 2:
+               return 'scooter';
+            case 3:
+               return 'moto_atv';
+         }
+      }
+   },
+   mounted() {
+      this.$nuxt.$on("get-main-image", this.getMainImage)
+
+      this.previewForm = {
+         image: this.announcement.media[0],
+         show_vin: this.announcement.show_vin,
+         has_360: true,
+         price: this.announcement.price_int + ' ' + this.getCurrencyName(),
+         tradeable: this.announcement.tradeable,
+         credit: this.announcement.credit,
+         brand: this.announcement[`${this.getNamesByCategory()}_brand`].name,
+         model: this.announcement[`${this.getNamesByCategory()}_model`].name,
+         year: this.announcement.year,
+         mileage: this.announcement.mileage,
+         car_catalog: {capacity: (this.announcement.capacity / 1000).toFixed(1)},
+         created_at: this.$formatDate(this.announcement.created_at, 'D.MM.YYYY')[this.locale]
+      }
+   },
 }
 </script>
 
@@ -169,7 +223,6 @@ export default {
       .card {
          flex-grow: 3;
          display: flex;
-         flex-direction: column;
          gap: 20px;
 
          &_title {
@@ -435,8 +488,6 @@ export default {
                background-size: inherit;
             }
          }
-
-
       }
 
 
