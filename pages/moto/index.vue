@@ -253,6 +253,8 @@
                this.sorting.key = filters.sort_by;
                this.sorting.value = filters.sort_order;
             }
+
+            this.announceType = filters.announce_type;
          }
       },
 

@@ -191,11 +191,14 @@ export const SearchMixin = {
                   setTimeout(() => {
                      this.scrollTo('.breadcrumbs', [-56, -96]);
                   }, 500);
+
                }
 
                if (this.loggedIn && this.meta.type === 'cars') {
                   this.fetchSavedSearch({search_url: `${this.meta.path}?${searchQuery}`});
                }
+            }, () => {
+               this.$emit('submit');
             });
          }
 
