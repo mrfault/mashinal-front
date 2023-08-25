@@ -85,8 +85,8 @@ export default {
          lastStepKey: 0,
          form: {
             car_catalog_id: announcement.car_catalog_id,
-            brand: announcement.brand.slug,
-            model: announcement.model.slug,
+            brand: announcement?.brand?.slug,
+            model: announcement?.model?.slug,
             generation_id: catalog.generation_id,
             car_body_type: catalog.car_type.id,
             gearing: catalog.main['  ']['engine'], // engines

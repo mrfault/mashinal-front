@@ -411,9 +411,9 @@
 
    @media (max-width: 1150px) {
       .vehicle-specs {
-         &__inner {
-            flex-direction: column;
-         }
+         //&__inner {
+         //   flex-direction: column;
+         //}
 
          &__list {
             &:not(:first-child) {

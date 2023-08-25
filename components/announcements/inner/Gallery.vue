@@ -92,12 +92,13 @@
             </div>
          </div>
 
+<!--         <pre>{{slides}}</pre>-->
          <div class="inner-gallery-lightbox" v-touch:swipe.top="handleSwipeTop">
             <FsLightbox
                v-if="isMobileBreakpoint"
                :zoomIncrement="0"
                :toggler="toggleFsLightbox"
-               :sources="getSourcesFsLightbox?.map(item => item.main_inner)"
+               :sources="getSourcesFsLightbox"
                :slide="currentSlide + 1"
                :key="lightboxKey"
                :onClose="refreshLightbox"
@@ -349,10 +350,10 @@
                         fromFsPopup: true,
                      },
                   },
-                  ...this.announcement?.media?.main?.slice(1, this.announcement?.media?.main?.length),
+                  ...this.slides.main.slice(1, this.slides.main.length),
                ]
             }
-            return this.announcement?.media?.main
+            return this.slides.main
          },
 
          slides() {

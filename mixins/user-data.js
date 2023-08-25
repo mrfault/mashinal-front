@@ -16,15 +16,15 @@ export const UserDataMixin = {
       },
       getUserSettingsLink() {
          if (!this.loggedIn) return this.$localePath('/login');
-         if (this.user.autosalon) {
-            return '/dashboard/1'
-         }
-         if (this.user.part_salon) {
-            return '/dashboard/2'
-         }
-         if (this.user.external_salon) {
-            return '/dashboard/3'
-         }
+         // if (this.user.autosalon) {
+         //    return '/profile/announcements'
+         // }
+         // if (this.user.part_salon) {
+         //    return '/profile/announcements'
+         // }
+         // if (this.user.external_salon) {
+         //    return '/profile/announcements'
+         // }
          return '/profile/announcements';
       }
    },

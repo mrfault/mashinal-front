@@ -2477,7 +2477,7 @@ export default {
    auction: "Auksion",
    sell: "Satış",
    end_date: "Son tarix",
-   announcement_info: "Avtomobilin məlumatları\n",
+   announcement_info: "Elanın məlumatları",
    announcement_end_date: "Elanın son tarixi",
    country: "Ölkə",
    dont_drink_so_much: "Bir də bu qədər içmə",
@@ -2859,5 +2859,7 @@ export default {
    "balance_present_title": "Bonus balansı",
    "balance_present_description": "Hədiyyə bonuslara şəklində əldə olunmuş məbləğ. Bonusun istifadə müddəti 30 gün",
    "Vin or car number is required": "VIN və ya QN nömrəsini əlavə edin",
+
+   "Aktiv elan sayı 3-dən çox ola bilməz": "Aktiv elan sayı 3-dən çox ola bilməz"
 };
 

@@ -187,7 +187,7 @@ export default {
                },
             ];
 
-            if (this.user.can_be_autosalon) {
+            if (this.user.autosalon || this.user.part_salon || this.user.external_salon || this.user.can_be_autosalon) {
                data.unshift({
                   title: this.$t('my_packages'),
                   icon: 'packages',

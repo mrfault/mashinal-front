@@ -1,5 +1,7 @@
 <template>
    <div class="cars-search-form form">
+<!--      <pre>{{announceType}}</pre>-->
+<!--      <pre>{{form.announce_type}}</pre>-->
       <div class="cars-search-form__inner">
          <template v-if="assistant">
             <div class="col-12">
@@ -1023,6 +1025,8 @@ export default {
    },
 
    mounted() {
+      // console.log('this.$route.query?.car_filter', JSON.parse(this.$route.query?.car_filter))
+
       if (this.$route.query?.car_filter && JSON.parse(this.$route.query?.car_filter)?.all_options) {
          this.form.all_options = this.popularOptions?.filter((option) => Object.keys(JSON.parse(this.$route.query?.car_filter)?.all_options)?.includes(option.name))?.map((p) => ({
             ...p, key: this.$t(p.label), slug: p.name, name: this.$t(p.label)

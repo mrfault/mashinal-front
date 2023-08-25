@@ -6,27 +6,7 @@
 
             <thumbs-gallery class="mt-3 mb-3" where="catalog" :media="selectedCar.transformed_media" />
 
-            <div class="mod-info-card card pt-0 pt-lg-3 mb-lg-3 pb-0 pb-lg-3">
-<!--               <template v-if="isMobileBreakpoint">-->
-<!--                  <h1 v-html="title"></h1>-->
-
-<!--                  <div class="d-flex">-->
-<!--                     <share-it type="publish" class="btns"/>-->
-<!--                     <button class="btn btn&#45;&#45;dark-blue-2-outline full-width" @click.stop="copyToClipboard($route.path)">-->
-<!--                        <icon name="link"/>-->
-<!--                        {{ $t('copy_to_clipboard') }}-->
-<!--                     </button>-->
-<!--                  </div>-->
-
-<!--                  <hr/>-->
-<!--               </template>-->
-
-<!--               <template v-else>-->
-<!--                  <thumbs-gallery where="catalog" :media="selectedCar.transformed_media"/>-->
-<!--               </template>-->
-            </div>
-
-            <div v-if="hasMods">
+            <div class="d-none d-lg-block" v-if="hasMods">
                <div class="modification-specs" v-for="(specs, key) in modSpecs" :key="key">
                   <div class="vehicle-specs">
                      <h2 class="vehicle-specs__title">{{ $t(key) }}</h2>
@@ -41,29 +21,29 @@
                               <span v-else-if="hasValues(key)">{{ $t(key + '_values')[spec || 0] }}</span>
 
                               <span v-else-if="Array.isArray(spec) && spec.length">
-                                    <template v-if="key.includes('maksimalnaya-moshchnost')">
-                                      <template v-if="spec[0]">{{ spec[0] }}</template>
-                                      <template v-if="spec[0] && spec[1] && spec[1] !== '—'">/</template>
-                                      <template v-if="spec[1] && spec[1] !== '—'">{{ spec[1] }}</template>
-                                      <template v-if="spec[2] && spec[2] !== '—'">{{ $t('at', {value: spec[2]}) }}</template>
-                                    </template>
+                                 <template v-if="key.includes('maksimalnaya-moshchnost')">
+                                    <template v-if="spec[0]">{{ spec[0] }}</template>
+                                    <template v-if="spec[0] && spec[1] && spec[1] !== '—'">/</template>
+                                    <template v-if="spec[1] && spec[1] !== '—'">{{ spec[1] }}</template>
+                                    <template v-if="spec[2] && spec[2] !== '—'">{{ $t('at', {value: spec[2]}) }}</template>
+                                 </template>
 
-                                    <template v-if="key.includes('krutyashchiy-moment')">
-                                      <template v-if="spec[0]">{{ spec[0] }}</template>
-                                      <template v-if="spec[1] && spec[1] !== '—'">{{ $t('at', {value: spec[1]}) }}</template>
-                                    </template>
+                                 <template v-if="key.includes('krutyashchiy-moment')">
+                                    <template v-if="spec[0]">{{ spec[0] }}</template>
+                                    <template v-if="spec[1] && spec[1] !== '—'">{{ $t('at', {value: spec[1]}) }}</template>
+                                 </template>
 
-                                    <template v-if="key.includes('electric') || key.includes('combined')">
-                                      <template v-if="spec[0]">{{ spec[0] }}</template>
-                                      <template v-if="spec[1] && spec[1] !== '—'">/ {{ spec[1] }}</template>
-                                    </template>
-                                 </span>
+                                 <template v-if="key.includes('electric') || key.includes('combined')">
+                                    <template v-if="spec[0]">{{ spec[0] }}</template>
+                                    <template v-if="spec[1] && spec[1] !== '—'">/ {{ spec[1] }}</template>
+                                 </template>
+                              </span>
 
                               <span v-else-if="typeof spec === 'object' && !Array.isArray(spec)">
-                                    <template v-if="spec.city || spec.track || spec.mixed">
-                                       {{ spec.city || '?' }} / {{ spec.track || '?' }} / {{ spec.mixed || '?' }}
-                                    </template>
-                                 </span>
+                                 <template v-if="spec.city || spec.track || spec.mixed">
+                                    {{ spec.city || '?' }} / {{ spec.track || '?' }} / {{ spec.mixed || '?' }}
+                                 </template>
+                              </span>
 
                               <span v-else-if="spec && !Array.isArray(spec)">{{ spec }}</span>
                               <span v-else>-</span>
@@ -74,33 +54,31 @@
                </div>
             </div>
 
-            <catalog-announcements :catalog-id="firstGeneration.id" :key="firstGeneration.id" />
+            <catalog-announcements class="d-none d-lg-block" :catalog-id="firstGeneration.id" :key="firstGeneration.id" />
          </div>
 
          <div class="col-auto">
-            <div class="card mb-2 mb-lg-3" v-if="!isMobileBreakpoint">
-               <div class="vehicle-specs">
-                  <h2 v-if="selectedBrand && selectedModel">
-                     {{ selectedBrand.name }} {{ $translateHard(selectedModel.name) }}
-                  </h2>
+            <div class="card mb-2 mb-lg-3">
+               <h2 v-if="selectedBrand && selectedModel">
+                  {{ selectedBrand.name }} {{ $translateHard(selectedModel.name) }}
+               </h2>
 
-                  <hr/>
+               <hr/>
 
-                  <ul>
-                     <li v-if="prodYears">
-                        <span>{{ $t('prod_years') }}</span>
-                        <span>{{ prodYears }}</span>
-                     </li>
-                     <li v-if="generationName">
-                        <span>{{ $t('generation') }}</span>
-                        <span>{{ generationName }}</span>
-                     </li>
-                     <li v-if="type">
-                        <span>{{ $t('body_type') }}</span>
-                        <span>{{ type.name[locale] }}</span>
-                     </li>
-                  </ul>
-               </div>
+               <ul>
+                  <li v-if="prodYears">
+                     <span>{{ $t('prod_years') }}</span>
+                     <span>{{ prodYears }}</span>
+                  </li>
+                  <li v-if="generationName">
+                     <span>{{ $t('generation') }}</span>
+                     <span>{{ generationName }}</span>
+                  </li>
+                  <li v-if="type">
+                     <span>{{ $t('body_type') }}</span>
+                     <span>{{ type.name[locale] }}</span>
+                  </li>
+               </ul>
             </div>
 
             <div class="card mt-2 mt-lg-3">
@@ -154,12 +132,11 @@
                </div>
             </div>
 
-            <div class="card mt-lg-3" v-if="!isMobileBreakpoint">
+            <div class="card mt-3">
 <!--               <div class="vehicle-specs">-->
                   <h2>{{ $t('main_parameters') }}</h2>
 
                   <hr/>
-
 <!--                  <div class="vehicle-specs">-->
                      <ul v-for="(specs, i) in mainSpecs" :key="i">
                         <li v-if="spec || $t(key+'_values')[spec]" v-for="(spec, key) in specs" :key="key">
@@ -186,6 +163,56 @@
 <!--                  </ul>-->
 <!--               </div>-->
             </div>
+
+            <div class="mt-3 d-lg-none" v-if="hasMods">
+               <div class="modification-specs" v-for="(specs, key) in modSpecs" :key="key">
+                  <div class="vehicle-specs">
+                     <h2 class="vehicle-specs__title">{{ $t(key) }}</h2>
+
+                     <div class="vehicle-specs__inner">
+                        <ul v-for="(col, i) in getDivSpecs(specs)" :key="i">
+                           <li v-for="(spec, key) in col" :key="key">
+                              <span>{{ $t(key) }}</span>
+
+                              <span v-if="['ekologicheskiy-klass'].includes(key)">{{ $t(spec) }}</span>
+
+                              <span v-else-if="hasValues(key)">{{ $t(key + '_values')[spec || 0] }}</span>
+
+                              <span v-else-if="Array.isArray(spec) && spec.length">
+                                 <template v-if="key.includes('maksimalnaya-moshchnost')">
+                                    <template v-if="spec[0]">{{ spec[0] }}</template>
+                                    <template v-if="spec[0] && spec[1] && spec[1] !== '—'">/</template>
+                                    <template v-if="spec[1] && spec[1] !== '—'">{{ spec[1] }}</template>
+                                    <template v-if="spec[2] && spec[2] !== '—'">{{ $t('at', {value: spec[2]}) }}</template>
+                                 </template>
+
+                                 <template v-if="key.includes('krutyashchiy-moment')">
+                                    <template v-if="spec[0]">{{ spec[0] }}</template>
+                                    <template v-if="spec[1] && spec[1] !== '—'">{{ $t('at', {value: spec[1]}) }}</template>
+                                 </template>
+
+                                 <template v-if="key.includes('electric') || key.includes('combined')">
+                                    <template v-if="spec[0]">{{ spec[0] }}</template>
+                                    <template v-if="spec[1] && spec[1] !== '—'">/ {{ spec[1] }}</template>
+                                 </template>
+                              </span>
+
+                              <span v-else-if="typeof spec === 'object' && !Array.isArray(spec)">
+                                 <template v-if="spec.city || spec.track || spec.mixed">
+                                    {{ spec.city || '?' }} / {{ spec.track || '?' }} / {{ spec.mixed || '?' }}
+                                 </template>
+                              </span>
+
+                              <span v-else-if="spec && !Array.isArray(spec)">{{ spec }}</span>
+                              <span v-else>-</span>
+                           </li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            <catalog-announcements class="" :catalog-id="firstGeneration.id" :key="firstGeneration.id" />
          </div>
       </div>
    </div>
@@ -343,7 +370,7 @@
    }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
    .catalog-inner {
       .card {
          padding: 24px 20px;
@@ -352,6 +379,29 @@
             &:last-child {
                hr {
                   display: none;
+               }
+            }
+         }
+
+         ul {
+            li {
+               display: flex;
+               align-items: center;
+               justify-content: space-between;
+               gap: 20px;
+               padding: 12px 0;
+
+               span {
+                  color: #364152;
+                  font-size: 15px;
+                  font-weight: 400;
+                  line-height: 20px;
+
+                  &:last-child {
+                     font-weight: 500;
+                     line-height: 18px;
+                     color: #121926;
+                  }
                }
             }
          }
@@ -383,8 +433,14 @@
             margin-bottom: 24px;
          }
 
+         &__inner {
+            display: flex;
+            justify-content: space-between;
+            gap: 88px;
+         }
+
          ul {
-            //padding: 0 30px;
+            width: 100%;
 
             li {
                display: flex;
@@ -441,6 +497,7 @@
                .compare-btn {
                   width: 40px;
                   height: 40px;
+                  margin-left: auto;
 
                   .btn-compare {
                      height: 22px;
@@ -461,6 +518,82 @@
 
                &:hover {
                   background-color: #EEF2F6;
+               }
+            }
+         }
+      }
+   }
+
+   .dark-mode {
+      .catalog-inner {
+         .modification-specs {
+            .vehicle-specs {
+               background-color: #1B2434;
+
+               &__title {
+                  color: #EEF2F6;
+               }
+
+               ul {
+                  li {
+                     border-color: #4B5565;
+
+                     span {
+                        color: #CDD5DF;
+
+                        &:last-child {
+                           color: #EEF2F6;
+                        }
+                     }
+                  }
+               }
+            }
+         }
+
+         .body-modifications {
+            h4 {
+               color: #EEF2F6;
+            }
+
+            &__row {
+               a {
+                  span {
+                     color: #CDD5DF;
+                  }
+
+                  .compare-btn {
+                     background-color: #364152;
+                  }
+
+                  &:hover {
+                     background-color: #364152;
+
+                     //.compare-btn {
+                     //   background-color: #FFFFFF !important;
+                     //}
+                  }
+               }
+            }
+         }
+
+         .card {
+            h2 {
+               color: #EEF2F6;
+            }
+
+            hr {
+               background-color: #4B5565;
+            }
+
+            ul {
+               li {
+                  span {
+                     color: #CDD5DF;
+
+                     &:last-child {
+                        color: #EEF2F6;
+                     }
+                  }
                }
             }
          }

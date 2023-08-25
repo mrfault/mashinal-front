@@ -2460,6 +2460,7 @@ export default {
    auction: "Аукцион",
    sell: "Продажа",
    end_date: "Дата окончания",
+   announcement_info: "Информация объявления",
    announcement_end_date: "Дата окончания объявления",
    country: "Страна",
    dont_drink_so_much: "Не пей так много",
@@ -2784,4 +2785,6 @@ export default {
    "balance_present_title": "Бонусный баланс",
    "balance_present_description": "Сумма получена в виде подарочных бонусов. Бонус действителен в течение 30 дней.",
    "Vin or car number is required": "Введите ВИН или номер",
+
+   "Aktiv elan sayı 3-dən çox ola bilməz": "Aktiv elan sayı 3-dən çox ola bilməz ru"
 };
