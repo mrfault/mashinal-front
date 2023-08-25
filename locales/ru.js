@@ -2780,4 +2780,6 @@ export default {
    "balance_present_title": "Бонусный баланс",
    "balance_present_description": "Сумма получена в виде подарочных бонусов. Бонус действителен в течение 30 дней.",
    "Vin or car number is required": "Введите ВИН или номер",
+
+   "Aktiv elan sayı 3-dən çox ola bilməz": "Aktiv elan sayı 3-dən çox ola bilməz ru"
 };
