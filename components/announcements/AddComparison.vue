@@ -11,7 +11,7 @@
       v-else-if="template === 'btn'"
       class="compare-btn"
       :class="[`btn--${btnClass}`]"
-      @click.stop="handleClick()"
+      @click.stop.prevent="handleClick()"
    >
       <span v-if="text">{{ text }}</span>
 
@@ -61,26 +61,26 @@
          async handleClick() {
             if (this.type === 'announcement') {
                if (this.announcementsList.findIndex(a => a.id_unique === this.id) >= 0) {
-                  this.$toasted.success(this.$t('comparison_removed'))
+                  this.$toasted.success(this.$t('comparison_removed'));
                } else {
                   if (this.limit === this.announcementsList.length) {
-                     this.$toasted.error(this.$t('reached_the_limit_announcement'))
+                     this.$toasted.error(this.$t('reached_the_limit_announcement'));
                   } else {
-                     this.$toasted.success(this.$t('comparison_added'))
+                     this.$toasted.success(this.$t('comparison_added'));
                   }
                }
-               await this.$store.dispatch('comparison/toggleAnnouncement', this.id)
+               await this.$store.dispatch('comparison/toggleAnnouncement', this.id);
             } else {
                if (this.modelsList.findIndex(a => a.id === this.id) >= 0) {
-                  this.$toasted.success(this.$t('comparison_removed'))
+                  this.$toasted.success(this.$t('comparison_removed'));
                } else {
                   if (this.limit === this.modelsList.length) {
-                     this.$toasted.error(this.$t('reached_the_limit_model'))
+                     this.$toasted.error(this.$t('reached_the_limit_model'));
                   } else {
-                     this.$toasted.success(this.$t('comparison_added'))
+                     this.$toasted.success(this.$t('comparison_added'));
                   }
                }
-               await this.$store.dispatch('comparison/toggleModel', this.id)
+               await this.$store.dispatch('comparison/toggleModel', this.id);
             }
          }
       },
@@ -92,6 +92,7 @@
             modelsList: 'comparison/modelsList',
             limit: 'comparison/limit',
          }),
+
          isActive() {
             if (this.type === 'announcement') {
                return this.announcementIds.findIndex(aId => aId === this.id) >= 0
