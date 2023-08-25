@@ -25,6 +25,7 @@
                :only-saved-search="!!$route.query.saved || false"
                :pending="pending"
                :sorting="sorting"
+               :announceType="announceType"
                @pending="pending = true"
                @submit="searchCars"
             />
@@ -150,17 +151,17 @@
       },
 
       data() {
-        return {
-           announceType: 1,
-           searchType: 1,
-           sorting: { key: 'created_at', value: 'desc', name: this.$t('show_by_date') },
-           sortItems: [
-              { key: 'created_at', value: 'desc', name: this.$t('show_by_date') },
-              { key: 'price_asc', value: 'asc', name: this.$t('show_cheap_first') },
-              { key: 'price_desc', value: 'desc', name: this.$t('show_expensive_first') },
-              { key: 'mileage', value: 'desc', name: this.$t('mileage') },
-              { key: 'year', value: 'desc', name: this.$t('years') }
-           ]
+         return {
+            announceType: 1,
+            searchType: 1,
+            sorting: { key: 'created_at', value: 'desc', name: this.$t('show_by_date') },
+            sortItems: [
+               { key: 'created_at', value: 'desc', name: this.$t('show_by_date') },
+               { key: 'price_asc', value: 'asc', name: this.$t('show_cheap_first') },
+               { key: 'price_desc', value: 'desc', name: this.$t('show_expensive_first') },
+               { key: 'mileage', value: 'desc', name: this.$t('mileage') },
+               { key: 'year', value: 'desc', name: this.$t('years') }
+            ]
         }
       },
 
@@ -239,11 +240,16 @@
             this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'cars' });
          }
 
-         if (this.$route.query.car_filter) {
-            let filters = JSON.parse(this.$route.query.car_filter)
+         if (this.$route.query?.car_filter) {
+            let filters = JSON.parse(this.$route.query?.car_filter)
 
-            this.sorting.key = filters.sort_by;
-            this.sorting.value = filters.sort_order;
+            if (filters.sort_by === 'price') {
+               this.sorting.key = `${filters.sort_by}_${filters.sort_order}`;
+               this.sorting.value = filters.sort_order;
+            } else {
+               this.sorting.key = filters.sort_by;
+               this.sorting.value = filters.sort_order;
+            }
          }
       },
 
