@@ -794,6 +794,7 @@ export default {
    fast_info: "Менее 7 секунд<br/>до 100 км/ч",
    "Faux leather": "Искусственная кожа",
    favorites: "Избранные",
+   favorites_ads: "Избранные объявления",
    features_1_title: "Единый бизнес пакет",
    features_2_title: "Безлимитный на один год",
    features_3_title: "Ежемесячная оплата",
@@ -2771,4 +2772,12 @@ export default {
    "info_saved":"Информация сохранена",
    '\"Avtomobilin nömrəsi\" artıq mövcuddur.': '«Номер автомобиля» уже существует.',
    'Sistem tərəfindən balans artırılması': 'Системное пополнение баланса',
+
+   "balance_personal_title": "Личный баланс",
+   "balance_personal_description": "Сумма, поступившая на лицевой счет доступными способами оплаты",
+   "balance_package_title": "Баланс пакета",
+   "balance_package_description": "Сумма, переведенная в рамках пакета (после оплаты счета)",
+   "balance_present_title": "Бонусный баланс",
+   "balance_present_description": "Сумма получена в виде подарочных бонусов. Бонус действителен в течение 30 дней.",
+   "Vin or car number is required": "Введите ВИН или номер",
 };

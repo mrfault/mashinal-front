@@ -1,6 +1,7 @@
 <template>
    <div class="inner-gallery">
       <div class="position-relative">
+<!--         <pre>{{slides}}</pre>-->
          <div
             class="swiper-container"
             v-swiper:gallerySwiper="swiperOps"
@@ -11,7 +12,7 @@
                <div
                   class="swiper-slide"
                   :key="index"
-                  v-for="(slide, index) in announcement?.media?.main"
+                  v-for="(slide, index) in slides.main"
                >
                   <div
                      style="width: 100%;"
@@ -34,7 +35,7 @@
                   <div
                      v-else
                      :class="['swiper-slide-bg', { 'youtube-play': showYtVideo(index) }]"
-                     :style="`background-image:url(${showYtVideo(index) ? getYtVideoImage('hq') : slide.main_inner}&width=716)`"
+                     :style="`background-image:url(${showYtVideo(index) ? getYtVideoImage('hq') : slide}?width=716)`"
                   >
                      <!--              <loader />-->
                   </div>
@@ -50,8 +51,6 @@
                   v-model="viewAspect"
                />
             </div>
-
-<!--            <pre>{{getSourcesFsLightbox?.map(item => item.main_inner)}}</pre>-->
 
             <div class="gallery-overlay_middle">
                <span class="d-flex justify-content-between">
@@ -365,6 +364,9 @@
             if (this.where === 'catalog') {
                thumbs = this.getMediaByKey(this.media, 'thumb')
                main = this.getMediaByKey(this.media, 'main')
+
+               console.log('thumbs', thumbs)
+               console.log('main', main)
             } else if (this.where === 'announcement') {
                let media = this.announcement.media.main
                if (media?.length === 0) return []

@@ -115,15 +115,14 @@ export default {
             {
                name: 'restore_free',
                icon: 'fi_check-square.svg',
-               show: this.announcement.status == 3,
+               show: this.announcement.status == 3 && !this.isNumberPlate,
                method: this.restore,
                modalTitle: 'restore_announcement'
             },
-
             {
                name: 'edit',
-               icon: 'notification.svg',
-               show: this.announcement.status == 1,
+               icon: 'fi_check-square.svg',
+               show: this.announcement.status == 1 || this.announcement.status == 0,
                method: this.editVehicle,
             },
             {
@@ -161,6 +160,7 @@ export default {
       },
 
       openModal(item) {
+         this.$store.commit('closeDropdown');
          this.showOptions = false;
          this.selectedItem = item;
          this.showModal = true;
@@ -175,14 +175,13 @@ export default {
       },
 
       async deactivate(event) {
+         this.$store.commit('closeDropdown');
          this.pending = true;
          try {
             await this.$store.dispatch('deactivateMyAnnounement', this.announcement.id_unique);
-            await this.$nuxt.refresh();
-            this.$emit('deactivateMyAnnounement');
+            this.$emit('refreshData');
             this.$toasted.success(this.$t('vehicle_deactivated'))
             this.closeModal();
-            this.$nuxt.refresh();
             this.pending = false;
             this.$store.commit('closeDropdown');
          } catch (e) {
@@ -196,11 +195,10 @@ export default {
          this.pending = true;
          try {
             await this.$store.dispatch('deleteMyAnnounementV2', this.announcement.id_unique);
-            await this.$nuxt.refresh();
+            this.$emit('refreshData');
             this.$emit('deleteMyAnnounement');
             this.$toasted.success(this.$t('vehicle_deleted'))
             this.closeModal();
-            this.$nuxt.refresh();
             this.pending = false;
             this.$store.commit('closeDropdown');
          } catch (e) {
@@ -211,11 +209,11 @@ export default {
       async restore() {
          try {
             await this.$axios.$get(`/restore/${this.announcement.id_unique}?is_mobile=${this.isMobileBreakpoint}`)
-            await this.$nuxt.refresh();
+            this.$emit('refreshData');
+
             this.$emit('restoredMyAnnounement');
             this.$toasted.success(this.$t('announcement_restored'))
             this.closeModal();
-            this.$nuxt.refresh();
             this.$store.commit('closeDropdown');
          } catch (e) {
             this.$toasted.error(this.$t('something_went_wrong'))
@@ -223,8 +221,9 @@ export default {
       },
 
       editVehicle() {
+         this.$store.commit('closeDropdown');
          if (this.isNumberPlate) {
-            this.$router.push(this.$localePath(`/plates/announcements/${this.announcement.id_unique}/edit`))
+            this.$router.push(this.$localePath(`/plates/${this.announcement.id_unique}/edit`))
          }
          if (!this.isNumberPlate) {
             if (this.announcement.type == 'Motorcycle' || this.announcement.type == 'Scooter' || this.announcement.type == 'Atv') {

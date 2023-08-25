@@ -245,6 +245,8 @@ const getInitialState = () => ({
    userCabinetCars: [],
 
    monetizationPriceList: [],
+
+   autosalonStatistics: {},
 });
 
 export const state = () => getInitialState();
@@ -462,6 +464,8 @@ export const getters = {
 
  //monetization
    monetizationPriceList: s => s.monetizationPriceList,
+
+   autosalonStatistics: s => s.autosalonStatistics,
 };
 
 const objectNotEmpty = (state, commit, property) => {
@@ -1801,6 +1805,12 @@ export const actions = {
       const res = await this.$axios.$get('/monetization/price/list')
       commit("mutate", {property: "monetizationPriceList", value: res});
 
+   }  ,
+
+   async getAutosalonStatistics({commit, state}, id) {
+      const res = await this.$axios.$get(`/my/dashboard/statistics/${id}`)
+      commit("mutate", {property: "autosalonStatistics", value: res});
+
    }
 
 };
@@ -2114,5 +2124,6 @@ export const mutations = {
    },
    mutateSavedImageUrls(state, payload) {
       state[payload.property] = payload.with;
-   }
+   },
+
 };

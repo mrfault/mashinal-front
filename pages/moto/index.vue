@@ -70,7 +70,6 @@
                         :clear-option="false"
                         :allowClear="false"
                         :objectInValue="true"
-                        @change="searchMoto"
                         v-model="sorting"
                      />
                   </template>

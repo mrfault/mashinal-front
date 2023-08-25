@@ -620,6 +620,7 @@
                div {
                   width: 100%;
                   height: 100%;
+                  background-position: center;
                }
             }
          }
@@ -676,7 +677,7 @@
          }
       }
 
-      .favorite-btn, .compare-btn {
+      .favorite-btn, .compare-btn, .edit-btn {
          border: 1px solid transparent;
          background-color: #1B2434;
 
@@ -686,6 +687,16 @@
 
          &:hover {
             border-color: #84ADFF !important;
+         }
+      }
+
+      .favorite-btn {
+         button {
+            background-image: url('../../static/icons/star-favorite2-white-border-min.svg') !important;
+
+            &.btn-favorite-active {
+               background-image: url('../../static/icons/star-favorite2-active-min.svg') !important;
+            }
          }
       }
    }

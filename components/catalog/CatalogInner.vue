@@ -2,59 +2,45 @@
    <div class="catalog-inner">
       <div class="row flex-column flex-lg-row">
          <div class="col-auto">
-            <gallery where="catalog" :media="selectedCar.transformed_media" :title="title" :subtitle="modName(main)"/>
+            <gallery where="catalog" :media="selectedCar.transformed_media" :title="title" :subtitle="modName(main)" />
+
+            <thumbs-gallery class="mt-3 mb-3" where="catalog" :media="selectedCar.transformed_media" />
 
             <div class="mod-info-card card pt-0 pt-lg-3 mb-lg-3 pb-0 pb-lg-3">
-               <template v-if="isMobileBreakpoint">
-                  <h1 v-html="title"></h1>
+<!--               <template v-if="isMobileBreakpoint">-->
+<!--                  <h1 v-html="title"></h1>-->
 
-                  <div class="d-flex">
-                     <share-it type="publish" class="btns"/>
-                     <button class="btn btn--dark-blue-2-outline full-width" @click.stop="copyToClipboard($route.path)">
-                        <icon name="link"/>
-                        {{ $t('copy_to_clipboard') }}
-                     </button>
-                  </div>
+<!--                  <div class="d-flex">-->
+<!--                     <share-it type="publish" class="btns"/>-->
+<!--                     <button class="btn btn&#45;&#45;dark-blue-2-outline full-width" @click.stop="copyToClipboard($route.path)">-->
+<!--                        <icon name="link"/>-->
+<!--                        {{ $t('copy_to_clipboard') }}-->
+<!--                     </button>-->
+<!--                  </div>-->
 
-                  <hr/>
-               </template>
+<!--                  <hr/>-->
+<!--               </template>-->
 
-               <template v-else>
-                  <thumbs-gallery where="catalog" :media="selectedCar.transformed_media"/>
-               </template>
-
-               <div class="vehicle-specs">
-                  <hr/>
-                  <div class="row">
-                     <div class="col" v-for="(specs, i) in mainSpecs" :key="i">
-                        <ul>
-                           <li v-if="spec || $t(key+'_values')[spec]" v-for="(spec, key) in specs" :key="key">
-                              <span>{{ $t(key) }}</span>
-                              <span v-if="hasValues(key)">{{ $t(key + '_values')[spec] }}</span>
-                              <span v-else>{{ spec || '—' }} {{ spec && getSuffix(key) }}</span>
-                           </li>
-                        </ul>
-                     </div>
-                  </div>
-                  <hr v-if="isMobileBreakpoint"/>
-               </div>
+<!--               <template v-else>-->
+<!--                  <thumbs-gallery where="catalog" :media="selectedCar.transformed_media"/>-->
+<!--               </template>-->
             </div>
 
-            <div class="card pt-1 pt-lg-3" v-if="hasMods">
+            <div v-if="hasMods">
                <div class="modification-specs" v-for="(specs, key) in modSpecs" :key="key">
-                  <h2 class="title-with-line">
-                     <span>{{ $t(key) }}</span>
-                  </h2>
-
                   <div class="vehicle-specs">
-                     <div class="row">
-                        <div class="col" v-for="(col, i) in getDivSpecs(specs)" :key="i">
-                           <ul>
-                              <li v-for="(spec, key) in col" :key="key">
-                                 <span>{{ $t(key) }}</span>
-                                 <span v-if="['ekologicheskiy-klass'].includes(key)">{{ $t(spec) }}</span>
-                                 <span v-else-if="hasValues(key)">{{ $t(key + '_values')[spec || 0] }}</span>
-                                 <span v-else-if="Array.isArray(spec) && spec.length">
+                     <h2 class="vehicle-specs__title">{{ $t(key) }}</h2>
+
+                     <div class="vehicle-specs__inner">
+                        <ul v-for="(col, i) in getDivSpecs(specs)" :key="i">
+                           <li v-for="(spec, key) in col" :key="key">
+                              <span>{{ $t(key) }}</span>
+
+                              <span v-if="['ekologicheskiy-klass'].includes(key)">{{ $t(spec) }}</span>
+
+                              <span v-else-if="hasValues(key)">{{ $t(key + '_values')[spec || 0] }}</span>
+
+                              <span v-else-if="Array.isArray(spec) && spec.length">
                                     <template v-if="key.includes('maksimalnaya-moshchnost')">
                                       <template v-if="spec[0]">{{ spec[0] }}</template>
                                       <template v-if="spec[0] && spec[1] && spec[1] !== '—'">/</template>
@@ -73,24 +59,22 @@
                                     </template>
                                  </span>
 
-                                 <span v-else-if="typeof spec === 'object' && !Array.isArray(spec)">
+                              <span v-else-if="typeof spec === 'object' && !Array.isArray(spec)">
                                     <template v-if="spec.city || spec.track || spec.mixed">
                                        {{ spec.city || '?' }} / {{ spec.track || '?' }} / {{ spec.mixed || '?' }}
                                     </template>
                                  </span>
 
-                                 <span v-else-if="spec && !Array.isArray(spec)">{{ spec }}</span>
-                                 <span v-else>-</span>
-                              </li>
-                           </ul>
-                        </div>
+                              <span v-else-if="spec && !Array.isArray(spec)">{{ spec }}</span>
+                              <span v-else>-</span>
+                           </li>
+                        </ul>
                      </div>
-                     <hr/>
                   </div>
                </div>
             </div>
 
-            <catalog-announcements :catalog-id="firstGeneration.id" :key="firstGeneration.id"/>
+            <catalog-announcements :catalog-id="firstGeneration.id" :key="firstGeneration.id" />
          </div>
 
          <div class="col-auto">
@@ -171,26 +155,36 @@
             </div>
 
             <div class="card mt-lg-3" v-if="!isMobileBreakpoint">
-               <div class="vehicle-specs">
+<!--               <div class="vehicle-specs">-->
                   <h2>{{ $t('main_parameters') }}</h2>
 
                   <hr/>
 
-                  <ul>
-                     <li v-if="prodYears">
-                        <span>{{ $t('prod_years') }}</span>
-                        <span>{{ prodYears }}</span>
-                     </li>
-                     <li v-if="generationName">
-                        <span>{{ $t('generation') }}</span>
-                        <span>{{ generationName }}</span>
-                     </li>
-                     <li v-if="type">
-                        <span>{{ $t('body_type') }}</span>
-                        <span>{{ type.name[locale] }}</span>
-                     </li>
-                  </ul>
-               </div>
+<!--                  <div class="vehicle-specs">-->
+                     <ul v-for="(specs, i) in mainSpecs" :key="i">
+                        <li v-if="spec || $t(key+'_values')[spec]" v-for="(spec, key) in specs" :key="key">
+                           <span>{{ $t(key) }}</span>
+                           <span v-if="hasValues(key)">{{ $t(key + '_values')[spec] }}</span>
+                           <span v-else>{{ spec || '—' }} {{ spec && getSuffix(key) }}</span>
+                        </li>
+                     </ul>
+<!--                  </div>-->
+
+<!--                  <ul>-->
+<!--                     <li v-if="prodYears">-->
+<!--                        <span>{{ $t('prod_years') }}</span>-->
+<!--                        <span>{{ prodYears }}</span>-->
+<!--                     </li>-->
+<!--                     <li v-if="generationName">-->
+<!--                        <span>{{ $t('generation') }}</span>-->
+<!--                        <span>{{ generationName }}</span>-->
+<!--                     </li>-->
+<!--                     <li v-if="type">-->
+<!--                        <span>{{ $t('body_type') }}</span>-->
+<!--                        <span>{{ type.name[locale] }}</span>-->
+<!--                     </li>-->
+<!--                  </ul>-->
+<!--               </div>-->
             </div>
          </div>
       </div>
@@ -313,6 +307,7 @@
 
          getDivSpecs(specs) {
             let filtered = {}, divSpecs = [{}, {}];
+
             for (let key in specs) {
                let value = specs[key];
                if (value instanceof Array ? value.filter(i => !['-', '—'].includes(i)).length : !['', 0, null, false, '-', '—'].includes(value)) {
@@ -330,9 +325,11 @@
                   }
                }
             }
+
             Object.keys(filtered).map((key, i) => {
                divSpecs[i % 2 === 0 ? 0 : 1][key] = specs[key];
             });
+
             return this.isMobileBreakpoint ? [filtered] : divSpecs;
          },
 
@@ -350,6 +347,14 @@
    .catalog-inner {
       .card {
          padding: 24px 20px;
+
+         .body-modifications {
+            &:last-child {
+               hr {
+                  display: none;
+               }
+            }
+         }
       }
 
       h2 {
@@ -359,13 +364,35 @@
          line-height: 22px;
       }
 
+      .modification-specs {
+         &:not(:first-child) {
+            margin-top: 20px;
+         }
+      }
+
       .vehicle-specs {
+         padding: 32px;
+         border-radius: 12px;
+         background-color: #FFFFFF;
+
+         &__title {
+            color: #1B2434;
+            font-size: 24px;
+            font-weight: 600;
+            line-height: 28px;
+            margin-bottom: 24px;
+         }
+
          ul {
+            //padding: 0 30px;
+
             li {
                display: flex;
                align-items: center;
                justify-content: space-between;
+               gap: 20px;
                padding: 12px 0;
+               border-bottom: 1px solid #E3E8EF;
 
                span {
                   color: #364152;

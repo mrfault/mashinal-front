@@ -94,15 +94,25 @@
          </div>
 
          <div class="row" v-if="announcement.status != 3">
-            <div class="col mt-2 mt-lg-3" v-if="contact.lat && contact.lng">
+            <div
+               class="col mt-2 mt-lg-3"
+               v-if="contact.lat && contact.lng"
+            >
                <show-map-button :lat="contact.lat" :lng="contact.lng" />
             </div>
 
-            <div class="col-5 mt-2 mt-lg-3" v-if="canSendMessage(announcement)">
+            <div
+               class="mt-2 mt-lg-3"
+               :class="contact.lat && contact.lng ? 'col-6' : 'col-5'"
+               v-if="canSendMessage(announcement)"
+            >
                <chat-button :announcement="announcement" has-after-login />
             </div>
 
-            <div class="col-7 mt-2 mt-lg-3" >
+            <div
+               class="mt-2 mt-lg-3"
+               :class="contact.lat && contact.lng ? 'col-12' : 'col-7'"
+            >
                <call-button-multiple
                   v-if="announcement?.is_auto_salon"
                   :phones="announcement?.user?.auto_salon?.phones"

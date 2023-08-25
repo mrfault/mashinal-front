@@ -89,7 +89,7 @@ export default {
       &--desc {
          font: 400 18px/22px 'TTHoves';
          color: #364152;
-         //text-transform: capitalize;
+         text-transform: capitalize;
       }
    }
 

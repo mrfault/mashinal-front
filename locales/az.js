@@ -2815,7 +2815,7 @@ export default {
    "shops_desc": "Axtarışınızı axtarış şablonlarına əlavə etməklə o parametrə uyğun yeni elana aid bildiriş əldə edəcəksiniz",
    "autocatalog_desc": "Lorem ipsum dolor sit amet consectetur. Fermentum euismod nunc massa tristique. Vitae nisi dignissim viverra neque nisl.",
 
-   "vin_or_car_number_is_mandatory": "Vin və ya avtomobilin nömrəsi məcburidir",
+   "vin_or_car_number_is_mandatory": "VIN və ya QN nömrəsini əlave edin",
    "mashin_pay": "Mashin pay",
    "mashin_pay_desc": "MashinPay.az keç",
    "vehicle_deleted": "Elan silinib",
@@ -2825,5 +2825,13 @@ export default {
    "L": "L",
    '\"Avtomobilin nömrəsi\" artıq mövcuddur.': 'Avtomobilin nömrəsi artıq mövcuddur.',
    'Sistem tərəfindən balans artırılması':'Sistem tərəfindən balans artırılması',
+
+   "balance_personal_title": "Şəxsi balans",
+   "balance_personal_description": "Şəxsi hesaba mümkün ödəniş üsulları vasitəsilə qoyulan məbləğ",
+   "balance_package_title": "Paket balansı",
+   "balance_package_description": "Paket çərçivəsində köçürülmüş məbləğ (invoys ödənildikdən sonra)",
+   "balance_present_title": "Bonus balansı",
+   "balance_present_description": "Hədiyyə bonuslara şəklində əldə olunmuş məbləğ. Bonusun istifadə müddəti 30 gün",
+   "Vin or car number is required": "VIN və ya QN nömrəsini əlavə edin",
 };
 

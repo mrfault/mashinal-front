@@ -12,7 +12,7 @@
                      <inline-svg :src="`/new-icons/announcements/${item.image}.svg`"/>
                   </div>
                   <div class="ma-announcements__top-card--title">{{ $t(item.name) }}</div>
-                  <div class="ma-announcements__top-card--count">{{ $t(item.value) }}</div>
+                  <div class="ma-announcements__top-card--count">{{ $t(item.value) || 0 }}</div>
                </div>
             </div>
             <div class="ma-announcements__head">
@@ -38,7 +38,6 @@
                     class="ma-announcements__body--row__inner">
                   <template v-for="(announcement,index) in myAnnouncements">
                      <div
-
                         class="ma-announcements__body--row__inner--item-plate"
                      >
                         <grid-item
@@ -52,6 +51,7 @@
                            show-phone-count
                            show-status
                            track-views
+                           :activeTab="activeTab"
                         />
                      </div>
                   </template>
@@ -78,13 +78,16 @@
                   <template v-for="(item,index) in allMyPlates">
                      <div
                         class="ma-announcements__body--row__inner--item-plate"
+
                      >
                         <plates-grid-item
                            :key="index"
-                           :item="item"
-                           moreInfo
-                           is-profile-page
                            :isLastChild="index === allMyPlates.length - 1"
+                           :item="item"
+                           is-profile-page
+                           moreInfo
+                           :activeTab="activeTab"
+
                         />
                      </div>
                   </template>
@@ -183,12 +186,17 @@ export default {
       });
    },
    mounted() {
+      if (this.user?.autosalon?.id)
+      this.getStatistics();
       this.$nuxt.$on('refresh-my-announcements', () => this.refresh++);
       const announcementsContainer = document.getElementById('announcementsContainer');
       announcementsContainer.addEventListener('mousedown', this.startDragging);
 
       const platesContainer = document.getElementById('platesContainer');
       platesContainer.addEventListener('mousedown', this.startDragging);
+
+
+
    },
    async asyncData({store, route}) {
       let status = ['0', '1', '2', '3'].includes(route.query.status) ? parseInt(route.query.status) : '';
@@ -237,9 +245,11 @@ export default {
          this.loading = false;
 
       },
+
       isValid(status) {
          return [0, 1, 2, 3].includes(status);
       },
+
       startDragging(event) {
          event.preventDefault(); // Disable content selection while dragging
          event.stopPropagation();
@@ -263,11 +273,18 @@ export default {
          container.style.userSelect = 'none'; // Disable content selection during dragging
       },
 
+      getStatistics() {
+         this.$store.dispatch('getAutosalonStatistics',this.user.autosalon.id)
+         console.log("this.user.autosalon",this.user.autosalon)
+      }
+
    },
    computed: {
       ...mapGetters({
          myAnnouncements: 'myAnnouncementsV2',
-         allMyPlates: 'myPlatesV2'
+         allMyPlates: 'myPlatesV2',
+         autosalonStatistics: 'autosalonStatistics',
+
       }),
 
       crumbs() {
@@ -280,27 +297,27 @@ export default {
          return [
             {
                name: 'announcements',
-               value: 14,
+               value: this.autosalonStatistics.announce_count || 0,
                image: 'doc'
             },
             {
                name: 'views_count',
-               value: 14,
+               value: this.autosalonStatistics.announce_view_count || 0,
                image: 'eye'
             },
             {
                name: 'favorites',
-               value: 14,
+               value: this.autosalonStatistics.total_favorites || 0,
                image: 'favorite'
             },
             {
                name: 'messages',
-               value: 14,
+               value: this.autosalonStatistics.message_count || 0,
                image: 'message-text'
             },
             {
                name: 'total_calls',
-               value: 14,
+               value: this.autosalonStatistics.call_count || 0,
                image: 'call'
             },
 
@@ -425,8 +442,28 @@ export default {
          }
       }
 
+      &__top-cards {
+         flex-wrap: wrap;
+         justify-content: flex-start;
+      }
+
+      &__top-card {
+         width: calc((100% - 40px) / 3) !important;
+         margin: 10px;
+
+         &:nth-of-type(1), &:nth-of-type(4) {
+            margin-left: 0;
+         }
+
+         &:nth-of-type(3) {
+            margin-right: 0;
+         }
+
+      }
+
 
    }
+
 
    .dark-mode {
       .ma-announcements {
@@ -448,6 +485,23 @@ export default {
                   height: 40px;
                }
             }
+         }
+      }
+   }
+}
+
+@media(max-width: 600px) {
+   .ma-announcements {
+      &__top-card {
+         width: calc(50% - 20px) !important;
+         margin: 10px !important;
+
+         &:nth-of-type(odd) {
+            margin-left: 0 !important;
+         }
+
+         &:nth-of-type(even) {
+            margin-right: 0 !important;
          }
       }
    }

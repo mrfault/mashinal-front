@@ -91,14 +91,11 @@
                this.showSinglePhone = true;
                this.trackCall(1);
 
-               window.getManualClassifiedNumber(
-                  ringostat_announce,
+               window.getManualClassifiedNumber(ringostat_announce,
                   (number) => {
-                     console.log(number);
-                     this.ringostat_number = number.numberWithoutMask
-                     this.ringostat_number_mask = number.number
-                     this.singlePhone = number?.numberWithoutMask.replace('+','')
-
+                     this.ringostat_number = number.numberWithoutMask;
+                     this.ringostat_number_mask = number.number;
+                     // this.singlePhone = number?.numberWithoutMask.replace('+','')
                   }, 0, `00${this.phone}`
                );
             }
@@ -130,7 +127,7 @@
       }
 
       &.active {
-         height: unset;
+         height: 56px;
 
          .call-a {
             color: #FFFFFF;

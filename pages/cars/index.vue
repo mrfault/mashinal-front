@@ -89,7 +89,6 @@
                         :clear-option="false"
                         :allowClear="false"
                         :objectInValue="true"
-                        @change="searchCars"
                         v-model="sorting"
                      />
                   </template>
@@ -157,8 +156,8 @@
            sorting: { key: 'created_at', value: 'desc', name: this.$t('show_by_date') },
            sortItems: [
               { key: 'created_at', value: 'desc', name: this.$t('show_by_date') },
-              { key: 'price', value: 'asc', name: this.$t('show_cheap_first') },
-              { key: 'price', value: 'desc', name: this.$t('show_expensive_first') },
+              { key: 'price_asc', value: 'asc', name: this.$t('show_cheap_first') },
+              { key: 'price_desc', value: 'desc', name: this.$t('show_expensive_first') },
               { key: 'mileage', value: 'desc', name: this.$t('mileage') },
               { key: 'year', value: 'desc', name: this.$t('years') }
            ]
@@ -266,11 +265,7 @@
             await this.$store.dispatch('fetchMonetizedCarsSearch', post);
             // await this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'cars', data: post });
             this.pending = false;
-            // if (page === 1) {
-            //    this.scrollTo('.announcements-sorting');
-            // } else {
-            //    this.scrollTo('.announcements-grid.paginated', [-50, -50]);
-            // }
+            this.scrollTo('.breadcrumbs', [20, -120]);
          }
       },
 
