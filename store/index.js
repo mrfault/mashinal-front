@@ -547,7 +547,7 @@ export const actions = {
       //       page: payload?.params?.page || 1
       //    }
       // };
-      const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/parts`, body, payload?.params?.page || 1);
+      const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/parts?page=${payload?.page || 1}`, body);
 
       commit("parts/mutate", {
          property: "showNotFound",
