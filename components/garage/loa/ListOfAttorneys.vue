@@ -71,7 +71,7 @@
 
 <script>
 import download from 'downloadjs'
-import templates from '~/pages/profile/templates.vue'
+import templates from '~/pages/profile/templates-old.vue'
 import AttorneyEmpty from '~/components/garage/AttorneyEmpty.vue'
 export default {
   components: { templates, AttorneyEmpty },

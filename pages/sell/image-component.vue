@@ -29,11 +29,12 @@ export default {
       initialForm: {},
       announcement: {},
       type: String,
+      deletedFiles: []
    },
    data() {
       return {
          form: this.$clone(this.initialForm),
-         files: (this.announcement?.media || []).map((media, i) => ({media, key: this.initialForm.saved_images[i]})),
+         files: ((this.type === 'parts' ? this.announcement?.defaultImages : this.announcement?.media) || []).map((media, i) => ({media, key: this.initialForm.saved_images[i]})),
          minFiles: 3,
          maxFiles: 20,
          savedFiles: [...this.initialForm.saved_images],
@@ -93,7 +94,7 @@ export default {
       },
       async deleteImage(index) {
          if (this.savedFiles[index]) {
-            if (this.edit && this.form.saved_images.includes(this.savedFiles[index]))
+            if (this.form.saved_images.includes(this.savedFiles[index]))
                this.deletedFiles.push(this.savedFiles[index]);
             else this.$axios.$post('/remove_temporary_image/' + this.savedFiles[index]);
             this.$delete(this.savedFiles, index);

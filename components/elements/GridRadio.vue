@@ -97,6 +97,7 @@ export default {
 .dark-mode {
    .grid_radio {
       background-color: #121926;
+      border-color: #121926;
 
       .grid_container {
          .grid_item {

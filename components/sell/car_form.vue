@@ -126,7 +126,7 @@
          object-in-value
          :new-label="false"
          v-model="form.modification"
-         @change="announcement.car_catalog.capacity = form.modification.capacity"
+         @change="preview.car_catalog.capacity = form.modification.capacity"
       />
       <!--      v-if="form.modification"-->
 
@@ -154,7 +154,7 @@
             <form-numeric-input
                :class="{form_error: $v.form.mileage.$error}"
                :placeholder="$t('mileage')"
-               :max-value="form.is_new ? (form.mileage_type === 1 ? 500 : 311) : 10000000"
+               :max-value="form.is_new ? (form.mileage_type === 1 ? 500 : 310) : 10000000"
                v-model="form.mileage"
                :invalid="$v.form.mileage.$error"
             />
@@ -261,11 +261,12 @@
                :class="{form_error: $v.form.price.$error}"
                :placeholder="$t('price')"
                v-model="form.price"
-               @change="!isEdit && (announcement.price = $event ? $event + ' ' + (form.currency.name?.[locale] || priceTypes.find((pr) => pr.id === form.currency).name?.[locale]) : 0)"
+               @change="preview.price = $event ? $event + ' ' + (form.currency.name?.[locale] || priceTypes.find((pr) => pr.id === form.currency).name?.[locale]) : 0"
                :invalid="$v.form.price.$error"
             />
             <div class="price_types">
-               <toggle-group :items="priceTypes" :default-value="form.currency || 1" v-slot="{ item }" @change="toggleCurrency">
+               <toggle-group :items="priceTypes" :default-value="form.currency || 1" v-slot="{ item }"
+                             @change="toggleCurrency">
                   <div class="price_item">
                      <p>{{ item.name[locale] }}</p>
                   </div>
@@ -304,14 +305,14 @@
                :label="$t('tradeable')"
                input-name="tradeable"
                transparent
-               @change="announcement.tradeable = $event"
+               @change="preview.tradeable = $event"
             />
             <form-checkbox
                v-model="form.credit"
                :label="$t('credit_possible')"
                input-name="credit"
                transparent
-               @change="announcement.credit = $event"
+               @change="preview.credit = $event"
             />
          </div>
          <div v-if="!user.external_salon">
@@ -348,7 +349,7 @@
                   v-model="form.show_vin"
                   :label="$t('show_on_site')"
                   input-name="show_vin"
-                  @change="announcement.show_vin = $event"
+                  @change="preview.show_vin = $event"
                   transparent
                />
             </div>
@@ -375,7 +376,10 @@
             </div>
          </div>
          <div class="comment" :class="{form_error: $v.form.saved_images.$error}">
-            <image-component :type="'cars'" :initial-form="form" :announcement="announcement" />
+            <client-only>
+               <image-component :type="'cars'" :initial-form="form" :announcement="announcement"
+                                :deletedFiles="deletedFiles"/>
+            </client-only>
             <div class="comment_info">
                <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
                <div class="warning_texts">
@@ -411,15 +415,15 @@ export default {
       mileageTypeName() {
          return this.form.mileage_type === 1 ? this.$t('char_kilometre') : this.$t('ml')
       },
-      // defaultImages() {
-      //    console.log(this.announcement.media)
-      //    return this.announcement ? this.announcement.media
-      // }
    },
    props: {
       announcement: {
          type: Object,
          required: true
+      },
+      preview: {
+         type: Object,
+         default: {}
       },
       isReady: {
          type: Boolean,
@@ -450,6 +454,7 @@ export default {
                name: {az: "EUR", ru: "EUR"},
             },
          ],
+         deletedFiles: [],
          form: {
             brand: "",
             model: "",
@@ -498,7 +503,7 @@ export default {
 
       async onChangeBrand({slug}) {
          this.clearFields(['model', 'year', 'body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])
-         this.announcement.brand = this.form.brand.name || this.$t('mark')
+         this.preview.brand = this.form.brand.name || this.$t('mark')
          if (slug) {
             await this.getModels(slug);
          }
@@ -507,7 +512,7 @@ export default {
          this.clearFields(['year', 'body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])
          const brand = this.form.brand.slug
          const model = this.form.model.slug
-         this.announcement.model = this.form.model.name || this.$t('model')
+         this.preview.model = this.form.model.name || this.$t('model')
          if (brand && this.form.model.name) {
             try {
                await this.getSellYears({brand, model});
@@ -524,7 +529,7 @@ export default {
          const brand = this.form.brand.slug
          const model = this.form.model.slug
          const year = this.form.year
-         this.announcement.year = this.form.year || "0000"
+         this.preview.year = this.form.year || "0000"
          if (brand && model && this.form.year) {
             try {
                await this.getSellBody({brand, model, year});
@@ -625,7 +630,7 @@ export default {
             } catch (e) {
             }
             if (this.sellModificationsV2.length === 1) {
-               this.announcement.car_catalog.capacity = this.sellModificationsV2[0].capacity
+               this.preview.car_catalog.capacity = this.sellModificationsV2[0].capacity
                this.form.modification = this.sellModificationsV2.map((o) => ({
                   name: o.title,
                   key: o.id,
@@ -639,14 +644,14 @@ export default {
             if (this.form.mileage_type === 1 && this.form.mileage > 500) {
                this.form.mileage = 500
             }
-            if (this.form.mileage_type === 2 && this.form.mileage > 311) {
-               this.form.mileage = 311
+            if (this.form.mileage_type === 2 && this.form.mileage > 310) {
+               this.form.mileage = 310
             }
          }
       },
       toggleCurrency(currency) {
          this.form.currency = currency.id
-         !this.isEdit && (this.announcement.price = this.form.price ? this.form.price + ' ' + (currency.name?.[this.locale] || 'AZN') : 0)
+         this.preview.price = this.form.price ? this.form.price + ' ' + (currency.name?.[this.locale] || 'AZN') : 0
       },
       updateAddress(address) {
          this.form.address = address;
@@ -708,31 +713,18 @@ export default {
    },
    watch: {
       'form.mileage_type'() {
-         this.isEdit ? this.$store.commit('mutate', {
-            property: 'announcement',
-            value: {
-               ...this.announcement,
-               mileage: this.form.mileage ? this.form.mileage + ' ' + (this.form.mileage_type === 1 ? this.$t('char_kilometre') : this.$t('ml')) : 0
-            }
-         }) : this.announcement.mileage = this.form.mileage ? this.form.mileage + ' ' + (this.form.mileage_type === 1 ? this.$t('char_kilometre') : this.$t('ml')) : 0
+         this.preview.mileage = this.form.mileage ? this.form.mileage + ' ' + (this.form.mileage_type === 1 ? this.$t('char_kilometre') : this.$t('ml')) : 0
          if (this.form.is_new) {
             if (this.form.mileage_type === 1 && this.form.mileage > 500) {
                this.form.mileage = 500
             }
-            if (this.form.mileage_type === 2 && this.form.mileage > 311) {
-               this.form.mileage = 311
+            if (this.form.mileage_type === 2 && this.form.mileage > 310) {
+               this.form.mileage = 310
             }
          }
       },
       'form.mileage'() {
-         this.isEdit ? this.$store.commit('mutate', {
-               property: 'announcement',
-               value: {
-                  ...this.announcement,
-                  mileage: this.form.mileage ? this.form.mileage + ' ' + (this.form.mileage_type === 1 ? this.$t('char_kilometre') : this.$t('ml')) : 0
-               }
-            }) :
-            this.announcement.mileage = this.form.mileage ? this.form.mileage + ' ' + (this.form.mileage_type === 1 ? this.$t('char_kilometre') : this.$t('ml')) : 0
+         this.preview.mileage = this.form.mileage ? this.form.mileage + ' ' + (this.form.mileage_type === 1 ? this.$t('char_kilometre') : this.$t('ml')) : 0
       },
       'form.modification'() {
          this.$emit("navigationProgress", {id: 1, status: !!this.form.modification})
@@ -797,6 +789,9 @@ export default {
             }
          } else {
             newForm = {...newForm, region_id: this.form.region_id}
+         }
+         if (this.isEdit && this.deletedFiles.length) {
+            newForm = {...newForm, deletedFiles: this.deletedFiles}
          }
 
          this.$emit("getForm", newForm)
