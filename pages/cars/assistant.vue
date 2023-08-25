@@ -2,12 +2,13 @@
    <div class="pages-cars-assistant">
       <div class="container">
          <breadcrumbs :crumbs="crumbs"/>
-         <car-guide @onSubmit="onGuideSubmit" :pending="pending"/>
+         <car-guide :class="{'mb-5':  result.announcements?.length > 0 || result.monetized?.length > 0}" @onSubmit="onGuideSubmit" @reset="resetForm" :pending="pending"/>
       </div>
-
-      <div class="overflow-hidden" v-if="monetizedCars?.length">
+      <no-results
+         v-if="result.announcements?.length === 0 && result.monetized?.length === 0"/>
+      <div class="overflow-hidden" v-if="result.monetized?.length">
          <grid
-            :announcements="monetizedCars"
+            :announcements="result.monetized"
             :pending="pending"
          >
             <template #cap>
@@ -26,9 +27,9 @@
             </template>
          </grid>
       </div>
-      <div class="overflow-hidden bg-white" v-if="mainAnnouncements?.data?.length">
+      <div class="overflow-hidden bg-white" v-if="result.announcements?.length">
          <grid
-            :announcements="mainAnnouncements?.data"
+            :announcements="result.announcements"
             :itemDetailsDark="true"
             :pending="pending"
          >
@@ -57,11 +58,13 @@ import CarGuide from "~/components/cars/CarGuide.vue";
 import {mapActions, mapGetters} from "vuex";
 import Grid from "~/components/announcements/Grid.vue";
 import Cap from "~/components/elements/Cap.vue";
+import NoResults from "~/components/elements/NoResults.vue";
 
 export default {
    name: 'pages-cars-assistant',
    layout: 'search',
    components: {
+      NoResults,
       Cap, Grid,
       CarGuide,
       CarSearchForm
@@ -78,6 +81,10 @@ export default {
    },
    data() {
       return {
+         result: {
+            monetized: null,
+            announcements: null
+         },
          pending: false
       }
    },
@@ -116,10 +123,20 @@ export default {
          try {
             await this.fetchMonetizedCarsSearch(form)
             await this.getGridSearch({url: '/car', post: form, prefix: 'main'})
+            this.result = {
+               monetized: this.monetizedCars,
+               announcements: this.mainAnnouncements?.data
+            }
          } catch (e) {
 
          } finally {
             this.pending = false
+         }
+      },
+      resetForm() {
+         this.result = {
+            monetized: null,
+            announcements: null
          }
       }
    }

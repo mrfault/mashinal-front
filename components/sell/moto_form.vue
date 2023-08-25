@@ -46,7 +46,7 @@
             :clear-option="false"
             :new-label="false"
             v-model="form.year"
-            @change="announcement.year = $event || '0000'"
+            @change="preview.year = $event || '0000'"
             :invalid="$v.form.year.$error"
          />
          <div class="divider">
@@ -54,7 +54,7 @@
                :class="{form_error: $v.form.volume.$error}"
                :placeholder="$t('engine_volume2')"
                v-model="form.volume"
-               @change="announcement.car_catalog.capacity = ($event / 1000).toFixed(1)"
+               @change="preview.car_catalog.capacity = ($event / 1000).toFixed(1)"
                :invalid="$v.form.volume.$error"
             />
             <form-numeric-input
@@ -107,8 +107,9 @@
             <form-numeric-input
                :placeholder="$t('mileage')"
                :class="{form_error: $v.form.mileage.$error}"
+               :max-value="form.is_new ? (form.mileage_type === 1 ? 500 : 310) : 10000000"
                v-model="form.mileage"
-               @change="announcement.mileage = $event ? $event  + ' ' + mileageTypeName : 0"
+               @change="preview.mileage = $event ? $event  + ' ' + mileageTypeName : 0"
                :invalid="$v.form.mileage.$error"
             />
             <div class="mileage_types">
@@ -201,11 +202,12 @@
                :placeholder="$t('price')"
                :class="{form_error: $v.form.price.$error}"
                v-model="form.price"
-               @change="!isEdit && (announcement.price = $event ? $event + ' ' + (form.currency.name?.[locale] || priceTypes.find((pr) => pr.id === form.currency).name?.[locale]) : 0)"
+               @change="preview.price = $event ? $event + ' ' + (form.currency.name?.[locale] || priceTypes.find((pr) => pr.id === form.currency).name?.[locale]) : 0"
                :invalid="$v.form.price.$error"
             />
             <div class="price_types">
-               <toggle-group :items="priceTypes" v-slot="{ item }" @change="toggleCurrency">
+               <toggle-group :items="priceTypes" :default-value="form.currency || 1" v-slot="{ item }"
+                             @change="toggleCurrency">
                   <div class="price_item">
                      <p>{{ item.name[locale] }}</p>
                   </div>
@@ -218,14 +220,14 @@
                :label="$t('tradeable')"
                input-name="tradeable"
                transparent
-               @change="announcement.tradeable = $event"
+               @change="preview.tradeable = $event"
             />
             <form-checkbox
                v-model="form.credit"
                :label="$t('credit_possible')"
                input-name="credit"
                transparent
-               @change="announcement.credit = $event"
+               @change="preview.credit = $event"
             />
          </div>
          <div>
@@ -238,8 +240,6 @@
                   :mask="'99 - A - 999'"
                   placeholder="__ - _ - ___"
                   class="with-trailing"
-                  :class="{form_error: $v.form.car_number.$error}"
-                  :invalid="$v.form.car_number.$error"
                />
                <form-checkbox
                   v-model="form.show_car_number"
@@ -302,7 +302,9 @@
             </div>
          </div>
          <div class="comment" :class="{form_error: $v.form.saved_images.$error}">
-            <image-component :type="'moto'" :initial-form="form" :announcement="announcement"/>
+            <client-only>
+               <image-component :type="'moto'" :initial-form="form" :announcement="announcement" :deletedFiles="deletedFiles" />
+            </client-only>
             <div class="comment_info">
                <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
                <div class="warning_texts">
@@ -338,6 +340,10 @@ export default {
          type: Object,
          required: true
       },
+      preview: {
+         type: Object,
+         default: {}
+      },
       isReady: {
          type: Boolean,
          default: false
@@ -365,6 +371,7 @@ export default {
                name: {az: "EUR", ru: "EUR"},
             },
          ],
+         deletedFiles: [],
          form: {
             type_of_moto: "",
             brand: "",
@@ -404,15 +411,18 @@ export default {
    },
    watch: {
       'form.mileage_type'() {
-         this.announcement.mileage = this.form.mileage ? this.form.mileage + ' ' + (this.form.mileage_type === 1 ? this.$t('char_kilometre') : this.$t('ml')) : 0
+         this.preview.mileage = this.form.mileage ? this.form.mileage + ' ' + (this.form.mileage_type === 1 ? this.$t('char_kilometre') : this.$t('ml')) : 0
          if (this.form.is_new) {
             if (this.form.mileage_type === 1 && this.form.mileage > 500) {
                this.form.mileage = 500
             }
-            if (this.form.mileage_type === 2 && this.form.mileage > 311) {
-               this.form.mileage = 311
+            if (this.form.mileage_type === 2 && this.form.mileage > 310) {
+               this.form.mileage = 310
             }
          }
+      },
+      'form.mileage'() {
+         this.preview.mileage = this.form.mileage ? this.form.mileage + ' ' + (this.form.mileage_type === 1 ? this.$t('char_kilometre') : this.$t('ml')) : 0
       },
       'form.model'() {
          this.$emit("navigationProgress", {id: 1, status: !!this.form.model})
@@ -461,7 +471,7 @@ export default {
             show_vin: this.form.show_vin,
             comment: this.form.comment,
             is_new: this.form.is_new === 1,
-            beaten: this.form.beaten === 1,
+            beaten: this.form.beaten,
             customs_clearance: this.form.customs_clearance,
             tradeable: this.form.tradeable,
             credit: this.form.credit,
@@ -476,10 +486,13 @@ export default {
             cylinders: this.form.cylinders || 0,
             number_of_vehicles: this.form.number_of_vehicles || 0,
             category: this.form.type_of_moto.id,
-            youtube: {"id": "", "thumb": ""}
+            youtube: {"id": "", "thumb": ""},
+
          }
 
-         this.$emit("getForm", newForm)
+         const editForm = {...newForm, deletedFiles: this.deletedFiles}
+
+         this.$emit("getForm", this.isEdit && this.deletedFiles.length ? editForm : newForm)
       }
    },
 
@@ -496,13 +509,13 @@ export default {
       async onChangeMotoBrand(val) {
          this.clearFields(['model', 'year'])
          const value = this.form.type_of_moto.value;
-         this.announcement.brand = this.form.brand.name || this.$t('mark')
+         !this.isEdit && (this.announcement.brand = this.form.brand.name || this.$t('mark'))
          if (this.form.brand.name) {
             await this.getMotoModelsV2({value, id: val.id, whereHas: 1});
          }
       },
       onChangeMotoModel() {
-         this.announcement.model = this.form.model.name || this.$t('model')
+         !this.isEdit && (this.announcement.model = this.form.model.name || this.$t('model'))
          this.clearFields(['year'])
       },
       onChangeIsNew(isnew) {
@@ -510,14 +523,14 @@ export default {
             if (this.form.mileage_type === 1 && this.form.mileage > 500) {
                this.form.mileage = 500
             }
-            if (this.form.mileage_type === 2 && this.form.mileage > 311) {
-               this.form.mileage = 311
+            if (this.form.mileage_type === 2 && this.form.mileage > 310) {
+               this.form.mileage = 310
             }
          }
       },
       toggleCurrency(currency) {
          this.form.currency = currency.id
-         !this.isEdit && (this.announcement.price = this.form.price ? this.form.price + ' ' + (currency.name?.[this.locale] || 'AZN') : 0)
+         this.preview.price = this.form.price ? this.form.price + ' ' + (currency.name?.[this.locale] || 'AZN') : 0
       },
       updateAddress(address) {
          this.form.address = address;

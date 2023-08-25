@@ -32,17 +32,18 @@
                         v-model="form.announce_type"
                         @change="handleAnnounceType"
                      />
-
-
                      <car_form v-if="form.announce_type.title === 'cars'" :announcement="announcement"
+                               :preview="announcement"
                                :isReady="isReady"
                                @navigationProgress="navigationData.find((nav) => nav.id === $event.id).isActive = $event.status"
                                @getForm="getCarForm($event)" @done="submitShow = $event"/>
                      <moto_form v-if="form.announce_type.title === 'moto'" :announcement="announcement"
+                                :preview="announcement"
                                 :isReady="isReady"
                                 @navigationProgress="navigationData.find((nav) => nav.id === $event.id).isActive = $event.status"
                                 @getForm="getMotoForm($event)" @done="submitShow = $event"/>
                      <part_form v-if="form.announce_type.title === 'parts'" :announcement="announcement"
+                                :preview="partPreview"
                                 @changeType="onChangePartType($event)"
                                 @navigationProgress="navigationData.find((nav) => nav.id === $event.id).isActive = $event.status"
                                 :isReady="isReady" @getForm="getPartForm($event)" @done="submitShow = $event"/>
@@ -77,9 +78,11 @@
                            />
                            <form-text-input
                               v-if="authStep === 'handleOTP'"
-                              :class="{form_error: $v.authForm.code.$error}"
+                              :class="['otp', {form_error: $v.authForm.code.$error}]"
                               :placeholder="$t('otp') + '*'"
                               v-model="authForm.code"
+                              :maxlength="5"
+                              :mask="'99999'"
                               :invalid="$v.authForm.code.$error"
                            />
                            <div class="contacts_info" v-if="!Object.values(user).length">
@@ -161,12 +164,12 @@
                   </form>
                   <div class="vehicle_card_info" v-if="!isMobileBreakpoint">
                      <template
-                        v-if="form.announce_type.title !== 'registration_marks' && form.announce_type !== '' && announcement.image !== ''">
+                        v-if="form.announce_type.title !== 'registration_marks' && form.announce_type !== '' && (announcement.image || partPreview.image)">
                         <div class="bg-white">
                            <grid-item
-                              v-if="form.announce_type.title === 'cars' ||  form.announce_type.title === 'moto' || announcement.image"
+                              v-if="form.announce_type.title === 'cars' ||  form.announce_type.title === 'moto' || announcement.image || partPreview.image"
                               style="pointer-events: none"
-                              :announcement="announcement"/>
+                              :announcement="form.announce_type.title === 'parts' ? partPreview : announcement"/>
                         </div>
                         <div class="vehicle_card_info_description">
                            <p>{{ $t('announce_looks_like') }}</p>
@@ -250,6 +253,13 @@ export default {
                id: 4, title: "Hesab məlumatları", isActive: false
             }
          ],
+         partPreview: {
+            title: this.$t('headline'),
+            description: this.$t('additional_info'),
+            image: "",
+            price: "0 AZN",
+            created_at: this.$moment(new Date()).format('DD.MM.YYYY')
+         },
          announcement: {
             image: "",
             show_vin: true,
@@ -274,7 +284,9 @@ export default {
             phone: "",
             code: ""
          },
-         authStep: ""
+         authStep: "",
+         resetAnnouncement: {},
+         resetPartPreview: {},
       };
    },
    async asyncData({store}) {
@@ -290,15 +302,15 @@ export default {
       onChangePartType(id) {
          switch (id) {
             case 19:
-               return this.announcement.image = "/img/tyre.svg"
+               return this.partPreview.image = "/img/tyre.svg"
             case 20:
-               return this.announcement.image = "/img/disc.svg"
+               return this.partPreview.image = "/img/disc.svg"
             case 21:
-               return this.announcement.image = "/img/oil.svg"
+               return this.partPreview.image = "/img/oil.svg"
             case 27:
-               return this.announcement.image = "/img/battery.svg"
+               return this.partPreview.image = "/img/battery.svg"
             default:
-               return this.announcement.image = "/img/parts.svg"
+               return this.partPreview.image = "/img/parts.svg"
          }
       },
       getMainImage(img) {
@@ -396,7 +408,7 @@ export default {
       onClick() {
          this.$v.authForm.$touch()
          setTimeout(() => {
-            this.scrollTo('.form_error', [-50, -50])
+            this.scrollTo('.form_error', -190)
          });
          if (this.$v.authForm.$error) {
             this.$toasted.error(this.$t('required_fields'));
@@ -417,9 +429,12 @@ export default {
                .$post('https://v2dev.mashin.al/api/v2/auth/login-or-register', {phone: this.authForm.phone.replace(/[^0-9]+/g, ''),})
 
             this.authStep = 'handleOTP'
+            this.$nextTick(() => {
+               this.scrollTo('.otp', [-50, -190])
+            })
             this.$v.authForm.$reset()
          } catch (e) {
-            console.log(e)
+
          }
       },
       async onOTPVerification() {
@@ -437,10 +452,15 @@ export default {
             this.isReady = !this.isReady
             this.$v.authForm.$reset()
          } catch (e) {
+            this.$nextTick(() => {
+               this.scrollTo('.otp', [-50, -190])
+            })
          }
       }
    },
    async mounted() {
+      this.resetAnnouncement = {...this.announcement}
+      this.resetPartPreview = {...this.partPreview}
       this.announceTitle = this.$t('place_an_ad')
       if (Object.values(this.user).length) {
          this.authForm.name = this.user.full_name
@@ -458,14 +478,19 @@ export default {
          this.navigationData.forEach((nav) => nav.id !== 4 && (nav.isActive = false))
          switch (this.form.announce_type.title) {
             case "cars":
+               this.partPreview = {...this.resetPartPreview}
                this.announceTitle = this.$t('vehicle_info')
                return this.announcement.image = "/img/car_default.svg"
             case "moto":
+               this.partPreview = {...this.resetPartPreview}
                this.announceTitle = this.$t('vehicle_info')
                return this.announcement.image = "/img/motorbike.svg"
             case "parts":
+               this.announcement = {...this.resetAnnouncement}
                return this.announceTitle = this.$t('part_info')
             case "registration_marks":
+               this.announcement = {...this.resetAnnouncement}
+               this.partPreview = {...this.resetPartPreview}
                this.announceTitle = this.$t('registration_mark_info')
                return this.submitShow = true
             default:
