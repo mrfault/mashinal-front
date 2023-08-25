@@ -230,7 +230,7 @@ export default {
    }
 
    .card-option {
-      width: 20%;
+      width: 100%;
       height: 25px;
       display: flex;
       justify-content: end;
