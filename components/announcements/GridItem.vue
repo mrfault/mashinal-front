@@ -63,7 +63,7 @@
 
          <div
             v-if="!showGallery"
-            v-lazy:background-image="getImage+'?width=308'"
+            v-lazy:background-image="getImage+'&width=308'"
             :aria-label="getAnnouncementTitle(announcement)"
             class="item-bg"
             role="img"
@@ -180,9 +180,9 @@
                <span v-if="announcement.mileage || announcement.mileage_measure">
                   {{ announcement.mileage }}
 
-<!--                  <template v-if="announcement.mileage_measure === 1">-->
+                  <template v-if="announcement.mileage_measure === 1">
                      {{ $t('char_kilometre') }}
-<!--                  </template>-->
+                  </template>
                </span>
 
                <span v-if="announcement?.description">{{ announcement?.description }}</span>
@@ -476,6 +476,7 @@ export default {
 
    svg {
       height: 28px;
+      display: inline !important;
    }
 }
 </style>
