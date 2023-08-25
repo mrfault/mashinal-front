@@ -180,9 +180,9 @@
                <span v-if="announcement.mileage || announcement.mileage_measure">
                   {{ announcement.mileage }}
 
-                  <template v-if="announcement.mileage_measure === 1">
+<!--                  <template v-if="announcement.mileage_measure === 1">-->
                      {{ $t('char_kilometre') }}
-                  </template>
+<!--                  </template>-->
                </span>
 
                <span v-if="announcement?.description">{{ announcement?.description }}</span>
