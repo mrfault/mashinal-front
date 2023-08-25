@@ -12,7 +12,7 @@
                      {{ $t("place_announcement") }}
                   </button>
                </form>
-               <div class="vehicle_card_info" v-if="!isMobileBreakpoint">
+               <div :class="['vehicle_card_info', {default_imgs: previewForm.image.startsWith('/img/')}]" v-if="!isMobileBreakpoint">
                   <client-only>
                      <grid-item :announcement="previewForm"/>
                   </client-only>
@@ -147,6 +147,9 @@ export default {
    },
    methods: {
       ...mapActions(['carEdit']),
+      getMainImage(img) {
+         this.previewForm.image = img || "/img/car_default.svg"
+      },
       async getCarForm(form) {
          const formData = new FormData()
          formData.append('data', JSON.stringify(form))
@@ -177,6 +180,7 @@ export default {
       },
    },
    mounted() {
+      this.$nuxt.$on("get-main-image", this.getMainImage)
       this.previewForm = {
          image: this.announcement.media[0],
          show_vin: this.announcement.show_vin,
@@ -468,9 +472,12 @@ export default {
                }
             }
 
-            .item-bg {
-               background-repeat: no-repeat;
-               background-size: inherit;
+            &.default_imgs {
+
+               .item-bg {
+                  background-repeat: no-repeat;
+                  background-size: inherit;
+               }
             }
          }
 

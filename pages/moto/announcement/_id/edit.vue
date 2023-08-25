@@ -11,7 +11,7 @@
                      {{ $t("place_announcement") }}
                   </button>
                </form>
-               <div class="vehicle_card_info" v-if="!isMobileBreakpoint">
+               <div :class="['vehicle_card_info', {default_imgs: previewForm.image.startsWith('/img/')}]" v-if="!isMobileBreakpoint">
                      <client-only>
                         <grid-item :announcement="previewForm"/>
                      </client-only>
@@ -150,7 +150,7 @@ export default {
    methods: {
       ...mapActions(['motoEdit']),
       getMainImage(img) {
-         this.previewForm.image = img
+         this.previewForm.image = img || "/img/motorbike.svg"
       },
       async getMotoForm(form) {
          const formData = new FormData()
@@ -483,9 +483,12 @@ export default {
                }
             }
 
-            .item-bg {
-               background-repeat: no-repeat;
-               background-size: inherit;
+            &.default_imgs {
+
+               .item-bg {
+                  background-repeat: no-repeat;
+                  background-size: inherit;
+               }
             }
          }
       }
