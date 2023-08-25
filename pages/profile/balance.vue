@@ -339,7 +339,7 @@ export default {
             }
          ];
 
-         if (this.user.can_be_autosalon) {
+         if (this.user.autosalon || this.user.part_salon || this.user.external_salon || this.user.can_be_autosalon) {
             data.push({
                id: 2,
                title: this.$t('balance_package_title'),
@@ -421,6 +421,8 @@ export default {
       },
    },
    mounted() {
+
+      console.log(this.user)
 
       let intervalSwipper = setInterval(() => {
          if(this.balanceSwiper.init()) {
