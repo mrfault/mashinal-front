@@ -136,6 +136,7 @@ export default {
             packs: [],
             packObjects: []
          }
+         this.$emit("reset")
       },
       getPackObjects(val) {
          this.formAssistant.packObjects = val

@@ -105,7 +105,7 @@ export default {
    props: {
       announcement: {
          type: Object,
-         required: true
+         default: {}
       },
       isReady: {
          type: Boolean,
@@ -205,7 +205,7 @@ export default {
          }
          const {region_id, first, second, number} = this.form.car_number;
          const car_number = `${region_id.split(" -")[0]} -  ${first + second} - ${number}`
-         const body = {...this.form, price: this.form.is_negotiable ? null : this.form.price, car_number}
+         const body = {...this.form, price: this.form.is_negotiable ? 0 : this.form.price, car_number}
          this.$emit("getForm", body)
       }
    },

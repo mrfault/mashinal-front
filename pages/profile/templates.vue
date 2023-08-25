@@ -1,223 +1,320 @@
 <template>
-  <div class="pages-profile-templates pt-2 pt-lg-5">
-    <div class="container">
-      <breadcrumbs :crumbs="crumbs" />
-      <template v-if="savedSearchList.length">
-        <div class="templates-controls-panel card mb-2 mb-lg-3">
-          <h2 class="title-with-line mt-n1 mb-n1" v-if="isMobileBreakpoint">
-            <span>{{ $t('my_searches') }}</span>
-          </h2>
-          <div class="row justify-content-between align-items-center mt-n1 mt-lg-0">
-            <div class="col-6 col-lg-2 ml-n2" v-if="!isMobileBreakpoint">
-              <form-checkbox class="fw-500" :label="$t('select_all')" v-model="selectAll" input-name="selectAll"
-                transparent @input="handleSelectAll" @change="handleSelectAll"/>
-            </div>
-            <div class="col-6 col-lg-2 d-flex align-items-center justify-content-end">
-              <span :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length}]" @click="openNotificationsModal" v-tooltip="$t('receive_notifications')">
-                <icon name="bell" />
-              </span>
-              <span :class="['control-icon cursor-pointer text-hover-red', {'disabled-ui': !selected.length}]" @click="showRemoveModal = true" v-tooltip="$t('delete')">
-                <icon name="garbage" />
-                <!-- <inline-svg src="/icons/garbage.svg" :height="14" /> -->
-              </span>
-            </div>
-          </div>
-        </div>
-        <div class="templates-list">
-          <saved-search
-            v-for="item in savedSearchList"
-            :key="item.id"
-            :item="item"
-            :checked="selected.includes(item.id)"
-            :notification-options="getNotificationOptions"
-            @change="selectSavedSearch"
-            @select="selectOneSavedSearch"
-          />
-          <nuxt-link style="max-width: 250px;" class="active btn ml-auto btn--pale-green-outline d-flex full-width mt-2"
-                     :to="$localePath('/cars?saved=true')">
-            <i aria-hidden="true" class="icon-arrow-left"></i>
-            {{ $t('new_saved_search') }}
-          </nuxt-link>
-        </div>
-        <modal-popup
-          :toggle="showIntervalModal"
-          :title="$t('receive_notifications')"
-          :overflow-hidden="false"
-          @close="showIntervalModal = false"
-        >
-          <form class="form" @submit.prevent="updateNotifications" novalidate>
-            <div class="mb-2 mb-lg-3">
-              <form-select
-                v-model="interval"
-                :options="getNotificationOptions"
-                :clear-option="false"
-                :allow-clear="false"
-                :skip-select="true"
-                :show-label-only-on-action-bar="true"
-                :label="$t('receive_notifications')"
-              />
-            </div>
-            <qrcode-box/>
-            <button type="submit" :class="['btn btn--green full-width', { pending }]">
-              {{ $t('confirm') }}
-            </button>
-          </form>
-        </modal-popup>
-        <modal-popup
-          :toggle="showRemoveModal"
-          :title="$t('want_to_delete_a_search')"
-          @close="showRemoveModal = false"
-        >
-          <form class="form" @submit.prevent="removeSavedSearch" novalidate>
-            <button type="submit" :class="['btn btn--green full-width', { pending }]">
-              {{ $t('confirm') }}
-            </button>
-          </form>
-        </modal-popup>
-      </template>
-      <no-results :text="$t('no_templates')" v-else >
-        <nuxt-link style="max-width: 250px;" class="active btn btn--pale-green-outline d-flex full-width mt-2"
-                   :to="$localePath('/cars?saved=true')">
-          <i aria-hidden="true" class="icon-arrow-left"></i>
-          {{ $t('new_saved_search') }}
-        </nuxt-link>
-      </no-results>
+   <div class="pages-profile-templates">
+      <div class="container">
+         <breadcrumbs :crumbs="crumbs"/>
+      </div>
+      <div class="templates_wrapper">
+         <div class="container">
+            <h1 class="title">{{ $t('my_searches') }}</h1>
+            <div class="templates">
+               <div class="template">
+                  <div class="heading">
+                     <h3>BMW 3-cü seriya</h3>
+                     <div class="heading_wrapper">
+                        <div class="heading_wrapper_icon" @click="openDropdown(1)">
+                           <inline-svg :src="'/new-icons/dots-vertical-new.svg'"/>
+                        </div>
+                        <ul v-if="showDropdown === 1" class="template_dropdown">
+                           <li v-for="menu in dropdownMenu" @click="openModal(menu)" :key="menu.id">
+                              <inline-svg :src="menu.icon"/>
+                              {{ menu.title }}
+                           </li>
+                        </ul>
 
-      <change-email
-        v-if="!user.email"
-        hide-input
-        @open="showIntervalModal = false"
-        @success="showIntervalModal = true"
-      />
-    </div>
-  </div>
+                     </div>
+                  </div>
+                  <p>Bildirişlərdən imtina olunub</p>
+               </div>
+            </div>
+            <div>
+               <template v-for="(item, key) in getTemplateOptions(savedSearchList[0].search_filter)">
+                  <div :key="key">{{ getTemplateKey(key) }} : {{ getTemplateValues(key, item) }}</div>
+                  <br>
+               </template>
+            </div>
+         </div>
+      </div>
+      <modal-popup
+         :modal-class="'wider'"
+         :toggle="showRules"
+         :title="modalTitle"
+         @close="showRules = false"
+      >
+         <div v-html="renderModal()"></div>
+      </modal-popup>
+   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-
-import SavedSearch from '~/components/profile/SavedSearch';
-import NoResults from '~/components/elements/NoResults';
-import ChangeEmail from '~/components/elements/ChangeEmail';
-import QrcodeBox from "~/components/login/Qrcode-box";
+import {mapGetters} from "vuex";
 
 export default {
-  name: 'pages-profile-templates',
-  middleware: 'auth_general',
-  components: {
-    QrcodeBox,
-    ChangeEmail,
-    SavedSearch,
-    NoResults
-  },
-  nuxtI18n: {
-    paths: {
-      az: '/profil/axtaris-sablonlari'
-    }
-  },
-  head() {
-    return this.$headMeta({
-      title: this.$t('my_searches')
-    });
-  },
-  async asyncData({store}) {
-    await Promise.all([
-      store.dispatch('getSavedSearch'),
-      store.dispatch('getBrands'),
-      store.dispatch('getBodyOptions'),
-      store.dispatch('getColors'),
-      store.dispatch('getOptions'),
-      store.dispatch('getAllOtherOptions')
-    ]);
-
-    return {
-      selected: [],
-      selectAll: false,
-      interval: 1440,
-      showRemoveModal: false,
-      showIntervalModal: false,
-      pending: false
-    }
-  },
-  computed: {
-    ...mapGetters(['savedSearchList']),
-
-    crumbs() {
-      return [
-        { name: this.$t('my_searches') }
-      ]
-    },
-
-    getNotificationOptions() {
-      return [
-        {name: this.$t('do_not_receive_notifications'), selected_name: this.$t('do_not_receive_notifications_selected'), key: 0},
-        {name: this.$t('receive_notifications_every_hour'), selected_name: this.$t('receive_notifications_every_hour_selected'), key: 60},
-        {name: this.$t('receive_notifications_every_3_hours'), selected_name: this.$t('receive_notifications_every_3_hours_selected'), key: 180},
-        {name: this.$t('receive_notifications_once_a_day'), selected_name: this.$t('receive_notifications_once_a_day_selected'), key: 1440},
-        {name: this.$t('receive_notifications_once_a_weak'), selected_name: this.$t('receive_notifications_once_a_weak_selected'), key: 10080}
-      ];
-    }
-  },
-  methods: {
-    ...mapActions(['updateSavedSearchNotificationsInterval', 'deleteSavedSearchMultiple', 'markViewedSavedSearch']),
-
-    selectSavedSearch(id, value) {
-      this.$set(this, 'selected', value
-        ? [...this.selected, id]
-        : this.selected.filter(selected_id => selected_id !== id)
-      );
-
-      if (this.selectAll && !value) {
-        this.selectAll = false;
-      } else if (!this.selectAll && value && this.selected.length === this.savedSearchList.length) {
-        this.selectAll = true;
+   nuxtI18n: {
+      paths: {
+         az: '/profil/axtaris-sablonlari'
       }
-    },
-    selectOneSavedSearch(id) {
-      if (this.selected.length)
-        this.handleSelectAll(false);
-      this.selectSavedSearch(id, true);
-      this.openNotificationsModal();
-    },
-    handleSelectAll(value) {
-      this.selectAll = value;
-      this.$set(this, 'selected', value
-        ? this.savedSearchList.map(item => item.id)
-        : []
-      );
-    },
-    openNotificationsModal() {
-        this.showIntervalModal = true;
-    },
-    async updateNotifications() {
-      if (this.pending) return;
-      this.pending = true;
-      try {
-        await this.updateSavedSearchNotificationsInterval({ id: this.selected, type: this.interval });
-        this.pending = false;
-        this.showIntervalModal = false;
-        this.$toasted.success(this.$t('saved_changes'));
-        this.handleSelectAll(false);
-      } catch (err) {
-        this.pending = false;
+   },
+   head() {
+      return this.$headMeta({
+         title: this.$t('my_searches')
+      });
+   },
+   computed: {
+      ...mapGetters(['savedSearchList', 'bodyOptions', 'popularOptions']),
+      crumbs() {
+         return [
+            {name: this.$t('my_searches')}
+         ]
+      },
+
+      getNotificationOptions() {
+         return [
+            {
+               name: this.$t('do_not_receive_notifications'),
+               selected_name: this.$t('do_not_receive_notifications_selected'),
+               key: 0
+            },
+            {
+               name: this.$t('receive_notifications_every_hour'),
+               selected_name: this.$t('receive_notifications_every_hour_selected'),
+               key: 60
+            },
+            {
+               name: this.$t('receive_notifications_every_3_hours'),
+               selected_name: this.$t('receive_notifications_every_3_hours_selected'),
+               key: 180
+            },
+            {
+               name: this.$t('receive_notifications_once_a_day'),
+               selected_name: this.$t('receive_notifications_once_a_day_selected'),
+               key: 1440
+            },
+            {
+               name: this.$t('receive_notifications_once_a_weak'),
+               selected_name: this.$t('receive_notifications_once_a_weak_selected'),
+               key: 10080
+            }
+         ];
       }
-    },
-    async removeSavedSearch() {
-      if (this.pending) return;
-      this.pending = true;
-      try {
-        await this.deleteSavedSearchMultiple({ ids: this.selected });
-        this.pending = false;
-        this.showRemoveModal = false;
-        this.$toasted.success(this.$t('my_templates_removed'));
-        this.handleSelectAll(false);
-      } catch (err) {
-        this.pending = false;
+   },
+   data() {
+      return {
+         showDropdown: 0,
+         showRules: false,
+         modalTitle: "",
+         modalType: "",
+         dropdownMenu: [
+            {
+               id: 1,
+               title: "Şablonun detalları",
+               icon: "/new-icons/eye_v2.svg",
+               key: "details"
+            },
+            {
+               id: 2,
+               title: "Bildirişlərə düzəliş",
+               icon: "/new-icons/bell.svg",
+               key: "edit"
+            },
+            {
+               id: 3,
+               title: "Şablonu sil",
+               icon: "/new-icons/grid/trash_v2.svg",
+               key: "delete"
+            },
+         ]
       }
-    },
-  },
-  created() {
-    this.markViewedSavedSearch();
-  }
+   },
+   async asyncData({store}) {
+      await Promise.all([
+         store.dispatch('getBodyOptions'),
+         store.dispatch('getSavedSearch'),
+         store.dispatch('getBrands'),
+         store.dispatch('getPopularOptions'),
+      ]);
+   },
+   methods: {
+      openDropdown(id) {
+         this.showDropdown = id;
+      },
+      openModal(menu) {
+         this.modalTitle = menu.title
+         this.modalType = menu.key;
+         this.showRules = true
+      },
+      renderModal() {
+         switch (this.modalType) {
+            case 'details' :
+               return `<h1>details</h1>`;
+            case 'edit' :
+               return `<h1>edit</h1>`;
+            case 'delete' :
+               return `<h1>delete</h1>`;
+
+         }
+      },
+      getTemplateOptions(template) {
+         return JSON.parse(template)
+      },
+      getTemplateKey(template) {
+         return template;
+      },
+      getTemplateMultipleValues(values, options, fromStore = false) {
+         if (fromStore) {
+            return values.map(value => options.find(item => item.key === value.key).name).join(', ')
+         }
+         return values.map((value) => options[value.key]).join(', ')
+      },
+      getTemplateValues(key, values) {
+         switch (key) {
+            case 'exclude_additional_brands' :
+               break;
+            case 'all_options' :
+               const parameters = values && Object.keys(values)
+               return this.popularOptions.filter((opt) => parameters.includes(opt.name)).map((option) => this.$t(option.label)).join(", ");
+            case 'announce_type' :
+               break;
+            case 'external_salon' :
+               break;
+            case 'currency' :
+               break;
+            case 'year_from' :
+               return values;
+            case 'year_to' :
+               return values;
+            case 'price_from' :
+               return values;
+            case 'price_to' :
+               return values;
+            case 'mileage_from' :
+               return values;
+            case 'mileage_to' :
+               return values;
+            case 'min_capacity' :
+               return values;
+            case 'max_capacity' :
+               return values;
+            case 'damage' :
+               break;
+            case 'customs' :
+               break;
+            case 'body' :
+               return this.getTemplateMultipleValues(values, this.bodyOptions.main.default_options.body.values, true);
+            case 'korobka' :
+               return this.getTemplateMultipleValues(values, this.$t('box_values'))
+
+            case 'engine_type' :
+               return this.getTemplateMultipleValues(values, this.$t('engine_values'))
+
+            case 'gearing' :
+               break;
+            case 'in_garanty' :
+               break;
+            case 'credit' :
+               break;
+         }
+      }
+   },
+   mounted() {
+      // console.log(this.$refs.dropdown)
+   }
 }
 </script>
+
+<style lang="scss" scoped>
+.pages-profile-templates {
+
+   .templates_wrapper {
+      background-color: #fff;
+
+      .title {
+         font-size: 28px;
+         font-weight: 700;
+         padding: 32px 0;
+      }
+
+      .templates {
+         display: grid;
+         grid-template-columns: repeat(3, 1fr);
+         gap: 20px;
+
+         .template {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 24px;
+            border: 1px solid #CDD5DF;
+            border-radius: 12px;
+
+            .heading {
+               display: flex;
+               align-items: center;
+               justify-content: space-between;
+               gap: 12px;
+               color: #1B2434;
+               font-size: 18px;
+               font-weight: 600;
+
+               &_wrapper {
+                     position: relative;
+
+                  &_icon {
+                     display: flex;
+                     align-items: center;
+                     justify-content: center;
+                     width: 32px;
+                     height: 32px;
+                     border-radius: 50%;
+                     cursor: pointer;
+                     transition: 0.2s;
+
+                     &:hover {
+                        background-color: #E3E8EF;
+                     }
+
+                  }
+
+                  .template_dropdown {
+                     position: absolute;
+                     top: 100%;
+                     left: 100%;
+                     transform: translateX(-30px);
+                     padding: 8px;
+                     background-color: #fff;
+                     border: 1px solid #CDD5DF;
+                     border-radius: 8px;
+
+                     li {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        padding: 12px 8px;
+                        border-radius: 8px;
+                        font-size: 16px;
+                        font-weight: 500;
+                        white-space: nowrap;
+                        cursor: pointer;
+                        transition: 0.2s;
+
+                        svg {
+                           min-width: 20px;
+                           min-height: 20px;
+                        }
+
+                        &:hover {
+                           background-color: #E3E8EF;
+                        }
+                     }
+                  }
+               }
+            }
+
+            p {
+               font-weight: 400;
+               color: #364152;
+            }
+         }
+      }
+   }
+}
+</style>

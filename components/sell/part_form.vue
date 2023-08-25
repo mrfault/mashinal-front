@@ -40,6 +40,7 @@
             v-model="form.title"
             :placeholder="$t('title_max_character', {max: 25})"
             :class="{form_error: $v.form.title.$error}"
+            @change="preview.title = $event || $t('headline')"
             :invalid="$v.form.title.$error"
          />
          <form-text-input
@@ -190,11 +191,11 @@
                v-model="form.price"
                :class="{form_error: $v.form.price.$error}"
                :invalid="$v.form.price.$error"
-               @change="form.is_negotiable = false"
+               @change="preview.price = $event ? $event + ' ' + (form.currency.name?.[locale] || priceTypes.find((pr) => pr.id === form.currency).name?.[locale]) : 0"
             />
-            <!--            @change="announcement.price = $event ? $event + (form.currency.name?.[locale] || 'AZN') : 0"-->
             <div class="price_types">
-               <toggle-group :items="priceTypes" v-slot="{ item }" @change="form.currency = $event.id">
+               <toggle-group :items="priceTypes" :default-value="form.currency || 1" v-slot="{ item }"
+                             @change="toggleCurrency">
                   <div class="price_item">
                      <p>{{ item.name[locale] }}</p>
                   </div>
@@ -206,7 +207,7 @@
             :label="$t('negotiable_price')"
             input-name="is_negotiable"
             transparent
-            @change="$event && (form.price = '')"
+            @change="toggleIsNegotiation"
          />
          <form-select v-if="Object.values(partFilters).length"
                       :label="$t('region')"
@@ -222,6 +223,7 @@
             <form-textarea
                v-model="form.description"
                :placeholder="$t('additional_info')"
+               @change="preview.description = $event || $t('additional_info')"
                :maxlength="600"
             />
             <div class="part_form_with_info_inner">
@@ -237,7 +239,9 @@
             </div>
          </div>
          <div class="part_form_with_info" :class="{form_error: $v.form.saved_images.$error}">
-            <image-component :type="'parts'" :initial-form="form"/>
+            <client-only>
+               <image-component :type="'parts'" :initial-form="form" :announcement="announcement" :deletedFiles="deletedFiles"/>
+            </client-only>
             <div class="part_form_with_info_inner">
                <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
                <div class="warning_texts">
@@ -263,6 +267,10 @@ export default {
       announcement: {
          type: Object,
          required: true
+      },
+      preview: {
+         type: Object,
+         default: {}
       },
       isReady: {
          type: Boolean,
@@ -292,6 +300,7 @@ export default {
                name: {az: "EUR", ru: "EUR"},
             },
          ],
+         deletedFiles: [],
          form: {
             category_id: "",
             brand_id: "",
@@ -313,7 +322,7 @@ export default {
             weight: "",
             have_delivery: false,
             have_warranty: false,
-            price: "",
+            price: 0,
             currency: 1,
             is_negotiable: false,
             region_id: "",
@@ -332,6 +341,18 @@ export default {
          if (this.form.category_id) {
             await this.getPartFilters(this.form.category_id);
          }
+      },
+      toggleIsNegotiation(val) {
+         if (val) {
+            this.form.price = 0
+            this.preview.price = this.$t('is_negotiable')
+         } else {
+            this.preview.price = this.form.price ? this.form.price + ' ' + (this.form.currency.name?.[this.locale] || this.priceTypes.find((pr) => pr.id === this.form.currency).name?.[locale]) : `0 ${this.priceTypes.find((pr) => pr.id === this.form.currency).name[this.locale]}`
+         }
+      },
+      toggleCurrency(currency) {
+         this.form.currency = currency.id
+         this.preview.price = this.form.price ? this.form.price + ' ' + (currency.name?.[this.locale] || 'AZN') : 0
       },
       onChangeSubCategory() {
          this.form = {
@@ -369,8 +390,10 @@ export default {
          this.form.width = this.announcement.width
          this.form.weight = this.announcement.weight
          this.form.diameter = this.announcement.diameter
+         this.form.number_of_mounting_holes = this.announcement.number_of_mounting_holes
          this.form.shine_width = this.announcement.shine_width
          this.form.price = this.announcement.price
+         this.form.currency = this.announcement.currency_id
          this.form.have_delivery = this.announcement.have_delivery
          this.form.have_warranty = this.announcement.have_warranty
          this.form.is_negotiable = this.announcement.is_negotiable
@@ -388,6 +411,11 @@ export default {
       'form.sub_category_id'() {
          this.$emit("navigationProgress", {id: 1, status: !!this.form.sub_category_id})
          this.$emit("done", !!((this.form.sub_category_id) && Object.values(this.partFilters).length))
+      },
+      'form.price'() {
+         if (this.form.price > 0) {
+            this.form.is_negotiable = false
+         }
       },
       isReady() {
          this.$v.form.$touch()
@@ -422,10 +450,14 @@ export default {
             tags: this.form.keywords.map((k) => ({text: k})),
             saved_images: this.form.saved_images
          }
-         const filteredForm = this.partFilters?.sub_categories.length ? {
+         let filteredForm = this.partFilters?.sub_categories.length ? {
             ...newForm,
             sub_category_id: this.form.sub_category_id
          } : {...newForm, brand_id: this.form.brand_id}
+
+         if (this.isEdit && this.deletedFiles.length) {
+            filteredForm = {...filteredForm, deletedFiles: this.deletedFiles}
+         }
 
          this.$emit("getForm", filteredForm)
       }
