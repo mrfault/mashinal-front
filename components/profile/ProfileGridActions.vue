@@ -121,7 +121,7 @@ export default {
             },
             {
                name: 'edit',
-               icon: 'fi_check-square.svg',
+               icon: 'fi_edit.svg',
                show: this.announcement.status == 1 || this.announcement.status == 0,
                method: this.editVehicle,
             },
@@ -185,7 +185,7 @@ export default {
             this.pending = false;
             this.$store.commit('closeDropdown');
          } catch (e) {
-            this.$toasted.error(this.$t('something_went_wrong'))
+            this.$toasted.error(this.$t(e))
             this.pending = false;
          }
 
@@ -203,7 +203,7 @@ export default {
             this.$store.commit('closeDropdown');
          } catch (e) {
             this.pending = false;
-            this.$toasted.error(this.$t('something_went_wrong'))
+            this.$toasted.error(this.$t(e.message))
          }
       },
       async restore() {
@@ -216,7 +216,7 @@ export default {
             this.closeModal();
             this.$store.commit('closeDropdown');
          } catch (e) {
-            this.$toasted.error(this.$t('something_went_wrong'))
+            this.$toasted.error(this.$t(e.message))
          }
       },
 
