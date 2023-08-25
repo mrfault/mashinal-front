@@ -25,6 +25,7 @@
                :only-saved-search="!!$route.query.saved || false"
                :pending="pending"
                :sorting="sorting"
+               :announceType="announceType"
                @pending="pending = true"
                @submit="searchCars"
             />

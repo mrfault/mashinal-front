@@ -1,12 +1,13 @@
 <template>
    <div class="catalog-inner">
+      <pre>{{modSpecs}}</pre>
       <div class="row flex-column flex-lg-row">
          <div class="col-auto">
             <gallery where="catalog" :media="selectedCar.transformed_media" :title="title" :subtitle="modName(main)" />
 
             <thumbs-gallery class="mt-3 mb-3" where="catalog" :media="selectedCar.transformed_media" />
 
-            <div class="mod-info-card card pt-0 pt-lg-3 mb-lg-3 pb-0 pb-lg-3">
+<!--            <div class="mod-info-card card pt-0 pt-lg-3 mb-lg-3 pb-0 pb-lg-3">-->
 <!--               <template v-if="isMobileBreakpoint">-->
 <!--                  <h1 v-html="title"></h1>-->
 
@@ -24,7 +25,7 @@
 <!--               <template v-else>-->
 <!--                  <thumbs-gallery where="catalog" :media="selectedCar.transformed_media"/>-->
 <!--               </template>-->
-            </div>
+<!--            </div>-->
 
             <div v-if="hasMods">
                <div class="modification-specs" v-for="(specs, key) in modSpecs" :key="key">
@@ -41,29 +42,29 @@
                               <span v-else-if="hasValues(key)">{{ $t(key + '_values')[spec || 0] }}</span>
 
                               <span v-else-if="Array.isArray(spec) && spec.length">
-                                    <template v-if="key.includes('maksimalnaya-moshchnost')">
-                                      <template v-if="spec[0]">{{ spec[0] }}</template>
-                                      <template v-if="spec[0] && spec[1] && spec[1] !== '—'">/</template>
-                                      <template v-if="spec[1] && spec[1] !== '—'">{{ spec[1] }}</template>
-                                      <template v-if="spec[2] && spec[2] !== '—'">{{ $t('at', {value: spec[2]}) }}</template>
-                                    </template>
+                                 <template v-if="key.includes('maksimalnaya-moshchnost')">
+                                    <template v-if="spec[0]">{{ spec[0] }}</template>
+                                    <template v-if="spec[0] && spec[1] && spec[1] !== '—'">/</template>
+                                    <template v-if="spec[1] && spec[1] !== '—'">{{ spec[1] }}</template>
+                                    <template v-if="spec[2] && spec[2] !== '—'">{{ $t('at', {value: spec[2]}) }}</template>
+                                 </template>
 
-                                    <template v-if="key.includes('krutyashchiy-moment')">
-                                      <template v-if="spec[0]">{{ spec[0] }}</template>
-                                      <template v-if="spec[1] && spec[1] !== '—'">{{ $t('at', {value: spec[1]}) }}</template>
-                                    </template>
+                                 <template v-if="key.includes('krutyashchiy-moment')">
+                                    <template v-if="spec[0]">{{ spec[0] }}</template>
+                                    <template v-if="spec[1] && spec[1] !== '—'">{{ $t('at', {value: spec[1]}) }}</template>
+                                 </template>
 
-                                    <template v-if="key.includes('electric') || key.includes('combined')">
-                                      <template v-if="spec[0]">{{ spec[0] }}</template>
-                                      <template v-if="spec[1] && spec[1] !== '—'">/ {{ spec[1] }}</template>
-                                    </template>
-                                 </span>
+                                 <template v-if="key.includes('electric') || key.includes('combined')">
+                                    <template v-if="spec[0]">{{ spec[0] }}</template>
+                                    <template v-if="spec[1] && spec[1] !== '—'">/ {{ spec[1] }}</template>
+                                 </template>
+                              </span>
 
                               <span v-else-if="typeof spec === 'object' && !Array.isArray(spec)">
-                                    <template v-if="spec.city || spec.track || spec.mixed">
-                                       {{ spec.city || '?' }} / {{ spec.track || '?' }} / {{ spec.mixed || '?' }}
-                                    </template>
-                                 </span>
+                                 <template v-if="spec.city || spec.track || spec.mixed">
+                                    {{ spec.city || '?' }} / {{ spec.track || '?' }} / {{ spec.mixed || '?' }}
+                                 </template>
+                              </span>
 
                               <span v-else-if="spec && !Array.isArray(spec)">{{ spec }}</span>
                               <span v-else>-</span>
@@ -159,7 +160,6 @@
                   <h2>{{ $t('main_parameters') }}</h2>
 
                   <hr/>
-
 <!--                  <div class="vehicle-specs">-->
                      <ul v-for="(specs, i) in mainSpecs" :key="i">
                         <li v-if="spec || $t(key+'_values')[spec]" v-for="(spec, key) in specs" :key="key">
@@ -355,6 +355,29 @@
                }
             }
          }
+
+         ul {
+            li {
+               display: flex;
+               align-items: center;
+               justify-content: space-between;
+               gap: 20px;
+               padding: 12px 0;
+
+               span {
+                  color: #364152;
+                  font-size: 15px;
+                  font-weight: 400;
+                  line-height: 20px;
+
+                  &:last-child {
+                     font-weight: 500;
+                     line-height: 18px;
+                     color: #121926;
+                  }
+               }
+            }
+         }
       }
 
       h2 {
@@ -383,8 +406,14 @@
             margin-bottom: 24px;
          }
 
+         &__inner {
+            display: flex;
+            justify-content: space-between;
+            gap: 88px;
+         }
+
          ul {
-            //padding: 0 30px;
+            width: 100%;
 
             li {
                display: flex;
