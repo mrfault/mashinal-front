@@ -1,13 +1,12 @@
 <template>
-   <div class="registrationMarks">
-      <div class="container p-0">
+   <div class="pages-sell">
+      <div class="container">
          <breadcrumbs :crumbs="crumbs"/>
-
          <div class="announce_container">
             <div class="card">
                <form class="add_announce_form">
                   <registration_mark isEdit :announcement="announcement" :isReady="isReady"
-                             @getForm="getPlateForm($event)" />
+                                     @getForm="getPlateForm($event)"/>
                   <button type="button" @click="onClick()" class="btn full-width btn--pale-green-outline active">
                      {{ $t("place_announcement") }}
                   </button>
@@ -23,7 +22,7 @@
 <script>
 import {mapActions, mapGetters} from "vuex";
 import {minLength, required} from "vuelidate/lib/validators";
-import { PaymentMixin } from '~/mixins/payment';
+import {PaymentMixin} from '~/mixins/payment';
 import Registration_mark from "~/components/sell/registration_mark.vue";
 
 export default {
@@ -39,7 +38,7 @@ export default {
       });
    },
 
-   mixins: [ PaymentMixin ],
+   mixins: [PaymentMixin],
 
    middleware: ['auth_general'],
 
@@ -73,21 +72,17 @@ export default {
       //       console.error(err)
       //    }
       // }
-         ...mapActions(['registrationMarkEdit']),
-         async getPlateForm(form) {
-
-            try {
-               await this.registrationMarkEdit({id: this.$route.params.id.slice(0, -1), form})
-               this.$router.push(this.$localePath('/profile/announcements'))
-            }catch(e){}
-         },
-         onClick() {
-            // this.$v.form.$touch()
-            // if (this.$v.authForm.$error) return;
-            this.isReady = !this.isReady
-
-
-         },
+      ...mapActions(['registrationMarkEdit']),
+      async getPlateForm(form) {
+         try {
+            await this.registrationMarkEdit({id: this.$route.params.id.slice(0, -1), form: form})
+            this.$router.push(this.$localePath('/profile/announcements'))
+         } catch (e) {
+         }
+      },
+      onClick() {
+         this.isReady = !this.isReady
+      },
 
    },
 
@@ -102,7 +97,7 @@ export default {
       }
    },
 
-   async fetch({ store, route }) {
+   async fetch({store, route}) {
       await store.dispatch('fetchRegistrationMark', route.params.id.slice(0, route.params.id.length - 1));
       await store.dispatch('getOptions');
    },
@@ -120,10 +115,49 @@ export default {
 
    validations: {
       form: {
-         price: { minLength: minLength(2) },
-         currency_id: { required },
-         region_id: { required }
+         price: {minLength: minLength(2)},
+         currency_id: {required},
+         region_id: {required}
       }
    }
 }
 </script>
+<style lang="scss">
+.pages-sell {
+   padding: 40px 0 160px 0;
+
+   .announce_container {
+      .card {
+         padding-right: 280px;
+
+         .add_announce_form {
+
+            .btn--pale-green-outline {
+               margin-top: 24px;
+            }
+         }
+      }
+
+   }
+
+}
+
+@media (max-width: 1150px) {
+   .pages-sell {
+
+      .announce_container {
+         .card {
+            padding-right: 24px;
+
+            .add_announce_form {
+
+               .btn--pale-green-outline {
+               }
+            }
+         }
+
+      }
+
+   }
+}
+</style>

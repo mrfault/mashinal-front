@@ -131,6 +131,8 @@ export default {
       files() {
          if (this.files.length) {
             this.$nuxt.$emit('get-main-image', this.files[0].image);
+         } else {
+            this.$nuxt.$emit('get-main-image', '');
          }
       }
    }
