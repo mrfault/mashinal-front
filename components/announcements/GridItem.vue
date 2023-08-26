@@ -269,8 +269,6 @@ export default {
       getType() {
          let item = this.announcement
 
-         // console.log('item', item)
-
          if (item.type === "motorcycle") return 'Motorcycle'
          else if (item.type === "scooter") return 'Scooter'
          else if (item.type === "moto_atv") return 'Atv'
