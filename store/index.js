@@ -874,6 +874,7 @@ export const actions = {
             ? search
             : {...search, notification_interval: data.type}
       );
+
       commit("mutate", {property: "savedSearchList", value: list});
       commit("mutate", {
          property: "singleSavedSearch",

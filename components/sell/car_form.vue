@@ -126,7 +126,7 @@
          object-in-value
          :new-label="false"
          v-model="form.modification"
-         @change="preview.car_catalog.capacity = form.modification.capacity"
+         @change="preview.car_catalog.capacity = form.modification?.capacity"
       />
       <!--      v-if="form.modification"-->
 

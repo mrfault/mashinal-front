@@ -7,48 +7,74 @@
          <div class="container">
             <h1 class="title">{{ $t('my_searches') }}</h1>
             <div class="templates">
-               <div class="template">
+               <div class="template" v-for="searchList in savedSearchList" :key="searchList.id">
                   <div class="heading">
-                     <h3>BMW 3-cü seriya</h3>
+                     <h3>{{ getTemplateTitle(getTemplateOptions(searchList.search_filter)) }}</h3>
                      <div class="heading_wrapper">
-                        <div class="heading_wrapper_icon" @click="openDropdown(1)">
+                        <div class="heading_wrapper_icon"
+                             @click="openDropdown(showDropdown === 0 ? searchList.id : 0, searchList)">
                            <inline-svg :src="'/new-icons/dots-vertical-new.svg'"/>
                         </div>
-                        <ul v-if="showDropdown === 1" class="template_dropdown">
-                           <li v-for="menu in dropdownMenu" @click="openModal(menu)" :key="menu.id">
+
+                        <ul v-if="showDropdown === searchList.id && !isMobileBreakpoint" class="template_dropdown"
+                        >
+                           <li v-for="menu in dropdownMenu" @click="openModal(menu)"
+                               :key="menu.id">
                               <inline-svg :src="menu.icon"/>
                               {{ menu.title }}
                            </li>
                         </ul>
-
                      </div>
                   </div>
-                  <p>Bildirişlərdən imtina olunub</p>
+                  <p>{{
+                        getNotificationOptions.find((option) => option.key === searchList.notification_interval).name
+                     }}</p>
                </div>
-            </div>
-            <div>
-               <template v-for="(item, key) in getTemplateOptions(savedSearchList[0].search_filter)">
-                  <div :key="key">{{ getTemplateKey(key) }} : {{ getTemplateValues(key, item) }}</div>
-                  <br>
-               </template>
             </div>
          </div>
       </div>
       <modal-popup
          :modal-class="'wider'"
-         :toggle="showRules"
+         :toggle="showModal"
+         :overflow-hidden="modalType !== 'edit'"
          :title="modalTitle"
-         @close="showRules = false"
+         @close="showModal = false"
       >
-         <div v-html="renderModal()"></div>
+         <details-modal v-if="modalType === 'details'" :data="details"/>
+
+         <template-edit-modal v-if="modalType === 'edit'" :get-notification-options="getNotificationOptions"
+                              :defaultInterval="interval"
+                              @onSubmit="updateNotifications($event, showDropdown)" :pending="pending"/>
+
+         <delete-modal v-if="modalType === 'delete'" @cancel='showModal = false'
+                       @onSubmit="onDeleteTemplate(showDropdown)" :pending="pending"/>
+         <p v-if="modalType === 'mobile_dropdown'" class="mobile_dropdown_list" v-for="menu in dropdownMenu"
+            @click="openModal(menu)"
+            :key="menu.id">
+            <inline-svg :src="menu.icon"/>
+            {{ menu.title }}
+         </p>
+
       </modal-popup>
+      <no-results :text="$t('no_templates')" v-if="savedSearchList.length === 0">
+         <nuxt-link style="max-width: 250px;" class="active btn btn--pale-green-outline d-flex full-width mt-2"
+                    :to="$localePath('/cars?saved=true')">
+            <i aria-hidden="true" class="icon-arrow-left"></i>
+            {{ $t('new_saved_search') }}
+         </nuxt-link>
+      </no-results>
    </div>
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import {mapActions, mapGetters} from "vuex";
+import DeleteModal from "~/components/templates/DeleteModal.vue";
+import DetailsModal from "~/components/templates/DetailsModal.vue";
+import TemplateEditModal from "~/components/templates/TemplateEditModal.vue";
+import NoResults from "~/components/elements/NoResults.vue";
 
 export default {
+   components: {NoResults, TemplateEditModal, DetailsModal, DeleteModal},
    nuxtI18n: {
       paths: {
          az: '/profil/axtaris-sablonlari'
@@ -60,13 +86,12 @@ export default {
       });
    },
    computed: {
-      ...mapGetters(['savedSearchList', 'bodyOptions', 'popularOptions']),
+      ...mapGetters(['savedSearchList', 'bodyOptions', 'popularOptions', 'brands', 'sellOptions']),
       crumbs() {
          return [
             {name: this.$t('my_searches')}
          ]
       },
-
       getNotificationOptions() {
          return [
             {
@@ -99,26 +124,29 @@ export default {
    },
    data() {
       return {
+         pending: false,
+         interval: 0,
+         details: [],
          showDropdown: 0,
-         showRules: false,
+         showModal: false,
          modalTitle: "",
          modalType: "",
          dropdownMenu: [
             {
                id: 1,
-               title: "Şablonun detalları",
+               title: this.$t('template_details'),
                icon: "/new-icons/eye_v2.svg",
                key: "details"
             },
             {
                id: 2,
-               title: "Bildirişlərə düzəliş",
+               title: this.$t('edit_notifications'),
                icon: "/new-icons/bell.svg",
                key: "edit"
             },
             {
                id: 3,
-               title: "Şablonu sil",
+               title: this.$t('delete_template'),
                icon: "/new-icons/grid/trash_v2.svg",
                key: "delete"
             },
@@ -131,27 +159,64 @@ export default {
          store.dispatch('getSavedSearch'),
          store.dispatch('getBrands'),
          store.dispatch('getPopularOptions'),
+         store.dispatch('getOptions'),
       ]);
    },
    methods: {
-      openDropdown(id) {
+      ...mapActions(['deleteSavedSearch', 'updateSavedSearchNotificationsInterval']),
+
+      async updateNotifications(interval, id) {
+         if (this.pending) return;
+         this.pending = true;
+         try {
+            await this.updateSavedSearchNotificationsInterval({id: [id], type: interval});
+            this.pending = false;
+            this.showModal = false;
+            this.this.$toasted.success(this.$t('saved_changes'));
+         } catch (err) {
+            this.pending = false;
+         }
+      },
+      async onDeleteTemplate(id) {
+         if (this.pending) return;
+         this.pending = true;
+         try {
+            await this.deleteSavedSearch(id);
+            this.pending = false;
+            this.showModal = false;
+            this.$toasted.success(this.$t('my_templates_removed'));
+         } catch (err) {
+            this.pending = false;
+         }
+      },
+
+      openDropdown(id, menu) {
+         const values = []
+         for (const key in this.getTemplateOptions(menu.search_filter)) {
+            this.getTemplateValues(key, this.getTemplateOptions(menu.search_filter)[key]) && values.push({
+               key: this.getTemplateKey(key),
+               value: this.getTemplateValues(key, this.getTemplateOptions(menu.search_filter)[key])
+            })
+         }
+         this.details = values
+         this.interval = menu.notification_interval
          this.showDropdown = id;
+         if (this.isMobileBreakpoint) {
+            this.modalTitle = this.$t("transactions")
+            this.modalType = "mobile_dropdown"
+            this.showModal = true
+         }
       },
       openModal(menu) {
          this.modalTitle = menu.title
          this.modalType = menu.key;
-         this.showRules = true
+         this.showModal = true
       },
-      renderModal() {
-         switch (this.modalType) {
-            case 'details' :
-               return `<h1>details</h1>`;
-            case 'edit' :
-               return `<h1>edit</h1>`;
-            case 'delete' :
-               return `<h1>delete</h1>`;
-
-         }
+      getTemplateTitle(data) {
+         const brand = this.brands.find((brand) => brand.id === data.additional_brands[0].brand)?.name || ""
+         const model = brand && (data.additional_brands[0]?.model_name?.replace("series", this.$t('series')).replace('class', this.$t('class')) || "")
+         const generation = brand && (data.additional_brands[0].generation_name?.[this.locale].replace("– 0", `– ${new Date().getFullYear()}`) || "")
+         return brand ? `${brand} ${model} ${generation}` : this.$t('all_car_brands')
       },
       getTemplateOptions(template) {
          return JSON.parse(template)
@@ -167,17 +232,15 @@ export default {
       },
       getTemplateValues(key, values) {
          switch (key) {
-            case 'exclude_additional_brands' :
-               break;
             case 'all_options' :
                const parameters = values && Object.keys(values)
                return this.popularOptions.filter((opt) => parameters.includes(opt.name)).map((option) => this.$t(option.label)).join(", ");
             case 'announce_type' :
                break;
-            case 'external_salon' :
-               break;
+            case 'region' :
+               return this.sellOptions.regions.find((region) => region.key === values).name
             case 'currency' :
-               break;
+               return values === 1 ? 'AZN' : values === 2 ? "USD" : 'EUR'
             case 'year_from' :
                return values;
             case 'year_to' :
@@ -195,9 +258,9 @@ export default {
             case 'max_capacity' :
                return values;
             case 'damage' :
-               break;
+               return values === 1 ? this.$t('without_beaten') : this.$t('broken')
             case 'customs' :
-               break;
+               return values === 1 ? this.$t('cleared') : this.$t('not_cleared')
             case 'body' :
                return this.getTemplateMultipleValues(values, this.bodyOptions.main.default_options.body.values, true);
             case 'korobka' :
@@ -207,30 +270,42 @@ export default {
                return this.getTemplateMultipleValues(values, this.$t('engine_values'))
 
             case 'gearing' :
-               break;
+               return this.getTemplateMultipleValues(values, this.$t('box_values'))
             case 'in_garanty' :
-               break;
+               return values ? this.$t('in_garanty') : null;
             case 'credit' :
-               break;
+               return values ? this.$t('credit') : null;
          }
       }
    },
    mounted() {
-      // console.log(this.$refs.dropdown)
-   }
+      window.addEventListener("click", (e) => {
+         const dropdown = document.querySelector('.template_dropdown')
+         const clickedInside = dropdown && (dropdown.contains(e.target) || e.target.classList[0] === 'heading_wrapper_icon');
+
+         if (!clickedInside && !this.isMobileBreakpoint) {
+            this.showDropdown = 0
+         }
+      })
+
+      console.log(JSON.parse(this.savedSearchList[2].search_filter))
+   },
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .pages-profile-templates {
+   padding-bottom: 120px;
 
    .templates_wrapper {
       background-color: #fff;
+      min-height: 500px;
+      padding: 32px 0;
 
       .title {
          font-size: 28px;
          font-weight: 700;
-         padding: 32px 0;
+         padding-bottom: 32px;
       }
 
       .templates {
@@ -241,6 +316,7 @@ export default {
          .template {
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
             gap: 12px;
             padding: 24px;
             border: 1px solid #CDD5DF;
@@ -248,7 +324,6 @@ export default {
 
             .heading {
                display: flex;
-               align-items: center;
                justify-content: space-between;
                gap: 12px;
                color: #1B2434;
@@ -256,7 +331,7 @@ export default {
                font-weight: 600;
 
                &_wrapper {
-                     position: relative;
+                  position: relative;
 
                   &_icon {
                      display: flex;
@@ -268,6 +343,10 @@ export default {
                      cursor: pointer;
                      transition: 0.2s;
 
+                     svg {
+                        pointer-events: none;
+                     }
+
                      &:hover {
                         background-color: #E3E8EF;
                      }
@@ -276,13 +355,14 @@ export default {
 
                   .template_dropdown {
                      position: absolute;
-                     top: 100%;
+                     top: 46px;
                      left: 100%;
                      transform: translateX(-30px);
                      padding: 8px;
                      background-color: #fff;
                      border: 1px solid #CDD5DF;
                      border-radius: 8px;
+                     z-index: 1;
 
                      li {
                         display: flex;
@@ -315,6 +395,92 @@ export default {
             }
          }
       }
+   }
+}
+
+.dark-mode {
+   .pages-profile-templates {
+
+      .templates_wrapper {
+         background-color: #1B2434;
+
+         .templates {
+
+            .template {
+               border-color: #121926;
+               background-color: #121926;
+
+               .heading {
+                  color: #fff;
+
+                  &_wrapper {
+
+                     &_icon {
+                        &:hover {
+                           background-color: #1B2434;
+                        }
+
+                     }
+
+                     .template_dropdown {
+                        background-color: #1B2434;
+                        border-color: #364152;
+
+                        li {
+
+                           &:hover {
+                              background-color: #121926;
+                           }
+                        }
+                     }
+                  }
+               }
+
+               p {
+                  color: #fff;
+               }
+            }
+         }
+      }
+   }
+}
+
+@media (max-width: 1150px) {
+   .pages-profile-templates {
+      .templates_wrapper {
+
+         .title {
+            font-size: 16px;
+            font-weight: 600;
+         }
+
+         .templates {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+
+            .template {
+               gap: 4px;
+
+               .heading {
+
+                  h3 {
+                     font-size: 16px;
+                     font-weight: 600;
+                  }
+               }
+            }
+         }
+      }
+
+   }
+   .mobile_dropdown_list {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 18px;
+      font-weight: 500;
+      padding: 10px 0;
    }
 }
 </style>

@@ -2,7 +2,8 @@
    <div class="pages-cars-assistant">
       <div class="container">
          <breadcrumbs :crumbs="crumbs"/>
-         <car-guide :class="{'mb-5':  result.announcements?.length > 0 || result.monetized?.length > 0}" @onSubmit="onGuideSubmit" @reset="resetForm" :pending="pending"/>
+         <car-guide :class="{'mb-5':  result.announcements?.length > 0 || result.monetized?.length > 0}"
+                    @onSubmit="onGuideSubmit" @reset="resetForm" :pending="pending"/>
       </div>
       <no-results
          v-if="result.announcements?.length === 0 && result.monetized?.length === 0"/>
@@ -30,8 +31,10 @@
       <div class="overflow-hidden bg-white" v-if="result.announcements?.length">
          <grid
             :announcements="result.announcements"
+            :paginate="result.meta"
             :itemDetailsDark="true"
             :pending="pending"
+            @change-page="onGuideSubmitPageChange"
          >
             <template #cap>
                <Cap :className="'mb40'">
@@ -82,8 +85,10 @@ export default {
    data() {
       return {
          result: {
+            form: {},
             monetized: null,
-            announcements: null
+            announcements: null,
+            meta: null,
          },
          pending: false
       }
@@ -118,19 +123,38 @@ export default {
    },
    methods: {
       ...mapActions(['fetchMonetizedCarsSearch', 'getGridSearch']),
-      async onGuideSubmit(form) {
+      async onGuideSubmitPageChange(page = 1) {
          this.pending = true
          try {
-            await this.fetchMonetizedCarsSearch(form)
-            await this.getGridSearch({url: '/car', post: form, prefix: 'main'})
+            await this.fetchMonetizedCarsSearch(this.form)
+            await this.getGridSearch({url: '/car', post: this.form, page, prefix: 'main'})
             this.result = {
                monetized: this.monetizedCars,
-               announcements: this.mainAnnouncements?.data
+               announcements: this.mainAnnouncements?.data,
+               meta: this.mainAnnouncements?.meta
             }
          } catch (e) {
 
          } finally {
             this.pending = false
+         }
+      },
+      async onGuideSubmit(form) {
+         this.pending = true
+         this.form = form;
+         try {
+            await this.fetchMonetizedCarsSearch(form)
+            await this.getGridSearch({url: '/car', post: form, page: 1, prefix: 'main'})
+            this.result = {
+               monetized: this.monetizedCars,
+               announcements: this.mainAnnouncements?.data,
+               meta: this.mainAnnouncements?.meta
+            }
+         } catch (e) {
+
+         } finally {
+            this.pending = false
+            this.$router.replace({'query': null});
          }
       },
       resetForm() {

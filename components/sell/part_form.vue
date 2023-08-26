@@ -325,7 +325,7 @@ export default {
             price: 0,
             currency: 1,
             is_negotiable: false,
-            region_id: "",
+            region_id: 1,
             description: "",
             keywords: [],
             saved_images: [],

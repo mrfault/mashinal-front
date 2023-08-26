@@ -46,8 +46,8 @@
             :clear-option="false"
             :new-label="false"
             v-model="form.year"
-            @change="preview.year = $event || '0000'"
             :invalid="$v.form.year.$error"
+            @change="preview.year = ($event || '0000')"
          />
          <div class="divider">
             <form-numeric-input
@@ -378,8 +378,8 @@ export default {
             model: "",
             year: "",
             volume: "",
-            power: "",
-            fuel: "",
+            power: 0,
+            fuel: 0,
             box: "",
             color: "",
             gearing: "",
