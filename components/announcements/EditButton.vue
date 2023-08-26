@@ -25,10 +25,13 @@
          ...mapGetters(['editPath']),
 
          path() {
+            console.log('this.$route.params', this.type)
             if (this.type === 'plates') {
+               console.log('1')
                return this.$localePath(`/${this.type}/${this.$route.params.id}/edit`);
             } else {
-               return this.$localePath(`/${this.type}/announcement/${this.$route.params.id}/edit`);
+               console.log('2')
+               return this.$localePath(`/${this.type}/announcement/${this.announcement.id_unique}/edit`);
             }
          }
       },

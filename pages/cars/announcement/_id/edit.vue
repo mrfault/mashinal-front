@@ -79,56 +79,56 @@ export default {
          store.dispatch('getMyAnnouncement', route.params.id)
       ]);
       const announcement = store.state.myAnnouncement;
-      const catalog = announcement.car_catalog;
+      const catalog = announcement?.car_catalog;
 
       return {
          lastStepKey: 0,
          form: {
-            car_catalog_id: announcement.car_catalog_id,
+            car_catalog_id: announcement?.car_catalog_id,
             brand: announcement?.brand?.slug,
             model: announcement?.model?.slug,
-            generation_id: catalog.generation_id,
-            car_body_type: catalog.car_type.id,
-            gearing: catalog.main['  ']['engine'], // engines
-            modification: catalog.main[' ']['box'], // transmissions/box
-            transmission: catalog.main[' ']['type_of_drive'], // gearing
-            capacity: catalog.capacity,
-            power: catalog.power,
-            year: announcement.year,
-            auction: announcement.auction,
-            end_date: app.$moment(announcement.end_date).format('DD.MM.YYYY HH:mm'),
-            country_id: announcement.country_id,
+            generation_id: catalog?.generation_id,
+            car_body_type: catalog?.car_type.id,
+            gearing: catalog?.main['  ']['engine'], // engines
+            modification: catalog?.main[' ']['box'], // transmissions/box
+            transmission: catalog?.main[' ']['type_of_drive'], // gearing
+            capacity: catalog?.capacity,
+            power: catalog?.power,
+            year: announcement?.year,
+            auction: announcement?.auction,
+            end_date: app.$moment(announcement?.end_date)?.format('DD.MM.YYYY HH:mm'),
+            country_id: announcement?.country_id,
             youtube: {
-               id: announcement.youtube_link,
-               thumb: `https://img.youtube.com/vi/${announcement.youtube_link}/hqdefault.jpg`
+               id: announcement?.youtube_link,
+               thumb: `https://img.youtube.com/vi/${announcement?.youtube_link}/hqdefault.jpg`
             },
-            selectedColor: announcement.colors,
-            is_matte: announcement.is_matte,
-            mileage: parseInt(announcement.mileage || 0),
-            mileage_measure: announcement.mileage_measure || 1,
-            region_id: announcement.region_id || 1,
-            address: announcement.address,
-            lat: parseFloat(announcement.latitude || 0),
-            lng: parseFloat(announcement.longitude || 0),
-            vin: announcement.vin,
-            price: announcement.price_int || '',
-            owner_type: parseInt(announcement.owner_type || 0),
-            currency: announcement.currency_id || 1,
-            car_number: announcement.car_number,
-            show_car_number: announcement.show_car_number,
-            show_vin: announcement.show_vin,
-            part: announcement.car_body_health ? JSON.parse(announcement.car_body_health.options) : {},
-            all_options: app.$clone(announcement.options),
-            badges: announcement.stickers?.map(item => item.id),
+            selectedColor: announcement?.colors,
+            is_matte: announcement?.is_matte,
+            mileage: parseInt(announcement?.mileage || 0),
+            mileage_measure: announcement?.mileage_measure || 1,
+            region_id: announcement?.region_id || 1,
+            address: announcement?.address,
+            lat: parseFloat(announcement?.latitude || 0),
+            lng: parseFloat(announcement?.longitude || 0),
+            vin: announcement?.vin,
+            price: announcement?.price_int || '',
+            owner_type: parseInt(announcement?.owner_type || 0),
+            currency: announcement?.currency_id || 1,
+            car_number: announcement?.car_number,
+            show_car_number: announcement?.show_car_number,
+            show_vin: announcement?.show_vin,
+            part: announcement?.car_body_health ? JSON.parse(announcement?.car_body_health?.options) : {},
+            all_options: app.$clone(announcement?.options),
+            badges: announcement?.stickers?.map(item => item.id),
             new_badges: [],
-            comment: announcement.comment || '',
-            is_new: announcement.is_new,
-            beaten: announcement.broken,
-            customs_clearance: announcement.customs_clearance,
-            tradeable: announcement.exchange_possible,
-            credit: announcement.credit,
-            guaranty: announcement.in_garanty,
-            saved_images: announcement.mediaIds
+            comment: announcement?.comment || '',
+            is_new: announcement?.is_new,
+            beaten: announcement?.broken,
+            customs_clearance: announcement?.customs_clearance,
+            tradeable: announcement?.exchange_possible,
+            credit: announcement?.credit,
+            guaranty: announcement?.in_garanty,
+            saved_images: announcement?.mediaIds
          }
       }
    },
