@@ -163,8 +163,9 @@ export default {
    all_models: "Bütün modellər",
    all_options: "Bütün seçimlər",
    template_values: {
-     all_options: "Miyau",
-      announce_type: "Bütün parametrlər",
+     all_options: "Bütün parametrlər",
+      announce_type: "Elanın tipi",
+      colors: "Rəng",
       region: "Şəhər",
       currency: "Valyuta",
       year_from: "Min. il",
