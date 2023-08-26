@@ -40,7 +40,7 @@ export default function ({app, store, error, $axios}) {
             window.location.reload();
          }
       } else if (code === 422) {
-         if(err.response.data && (err.response.data.message == "Aktiv elan sayı 3-dən çox ola bilməz" || err.response.data.message == "Количество активных объявлений не может быть больше 3")){
+         if(err.response.data && (err.response.data.message.includes("Aktiv elan sayı") || err.response.data.message.includes("Количество активных объявлений"))){
             app.$toast.error(err.response.data.message);
          }
          if (err.response.data.data) {
