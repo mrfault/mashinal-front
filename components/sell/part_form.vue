@@ -417,6 +417,9 @@ export default {
             this.form.is_negotiable = false
          }
       },
+      "form.saved_images"() {
+         this.$emit("navigationProgress", {id: 3, status: this.form.saved_images.length > 0})
+      },
       isReady() {
          this.$v.form.$touch()
          setTimeout(() => {
@@ -462,7 +465,15 @@ export default {
          this.$emit("getForm", filteredForm)
       }
    },
-
+   updated() {
+      const announceDescription = ['title',
+         'price',].every((key) => this.form[key]) &&
+         (this.hasComponent('diameter') ? this.form.diameter : true) &&
+         (this.form.category_id !== 27 && this.hasComponent('height') ? this.form.height : true) &&
+         (this.hasComponent('shine_width') ? this.form.shine_width : true) &&
+         (this.hasComponent('number_of_mounting_holes') ? this.form.number_of_mounting_holes : true)
+      this.$emit("navigationProgress", {id: 2, status: announceDescription})
+   },
    validations() {
       return {
          form: {

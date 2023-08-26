@@ -34,7 +34,10 @@ export default {
    data() {
       return {
          form: this.$clone(this.initialForm),
-         files: ((this.type === 'parts' ? this.announcement?.defaultImages : this.announcement?.media) || []).map((media, i) => ({media, key: this.initialForm.saved_images[i]})),
+         files: ((this.type === 'parts' ? this.announcement?.defaultImages : this.announcement?.media) || []).map((media, i) => ({
+            media,
+            key: this.initialForm.saved_images[i]
+         })),
          minFiles: 3,
          maxFiles: 20,
          savedFiles: [...this.initialForm.saved_images],
@@ -100,6 +103,9 @@ export default {
             this.$delete(this.savedFiles, index);
          }
          this.initialForm.saved_images.filter((image) => image !== this.savedFiles[index])
+         if (this.files.length) {
+            this.$nuxt.$emit('get-main-image', '');
+         }
       },
       async rotateImage(index, key) {
          if (this.savedFiles[index]) {
@@ -131,9 +137,10 @@ export default {
       files() {
          if (this.files.length) {
             this.$nuxt.$emit('get-main-image', this.files[0].image);
-         } else {
-            this.$nuxt.$emit('get-main-image', '');
          }
+         // else {
+         //    this.$nuxt.$emit('get-main-image', '');
+         // }
       }
    }
 }
