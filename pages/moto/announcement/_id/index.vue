@@ -70,29 +70,29 @@
          }
       },
 
-      // head() {
-      //    let announcementTitle = `${this.motoBrand.name} ${this.motoModel.name}`;
-      //    let title = `${this.$t(`meta-title_announcement-${this.announcement.is_new ? 'new' : 'used'}`, {announce: `${announcementTitle}, ${this.announcement.year}`})}`;
-      //    let description = `${announcementTitle}, ${this.$t('meta-descr_announcement', {announce: `${this.announcement.price}`})}`;
-      //    let image = this.getAnnouncementImage(this.announcement);
-      //    let category = 'Motorcycle';
-      //    if (this.announcement.moto_atv_brand) category = 'Atv';
-      //    else if (this.announcement.scooter_brand) category = 'Scooter';
-      //    return this.$headMeta({title, description, image}, {
-      //       category,
-      //       id: this.announcement.id_unique,
-      //       autosalon: this.announcement.user.autosalon,
-      //       brand: this.motoBrand.name,
-      //       model: this.motoModel.name,
-      //       year: this.announcement.year,
-      //       price: {amount: this.announcement.price_int, currency: this.announcement.currency_id},
-      //       services: this.announcement.type,
-      //       new: this.announcement.is_new,
-      //       available: this.announcement.status == 1,
-      //       barter: this.announcement.tradeable,
-      //       credit: this.announcement.credit
-      //    });
-      // },
+     head() {
+        let announcementTitle = `${this.motoBrand.name} ${this.motoModel.name}`;
+        let title = `${this.$t(`meta-title_announcement-${this.announcement.is_new ? 'new' : 'used'}`, {announce: `${announcementTitle}, ${this.announcement.year}`})}`;
+        let description = `${announcementTitle}, ${this.$t('meta-descr_announcement', {announce: `${this.announcement.price}`})}`;
+        let image = this.getAnnouncementImage(this.announcement);
+        let category = 'Motorcycle';
+        if (this.announcement.moto_atv_brand) category = 'Atv';
+        else if (this.announcement.scooter_brand) category = 'Scooter';
+        return this.$headMeta({title, description, image}, {
+           category,
+           id: this.announcement.id_unique,
+           autosalon: this.announcement.user.autosalon,
+           brand: this.motoBrand.name,
+           model: this.motoModel.name,
+           year: this.announcement.year,
+           price: {amount: this.announcement.price_int, currency: this.announcement.currency_id},
+           services: this.announcement.type,
+           new: this.announcement.is_new,
+           available: this.announcement.status == 1,
+           barter: this.announcement.tradeable,
+           credit: this.announcement.credit
+        });
+     },
 
       async asyncData({store, route}) {
          await Promise.all([
@@ -118,11 +118,19 @@
             if (type.includes('model')) {
                form.additional_brands[0].model = this.motoModel.id;
             }
-
-            let slug = 'motorcycles';
-            if (this.announcement.moto_atv_brand) slug = 'atvs';
-            else if (this.announcement.scooter_brand) slug = 'scooters';
-            return `/moto/${this.$t('slug_' + slug)}?filter=${encodeURI(JSON.stringify(form))}`
+               form.moto_type = this.$route.query.type
+            switch (form.moto_type) {
+               case 'motorcycle':
+                  form.additional_brands[0].category = 1;
+                  break;
+               case 'scooter':
+                  form.additional_brands[0].category = 2;
+                  break;
+               case 'moto_atv':
+                  form.additional_brands[0].category = 3;
+                  break;
+            }
+            return `/moto?filter=${encodeURI(JSON.stringify(form))}`
          }
       },
 
@@ -130,12 +138,11 @@
          ...mapGetters(['announcement']),
 
          motoBrand() {
-            console.log('this.announcement222', this.announcement)
-            return this.announcement?.brand || this.announcement?.moto_atv_brand || this.announcement?.scooter_brand;
+            return this.announcement?.brand;
          },
 
          motoModel() {
-            return this.announcement?.model || this.announcement?.moto_atv_model || this.announcement?.scooter_model;
+            return this.announcement?.model;
          },
 
          crumbs() {
