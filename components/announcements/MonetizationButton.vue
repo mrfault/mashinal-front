@@ -6,7 +6,6 @@
       [`btn btn--${className} full-width`]: !classes,
       'disabled': disabled
     }"
-
       @click="openPaymentModal"
    >
       <div :class="['d-flex align-items-center', {'disabled': disabled}]">
@@ -279,16 +278,17 @@ export default {
       },
 
       openPaymentModal(e) {
-
+         // console.log('this.announcement', this.announcement)
          if (this.announcement.status != 1) {
             e.stopPropagation()
             // this.$toasted.error('announcement_cannot_monetization')
             return;
-
          } else {
             e.stopPropagation();
             this.showPaymentModal = true;
          }
+
+         console.log('sss', this.showPaymentModal)
       },
 
       handlePaymentType(id) {

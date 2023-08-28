@@ -267,6 +267,7 @@ export default {
 
    computed: {
       getType() {
+         console.log('item', item)
          let item = this.announcement
 
          if (item.type === "motorcycle") return 'Motorcycle'
@@ -279,11 +280,16 @@ export default {
       },
 
       getLink() {
-         let type = 'cars'
+         let type = 'cars',
+             motoType = 'motorcycle';
+
+         if (this.getType === 'Scooter') motoType = 'scooter';
+         else if (this.getType === 'Atv') motoType = 'atv';
+
          if (['Motorcycle', 'Scooter', 'Atv'].includes(this.getType)) type = 'moto'
          else if (['Commercial'].includes(this.getType)) type = 'commercial'
          else if (['Part'].includes(this.getType)) type = 'parts'
-         let path = `/${type}/announcement/${this.announcement.id}`
+         let path = `/${type}/announcement/${this.announcement.id}?type=${motoType}`
          return this.$localePath(path)
       },
 

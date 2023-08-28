@@ -143,6 +143,11 @@
             }
          }
       }
+
+      &.deactivate {
+         width: 100%;
+         max-width: 550px;
+      }
    }
 
    .border-12 {
