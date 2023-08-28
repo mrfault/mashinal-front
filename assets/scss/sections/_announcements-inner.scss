@@ -148,7 +148,7 @@
 
       .btn {
          i {
-            font-size: 12px;
+            font-size: 20px;
          }
       }
    }
@@ -677,12 +677,12 @@
          }
       }
 
-      .favorite-btn, .compare-btn, .edit-btn {
+      .favorite-btn, .compare-btn, .edit-btn, .deactivate-btn {
          border: 1px solid transparent;
          background-color: #1B2434;
 
          span {
-            color: #FFFFFF;
+            color: #FFFFFF !important;
          }
 
          &:hover {

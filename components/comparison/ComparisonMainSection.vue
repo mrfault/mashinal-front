@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="comparison" class="comparison card" v-if="!showNotFound">
+    <div id="comparison" class="comparison" v-if="!showNotFound">
       <comparison-announcements v-if="filter.compareType === 'announcements'" />
       <comparison-models v-else />
     </div>

@@ -151,7 +151,7 @@
          </grid>
       </div>
 
-      <HandleIds v-if="getMainMonetized.length" :items="getMainMonetized" :watchIds="false"/>
+      <HandleIds :items="getMainMonetized" :watchIds="false"/>
    </div>
 </template>
 

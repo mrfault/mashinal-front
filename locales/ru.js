@@ -974,6 +974,7 @@ export default {
    has_lising_kredit: "Возможен залог автомобиля или договор аренды / аренды",
    hatchback: "Хетчбек",
    have: "Есть",
+   delivery: "Доставка",
    have_delivery: "Доставка",
    have_warranty: "Гарантия",
    "Head-up display": "Проекционный дисплей",
