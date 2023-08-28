@@ -1588,8 +1588,8 @@ export const actions = {
    },
 
    //SELL POSTS
-   async plateNumbersPost({}, {is_mobile, form}) {
-         const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/plate-numbers/post?is_mobile=${is_mobile}`, form);
+   async plateNumbersPost({}, {form}) {
+         const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/plate-numbers/post?is_mobile=${this.isMobileBreakpoint}`, form);
          return res;
    },
    async partsPost({}, form) {
@@ -1597,11 +1597,11 @@ export const actions = {
          return res;
    },
    async carsPost({}, form) {
-      const res = await this.$axios.$post(`/sell/post/publish?is_mobile=false`, form);
+      const res = await this.$axios.$post(`/sell/post/publish?is_mobile=${this.isMobileBreakpoint}`, form);
       return res;
    },
    async motoPost({}, form) {
-      const res = await this.$axios.$post(`/sell/moto/post/publish?is_mobile=false`, form);
+      const res = await this.$axios.$post(`/sell/moto/post/publish?is_mobile=${this.isMobileBreakpoint}`, form);
       return res;
 
    },

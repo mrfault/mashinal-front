@@ -85,7 +85,7 @@
          <form-textarea
             v-model="form.comment"
             :placeholder="$t('additional_info')"
-            :maxlength="600"
+            :maxlength="500"
          />
          <div class="registration_mark_form_with_info_inner">
             <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
@@ -276,15 +276,7 @@ export default {
       grid-template-columns: repeat(2, calc(50% - 8px));
       gap: 20px;
 
-      .price_types {
-         .price_item {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 52px;
-            padding: 0 16px;
-         }
-      }
+
    }
 }
 

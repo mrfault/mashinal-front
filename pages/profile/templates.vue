@@ -10,10 +10,10 @@
                <div class="template" v-for="searchList in savedSearchList" :key="searchList.id"
                     @click="goToSearch(searchList)">
                   <div class="heading">
-                     <h3>{{ getTemplateTitle(getTemplateOptions(searchList.search_filter)) }}</h3>
+                     <h3>{{ getTemplateTitle(getTemplateOptions(searchList.search_filter).additional_brands[0]) }}</h3>
                      <div class="heading_wrapper">
                         <div class="heading_wrapper_icon"
-                             @click.stop="openDropdown(showDropdown === 0 ? searchList.id : 0, searchList)">
+                             @click.stop="openDropdown(searchList.id, searchList)">
                            <inline-svg :src="'/new-icons/dots-vertical-new.svg'"/>
                         </div>
 
@@ -81,6 +81,7 @@ export default {
          az: '/profil/axtaris-sablonlari'
       }
    },
+   middleware: 'auth_general',
    head() {
       return this.$headMeta({
          title: this.$t('my_searches')
@@ -132,6 +133,9 @@ export default {
          showModal: false,
          modalTitle: "",
          modalType: "",
+         form: {
+            currency: "AZN"
+         },
          dropdownMenu: [
             {
                id: 1,
@@ -201,6 +205,8 @@ export default {
       },
       openDropdown(id, menu) {
          const values = []
+         this.form.currency = this.getTemplateOptions(menu.search_filter).currency
+         this.form.currency = this.getTemplateOptions(menu.search_filter).additional_brands
          for (const key in this.getTemplateOptions(menu.search_filter)) {
             this.getTemplateValues(key, this.getTemplateOptions(menu.search_filter)[key]) && values.push({
                key: this.getTemplateKey(key),
@@ -209,7 +215,11 @@ export default {
          }
          this.details = values
          this.interval = menu.notification_interval
-         this.showDropdown = id;
+         if (this.showDropdown === id) {
+            this.showDropdown = 0
+         } else {
+            this.showDropdown = id;
+         }
          if (this.isMobileBreakpoint) {
             this.modalTitle = this.$t("transactions")
             this.modalType = "mobile_dropdown"
@@ -222,9 +232,9 @@ export default {
          this.showModal = true
       },
       getTemplateTitle(data) {
-         const brand = this.brands.find((brand) => brand.id === data.additional_brands[0].brand)?.name || ""
-         const model = brand && (data.additional_brands[0]?.model_name?.replace("series", this.$t('series')).replace('class', this.$t('class')) || "")
-         const generation = brand && (data.additional_brands[0].generation_name?.[this.locale].replace("– 0", `– ${new Date().getFullYear()}`) || "")
+         const brand = this.brands.find((brand) => brand.id === data.brand)?.name || ""
+         const model = brand && (data?.model_name?.replace("series", this.$t('series')).replace('class', this.$t('class')) || "")
+         const generation = brand && (data.generation_name?.[this.locale].replace("– 0", `– ${new Date().getFullYear()}`) || "")
          return brand ? `${brand} ${model} ${generation}` : this.$t('all_car_brands')
       },
       getTemplateOptions(template) {
@@ -241,6 +251,13 @@ export default {
       },
       getTemplateValues(key, values) {
          switch (key) {
+            case 'additional_brands' :
+               let brands = []
+               Object.values(values).forEach((value) => {
+                  const val = this.getTemplateTitle(value)
+                  brands.push(val !== this.$t('all_car_brands') ? val : null)
+               })
+               return brands.filter(brand => brand).map(brand => brand?.trim()).length ? brands.filter(brand => brand).map(brand => brand?.trim()) : null
             case 'all_options' :
                const parameters = values && Object.keys(values)
                return this.popularOptions.filter((opt) => parameters.includes(opt.name)).map((option) => this.$t(option.label)).join(", ");
@@ -250,16 +267,14 @@ export default {
                return this.colors.filter((color) => values.includes(color.id)).map((option) => option.name[this.locale]).join(", ");
             case 'region' :
                return this.sellOptions.regions.find((region) => region.key === values).name
-            case 'currency' :
-               return values === 1 ? 'AZN' : values === 2 ? "USD" : 'EUR'
             case 'year_from' :
                return values;
             case 'year_to' :
                return values;
             case 'price_from' :
-               return values;
+               return values + " " + (this.form.currency === 1 ? 'AZN' : values === 2 ? "USD" : 'EUR');
             case 'price_to' :
-               return values;
+               return values + " " + (this.form.currency === 1 ? 'AZN' : values === 2 ? "USD" : 'EUR');
             case 'mileage_from' :
                return values;
             case 'mileage_to' :
@@ -286,19 +301,28 @@ export default {
                return values ? this.$t('in_garanty') : null;
             case 'credit' :
                return values ? this.$t('credit') : null;
+            case 'exchange_possible' :
+               return values ? this.$t('tradeable') : null;
+            case 'with_video' :
+               return values ? this.$t('yes') : null;
          }
       }
    },
    mounted() {
       window.addEventListener("click", (e) => {
          const dropdown = document.querySelector('.template_dropdown')
-         const clickedInside = dropdown && (dropdown.contains(e.target) || e.target.classList[0] === 'heading_wrapper_icon');
+         const clickedInside = dropdown && (dropdown.contains(e.target));
 
-         if (!clickedInside && !this.isMobileBreakpoint) {
+         if (!clickedInside && e.target.classList[0] !== 'heading_wrapper_icon') {
             this.showDropdown = 0
          }
       })
    },
+   watch: {
+      showModal() {
+         !this.showModal && (this.showDropdown = 0)
+      }
+   }
 }
 </script>
 
@@ -331,6 +355,11 @@ export default {
             border: 1px solid #CDD5DF;
             border-radius: 12px;
             cursor: pointer;
+            transition: 0.2s;
+
+            &:hover {
+               border-color: #155EEF;
+            }
 
             .heading {
                display: flex;
@@ -366,8 +395,8 @@ export default {
                   .template_dropdown {
                      position: absolute;
                      top: 46px;
-                     left: 100%;
-                     transform: translateX(-30px);
+                     right: 100%;
+                     transform: translateX(30px);
                      padding: 8px;
                      background-color: #fff;
                      border: 1px solid #CDD5DF;
@@ -420,6 +449,10 @@ export default {
                border-color: #121926;
                background-color: #121926;
 
+               &:hover {
+                  border-color: #155EEF;
+               }
+
                .heading {
                   color: #fff;
 
@@ -457,6 +490,8 @@ export default {
 
 @media (max-width: 1150px) {
    .pages-profile-templates {
+      padding-bottom: 0;
+
       .templates_wrapper {
 
          .title {
