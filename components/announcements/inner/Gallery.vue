@@ -20,14 +20,15 @@
                   >
                      <div class="position-relative">
                         <no-ssr>
-                           <Interior360Viewer :url="announcement?.media?.interior_360" v-if="showInterior"/>
                            <vue-three-sixty
-                              v-else
+                              v-if="viewAspect === 1"
                               :amount="announcement?.media?.images_360?.length"
                               buttonClass="d-none"
                               disableZoom
                               :files="announcement?.media?.images_360"
                            />
+
+                           <Interior360Viewer :url="announcement?.media?.interior_360" v-else />
                         </no-ssr>
                      </div>
                   </div>
@@ -46,7 +47,7 @@
          <div class="gallery-overlay" v-if="showSlider">
             <div class="gallery-overlay_top d-flex">
                <ViewAspect
-                  v-if="announcement.has_360"
+                  v-if="announcement?.media?.interior_360 && announcement?.media?.images_360"
                   :options="viewAspectOptions"
                   v-model="viewAspect"
                />
