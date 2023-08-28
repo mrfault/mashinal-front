@@ -194,6 +194,17 @@ export default {
       }
    },
    watch: {
+      form: {
+         deep: true,
+         handler() {
+            const carNumber = ['region_id',
+               'first',
+               'second',
+               'number'].every((key) => this.form.car_number[key])
+            this.$emit("navigationProgress", {id: 1, status: carNumber})
+            this.$emit("navigationProgress", {id: 2, status: this.form.price})
+         }
+      },
       isReady() {
          this.$v.form.$touch()
          setTimeout(() => {

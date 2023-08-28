@@ -7,18 +7,19 @@
          <div class="container">
             <h1 class="title">{{ $t('my_searches') }}</h1>
             <div class="templates">
-               <div class="template" v-for="searchList in savedSearchList" :key="searchList.id">
+               <div class="template" v-for="searchList in savedSearchList" :key="searchList.id"
+                    @click="goToSearch(searchList)">
                   <div class="heading">
                      <h3>{{ getTemplateTitle(getTemplateOptions(searchList.search_filter)) }}</h3>
                      <div class="heading_wrapper">
                         <div class="heading_wrapper_icon"
-                             @click="openDropdown(showDropdown === 0 ? searchList.id : 0, searchList)">
+                             @click.stop="openDropdown(showDropdown === 0 ? searchList.id : 0, searchList)">
                            <inline-svg :src="'/new-icons/dots-vertical-new.svg'"/>
                         </div>
 
                         <ul v-if="showDropdown === searchList.id && !isMobileBreakpoint" class="template_dropdown"
                         >
-                           <li v-for="menu in dropdownMenu" @click="openModal(menu)"
+                           <li v-for="menu in dropdownMenu" @click.stop="openModal(menu)"
                                :key="menu.id">
                               <inline-svg :src="menu.icon"/>
                               {{ menu.title }}
@@ -86,7 +87,7 @@ export default {
       });
    },
    computed: {
-      ...mapGetters(['savedSearchList', 'bodyOptions', 'popularOptions', 'brands', 'sellOptions']),
+      ...mapGetters(['savedSearchList', 'bodyOptions', 'popularOptions', 'brands', 'sellOptions', 'colors']),
       crumbs() {
          return [
             {name: this.$t('my_searches')}
@@ -160,6 +161,7 @@ export default {
          store.dispatch('getBrands'),
          store.dispatch('getPopularOptions'),
          store.dispatch('getOptions'),
+         store.dispatch('getColors'),
       ]);
    },
    methods: {
@@ -189,7 +191,14 @@ export default {
             this.pending = false;
          }
       },
-
+      goToSearch(search) {
+         let filter = search.search_filter;
+         let url = search.search_url
+            .replace('/cars', this.$localePath('/cars'));
+         if (url?.[0] !== '/')
+            url = `${this.$localePath('/cars')}?car_filter=${encodeURI(filter)}`;
+         this.$router.push(url);
+      },
       openDropdown(id, menu) {
          const values = []
          for (const key in this.getTemplateOptions(menu.search_filter)) {
@@ -237,6 +246,8 @@ export default {
                return this.popularOptions.filter((opt) => parameters.includes(opt.name)).map((option) => this.$t(option.label)).join(", ");
             case 'announce_type' :
                break;
+            case 'colors' :
+               return this.colors.filter((color) => values.includes(color.id)).map((option) => option.name[this.locale]).join(", ");
             case 'region' :
                return this.sellOptions.regions.find((region) => region.key === values).name
             case 'currency' :
@@ -288,7 +299,7 @@ export default {
          }
       })
 
-      console.log(JSON.parse(this.savedSearchList[2].search_filter))
+      console.log(JSON.parse(this.savedSearchList[3].search_filter))
    },
 }
 </script>
@@ -321,6 +332,7 @@ export default {
             padding: 24px;
             border: 1px solid #CDD5DF;
             border-radius: 12px;
+            cursor: pointer;
 
             .heading {
                display: flex;
