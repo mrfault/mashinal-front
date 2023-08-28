@@ -4,6 +4,7 @@
          <breadcrumbs :crumbs="crumbs"/>
       </portal>
       <div class="container">
+         {{isDragging}}
          <div class="ma-announcements">
             <h2 class="ma-title--md">{{ $t('my_announces') }}</h2>
             <div v-if="user.autosalon" class="ma-announcements__top-cards">
@@ -29,7 +30,7 @@
          <div class="ma-announcements__body">
             <h4 v-if="!loading" class="ma-subtitle--lg">{{ $t('my_vehicle_announcements') }}</h4>
             <div id="announcementsContainer" :class="{'overflow-x-hidden': !myAnnouncements.length}"
-                 class="ma-announcements__body--row" @mousedown.prevent="startDragging">
+                 class="ma-announcements__body--row" @mousedown.prevent="startDragging" @mouseup.prevent="mouseUp">
                <!--                                loading-->
                <div v-if="loading">
                   <loader/>
@@ -44,7 +45,7 @@
                            :key="announcement.id_unique +  '_' + index"
                            :announcement="announcement"
                            :isLastChild="index === myAnnouncements.length - 1"
-                           clickable
+                           :clickable="!isDragging"
                            isProfilePage
                            show-monetization-actions
                            show-overlay
@@ -70,7 +71,7 @@
             <!--            number plates-->
             <h4 v-if="!loading" class="ma-subtitle--lg">{{ $t('my_car_number_announcements') }}</h4>
             <div id="platesContainer" :class="{'overflow-x-hidden': !allMyPlates.length}"
-                 class="ma-announcements__body--row" @mousedown.prevent="startDragging">
+                 class="ma-announcements__body--row" @mousedown.prevent="startDragging" @mouseup.prevent="mouseUp">
                <div v-if="loading" style="height: 420px !important;width:100%; display: flex;justify-content: center;">
                   <loader/>
                </div>
@@ -86,6 +87,7 @@
                            :item="item"
                            is-profile-page
                            moreInfo
+                           :clickable="!isDragging"
                            :activeTab="activeTab"
 
                         />
@@ -164,6 +166,7 @@ export default {
             },
          ],
          escapeDuplicates: false,
+         isDragging: false,
       }
    },
    components: {
@@ -189,15 +192,7 @@ export default {
       if (this.user?.autosalon?.id)
       this.getStatistics();
       this.$nuxt.$on('refresh-my-announcements', () => this.refresh++);
-      const announcementsContainer = document.getElementById('announcementsContainer');
-      announcementsContainer.addEventListener('mousedown', this.startDragging);
-
-      const platesContainer = document.getElementById('platesContainer');
-      platesContainer.addEventListener('mousedown', this.startDragging);
-
-
-
-   },
+      },
    async asyncData({store, route}) {
       let status = ['0', '1', '2', '3'].includes(route.query.status) ? parseInt(route.query.status) : '';
       let shop = ['1', '2'].includes(route.query.type) ? (route.query.type == 2 ? 'part' : 'salon') : false;
@@ -257,7 +252,9 @@ export default {
          let startX = event.clientX;
          let scrollLeft = container.scrollLeft;
 
+
          const scrollByDragging = (event) => {
+            this.isDragging = true;
             const distance = event.clientX - startX;
             container.scrollLeft = scrollLeft - distance;
          };
@@ -273,6 +270,9 @@ export default {
          container.style.userSelect = 'none'; // Disable content selection during dragging
       },
 
+      mouseUp() {
+         this.isDragging = false;
+      },
       getStatistics() {
          this.$store.dispatch('getAutosalonStatistics',this.user.autosalon.id)
          console.log("this.user.autosalon",this.user.autosalon)

@@ -158,14 +158,19 @@ export default {
       isProfilePage: Boolean,
       isLastChild: Boolean,
       activeTab: Number,
+      clickable: {
+         type: Boolean,
+         default: true,
+      }
    },
 
    methods: {
       goToRegistrationMark(id, event) {
-
-         event.stopPropagation();
-         event.preventDefault();
-         this.$router.push(this.localePath(`/plates/${id}`));
+         if (this.clickable) {
+            event.stopPropagation();
+            event.preventDefault();
+            this.$router.push(this.localePath(`/plates/${id}`));
+         }
 
       },
 
