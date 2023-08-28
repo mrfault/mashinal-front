@@ -1,42 +1,38 @@
 <template>
    <div class="vehicle-specs">
       <h4 class="vehicle-specs__title">{{ title }}</h4>
-<!--      <pre>{{announcement}}</pre>-->
+<!--      <pre>{{announcement.region}}</pre>-->
 
-      <div class="vehicle-specs__inner">
-         <ul
-            class="vehicle-specs__list"
-            v-for="(ul, i) in $chunk(announcementSpecs, Math.ceil(announcementSpecs.length / 3))" :key="i"
+      <ul class="vehicle-specs__list">
+         <li
+            class="vehicle-specs__list-item"
+            v-if="!(announcement.is_external_salon && specs.key === 'customs') && specs.value"
+            v-for="(specs, i) in announcementSpecs"
+            :key="i"
+            :class="{'is-vin-number': (specs.key === 'vin')}"
          >
-            <li
-               class="vehicle-specs__list-item"
-               v-if="!(announcement.is_external_salon && spec.key === 'customs') && spec.value"
-               v-for="spec in ul"
-               :key="spec.key" :class="{'is-vin-number': (spec.key === 'vin')}"
-            >
-               <inline-svg
-                  width="32px"
-                  height="32px"
-                  v-if="spec.icon"
-                  :src="spec.icon"
-               />
+            <inline-svg
+               width="32px"
+               height="32px"
+               v-if="specs.icon"
+               :src="specs.icon"
+            />
 
-               <div class="vehicle-specs__list-description">
-                  <h6>{{ $t(spec.key) }}</h6>
-                  <h5>{{ spec.value }}</h5>
-               </div>
-               <!--            <span>-->
-               <!--               {{ $t(spec.key === 'engine' ? 'engine_only' : spec.key) }}-->
-               <!--            </span>-->
+            <div class="vehicle-specs__list-description">
+               <h6>{{ $t(specs.key) }}</h6>
+               <h5>{{ specs.value }}</h5>
+            </div>
+            <!--            <span>-->
+            <!--               {{ $t(spec.key === 'engine' ? 'engine_only' : spec.key) }}-->
+            <!--            </span>-->
 
-               <!--            <span v-if="spec.key !== 'vin'">{{ spec.value }}</span>-->
+            <!--            <span v-if="spec.key !== 'vin'">{{ spec.value }}</span>-->
 
-               <!--            <span v-else>-->
-               <!--               <p class="mb-0" style="width: calc(100% - 30px)">{{ spec.value }}</p>-->
-               <!--            </span>-->
-            </li>
-         </ul>
-      </div>
+            <!--            <span v-else>-->
+            <!--               <p class="mb-0" style="width: calc(100% - 30px)">{{ spec.value }}</p>-->
+            <!--            </span>-->
+         </li>
+      </ul>
 
       <nuxt-link class="vehicle-specs__btn" :to="catalogLink" v-if="catalog">
          <span>{{ $t('catalog_model_specifications') }}</span>
@@ -91,7 +87,7 @@
                },
                {
                   key: 'region',
-                  value: this.announcement.region?.name[this.locale],
+                  value: this.announcement?.region?.name,
                   icon: '/icons/location.svg'
                },
                {
@@ -99,31 +95,6 @@
                   value: this.announcement[`country_name_${this.locale}`],
                   // icon: '/icons/speedometer.svg',
                   for: ['cars', 'commercial', 'moto']
-               },
-               {
-                  key: 'mileage',
-                  value: this.mileage + (this.announcement.is_new ? ', ' + this.$t('is_new').toLowerCase() : ''),
-                  icon: '/icons/speedometer.svg',
-                  for: ['cars', 'commercial', 'moto']
-               },
-               {
-                  key: 'condition',
-                  value: (this.announcement.broken || this.announcement.status_id || this.announcement.beaten) && this.$t('bitie'),
-                  // icon: '/icons/car-2.svg'
-               },
-               {
-                  key: 'guaranty',
-                  value: (this.announcement.in_garanty || this.announcement.guaranty) && this.$t('in_garanty'),
-               },
-               {
-                  key: 'com_equip_type',
-                  value: this.commercialType,
-                  for: ['commercial']
-               },
-               {
-                  key: 'carcase',
-                  value: this.bodyType, for: ['cars'],
-                  icon: '/icons/car-2.svg'
                },
                {
                   key: 'color2',
@@ -136,9 +107,15 @@
                   value: this.engineSpecs,
                   icon: '/icons/engine.svg'
                },
-               {key: 'the_number_of_measures', value: this.tact, for: ['moto']},
-               {key: 'cylinder_block', value: this.cylinderBlock, for: ['moto']},
-               {key: 'fuel_type', value: this.fuelType, for: ['moto']},
+               {
+                  key: 'carcase',
+                  value: this.bodyType, for: ['cars'],
+                  icon: '/icons/car-2.svg'
+               },
+               {
+                  key: 'license_plate_number', value: this.announcement.car_number,
+                  icon: '/icons/registration_marks_2.svg',
+               },
                {
                   key: 'box',
                   value: this.box,
@@ -150,10 +127,48 @@
                   icon: `/icons/${gearIcon}.svg`
                },
                {
-                  key: 'condition_2',
-                  value: this.announcement.is_new ? this.$t('new_2') : this.$t('with_mileage'),
+                  key: 'vin',
+                  value: this.announcement.show_vin && this.announcement.vin,
+                  icon: '/icons/vin_3.svg'
+               },
+               {
+                  key: 'mileage',
+                  value: this.mileage + (this.announcement.is_new ? ', ' + this.$t('is_new').toLowerCase() : ''),
+                  icon: '/icons/speedometer.svg',
+                  for: ['cars', 'commercial', 'moto']
+               },
+
+               {
+                  key: 'condition',
+                  value: (this.announcement.broken || this.announcement.status_id || this.announcement.beaten) && this.$t('bitie'),
                   icon: '/icons/search_2.svg'
                },
+               {
+                  key: 'guaranty',
+                  value: (this.announcement.in_garanty || this.announcement.guaranty) && this.$t('in_garanty'),
+                  icon: '/icons/guaranty.svg'
+               },
+               {
+                  key: 'com_equip_type',
+                  value: this.commercialType,
+                  for: ['commercial']
+               },
+
+
+               {key: 'the_number_of_measures', value: this.tact, for: ['moto']},
+               {key: 'cylinder_block', value: this.cylinderBlock, for: ['moto']},
+               {
+                  key: 'fuel_type',
+                  value: this.fuelType,
+                  icon: '/icons/fuelType.svg',
+                  for: ['moto']
+               },
+
+               // {
+               //    key: 'condition_2',
+               //    value: this.announcement.is_new ? this.$t('new_2') : this.$t('with_mileage'),
+               //    icon: '/icons/search_2.svg'
+               // },
                {key: 'type_of_brakes', value: this.brakeType, for: ['commercial']},
                {key: 'wheel_formula', value: this.wheelFormula, for: ['commercial']},
                {key: 'loading', value: this.loadingKg, for: ['commercial']},
@@ -170,35 +185,52 @@
                //    value: (this.announcement.customs_clearance || this.announcement.customed_id || this.announcement.customed) ? this.$t('not_cleared') : this.$t('cleared'),
                //    for: ['cars', 'commercial', 'moto']
                // },
-               {key: 'product_code', value: this.announcement.product_code, for: ['parts']},
+               {
+                  key: 'product_code',
+                  value: this.announcement.product_code,
+                  icon: '/icons/vin_3.svg',
+                  for: ['parts']
+               },
                {key: 'category', value: this.announcement?.category?.name[this.locale], for: ['parts']},
                {key: 'sub_category', value: this.announcement?.sub_category?.name[this.locale], for: ['parts']},
-               {key: 'brand_name', value: this.announcement?.brand?.name, for: ['parts']},
                {
-                  key: 'vin',
-                  value: this.announcement.show_vin && this.announcement.vin,
-                  icon: '/icons/vin_3.svg'
+                  key: 'brand_name',
+                  value: this.announcement?.brand?.name,
+                  icon: '/icons/star_2.svg',
+                  for: ['parts']
                },
+
                {key: 'license_plate', value: this.announcement.show_car_number && this.announcement.car_number},
                {
                   key: 'exchange',
                   value: (this.announcement.exchange_possible || this.announcement.tradeable) && this.$t('is_possible')
                },
                {key: 'credit', value: this.announcement.credit && this.$t('is_in_credit')},
-               {key: 'condition', value: this.condition, for: ['parts']},
-               {key: 'is_original', value: this.announcement.is_original ? this.$t('yes') : this.$t('no'), for: ['parts']},
                {
-                  key: 'have_delivery',
+                  key: 'condition',
+                  value: this.condition,
+                  icon: '/icons/condition.svg',
+                  for: ['parts']
+               },
+               {
+                  key: 'is_original',
+                  value: this.announcement.is_original ? this.$t('yes') : this.$t('no'),
+                  icon: '/icons/check6.svg',
+                  for: ['parts']
+               },
+               {
+                  key: 'delivery',
                   value: this.announcement.have_delivery ? this.$t('yes') : this.$t('no'),
+                  icon: '/icons/delivery.svg',
                   for: ['parts']
                },
                {
                   key: 'have_warranty',
                   value: this.announcement.have_warranty ? this.$t('yes') : this.$t('no'),
+                  icon: '/icons/guaranty.svg',
                   for: ['parts']
                },
-               {key: 'commercial_size', value: this.announcement.commercial_size}
-
+               {key: 'commercial_size', value: this.announcement.commercial_size},
             ];
 
             if (this.announcement.is_external_salon) {
@@ -233,6 +265,7 @@
                         specs.push({
                               key: filter.replace('capacity', 'battery_capacity'),
                               value,
+                              icon: '/icons/thorns.svg',
                               for: ['parts']
                            }
                         )
@@ -245,24 +278,28 @@
                   specs.push({
                      key: 'size',
                      value: mergedValues['shine_width'] + '/' + mergedValues['height'] + 'R' + mergedValues['diameter'],
+                     icon: '/icons/size.svg',
                      for: ['parts']
                   })
                else if (mergedValues['diameter']) {
                   specs.push({
                      key: 'diameter',
                      value: mergedValues['diameter'],
+                     icon: '/icons/size.svg',
                      for: ['parts']
                   })
                }
             }
 
-            let filteredSpecs = specs.filter(spec => spec.value && (!spec.for || spec.for.includes(this.type)));
-            return this.brief ? filteredSpecs.slice(0, 5) : filteredSpecs;
+            // let filteredSpecs = specs.filter(spec => spec.value && (!spec.for || spec.for.includes(this.type)));
+            // return this.brief ? filteredSpecs.slice(0, 5) : filteredSpecs;
+
+            return specs.filter(spec => spec.value && (!spec.for || spec.for.includes(this.type)));
          },
 
          catalogLink() {
-            // console.log('this.catalog', this.catalog)
-            let path = this.catalog && `/catalog/${this.catalog.brand.slug}/${this.catalog.model.slug}/${this.catalog.generation.id}/${this.catalog.car_type.id}/mod/${this.catalog.id}`;
+            console.log('this.catalog', this.catalog)
+            let path = this.catalog && `/catalog/${this.catalog.brand.slug}/${this.catalog.model.slug}/${this.catalog.generation.id}/${this.catalog.car_type.id}/mod/${this.announcement?.car_catalog_id}`;
             return path && this.$localePath(path);
          }
       }
@@ -282,34 +319,31 @@
          color: #1B2434;
       }
 
-      &__inner {
-         display: flex;
-         justify-content: space-between;
-      }
-
       &__list {
          position: relative;
+         display: grid;
+         grid-template-columns: repeat(3, 1fr);
+         grid-column-gap: 40px;
+         grid-row-gap: 24px;
          margin-top: 24px;
          width: 100%;
-
-         &:not(:first-child) {
-            &:before {
-               content: '';
-               position: absolute;
-               top: 0;
-               left: -24px;
-               width: 1px;
-               height: 100%;
-               background-color: #E3E8EF;
-            }
-         }
+         overflow: hidden;
 
          &-item {
+            position: relative;
             display: flex;
             align-items: center;
 
             &:not(:first-child) {
-               margin-top: 24px;
+               &:before {
+                  content: '';
+                  position: absolute;
+                  top: 0;
+                  left: -30px;
+                  width: 1px;
+                  height: 500%;
+                  background-color: #E3E8EF;
+               }
             }
 
             svg {
@@ -381,19 +415,21 @@
                }
             }
 
-            &:not(:first-child) {
-               &:before {
-                  background-color: #4B5565;
+            &-item {
+               &:not(:first-child) {
+                  &:before {
+                     background-color: #4B5565;
+                  }
                }
             }
          }
 
          &__btn {
-            border-color: #E3E8EF;
+            border-color: #4B5565;
             background-color: transparent;
 
             &:hover {
-               border-color: #4B5565;
+               border-color: #84ADFF;
             }
 
             span {
@@ -411,21 +447,27 @@
 
    @media (max-width: 1150px) {
       .vehicle-specs {
-         //&__inner {
-         //   flex-direction: column;
-         //}
-
          &__list {
-            &:not(:first-child) {
-               &:before {
-                  display: none;
-               }
-            }
+            grid-template-columns: repeat(2, 1fr);
+
+            //&:not(:first-child) {
+            //   &:before {
+            //      display: none;
+            //   }
+            //}
          }
       }
    }
 
-   @media (max-width: 385px) {
+   @media (max-width: 768px) {
+      .vehicle-specs {
+         &__list {
+            grid-template-columns: repeat(1, 1fr);
+         }
+      }
+   }
+
+   @media (max-width: 425px) {
       .vehicle-specs {
          padding: 16px;
 

@@ -89,7 +89,6 @@
                            moreInfo
                            :clickable="!isDragging"
                            :activeTab="activeTab"
-
                         />
                      </div>
                   </template>

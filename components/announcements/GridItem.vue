@@ -180,9 +180,9 @@
                <span v-if="announcement.mileage || announcement.mileage_measure">
                   {{ announcement.mileage }}
 
-                  <template v-if="announcement.mileage_measure === 1">
+<!--                  <template v-if="announcement.mileage_measure === 1">-->
                      {{ $t('char_kilometre') }}
-                  </template>
+<!--                  </template>-->
                </span>
 
                <span v-if="announcement?.description">{{ announcement?.description }}</span>
@@ -267,6 +267,7 @@ export default {
 
    computed: {
       getType() {
+         console.log('item', item)
          let item = this.announcement
 
          if (item.type === "motorcycle") return 'Motorcycle'
@@ -279,11 +280,19 @@ export default {
       },
 
       getLink() {
-         let type = 'cars'
+         let type = 'cars',
+             motoType = '';
+
+         if (this.getType === 'Motorcycle') motoType = '?type=motorcycle';
+         else if (this.getType === 'Scooter') motoType = '?type=scooter';
+         else if (this.getType === 'Atv') motoType = '?type=atv';
+         else motoType = ''
+
          if (['Motorcycle', 'Scooter', 'Atv'].includes(this.getType)) type = 'moto'
          else if (['Commercial'].includes(this.getType)) type = 'commercial'
          else if (['Part'].includes(this.getType)) type = 'parts'
-         let path = `/${type}/announcement/${this.announcement.id}`
+         console.log('motoType', motoType)
+         let path = `/${type}/announcement/${this.announcement.id}${motoType}`
          return this.$localePath(path)
       },
 

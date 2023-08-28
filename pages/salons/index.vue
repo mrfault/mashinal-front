@@ -1,5 +1,14 @@
 <template>
    <div class="pages-salons-wrapper">
+      <Banner
+         class="mt-0 d-sm-none"
+         :bg="'/img/salon-bg.png'"
+         :title="$t('auto_salons')">
+         <template #content>
+            <breadcrumbs class="light-color" :crumbs="crumbs" />
+         </template>
+      </Banner>
+
       <div class="container-fluid p-0">
          <div
             :class="['pages-salons', `${showMapsView ? 'map' : 'list'}-view`]"
@@ -7,6 +16,7 @@
          >
             <div class="container">
                <Banner
+                  class="d-none d-sm-block"
                   :bg="'/img/salon-bg.png'"
                   :title="$t('auto_salons')">
                   <template #content>

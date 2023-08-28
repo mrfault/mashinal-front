@@ -1,5 +1,23 @@
 <template>
    <div class="pages-catalog">
+      <Banner
+         class="mt-0 d-sm-none"
+         :bg="'/img/salon-bg.png'"
+         :title="$t('autocatalog')"
+      >
+         <template #content>
+            <breadcrumbs class="light-color" :crumbs="crumbs"/>
+         </template>
+      </Banner>
+
+      <catalog-search-form
+         class="d-sm-none"
+         :total-count="catalogTotal"
+         :pending="pending"
+         @pending="pending = true"
+         @submit="searchCatalog"
+      />
+
       <div class="container">
          <breadcrumbs
             :crumbs="crumbs"
@@ -7,7 +25,7 @@
          />
 
          <Banner
-            class="mb-5"
+            class="mb-5 d-none d-sm-block"
             :bg="'/img/salon-bg.png'"
             :title="$t('autocatalog')"
             v-else
@@ -19,6 +37,7 @@
 
          <template v-if="!$route.params.body">
             <catalog-search-form
+               class="d-none d-sm-block"
                :total-count="catalogTotal"
                :pending="pending"
                @pending="pending = true"
@@ -158,7 +177,7 @@
                page
             });
             this.pending = false;
-            if (scroll) this.scrollTo('.catalog-grid', [-15, -20]);
+            if (scroll) this.scrollTo('.cap', [-80, -200]);
          }
       },
 
@@ -319,6 +338,40 @@
                   }
                }
             }
+
+            .clearSearch {
+               border-color: #f97066;
+               background-color: transparent;
+
+               span {
+                  color: #FFFFFF;
+               }
+
+               svg {
+                  path {
+                     stroke: #FFFFFF;
+                  }
+               }
+            }
+
+            .moreSearch {
+               border-color: #2970ff;
+               background-color: transparent;
+
+               span {
+                  color: #FFFFFF;
+               }
+
+               svg {
+                  path {
+                     stroke: #FFFFFF;
+                  }
+
+                  line {
+                     stroke: #FFFFFF;
+                  }
+               }
+            }
          }
       }
    }
@@ -344,12 +397,35 @@
             }
          }
       }
+
+      .dark-mode {
+         .pages-catalog {
+            .catalog-search-form {
+               .clearSearch {
+                  border-color: #FDA29B;
+                  background-color: transparent;
+
+                  span {
+                     color: #F04438;
+                  }
+
+                  svg {
+                     path {
+                        stroke: #F04438;
+                     }
+                  }
+               }
+            }
+         }
+      }
    }
 
    @media (max-width: 600px) {
       .pages-catalog {
          .catalog-search-form {
-            margin: -30px -20px 0 -20px;
+            .card {
+               border-radius: 0;
+            }
          }
       }
    }

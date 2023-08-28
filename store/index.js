@@ -1300,8 +1300,8 @@ export const actions = {
       );
       commit("mutate", {property: "temporaryLazyData", value: res});
    },
-   async getUserAnnouncements({commit}, data) {
-      const res = await this.$axios.$get(`/user/${data.id}/announcements`);
+   async getUserAnnouncements({commit}, id) {
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/all-announcements/user/${id}`);
       commit("mutate", {property: "userAnnouncements", value: res});
    },
    async getMyAllAnnouncements({commit}, data = {}) {
@@ -1313,7 +1313,6 @@ export const actions = {
       commit("mutate", {property: "myAnnouncements", value: res});
    },
    async getMyAllAnnouncementsV2({commit}, data = {}) {
-
       const res = await this.$axios.$get(
          `https://v2dev.mashin.al/api/v2/me/announcements?status=${data.status}`
       );
@@ -1326,8 +1325,8 @@ export const actions = {
       commit("mutate", {property: "announcement", value: res});
    },
 
-   async getMotoInnerV2({commit}, id) {
-      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/moto/motorcycle/${id}`);
+   async getMotoInnerV2({commit}, payload) {
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/moto/${payload.type}/${payload.id}`);
       commit("mutate", {property: "announcement", value: res});
    },
 
@@ -1589,8 +1588,8 @@ export const actions = {
    },
 
    //SELL POSTS
-   async plateNumbersPost({}, {is_mobile, form}) {
-         const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/plate-numbers/post?is_mobile=${is_mobile}`, form);
+   async plateNumbersPost({}, {form}) {
+         const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/plate-numbers/post?is_mobile=${this.isMobileBreakpoint}`, form);
          return res;
    },
    async partsPost({}, form) {
@@ -1598,11 +1597,11 @@ export const actions = {
          return res;
    },
    async carsPost({}, form) {
-      const res = await this.$axios.$post(`/sell/post/publish?is_mobile=false`, form);
+      const res = await this.$axios.$post(`/sell/post/publish?is_mobile=${this.isMobileBreakpoint}`, form);
       return res;
    },
    async motoPost({}, form) {
-      const res = await this.$axios.$post(`/sell/moto/post/publish?is_mobile=false`, form);
+      const res = await this.$axios.$post(`/sell/moto/post/publish?is_mobile=${this.isMobileBreakpoint}`, form);
       return res;
 
    },

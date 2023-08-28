@@ -23,9 +23,20 @@
          </div>
       </mobile-screen>
 
+      <Banner
+         class="mt-0 d-sm-none"
+         :bg="'/img/salon-bg.png'"
+         :title="$t('shops')"
+      >
+         <template #content>
+            <breadcrumbs class="light-color" :crumbs="crumbs"/>
+         </template>
+      </Banner>
+
       <template v-if="!mapView">
          <div class="container">
             <Banner
+               class=" d-none d-sm-block"
                :bg="'/img/salon-bg.png'"
                :title="$t('shops')"
             >

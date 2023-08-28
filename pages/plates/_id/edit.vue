@@ -135,6 +135,16 @@ export default {
             .btn--pale-green-outline {
                margin-top: 24px;
             }
+
+            .price_types {
+               .price_item {
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  height: 52px;
+                  padding: 0 16px;
+               }
+            }
          }
       }
 
@@ -142,22 +152,72 @@ export default {
 
 }
 
-@media (max-width: 1150px) {
+.dark-mode {
    .pages-sell {
 
       .announce_container {
          .card {
-            padding-right: 24px;
 
             .add_announce_form {
 
-               .btn--pale-green-outline {
+               .price_types {
+                  .toggle_item {
+
+                     border-color: #121926;
+                     overflow: hidden;
+
+                     &.active {
+                        border-color: #155EEF;
+                     }
+
+                     .price_item {
+                        background-color: #121926;
+                        color: #9AA4B2;
+                     }
+                  }
                }
             }
          }
 
       }
-
    }
 }
+
+   @media (max-width: 1150px) {
+      .pages-sell {
+
+         .announce_container {
+            .card {
+               padding-right: 24px;
+
+               .add_announce_form {
+
+                  .btn--pale-green-outline {
+                  }
+               }
+            }
+
+         }
+
+      }
+   }
+
+   @media (max-width: 485px) {
+      .registration_mark_form {
+         .divider {
+
+            .price_types {
+               .toggle_container {
+                  gap: 8px !important;
+               }
+
+               .price_item {
+                  padding: 0 8px;
+               }
+            }
+         }
+
+
+      }
+   }
 </style>

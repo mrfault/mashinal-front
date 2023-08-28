@@ -48,6 +48,7 @@
                                 @navigationProgress="navigationData.find((nav) => nav.id === $event.id).isActive = $event.status"
                                 :isReady="isReady" @getForm="getPartForm($event)" @done="submitShow = $event"/>
                      <registration_mark v-if="form.announce_type.title === 'registration_marks'" :isReady="isReady"
+                                        @navigationProgress="navigationData.find((nav) => nav.id === $event.id).isActive = $event.status"
                                         @getForm="getRegistrationMarksForm($event)"/>
 
                      <template v-if="submitShow">
@@ -168,10 +169,12 @@
                      <template
                         v-if="form.announce_type.title !== 'registration_marks' && form.announce_type !== '' && (announcement.image || partPreview.image)">
                         <div class="bg-white">
-                           <grid-item
-                              v-if="form.announce_type.title === 'cars' ||  form.announce_type.title === 'moto' || announcement.image || partPreview.image"
-                              style="pointer-events: none"
-                              :announcement="form.announce_type.title === 'parts' ? partPreview : announcement"/>
+                           <client-only>
+                              <grid-item
+                                 v-if="form.announce_type.title === 'cars' ||  form.announce_type.title === 'moto' || announcement.image || partPreview.image"
+                                 style="pointer-events: none"
+                                 :announcement="form.announce_type.title === 'parts' ? partPreview : announcement"/>
+                           </client-only>
                         </div>
                         <div class="vehicle_card_info_description">
                            <p>{{ $t('announce_looks_like') }}</p>
@@ -191,7 +194,9 @@
             </div>
             <div class="form_navigation" v-if="!isMobileBreakpoint">
                <ul>
-                  <li v-for="(nav) in navigationData" :key="nav.id">
+                  <li
+                     v-for="(nav) in navigationData.filter((nav) => !(nav.id === 3 && form.announce_type.title === 'registration_marks'))"
+                     :key="nav.id">
                      <inline-svg :class="['nav_svg', {active: nav.isActive}]" :src="'/icons/filled_circled_check.svg'"/>
                      {{ nav.title }}
                   </li>
@@ -316,7 +321,28 @@ export default {
          }
       },
       getMainImage(img) {
-         this.announcement.image = img
+         let defaultImg = "";
+         switch (this.form.announce_type?.id) {
+            case 1:
+               defaultImg = "/img/car_default.svg"
+               break;
+            case 4:
+               defaultImg = "/img/motorbike.svg"
+               break;
+            case 20:
+               defaultImg = "/img/disc.svg"
+               break;
+            case 21:
+               defaultImg = "/img/oil.svg"
+               break;
+            case 27:
+               defaultImg = "/img/battery.svg"
+               break;
+            default:
+               defaultImg = "/img/parts.svg"
+               break;
+         }
+         this.announcement.image = img || defaultImg
       },
       async getCarForm(form) {
          try {
@@ -366,10 +392,10 @@ export default {
 
       async getRegistrationMarksForm(form) {
          try {
-            const res = await this.plateNumbersPost({is_mobile: false, form});
+            const res = await this.plateNumbersPost({form});
             if (res?.redirect_url) {
                const response = {data: {...res}}
-               this.handlePayment(response, false, this.$t('car_added'), 'v2')
+               this.handlePayment(response, false, this.$t('plate_added'), 'v2')
                this.$router.push(this.$localePath('/profile/announcements'))
             } else {
                this.$router.push(this.$localePath('/profile/announcements'), () => {
@@ -980,6 +1006,23 @@ export default {
 
                &_help {
                   background-color: #364152;
+               }
+            }
+
+            .price_types {
+               .toggle_item {
+
+                  border-color: #121926;
+                  overflow: hidden;
+
+                  &.active {
+                     border-color: #155EEF;
+                  }
+
+                  .price_item {
+                     background-color: #121926;
+                     color: #9AA4B2;
+                  }
                }
             }
          }

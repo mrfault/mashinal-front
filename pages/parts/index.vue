@@ -137,10 +137,15 @@
          Cap
       },
 
-      async asyncData({store}) {
+      async asyncData({ store, route }) {
+         const data = JSON.parse(route.query.parts_filter || '{}');
+
+         console.log('data', data)
          await Promise.all([
-            store.dispatch('fetchPartsAnnouncements'),
-            store.dispatch('fetchPartMonetized')
+            store.dispatch('getInfiniteMainPartsPageSearch', { body: data }),
+            store.dispatch('fetchPartMonetized', { body: data })
+            // store.dispatch('fetchPartsAnnouncements'),
+            // store.dispatch('fetchPartMonetized')
          ])
 
          return {

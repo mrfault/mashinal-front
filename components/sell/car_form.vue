@@ -805,7 +805,6 @@ export default {
          'address',
          'price'].every((key) => this.form[key]) && (!this.user.autosalon ? this.form.region_id : true)
       this.$emit("navigationProgress", {id: 2, status: announceDescription})
-
    },
    validations() {
       return {

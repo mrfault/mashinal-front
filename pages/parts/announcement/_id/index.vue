@@ -12,6 +12,8 @@
                      </gallery>
                   </client-only>
 
+                  <thumbs-gallery />
+
                   <announcement-specs type="parts" />
 
                   <comment :comment="announcement.comment" v-if="announcement.comment">

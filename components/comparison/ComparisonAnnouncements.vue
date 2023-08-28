@@ -1,12 +1,13 @@
 <template>
   <div>
     <!-- Announcements -->
-    <div class="comparison__items row" v-if="announcements.length">
+    <div class="comparison__items" v-if="announcements.length">
         <div
-          class="comparison__item col-auto col-lg-1-5"
+          class="comparison__item "
           v-for="announcement in announcements"
           :key="announcement.id_unique"
         >
+<!--           col-auto col-lg-1-5-->
           <div
             class="comparison__item__image"
           >
@@ -44,8 +45,8 @@
               {{ specification.title }}
             </h4>
 
-            <div class="collapse-content__columns row" >
-              <div v-for="(announcement, aIndex) in announcements" :key="announcement.id_unique" class="collapse-content__column col-auto col-lg-1-5" >
+            <div class="collapse-content__columns" >
+              <div v-for="(announcement, aIndex) in announcements" :key="announcement.id_unique" class="collapse-content__column" >
                 <p>{{ specification.values[aIndex] }}</p>
               </div>
             </div>
