@@ -1300,8 +1300,8 @@ export const actions = {
       );
       commit("mutate", {property: "temporaryLazyData", value: res});
    },
-   async getUserAnnouncements({commit}, data) {
-      const res = await this.$axios.$get(`/user/${data.id}/announcements`);
+   async getUserAnnouncements({commit}, id) {
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/all-announcements/user/${id}`);
       commit("mutate", {property: "userAnnouncements", value: res});
    },
    async getMyAllAnnouncements({commit}, data = {}) {
@@ -1313,7 +1313,6 @@ export const actions = {
       commit("mutate", {property: "myAnnouncements", value: res});
    },
    async getMyAllAnnouncementsV2({commit}, data = {}) {
-
       const res = await this.$axios.$get(
          `https://v2dev.mashin.al/api/v2/me/announcements?status=${data.status}`
       );

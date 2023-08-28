@@ -1,6 +1,5 @@
 <template>
    <div class="comparison-filter">
-      <!--      <div class="card">-->
       <div class="row">
          <div class="col-12 col-lg-auto mr-auto">
             <form-buttons
@@ -10,6 +9,7 @@
                :group-by="0"
             />
          </div>
+
          <div class="col-12 col-lg-1-5 mt-2 mt-lg-0" v-if="compareType === 'models' && models.length">
             <button
                :class="['btn full-width btn--pale-green', { disabled: models.length >= 5 }]"
@@ -19,7 +19,15 @@
                <span>{{ $t('add_car_model') }}</span>
             </button>
          </div>
-         <div class="col-12 col-lg-1-5 mt-2 mt-lg-0">
+
+         <div class="comparison-filter__checkboxes">
+            <form-checkbox
+               v-model="hideEmptyCells"
+               :label="$t('comparison_hide_empty_cells')"
+               :checked="hideEmptyCells"
+               input-name="hide_empty_cells"
+            />
+
             <form-checkbox
                v-model="showDifferences"
                :label="$t('comparison_show_differences')"
@@ -27,16 +35,7 @@
                input-name="show_differences"
             />
          </div>
-         <div class="col-12 col-lg-1-5 mt-2 mt-lg-0">
-            <form-checkbox
-               v-model="hideEmptyCells"
-               :label="$t('comparison_hide_empty_cells')"
-               :checked="hideEmptyCells"
-               input-name="hide_empty_cells"
-            />
-         </div>
       </div>
-      <!--      </div>-->
    </div>
 </template>
 
@@ -112,3 +111,40 @@
       }
    }
 </script>
+
+<style lang="scss">
+   .comparison-filter {
+      &__types {
+         .form-group {
+            .btn {
+               border: none;
+               border-bottom: 1px solid transparent;
+               border-radius: 0;
+               background-color: transparent;
+
+               span {
+                  color: #4B5565;
+               }
+
+               &.active {
+                  border-bottom: 1px solid #155EEF;
+
+                  span {
+                     color: #121926;
+                  }
+               }
+            }
+         }
+      }
+
+      &__checkboxes {
+         .form-group {
+            .checkbox-input {
+               label {
+                  border: none;
+               }
+            }
+         }
+      }
+   }
+</style>

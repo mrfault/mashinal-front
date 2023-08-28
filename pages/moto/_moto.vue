@@ -79,7 +79,7 @@ export default {
       if (!slug) return error({statusCode: 404});
 
       const category = ({
-         'motorcycles': {id: 1, type: 'motorcycles', url: '/grid/moto'},
+         'motorcycles': {id: 1, type: 'motorcycles', url: '/moto/motorcycle'},
          'scooters': {id: 2, type: 'scooters', url: '/grid/scooter'},
          'atvs': {id: 3, type: 'atvs', url: '/grid/atv'}
       })[slug];

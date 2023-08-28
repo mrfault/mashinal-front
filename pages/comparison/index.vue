@@ -56,6 +56,7 @@
          }
       },
 
+
       computed: {
          crumbs() {
             return [{ name: this.$t('comparisons'), route: '/comparison' }]
@@ -79,6 +80,10 @@
          font-weight: 700;
          line-height: 32px;
          margin-bottom: 32px;
+      }
+
+      .comparison-filter {
+         margin-bottom: 30px;
       }
    }
 </style>
