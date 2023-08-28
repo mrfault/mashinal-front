@@ -281,15 +281,18 @@ export default {
 
       getLink() {
          let type = 'cars',
-             motoType = 'motorcycle';
+             motoType = '';
 
-         if (this.getType === 'Scooter') motoType = 'scooter';
-         else if (this.getType === 'Atv') motoType = 'atv';
+         if (this.getType === 'Motorcycle') motoType = '?type=motorcycle';
+         else if (this.getType === 'Scooter') motoType = '?type=scooter';
+         else if (this.getType === 'Atv') motoType = '?type=atv';
+         else motoType = ''
 
          if (['Motorcycle', 'Scooter', 'Atv'].includes(this.getType)) type = 'moto'
          else if (['Commercial'].includes(this.getType)) type = 'commercial'
          else if (['Part'].includes(this.getType)) type = 'parts'
-         let path = `/${type}/announcement/${this.announcement.id}?type=${motoType}`
+         console.log('motoType', motoType)
+         let path = `/${type}/announcement/${this.announcement.id}${motoType}`
          return this.$localePath(path)
       },
 

@@ -289,7 +289,7 @@
 
          .announcements-inner {
             .wrapp {
-               background-color: #1B2434;
+               background-color: transparent;
                overflow: hidden;
                border-radius: 12px;
             }
@@ -343,6 +343,10 @@
          .registrationMarks__number {
             top: 275px;
             left: 390px;
+         }
+
+         .announcements-inner {
+            padding-bottom: 0;
          }
 
          .quick-info {

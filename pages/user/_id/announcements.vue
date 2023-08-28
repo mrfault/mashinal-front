@@ -24,7 +24,7 @@
                />
 
                <no-results
-                  v-if="!userAnnouncements.length"
+                  v-else
                   :text="$t('no_announcements')"
                ></no-results>
             </div>
@@ -96,7 +96,7 @@
       },
 
       async asyncData({ store, route }) {
-         await store.dispatch('getUserAnnouncements', { id: route.params.id });
+         await store.dispatch('getUserAnnouncements', route.params.id);
          await store.dispatch('fetchUserRegistrationMarks', `${route.params.id}`);
       },
 
