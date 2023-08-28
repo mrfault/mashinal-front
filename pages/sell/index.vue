@@ -139,7 +139,7 @@
                               </div>
                            </div>
                            <button type="button" @click="onClick()"
-                                   class="btn full-width btn--pale-green-outline active">
+                                   :class="['btn', 'full-width', 'btn--pale-green-outline', 'active', {pending}]">
                               {{ authStep === "notLoggedIn" ? $t("enter_sms_code") : $t("place_announcement") }}
                            </button>
                         </div>
@@ -242,6 +242,7 @@ export default {
    },
    data() {
       return {
+         pending: false,
          submitShow: false,
          showRules: false,
          isReady: false,
@@ -345,11 +346,13 @@ export default {
          this.announcement.image = img || defaultImg
       },
       async getCarForm(form) {
+         this.pending = true;
          try {
             const formData = new FormData()
             formData.append('data', JSON.stringify(form))
             formData.append('add_monetization', this.form.add_monetization)
             const res = await this.carsPost(formData);
+            this.pending = false;
             if (res?.data?.redirect_url) {
                this.handlePayment(res, false, this.$t('car_added'), 'v2')
                this.$router.push(this.$localePath('/profile/announcements'))
@@ -360,18 +363,19 @@ export default {
                      text: this.$t('announcement_paid'),
                      title: this.$t('success_payment')
                   });
-
                });
             }
          } catch (e) {
          }
       },
       async getMotoForm(form) {
+         this.pending = true;
          try {
             const formData = new FormData()
             formData.append('data', JSON.stringify(form))
             formData.append('add_monetization', this.form.add_monetization)
             const res = await this.motoPost(formData);
+            this.pending = false;
             if (res?.data?.redirect_url) {
                this.handlePayment(res, false, this.$t('car_added'), 'v2')
                this.$router.push(this.$localePath('/profile/announcements'))
@@ -391,8 +395,10 @@ export default {
       },
 
       async getRegistrationMarksForm(form) {
+         this.pending = true;
          try {
             const res = await this.plateNumbersPost({form});
+            this.pending = false;
             if (res?.redirect_url) {
                const response = {data: {...res}}
                this.handlePayment(response, false, this.$t('plate_added'), 'v2')
@@ -411,10 +417,12 @@ export default {
          }
       },
       async getPartForm(form) {
+         this.pending = true;
          try {
             const formData = new FormData()
             formData.append('data', JSON.stringify(form))
             const res = await this.partsPost(formData);
+            this.pending = false;
             if (res?.data?.redirect_url) {
                this.handlePayment(res, false, this.$t('car_added'), 'v2')
                this.$router.push(this.$localePath('/profile/announcements'))
@@ -452,10 +460,11 @@ export default {
          }
       },
       async onPhoneVerification() {
+         this.pending = true;
          try {
             const res = await this.$axios
                .$post('https://v2dev.mashin.al/api/v2/auth/login-or-register', {phone: this.authForm.phone.replace(/[^0-9]+/g, ''),})
-
+            this.pending = false;
             this.authStep = 'handleOTP'
             this.$nextTick(() => {
                this.scrollTo('.otp', [-50, -190])
@@ -466,12 +475,14 @@ export default {
          }
       },
       async onOTPVerification() {
+         this.pending = true;
          try {
             const data = await this.$axios
                .$post('https://v2dev.mashin.al/api/v2/auth/confirm-otp', {
                   ...this.authForm,
                   phone: this.authForm.phone.replace(/[^0-9]+/g, '')
                })
+            this.pending = false;
             this.fbTrack('Complete Registration Api')
             this.gtagTrack('AW-600951956/-O6CCJGB2fIBEJSZx54C')
             this.$auth.setUser(data.user.original)

@@ -11,10 +11,11 @@
                      {{ $t("place_announcement") }}
                   </button>
                </form>
-               <div :class="['vehicle_card_info', {default_imgs: previewForm.image.startsWith('/img/')}]" v-if="!isMobileBreakpoint">
-                     <client-only>
-                        <grid-item :announcement="previewForm"/>
-                     </client-only>
+               <div :class="['vehicle_card_info', {default_imgs: previewForm.image.startsWith('/img/')}]"
+                    v-if="!isMobileBreakpoint">
+                  <client-only>
+                     <grid-item :announcement="previewForm"/>
+                  </client-only>
                </div>
             </div>
          </div>
@@ -156,7 +157,11 @@ export default {
          const formData = new FormData()
          formData.append('data', JSON.stringify(form))
          try {
-            await this.motoEdit({id: this.$route.params.id.slice(0, -1), isMobile: this.isMobileBreakpoint, form: formData})
+            await this.motoEdit({
+               id: this.$route.params.id.slice(0, -1),
+               isMobile: this.isMobileBreakpoint,
+               form: formData
+            })
             this.$router.push(this.$localePath('/profile/announcements'))
          } catch (e) {
          }
@@ -165,7 +170,7 @@ export default {
          this.isReady = !this.isReady
       },
       getCurrencyName() {
-         switch(this.announcement.currency_id) {
+         switch (this.announcement.currency_id) {
             case 1:
                return 'AZN';
             case 2:
@@ -177,7 +182,7 @@ export default {
          }
       },
       getNamesByCategory() {
-         switch(this.announcement.type_of_moto) {
+         switch (this.announcement.type_of_moto) {
             case 1:
                return 'moto';
             case 2:
@@ -536,6 +541,22 @@ export default {
                   }
                }
 
+               .price_types {
+                  .toggle_item {
+
+                     border-color: #121926;
+                     overflow: hidden;
+
+                     &.active {
+                        border-color: #155EEF;
+                     }
+
+                     .price_item {
+                        background-color: #121926;
+                        color: #9AA4B2;
+                     }
+                  }
+               }
 
                .contacts {
 
@@ -546,16 +567,10 @@ export default {
             }
 
             .vehicle_card_info {
-               &_description {
-                  background-color: #00359E;
-               }
-
-               &_help {
-                  background-color: #364152;
+               .item-details {
+                  background-color: #121926 ;
                }
             }
-
-
          }
       }
    }
