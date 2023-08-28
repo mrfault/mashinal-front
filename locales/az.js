@@ -163,7 +163,7 @@ export default {
    all_models: "Bütün modellər",
    all_options: "Bütün seçimlər",
    template_values: {
-     all_options: "Bütün parametrlər",
+      all_options: "Bütün parametrlər",
       announce_type: "Elanın tipi",
       colors: "Rəng",
       region: "Şəhər",
@@ -181,7 +181,7 @@ export default {
       body: "Ban növü",
       korobka: "Sürətlər qutusu",
       engine_type: "Mühərrik növü",
-      gearing: "",
+      gearing: "Ötürücü",
       in_garanty: "Zəmanət",
       credit: "Kredit",
    },

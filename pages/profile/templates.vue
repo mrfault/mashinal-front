@@ -3,7 +3,7 @@
       <div class="container">
          <breadcrumbs :crumbs="crumbs"/>
       </div>
-      <div class="templates_wrapper">
+      <div class="templates_wrapper" v-if="savedSearchList.length > 0">
          <div class="container">
             <h1 class="title">{{ $t('my_searches') }}</h1>
             <div class="templates">
@@ -245,7 +245,7 @@ export default {
                const parameters = values && Object.keys(values)
                return this.popularOptions.filter((opt) => parameters.includes(opt.name)).map((option) => this.$t(option.label)).join(", ");
             case 'announce_type' :
-               break;
+               return values === 2 ? this.$t("is_new") : values === 3 ? this.$t("S_H") : null
             case 'colors' :
                return this.colors.filter((color) => values.includes(color.id)).map((option) => option.name[this.locale]).join(", ");
             case 'region' :
@@ -281,7 +281,7 @@ export default {
                return this.getTemplateMultipleValues(values, this.$t('engine_values'))
 
             case 'gearing' :
-               return this.getTemplateMultipleValues(values, this.$t('box_values'))
+               return this.getTemplateMultipleValues(values, this.$t('type_of_drive_values'))
             case 'in_garanty' :
                return values ? this.$t('in_garanty') : null;
             case 'credit' :
@@ -298,8 +298,6 @@ export default {
             this.showDropdown = 0
          }
       })
-
-      console.log(JSON.parse(this.savedSearchList[3].search_filter))
    },
 }
 </script>
