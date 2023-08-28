@@ -67,11 +67,10 @@
 
                <p class="text-red" v-else-if="announcement.status === 3">{{ $t('sold') }}</p>
 
-<!--               <pre>{{contact}}</pre>-->
                <nuxt-link
                   :to="contact?.link"
                   v-if="
-                     contact?.user?.active_announcements_count > 1 ||
+                     announcement?.active_announcements_count > 1 ||
                      announcement?.is_part_salon ||
                      announcement?.is_auto_salon ||
                      announcement?.is_external_salon
@@ -111,7 +110,7 @@
 
             <div
                class="mt-2 mt-lg-3"
-               :class="contact?.lat && contact?.lng ? 'col-12' : 'col-7'"
+               :class="(contact?.lat && contact?.lng) ? 'col-12' : 'col-7'"
             >
                <call-button-multiple
                   v-if="announcement?.is_auto_salon"
@@ -377,9 +376,9 @@
          showEditButton(item) {
             console.log('item.status', item)
             if (this.$auth.loggedIn === false) {
-               return item?.status == 1 || item?.status == 2
+               return item?.status === 1 || item?.status === 2
             } else {
-               return this.$auth.user?.id == item?.user?.id && item?.status != 5 && item?.status !== 3;
+               return this.$auth.user?.id === item?.user?.id && item?.status !== 2 && item?.status !== 3 && item?.status !== 5;
             }
          },
          openModal() {
@@ -413,6 +412,7 @@
          border-radius: 12px;
          border: 1px solid #CDD5DF;
          margin-bottom: 20px;
+         overflow: hidden;
 
          &.registration-marks {
             margin-top: -1px;
@@ -584,6 +584,10 @@
                   color: #EEF2F6;
                }
             }
+         }
+
+         .status {
+            color: #EEF2F6;
          }
       }
    }

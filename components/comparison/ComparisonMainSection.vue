@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="comparison" class="comparison" v-if="!showNotFound">
+    <div id="comparison" class="comparison" @mousedown="startDragging" v-if="!showNotFound">
       <comparison-announcements v-if="filter.compareType === 'announcements'" />
       <comparison-models v-else />
     </div>
@@ -47,7 +47,30 @@ export default {
           value: this.$route.hash.replace?.('#', '')
         });
       }
-    }
+    },
+
+     startDragging(event) {
+        event.preventDefault(); // Disable content selection while dragging
+        event.stopPropagation();
+        const container = event.currentTarget;
+        let startX = event.clientX;
+        let scrollLeft = container.scrollLeft;
+
+        const scrollByDragging = (event) => {
+           const distance = event.clientX - startX;
+           container.scrollLeft = scrollLeft - distance;
+        };
+
+        const stopDragging = () => {
+           document.removeEventListener('mousemove', scrollByDragging);
+           document.removeEventListener('mouseup', stopDragging);
+           container.style.userSelect = ''; // Restore default content selection behavior
+        };
+
+        document.addEventListener('mousemove', scrollByDragging);
+        document.addEventListener('mouseup', stopDragging);
+        container.style.userSelect = 'none'; // Disable content selection during dragging
+     },
   },
   watch: {
     '$route'(val) {

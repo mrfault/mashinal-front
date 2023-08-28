@@ -192,6 +192,7 @@ export default {
    background-color: #FFFFFF;
    cursor: pointer;
    transition: all .3s;
+   min-width: 0;
 
    &:hover {
       box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.12);

@@ -22,7 +22,7 @@
           {{ desc }}
         </div>
       </div>
-      
+
       <div class="col-6 col-lg-1-5" v-if="!models.length">
         <div class="add-item" @click.stop="addModel()">
           <div class="add-item_inner">
@@ -31,7 +31,7 @@
           </div>
         </div>
       </div>
-      
+
       <!-- Recommended model -->
       <div
         class="comparison__item"
@@ -43,7 +43,7 @@
         >
           <div
             v-if="models.length"
-            class="action-button action-button--close" 
+            class="action-button action-button--close"
             @click="removeRecommendedModel"
           >
             <icon name="cross" />
@@ -87,8 +87,8 @@
               {{ specification.title }}
             </h4>
 
-            <div class="collapse-content__columns row" >
-              <div v-for="(model, mIndex) in modelsForSpecs" :key="model.id_unique" class="collapse-content__column col-auto col-lg-1-5" >
+            <div class="collapse-content__columns" >
+              <div v-for="(model, mIndex) in modelsForSpecs" :key="model.id_unique" class="collapse-content__column" >
                 <p>{{ specification.values[mIndex] }}</p>
               </div>
             </div>
