@@ -61,9 +61,10 @@
             <!--        <span class="sr-only">{{ getAnnouncementTitle(announcement) }}</span>-->
          </a>
 
+<!--         +'&width=308'-->
          <div
             v-if="!showGallery"
-            v-lazy:background-image="getImage+'&width=308'"
+            v-lazy:background-image="getImage"
             :aria-label="getAnnouncementTitle(announcement)"
             class="item-bg"
             role="img"
@@ -180,9 +181,9 @@
                <span v-if="announcement.mileage || announcement.mileage_measure">
                   {{ announcement.mileage }}
 
-<!--                  <template v-if="announcement.mileage_measure === 1">-->
+                  <template v-if="mileage">
                      {{ $t('char_kilometre') }}
-<!--                  </template>-->
+                  </template>
                </span>
 
                <span v-if="announcement?.description">{{ announcement?.description }}</span>
@@ -248,6 +249,10 @@ export default {
          default: false,
       },
       isLastChild: Boolean,
+      mileage: {
+         type: Boolean,
+         default: true
+      },
       activeTab: Number,
    },
 

@@ -155,7 +155,7 @@
                },
 
 
-               {key: 'the_number_of_measures', value: this.tact, for: ['moto']},
+               // {key: 'the_number_of_measures', value: this.tact, for: ['moto']},
                {key: 'cylinder_block', value: this.cylinderBlock, for: ['moto']},
                {
                   key: 'fuel_type',
@@ -203,9 +203,13 @@
                {key: 'license_plate', value: this.announcement.show_car_number && this.announcement.car_number},
                {
                   key: 'exchange',
-                  value: (this.announcement.exchange_possible || this.announcement.tradeable) && this.$t('is_possible')
+                  value: (this.announcement.exchange_possible || this.announcement.tradeable) && this.$t('is_possible'),
+                  icon: '/icons/barter_2.svg',
                },
-               {key: 'credit', value: this.announcement.credit && this.$t('is_in_credit')},
+               {
+                  key: 'credit',
+                  icon: '/icons/credit_2.svg',
+                  value: this.announcement.credit && this.$t('is_in_credit')},
                {
                   key: 'condition',
                   value: this.condition,
@@ -248,7 +252,6 @@
 
             // Dynamic specs
             if (this.type === 'parts') {
-               console.log('ssss', this.announcement)
                Object.keys(this.announcement?.filters)?.forEach(filter => {
                   let value = this.announcement?.filters[filter]
 
@@ -270,7 +273,6 @@
                            }
                         )
                      }
-
                   }
                })
 
