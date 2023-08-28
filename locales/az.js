@@ -163,6 +163,7 @@ export default {
    all_models: "Bütün modellər",
    all_options: "Bütün seçimlər",
    template_values: {
+      additional_brands: "Maşın",
       all_options: "Bütün parametrlər",
       announce_type: "Elanın tipi",
       colors: "Rəng",
@@ -182,8 +183,10 @@ export default {
       korobka: "Sürətlər qutusu",
       engine_type: "Mühərrik növü",
       gearing: "Ötürücü",
-      in_garanty: "Zəmanət",
-      credit: "Kredit",
+      in_garanty: "Zəmanətli",
+      credit: "Kreditdədir",
+      exchange_possible: "Barter",
+      with_video: "360°"
    },
    all_parts: "Bütün ehtiyat hissələri",
    all_premium_announcements: "Bütün premium elanlar",
@@ -409,6 +412,7 @@ export default {
    capacity_from: "Motor min.",
    capacity_from_l: "Mühərrik həcmi min., l",
    capacity_from_sm3: "Mühərrik həcmi min., sm³",
+   plate_added: "Qeydiyyat nişanı əlavə edildi",
    car: "Avtomobil",
    car_activated: "Avtomobil aktiv edildi",
    car_added: "Avtomobil əlavə edildi",

@@ -2,7 +2,10 @@
    <ul class="template_details">
       <li class="template_details_list" v-for="detail in data">
          <p>{{ $t(`template_values.${detail.key}`) }}</p>
-         <p class="template_details_list_value">{{ detail.value }}</p>
+         <p class="template_details_list_value" v-if="detail.key !== 'additional_brands'">{{ detail.value }}</p>
+         <ul v-else>
+            <li class="template_details_list_value" v-for="(val, i) in detail.value">{{val}}</li>
+         </ul>
       </li>
    </ul>
 </template>

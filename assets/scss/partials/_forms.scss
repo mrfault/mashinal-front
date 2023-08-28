@@ -137,7 +137,11 @@ input::-webkit-inner-spin-button {
       &.disabled {
          color: $grey-3;
          -webkit-text-fill-color: $grey-3;
-         opacity: 1;
+         opacity: 0.4;
+
+         &:hover{
+            border-color: transparent;
+         }
       }
 
       &:hover{
