@@ -254,7 +254,7 @@
                this.sorting.value = filters.sort_order;
             }
 
-            this.announceType = filters.announce_type;
+            this.announceType = filters.announce_type || 1;
          }
       },
 
