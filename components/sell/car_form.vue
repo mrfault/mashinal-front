@@ -724,6 +724,7 @@ export default {
          }
       },
       'form.mileage'() {
+         console.log(this.form.mileage)
          this.preview.mileage = this.form.mileage ? this.form.mileage + ' ' + (this.form.mileage_type === 1 ? this.$t('char_kilometre') : this.$t('ml')) : 0
       },
       'form.modification'() {
