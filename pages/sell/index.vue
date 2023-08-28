@@ -194,7 +194,9 @@
             </div>
             <div class="form_navigation" v-if="!isMobileBreakpoint">
                <ul>
-                  <li v-for="(nav) in navigationData.filter((nav) => !(nav.id === 3 && form.announce_type.title === 'registration_marks'))" :key="nav.id">
+                  <li
+                     v-for="(nav) in navigationData.filter((nav) => !(nav.id === 3 && form.announce_type.title === 'registration_marks'))"
+                     :key="nav.id">
                      <inline-svg :class="['nav_svg', {active: nav.isActive}]" :src="'/icons/filled_circled_check.svg'"/>
                      {{ nav.title }}
                   </li>
@@ -390,10 +392,10 @@ export default {
 
       async getRegistrationMarksForm(form) {
          try {
-            const res = await this.plateNumbersPost({is_mobile: false, form});
+            const res = await this.plateNumbersPost({form});
             if (res?.redirect_url) {
                const response = {data: {...res}}
-               this.handlePayment(response, false, this.$t('car_added'), 'v2')
+               this.handlePayment(response, false, this.$t('plate_added'), 'v2')
                this.$router.push(this.$localePath('/profile/announcements'))
             } else {
                this.$router.push(this.$localePath('/profile/announcements'), () => {
@@ -1004,6 +1006,23 @@ export default {
 
                &_help {
                   background-color: #364152;
+               }
+            }
+
+            .price_types {
+               .toggle_item {
+
+                  border-color: #121926;
+                  overflow: hidden;
+
+                  &.active {
+                     border-color: #155EEF;
+                  }
+
+                  .price_item {
+                     background-color: #121926;
+                     color: #9AA4B2;
+                  }
                }
             }
          }
