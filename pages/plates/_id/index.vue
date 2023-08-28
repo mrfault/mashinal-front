@@ -436,8 +436,12 @@
 
    @media (max-width: 485px) {
       .plate-id {
+         &__registrationMark {
+            height: 350px;
+         }
+
          .registrationMarks__number {
-            top: 230px;
+            top: 205px;
          }
 
          .quick-info {
@@ -457,8 +461,12 @@
 
    @media (max-width: 450px) {
       .plate-id {
+         &__registrationMark {
+            height: 330px;
+         }
+
          .registrationMarks__number {
-            top: 230px;
+            top: 190px;
 
             .divider {
                img {
@@ -494,7 +502,7 @@
    @media (max-width: 430px) {
       .plate-id {
          .registrationMarks__number {
-            top: 225px;
+            //top: 225px;
          }
 
          .quick-info {
@@ -574,7 +582,7 @@
    @media (max-width: 370px) {
       .plate-id {
          .registrationMarks__number {
-            top: 223px;
+            //top: 223px;
 
             .divider {
                p {

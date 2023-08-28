@@ -87,7 +87,6 @@
                            is-profile-page
                            moreInfo
                            :activeTab="activeTab"
-
                         />
                      </div>
                   </template>

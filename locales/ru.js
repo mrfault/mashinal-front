@@ -974,6 +974,7 @@ export default {
    has_lising_kredit: "Возможен залог автомобиля или договор аренды / аренды",
    hatchback: "Хетчбек",
    have: "Есть",
+   delivery: "Доставка",
    have_delivery: "Доставка",
    have_warranty: "Гарантия",
    "Head-up display": "Проекционный дисплей",
@@ -2120,6 +2121,7 @@ export default {
    with_mileage: "С пробегом",
    with_mileage_2: "С пробегом",
    with_new: "новых",
+   used: "Б/У",
    with_significant_damage_to_body_elements_that_do_not_move_on_their_own:
       "С существенными повреждениями кузовных элементов, не передвигающиеся своим ходом.",
    with_video: "360&deg;",

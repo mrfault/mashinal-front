@@ -198,10 +198,10 @@ Vue.use({
                return `${capacity} ${this.$t(showLitres ? 'char_litre' : 'char_sm_cube')}`;
             },
             canSendMessage(item) {
-               return !this.loggedIn || (item.user.id !== this.user.id);
+               return !this.loggedIn || (item?.user?.id !== this.user?.id);
             },
             userIsOwner(item) {
-               return this.loggedIn && (item.user.id === this.user.id);
+               return this.loggedIn && (item?.user?.id === this.user?.id);
             },
             salonIsOwner(item) {
                return this.loggedIn && (item.id === this.user.autosalon?.id || item.id === this.user.part_salon?.id);

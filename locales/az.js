@@ -1008,6 +1008,7 @@ export default {
       "Nəqliyyat vasitəsinin girov vəya kredit/lizinq müqaviləsi mövcuddur",
    hatchback: "Hetçbek",
    have: "Var",
+   delivery: "Çatdırılma",
    have_delivery: "Çatdırılma var",
    have_warranty: "Zəmanət",
    "Head-up display": "Proyeksiya ekranı",

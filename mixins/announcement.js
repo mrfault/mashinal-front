@@ -91,7 +91,7 @@ export const AnnouncementDataMixin = {
          }
       },
       bodyType() {
-         return this.catalog && this.catalog.car_type.name[this.locale];
+         return this.catalog && this.catalog.car_type.name;
       },
       cylinderBlock() {
          if (!this.motoOptions.config) return false;

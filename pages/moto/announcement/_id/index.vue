@@ -11,9 +11,11 @@
                         <quick-info type="moto" brief/>
                      </gallery>
 
-                     <announcement-specs type="moto" brief/>
+                     <thumbs-gallery />
 
-                     <comment :comment="announcement.comment" v-if="!isMobileBreakpoint">
+                     <announcement-specs type="moto" :title="$t('vehicle_info')" brief/>
+
+                     <comment :comment="announcement.comment" v-if="announcement.comment">
                         <template #before>
                            <thumbs-gallery/>
                         </template>
@@ -94,7 +96,7 @@
 
       async asyncData({store, route}) {
          await Promise.all([
-            store.dispatch('getMotoInnerV2', route.params.id),
+            store.dispatch('getMotoInnerV2', { id: route.params.id, type: route.query.type }),
             store.dispatch('getComplaintOptions'),
             store.dispatch('getOptions'),
             store.dispatch('getMotoOptions')
@@ -128,18 +130,19 @@
          ...mapGetters(['announcement']),
 
          motoBrand() {
-            return this.announcement?.brand?.name || this.announcement?.moto_atv_brand || this.announcement?.scooter_brand;
+            console.log('this.announcement222', this.announcement)
+            return this.announcement?.brand || this.announcement?.moto_atv_brand || this.announcement?.scooter_brand;
          },
 
          motoModel() {
-            return this.announcement?.model?.name || this.announcement?.moto_atv_model || this.announcement?.scooter_model;
+            return this.announcement?.model || this.announcement?.moto_atv_model || this.announcement?.scooter_model;
          },
 
          crumbs() {
             return [
                {name: this.$t('moto'), route: '/moto'},
-               {name: this.motoBrand, route: this.getFilterLink('brand')},
-               {name: this.motoModel, route: this.getFilterLink('brand-model')},
+               {name: this.motoBrand.name, route: this.getFilterLink('brand')},
+               {name: this.motoModel.name, route: this.getFilterLink('brand-model')},
                {name: '#' + this.announcement.id_unique}
             ]
          }

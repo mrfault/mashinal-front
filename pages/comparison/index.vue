@@ -1,17 +1,17 @@
 <template>
    <div class="pages-comparison-index">
       <div class="container">
-         <!-- Breadcrumb -->
-         <breadcrumbs :crumbs="crumbs"/>
+         <breadcrumbs :crumbs="crumbs" />
 
-         <!-- Filter -->
-         <comparison-filter/>
+         <div class="pages-comparison-index__inner">
+            <h2 class="pages-comparison-index__title">{{ $t('comparisons') }}</h2>
 
-         <!-- Main section -->
-         <comparison-main-section/>
+            <comparison-filter />
 
-         <!-- Add model -->
-         <comparison-add-model/>
+            <comparison-main-section />
+
+            <comparison-add-model />
+         </div>
       </div>
    </div>
 </template>
@@ -63,3 +63,22 @@
       }
    }
 </script>
+
+<style lang="scss" scoped>
+   .pages-comparison-index {
+      &__inner {
+         padding: 32px;
+         border-radius: 12px;
+         background-color: #FFFFFF;
+         overflow: hidden;
+      }
+
+      &__title {
+         color: #121926;
+         font-size: 28px;
+         font-weight: 700;
+         line-height: 32px;
+         margin-bottom: 32px;
+      }
+   }
+</style>

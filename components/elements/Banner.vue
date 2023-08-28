@@ -90,11 +90,15 @@ export default {
 
    @media (max-width: 600px) {
       .banner {
-         margin-top: 0;
-         width: 110%;
-         height: 240px;
-         margin: 0 -15px;
          border-radius: unset;
+
+         &__title {
+            bottom: 40px;
+         }
+
+         .breadcrumbs {
+            bottom: 75px;
+         }
       }
    }
 
@@ -107,10 +111,11 @@ export default {
             font-weight: 600;
             font-size: 28px;
             line-height: 34px;
+            bottom: 30px;
          }
 
          .breadcrumbs {
-            bottom: 60px;
+            bottom: 50px;
 
             ul {
                li {
