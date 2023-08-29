@@ -245,6 +245,7 @@
                   v-model="form.show_car_number"
                   :label="$t('show_on_site')"
                   input-name="show_car_number"
+                  :disabled="!form.car_number"
                   transparent
                />
             </div>
@@ -262,6 +263,7 @@
                   v-model="form.show_vin"
                   :label="$t('show_on_site')"
                   input-name="show_vin"
+                  :disabled="!form.vin"
                   transparent
                />
             </div>
@@ -275,6 +277,7 @@
             v-model="form.engine"
          />
          <form-select
+            v-if="form.type_of_moto?.id !== 2"
             :label="$t('number_of_cylinders')"
             :options="motoOptions?.config?.cylinders?.sell_values[form.type_of_moto.id]?.map((f) => ({...f, name: $t(f.name)}))"
             :clear-placeholder="true"
@@ -490,9 +493,7 @@ export default {
 
          }
 
-         const editForm = {...newForm, deletedFiles: this.deletedFiles}
-
-         this.$emit("getForm", this.isEdit && this.deletedFiles.length ? editForm : newForm)
+         this.$emit("getForm", {form: newForm, deletedImages: (this.isEdit && this.deletedFiles.length) ? this.deletedFiles : []})
       }
    },
 

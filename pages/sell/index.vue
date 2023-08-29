@@ -64,7 +64,7 @@
                            <form-text-input
                               :class="{form_error: $v.authForm.email.$error}"
                               v-model="authForm.email"
-                              :placeholder="$t('email')"
+                              :placeholder="$t('email') + '*'"
                               :mask="$maskEmail()"
                               :invalid="$v.authForm.email.$error"
                            />
@@ -77,15 +77,23 @@
                               :mask="$maskPhone()"
                               :invalid="$v.authForm.phone.$error"
                            />
-                           <form-text-input
-                              v-if="authStep === 'handleOTP'"
-                              :class="['otp', {form_error: $v.authForm.code.$error}]"
-                              :placeholder="$t('otp') + '*'"
-                              v-model="authForm.code"
-                              :maxlength="5"
-                              :mask="'99999'"
-                              :invalid="$v.authForm.code.$error"
-                           />
+                           <div class="otp_section" v-if="authStep === 'handleOTP'">
+                              <form-text-input
+                                 :class="['otp', {form_error: $v.authForm.code.$error}]"
+                                 :placeholder="$t('OTP') + '*'"
+                                 v-model="authForm.code"
+                                 :maxlength="5"
+                                 :mask="'99999'"
+                                 :invalid="$v.authForm.code.$error"
+                              />
+                              <timer
+                                 class="otp_timer"
+                                 :duration="resendSmsAfterSecond"
+                                 format="i:s"
+                                 @timeOver="resendSmsAfterSecond = 0"
+                              />
+                           </div>
+
                            <div class="contacts_info" v-if="!Object.values(user).length">
                               <inline-svg class="contacts_info_svg info_svg" :src="'/icons/info.svg'"/>
                               <p>{{ $t("contacts_registration_info") }}</p>
@@ -173,6 +181,9 @@
                               <grid-item
                                  v-if="form.announce_type.title === 'cars' ||  form.announce_type.title === 'moto' || announcement.image || partPreview.image"
                                  style="pointer-events: none"
+                                 :mileage="false"
+                                 show-overlay
+                                 :hideFavoriteBtn="false"
                                  :announcement="form.announce_type.title === 'parts' ? partPreview : announcement"/>
                            </client-only>
                         </div>
@@ -242,6 +253,7 @@ export default {
    },
    data() {
       return {
+         resendSmsAfterSecond: 0,
          pending: false,
          submitShow: false,
          showRules: false,
@@ -249,16 +261,16 @@ export default {
          announceTitle: "",
          navigationData: [
             {
-               id: 1, title: "Elan məlumatları", isActive: false
+               id: 1, title: this.$t('info_announcement'), isActive: false
             },
             {
-               id: 2, title: "Elanın təsviri", isActive: false
+               id: 2, title: this.$t('description_announcement'), isActive: false
             },
             {
-               id: 3, title: "Şəkillər", isActive: false
+               id: 3, title: this.$t('images_announcement'), isActive: false
             },
             {
-               id: 4, title: "Hesab məlumatları", isActive: false
+               id: 4, title: this.$t('account_info'), isActive: false
             }
          ],
          partPreview: {
@@ -270,8 +282,8 @@ export default {
          },
          announcement: {
             image: "",
-            show_vin: true,
-            has_360: true,
+            show_vin: false,
+            has_360: false,
             price: "0 AZN",
             tradeable: false,
             credit: false,
@@ -284,7 +296,7 @@ export default {
          },
          form: {
             announce_type: "",
-            add_monetization: 0
+            add_monetization: 1
          },
          authForm: {
             name: "",
@@ -343,39 +355,43 @@ export default {
                defaultImg = "/img/parts.svg"
                break;
          }
-         this.announcement.image = img || defaultImg
-      },
-      async getCarForm(form) {
-         this.pending = true;
-         try {
-            const formData = new FormData()
-            formData.append('data', JSON.stringify(form))
-            formData.append('add_monetization', this.form.add_monetization)
-            const res = await this.carsPost(formData);
-            this.pending = false;
-            if (res?.data?.redirect_url) {
-               this.handlePayment(res, false, this.$t('car_added'), 'v2')
-               this.$router.push(this.$localePath('/profile/announcements'))
-            } else {
-               this.$router.push(this.$localePath('/profile/announcements'), () => {
-                  this.updatePaidStatus({
-                     type: 'success',
-                     text: this.$t('announcement_paid'),
-                     title: this.$t('success_payment')
-                  });
-               });
-            }
-         } catch (e) {
+         if (this.form.announce_type.title === "parts") {
+            this.partPreview.image = img || defaultImg
+         } else {
+            this.announcement.image = img || defaultImg
          }
       },
-      async getMotoForm(form) {
+      async getCarForm({form}) {
          this.pending = true;
          try {
             const formData = new FormData()
             formData.append('data', JSON.stringify(form))
             formData.append('add_monetization', this.form.add_monetization)
-            const res = await this.motoPost(formData);
+            const res = await this.carsPost({form: formData, isMobile: this.isMobileBreakpoint});
+            if (res?.data?.redirect_url) {
+               this.handlePayment(res, false, this.$t('car_added'), 'v2')
+               this.$router.push(this.$localePath('/profile/announcements'))
+            } else {
+               this.$router.push(this.$localePath('/profile/announcements'), () => {
+                  this.updatePaidStatus({
+                     type: 'success',
+                     text: this.$t('announcement_paid'),
+                     title: this.$t('success_payment')
+                  });
+               });
+            }
+         } catch (e) {
+         } finally {
             this.pending = false;
+         }
+      },
+      async getMotoForm({form}) {
+         this.pending = true;
+         try {
+            const formData = new FormData()
+            formData.append('data', JSON.stringify(form))
+            formData.append('add_monetization', this.form.add_monetization)
+            const res = await this.motoPost({form: formData, isMobile: this.isMobileBreakpoint});
             if (res?.data?.redirect_url) {
                this.handlePayment(res, false, this.$t('car_added'), 'v2')
                this.$router.push(this.$localePath('/profile/announcements'))
@@ -391,14 +407,15 @@ export default {
             }
 
          } catch (e) {
+         } finally {
+            this.pending = false;
          }
       },
 
       async getRegistrationMarksForm(form) {
          this.pending = true;
          try {
-            const res = await this.plateNumbersPost({form});
-            this.pending = false;
+            const res = await this.plateNumbersPost({form, isMobile: this.isMobileBreakpoint});
             if (res?.redirect_url) {
                const response = {data: {...res}}
                this.handlePayment(response, false, this.$t('plate_added'), 'v2')
@@ -414,15 +431,16 @@ export default {
                });
             }
          } catch (e) {
+         } finally {
+            this.pending = false;
          }
       },
-      async getPartForm(form) {
+      async getPartForm({form}) {
          this.pending = true;
          try {
             const formData = new FormData()
             formData.append('data', JSON.stringify(form))
             const res = await this.partsPost(formData);
-            this.pending = false;
             if (res?.data?.redirect_url) {
                this.handlePayment(res, false, this.$t('car_added'), 'v2')
                this.$router.push(this.$localePath('/profile/announcements'))
@@ -438,6 +456,8 @@ export default {
             }
             this.$router.push(this.$localePath('/profile/announcements'))
          } catch (e) {
+         } finally {
+            this.pending = false;
          }
       },
 
@@ -464,14 +484,17 @@ export default {
          try {
             const res = await this.$axios
                .$post('https://v2dev.mashin.al/api/v2/auth/login-or-register', {phone: this.authForm.phone.replace(/[^0-9]+/g, ''),})
-            this.pending = false;
+
             this.authStep = 'handleOTP'
             this.$nextTick(() => {
                this.scrollTo('.otp', [-50, -190])
             })
+            this.resendSmsAfterSecond = 30
             this.$v.authForm.$reset()
          } catch (e) {
 
+         } finally {
+            this.pending = false;
          }
       },
       async onOTPVerification() {
@@ -601,6 +624,9 @@ export default {
             gap: 12px;
             background-color: #EEF2F6;
             border-radius: 12px;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
 
 
             &_svg {
@@ -617,6 +643,9 @@ export default {
             gap: 12px;
             background-color: #ECFDF3;
             border-radius: 12px;
+            font-size: 15px;
+            font-style: normal;
+            font-weight: 500;
 
             &_svg {
                min-width: 32px;
@@ -666,6 +695,17 @@ export default {
                      padding: 12px 16px;
                      background-color: #EEF2F6;
                      border-radius: 8px;
+                  }
+
+                  .otp_section {
+                     position: relative;
+
+                     .otp_timer {
+                        position: absolute;
+                        top: 50%;
+                        right: 16px;
+                        transform: translateY(-50%);
+                     }
                   }
 
                   .service_packages {
@@ -737,6 +777,9 @@ export default {
                               display: flex;
                               align-items: center;
                               gap: 12px;
+                              font-size: 14px;
+                              font-style: normal;
+                              font-weight: 400;
 
                               .check_svg {
                                  color: #CDD5DF;
@@ -856,7 +899,8 @@ export default {
       .form_navigation {
          position: sticky;
          top: 188px;
-         min-width: 300px;
+         min-width: 256px;
+         max-width: 256px;
          height: min-content;
          flex-grow: 1;
 

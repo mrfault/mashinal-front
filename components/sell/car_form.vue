@@ -331,6 +331,7 @@
                   v-model="form.show_car_number"
                   :label="$t('show_on_site')"
                   input-name="show_car_number"
+                  :disabled="!form.car_number"
                   transparent
                />
             </div>
@@ -350,6 +351,7 @@
                   :label="$t('show_on_site')"
                   input-name="show_vin"
                   @change="preview.show_vin = $event"
+                  :disabled="!form.vin"
                   transparent
                />
             </div>
@@ -795,7 +797,7 @@ export default {
             newForm = {...newForm, deletedFiles: this.deletedFiles}
          }
 
-         this.$emit("getForm", newForm)
+         this.$emit("getForm", {form: newForm, deletedImages: (this.isEdit && this.deletedFiles.length) ? this.deletedFiles : []})
       },
    },
    updated() {
