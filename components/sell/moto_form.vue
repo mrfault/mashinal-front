@@ -424,6 +424,12 @@ export default {
             }
          }
       },
+      'form.car_number'() {
+         !this.form.car_number && (this.form.show_car_number = false)
+      },
+      'form.vin'() {
+         !this.form.vin && (this.form.show_vin = false)
+      },
       'form.mileage'() {
          this.preview.mileage = this.form.mileage ? this.form.mileage + ' ' + (this.form.mileage_type === 1 ? this.$t('char_kilometre') : this.$t('ml')) : 0
       },
