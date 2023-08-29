@@ -228,6 +228,9 @@ export default {
    width: 36px;
    object-fit: contain;
 }
+.ma-garage__nav--profile__name{
+   width: auto!important;
+}
 .dark-mode{
    .breadcrumbs_main{
       background-color: #121926;
@@ -306,6 +309,9 @@ export default {
          }
       }
 
+      .ma-garage__nav--profile__name{
+         width: auto!important;
+      }
       .container {
          //background: #1B2434;
          border-radius: 8px;

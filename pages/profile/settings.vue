@@ -108,6 +108,9 @@ export default {
       ChangeEmail,
       ChangePhone
    },
+   mounted() {
+      console.log(this.getUserAvatar)
+   },
    nuxtI18n: {
       paths: {
          az: '/profil/parametrler'
@@ -131,7 +134,7 @@ export default {
             password_confirmation: '',
             name: $auth.user.name || '',
             lastname: $auth.user.lastname || '',
-            gender: $auth.user.gender || '',
+            gender: $auth.user.gender || 0,
             birthday: app.$moment($auth.user.birthday || null).format('DD.MM.YYYY'),
             avatar: null
          }
