@@ -14,7 +14,9 @@
                <div :class="['vehicle_card_info', {default_imgs: previewForm.image.startsWith('/img/')}]"
                     v-if="!isMobileBreakpoint">
                   <client-only>
-                     <grid-item :announcement="previewForm"/>
+                     <grid-item :mileage="false"
+                                show-overlay
+                                :hideFavoriteBtn="false" :announcement="previewForm"/>
                   </client-only>
                </div>
             </div>
@@ -153,9 +155,10 @@ export default {
       getMainImage(img) {
          this.previewForm.image = img || "/img/motorbike.svg"
       },
-      async getMotoForm(form) {
+      async getMotoForm({form, deletedImages}) {
          const formData = new FormData()
          formData.append('data', JSON.stringify(form))
+         formData.append('deletedImages', JSON.stringify(deletedImages))
          try {
             await this.motoEdit({
                id: this.$route.params.id.slice(0, -1),

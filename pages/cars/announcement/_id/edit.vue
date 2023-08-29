@@ -12,9 +12,12 @@
                      {{ $t("place_announcement") }}
                   </button>
                </form>
-               <div :class="['vehicle_card_info', {default_imgs: previewForm.image.startsWith('/img/')}]" v-if="!isMobileBreakpoint">
+               <div :class="['vehicle_card_info', {default_imgs: previewForm.image.startsWith('/img/')}]"
+                    v-if="!isMobileBreakpoint">
                   <client-only>
-                     <grid-item :announcement="previewForm"/>
+                     <grid-item :mileage="false"
+                                show-overlay
+                                :hideFavoriteBtn="false" :announcement="previewForm"/>
                   </client-only>
                </div>
             </div>
@@ -150,9 +153,10 @@ export default {
       getMainImage(img) {
          this.previewForm.image = img || "/img/car_default.svg"
       },
-      async getCarForm(form) {
+      async getCarForm({form, deletedImages}) {
          const formData = new FormData()
          formData.append('data', JSON.stringify(form))
+         formData.append('deletedImages', JSON.stringify(deletedImages))
          try {
             await this.carEdit({
                id: this.$route.params.id.slice(0, -1),
@@ -164,7 +168,7 @@ export default {
          }
       },
       getCurrencyName() {
-         switch(this.announcement.currency_id) {
+         switch (this.announcement.currency_id) {
             case 1:
                return 'AZN';
             case 2:

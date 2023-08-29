@@ -111,7 +111,7 @@
                      class="item-overlay__top--right"
                   >
                      <add-favorite
-                        v-if="!isProfilePage"
+                        v-if="!isProfilePage && hideFavoriteBtn"
                         :announcement="announcement"
                      />
                      <!--                     <pre>{{announcement}}</pre>-->
@@ -125,7 +125,6 @@
                         src="/icons/promote.svg"
                      />
                   </div>
-
                   <div class="item-overlay__bottom--right">
                      <inline-svg
                         v-if="announcement.show_vin"
@@ -247,6 +246,10 @@ export default {
       isProfilePage: {
          type: Boolean,
          default: false,
+      },
+      hideFavoriteBtn: {
+         type: Boolean,
+         default: true,
       },
       isLastChild: Boolean,
       mileage: {
