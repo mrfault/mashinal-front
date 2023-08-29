@@ -117,7 +117,7 @@
           >
             <div class="overlay">
               <!-- <icon name="camera" /> -->
-              <inline-svg :height="14" src="/icons/camera.svg"/>
+              <inline-svg class="plus_icon" :height="14" src="/icons/plus.svg"/>
               <p>{{ $t('add_image') }}</p>
             </div>
           </div>

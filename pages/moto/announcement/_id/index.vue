@@ -11,9 +11,11 @@
                         <quick-info type="moto" brief/>
                      </gallery>
 
-                     <announcement-specs type="moto" brief/>
+                     <thumbs-gallery />
 
-                     <comment :comment="announcement.comment" v-if="!isMobileBreakpoint">
+                     <announcement-specs type="moto" :title="$t('vehicle_info')" brief/>
+
+                     <comment :comment="announcement.comment" v-if="announcement.comment">
                         <template #before>
                            <thumbs-gallery/>
                         </template>
@@ -68,33 +70,33 @@
          }
       },
 
-      // head() {
-      //    let announcementTitle = `${this.motoBrand.name} ${this.motoModel.name}`;
-      //    let title = `${this.$t(`meta-title_announcement-${this.announcement.is_new ? 'new' : 'used'}`, {announce: `${announcementTitle}, ${this.announcement.year}`})}`;
-      //    let description = `${announcementTitle}, ${this.$t('meta-descr_announcement', {announce: `${this.announcement.price}`})}`;
-      //    let image = this.getAnnouncementImage(this.announcement);
-      //    let category = 'Motorcycle';
-      //    if (this.announcement.moto_atv_brand) category = 'Atv';
-      //    else if (this.announcement.scooter_brand) category = 'Scooter';
-      //    return this.$headMeta({title, description, image}, {
-      //       category,
-      //       id: this.announcement.id_unique,
-      //       autosalon: this.announcement.user.autosalon,
-      //       brand: this.motoBrand.name,
-      //       model: this.motoModel.name,
-      //       year: this.announcement.year,
-      //       price: {amount: this.announcement.price_int, currency: this.announcement.currency_id},
-      //       services: this.announcement.type,
-      //       new: this.announcement.is_new,
-      //       available: this.announcement.status == 1,
-      //       barter: this.announcement.tradeable,
-      //       credit: this.announcement.credit
-      //    });
-      // },
+     head() {
+        let announcementTitle = `${this.motoBrand.name} ${this.motoModel.name}`;
+        let title = `${this.$t(`meta-title_announcement-${this.announcement.is_new ? 'new' : 'used'}`, {announce: `${announcementTitle}, ${this.announcement.year}`})}`;
+        let description = `${announcementTitle}, ${this.$t('meta-descr_announcement', {announce: `${this.announcement.price}`})}`;
+        let image = this.getAnnouncementImage(this.announcement);
+        let category = 'Motorcycle';
+        if (this.announcement.moto_atv_brand) category = 'Atv';
+        else if (this.announcement.scooter_brand) category = 'Scooter';
+        return this.$headMeta({title, description, image}, {
+           category,
+           id: this.announcement.id_unique,
+           autosalon: this.announcement.user.autosalon,
+           brand: this.motoBrand.name,
+           model: this.motoModel.name,
+           year: this.announcement.year,
+           price: {amount: this.announcement.price_int, currency: this.announcement.currency_id},
+           services: this.announcement.type,
+           new: this.announcement.is_new,
+           available: this.announcement.status == 1,
+           barter: this.announcement.tradeable,
+           credit: this.announcement.credit
+        });
+     },
 
       async asyncData({store, route}) {
          await Promise.all([
-            store.dispatch('getMotoInnerV2', route.params.id),
+            store.dispatch('getMotoInnerV2', { id: route.params.id, type: route.query.type }),
             store.dispatch('getComplaintOptions'),
             store.dispatch('getOptions'),
             store.dispatch('getMotoOptions')
@@ -116,11 +118,19 @@
             if (type.includes('model')) {
                form.additional_brands[0].model = this.motoModel.id;
             }
-
-            let slug = 'motorcycles';
-            if (this.announcement.moto_atv_brand) slug = 'atvs';
-            else if (this.announcement.scooter_brand) slug = 'scooters';
-            return `/moto/${this.$t('slug_' + slug)}?filter=${encodeURI(JSON.stringify(form))}`
+               form.moto_type = this.$route.query.type
+            switch (form.moto_type) {
+               case 'motorcycle':
+                  form.additional_brands[0].category = 1;
+                  break;
+               case 'scooter':
+                  form.additional_brands[0].category = 2;
+                  break;
+               case 'moto_atv':
+                  form.additional_brands[0].category = 3;
+                  break;
+            }
+            return `/moto?filter=${encodeURI(JSON.stringify(form))}`
          }
       },
 
@@ -128,18 +138,18 @@
          ...mapGetters(['announcement']),
 
          motoBrand() {
-            return this.announcement?.brand?.name || this.announcement?.moto_atv_brand || this.announcement?.scooter_brand;
+            return this.announcement?.brand;
          },
 
          motoModel() {
-            return this.announcement?.model?.name || this.announcement?.moto_atv_model || this.announcement?.scooter_model;
+            return this.announcement?.model;
          },
 
          crumbs() {
             return [
                {name: this.$t('moto'), route: '/moto'},
-               {name: this.motoBrand, route: this.getFilterLink('brand')},
-               {name: this.motoModel, route: this.getFilterLink('brand-model')},
+               {name: this.motoBrand.name, route: this.getFilterLink('brand')},
+               {name: this.motoModel.name, route: this.getFilterLink('brand-model')},
                {name: '#' + this.announcement.id_unique}
             ]
          }

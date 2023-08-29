@@ -42,9 +42,9 @@
          <breadcrumbs :crumbs="crumbs" />
 
          <grid
-            v-if="motoAnnouncements.data.length"
-            :announcements="motoAnnouncements.data"
-            :paginate="$paginate(motoAnnouncements)"
+            v-if="motoAnnouncements?.data?.length"
+            :announcements="motoAnnouncements?.data"
+            :paginate="motoAnnouncements?.meta"
             :pending="pending"
             :hasContainer="false"
             @change-page="searchMoto"
@@ -129,8 +129,8 @@
             sorting: { key: 'created_at', value: 'desc', name: this.$t('show_by_date') },
             sortItems: [
                { key: 'created_at', value: 'desc', name: this.$t('show_by_date') },
-               { key: 'price', value: 'asc', name: this.$t('show_cheap_first') },
-               { key: 'price', value: 'desc', name: this.$t('show_expensive_first') },
+               { key: 'price_asc', value: 'asc', name: this.$t('show_cheap_first') },
+               { key: 'price_desc', value: 'desc', name: this.$t('show_expensive_first') },
                { key: 'mileage', value: 'desc', name: this.$t('mileage') },
                { key: 'year', value: 'desc', name: this.$t('years') }
             ]
@@ -181,7 +181,7 @@
             await this.getGridSearch({...this.searchParams, post, page});
             await this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'moto', data: post });
             this.pending = false;
-            // this.scrollTo('.announcements-grid.paginated', [-15, -20]);
+            this.scrollTo('.breadcrumbs', [20, -120]);
          }
       },
 
@@ -241,6 +241,20 @@
 
          if (!Object.keys(this.$route.query)?.length) {
             this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'moto' });
+         }
+
+         if (this.$route.query?.filter) {
+            let filters = JSON.parse(this.$route.query?.filter)
+
+            if (filters.sort_by === 'price') {
+               this.sorting.key = `${filters.sort_by}_${filters.sort_order}`;
+               this.sorting.value = filters.sort_order;
+            } else {
+               this.sorting.key = filters.sort_by;
+               this.sorting.value = filters.sort_order;
+            }
+
+            this.announceType = filters.announce_type || 1;
          }
       },
 

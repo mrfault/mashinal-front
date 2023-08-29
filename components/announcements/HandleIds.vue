@@ -31,7 +31,7 @@
       },
 
       watch: {
-         'items'(newVal) {
+         items(newVal) {
             if (!this.single && this.watchIds) this.$store.dispatch('fetchHandleIds', { type: this.type, ids: newVal });
          }
       }

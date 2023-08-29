@@ -11,10 +11,13 @@
                      {{ $t("place_announcement") }}
                   </button>
                </form>
-               <div class="vehicle_card_info" v-if="!isMobileBreakpoint">
-                     <client-only>
-                        <grid-item :announcement="previewForm"/>
-                     </client-only>
+               <div :class="['vehicle_card_info', {default_imgs: previewForm.image.startsWith('/img/')}]"
+                    v-if="!isMobileBreakpoint">
+                  <client-only>
+                     <grid-item :mileage="false"
+                                show-overlay
+                                :hideFavoriteBtn="false" :announcement="previewForm"/>
+                  </client-only>
                </div>
             </div>
          </div>
@@ -89,48 +92,48 @@ export default {
       return {
          lastStepKey: 0,
          form: {
-            auction: announcement.auction,
-            end_date: app.$moment(announcement.end_date).format('DD.MM.YYYY HH:mm'),
-            country_id: announcement.country_id,
+            auction: announcement?.auction,
+            end_date: app.$moment(announcement?.end_date).format('DD.MM.YYYY HH:mm'),
+            country_id: announcement?.country_id,
             category: category,
-            engine: announcement.engine_type_id,
-            volume: announcement.capacity || '',
-            power: announcement.power,
-            cylinders: announcement.cylinders,
-            box: announcement.box_id,
-            cylinder_placement: announcement.cylinder_type_id,
-            number_of_vehicles: announcement.tact,
-            drive: announcement.gear_id,
-            capacity: announcement.capacity || '',
-            selectedYear: announcement.year,
+            engine: announcement?.engine_type_id,
+            volume: announcement?.capacity || '',
+            power: announcement?.power,
+            cylinders: announcement?.cylinders,
+            box: announcement?.box_id,
+            cylinder_placement: announcement?.cylinder_type_id,
+            number_of_vehicles: announcement?.tact,
+            drive: announcement?.gear_id,
+            capacity: announcement?.capacity || '',
+            selectedYear: announcement?.year,
             youtube: {
-               id: announcement.youtube,
-               thumb: `https://img.youtube.com/vi/${announcement.youtube}/hqdefault.jpg`
+               id: announcement?.youtube,
+               thumb: `https://img.youtube.com/vi/${announcement?.youtube}/hqdefault.jpg`
             },
-            selectedColor: announcement.color_id,
-            mileage: parseInt(announcement.mileage || 0),
-            mileage_measure: announcement.mileage_measure || 1,
-            region_id: announcement.region_id || 1,
-            address: announcement.address,
-            lat: parseFloat(announcement.latitude || 0),
-            lng: parseFloat(announcement.longitude || 0),
-            vin: announcement.vin,
-            price: announcement.price_int || '',
-            owner_type: parseInt(announcement.owners || 0),
-            currency: announcement.currency_id || 1,
-            car_number: announcement.car_number,
-            show_car_number: announcement.show_car_number,
-            show_vin: announcement.show_vin,
-            badges: announcement.stickers?.map(item => item.id),
+            selectedColor: announcement?.color_id,
+            mileage: parseInt(announcement?.mileage || 0),
+            mileage_measure: announcement?.mileage_measure || 1,
+            region_id: announcement?.region_id || 1,
+            address: announcement?.address,
+            lat: parseFloat(announcement?.latitude || 0),
+            lng: parseFloat(announcement?.longitude || 0),
+            vin: announcement?.vin,
+            price: announcement?.price_int || '',
+            owner_type: parseInt(announcement?.owners || 0),
+            currency: announcement?.currency_id || 1,
+            car_number: announcement?.car_number,
+            show_car_number: announcement?.show_car_number,
+            show_vin: announcement?.show_vin,
+            badges: announcement?.stickers?.map(item => item.id),
             new_badges: [],
-            comment: announcement.comment || '',
-            is_new: announcement.is_new,
-            beaten: announcement.status_id,
-            customs_clearance: announcement.customed_id,
-            tradeable: announcement.tradeable,
-            credit: announcement.credit,
-            guaranty: announcement.guaranty,
-            saved_images: announcement.media
+            comment: announcement?.comment || '',
+            is_new: announcement?.is_new,
+            beaten: announcement?.status_id,
+            customs_clearance: announcement?.customed_id,
+            tradeable: announcement?.tradeable,
+            credit: announcement?.credit,
+            guaranty: announcement?.guaranty,
+            saved_images: announcement?.media
          }
       }
    },
@@ -150,13 +153,18 @@ export default {
    methods: {
       ...mapActions(['motoEdit']),
       getMainImage(img) {
-         this.previewForm.image = img
+         this.previewForm.image = img || "/img/motorbike.svg"
       },
-      async getMotoForm(form) {
+      async getMotoForm({form, deletedImages}) {
          const formData = new FormData()
          formData.append('data', JSON.stringify(form))
+         formData.append('deletedImages', JSON.stringify(deletedImages))
          try {
-            await this.motoEdit({id: this.$route.params.id.slice(0, -1), isMobile: this.isMobileBreakpoint, form: formData})
+            await this.motoEdit({
+               id: this.$route.params.id.slice(0, -1),
+               isMobile: this.isMobileBreakpoint,
+               form: formData
+            })
             this.$router.push(this.$localePath('/profile/announcements'))
          } catch (e) {
          }
@@ -165,7 +173,7 @@ export default {
          this.isReady = !this.isReady
       },
       getCurrencyName() {
-         switch(this.announcement.currency_id) {
+         switch (this.announcement.currency_id) {
             case 1:
                return 'AZN';
             case 2:
@@ -177,7 +185,7 @@ export default {
          }
       },
       getNamesByCategory() {
-         switch(this.announcement.type_of_moto) {
+         switch (this.announcement.type_of_moto) {
             case 1:
                return 'moto';
             case 2:
@@ -483,9 +491,12 @@ export default {
                }
             }
 
-            .item-bg {
-               background-repeat: no-repeat;
-               background-size: inherit;
+            &.default_imgs {
+
+               .item-bg {
+                  background-repeat: no-repeat;
+                  background-size: inherit;
+               }
             }
          }
       }
@@ -533,6 +544,22 @@ export default {
                   }
                }
 
+               .price_types {
+                  .toggle_item {
+
+                     border-color: #121926;
+                     overflow: hidden;
+
+                     &.active {
+                        border-color: #155EEF;
+                     }
+
+                     .price_item {
+                        background-color: #121926;
+                        color: #9AA4B2;
+                     }
+                  }
+               }
 
                .contacts {
 
@@ -543,16 +570,10 @@ export default {
             }
 
             .vehicle_card_info {
-               &_description {
-                  background-color: #00359E;
-               }
-
-               &_help {
-                  background-color: #364152;
+               .item-details {
+                  background-color: #121926 ;
                }
             }
-
-
          }
       }
    }

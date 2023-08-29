@@ -158,14 +158,19 @@ export default {
       isProfilePage: Boolean,
       isLastChild: Boolean,
       activeTab: Number,
+      clickable: {
+         type: Boolean,
+         default: true,
+      }
    },
 
    methods: {
       goToRegistrationMark(id, event) {
-
-         event.stopPropagation();
-         event.preventDefault();
-         this.$router.push(this.localePath(`/plates/${id}`));
+         if (this.clickable) {
+            event.stopPropagation();
+            event.preventDefault();
+            this.$router.push(this.localePath(`/plates/${id}`));
+         }
 
       },
 
@@ -192,6 +197,7 @@ export default {
    background-color: #FFFFFF;
    cursor: pointer;
    transition: all .3s;
+   min-width: 0;
 
    &:hover {
       box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.12);

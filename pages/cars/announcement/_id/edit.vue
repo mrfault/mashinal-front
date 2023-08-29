@@ -12,9 +12,12 @@
                      {{ $t("place_announcement") }}
                   </button>
                </form>
-               <div class="vehicle_card_info" v-if="!isMobileBreakpoint">
+               <div :class="['vehicle_card_info', {default_imgs: previewForm.image.startsWith('/img/')}]"
+                    v-if="!isMobileBreakpoint">
                   <client-only>
-                     <grid-item :announcement="previewForm"/>
+                     <grid-item :mileage="false"
+                                show-overlay
+                                :hideFavoriteBtn="false" :announcement="previewForm"/>
                   </client-only>
                </div>
             </div>
@@ -79,56 +82,56 @@ export default {
          store.dispatch('getMyAnnouncement', route.params.id)
       ]);
       const announcement = store.state.myAnnouncement;
-      const catalog = announcement.car_catalog;
+      const catalog = announcement?.car_catalog;
 
       return {
          lastStepKey: 0,
          form: {
-            car_catalog_id: announcement.car_catalog_id,
-            brand: announcement.brand.slug,
-            model: announcement.model.slug,
-            generation_id: catalog.generation_id,
-            car_body_type: catalog.car_type.id,
-            gearing: catalog.main['  ']['engine'], // engines
-            modification: catalog.main[' ']['box'], // transmissions/box
-            transmission: catalog.main[' ']['type_of_drive'], // gearing
-            capacity: catalog.capacity,
-            power: catalog.power,
-            year: announcement.year,
-            auction: announcement.auction,
-            end_date: app.$moment(announcement.end_date).format('DD.MM.YYYY HH:mm'),
-            country_id: announcement.country_id,
+            car_catalog_id: announcement?.car_catalog_id,
+            brand: announcement?.brand?.slug,
+            model: announcement?.model?.slug,
+            generation_id: catalog?.generation_id,
+            car_body_type: catalog?.car_type.id,
+            gearing: catalog?.main['  ']['engine'], // engines
+            modification: catalog?.main[' ']['box'], // transmissions/box
+            transmission: catalog?.main[' ']['type_of_drive'], // gearing
+            capacity: catalog?.capacity,
+            power: catalog?.power,
+            year: announcement?.year,
+            auction: announcement?.auction,
+            end_date: app.$moment(announcement?.end_date)?.format('DD.MM.YYYY HH:mm'),
+            country_id: announcement?.country_id,
             youtube: {
-               id: announcement.youtube_link,
-               thumb: `https://img.youtube.com/vi/${announcement.youtube_link}/hqdefault.jpg`
+               id: announcement?.youtube_link,
+               thumb: `https://img.youtube.com/vi/${announcement?.youtube_link}/hqdefault.jpg`
             },
-            selectedColor: announcement.colors,
-            is_matte: announcement.is_matte,
-            mileage: parseInt(announcement.mileage || 0),
-            mileage_measure: announcement.mileage_measure || 1,
-            region_id: announcement.region_id || 1,
-            address: announcement.address,
-            lat: parseFloat(announcement.latitude || 0),
-            lng: parseFloat(announcement.longitude || 0),
-            vin: announcement.vin,
-            price: announcement.price_int || '',
-            owner_type: parseInt(announcement.owner_type || 0),
-            currency: announcement.currency_id || 1,
-            car_number: announcement.car_number,
-            show_car_number: announcement.show_car_number,
-            show_vin: announcement.show_vin,
-            part: announcement.car_body_health ? JSON.parse(announcement.car_body_health.options) : {},
-            all_options: app.$clone(announcement.options),
-            badges: announcement.stickers?.map(item => item.id),
+            selectedColor: announcement?.colors,
+            is_matte: announcement?.is_matte,
+            mileage: parseInt(announcement?.mileage || 0),
+            mileage_measure: announcement?.mileage_measure || 1,
+            region_id: announcement?.region_id || 1,
+            address: announcement?.address,
+            lat: parseFloat(announcement?.latitude || 0),
+            lng: parseFloat(announcement?.longitude || 0),
+            vin: announcement?.vin,
+            price: announcement?.price_int || '',
+            owner_type: parseInt(announcement?.owner_type || 0),
+            currency: announcement?.currency_id || 1,
+            car_number: announcement?.car_number,
+            show_car_number: announcement?.show_car_number,
+            show_vin: announcement?.show_vin,
+            part: announcement?.car_body_health ? JSON.parse(announcement?.car_body_health?.options) : {},
+            all_options: app.$clone(announcement?.options),
+            badges: announcement?.stickers?.map(item => item.id),
             new_badges: [],
-            comment: announcement.comment || '',
-            is_new: announcement.is_new,
-            beaten: announcement.broken,
-            customs_clearance: announcement.customs_clearance,
-            tradeable: announcement.exchange_possible,
-            credit: announcement.credit,
-            guaranty: announcement.in_garanty,
-            saved_images: announcement.mediaIds
+            comment: announcement?.comment || '',
+            is_new: announcement?.is_new,
+            beaten: announcement?.broken,
+            customs_clearance: announcement?.customs_clearance,
+            tradeable: announcement?.exchange_possible,
+            credit: announcement?.credit,
+            guaranty: announcement?.in_garanty,
+            saved_images: announcement?.mediaIds
          }
       }
    },
@@ -147,9 +150,13 @@ export default {
    },
    methods: {
       ...mapActions(['carEdit']),
-      async getCarForm(form) {
+      getMainImage(img) {
+         this.previewForm.image = img || "/img/car_default.svg"
+      },
+      async getCarForm({form, deletedImages}) {
          const formData = new FormData()
          formData.append('data', JSON.stringify(form))
+         formData.append('deletedImages', JSON.stringify(deletedImages))
          try {
             await this.carEdit({
                id: this.$route.params.id.slice(0, -1),
@@ -161,7 +168,7 @@ export default {
          }
       },
       getCurrencyName() {
-         switch(this.announcement.currency_id) {
+         switch (this.announcement.currency_id) {
             case 1:
                return 'AZN';
             case 2:
@@ -177,6 +184,7 @@ export default {
       },
    },
    mounted() {
+      this.$nuxt.$on("get-main-image", this.getMainImage)
       this.previewForm = {
          image: this.announcement.media[0],
          show_vin: this.announcement.show_vin,
@@ -468,9 +476,12 @@ export default {
                }
             }
 
-            .item-bg {
-               background-repeat: no-repeat;
-               background-size: inherit;
+            &.default_imgs {
+
+               .item-bg {
+                  background-repeat: no-repeat;
+                  background-size: inherit;
+               }
             }
          }
 

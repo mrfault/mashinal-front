@@ -226,16 +226,25 @@ export default {
             this.$router.push(this.$localePath(`/plates/${this.announcement.id_unique}/edit`))
          }
          if (!this.isNumberPlate) {
-            if (this.announcement.type == 'Motorcycle' || this.announcement.type == 'Scooter' || this.announcement.type == 'Atv') {
-               this.type = 'moto'
-            } else if (this.announcement.type == 'Commercial') {
-               this.type = 'commercial'
-            } else if (this.announcement.type == 'Part') {
-               this.type = 'parts'
-            } else if (this.type = 'cars') {
 
+
+
+
+            if (this.announcement.type == 'motorcycle' || this.announcement.type == 'scooter' || this.announcement.type == 'atv') {
+               this.type = 'moto'
+               this.$router.push(this.$localePath(`/${this.type}/announcement/${this.announcement.id_unique}/edit`))
+            } else if (this.announcement.type == 'commercial') {
+               this.type = 'commercial'
+               this.$router.push(this.$localePath(`/${this.type}/announcement/${this.announcement.id_unique}/edit`))
+            } else if (this.announcement.type == 'part') {
+               this.type = 'parts'
+               this.$router.push(this.$localePath(`/${this.type}/announcement/${this.announcement.id_unique}/edit`))
+            } else {
+               this.type = 'cars'
                this.$router.push(this.$localePath(`/${this.type}/announcement/${this.announcement.id_unique}/edit`))
             }
+
+
          }
       }
 
@@ -347,6 +356,19 @@ export default {
    .announcement-actions__content {
       top: -27px;
       left: -161px;
+   }
+}
+
+@media (max-width: 599px){
+   .isNumberPlate{
+      top: 50px;
+      right: 6px;
+   }
+}
+@media (max-width: 425px){
+   .isNumberPlate{
+      top: 44px;
+      right: 0px;
    }
 }
 </style>

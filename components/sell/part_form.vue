@@ -258,7 +258,7 @@
 import {mapActions, mapGetters} from "vuex";
 import ToggleGroup from "~/components/elements/ToggleGroup.vue";
 import ImageComponent from "~/pages/sell/image-component.vue";
-import {maxLength, minLength, required, requiredIf} from "vuelidate/lib/validators";
+import {maxLength, minLength, minValue, required, requiredIf} from "vuelidate/lib/validators";
 import FormKeywords from "~/components/forms/FormKeywords.vue";
 
 export default {
@@ -325,7 +325,7 @@ export default {
             price: 0,
             currency: 1,
             is_negotiable: false,
-            region_id: "",
+            region_id: 1,
             description: "",
             keywords: [],
             saved_images: [],
@@ -417,6 +417,9 @@ export default {
             this.form.is_negotiable = false
          }
       },
+      "form.saved_images"() {
+         this.$emit("navigationProgress", {id: 3, status: this.form.saved_images.length > 0})
+      },
       isReady() {
          this.$v.form.$touch()
          setTimeout(() => {
@@ -455,14 +458,18 @@ export default {
             sub_category_id: this.form.sub_category_id
          } : {...newForm, brand_id: this.form.brand_id}
 
-         if (this.isEdit && this.deletedFiles.length) {
-            filteredForm = {...filteredForm, deletedFiles: this.deletedFiles}
-         }
-
-         this.$emit("getForm", filteredForm)
+         this.$emit("getForm", {form: filteredForm, deletedImages: (this.isEdit && this.deletedFiles.length) ? this.deletedFiles : []})
       }
    },
-
+   updated() {
+      const announceDescription = ['title',
+         'price',].every((key) => this.form[key]) &&
+         (this.hasComponent('diameter') ? this.form.diameter : true) &&
+         (this.form.category_id !== 27 && this.hasComponent('height') ? this.form.height : true) &&
+         (this.hasComponent('shine_width') ? this.form.shine_width : true) &&
+         (this.hasComponent('number_of_mounting_holes') ? this.form.number_of_mounting_holes : true)
+      this.$emit("navigationProgress", {id: 2, status: announceDescription})
+   },
    validations() {
       return {
          form: {
@@ -474,7 +481,8 @@ export default {
             price: {
                required: requiredIf(function () {
                   return !this.form.is_negotiable
-               })
+               }),
+               minValue: minValue(!this.form.is_negotiable && 1)
             },
             region_id: {required},
             diameter: {

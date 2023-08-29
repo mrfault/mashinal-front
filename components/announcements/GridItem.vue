@@ -61,9 +61,10 @@
             <!--        <span class="sr-only">{{ getAnnouncementTitle(announcement) }}</span>-->
          </a>
 
+<!--         +'&width=308'-->
          <div
             v-if="!showGallery"
-            v-lazy:background-image="getImage+'?width=308'"
+            v-lazy:background-image="getImage"
             :aria-label="getAnnouncementTitle(announcement)"
             class="item-bg"
             role="img"
@@ -110,7 +111,7 @@
                      class="item-overlay__top--right"
                   >
                      <add-favorite
-                        v-if="!isProfilePage"
+                        v-if="!isProfilePage && hideFavoriteBtn"
                         :announcement="announcement"
                      />
                      <!--                     <pre>{{announcement}}</pre>-->
@@ -124,7 +125,6 @@
                         src="/icons/promote.svg"
                      />
                   </div>
-
                   <div class="item-overlay__bottom--right">
                      <inline-svg
                         v-if="announcement.show_vin"
@@ -180,9 +180,9 @@
                <span v-if="announcement.mileage || announcement.mileage_measure">
                   {{ announcement.mileage }}
 
-<!--                  <template v-if="announcement.mileage_measure === 1">-->
+                  <template v-if="mileage">
                      {{ $t('char_kilometre') }}
-<!--                  </template>-->
+                  </template>
                </span>
 
                <span v-if="announcement?.description">{{ announcement?.description }}</span>
@@ -247,7 +247,15 @@ export default {
          type: Boolean,
          default: false,
       },
+      hideFavoriteBtn: {
+         type: Boolean,
+         default: true,
+      },
       isLastChild: Boolean,
+      mileage: {
+         type: Boolean,
+         default: true
+      },
       activeTab: Number,
    },
 
@@ -267,9 +275,8 @@ export default {
 
    computed: {
       getType() {
+         console.log('item', item)
          let item = this.announcement
-
-         // console.log('item', item)
 
          if (item.type === "motorcycle") return 'Motorcycle'
          else if (item.type === "scooter") return 'Scooter'
@@ -281,11 +288,19 @@ export default {
       },
 
       getLink() {
-         let type = 'cars'
+         let type = 'cars',
+             motoType = '';
+
+         if (this.getType === 'Motorcycle') motoType = '?type=motorcycle';
+         else if (this.getType === 'Scooter') motoType = '?type=scooter';
+         else if (this.getType === 'Atv') motoType = '?type=atv';
+         else motoType = ''
+
          if (['Motorcycle', 'Scooter', 'Atv'].includes(this.getType)) type = 'moto'
          else if (['Commercial'].includes(this.getType)) type = 'commercial'
          else if (['Part'].includes(this.getType)) type = 'parts'
-         let path = `/${type}/announcement/${this.announcement.id}`
+         console.log('motoType', motoType)
+         let path = `/${type}/announcement/${this.announcement.id}${motoType}`
          return this.$localePath(path)
       },
 
@@ -476,6 +491,7 @@ export default {
 
    svg {
       height: 28px;
+      display: inline !important;
    }
 }
 </style>

@@ -3,13 +3,15 @@
       <div class="container">
          <breadcrumbs :crumbs="crumbs"/>
 
-         <moto-search-form
-            :total-count="$paginate(motoAnnouncements).total"
-            :pending="pending"
-            :category="category"
-            @pending="pending = true"
-            @submit="searchMoto"
-         />
+         <div class="filters-container">
+            <moto-search-form
+               :total-count="$paginate(motoAnnouncements).total"
+               :pending="pending"
+               :category="category"
+               @pending="pending = true"
+               @submit="searchMoto"
+            />
+         </div>
 
          <grid
             v-if="getMainMonetized.length"
@@ -79,8 +81,8 @@ export default {
       if (!slug) return error({statusCode: 404});
 
       const category = ({
-         'motorcycles': {id: 1, type: 'motorcycles', url: '/grid/moto'},
-         'scooters': {id: 2, type: 'scooters', url: '/grid/scooter'},
+         'motorcycles': {id: 1, type: 'motorcycles', url: '/moto/motorcycle'},
+         'scooters': {id: 2, type: 'scooters', url: '/moto/scooter'},
          'atvs': {id: 3, type: 'atvs', url: '/grid/atv'}
       })[slug];
 

@@ -49,6 +49,7 @@
             :announcements="parts?.data"
             :pending="pending"
             :paginate="parts?.meta"
+            @change-page="searchParts"
             :has-container="false"
          >
             <template #cap>
@@ -118,8 +119,8 @@
             sorting: { key: 'created_at', value: 'desc', name: this.$t('show_by_date') },
             sortItems: [
                { key: 'created_at', value: 'desc', name: this.$t('show_by_date') },
-               { key: 'price', value: 'asc', name: this.$t('show_cheap_first') },
-               { key: 'price', value: 'desc', name: this.$t('show_expensive_first') }
+               { key: 'price_asc', value: 'asc', name: this.$t('show_cheap_first') },
+               { key: 'price_desc', value: 'desc', name: this.$t('show_expensive_first') }
             ]
          }
       },
@@ -136,10 +137,15 @@
          Cap
       },
 
-      async asyncData({store}) {
+      async asyncData({ store, route }) {
+         const data = JSON.parse(route.query.parts_filter || '{}');
+
+         console.log('data', data)
          await Promise.all([
-            store.dispatch('fetchPartsAnnouncements'),
-            store.dispatch('fetchPartMonetized')
+            store.dispatch('getInfiniteMainPartsPageSearch', { body: data }),
+            store.dispatch('fetchPartMonetized', { body: data })
+            // store.dispatch('fetchPartsAnnouncements'),
+            // store.dispatch('fetchPartMonetized')
          ])
 
          return {
@@ -154,27 +160,33 @@
          // }
          //window.addEventListener('scroll', this.getNextAnnouncements)
 
-         // if (this.$route.query.parts_filter) {
-         //    let filters = JSON.parse(this.$route.query.parts_filter)
-         //
-         //    this.sorting.key = filters.sort_by;
-         //    this.sorting.value = filters.sort_order;
-         // }
+         if (this.$route.query?.parts_filter) {
+            let filters = JSON.parse(this.$route.query?.parts_filter)
+
+            if (filters.sort_by === 'price') {
+               this.sorting.key = `${filters.sort_by}_${filters.sort_order}`;
+               this.sorting.value = filters.sort_order;
+            } else {
+               this.sorting.key = filters.sort_by;
+               this.sorting.value = filters.sort_order;
+            }
+         }
       },
 
       methods: {
          // ...mapActions(['fetchAllAnnouncementsHome']),
 
-         async searchParts() {
+         async searchParts(page = 1) {
             // this.refreshInfinity++;
             // this.mutate({ property: 'temporaryLazyData', value: {} });
+            page = this.$route.query.page || 1;
             this.pending = true
             const data = JSON.parse(this.$route.query.parts_filter || '{}')
-            await this.$store.dispatch('getInfiniteMainPartsPageSearch', { body: data })
+            await this.$store.dispatch('getInfiniteMainPartsPageSearch', { body: data, page: page })
             await this.$store.dispatch('fetchPartMonetized', { body: data });
             this.pending = false
             // await this.$store.dispatch('parts/setSearchActive', true)
-            this.scrollTo('.announcements-grid', [0, -140])
+            this.scrollTo('.breadcrumbs', [20, -120]);
          }
       },
 

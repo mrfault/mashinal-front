@@ -35,6 +35,7 @@
       border-radius: 12px;
       border: 1px solid #12B76A;
       background-color: #FFFFFF;
+      overflow: hidden;
 
       &__title {
          font-size: 18px;

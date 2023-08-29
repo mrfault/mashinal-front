@@ -20,14 +20,15 @@
                   >
                      <div class="position-relative">
                         <no-ssr>
-                           <Interior360Viewer :url="announcement?.media?.interior_360" v-if="showInterior"/>
                            <vue-three-sixty
-                              v-else
+                              v-if="viewAspect === 1"
                               :amount="announcement?.media?.images_360?.length"
                               buttonClass="d-none"
                               disableZoom
                               :files="announcement?.media?.images_360"
                            />
+
+                           <Interior360Viewer :url="announcement?.media?.interior_360" v-else />
                         </no-ssr>
                      </div>
                   </div>
@@ -46,7 +47,7 @@
          <div class="gallery-overlay" v-if="showSlider">
             <div class="gallery-overlay_top d-flex">
                <ViewAspect
-                  v-if="announcement.has_360"
+                  v-if="announcement?.media?.interior_360 && announcement?.media?.images_360"
                   :options="viewAspectOptions"
                   v-model="viewAspect"
                />
@@ -92,12 +93,13 @@
             </div>
          </div>
 
+<!--         <pre>{{slides}}</pre>-->
          <div class="inner-gallery-lightbox" v-touch:swipe.top="handleSwipeTop">
             <FsLightbox
                v-if="isMobileBreakpoint"
                :zoomIncrement="0"
                :toggler="toggleFsLightbox"
-               :sources="getSourcesFsLightbox?.map(item => item.main_inner)"
+               :sources="getSourcesFsLightbox"
                :slide="currentSlide + 1"
                :key="lightboxKey"
                :onClose="refreshLightbox"
@@ -349,10 +351,10 @@
                         fromFsPopup: true,
                      },
                   },
-                  ...this.announcement?.media?.main?.slice(1, this.announcement?.media?.main?.length),
+                  ...this.slides.main.slice(1, this.slides.main.length),
                ]
             }
-            return this.announcement?.media?.main
+            return this.slides.main
          },
 
          slides() {

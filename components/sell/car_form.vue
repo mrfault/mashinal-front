@@ -126,7 +126,7 @@
          object-in-value
          :new-label="false"
          v-model="form.modification"
-         @change="preview.car_catalog.capacity = form.modification.capacity"
+         @change="preview.car_catalog.capacity = form.modification?.capacity"
       />
       <!--      v-if="form.modification"-->
 
@@ -331,6 +331,7 @@
                   v-model="form.show_car_number"
                   :label="$t('show_on_site')"
                   input-name="show_car_number"
+                  :disabled="!form.car_number"
                   transparent
                />
             </div>
@@ -350,6 +351,7 @@
                   :label="$t('show_on_site')"
                   input-name="show_vin"
                   @change="preview.show_vin = $event"
+                  :disabled="!form.vin"
                   transparent
                />
             </div>
@@ -723,6 +725,12 @@ export default {
             }
          }
       },
+      'form.car_number'() {
+         !this.form.car_number && (this.form.show_car_number = false)
+      },
+      'form.vin'() {
+         !this.form.vin && (this.form.show_vin = false)
+      },
       'form.mileage'() {
          this.preview.mileage = this.form.mileage ? this.form.mileage + ' ' + (this.form.mileage_type === 1 ? this.$t('char_kilometre') : this.$t('ml')) : 0
       },
@@ -794,7 +802,7 @@ export default {
             newForm = {...newForm, deletedFiles: this.deletedFiles}
          }
 
-         this.$emit("getForm", newForm)
+         this.$emit("getForm", {form: newForm, deletedImages: (this.isEdit && this.deletedFiles.length) ? this.deletedFiles : []})
       },
    },
    updated() {
@@ -805,7 +813,6 @@ export default {
          'address',
          'price'].every((key) => this.form[key]) && (!this.user.autosalon ? this.form.region_id : true)
       this.$emit("navigationProgress", {id: 2, status: announceDescription})
-
    },
    validations() {
       return {

@@ -737,6 +737,34 @@
    }
 }
 
+.btn--white.pending {
+   pointer-events: none;
+   position: relative;
+   user-select: none;
+   color: transparent !important;
+
+   * {
+      color: transparent !important;
+   }
+
+   &::after {
+      content: '';
+      position: absolute;
+      left: -9999px;
+      top: 50%;
+      margin-top: -5px;
+      margin-left: calc(50% - 5px);
+      width: 10px;
+      height: 10px;
+      border-radius: 5px;
+      background-color: rgba(red, 1);
+      color: rgba($white, 1);
+      box-shadow: 9984px 0 0 0 rgba($white, 1), 9999px 0 0 0 rgba($white, 1),
+      10014px 0 0 0 rgba($white, 1);
+      animation: button-loading-dark-blue 1s infinite linear;
+   }
+}
+
 .light-mode {
    .btn.pending {
       &.btn--dark-blue-outline {

@@ -11,7 +11,8 @@
                      {{ $t("place_announcement") }}
                   </button>
                </form>
-               <div class="vehicle_card_info" v-if="!isMobileBreakpoint">
+               <div :class="['vehicle_card_info', {default_imgs: partPreview.image.startsWith('/img/')}]"
+                    v-if="!isMobileBreakpoint">
                   <client-only>
                      <grid-item :announcement="partPreview"/>
                   </client-only>
@@ -86,11 +87,12 @@ export default {
    methods: {
       ...mapActions(['partEdit']),
       getMainImage(img) {
-         this.partPreview.image = img
+         this.partPreview.image = img || this.onChangePartType(this.announcement.category_id)
       },
-      async getPartForm(form) {
+      async getPartForm({form, deletedImages}) {
          const formData = new FormData()
          formData.append('data', JSON.stringify(form))
+         formData.append('deletedImages', JSON.stringify(deletedImages))
          try {
             await this.partEdit({id: this.$route.params.id.slice(0, -1), form: formData})
             this.$router.push(this.$localePath('/profile/announcements'))
@@ -99,6 +101,20 @@ export default {
       },
       onClick() {
          this.isReady = !this.isReady
+      },
+      onChangePartType(id) {
+         switch (id) {
+            case 19:
+               return this.partPreview.image = "/img/tyre.svg"
+            case 20:
+               return this.partPreview.image = "/img/disc.svg"
+            case 21:
+               return this.partPreview.image = "/img/oil.svg"
+            case 27:
+               return this.partPreview.image = "/img/battery.svg"
+            default:
+               return this.partPreview.image = "/img/parts.svg"
+         }
       },
       getCurrencyName() {
          switch (this.announcement.currency_id) {
@@ -188,9 +204,12 @@ export default {
          }
       }
 
-      .item-bg {
-         background-repeat: no-repeat;
-         background-size: inherit;
+      &.default_imgs {
+
+         .item-bg {
+            background-repeat: no-repeat;
+            background-size: inherit;
+         }
       }
    }
 }
