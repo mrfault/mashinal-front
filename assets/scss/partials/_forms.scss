@@ -109,6 +109,11 @@ input::-webkit-inner-spin-button {
    &:hover {
       input {
          border-color: $blue-new;
+
+         &.disabled {
+            pointer-events: none;
+            border-color: #cdd5df;
+         }
       }
    }
 
@@ -138,6 +143,7 @@ input::-webkit-inner-spin-button {
          color: $grey-3;
          -webkit-text-fill-color: $grey-3;
          opacity: 0.4;
+         pointer-events: none;
 
          &:hover{
             border-color: transparent;
@@ -379,6 +385,12 @@ input::-webkit-inner-spin-button {
             opacity: 1;
          }
       }
+   }
+
+   input:disabled ~ label {
+      pointer-events: none;
+      border-color: #cdd5df;
+      opacity: 0.4;
    }
 
    .popover-wrapper {

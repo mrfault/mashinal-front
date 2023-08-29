@@ -55,10 +55,10 @@
                         <div class="contacts">
                            <h2>{{ $t("contact_information") }}</h2>
                            <form-text-input
-                              :class="{form_error: $v.authForm.name.$error}"
+                              :class="{form_error: $v.authForm.name.$error || authError.includes('name')}"
                               v-model="authForm.name"
                               :placeholder="$t('your_name') + '*'"
-                              :invalid="$v.authForm.name.$error"
+                              :invalid="$v.authForm.name.$error || authError.includes('name')"
                               :disabled="loggedIn"
                            />
                            <form-text-input
@@ -66,37 +66,40 @@
                               v-model="authForm.email"
                               :placeholder="$t('email') + '*'"
                               :mask="$maskEmail()"
-                              :invalid="$v.authForm.email.$error"
+                              :invalid="$v.authForm.email.$error || authError.includes('email')"
                            />
                            <form-text-input
                               v-if="!Object.values(user).length"
-                              :class="{form_error: $v.authForm.phone.$error}"
+                              :class="{form_error: $v.authForm.phone.$error || authError.includes('phone')}"
                               key="phone"
                               :placeholder="$t('mobile_phone_number') + '*'"
                               v-model="authForm.phone"
                               :mask="$maskPhone()"
-                              :invalid="$v.authForm.phone.$error"
+                              :invalid="$v.authForm.phone.$error || authError.includes('phone')"
                            />
-                           <div class="otp_section" v-if="authStep === 'handleOTP'">
-                              <form-text-input
-                                 :class="['otp', {form_error: $v.authForm.code.$error}]"
-                                 :placeholder="$t('OTP') + '*'"
-                                 v-model="authForm.code"
-                                 :maxlength="5"
-                                 :mask="'99999'"
-                                 :invalid="$v.authForm.code.$error"
-                              />
+                           <form-text-input
+                              v-if="authStep === 'handleOTP'"
+                              :class="['otp', {form_error: $v.authForm.code.$error}]"
+                              :placeholder="$t('OTP') + '*'"
+                              v-model="authForm.code"
+                              :maxlength="5"
+                              :mask="'99999'"
+                              :invalid="$v.authForm.code.$error"
+                           />
+                           <div class="contacts_info" v-if="!Object.values(user).length && authStep !== 'handleOTP'">
+                              <inline-svg class="contacts_info_svg info_svg" :src="'/icons/info.svg'"/>
+                              <p>{{ $t("contacts_registration_info") }}</p>
+                           </div>
+                           <div class="resend_section" v-if="authStep === 'handleOTP'">
+                              <p :class="{link_active: resendSmsAfterSecond === 0}" @click="resendCode">Kodu
+                                 yenidən göndər</p>
                               <timer
+                                 v-if="resendSmsAfterSecond > 0"
                                  class="otp_timer"
                                  :duration="resendSmsAfterSecond"
                                  format="i:s"
                                  @timeOver="resendSmsAfterSecond = 0"
                               />
-                           </div>
-
-                           <div class="contacts_info" v-if="!Object.values(user).length">
-                              <inline-svg class="contacts_info_svg info_svg" :src="'/icons/info.svg'"/>
-                              <p>{{ $t("contacts_registration_info") }}</p>
                            </div>
 
                            <div class="service_packages"
@@ -253,6 +256,7 @@ export default {
    },
    data() {
       return {
+         authError: [],
          resendSmsAfterSecond: 0,
          pending: false,
          submitShow: false,
@@ -460,6 +464,18 @@ export default {
             this.pending = false;
          }
       },
+      async resendCode() {
+         try {
+            await this.$axios
+               .$post('/resend/code', {
+                  phone: this.authForm.phone.replace(/[^0-9]+/g, ''),
+               })
+
+            this.resendSmsAfterSecond = 30;
+         } catch (e) {
+
+         }
+      },
 
       onClick() {
          this.$v.authForm.$touch()
@@ -499,13 +515,13 @@ export default {
       },
       async onOTPVerification() {
          this.pending = true;
+         this.authError = []
          try {
             const data = await this.$axios
                .$post('https://v2dev.mashin.al/api/v2/auth/confirm-otp', {
                   ...this.authForm,
                   phone: this.authForm.phone.replace(/[^0-9]+/g, '')
                })
-            this.pending = false;
             this.fbTrack('Complete Registration Api')
             this.gtagTrack('AW-600951956/-O6CCJGB2fIBEJSZx54C')
             this.$auth.setUser(data.user.original)
@@ -514,9 +530,16 @@ export default {
             this.isReady = !this.isReady
             this.$v.authForm.$reset()
          } catch (e) {
+            const errors = []
+            for (const key in e.response.data?.data) {
+               errors.push(key)
+            }
+            this.authError = errors
             this.$nextTick(() => {
-               this.scrollTo('.otp', [-50, -190])
+               this.scrollTo('.form_error', [-50, -190])
             })
+         } finally {
+            this.pending = false;
          }
       }
    },
@@ -697,16 +720,31 @@ export default {
                      border-radius: 8px;
                   }
 
-                  .otp_section {
-                     position: relative;
+                  .resend_section {
+                     display: flex;
+                     align-items: center;
+                     justify-content: center;
+                     gap: 4px;
 
                      .otp_timer {
-                        position: absolute;
-                        top: 50%;
-                        right: 16px;
-                        transform: translateY(-50%);
+                        color: #2970FF;
+                     }
+
+                     p {
+                        color: #9AA4B2;
+                        font-size: 16px;
+                        font-weight: 500;
+
+                        &.link_active {
+                           color: #2970FF;
+                           font-size: 16px;
+                           font-weight: 500;
+                           text-decoration-line: underline;
+                           cursor: pointer;
+                        }
                      }
                   }
+
 
                   .service_packages {
                      display: flex;
