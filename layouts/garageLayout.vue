@@ -226,7 +226,7 @@ export default {
 .ma-garage__nav--profile__avatar img{
    height: 36px;
    width: 36px;
-   object-fit: contain;
+   object-fit: cover;
 }
 .dark-mode{
    .breadcrumbs_main{
@@ -313,6 +313,16 @@ export default {
       }
    }
 }
+
+.ma-garage__nav--profile__name {
+   width: calc(100% - 48px);
+   box-sizing: border-box;
+   overflow: hidden;
+   white-space: break-spaces;
+   height: auto;
+}
+
+
 
 </style>
 
