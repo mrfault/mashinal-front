@@ -205,7 +205,7 @@
 }
 
 .select-generation {
-  height: auto;
+  height: auto !important;
   min-height: 100%;
   flex-wrap: wrap;
   padding: 0 0 10px !important;
@@ -257,7 +257,7 @@
 
 .dark-mode {
   .sell_select-modification {
-    
+
     .btn {
       .icon-drive {
         @supports(-webkit-background-clip: text) {

@@ -1,22 +1,25 @@
 <template>
    <div class="pages-catalog">
-      <Banner
-         class="mt-0 d-sm-none"
-         :bg="'/img/salon-bg.png'"
-         :title="$t('autocatalog')"
-      >
-         <template #content>
-            <breadcrumbs class="light-color" :crumbs="crumbs"/>
-         </template>
-      </Banner>
+      <template v-if="!$route.params.body">
+         <Banner
+            class="mt-0 d-sm-none"
+            :bg="'/img/salon-bg.png'"
+            :title="$t('autocatalog')"
+         >
+            <template #content>
+               <breadcrumbs class="light-color" :crumbs="crumbs"/>
+            </template>
+         </Banner>
 
-      <catalog-search-form
-         class="d-sm-none"
-         :total-count="catalogTotal"
-         :pending="pending"
-         @pending="pending = true"
-         @submit="searchCatalog"
-      />
+         <catalog-search-form
+            class="d-sm-none"
+            :total-count="catalogTotal"
+            :pending="pending"
+            @pending="pending = true"
+            @submit="searchCatalog"
+         />
+      </template>
+
 
       <div class="container">
          <breadcrumbs
@@ -177,7 +180,7 @@
                page
             });
             this.pending = false;
-            if (scroll) this.scrollTo('.cap', [-80, -200]);
+            if (scroll) this.scrollTo('.cap', [-80, -150]);
          }
       },
 
