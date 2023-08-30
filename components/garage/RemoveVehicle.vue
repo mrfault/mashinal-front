@@ -100,9 +100,9 @@ export default {
       async removeVehicle() {
          if (this.pending) return;
          try {
-            console.log("remove vehicle")
+            // console.log("remove vehicle")
             await this.delete({id: this.vehicle.id});
-            console.log("response remove vehicle")
+            // console.log("response remove vehicle")
             this.$toasted.success(this.$t('car_deleted'));
             this.pending = false;
             this.showModal = false;
@@ -110,7 +110,7 @@ export default {
             this.$emit("selectedCarDeleted", true)
          } catch (err) {
             this.pending = false;
-            console.log("not remove vehicle")
+            // console.log("not remove vehicle")
          }
       }
    }

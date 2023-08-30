@@ -151,7 +151,9 @@
          </grid>
       </div>
 
-      <HandleIds :items="getMainMonetized" :watchIds="false"/>
+      <HandleIds :items="handleIdsOptions" :watchIds="false" />
+
+      {{handleIdsOptions}}
    </div>
 </template>
 
@@ -193,7 +195,7 @@
 
       data() {
          return {
-            announceType: 1,
+            announceType: 0,
             searchType: 1,
             currentSlide: 0,
             swiperOps: {
@@ -278,11 +280,11 @@
          },
 
          getMileageOptions() {
-            let zeroFirst;
+            // let zeroFirst;
             return [
-               {name: this.$t('all2'), key: zeroFirst ? 0 : 1},
-               {name: this.$t('new'), key: zeroFirst ? 1 : 2},
-               {name: this.$t('with_mileage_2'), key: zeroFirst ? 2 : 3}
+               {name: this.$t('all2'), key: 0},
+               {name: this.$t('new'), key: 1},
+               {name: this.$t('with_mileage_2'), key: 2}
                // {name: this.$t(this.meta.type === 'parts' ? 'S_H' : 'with_mileage'), key: zeroFirst ? 2 : 3}
             ];
          },
@@ -293,6 +295,24 @@
                { name: this.$t('category_moto'), key: 2 }
             ];
          },
+
+         handleIdsOptions() {
+            let ids = [];
+
+            ids.push({
+               type: 'car',
+               ids: [
+                  ...this.getMainMonetized?.filter(car => car.type === 'light_vehicle').map(item => item.id),
+                  ...this.mainAnnouncements?.filter(car => car.type === 'light_vehicle').map(item => item.id)
+               ]
+            });
+
+            ids.push({type: 'plate', ids: [...this.plateNumbers?.map(item => item.id)]});
+
+            console.log('ids', ids)
+            // console.log('555555555', this.mainAnnouncements?.map(item => item.id))
+            // return this.getMainMonetized
+         }
       },
 
       methods: {
@@ -378,7 +398,7 @@
 
       watch: {
          searchType() {
-            this.announceType = 1;
+            this.announceType = 0;
          }
       },
 

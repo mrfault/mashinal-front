@@ -27,7 +27,7 @@
       },
 
       mounted() {
-         this.$store.dispatch('fetchHandleIds', { single: this.single, type: this.type, ids: this.items });
+         this.$store.dispatch('fetchHandleIds', { single: this.single, data: this.items });
       },
 
       watch: {

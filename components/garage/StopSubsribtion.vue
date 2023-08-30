@@ -107,7 +107,7 @@ export default {
             this.scrollReset();
             this.$emit("carDeactivated", true)
          } catch (err) {
-            console.log("removeVehicle catch")
+            // console.log("removeVehicle catch")
             this.pending = false;
          }
       }

@@ -83,6 +83,7 @@ const getInitialState = () => ({
    commercialAnnouncements: [],
    shopAnnouncements: {},
    announcement: {},
+   motoRelatives: [],
    relativeAnnouncements: [],
    userAnnouncements: [],
    userRegistrationMarks: [],
@@ -252,6 +253,7 @@ const getInitialState = () => ({
 export const state = () => getInitialState();
 
 export const getters = {
+   motoRelatives: s => s.motoRelatives,
    monetizedPage: s => s.monetizedPage,
    getAgreements: s => s.agreements,
    getResetForm: s => s.resetForm,
@@ -621,17 +623,16 @@ export const actions = {
       commit("mutate", {property: "agreements", value: res.data || []})
    },
 
-   async fetchHandleIds({commit}, data) {
-      let announcementIds = data.ids.map(a => a.id),
-         link = 'announcement-view';
+   async fetchHandleIds({commit}, payload) {
+      let link = 'announcement-view';
 
-      if (data.single) {
+      if (payload.single) {
          link = 'announcement-open';
-         announcementIds = data.ids;
+         // announcementIds = payload.data;
       }
 
-      const res = await this.$axios.$post(link, {ids: announcementIds, type: data.type});
-      commit("mutate", {property: "resetForm", value: res});
+      const res = await this.$axios.$post(link, payload.data);
+      commit("mutate", { property: "resetForm", value: res });
    },
 
    async fetchResetForm({commit}, data) {
@@ -1328,6 +1329,11 @@ export const actions = {
    async getMotoInnerV2({commit}, payload) {
       const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/moto/${payload.type}/${payload.id}`);
       commit("mutate", {property: "announcement", value: res});
+   },
+
+   async motoRelativesV2({commit}, payload) {
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/moto/${payload.type}/similar/${payload.id}`);
+      commit("mutate", {property: "motoRelatives", value: res});
    },
 
    async getPartsInnerV2({commit}, id) {

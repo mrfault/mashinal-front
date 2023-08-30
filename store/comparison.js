@@ -64,8 +64,9 @@ export const actions = {
     dispatch('getAnnouncements')
   },
   async getAnnouncements({ commit, state }) {
+
     if (state.announcementIds.length) {
-      const { data } = await this.$axios.$post('/comparison/announcements/by_ids', {
+      const data = await this.$axios.$post('https://v2dev.mashin.al/api/v2/car/compared', {
         ids: state.announcementIds.map(x => Math.floor((Number(x) / 10)))
       });
       commit('mutate', {
@@ -154,7 +155,7 @@ export const actions = {
   },
   async updateRecommendation({ commit, state, dispatch }) {
     const skip = state.recommendedModel.catalog_id;
-    
+
     let catalog = null;
     const modelIds = state.modelsList.map(m => m.id)
     if (modelIds.length) {

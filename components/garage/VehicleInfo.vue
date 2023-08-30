@@ -152,16 +152,16 @@ export default {
          return this.companies.find(item => item.key == id)?.name
       },
       async confirmInsurance() {
-         console.log("confirmInsurance")
+         // console.log("confirmInsurance")
          this.pending = true;
          try {
-            console.log("confirmInsurance try")
+            // console.log("confirmInsurance try")
             await this.$axios.$post('/garage/insurance/set-enddate', {
                car_id: this.selectedCar.id,
                end_date: `${this.dateChangeForm.year}-${this.dateChangeForm.month}-${this.dateChangeForm.day}`,
                insurance_company_id: this.dateChangeForm.company
             })
-            console.log("confirmInsurance response")
+            // console.log("confirmInsurance response")
             this.$emit('refresh-data')
             this.openDateChangeModal = false;
             this.$emit('carDataChanged', true)
@@ -181,7 +181,7 @@ export default {
          return string.charAt(0).toUpperCase() + string.slice(1);
       },
       carActivatedMethod() {
-         console.log("carActivated ahey ahey")
+         // console.log("carActivated ahey ahey")
          this.getAllCarsList();
          this.$nuxt.refresh();
       }

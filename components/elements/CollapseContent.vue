@@ -1,14 +1,17 @@
 <template>
    <div class="collapse-content">
-      <component :is="(titleWithLine || titleWithHr) ? 'h2' : 'h3'" :class="{ 'title-with-line': titleWithLine }"
-                 @click="collapsed = !collapsed">
-         <span>{{ title }}</span>
-         <icon :name="`chevron-${collapsed ? 'down' : 'up'}`" class="cursor-pointer" />
+      <component
+         :is="(titleWithLine || titleWithHr) ? 'h2' : 'h3'"
+         :class="{ 'title-with-line': titleWithLine }"
+         @click="collapsed = !collapsed"
+      >
+<!--         <span>{{ title }}</span>-->
+<!--         <icon :name="`chevron-${collapsed ? 'down' : 'up'}`" class="cursor-pointer"/>-->
       </component>
 
       <component :is="animate ? 'transition-expand' : 'div'">
          <div v-if="!collapsed">
-            <hr v-if="titleWithHr" />
+            <hr v-if="titleWithHr"/>
             <slot/>
          </div>
       </component>
@@ -16,23 +19,23 @@
 </template>
 
 <script>
-   export default {
-      props: {
-         title: String,
-         firstCollapsed: Boolean,
-         titleWithLine: Boolean,
-         titleWithHr: Boolean,
-         animate: Boolean
-      },
+export default {
+   props: {
+      title: String,
+      firstCollapsed: Boolean,
+      titleWithLine: Boolean,
+      titleWithHr: Boolean,
+      animate: Boolean
+   },
 
-      data() {
-         return {
-            collapsed: this.firstCollapsed
-         }
-      },
-
-      beforeDestroy() {
-         this.collapsed = false;
+   data() {
+      return {
+         collapsed: this.firstCollapsed
       }
+   },
+
+   beforeDestroy() {
+      this.collapsed = false;
    }
+}
 </script>
