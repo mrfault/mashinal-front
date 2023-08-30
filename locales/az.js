@@ -163,7 +163,7 @@ export default {
    all_models: "Bütün modellər",
    all_options: "Bütün seçimlər",
    template_values: {
-      additional_brands: "Maşın",
+      additional_brands: "Marka/Model",
       all_options: "Bütün parametrlər",
       announce_type: "Elanın tipi",
       colors: "Rəng",
@@ -1512,6 +1512,10 @@ export default {
    place_an_ad: "Elan yerləşdir",
    place_and_pay: "Yerləşdir və ödəniş et",
    place_announcement: "Elanı yerləşdir",
+   info_announcement: "Elan məlumatları",
+   description_announcement: "Elanın təsviri",
+   images_announcement: "Şəkillər",
+   account_info: "Hesab məlumatları",
    place_of_inspection: "Baxış yeri",
    place_of_residence: "Yaşayış yeri",
    platinium: "Platinium",
@@ -2171,6 +2175,7 @@ export default {
    with_mileage_2: "Sürülmüş",
    with_new: "yenilərin",
    used: "İşlənmiş",
+   part_used: "İşlənmiş",
    with_significant_damage_to_body_elements_that_do_not_move_on_their_own:
       "Öz-özünə hərəkət etməyən ban hissələrinə əhəmiyyətli dərəcədə ziyan vurmaqla.",
    with_video: "360&deg;",

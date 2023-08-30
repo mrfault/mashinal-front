@@ -4,7 +4,6 @@
          <breadcrumbs :crumbs="crumbs"/>
       </portal>
       <div class="container">
-         {{isDragging}}
          <div class="ma-announcements">
             <h2 class="ma-title--md">{{ $t('my_announces') }}</h2>
             <div v-if="user.autosalon" class="ma-announcements__top-cards">

@@ -13,22 +13,22 @@
                   :id="'1'"
                   :label="$t('all2')"
                   input-name="announceType"
-                  v-model="form.announceType"
-                  :radio-value="1"
+                  v-model="form.announce_type"
+                  :radio-value="0"
                />
                <form-radio
                   :id="'2'"
                   :label="$t('new')"
                   input-name="announceType"
-                  v-model="form.announceType"
-                  :radio-value="2"
+                  v-model="form.announce_type"
+                  :radio-value="1"
                />
                <form-radio
                   :id="'3'"
                   :label="$t('with_mileage_2')"
                   input-name="announceType"
-                  v-model="form.announceType"
-                  :radio-value="3"
+                  v-model="form.announce_type"
+                  :radio-value="2"
                />
             </div>
             <car-body-shortcuts v-if="isMobileBreakpoint" v-model="formAssistant.body"/>
@@ -87,7 +87,7 @@ export default {
    data() {
       return {
          form: {
-            announceType: 1,
+            announce_type: 0,
             additional_brands: {0: {}, 1: {}, 2: {}, 3: {}, 4: {}},
             exclude_additional_brands: {0: {}, 1: {}, 2: {}, 3: {}, 4: {}},
             all_options: {},
@@ -129,7 +129,7 @@ export default {
          this.$emit('onSubmit', {...this.form, ...objects, ...price});
       },
       resetForm() {
-         this.form.announceType = 1
+         this.form.announce_type = 0
          this.formAssistant = {
             price: [5000, 100000],
             body: [],

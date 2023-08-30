@@ -1,8 +1,8 @@
 <template>
   <div :class="{ dragover: onDragover, 'single' : !helpers.length && !Object.values(files).length }" class="upload-image">
+<!--      :handle="isMobileBreakpoint ? '.handle' : ''"-->
     <draggable
       v-model="orderdedKeys"
-      :handle="isMobileBreakpoint ? '.handle' : ''"
       :sort="true"
       class="upload-image_draggable"
       draggable=".draggable"
@@ -117,7 +117,7 @@
           >
             <div class="overlay">
               <!-- <icon name="camera" /> -->
-              <inline-svg class="plus_icon" :height="14" src="/icons/plus.svg"/>
+              <inline-svg class="plus_icon" :height="32" :width="32" src="/icons/plus.svg"/>
               <p>{{ $t('add_image') }}</p>
             </div>
           </div>

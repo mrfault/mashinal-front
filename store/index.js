@@ -1594,20 +1594,20 @@ export const actions = {
    },
 
    //SELL POSTS
-   async plateNumbersPost({}, {form}) {
-         const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/plate-numbers/post?is_mobile=${this.isMobileBreakpoint}`, form);
+   async plateNumbersPost({}, {form, isMobile}) {
+         const res = await this.$axios.$post(`https://v2dev.mashin.al/api/v2/plate-numbers/post?is_mobile=${isMobile}`, form);
          return res;
    },
    async partsPost({}, form) {
          const res = await this.$axios.$post(`/sell/part/post/publish`, form);
          return res;
    },
-   async carsPost({}, form) {
-      const res = await this.$axios.$post(`/sell/post/publish?is_mobile=${this.isMobileBreakpoint}`, form);
+   async carsPost({}, {form, isMobile}) {
+      const res = await this.$axios.$post(`/sell/post/publish?is_mobile=${isMobile}`, form);
       return res;
    },
-   async motoPost({}, form) {
-      const res = await this.$axios.$post(`/sell/moto/post/publish?is_mobile=${this.isMobileBreakpoint}`, form);
+   async motoPost({}, {form, isMobile}) {
+      const res = await this.$axios.$post(`/sell/moto/post/publish?is_mobile=${isMobile}`, form);
       return res;
 
    },

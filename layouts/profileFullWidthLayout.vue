@@ -56,6 +56,9 @@ export default {
    }
    .ma-garage__nav--profile__name{
       color: #fff!important;
+      width: calc(100% - 40px);
    }
 }
+
+
 </style>

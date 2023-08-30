@@ -245,6 +245,7 @@
                   v-model="form.show_car_number"
                   :label="$t('show_on_site')"
                   input-name="show_car_number"
+                  :disabled="!form.car_number"
                   transparent
                />
             </div>
@@ -262,6 +263,8 @@
                   v-model="form.show_vin"
                   :label="$t('show_on_site')"
                   input-name="show_vin"
+                  @change="preview.show_vin = $event"
+                  :disabled="!form.vin"
                   transparent
                />
             </div>
@@ -275,6 +278,7 @@
             v-model="form.engine"
          />
          <form-select
+            v-if="form.type_of_moto?.id !== 2"
             :label="$t('number_of_cylinders')"
             :options="motoOptions?.config?.cylinders?.sell_values[form.type_of_moto.id]?.map((f) => ({...f, name: $t(f.name)}))"
             :clear-placeholder="true"
@@ -379,7 +383,7 @@ export default {
             year: "",
             volume: "",
             power: 0,
-            fuel: 0,
+            fuel: "",
             box: "",
             color: "",
             gearing: "",
@@ -420,6 +424,12 @@ export default {
                this.form.mileage = 310
             }
          }
+      },
+      'form.car_number'() {
+         !this.form.car_number && (this.form.show_car_number = false)
+      },
+      'form.vin'() {
+         !this.form.vin && (this.form.show_vin = false)
       },
       'form.mileage'() {
          this.preview.mileage = this.form.mileage ? this.form.mileage + ' ' + (this.form.mileage_type === 1 ? this.$t('char_kilometre') : this.$t('ml')) : 0
@@ -478,7 +488,7 @@ export default {
             guaranty: this.form.guaranty,
             saved_images: this.form.saved_images,
             drive: this.form.gearing || 0,
-            fuel_type: this.form.fuel,
+            fuel_type: this.form.fuel || 0,
             owner_type: 0,
             volume: this.form.volume,
             power: this.form.power,
@@ -490,9 +500,7 @@ export default {
 
          }
 
-         const editForm = {...newForm, deletedFiles: this.deletedFiles}
-
-         this.$emit("getForm", this.isEdit && this.deletedFiles.length ? editForm : newForm)
+         this.$emit("getForm", {form: newForm, deletedImages: (this.isEdit && this.deletedFiles.length) ? this.deletedFiles : []})
       }
    },
 

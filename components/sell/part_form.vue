@@ -41,12 +41,14 @@
             :placeholder="$t('title_max_character', {max: 25})"
             :class="{form_error: $v.form.title.$error}"
             @change="preview.title = $event || $t('headline')"
+            maxlength="25"
             :invalid="$v.form.title.$error"
          />
          <form-text-input
             key="product_code"
             v-model="form.product_code"
             :placeholder="$t('product_code_not_required')"
+            maxlength="32"
          />
          <div class="divider">
             <form-radio
@@ -58,7 +60,7 @@
             />
             <form-radio
                :id="'2'"
-               :label="$t('s_h')"
+               :label="$t('part_used')"
                input-name="is_new"
                v-model="form.is_new"
                :radio-value="0"
@@ -258,7 +260,7 @@
 import {mapActions, mapGetters} from "vuex";
 import ToggleGroup from "~/components/elements/ToggleGroup.vue";
 import ImageComponent from "~/pages/sell/image-component.vue";
-import {maxLength, minLength, required, requiredIf} from "vuelidate/lib/validators";
+import {maxLength, minLength, minValue, required, requiredIf} from "vuelidate/lib/validators";
 import FormKeywords from "~/components/forms/FormKeywords.vue";
 
 export default {
@@ -458,11 +460,7 @@ export default {
             sub_category_id: this.form.sub_category_id
          } : {...newForm, brand_id: this.form.brand_id}
 
-         if (this.isEdit && this.deletedFiles.length) {
-            filteredForm = {...filteredForm, deletedFiles: this.deletedFiles}
-         }
-
-         this.$emit("getForm", filteredForm)
+         this.$emit("getForm", {form: filteredForm, deletedImages: (this.isEdit && this.deletedFiles.length) ? this.deletedFiles : []})
       }
    },
    updated() {
@@ -485,7 +483,8 @@ export default {
             price: {
                required: requiredIf(function () {
                   return !this.form.is_negotiable
-               })
+               }),
+               minValue: minValue(!this.form.is_negotiable && 1)
             },
             region_id: {required},
             diameter: {

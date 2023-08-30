@@ -89,9 +89,10 @@ export default {
       getMainImage(img) {
          this.partPreview.image = img || this.onChangePartType(this.announcement.category_id)
       },
-      async getPartForm(form) {
+      async getPartForm({form, deletedImages}) {
          const formData = new FormData()
          formData.append('data', JSON.stringify(form))
+         formData.append('deletedImages', JSON.stringify(deletedImages))
          try {
             await this.partEdit({id: this.$route.params.id.slice(0, -1), form: formData})
             this.$router.push(this.$localePath('/profile/announcements'))

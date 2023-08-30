@@ -111,7 +111,7 @@
                      class="item-overlay__top--right"
                   >
                      <add-favorite
-                        v-if="!isProfilePage"
+                        v-if="!isProfilePage && hideFavoriteBtn"
                         :announcement="announcement"
                      />
                      <!--                     <pre>{{announcement}}</pre>-->
@@ -125,7 +125,6 @@
                         src="/icons/promote.svg"
                      />
                   </div>
-
                   <div class="item-overlay__bottom--right">
                      <inline-svg
                         v-if="announcement.show_vin"
@@ -235,32 +234,36 @@
    import ProfileGridActions from "~/components/profile/ProfileGridActions";
    import CallButton from "~/components/announcements/CallButton.vue";
 
-   export default {
-      props: {
-         announcement: {},
-         showStatus: Boolean,
-         showMonetizationActions: {
-            type: Boolean,
-            default: true,
-         },
-         showCheckbox: Boolean,
-         showPhoneCount: Boolean,
-         showGallery: Boolean,
-         showOverlay: Boolean,
-         clickable: Boolean,
-         trackViews: Boolean,
-         colClass: String,
-         isProfilePage: {
-            type: Boolean,
-            default: false,
-         },
-         isLastChild: Boolean,
-         mileage: {
-            type: Boolean,
-            default: true
-         },
-         activeTab: Number,
+export default {
+   props: {
+      announcement: {},
+      showStatus: Boolean,
+      showMonetizationActions: {
+         type: Boolean,
+         default: true,
       },
+      showCheckbox: Boolean,
+      showPhoneCount: Boolean,
+      showGallery: Boolean,
+      showOverlay: Boolean,
+      clickable: Boolean,
+      trackViews: Boolean,
+      colClass: String,
+      isProfilePage: {
+         type: Boolean,
+         default: false,
+      },
+      hideFavoriteBtn: {
+         type: Boolean,
+         default: true,
+      },
+      isLastChild: Boolean,
+      mileage: {
+         type: Boolean,
+         default: true
+      },
+      activeTab: Number,
+   },
 
       components: {
          MonetizationStatsButton,

@@ -163,7 +163,7 @@ export default {
    all_models: "Все Модели",
    all_options: "Все опции",
    template_values: {
-      additional_brands: "Автомобиль",
+      additional_brands: "Марка/Модель",
       all_options: "Все параметры",
       announce_type: "Тип объявления",
       colors: "Цвет",
@@ -1495,6 +1495,10 @@ export default {
    place_an_ad: "Разместить объявление",
    place_and_pay: "Разместить и оплатить",
    place_announcement: "Разместить объявление",
+   info_announcement: "Информация об объявлении",
+   description_announcement: "Описание объявления",
+   images_announcement: "Изображения",
+   account_info: "Профиль",
    place_of_inspection: "Место осмотра",
    place_of_residence: "Место проживания",
    platinium: "Платиновый",
@@ -2149,6 +2153,7 @@ export default {
    with_mileage_2: "С пробегом",
    with_new: "новых",
    used: "Б/У",
+   part_used: "Использванные",
    with_significant_damage_to_body_elements_that_do_not_move_on_their_own:
       "С существенными повреждениями кузовных элементов, не передвигающиеся своим ходом.",
    with_video: "360&deg;",

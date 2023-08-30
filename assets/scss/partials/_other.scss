@@ -342,9 +342,10 @@
       }
    }
 
-   &.midsize{
+   &.midsize {
       width: 476px;
    }
+
    &.larger {
       width: 590px;
    }
@@ -454,6 +455,7 @@
                color: $white-2-new;
             }
          }
+
          .form {
             .total-price {
                strong {
@@ -798,15 +800,18 @@
 
 .upload-image {
    &.single {
-      .upload-image_draggable {
-         grid-template-columns: 1fr;
+      .upload-image_thumbnail {
+         grid-column: 1/3;
+         aspect-ratio: 2;
       }
+
    }
 
    &_draggable {
-   display: grid;
-   grid-template-columns: repeat(2, 1fr);
-   gap: 16px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+
       .draggable_item {
          width: 100%;
          display: flex;
@@ -830,16 +835,17 @@
 
    &_thumbnail {
       position: relative;
-      height: 100%;
+      flex: 0 0 100%;
       display: flex;
       flex-direction: column;
       justify-content: center;
       gap: 12px;
 
       &_item {
-      height: 72px;
+         height: 72px;
 
       }
+
       p {
          text-align: center;
       }
@@ -1084,7 +1090,8 @@
 .dark-mode {
    .upload-image {
       .upload-image_thumbnail {
-         background-color: $dark-1;
+         background-color: $grey-3-new;
+         border-radius: 12px;
 
          &.add-image,
          &.helper {
