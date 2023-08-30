@@ -171,7 +171,7 @@ export default {
    },
 
    mounted() {
-      console.log(this.slides);
+      // console.log(this.slides);
       window.addEventListener('keydown', this.handleEscapeKey);
       this.$nextTick(() => {
          this.imagesSwiper.thumbs.swiper = this.thumbsSwiper

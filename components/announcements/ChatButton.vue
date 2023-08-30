@@ -43,7 +43,7 @@
 
 <style lang="scss" scoped>
    .chat-button {
-      font-size: 13px;
+      font-size: 15px;
       height: 56px;
       transition: all .3s;
    }

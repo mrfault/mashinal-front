@@ -291,7 +291,7 @@
             .wrapp {
                background-color: transparent;
                overflow: hidden;
-               border-radius: 12px;
+               //border-radius: 12px;
             }
          }
       }

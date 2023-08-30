@@ -30,7 +30,21 @@
                   </div>
                </div>
 
-<!--               <relatives/>-->
+               <grid
+                  v-if="motoRelatives?.length"
+                  :announcements="motoRelatives"
+                  escape-duplicates
+                  :needAutoScroll="true"
+                  :hasContainer="false"
+               >
+                  <template #cap>
+                     <Cap :className="'mb40'">
+                        <template #left>
+                           <h3>{{ $t('relative_announcements') }}</h3>
+                        </template>
+                     </Cap>
+                  </template>
+               </grid>
 
                <HandleIds :single="true" :type="'motorcycles'" :items="[announcement.id]"/>
             </div>
@@ -40,6 +54,8 @@
 </template>
 
 <script>
+   import Grid from "~/components/announcements/Grid.vue";
+   import Cap from "~/components/elements/Cap.vue";
    import QuickInfo from '~/components/announcements/inner/QuickInfo';
    import AnnouncementSpecs from '~/components/announcements/inner/AnnouncementSpecs';
    import Gallery from '~/components/announcements/inner/Gallery';
@@ -54,6 +70,8 @@
       name: 'pages-moto-id',
 
       components: {
+         Grid,
+         Cap,
          SiteBanner,
          QuickInfo,
          AnnouncementSpecs,
@@ -95,8 +113,10 @@
      },
 
       async asyncData({store, route}) {
+         console.log('moto', route)
          await Promise.all([
             store.dispatch('getMotoInnerV2', { id: route.params.id, type: route.query.type }),
+            store.dispatch('motoRelativesV2', { id: route.params.id, type: route.query.type }),
             store.dispatch('getComplaintOptions'),
             store.dispatch('getOptions'),
             store.dispatch('getMotoOptions')
@@ -135,7 +155,7 @@
       },
 
       computed: {
-         ...mapGetters(['announcement']),
+         ...mapGetters(['announcement', 'motoRelatives']),
 
          motoBrand() {
             return this.announcement?.brand;

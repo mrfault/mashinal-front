@@ -469,7 +469,7 @@
                sort_by: 'created_at',
                sort_order: 'desc',
                additional_brands: {0: {}, 1: {}, 2: {}, 3: {}, 4: {}},
-               announce_type: 1,
+               announce_type: 0,
                currency: 1,
                box: [],
                engine: [],

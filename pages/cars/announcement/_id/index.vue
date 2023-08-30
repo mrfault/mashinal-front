@@ -130,7 +130,7 @@
                sorting: 'created_at_desc',
                additional_brands: {0: {}, 1: {}, 2: {}, 3: {}, 4: {}},
                all_options: {},
-               announce_type: 1,
+               announce_type: 0,
                currency: 1
             }
             // insert announcement data into form
