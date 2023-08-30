@@ -366,7 +366,10 @@
 
             ids.push({
                type: 'car',
-               ids: [...this.carsAnnouncements.data.map(item => item.id)]
+               ids: [
+                  ...this.carsAnnouncements.data.map(item => item.id),
+                  ...this.monetizedCars.map(item => item.id)
+               ]
             });
 
             return ids;
