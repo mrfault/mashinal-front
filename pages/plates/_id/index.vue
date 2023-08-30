@@ -77,7 +77,7 @@
 <!--            <floating-cta :announcement="registrationMark"/>-->
 <!--         </div>-->
 
-         <HandleIds :type="'plate'" :single="true" :items="[registrationMark.id]" />
+         <HandleIds :single="true" :items="{ type: 'plate', id: registrationMark.id }" />
       </div>
    </div>
 </template>

@@ -626,10 +626,7 @@ export const actions = {
    async fetchHandleIds({commit}, payload) {
       let link = 'announcement-view';
 
-      if (payload.single) {
-         link = 'announcement-open';
-         // announcementIds = payload.data;
-      }
+      if (payload.single) link = 'announcement-open';
 
       const res = await this.$axios.$post(link, payload.data);
       commit("mutate", { property: "resetForm", value: res });

@@ -38,7 +38,6 @@
                @pending="pending = true"
                @submit="searchMoto"
             />
-            {{announceType}}
          </div>
 
          <breadcrumbs :crumbs="crumbs" />
@@ -78,11 +77,10 @@
                </Cap>
             </template>
          </grid>
-         <!--         :title="$t('announcements')"-->
 
          <no-results v-else/>
 
-         <HandleIds :type="'motorcycles'" :items="motoAnnouncements.data" />
+         <HandleIds :items="handleIdsOptions" />
       </div>
    </div>
 </template>
@@ -228,6 +226,33 @@
                }
             }
          },
+
+         handleIdsOptions() {
+            let ids = [];
+
+            ids.push({
+               type: 'motorcycle',
+               ids: [
+                  ...this.motoAnnouncements.data?.filter(car => car.type === 'motorcycle').map(item => item.id)
+               ]
+            });
+
+            ids.push({
+               type: 'scooter',
+               ids: [
+                  ...this.motoAnnouncements.data?.filter(car => car.type === 'scooter').map(item => item.id)
+               ]
+            });
+
+            ids.push({
+               type: 'motoatv',
+               ids: [
+                  ...this.motoAnnouncements.data?.filter(car => car.type === 'motoatv').map(item => item.id)
+               ]
+            });
+
+            return ids;
+         }
 
          // sortItems() {
          //    return [

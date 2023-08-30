@@ -16,8 +16,9 @@
          },
 
          items: {
-            type: Array,
-            default() { return [] }
+            required: true
+            // type: Array,
+            // default() { return [] }
          },
 
          watchIds: {
@@ -32,7 +33,7 @@
 
       watch: {
          items(newVal) {
-            if (!this.single && this.watchIds) this.$store.dispatch('fetchHandleIds', { type: this.type, ids: newVal });
+            if (!this.single && this.watchIds) this.$store.dispatch('fetchHandleIds', { type: this.items.type, data: newVal });
          }
       }
    }
