@@ -140,7 +140,7 @@
                >
                </no-results>
 
-               <HandleIds :type="'plate'" :items="getRegistrationMarks.data" />
+               <HandleIds :items="handleIdsOptions" />
             </div>
          </div>
       </div>
@@ -285,6 +285,18 @@
 
          crumbs() {
             return [{ name: this.$t('registration_marks') }]
+         },
+
+         handleIdsOptions() {
+            let ids = [];
+
+            ids.push({
+               type: 'plate',
+               ids: [...this.getRegistrationMarks?.data?.map(item => item.id)
+               ]
+            });
+
+            return ids;
          }
       },
 

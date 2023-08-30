@@ -102,7 +102,7 @@
             v-else
          />
 
-         <HandleIds :items="carsAnnouncements.data" />
+         <HandleIds :items="handleIdsOptions" />
       </div>
    </div>
 </template>
@@ -152,7 +152,7 @@
 
       data() {
          return {
-            announceType: 1,
+            announceType: 0,
             searchType: 1,
             sorting: { key: 'created_at', value: 'desc', name: this.$t('show_by_date') },
             sortItems: [
@@ -170,7 +170,11 @@
             if (query && query.with_panorama == 'true') {
                this.searchCars(1, true);
             }
-         }
+         },
+
+         // searchType() {
+         //    this.announceType = 0;
+         // }
       },
 
       async asyncData({store, route, $auth}) {
@@ -251,7 +255,9 @@
                this.sorting.value = filters.sort_order;
             }
 
-            this.announceType = filters.announce_type;
+            this.announceType = filters.announce_type || 0;
+
+            console.log('filters.announce_type', filters.announce_type)
          }
       },
 
@@ -339,11 +345,11 @@
          // },
 
          getMileageOptions() {
-            let zeroFirst;
+            // let zeroFirst;
             return [
-               {name: this.$t('all2'), key: zeroFirst ? 0 : 1},
-               {name: this.$t('new'), key: zeroFirst ? 1 : 2},
-               {name: this.$t('with_mileage_2'), key: zeroFirst ? 2 : 3}
+               {name: this.$t('all2'), key: 0},
+               {name: this.$t('new'), key: 1},
+               {name: this.$t('with_mileage_2'), key: 2}
                // {name: this.$t(this.meta.type === 'parts' ? 'S_H' : 'with_mileage'), key: zeroFirst ? 2 : 3}
             ];
          },
@@ -354,6 +360,20 @@
                { name: this.$t('category_moto'), key: 2 }
             ];
          },
+
+         handleIdsOptions() {
+            let ids = [];
+
+            ids.push({
+               type: 'car',
+               ids: [
+                  ...this.carsAnnouncements.data.map(item => item.id),
+                  ...this.monetizedCars.map(item => item.id)
+               ]
+            });
+
+            return ids;
+         }
       },
 
       beforeRouteLeave(to, from, next) {

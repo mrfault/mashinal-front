@@ -145,11 +145,14 @@
          :media="[salonSingle.gallery_urls, salonSingle.gallery_thumbs]"
          :show-slider="false"
       />
+
+      <HandleIds :items="[{type: 'commercial', ids: autosalonAnnouncementsId?.data?.map(item => item.id)}]" />
    </div>
 </template>
 
 <script>
    import { mapGetters, mapActions } from 'vuex'
+   import HandleIds from "~/components/announcements/HandleIds.vue";
    import { SalonsMixin } from '~/mixins/salons'
    import Grid from '~/components/announcements/Grid'
    import Gallery from '~/components/announcements/inner/Gallery'
@@ -163,7 +166,8 @@
          Gallery,
          ThumbsGallery,
          CustomDropdown,
-         Cap
+         Cap,
+         HandleIds
       },
 
       mixins: [SalonsMixin],

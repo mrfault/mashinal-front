@@ -206,6 +206,11 @@ export default {
       .registration_mark_form {
          .divider {
 
+            &.mobile-column {
+               display: flex !important;
+               flex-direction: column;
+            }
+
             .price_types {
                .toggle_container {
                   gap: 8px !important;

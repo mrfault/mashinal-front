@@ -826,7 +826,7 @@ export default {
             },
             car_number: {
                required: requiredIf(function () {
-                  return !this.form.vin && !this.user.external_salon && !this.user.autosalon
+                  return !this.form.vin && (!this.user.external_salon || !this.user.autosalon)
                })
             },
             region_id: {
@@ -846,7 +846,7 @@ export default {
             },
             vin: {
                required: requiredIf(function () {
-                  return this.form.customs_clearance
+                  return (!this.user.external_salon || !this.user.autosalon) && this.form.customs_clearance
                })
             },
             price: {required},

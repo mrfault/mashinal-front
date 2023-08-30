@@ -17,12 +17,15 @@
             </template>
          </grid>
       </div>
+
+      <HandleIds :items="handleIdsOptions" />
    </div>
 </template>
 
 <script>
    import Grid from "~/components/announcements/Grid.vue";
    import Cap from "~/components/elements/Cap.vue";
+   import HandleIds from "~/components/announcements/HandleIds.vue";
    import { mapGetters } from "vuex";
 
    export default {
@@ -43,7 +46,7 @@
          }
       },
 
-      components: { Grid, Cap },
+      components: { Grid, Cap, HandleIds },
 
       data() {
         return {
@@ -66,9 +69,45 @@
       },
 
       computed: {
-        ...mapGetters({
-           announcements: 'monetizedPage'
-        })
+         ...mapGetters({
+             announcements: 'monetizedPage'
+         }),
+
+         handleIdsOptions() {
+            let ids = [];
+
+            ids.push({
+               type: 'car',
+               ids: [...this.announcements?.data?.filter(car => car.type === 'light_vehicle').map(item => item.id)]
+            });
+
+            ids.push({
+               type: 'motorcycle',
+               ids: [...this.announcements?.data?.filter(car => car.type === 'motorcycle').map(item => item.id)]
+            });
+
+            ids.push({
+               type: 'scooter',
+               ids: [...this.announcements?.data?.filter(car => car.type === 'scooter').map(item => item.id)]
+            });
+
+            ids.push({
+               type: 'motoatv',
+               ids: [...this.announcements?.data?.filter(car => car.type === 'motoatv').map(item => item.id)]
+            });
+
+            ids.push({
+               type: 'commercial',
+               ids: [...this.announcements?.data?.filter(car => car.type === 'commercial').map(item => item.id)]
+            });
+
+            ids.push({
+               type: 'parts',
+               ids: [...this.announcements?.data?.filter(car => car.type === 'parts').map(item => item.id)]
+            });
+
+            return ids;
+         }
       },
 
       async asyncData({ store }) {

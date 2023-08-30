@@ -860,7 +860,7 @@ export default {
             additional_brands: {0: {}, 1: {}, 2: {}, 3: {}, 4: {}},
             exclude_additional_brands: {0: {}, 1: {}, 2: {}, 3: {}, 4: {}},
             all_options: [],
-            announce_type: 1,
+            announce_type: 0,
             external_salon: false,
             currency: 1,
             min_capacity: '',

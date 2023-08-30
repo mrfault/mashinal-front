@@ -152,10 +152,10 @@
    }
 
    hr {
-      background-color: $dark-1;
+      background-color: $grey-2-new;
 
       &.dashed {
-         border-color: $dark-1;
+         border-color: $grey-2-new;
       }
    }
 
@@ -1403,8 +1403,11 @@
 
 .dark-mode {
    .upload-image {
+      .draggable_item {
+         border-color: $grey-4-new;
+
       .upload-image_thumbnail {
-         background-color: $dark-1;
+         background-color: $grey-3-new;
 
          &.add-image,
          &.helper {
@@ -1412,6 +1415,7 @@
                color: $grey-4;
             }
          }
+      }
       }
 
       &.dragover .upload-image_thumbnail {

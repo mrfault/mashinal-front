@@ -58,7 +58,7 @@
 
       methods: {
          handleClick() {
-            console.log(this.phone)
+            // console.log(this.phone)
             if (this.callAtOnce) {
                window.location.href = `tel:+${this.phone}`;
                this.trackCall(2);
@@ -95,7 +95,9 @@
       height: 56px !important;
 
       &.circle {
-         display: block;
+         display: flex;
+         align-items: center;
+         justify-content: center;
          width: 56px;
          height: 56px;
          border-radius: 50%;

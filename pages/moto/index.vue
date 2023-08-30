@@ -34,6 +34,7 @@
                :pending="pending"
                :category="{}"
                :sorting="sorting"
+               :announceType="announceType"
                @pending="pending = true"
                @submit="searchMoto"
             />
@@ -76,11 +77,10 @@
                </Cap>
             </template>
          </grid>
-         <!--         :title="$t('announcements')"-->
 
          <no-results v-else/>
 
-         <HandleIds :type="'motorcycles'" :items="motoAnnouncements.data" />
+         <HandleIds :items="handleIdsOptions" />
       </div>
    </div>
 </template>
@@ -124,7 +124,7 @@
 
       data() {
          return {
-            announceType: 1,
+            announceType: 0,
             searchType: 1,
             sorting: { key: 'created_at', value: 'desc', name: this.$t('show_by_date') },
             sortItems: [
@@ -195,11 +195,11 @@
          },
 
          getMileageOptions() {
-            let zeroFirst;
+            // let zeroFirst;
             return [
-               {name: this.$t('all2'), key: zeroFirst ? 0 : 1},
-               {name: this.$t('new'), key: zeroFirst ? 1 : 2},
-               {name: this.$t('with_mileage_2'), key: zeroFirst ? 2 : 3}
+               {name: this.$t('all2'), key: 0},
+               {name: this.$t('new'), key: 1},
+               {name: this.$t('with_mileage_2'), key: 2}
                // {name: this.$t(this.meta.type === 'parts' ? 'S_H' : 'with_mileage'), key: zeroFirst ? 2 : 3}
             ];
          },
@@ -226,6 +226,33 @@
                }
             }
          },
+
+         handleIdsOptions() {
+            let ids = [];
+
+            ids.push({
+               type: 'motorcycle',
+               ids: [
+                  ...this.motoAnnouncements.data?.filter(car => car.type === 'motorcycle').map(item => item.id)
+               ]
+            });
+
+            ids.push({
+               type: 'scooter',
+               ids: [
+                  ...this.motoAnnouncements.data?.filter(car => car.type === 'scooter').map(item => item.id)
+               ]
+            });
+
+            ids.push({
+               type: 'motoatv',
+               ids: [
+                  ...this.motoAnnouncements.data?.filter(car => car.type === 'motoatv').map(item => item.id)
+               ]
+            });
+
+            return ids;
+         }
 
          // sortItems() {
          //    return [
@@ -254,7 +281,9 @@
                this.sorting.value = filters.sort_order;
             }
 
-            this.announceType = filters.announce_type || 1;
+            this.announceType = filters.announce_type || 0;
+
+            console.log('filters.announce_type', filters.announce_type)
          }
       },
 

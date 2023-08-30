@@ -74,7 +74,7 @@ export default {
          let path = this.$localePath(this.getLink(item));
          let scrollToGrid = !this.$route.params.generation;
          this.$router.push(path, () => {
-            console.log('asdsdssss')
+            // console.log('asdsdssss')
             if (scrollToGrid) this.scrollTo('.catalog-grid', [-15, -190]);
             else this.scrollReset();
          });

@@ -209,6 +209,11 @@
 
                </span>
             </div>
+
+<!--            <call-button-->
+<!--               :phone="contact?.phone"-->
+<!--               :announcement-id="announcement?.id_unique"-->
+<!--            />-->
          </div>
 
          <div v-if="isProfilePage" class="item-monetization">
@@ -222,11 +227,12 @@
 </template>
 
 <script>
-import AddFavorite from '~/components/announcements/AddFavorite'
-import AddComparison from '~/components/announcements/AddComparison'
-import MonetizationButton from '~/components/announcements/MonetizationButton'
-import MonetizationStatsButton from '~/components/announcements/MonetizationStatsButton'
-import ProfileGridActions from "~/components/profile/ProfileGridActions";
+   import AddFavorite from '~/components/announcements/AddFavorite'
+   import AddComparison from '~/components/announcements/AddComparison'
+   import MonetizationButton from '~/components/announcements/MonetizationButton'
+   import MonetizationStatsButton from '~/components/announcements/MonetizationStatsButton'
+   import ProfileGridActions from "~/components/profile/ProfileGridActions";
+   import CallButton from "~/components/announcements/CallButton.vue";
 
 export default {
    props: {
@@ -259,239 +265,239 @@ export default {
       activeTab: Number,
    },
 
-   components: {
-      MonetizationStatsButton,
-      MonetizationButton,
-      AddFavorite,
-      AddComparison,
-      ProfileGridActions,
-   },
-
-   data() {
-      return {
-         selected: false
-      }
-   },
-
-   computed: {
-      getType() {
-         console.log('item', item)
-         let item = this.announcement
-
-         if (item.type === "motorcycle") return 'Motorcycle'
-         else if (item.type === "scooter") return 'Scooter'
-         else if (item.type === "moto_atv") return 'Atv'
-         else if (item.commercial_brand) return 'Commercial'
-         else if (item.type === "light_vehicle") return 'Car'
-         else if (item.type === "part" || item.title) return 'Part'
-         return ''
+      components: {
+         MonetizationStatsButton,
+         MonetizationButton,
+         AddFavorite,
+         AddComparison,
+         ProfileGridActions,
+         CallButton
       },
 
-      getLink() {
-         let type = 'cars',
-             motoType = '';
-
-         if (this.getType === 'Motorcycle') motoType = '?type=motorcycle';
-         else if (this.getType === 'Scooter') motoType = '?type=scooter';
-         else if (this.getType === 'Atv') motoType = '?type=atv';
-         else motoType = ''
-
-         if (['Motorcycle', 'Scooter', 'Atv'].includes(this.getType)) type = 'moto'
-         else if (['Commercial'].includes(this.getType)) type = 'commercial'
-         else if (['Part'].includes(this.getType)) type = 'parts'
-         console.log('motoType', motoType)
-         let path = `/${type}/announcement/${this.announcement.id}${motoType}`
-         return this.$localePath(path)
+      data() {
+         return {
+            selected: false
+         }
       },
 
-      getTextLine() {
-         if (['Part'].includes(this.getType)) return this.announcement.description
-         let text = `${this.announcement.year} ${this.$t('plural_forms_year')[0]}`
-         if (
-            // this.getCapacity &&
-            this.showOverlay
-         )
-            if (this.getCapacity) {
-               text +=
-                  // `, ${this.getCapacity}`text +=
-                  // `, ${this.announcement.humanize_mileage} ${this.$t('char_kilometre')}`
-                  `, ${this.getCapacity}`
-            }
-         return text
-      },
+      computed: {
+         getType() {
+            let item = this.announcement
+            console.log('item', this.announcement)
 
-      getImage() {
-         let item = this.announcement;
-         return this.$withBaseUrl(item.image);
+            if (item.type === "motorcycle") return 'Motorcycle'
+            else if (item.type === "scooter") return 'Scooter'
+            else if (item.type === "moto_atv") return 'Atv'
+            else if (item.commercial_brand) return 'Commercial'
+            else if (item.type === "light_vehicle") return 'Car'
+            else if (item.type === "part" || item.title) return 'Part'
+            return ''
+         },
 
-         // if (item.has_360 == false || !item.has_360) {
-         //   if (item.media && item.media.thumb && item.media.thumb.length)
-         //     return this.$withBaseUrl(item.image)
-         //   else if (item.media && item.media.length)
-         //     return this.$withBaseUrl(item.media[0].thumb || item.media[0])
-         //   return false
-         // } else {
-         //   return this.$withBaseUrl(item.has_360)
-         // }
-      },
+         getLink() {
+            let type = 'cars',
+                motoType = '';
 
-      getCapacity() {
-         let item = this.announcement,
-            type = this.getType
-         let capacity = item.car_catalog?.capacity || item.capacity
-         let showLitres = ['Car', 'Commercial'].includes(type)
-         if (!capacity || capacity == '0') return ''
-         if (showLitres && capacity > 50) capacity = (capacity / 1000).toFixed(1)
-         return `${capacity} ${this.$t(
-            showLitres ? 'char_litre' : 'char_sm_cube',
-         )}`
-      },
+            if (this.getType === 'Motorcycle') motoType = '?type=motorcycle';
+            else if (this.getType === 'Scooter') motoType = '?type=scooter';
+            else if (this.getType === 'Atv') motoType = '?type=atv';
+            else motoType = ''
 
-      getOdometer() {
-         if (this.showOverlay) {
-            return `${this.announcement.humanize_mileage} ${this.$t(
-               'char_kilometre',
+            if (['Motorcycle', 'Scooter', 'Atv'].includes(this.getType)) type = 'moto'
+            else if (['Commercial'].includes(this.getType)) type = 'commercial'
+            else if (['Part'].includes(this.getType)) type = 'parts'
+            console.log('motoType', motoType)
+            let path = `/${type}/announcement/${this.announcement.id}${motoType}`
+            return this.$localePath(path)
+         },
+
+         getTextLine() {
+            if (['Part'].includes(this.getType)) return this.announcement.description
+            let text = `${this.announcement.year} ${this.$t('plural_forms_year')[0]}`
+            if (
+               // this.getCapacity &&
+               this.showOverlay
+            )
+               if (this.getCapacity) {
+                  text +=
+                     // `, ${this.getCapacity}`text +=
+                     // `, ${this.announcement.humanize_mileage} ${this.$t('char_kilometre')}`
+                     `, ${this.getCapacity}`
+               }
+            return text
+         },
+
+         getImage() {
+            let item = this.announcement;
+            return this.$withBaseUrl(item.image);
+
+            // if (item.has_360 == false || !item.has_360) {
+            //   if (item.media && item.media.thumb && item.media.thumb.length)
+            //     return this.$withBaseUrl(item.image)
+            //   else if (item.media && item.media.length)
+            //     return this.$withBaseUrl(item.media[0].thumb || item.media[0])
+            //   return false
+            // } else {
+            //   return this.$withBaseUrl(item.has_360)
+            // }
+         },
+
+         getCapacity() {
+            let item = this.announcement,
+               type = this.getType
+            let capacity = item.car_catalog?.capacity || item.capacity
+            let showLitres = ['Car', 'Commercial'].includes(type)
+            if (!capacity || capacity == '0') return ''
+            if (showLitres && capacity > 50) capacity = (capacity / 1000).toFixed(1)
+            return `${capacity} ${this.$t(
+               showLitres ? 'char_litre' : 'char_sm_cube',
             )}`
+         },
+
+         getOdometer() {
+            if (this.showOverlay) {
+               return `${this.announcement.humanize_mileage} ${this.$t(
+                  'char_kilometre',
+               )}`
+            }
          }
+      },
+
+      methods: {
+         getShineSize(filters) {
+            return filters.shine_width.name + '/' + filters.height.name + 'R' + filters.diameter.name
+         },
+
+         goToAnnouncement(event) {
+            this.$store.commit('closeDropdown');
+
+            if (!this.clickable) return;
+
+            if (this.trackViews) {
+               this.fbTrack('ViewContent', {
+                  content_type: 'product',
+                  content_category: this.getType,
+                  content_ids: [this.announcement.id],
+                  content_name: this.getAnnouncementTitle(this.announcement) + ', ' + this.announcement.year
+               })
+            }
+
+            if (!this.isMobileBreakpoint && !this.$env.DEV) return;
+
+            if (!this.isMobileBreakpoint) {
+               this.$router.push(this.getLink);
+            } else if (this.isMobileBreakpoint) {
+               event.stopPropagation();
+               event.preventDefault();
+               this.$router.push(this.getLink);
+            }
+         },
+
+         handleChange(value) {
+            this.selected = value;
+            this.$nuxt.$emit('select-announcement', this.announcement.id, value, true);
+         },
+
+         selectAnnouncement(id, value, controls = false) {
+            if (controls || id != this.announcement.id) return
+            this.handleChange(value)
+         },
+
+         checkPendingBadge(announcement) {
+            if (
+               (announcement.status == 2 ||
+                  announcement.status == 5 ||
+                  announcement.status == 3) &&
+               (announcement.is_auto_salon == true ||
+                  announcement.is_part_salon == true)
+            ) {
+               return true
+            } else {
+               return false
+            }
+         },
+
+         getActiveTabAnnouncements() {
+            this.$store.dispatch('getMyAllAnnouncementsV2', { status: this.activeTab });
+         }
+      },
+
+      mounted() {
+         // console.log('this.announcement', this.announcement)
+         this.$nuxt.$on('select-announcement', this.selectAnnouncement)
+      },
+
+      beforeDestroy() {
+         this.$nuxt.$off('select-announcement', this.selectAnnouncement)
       }
-   },
-
-   methods: {
-      getShineSize(filters) {
-         return filters.shine_width.name + '/' + filters.height.name + 'R' + filters.diameter.name
-      },
-
-      goToAnnouncement(event) {
-         this.$store.commit('closeDropdown');
-
-         if (!this.clickable) return;
-
-         if (this.trackViews) {
-            this.fbTrack('ViewContent', {
-               content_type: 'product',
-               content_category: this.getType,
-               content_ids: [this.announcement.id],
-               content_name: this.getAnnouncementTitle(this.announcement) + ', ' + this.announcement.year
-            })
-         }
-
-         if (!this.isMobileBreakpoint && !this.$env.DEV) return;
-
-         if (!this.isMobileBreakpoint) {
-            this.$router.push(this.getLink);
-         } else if (this.isMobileBreakpoint) {
-            event.stopPropagation();
-            event.preventDefault();
-            this.$router.push(this.getLink);
-         }
-      },
-
-      handleChange(value) {
-         this.selected = value;
-         this.$nuxt.$emit('select-announcement', this.announcement.id, value, true);
-      },
-
-      selectAnnouncement(id, value, controls = false) {
-         if (controls || id != this.announcement.id) return
-         this.handleChange(value)
-      },
-
-      checkPendingBadge(announcement) {
-         if (
-            (announcement.status == 2 ||
-               announcement.status == 5 ||
-               announcement.status == 3) &&
-            (announcement.is_auto_salon == true ||
-               announcement.is_part_salon == true)
-         ) {
-            return true
-         } else {
-            return false
-         }
-      },
-
-      getActiveTabAnnouncements() {
-         this.$store.dispatch('getMyAllAnnouncementsV2', {status: this.activeTab})
-      }
-   },
-
-   mounted() {
-      // console.log('this.announcement', this.announcement)
-      this.$nuxt.$on('select-announcement', this.selectAnnouncement)
-   },
-
-   beforeDestroy() {
-      this.$nuxt.$off('select-announcement', this.selectAnnouncement)
    }
-}
-</script>
+   </script>
 
 <style lang="scss">
-
-.badge-icon {
-   width: 20px;
-   margin-right: 3px;
-   margin-bottom: 1px;
-   height: 20px;
-}
-
-.badge-external {
-   margin-right: -17px;
-   border-bottom-right-radius: 0 !important;
-   border-top-right-radius: 0 !important;
-}
-
-.shine-size {
-   margin-left: auto;
-}
-
-.item-overlay__top--left_item {
-   &.activeStatus {
-      background: #32B878;
+   .badge-icon {
+      width: 20px;
+      margin-right: 3px;
+      margin-bottom: 1px;
+      height: 20px;
    }
 
-   &.deactiveStatus {
-      background: #697586;
+   .badge-external {
+      margin-right: -17px;
+      border-bottom-right-radius: 0 !important;
+      border-top-right-radius: 0 !important;
    }
 
-   &.consideration {
-      background: #F79009;
+   .shine-size {
+      margin-left: auto;
    }
 
-   &.rejectedStatus {
-      background: #F97066;
-   }
-}
+   .item-overlay__top--left_item {
+      &.activeStatus {
+         background: #32B878;
+      }
 
-.item-monetization {
-   position: absolute;
-   bottom: 12px;
-   left: 12px;
-   width: calc(100% - 24px);
-   z-index: 2;
-   padding: 0 !important;
-}
+      &.deactiveStatus {
+         background: #697586;
+      }
 
-.isProfilePage {
-   .item-details {
-      padding-bottom: 70px;
-      height: auto;
-   }
-}
+      &.consideration {
+         background: #F79009;
+      }
 
-.ma-announcement-card__stats {
-   display: flex;
-   align-items: center;
-
-   p {
-      padding-left: 4px;
-      margin: 0;
-      font: 400 15px/22px 'TTHoves';
+      &.rejectedStatus {
+         background: #F97066;
+      }
    }
 
-   svg {
-      height: 28px;
-      display: inline !important;
+   .item-monetization {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      width: calc(100% - 24px);
+      z-index: 2;
+      padding: 0 !important;
    }
-}
+
+   .isProfilePage {
+      .item-details {
+         padding-bottom: 70px;
+         height: auto;
+      }
+   }
+
+   .ma-announcement-card__stats {
+      display: flex;
+      align-items: center;
+
+      p {
+         padding-left: 4px;
+         margin: 0;
+         font: 400 15px/22px 'TTHoves';
+      }
+
+      svg {
+         height: 28px;
+         display: inline !important;
+      }
+   }
 </style>

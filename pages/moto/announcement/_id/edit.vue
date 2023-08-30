@@ -58,8 +58,8 @@ export default {
       return {
          previewForm: {
             image: "",
-            show_vin: true,
-            has_360: true,
+            show_vin: false,
+            has_360: false,
             price: "0 AZN",
             tradeable: 0,
             credit: false,
@@ -201,7 +201,7 @@ export default {
       this.previewForm = {
          image: this.announcement.media[0],
          show_vin: this.announcement.show_vin,
-         has_360: true,
+         has_360: false,
          price: this.announcement.price_int + ' ' + this.getCurrencyName(),
          tradeable: this.announcement.tradeable,
          credit: this.announcement.credit,

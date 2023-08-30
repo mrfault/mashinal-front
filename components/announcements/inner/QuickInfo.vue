@@ -168,25 +168,25 @@
 <!--         </div>-->
 <!--      </template>-->
 
-      <template v-if="(((announcement.status == 1 || announcement.has_monetization)) || needToPay)">
-<!--         <hr class="mt-3"-->
-<!--             v-if="needToPay ||-->
-<!--             (!this.isMobileBreakpoint && announcement.has_monetization && $auth.loggedIn) ||-->
-<!--             (!this.isMobileBreakpoint && !announcement.has_monetization) && this.type !== 'registration-marks'"-->
-<!--         />-->
+<!--      <template v-if="(((announcement.status == 1 || announcement.has_monetization)) || needToPay)">-->
+<!--&lt;!&ndash;         <hr class="mt-3"&ndash;&gt;-->
+<!--&lt;!&ndash;             v-if="needToPay ||&ndash;&gt;-->
+<!--&lt;!&ndash;             (!this.isMobileBreakpoint && announcement.has_monetization && $auth.loggedIn) ||&ndash;&gt;-->
+<!--&lt;!&ndash;             (!this.isMobileBreakpoint && !announcement.has_monetization) && this.type !== 'registration-marks'"&ndash;&gt;-->
+<!--&lt;!&ndash;         />&ndash;&gt;-->
 
-         <div :class="{'mb-2 mb-lg-3': !needToPay }" v-if="type !== 'plates'">
-            <pay-announcement-button
-               :announcement="announcement"
-               v-if="needToPay"
-            />
+<!--         <div :class="{'mb-2 mb-lg-3': !needToPay }" v-if="type !== 'plates'">-->
+<!--            <pay-announcement-button-->
+<!--               :announcement="announcement"-->
+<!--               v-if="needToPay"-->
+<!--            />-->
 
-            <monetization-stats-button
-               :announcement="announcement"
-               v-else-if="!this.isMobileBreakpoint && announcement.has_monetization && $auth.loggedIn && $auth.user.id === announcement.user_id && !needToPay"
-            />
-         </div>
-      </template>
+<!--            <monetization-stats-button-->
+<!--               :announcement="announcement"-->
+<!--               v-else-if="!this.isMobileBreakpoint && announcement.has_monetization && $auth.loggedIn && $auth.user.id === announcement.user_id && !needToPay"-->
+<!--            />-->
+<!--         </div>-->
+<!--      </template>-->
 
 <!--      <div class="quick-info__item" v-if="brief">-->
 <!--         <monetization-button-->
@@ -223,7 +223,8 @@
 
       <div class="wrapp">
          <monetization-button
-            class="h-52 mb-3"
+            v-if="type !== 'plates' && announcement.status === 1"
+            class="h-52 mb-2"
             :announcement="announcement"
             @openModal="openModal"
          />
@@ -234,6 +235,7 @@
                :template="'btn'"
                :text="$t('add_favorite')"
                :announcement="announcement"
+               v-if="![2,3].includes(announcement.status)"
             />
 
             <add-comparison
@@ -374,7 +376,7 @@
             return false;
          },
          showEditButton(item) {
-            console.log('item.status', item)
+            // console.log('item.status', item)
             if (this.$auth.loggedIn === false) {
                return item?.status === 1 || item?.status === 2
             } else {
@@ -382,7 +384,7 @@
             }
          },
          openModal() {
-            console.log('sadsad')
+            // console.log('sadsad')
             this.showModal = true
          },
          closeModal() {
@@ -508,7 +510,7 @@
 
       .btns {
          display: grid;
-         grid-template-columns: repeat(2, 1fr);
+         grid-template-columns: repeat(1, 1fr);
          gap: 12px;
       }
 

@@ -263,6 +263,7 @@
                   v-model="form.show_vin"
                   :label="$t('show_on_site')"
                   input-name="show_vin"
+                  @change="preview.show_vin = $event"
                   :disabled="!form.vin"
                   transparent
                />
