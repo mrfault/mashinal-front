@@ -254,6 +254,12 @@ export default {
          return this.staticPages.find(page => page.id == 1);
       },
    },
+   head() {
+      return this.$headMeta({
+         title: this.$t('meta-title_main-page'),
+         description: this.$t('meta-descr_main-page'),
+      })
+   },
    data() {
       return {
          authError: [],
@@ -561,21 +567,23 @@ export default {
       'form.announce_type'() {
          this.submitShow = false
          this.navigationData.forEach((nav) => nav.id !== 4 && (nav.isActive = false))
+         this.partPreview = {...this.resetPartPreview}
+         this.announcement = {...this.resetAnnouncement}
          switch (this.form.announce_type.title) {
             case "cars":
-               this.partPreview = {...this.resetPartPreview}
+               // this.partPreview = {...this.resetPartPreview}
                this.announceTitle = this.$t('vehicle_info')
                return this.announcement.image = "/img/car_default.svg"
             case "moto":
-               this.partPreview = {...this.resetPartPreview}
+               // this.partPreview = {...this.resetPartPreview}
                this.announceTitle = this.$t('vehicle_info')
                return this.announcement.image = "/img/motorbike.svg"
             case "parts":
-               this.announcement = {...this.resetAnnouncement}
+               // this.announcement = {...this.resetAnnouncement}
                return this.announceTitle = this.$t('part_info')
             case "registration_marks":
-               this.announcement = {...this.resetAnnouncement}
-               this.partPreview = {...this.resetPartPreview}
+               // this.announcement = {...this.resetAnnouncement}
+               // this.partPreview = {...this.resetPartPreview}
                this.announceTitle = this.$t('registration_mark_info')
                return this.submitShow = true
             default:
