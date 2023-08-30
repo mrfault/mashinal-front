@@ -106,4 +106,17 @@ export default {
       }
    }
 }
+
+@media (max-width: 1150px) {
+   .grid_radio {
+      .grid_container {
+         .grid_item {
+            .check_icon {
+               top: 8px;
+               left: 8px;
+            }
+         }
+      }
+   }
+}
 </style>

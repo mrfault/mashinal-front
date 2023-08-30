@@ -2432,6 +2432,7 @@ export default {
    number_of_tech_id: "Texpasport nömrəsi",
    watch_your_penalties_on_mashinal: "Cərimələrinizi Mashin.AL-da izləyin",
    otp_number: "OTP nömrə",
+   resend_otp: "Kodu yenidən göndər",
    we_created_a_system_that_you_can_buy_a_car_only_in_one_hour:
       "Cəmi bir saat ərzində avtomobil almağa imkan verən sistem  yaratdıq.",
    download_mobile_app: "Mobil tətbiqi yüklə",

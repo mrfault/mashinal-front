@@ -91,8 +91,9 @@
                               <p>{{ $t("contacts_registration_info") }}</p>
                            </div>
                            <div class="resend_section" v-if="authStep === 'handleOTP'">
-                              <p :class="{link_active: resendSmsAfterSecond === 0}" @click="resendCode">Kodu
-                                 yenidən göndər</p>
+                              <p :class="{link_active: resendSmsAfterSecond === 0}" @click="resendCode">{{
+                                    $t('resend_otp')
+                                 }}</p>
                               <timer
                                  v-if="resendSmsAfterSecond > 0"
                                  class="otp_timer"
@@ -155,6 +156,9 @@
                            </button>
                         </div>
                         <div class="comment_info">
+                           <inline-svg
+                              :src="'/icons/info.svg'"
+                           />
                            <p>{{ $t("by_posting_an_ad_you_confirm_your_agreement_with_the_rules") }}:
                               <nuxt-link :to="`/page/${getRulesPage.slug[locale]}`"
                                          @click.native.prevent="showRules = true"
@@ -550,8 +554,8 @@ export default {
       }
    },
    async mounted() {
-      this.resetAnnouncement = {...this.announcement}
-      this.resetPartPreview = {...this.partPreview}
+      this.resetAnnouncement = JSON.parse(JSON.stringify(this.announcement));
+      this.resetPartPreview = JSON.parse(JSON.stringify(this.partPreview))
       this.announceTitle = this.$t('place_an_ad')
       if (Object.values(this.user).length) {
          this.authForm.name = this.user.full_name
@@ -567,23 +571,18 @@ export default {
       'form.announce_type'() {
          this.submitShow = false
          this.navigationData.forEach((nav) => nav.id !== 4 && (nav.isActive = false))
-         this.partPreview = {...this.resetPartPreview}
-         this.announcement = {...this.resetAnnouncement}
+         this.partPreview = JSON.parse(JSON.stringify(this.resetPartPreview))
+         this.announcement = JSON.parse(JSON.stringify(this.resetAnnouncement));
          switch (this.form.announce_type.title) {
             case "cars":
-               // this.partPreview = {...this.resetPartPreview}
                this.announceTitle = this.$t('vehicle_info')
                return this.announcement.image = "/img/car_default.svg"
             case "moto":
-               // this.partPreview = {...this.resetPartPreview}
                this.announceTitle = this.$t('vehicle_info')
                return this.announcement.image = "/img/motorbike.svg"
             case "parts":
-               // this.announcement = {...this.resetAnnouncement}
                return this.announceTitle = this.$t('part_info')
             case "registration_marks":
-               // this.announcement = {...this.resetAnnouncement}
-               // this.partPreview = {...this.resetPartPreview}
                this.announceTitle = this.$t('registration_mark_info')
                return this.submitShow = true
             default:
@@ -888,6 +887,16 @@ export default {
                   }
                }
 
+               .comment_info {
+                  display:flex;
+                  align-items: center;
+                  gap: 10px;
+
+                  svg {
+                     min-width: 24px;
+                     min-height: 24px;
+                  }
+               }
 
             }
 
