@@ -167,11 +167,13 @@
                               </div>
                            </div>
                         </div>
+
                         <div
                            v-if="hasGenerations && getFilteredOptions.length"
                            class="mt-2"
                         >
                            <form-buttons
+                              class="generation"
                               v-model="selectGeneration"
                               :btn-class="'primary-outline select-generation'"
                               :group-by="2"
@@ -179,10 +181,7 @@
                            >
                               <template #custom="{ button }">
                                  <div
-                                    :class="[
-                          'generation-bg',
-                          { 'no-img': !!getGenerationStyle(button).noImg },
-                        ]"
+                                    :class="['generation-bg',{ 'no-img': !!getGenerationStyle(button).noImg }]"
                                     :style="getGenerationStyle(button)"
                                  ></div>
                                  <div class="generation-info">
