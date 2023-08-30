@@ -34,7 +34,7 @@
                   "3":{},
                   "4":{}
                },
-               "announce_type": 1,
+               "announce_type": 0,
                "currency": 1
             }
 

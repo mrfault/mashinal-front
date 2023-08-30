@@ -92,7 +92,7 @@ export default {
         brand_id: '',
         model_id: '',
         generation_id: '',
-        announce_type: 1,
+        announce_type: 0,
         barter: false,
         credit: false,
         text: '',

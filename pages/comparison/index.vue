@@ -56,7 +56,6 @@
          }
       },
 
-
       computed: {
          crumbs() {
             return [{ name: this.$t('comparisons'), route: '/comparison' }]
@@ -65,8 +64,10 @@
    }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
    .pages-comparison-index {
+      padding-bottom: 120px;
+
       &__inner {
          padding: 32px;
          border-radius: 12px;
@@ -84,6 +85,79 @@
 
       .comparison-filter {
          margin-bottom: 30px;
+      }
+   }
+
+   .dark-mode {
+      .pages-comparison-index {
+         &__inner {
+            background-color: #1B2434;
+
+            .comparison-filter {
+               &__types {
+                  .btn {
+                     span {
+                        color: #CDD5DF;
+                     }
+
+                     &.active {
+                        span {
+                           color: #EEF2F6 !important;
+                        }
+                     }
+                  }
+               }
+
+               &__checkboxes {
+                  .form-group {
+                     .checkbox-input {
+                        label {
+                           background-color: transparent !important;
+                           //border: none;
+                        }
+                     }
+                  }
+               }
+            }
+
+            .comparison {
+               &__specifications {
+                  .collapse-content {
+                     &__column {
+                        border-color: #4B5565;
+
+                        h2 {
+                           color: #EEF2F6;
+                        }
+
+                        h3 {
+                           color: #CDD5DF;
+                        }
+
+                        p {
+                           color: #EEF2F6;
+                        }
+                     }
+
+                     & > div {
+                        & > div {
+                           .collapse-content__element {
+                              &:not(:last-child) {
+                                 .collapse-content__column {
+                                    border-color: #4B5565;
+                                 }
+                              }
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         }
+
+         &__title {
+            color: #EEF2F6;
+         }
       }
    }
 </style>

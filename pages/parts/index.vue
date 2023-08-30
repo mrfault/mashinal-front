@@ -78,7 +78,7 @@
             v-else
          />
 
-<!--         <HandleIds :type="'parts'" :items="partAnnouncements.data" />-->
+         <HandleIds :items="handleIdsOptions" />
       </div>
    </div>
 </template>
@@ -207,6 +207,20 @@
          crumbs() {
             return [{ name: this.$t('all_parts') }]
          },
+
+         handleIdsOptions() {
+            let ids = [];
+
+            ids.push({
+               type: 'parts',
+               ids: [
+                  ...this.parts?.data?.map(item => item.id),
+                  ...this.partsMonetized?.map(item => item.id),
+               ]
+            });
+
+            return ids;
+         }
       },
 
       beforeDestroy() {

@@ -151,7 +151,7 @@
          </grid>
       </div>
 
-      <HandleIds :items="getMainMonetized" :watchIds="false"/>
+      <HandleIds :items="handleIdsOptions" :watchIds="false" />
    </div>
 </template>
 
@@ -193,7 +193,7 @@
 
       data() {
          return {
-            announceType: 1,
+            announceType: 0,
             searchType: 1,
             currentSlide: 0,
             swiperOps: {
@@ -278,11 +278,11 @@
          },
 
          getMileageOptions() {
-            let zeroFirst;
+            // let zeroFirst;
             return [
-               {name: this.$t('all2'), key: zeroFirst ? 0 : 1},
-               {name: this.$t('new'), key: zeroFirst ? 1 : 2},
-               {name: this.$t('with_mileage_2'), key: zeroFirst ? 2 : 3}
+               {name: this.$t('all2'), key: 0},
+               {name: this.$t('new'), key: 1},
+               {name: this.$t('with_mileage_2'), key: 2}
                // {name: this.$t(this.meta.type === 'parts' ? 'S_H' : 'with_mileage'), key: zeroFirst ? 2 : 3}
             ];
          },
@@ -293,6 +293,67 @@
                { name: this.$t('category_moto'), key: 2 }
             ];
          },
+
+         handleIdsOptions() {
+            let ids = [];
+
+            ids.push({
+               type: 'car',
+               ids: [
+                  ...this.getMainMonetized?.filter(car => car.type === 'light_vehicle').map(item => item.id),
+                  ...this.mainAnnouncements?.filter(car => car.type === 'light_vehicle').map(item => item.id)
+               ]
+            });
+
+            ids.push({
+               type: 'motorcycle',
+               ids: [
+                  ...this.getMainMonetized?.filter(car => car.type === 'motorcycle').map(item => item.id),
+                  ...this.mainAnnouncements?.filter(car => car.type === 'motorcycle').map(item => item.id)
+               ]
+            });
+
+            ids.push({
+               type: 'scooter',
+               ids: [
+                  ...this.getMainMonetized?.filter(car => car.type === 'scooter').map(item => item.id),
+                  ...this.mainAnnouncements?.filter(car => car.type === 'scooter').map(item => item.id)
+               ]
+            });
+
+            ids.push({
+               type: 'motoatv',
+               ids: [
+                  ...this.getMainMonetized?.filter(car => car.type === 'motoatv').map(item => item.id),
+                  ...this.mainAnnouncements?.filter(car => car.type === 'motoatv').map(item => item.id)
+               ]
+            });
+
+            ids.push({
+               type: 'commercial',
+               ids: [
+                  ...this.getMainMonetized?.filter(car => car.type === 'commercial').map(item => item.id),
+                  ...this.mainAnnouncements?.filter(car => car.type === 'commercial').map(item => item.id),
+                  ...this.carShowroom?.filter(car => car.type === 'commercial').map(item => item.id)
+               ]
+            });
+
+            ids.push({
+               type: 'parts',
+               ids: [
+                  ...this.getMainMonetized?.filter(car => car.type === 'parts').map(item => item.id),
+                  ...this.partsHome?.map(item => item.id)
+               ]
+            });
+
+            ids.push({
+               type: 'plate',
+               ids: [...this.plateNumbers?.map(item => item.id)
+               ]
+            });
+
+            return ids;
+         }
       },
 
       methods: {
@@ -378,7 +439,7 @@
 
       watch: {
          searchType() {
-            this.announceType = 1;
+            this.announceType = 0;
          }
       },
 

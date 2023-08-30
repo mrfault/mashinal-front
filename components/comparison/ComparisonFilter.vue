@@ -1,7 +1,7 @@
 <template>
    <div class="comparison-filter">
       <div class="row">
-         <div class="col-12 col-lg-auto mr-auto">
+         <div class="col-12 col-md-3 mr-auto mb-2 mb-md-0">
             <form-buttons
                class="comparison-filter__types"
                v-model="compareType"
@@ -124,6 +124,11 @@
 
                span {
                   color: #4B5565;
+                  overflow: visible;
+               }
+
+               &:hover {
+                  background-color: unset;
                }
 
                &.active {

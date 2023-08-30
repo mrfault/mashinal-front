@@ -182,7 +182,7 @@ export default {
          this.lightboxKey++;
       },
       onBeforeClose() {
-         console.log("onBeforeClose")
+         // console.log("onBeforeClose")
          this.showLightbox = false;
          this.setBodyOverflow('scroll');
          if (this.isMobileBreakpoint) {
@@ -194,7 +194,7 @@ export default {
 
       },
       changeLightboxSlide(fsBox) {
-         console.log("changeLightboxSlide")
+         // console.log("changeLightboxSlide")
          this.currentSlide = fsBox.stageIndexes.current;
       },
       closeLightbox() {
@@ -202,7 +202,7 @@ export default {
          this.$emit('mediaClosed', true)
          if (this.isMobileBreakpoint) {
             if (this.showLightbox) {
-               console.log("closeLightbox  showLightbox")
+               // console.log("closeLightbox  showLightbox")
                this.toggleFsLightbox = !this.toggleFsLightbox;
             }
          }

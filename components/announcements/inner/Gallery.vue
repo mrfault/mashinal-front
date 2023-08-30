@@ -367,8 +367,8 @@
                thumbs = this.getMediaByKey(this.media, 'thumb')
                main = this.getMediaByKey(this.media, 'main')
 
-               console.log('thumbs', thumbs)
-               console.log('main', main)
+               // console.log('thumbs', thumbs)
+               // console.log('main', main)
             } else if (this.where === 'announcement') {
                let media = this.announcement.media.main
                if (media?.length === 0) return []
