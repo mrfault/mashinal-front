@@ -161,20 +161,13 @@
                            />
                            <p>{{ $t("by_posting_an_ad_you_confirm_your_agreement_with_the_rules") }}:
                               <nuxt-link :to="`/page/${getRulesPage.slug[locale]}`"
-                                         @click.native.prevent="showRules = true"
+                                         @click.native.prevent="onShowModal('rules')"
                                          event="">
                                  <strong style="text-decoration: underline">{{ $t('general_rules') }}</strong>
                               </nuxt-link>
                            </p>
                         </div>
-                        <modal-popup
-                           :modal-class="'wider'"
-                           :toggle="showRules"
-                           :title="getRulesPage.title[locale]"
-                           @close="showRules = false"
-                        >
-                           <div v-html="getRulesPage.text[locale]"></div>
-                        </modal-popup>
+
                      </template>
 
                   </form>
@@ -204,7 +197,7 @@
                               />
                               <p>{{ $t('announce_help_text') }}</p>
                            </div>
-                           <button class="btn btn--red">{{ $t("let_us_know") }}</button>
+                           <button class="btn btn--red" @click="onShowModal('feedback')">{{ $t("let_us_know") }}</button>
                         </div>
                      </template>
                   </div>
@@ -222,6 +215,16 @@
             </div>
          </div>
       </div>
+      <modal-popup
+         :modal-class="'wider'"
+         :toggle="showModal"
+         :title="getRulesPage.title[locale]"
+         @close="showModal = false"
+      >
+
+         <div v-if="modalType === 'rules'" v-html="getRulesPage.text[locale]"></div>
+         <feedback-modal v-if="modalType === 'feedback'"/>
+      </modal-popup>
    </div>
 </template>
 
@@ -242,11 +245,13 @@ import Registration_mark from "~/components/sell/registration_mark.vue";
 import Moto_form from "~/components/sell/moto_form.vue";
 import {required, email, requiredIf} from "vuelidate/lib/validators";
 import {PaymentMixin} from "~/mixins/payment";
+import FeedbackModal from "~/components/sell/FeedbackModal.vue";
 
 export default {
    name: "add-announce",
    mixins: [MenusDataMixin, ToastErrorsMixin, PaymentMixin],
    components: {
+      FeedbackModal,
       Moto_form,
       Registration_mark,
       Part_form,
@@ -270,7 +275,8 @@ export default {
          resendSmsAfterSecond: 0,
          pending: false,
          submitShow: false,
-         showRules: false,
+         showModal: false,
+         modalType: "",
          isReady: false,
          announceTitle: "",
          navigationData: [
@@ -332,6 +338,10 @@ export default {
          if (payload) {
             await this.$store.dispatch(payload.api_key)
          }
+      },
+      onShowModal(type) {
+         this.showModal = true
+         this.modalType = type
       },
       onChangePartType(id) {
          switch (id) {
@@ -888,7 +898,7 @@ export default {
                }
 
                .comment_info {
-                  display:flex;
+                  display: flex;
                   align-items: center;
                   gap: 10px;
 
