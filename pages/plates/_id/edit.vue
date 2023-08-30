@@ -128,7 +128,6 @@ export default {
 
    .announce_container {
       .card {
-         padding-right: 280px;
 
          .add_announce_form {
 

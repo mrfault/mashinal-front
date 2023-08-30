@@ -158,24 +158,30 @@
                v-model="form.mileage"
                :invalid="$v.form.mileage.$error"
             />
-            <!--               @change="announcement.mileage = $event ? $event  + ' ' + mileageTypeName : 0"-->
-            <div class="mileage_types">
-               <form-radio
-                  :id="'1'"
-                  :label="$t('char_kilometre')"
-                  input-name="mileage"
-                  v-model="form.mileage_type"
-                  :radio-value="1"
-               />
-               <form-radio
-                  :id="'52'"
-                  :label="$t('ml')"
-                  input-name="mileage"
-                  v-model="form.mileage_type"
-                  :radio-value="2"
+<!--            <div class="mileage_types">-->
+<!--               <form-radio-->
+<!--                  :id="'1'"-->
+<!--                  :label="$t('char_kilometre')"-->
+<!--                  input-name="mileage"-->
+<!--                  @change="form.mileage_type = $event"-->
+<!--                  :value="form.mileage_type"-->
+<!--                  :radio-value="1"-->
+<!--               />-->
+<!--               <form-radio-->
+<!--                  :id="'52'"-->
+<!--                  :label="$t('ml')"-->
+<!--                  input-name="mileage2"-->
+<!--                  @change="form.mileage_type = $event"-->
+<!--                  :value="form.mileage_type"-->
+<!--                  :radio-value="2"-->
+<!--               />-->
+<!--         </div>-->
+               <radio-group
+                  class="mileage_types"
+               v-model="form.mileage_type"
+               :options="[{key:1, name: 'char_kilometre'},{key:2, name: 'ml'}]"
                />
             </div>
-         </div>
          <div class="divider">
             <form-radio
                :id="'3'"
@@ -405,17 +411,15 @@ import {ToastErrorsMixin} from "~/mixins/toast-errors";
 import {mapActions, mapGetters} from "vuex";
 import {maxLength, maxValue, minLength, required, requiredIf} from "vuelidate/lib/validators";
 import MaxLength from "vuelidate/lib/validators/maxLength";
+import RadioGroup from "~/components/moderator/RadioGroup.vue";
 
 export default {
-   components: {PickOnMapButton, ToggleGroup, ImageComponent, GridRadio},
+   components: {RadioGroup, PickOnMapButton, ToggleGroup, ImageComponent, GridRadio},
    mixins: [MenusDataMixin, ToastErrorsMixin],
    computed: {
       ...mapGetters(['brands', 'models', 'sellYears', 'sellBody', "sellGenerationsV2", "sellEngines", "sellGearing", "sellTransmissions", "sellModificationsV2", "colors", "popularOptions", 'sellOptions']),
       otherParameters() {
          return this.popularOptions.map((p) => ({...p, key: this.$t(p.label), slug: p.name, name: this.$t(p.label)}))
-      },
-      mileageTypeName() {
-         return this.form.mileage_type === 1 ? this.$t('char_kilometre') : this.$t('ml')
       },
    },
    props: {
@@ -798,9 +802,6 @@ export default {
          } else {
             newForm = {...newForm, region_id: this.form.region_id}
          }
-         if (this.isEdit && this.deletedFiles.length) {
-            newForm = {...newForm, deletedFiles: this.deletedFiles}
-         }
 
          this.$emit("getForm", {form: newForm, deletedImages: (this.isEdit && this.deletedFiles.length) ? this.deletedFiles : []})
       },
@@ -826,7 +827,7 @@ export default {
             },
             car_number: {
                required: requiredIf(function () {
-                  return !this.form.vin && (!this.user.external_salon || !this.user.autosalon)
+                  return !this.form.vin && (!this.user.external_salon && !this.user.autosalon)
                })
             },
             region_id: {
@@ -846,8 +847,9 @@ export default {
             },
             vin: {
                required: requiredIf(function () {
-                  return (!this.user.external_salon || !this.user.autosalon) && this.form.customs_clearance
+                  return (!this.user.external_salon && !this.user.autosalon) && this.form.customs_clearance
                })
+
             },
             price: {required},
             saved_images: {required, minLength: minLength(3)}
