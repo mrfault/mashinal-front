@@ -42,9 +42,7 @@
          </div>
       </div>
 
-      <!--            <relatives/>-->
-
-      <HandleIds :single="true" :type="'parts'" :items="[announcement.id]"/>
+      <HandleIds :single="true" :items="{ type: 'parts', id: announcement.id }" />
    </div>
 </template>
 

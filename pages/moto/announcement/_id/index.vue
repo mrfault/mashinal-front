@@ -46,7 +46,7 @@
                   </template>
                </grid>
 
-               <HandleIds :single="true" :type="'motorcycles'" :items="[announcement.id]"/>
+               <HandleIds :single="true" :items="{ type: 'motorcycles', id: announcement.id }" />
             </div>
          </div>
       </div>

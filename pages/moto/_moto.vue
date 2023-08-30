@@ -35,7 +35,7 @@
 
          <no-results v-else/>
 
-         <HandleIds :type="category?.type" :items="motoAnnouncements.data" />
+         <HandleIds :items="handleIdsOptions" />
       </div>
    </div>
 </template>
@@ -140,6 +140,33 @@ export default {
             {name: this.$t('moto'), route: '/moto'},
             {name: this.$t(this.category.type)}
          ]
+      },
+
+      handleIdsOptions() {
+         let ids = [];
+
+         ids.push({
+            type: 'motorcycle',
+            ids: [
+               ...this.motoAnnouncements.data?.filter(car => car.type === 'motorcycle').map(item => item.id)
+            ]
+         });
+
+         ids.push({
+            type: 'scooter',
+            ids: [
+               ...this.motoAnnouncements.data?.filter(car => car.type === 'scooter').map(item => item.id)
+            ]
+         });
+
+         ids.push({
+            type: 'motoatv',
+            ids: [
+               ...this.motoAnnouncements.data?.filter(car => car.type === 'motoatv').map(item => item.id)
+            ]
+         });
+
+         return ids;
       }
    },
    mounted() {

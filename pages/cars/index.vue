@@ -102,7 +102,7 @@
             v-else
          />
 
-         <HandleIds :items="carsAnnouncements.data" />
+         <HandleIds :items="handleIdsOptions" />
       </div>
    </div>
 </template>
@@ -360,6 +360,17 @@
                { name: this.$t('category_moto'), key: 2 }
             ];
          },
+
+         handleIdsOptions() {
+            let ids = [];
+
+            ids.push({
+               type: 'car',
+               ids: [...this.carsAnnouncements.data.map(item => item.id)]
+            });
+
+            return ids;
+         }
       },
 
       beforeRouteLeave(to, from, next) {

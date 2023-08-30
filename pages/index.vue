@@ -152,8 +152,6 @@
       </div>
 
       <HandleIds :items="handleIdsOptions" :watchIds="false" />
-
-      {{handleIdsOptions}}
    </div>
 </template>
 
@@ -307,11 +305,54 @@
                ]
             });
 
-            ids.push({type: 'plate', ids: [...this.plateNumbers?.map(item => item.id)]});
+            ids.push({
+               type: 'motorcycle',
+               ids: [
+                  ...this.getMainMonetized?.filter(car => car.type === 'motorcycle').map(item => item.id),
+                  ...this.mainAnnouncements?.filter(car => car.type === 'motorcycle').map(item => item.id)
+               ]
+            });
 
-            console.log('ids', ids)
-            // console.log('555555555', this.mainAnnouncements?.map(item => item.id))
-            // return this.getMainMonetized
+            ids.push({
+               type: 'scooter',
+               ids: [
+                  ...this.getMainMonetized?.filter(car => car.type === 'scooter').map(item => item.id),
+                  ...this.mainAnnouncements?.filter(car => car.type === 'scooter').map(item => item.id)
+               ]
+            });
+
+            ids.push({
+               type: 'motoatv',
+               ids: [
+                  ...this.getMainMonetized?.filter(car => car.type === 'motoatv').map(item => item.id),
+                  ...this.mainAnnouncements?.filter(car => car.type === 'motoatv').map(item => item.id)
+               ]
+            });
+
+            ids.push({
+               type: 'commercial',
+               ids: [
+                  ...this.getMainMonetized?.filter(car => car.type === 'commercial').map(item => item.id),
+                  ...this.mainAnnouncements?.filter(car => car.type === 'commercial').map(item => item.id),
+                  ...this.carShowroom?.filter(car => car.type === 'commercial').map(item => item.id)
+               ]
+            });
+
+            ids.push({
+               type: 'parts',
+               ids: [
+                  ...this.getMainMonetized?.filter(car => car.type === 'parts').map(item => item.id),
+                  ...this.partsHome?.map(item => item.id)
+               ]
+            });
+
+            ids.push({
+               type: 'plate',
+               ids: [...this.plateNumbers?.map(item => item.id)
+               ]
+            });
+
+            return ids;
          }
       },
 

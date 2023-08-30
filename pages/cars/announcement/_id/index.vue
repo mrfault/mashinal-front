@@ -54,7 +54,7 @@
 
       <relatives />
 
-      <HandleIds :single="true" :items="[announcement.id]" />
+      <HandleIds :single="true" :items="{ type: 'car', id: announcement.id }" />
    </div>
 </template>
 
