@@ -343,10 +343,41 @@
       }
 
       &.isComparisonPage {
+         .item-overlay {
+            &__bottom {
+               &--left {
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+
+                  .comparisonDelete {
+                     display: flex;
+                     align-items: center;
+                     gap: 2px;
+                     padding: 3px 10px;
+                     border-radius: 4px;
+                     background-color: $white;
+                     pointer-events: all;
+
+                     span {
+                        color: #364152;
+                        font-size: 15px;
+                        font-weight: 500;
+                        line-height: 18px;
+                     }
+                  }
+               }
+            }
+         }
+
          .item-details {
             border-radius: 0 0 8px 8px;
             border: 1px solid #CDD5DF;
          }
+      }
+
+      &.isPromotion {
+         border: 2px solid $red-1;
       }
 
       a.abs-link {

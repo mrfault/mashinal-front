@@ -180,7 +180,7 @@
                page
             });
             this.pending = false;
-            if (scroll) this.scrollTo('.cap', [-80, -150]);
+            if (scroll) this.scrollTo('.cap', [-80, -200]);
          }
       },
 

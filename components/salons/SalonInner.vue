@@ -108,7 +108,7 @@
             </div>
          </div>
       </div>
-
+<pre>{{autosalonAnnouncementsId?.meta}}</pre>
       <grid
          v-if="autosalonAnnouncementsId?.data?.length"
          :announcements="autosalonAnnouncementsId?.data"
@@ -213,7 +213,7 @@
 
          async changePage(page = 1) {
             // console.log('page', page)
-            // page = this.$route.query.page || 1;
+            page = this.$route.query.page || 1;
             this.pending = true
             await this.getSalonById({
                slug: this.$route.params.id,
