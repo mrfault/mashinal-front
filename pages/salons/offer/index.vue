@@ -326,7 +326,7 @@ export default {
     },
 
     async getOfferDetail(id) {
-      console.log(id)
+      // console.log(id)
       this.chat.text=''
 
 
@@ -406,7 +406,7 @@ export default {
   watch: {
     async $route(newVal, oldVal) {
       await this.$store.dispatch('getAllOffers', newVal.query)
-      console.log(newVal)
+      // console.log(newVal)
     },
     search(newVal){
       this.$router.push({

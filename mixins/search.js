@@ -12,7 +12,7 @@ export const SearchMixin = {
       ...mapActions(['fetchSavedSearch', 'createSavedSearch', 'deleteSavedSearch', 'getNotViewedSavedSearch']),
 
       getFormData() {
-         console.log('this.form', this.form)
+         // console.log('this.form', this.form)
          let requiredKeys = [];
          if (this.meta?.type === 'cars') requiredKeys.push('all_options');
          let form = {};

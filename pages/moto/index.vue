@@ -36,6 +36,7 @@
                :sorting="sorting"
                :announceType="announceType"
                @pending="pending = true"
+               @showSorting="showSorting = $event"
                @submit="searchMoto"
             />
          </div>
@@ -64,7 +65,9 @@
                   </template>
 
                   <template #right>
+
                      <form-select
+                        v-if="showSorting"
                         :label="$t('sorting_2')"
                         :options="sortItems"
                         :clearPlaceholder="true"
@@ -126,6 +129,7 @@
          return {
             announceType: 0,
             searchType: 1,
+            showSorting: false,
             sorting: { key: 'created_at', value: 'desc', name: this.$t('show_by_date') },
             sortItems: [
                { key: 'created_at', value: 'desc', name: this.$t('show_by_date') },
@@ -175,6 +179,11 @@
          async searchMoto(page = 1) {
             page = this.$route.query.page || 1;
             let post = JSON.parse(this.$route.query.filter || '{}');
+
+            // Object.values(post.additional_brands).map(item => {
+            //    if (item.category) this.showSorting = true;
+            // })
+            // console.log('post', post.additional_brands)
             post = { ...post, sort_by: post.sort_by, sort_order: post.sort_order }
 
             this.pending = true;
@@ -252,7 +261,18 @@
             });
 
             return ids;
-         }
+         },
+
+         // showSorting() {
+         //    let post = JSON.parse(this.$route.query.filter || '{}')
+         //
+         //    return Object.values(post.additional_brands).map(item => {
+         //       if (item.category) {
+         //          console.log('vvvvvvvvv', item.category)
+         //          return true
+         //       }
+         //    })
+         // }
 
          // sortItems() {
          //    return [
@@ -283,7 +303,7 @@
 
             this.announceType = filters.announce_type || 0;
 
-            console.log('filters.announce_type', filters.announce_type)
+            // console.log('filters.announce_type', filters.announce_type)
          }
       },
 

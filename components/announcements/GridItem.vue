@@ -294,7 +294,7 @@ export default {
       computed: {
          getType() {
             let item = this.announcement
-            console.log('item', this.announcement)
+            // console.log('item', this.announcement)
 
             if (item.type === "motorcycle") return 'Motorcycle'
             else if (item.type === "scooter") return 'Scooter'
@@ -317,7 +317,7 @@ export default {
             if (['Motorcycle', 'Scooter', 'Atv'].includes(this.getType)) type = 'moto'
             else if (['Commercial'].includes(this.getType)) type = 'commercial'
             else if (['Part'].includes(this.getType)) type = 'parts'
-            console.log('motoType', motoType)
+            // console.log('motoType', motoType)
             let path = `/${type}/announcement/${this.announcement.id}${motoType}`
             return this.$localePath(path)
          },

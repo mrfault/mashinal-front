@@ -234,7 +234,7 @@ export default {
          this.activeMessage = messageId;
          setTimeout(() => {
             this.$root.$refs.ChatMessages.scrollToBottom('chat');
-            console.log('ok');
+            // console.log('ok');
          }, 1000);
       },
 

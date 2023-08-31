@@ -234,7 +234,7 @@
                delete data.name;
             }
 
-            console.log(data);
+            // console.log(data);
 
             try {
                const res = await this.$axios.$post(`${api}?is_mobile=${this.isMobileBreakpoint}`, data);
