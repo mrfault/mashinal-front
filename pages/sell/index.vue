@@ -102,54 +102,6 @@
                                  @timeOver="resendSmsAfterSecond = 0"
                               />
                            </div>
-
-                           <div class="service_packages"
-                                v-if="form.announce_type.title === 'cars' || form.announce_type.title === 'moto'">
-                              <div
-                                 :class="['package', 'standard_package', form.add_monetization === 0 ? 'selected': '' ]"
-                                 @click="form.add_monetization = 0">
-                                 <div class="title">
-                                    <inline-svg class="stars_svg" :src="'/icons/stars.svg'"/>
-                                    <p>{{ $t('standard_announce') }}</p>
-                                 </div>
-                                 <ul class="content">
-                                    <li class="content_list" v-for="sp in servicePackages?.standard" :key="sp.id">
-                                       <inline-svg :class="sp.status ? 'active' : 'check_svg'"
-                                                   :src="'/icons/filled_circled_check.svg'"/>
-                                       {{ sp.text }}
-                                    </li>
-                                 </ul>
-                                 <div class="package_price">
-                                    <p>{{ $t('free_for_30_days') }}</p>
-                                 </div>
-                              </div>
-                              <div
-                                 :class="['package', 'premium_package', form.add_monetization === 1 ? 'selected': '' ]"
-                                 @click="form.add_monetization = 1">
-                                 <div class="sale_effect">
-                                    <p>x3</p>
-                                    <span v-html="$t('x3morefaster')"></span>
-                                 </div>
-                                 <div class="title">
-                                    <inline-svg class="stars_svg" :src="'/icons/promote_square.svg'"/>
-                                    <p>{{ $t('paid_announce') }}</p>
-
-                                 </div>
-                                 <ul class="content">
-                                    <li class="content_list" v-for="sp in servicePackages?.premium" :key="sp.id">
-                                       <inline-svg :class="sp.status ? 'active' : 'check_svg'"
-                                                   :src="'/icons/filled_circled_check.svg'"/>
-                                       {{ sp.text }}
-                                    </li>
-                                 </ul>
-                                 <div class="package_price">
-                                    <p><span>{{ $t('discount_message') }}</span>{{ $t('total_count_message') }}</p>
-                                    <div class="badge">
-                                       <p style="text-transform: lowercase">40% {{ $t('discount') }}</p>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
                            <button type="button" @click="onClick()"
                                    :class="['btn', 'full-width', 'btn--pale-green-outline', 'active', {pending}]">
                               {{ authStep === "notLoggedIn" ? $t("enter_sms_code") : $t("place_announcement") }}
@@ -167,7 +119,6 @@
                               </nuxt-link>
                            </p>
                         </div>
-
                      </template>
 
                   </form>
@@ -197,12 +148,20 @@
                               />
                               <p>{{ $t('announce_help_text') }}</p>
                            </div>
-                           <button class="btn btn--red" @click="onShowModal('feedback')">{{ $t("let_us_know") }}</button>
+                           <button class="btn btn--red" @click="onShowModal('feedback')">{{
+                                 $t("let_us_know")
+                              }}
+                           </button>
                         </div>
                      </template>
                   </div>
                </div>
+<!--               submitShow &&-->
+               <service-packages v-if=" (form.announce_type.title === 'cars' || form.announce_type.title === 'moto')"
+                                 v-model="form.add_monetization" :add_monetization="form.add_monetization"
+                                 :data="servicePackages"/>
             </div>
+
             <div class="form_navigation" v-if="!isMobileBreakpoint">
                <ul>
                   <li
@@ -212,11 +171,12 @@
                      {{ nav.title }}
                   </li>
                </ul>
+
             </div>
          </div>
       </div>
       <modal-popup
-         :modal-class="'wider'"
+         :modal-class="modalType === 'monetization_alert' ? 'medium' : 'wider'"
          :toggle="showModal"
          :title="getRulesPage.title[locale]"
          @close="showModal = false"
@@ -224,6 +184,7 @@
 
          <div v-if="modalType === 'rules'" v-html="getRulesPage.text[locale]"></div>
          <feedback-modal v-if="modalType === 'feedback'"/>
+         <monetization-alert-modal v-if="modalType === 'monetization_alert'" @onSubmit="onSubmitMonetizationModal" />
       </modal-popup>
    </div>
 </template>
@@ -246,11 +207,15 @@ import Moto_form from "~/components/sell/moto_form.vue";
 import {required, email, requiredIf} from "vuelidate/lib/validators";
 import {PaymentMixin} from "~/mixins/payment";
 import FeedbackModal from "~/components/sell/FeedbackModal.vue";
+import ServicePackages from "~/components/sell/ServicePackages.vue";
+import MonetizationAlertModal from "~/components/sell/MonetizationAlertModal.vue";
 
 export default {
    name: "add-announce",
    mixins: [MenusDataMixin, ToastErrorsMixin, PaymentMixin],
    components: {
+      MonetizationAlertModal,
+      ServicePackages,
       FeedbackModal,
       Moto_form,
       Registration_mark,
@@ -496,7 +461,10 @@ export default {
 
          }
       },
-
+      onSubmitMonetizationModal() {
+         this.showModal = false
+         this.isReady = !this.isReady
+      },
       onClick() {
          this.$v.authForm.$touch()
          setTimeout(() => {
@@ -508,7 +476,12 @@ export default {
          }
 
          if (this.authStep === "loggedIn") {
-            this.isReady = !this.isReady
+            if (this.form.add_monetization === 1) {
+               this.modalType = 'monetization_alert'
+               this.showModal = true
+            } else {
+               this.isReady = !this.isReady
+            }
          } else if (this.authStep === "notLoggedIn") {
             this.onPhoneVerification()
          } else {
@@ -647,6 +620,7 @@ export default {
       column-gap: 16px;
 
       .card {
+         width: 100%;
          flex-grow: 3;
          display: flex;
          flex-direction: column;
@@ -758,140 +732,6 @@ export default {
                            font-weight: 500;
                            text-decoration-line: underline;
                            cursor: pointer;
-                        }
-                     }
-                  }
-
-
-                  .service_packages {
-                     display: flex;
-                     gap: 16px;
-
-                     .package {
-                        position: relative;
-                        flex-grow: 1;
-                        display: flex;
-                        flex-direction: column;
-                        gap: 16px;
-                        padding: 20px 16px;
-                        border: 1px solid #CDD5DF;
-                        border-radius: 12px;
-                        overflow: hidden;
-                        cursor: pointer;
-
-                        .title {
-
-                           display: flex;
-                           align-items: center;
-                           gap: 8px;
-                           padding-bottom: 20px;
-                           border-bottom: 1px solid #CDD5DF;
-
-
-                           p {
-                              font-size: 16px;
-                              font-weight: 700;
-                           }
-
-                           .stars_svg {
-                              width: 24px;
-                              height: 24px;
-                              color: #0A77E8;
-                           }
-                        }
-
-                        .sale_effect {
-                           width: 100%;
-                           position: absolute;
-                           top: 2%;
-                           right: -35%;
-                           background-color: #D1E0FF;
-                           display: flex;
-                           align-items: center;
-                           gap: 2px;
-                           justify-content: center;
-                           transform: rotate(45deg);
-                           padding: 2px 0;
-
-                           p {
-                              font-size: 17px;
-                              font-weight: 600;
-                           }
-
-                           span {
-                              line-height: 13px;
-                              font-size: 11px;
-                              font-weight: 600;
-                           }
-                        }
-
-                        .content {
-
-                           &_list {
-                              padding: 20px 0;
-                              display: flex;
-                              align-items: center;
-                              gap: 12px;
-                              font-size: 14px;
-                              font-style: normal;
-                              font-weight: 400;
-
-                              .check_svg {
-                                 color: #CDD5DF;
-
-                              }
-
-                              .active {
-                                 color: #12B76A;
-                              }
-                           }
-                        }
-
-                        .package_price {
-                           position: relative;
-                           padding: 4px 8px;
-                           height: 56px;
-                           margin-top: auto;
-                           display: flex;
-                           justify-content: center;
-                           align-items: center;
-                           border-radius: 8px;
-                           background-color: #D1E0FF;
-                           font-size: 15px;
-                           font-weight: 700;
-                           text-align: center;
-
-                           span {
-                              display: block;
-                              font-size: 11px;
-                              font-weight: 500;
-                           }
-
-                           .badge {
-                              position: absolute;
-                              top: -21px;
-                              right: 8px;
-                              background-color: #F81734;
-                              padding: 4px 6px;
-                              border-radius: 6px;
-                              color: #fff;
-                              font-size: 13px;
-                              font-weight: 600;
-                           }
-                        }
-
-                        &.selected {
-                           border-color: #004EEB;
-
-                           .package_price {
-                              background-color: #004EEB;
-                              color: #fff;
-                           }
-
-                           .sale_effect {
-                              background-color: #004EEB;
-                              color: #fff;
-                           }
                         }
                      }
                   }
@@ -1080,41 +920,6 @@ export default {
                      &_info {
                         background-color: #364152;
                      }
-
-                     .service_packages {
-                        display: flex;
-                        gap: 16px;
-
-                        .package {
-                           background-color: #364152;
-
-                           .content {
-                              &_list {
-                                 color: #CDD5DF;
-
-                                 svg {
-                                    color: #CDD5DF;
-
-                                    &.active {
-                                       color: #12B76A;
-                                    }
-                                 }
-                              }
-                           }
-
-                           .sale_effect {
-                              background-color: #697586;
-
-                           }
-
-
-                        }
-
-                        .package_price {
-                           background-color: #697586;
-                        }
-
-                     }
                   }
                }
             }
@@ -1181,17 +986,6 @@ export default {
             &_title {
                font-size: 20px;
             }
-
-            &_container {
-               .add_announce_form {
-                  .contacts {
-                     .service_packages {
-                        flex-direction: column;
-                     }
-                  }
-               }
-            }
-
          }
       }
    }
