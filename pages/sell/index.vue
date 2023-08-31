@@ -20,7 +20,7 @@
                </div>
                <h2 class="card_title">{{ announceTitle }}</h2>
                <div class="card_container">
-                  <form class="add_announce_form">
+                  <div class="add_announce_form">
                      <form-select
                         :label="$t('announcement_type')"
                         :options="searchMenus.filter((menu) => menu.id !== 3).map((menu) => ({...menu,name: $t(menu.title)}))"
@@ -51,77 +51,9 @@
                                         @navigationProgress="navigationData.find((nav) => nav.id === $event.id).isActive = $event.status"
                                         @getForm="getRegistrationMarksForm($event)"/>
 
-                     <template v-if="submitShow">
-                        <div class="contacts">
-                           <h2>{{ $t("contact_information") }}</h2>
-                           <form-text-input
-                              :class="{form_error: $v.authForm.name.$error || authError.includes('name')}"
-                              v-model="authForm.name"
-                              :placeholder="$t('your_name') + '*'"
-                              :invalid="$v.authForm.name.$error || authError.includes('name')"
-                              :disabled="loggedIn"
-                           />
-                           <form-text-input
-                              :class="{form_error: $v.authForm.email.$error}"
-                              v-model="authForm.email"
-                              :placeholder="$t('email') + '*'"
-                              :mask="$maskEmail()"
-                              :invalid="$v.authForm.email.$error || authError.includes('email')"
-                           />
-                           <form-text-input
-                              v-if="!Object.values(user).length"
-                              :class="{form_error: $v.authForm.phone.$error || authError.includes('phone')}"
-                              key="phone"
-                              :placeholder="$t('mobile_phone_number') + '*'"
-                              v-model="authForm.phone"
-                              :mask="$maskPhone()"
-                              :invalid="$v.authForm.phone.$error || authError.includes('phone')"
-                           />
-                           <form-text-input
-                              v-if="authStep === 'handleOTP'"
-                              :class="['otp', {form_error: $v.authForm.code.$error}]"
-                              :placeholder="$t('OTP') + '*'"
-                              v-model="authForm.code"
-                              :maxlength="5"
-                              :mask="'99999'"
-                              :invalid="$v.authForm.code.$error"
-                           />
-                           <div class="contacts_info" v-if="!Object.values(user).length && authStep !== 'handleOTP'">
-                              <inline-svg class="contacts_info_svg info_svg" :src="'/icons/info.svg'"/>
-                              <p>{{ $t("contacts_registration_info") }}</p>
-                           </div>
-                           <div class="resend_section" v-if="authStep === 'handleOTP'">
-                              <p :class="{link_active: resendSmsAfterSecond === 0}" @click="resendCode">{{
-                                    $t('resend_otp')
-                                 }}</p>
-                              <timer
-                                 v-if="resendSmsAfterSecond > 0"
-                                 class="otp_timer"
-                                 :duration="resendSmsAfterSecond"
-                                 format="i:s"
-                                 @timeOver="resendSmsAfterSecond = 0"
-                              />
-                           </div>
-                           <button type="button" @click="onClick()"
-                                   :class="['btn', 'full-width', 'btn--pale-green-outline', 'active', {pending}]">
-                              {{ authStep === "notLoggedIn" ? $t("enter_sms_code") : $t("place_announcement") }}
-                           </button>
-                        </div>
-                        <div class="comment_info">
-                           <inline-svg
-                              :src="'/icons/info.svg'"
-                           />
-                           <p>{{ $t("by_posting_an_ad_you_confirm_your_agreement_with_the_rules") }}:
-                              <nuxt-link :to="`/page/${getRulesPage.slug[locale]}`"
-                                         @click.native.prevent="onShowModal('rules')"
-                                         event="">
-                                 <strong style="text-decoration: underline">{{ $t('general_rules') }}</strong>
-                              </nuxt-link>
-                           </p>
-                        </div>
-                     </template>
 
-                  </form>
+
+                  </div>
                   <div
                      :class="['vehicle_card_info', {default_imgs: announcement.image.startsWith('/img/') || partPreview.image.startsWith('/img/') }]"
                      v-if="!isMobileBreakpoint">
@@ -156,10 +88,78 @@
                      </template>
                   </div>
                </div>
-<!--               submitShow &&-->
-               <service-packages v-if=" (form.announce_type.title === 'cars' || form.announce_type.title === 'moto')"
+               <service-packages v-if="submitShow && (form.announce_type.title === 'cars' || form.announce_type.title === 'moto')"
                                  v-model="form.add_monetization" :add_monetization="form.add_monetization"
                                  :data="servicePackages"/>
+               <template v-if="submitShow">
+                  <div class="contacts">
+                     <h2>{{ $t("contact_information") }}</h2>
+                     <form-text-input
+                        :class="{form_error: $v.authForm.name.$error || authError.includes('name')}"
+                        v-model="authForm.name"
+                        :placeholder="$t('your_name') + '*'"
+                        :invalid="$v.authForm.name.$error || authError.includes('name')"
+                        :disabled="loggedIn"
+                     />
+                     <form-text-input
+                        :class="{form_error: $v.authForm.email.$error}"
+                        v-model="authForm.email"
+                        :placeholder="$t('email') + '*'"
+                        :mask="$maskEmail()"
+                        :invalid="$v.authForm.email.$error || authError.includes('email')"
+                     />
+                     <form-text-input
+                        v-if="!Object.values(user).length"
+                        :class="{form_error: $v.authForm.phone.$error || authError.includes('phone')}"
+                        key="phone"
+                        :placeholder="$t('mobile_phone_number') + '*'"
+                        v-model="authForm.phone"
+                        :mask="$maskPhone()"
+                        :invalid="$v.authForm.phone.$error || authError.includes('phone')"
+                     />
+                     <form-text-input
+                        v-if="authStep === 'handleOTP'"
+                        :class="['otp', {form_error: $v.authForm.code.$error}]"
+                        :placeholder="$t('OTP') + '*'"
+                        v-model="authForm.code"
+                        :maxlength="5"
+                        :mask="'99999'"
+                        :invalid="$v.authForm.code.$error"
+                     />
+                     <div class="contacts_info" v-if="!Object.values(user).length && authStep !== 'handleOTP'">
+                        <inline-svg class="contacts_info_svg info_svg" :src="'/icons/info.svg'"/>
+                        <p>{{ $t("contacts_registration_info") }}</p>
+                     </div>
+                     <div class="resend_section" v-if="authStep === 'handleOTP'">
+                        <p :class="{link_active: resendSmsAfterSecond === 0}" @click="resendCode">{{
+                              $t('resend_otp')
+                           }}</p>
+                        <timer
+                           v-if="resendSmsAfterSecond > 0"
+                           class="otp_timer"
+                           :duration="resendSmsAfterSecond"
+                           format="i:s"
+                           @timeOver="resendSmsAfterSecond = 0"
+                        />
+                     </div>
+                     <button type="button" @click="onClick()"
+                             :class="['btn', 'full-width', 'btn--pale-green-outline', 'active', {pending}]">
+                        {{ authStep === "notLoggedIn" ? $t("enter_sms_code") : $t("place_announcement") }}
+                     </button>
+                  </div>
+                  <div class="comment_info">
+                     <inline-svg
+                        :src="'/icons/info.svg'"
+                     />
+                     <p>{{ $t("by_posting_an_ad_you_confirm_your_agreement_with_the_rules") }}:
+                        <nuxt-link :to="`/page/${getRulesPage.slug[locale]}`"
+                                   @click.native.prevent="onShowModal('rules')"
+                                   event="">
+                           <strong style="text-decoration: underline">{{ $t('general_rules') }}</strong>
+                        </nuxt-link>
+                     </p>
+                  </div>
+               </template>
             </div>
 
             <div class="form_navigation" v-if="!isMobileBreakpoint">
@@ -184,7 +184,8 @@
 
          <div v-if="modalType === 'rules'" v-html="getRulesPage.text[locale]"></div>
          <feedback-modal v-if="modalType === 'feedback'"/>
-         <monetization-alert-modal v-if="modalType === 'monetization_alert'" @onSubmit="onSubmitMonetizationModal" @close="showModal = false" />
+         <monetization-alert-modal v-if="modalType === 'monetization_alert'" @onSubmit="onSubmitMonetizationModal"
+                                   @close="showModal = false"/>
       </modal-popup>
    </div>
 </template>
@@ -237,6 +238,7 @@ export default {
    data() {
       return {
          authError: [],
+         alertShowed: false,
          resendSmsAfterSecond: 0,
          pending: false,
          submitShow: false,
@@ -351,12 +353,19 @@ export default {
          }
       },
       async getCarForm({form}) {
+         if (this.form.add_monetization === 1 && !this.alertShowed) {
+            this.modalType = 'monetization_alert'
+            this.alertShowed = true
+            this.showModal = true
+            return
+         }
          this.pending = true;
          try {
             const formData = new FormData()
             formData.append('data', JSON.stringify(form))
             formData.append('add_monetization', this.form.add_monetization)
             const res = await this.carsPost({form: formData, isMobile: this.isMobileBreakpoint});
+            this.alertShowed = false
             if (res?.data?.redirect_url) {
                this.handlePayment(res, false, this.$t('car_added'), 'v2')
                this.$router.push(this.$localePath('/profile/announcements'))
@@ -375,6 +384,12 @@ export default {
          }
       },
       async getMotoForm({form}) {
+         if (this.form.add_monetization === 1 && !this.alertShowed) {
+            this.modalType = 'monetization_alert'
+            this.alertShowed = true
+            this.showModal = true
+            return
+         }
          this.pending = true;
          try {
             const formData = new FormData()
@@ -476,12 +491,7 @@ export default {
          }
 
          if (this.authStep === "loggedIn") {
-            if (this.form.add_monetization === 1) {
-               this.modalType = 'monetization_alert'
-               this.showModal = true
-            } else {
-               this.isReady = !this.isReady
-            }
+            this.isReady = !this.isReady
          } else if (this.authStep === "notLoggedIn") {
             this.onPhoneVerification()
          } else {
@@ -520,12 +530,7 @@ export default {
             this.$auth.setUser(data.user.original)
             await this.$auth.setUserToken(data.meta.token)
             this.authStep = 'loggedIn'
-            if (this.form.add_monetization === 1) {
-               this.modalType = 'monetization_alert'
-               this.showModal = true
-            } else {
-               this.isReady = !this.isReady
-            }
+            this.isReady = !this.isReady
             this.$v.authForm.$reset()
          } catch (e) {
             const errors = []
@@ -692,55 +697,7 @@ export default {
                gap: 20px;
 
 
-               .contacts {
-                  display: flex;
-                  flex-direction: column;
-                  gap: 16px;
-                  margin-top: 24px;
 
-                  svg {
-                     min-width: 24px;
-                     min-height: 24px;
-                  }
-
-                  h2 {
-                     margin-bottom: 24px;
-                  }
-
-                  &_info {
-                     display: flex;
-                     align-items: center;
-                     gap: 10px;
-                     padding: 12px 16px;
-                     background-color: #EEF2F6;
-                     border-radius: 8px;
-                  }
-
-                  .resend_section {
-                     display: flex;
-                     align-items: center;
-                     justify-content: center;
-                     gap: 4px;
-
-                     .otp_timer {
-                        color: #2970FF;
-                     }
-
-                     p {
-                        color: #9AA4B2;
-                        font-size: 16px;
-                        font-weight: 500;
-
-                        &.link_active {
-                           color: #2970FF;
-                           font-size: 16px;
-                           font-weight: 500;
-                           text-decoration-line: underline;
-                           cursor: pointer;
-                        }
-                     }
-                  }
-               }
 
                .comment_info {
                   display: flex;
@@ -801,7 +758,57 @@ export default {
                   }
                }
             }
+
          }
+            .contacts {
+               display: flex;
+               flex-direction: column;
+               gap: 16px;
+               margin-top: 24px;
+
+               svg {
+                  min-width: 24px;
+                  min-height: 24px;
+               }
+
+               h2 {
+                  margin-bottom: 24px;
+               }
+
+               &_info {
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  padding: 12px 16px;
+                  background-color: #EEF2F6;
+                  border-radius: 8px;
+               }
+
+               .resend_section {
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  gap: 4px;
+
+                  .otp_timer {
+                     color: #2970FF;
+                  }
+
+                  p {
+                     color: #9AA4B2;
+                     font-size: 16px;
+                     font-weight: 500;
+
+                     &.link_active {
+                        color: #2970FF;
+                        font-size: 16px;
+                        font-weight: 500;
+                        text-decoration-line: underline;
+                        cursor: pointer;
+                     }
+                  }
+               }
+            }
 
 
       }
@@ -918,14 +925,13 @@ export default {
                         background: #121926 !important;
                      }
                   }
+               }
+            }
 
+            .contacts {
 
-                  .contacts {
-
-                     &_info {
-                        background-color: #364152;
-                     }
-                  }
+               &_info {
+                  background-color: #364152;
                }
             }
 
