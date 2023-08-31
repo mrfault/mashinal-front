@@ -14,9 +14,9 @@
                <li :class="['content_list', {active: sp.status}]" v-for="sp in data?.premium" :key="sp.id">
                   {{ sp.text }}
                   <inline-svg v-if="sp.status"
-                              :src="'/icons/check.svg'"/>
+                              :src="'/icons/check_v2.svg'"/>
                   <inline-svg v-else
-                              :src="'/icons/close.svg'"/>
+                              :src="'/icons/close_v2.svg'"/>
                </li>
             </ul>
             <div class="package_price">
@@ -25,6 +25,15 @@
             </div>
             <div class="badge">
                <p>40% {{ $t('discount') }}</p>
+            </div>
+            <div class="package_popover" v-if="!turboIsClosed && !$cookies.get('turboIsClosed')">
+               <h3>Bu paketlə 4 dəfə tez sata bilərsən!</h3>
+               <p>Turbo paketi seçməklə elanını 4 dəfə tez sata və vizual olaraq digər elanlardan daha cəlbedici edə bilərsən. Beləliklə elanının alıcılar tərəfindən daha tez tapılacaq.</p>
+               <button type="button"
+                       @click="closePopover"
+                  class="btn full-width btn--blue-new active">
+                  Aydındır
+               </button>
             </div>
          </div>
          <div
@@ -37,9 +46,9 @@
                <li :class="['content_list', {active: sp.status}]" v-for="sp in data?.standard" :key="sp.id">
                   {{ sp.text }}
                   <inline-svg v-if="sp.status"
-                              :src="'/icons/check.svg'"/>
+                              :src="'/icons/check_v2.svg'"/>
                   <inline-svg v-else
-                              :src="'/icons/close.svg'"/>
+                              :src="'/icons/close_v2.svg'"/>
                </li>
             </ul>
             <div class="package_price">
@@ -92,6 +101,7 @@ export default {
    },
    data() {
       return {
+         turboIsClosed: false,
          statistics_data: [
             {
                id: 1,
@@ -159,6 +169,15 @@ export default {
             }
          ]
       }
+   },
+   methods: {
+      closePopover() {
+         this.$cookies.set('turboIsClosed', 1)
+         this.turboIsClosed = true
+      }
+   },
+   mounted() {
+      console.log(this.data)
    }
 }
 </script>
@@ -203,7 +222,14 @@ export default {
 
          .title {
             display: flex;
-            height: 54px;
+            min-height: 54px;
+            width: 100%;
+
+            img {
+               width: 70%;
+               height: 100%;
+               object-fit: contain;
+            }
 
             p {
                color: #4B5565;
@@ -233,7 +259,7 @@ export default {
                   min-height: 20px;
                   max-width: 20px;
                   max-height: 20px;
-                  color: #CDD5DF;
+                  color: #1B2434;
                }
 
                &.active {
@@ -268,6 +294,8 @@ export default {
          }
 
          &.premium_package {
+            position: relative;
+
             .title {
                align-items: center;
 
@@ -292,6 +320,44 @@ export default {
                   font-weight: 600;
                   color: #fff;
                   text-transform: lowercase;
+               }
+            }
+
+            .package_popover {
+               position: absolute;
+               top: 5%;
+               left: 0;
+               transform: translateX(calc(-100% - 22px));
+               display: flex;
+               width: 248px;
+               padding: 24px;
+               border-radius: 12px;
+               background-color: #1B2434;
+               flex-direction: column;
+               align-items: flex-start;
+               gap: 20px;
+
+               h3 {
+                  color: #fff;
+                  font-size: 20px;
+                  font-weight: 600;
+               }
+
+               p {
+                  color: #CDD5DF;
+                  font-size: 16px;
+                  font-weight: 500;
+               }
+
+               &::after {
+                  content: "";
+                  position: absolute;
+                  top: 50%;
+                  right: -8px;
+                  width: 16px;
+                  height: 16px;
+                  transform: rotate(-45deg);
+                  background-color: #1B2434;
                }
             }
          }
@@ -372,36 +438,102 @@ export default {
    }
 }
 
-//.dark-mode {
-//   .service_packages {
-//      display: flex;
-//      gap: 16px;
-//
-//      .package {
-//         background-color: #364152;
-//
-//         .content {
-//            &_list {
-//               color: #CDD5DF;
-//
-//               svg {
-//                  color: #CDD5DF;
-//
-//                  &.active {
-//                     color: #12B76A;
-//                  }
-//               }
-//            }
-//         }
-//      }
-//
-//      .package_price {
-//         background-color: #697586;
-//      }
-//
-//   }
-//}
-//
+.dark-mode {
+   .service_packages {
+      background-color: #121926;
+
+      h2 {
+         color: #EEF2F6;
+      }
+
+      p {
+         color: #EEF2F6;
+      }
+
+      .packages {
+
+         .package {
+            background-color: #1B2434;
+
+            .title {
+
+               p {
+                  color: #EEF2F6;
+               }
+            }
+
+
+            .content {
+               &_list {
+                  color: #EEF2F6;
+
+                  svg {
+                     color: #EEF2F6;
+                  }
+               }
+            }
+
+            .package_price {
+
+               p {
+                  color: #EEF2F6;
+               }
+
+               span {
+                  color: #697586;
+               }
+
+
+            }
+         }
+
+      }
+
+      .package_statistics {
+         background-color: #1B2434;
+
+         .statistics_progress {
+            .progress {
+
+               p {
+                  color: #EEF2F6;
+               }
+
+               .measure {
+                  background-color: #364152;
+
+                  .percentage {
+                     background-color: #697586;
+
+                     &.active {
+                        background-color: rgb(252, 181, 48);
+                        background: linear-gradient(90deg, rgba(252, 181, 48, 1) 0%, rgba(242, 94, 66, 1) 100%);
+                     }
+                  }
+               }
+            }
+         }
+
+         .statistics_info {
+            li {
+               color: #CDD5DF;
+
+               .dashed {
+                  flex: 1;
+                  border-top: 2px dashed #CDD5DF;
+               }
+            }
+         }
+      }
+   }
+}
+
+@media (max-width: 1550px) {
+   .package_popover {
+      display: none !important;
+   }
+}
+
 @media (max-width: 1150px) {
    .service_packages {
       padding: 40px 0 0 0;
@@ -420,6 +552,7 @@ export default {
             }
          }
       }
+
       .package_statistics {
 
          .statistics_progress {
@@ -460,6 +593,40 @@ export default {
                   color: #1B2434;
                   font-size: 18px;
                   font-weight: 600;
+               }
+            }
+         }
+      }
+   }
+
+   .dark-mode {
+      .service_packages {
+         background-color: transparent;
+
+         .package_statistics {
+
+
+
+            .statistics_info {
+               display: flex;
+
+               li {
+
+                  &.total {
+
+                     p {
+                        color: #EEF2F6 !important;
+                     }
+                  }
+
+
+                  .title {
+                     color: #EEF2F6;
+                  }
+
+                  .price {
+                     color: #EEF2F6;
+                  }
                }
             }
          }
