@@ -4,6 +4,7 @@
       'login-forms': !inAttorney,
       'login-forms--popup': popup,
       'login-in-attorney': inAttorney,
+      'login-in-modal': loginInModal,
       'mx-0': true,
     }"
       @click.stop
@@ -79,7 +80,8 @@ export default {
       sellCheckTokens: {
          type: Boolean,
          default: false,
-      }
+      },
+      loginInModal: Boolean,
    },
    data() {
       return {
@@ -181,6 +183,11 @@ export default {
       justify-content: center;
       width: 100%;
       margin-bottom: 20px;
+   }
+}
+.login-in-modal{
+   &.login-forms{
+      width: 100% !important;
    }
 }
 </style>

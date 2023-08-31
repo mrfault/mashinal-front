@@ -11,9 +11,26 @@
          @close="showDeactivateModal = false"
       >
          <form class="form" @submit.prevent="deactivateAnouncement" novalidate>
-            <button type="submit" :class="['btn btn--green full-width', { pending }]">
-               {{ $t('confirm') }}
-            </button>
+            <div class="protocol-payment-modal__actions">
+               <button
+                  type="button"
+                  class="btn btn--white btn-dark-text"
+                  @click.stop="showDeactivateModal = false"
+               >{{ $t('reject') }}</button>
+
+               <button
+                  type="submit"
+                  class="btn btn--white btn-dark-text"
+               >{{ $t('confirm') }}</button>
+            </div>
+
+<!--            <button type="button" class="btn btn&#45;&#45;white btn-dark-text">-->
+<!--               İmtina et-->
+<!--            </button>-->
+<!--            -->
+<!--            <button type="submit" :class="['btn btn&#45;&#45;green full-width', { pending }]">-->
+<!--               {{ $t('confirm') }}-->
+<!--            </button>-->
          </form>
       </modal-popup>
    </button>

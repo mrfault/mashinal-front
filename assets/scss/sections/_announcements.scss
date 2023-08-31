@@ -48,7 +48,7 @@
 
       .item-details {
          padding: 16px;
-         height: 132px;
+         //height: 132px;
 
          &__item {
             text-overflow: ellipsis;
@@ -147,6 +147,11 @@
          .item-info {
             display: block;
             color: $greyish-blue-7;
+         }
+
+         .call-button {
+            margin-top: 12px;
+            pointer-events: all;
          }
       }
 
@@ -334,6 +339,13 @@
       .btn-favorite {
          svg {
             display: none;
+         }
+      }
+
+      &.isComparisonPage {
+         .item-details {
+            border-radius: 0 0 8px 8px;
+            border: 1px solid #CDD5DF;
          }
       }
 
@@ -536,27 +548,13 @@
       &__item {
          background-color: $dark-2;
 
-         //&:hover {
-         //   box-shadow: $shadow-dark-6;
-         //}
-         //
-         //.item-bg {
-         //   background-color: $dark-3;
-         //}
-         //
-         //.item-details .item-info,
-         //.call-count {
-         //   color: $grey-4;
-         //}
-         //
-         //.item-price span {
-         //   color: $white;
-         //}
-         //
-         //.item-overlay .badge {
-         //   background-color: rgba($dark-2, 0.35);
-         //}
-         //
+         &.isComparisonPage {
+            .item-details {
+               border: none;
+               background-color: #121926;
+            }
+         }
+
          .item-details {
             background-color: $dark-light-new;
 
