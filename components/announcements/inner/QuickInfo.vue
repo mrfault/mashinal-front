@@ -288,8 +288,9 @@
 
 <!--      <InsureCar class="mt-4" />-->
 
-      <modal-popup :toggle="showModal" @close="showModal = false">
-         <login-tabs></login-tabs>
+      <modal-popup :toggle="showModal" @close="showModal = false" :title="!isMobileBreakpoint ? $t('sign_in_to_account') : '' ">
+<!--         <h2 class="ma-title-sm mb-2" v-if="!isMobileBreakpoint">{{$t('sign_in_to_account')}}</h2>-->
+         <login-tabs  loginInModal :class="{'mt-5': isMobileBreakpoint}"></login-tabs>
       </modal-popup>
    </div>
 </template>
