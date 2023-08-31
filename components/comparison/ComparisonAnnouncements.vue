@@ -8,7 +8,7 @@
          >
             <grid-item
                :announcement="announcement"
-               :clickable="false"
+               :clickable="true"
                :showOverlay="true"
                :isComparisonPage="true"
                @removeItem="removeItem"
@@ -212,12 +212,27 @@
    .comparison {
       padding-bottom: 40px;
 
+      &::-webkit-scrollbar {
+         height: 10px; // Ширина скролла.
+      }
+      &::-webkit-scrollbar-track {
+         border-radius: 8px;  // Округление скролла.
+         background-color: #E5E7EB; // Цвет трека.
+      }
+      &::-webkit-scrollbar-thumb {
+         background-color: #D1D5DB; // Цвет скролла.
+         border-radius: 8px;  // Округление скролла.
+         border: 3px solid #D1D5DB; // Обводка скролла.
+      }
+
       &__specifications {
          margin-top: 32px;
 
-         .title-with-line {
-            width: 200%;
-         }
+         //.title-with-line {
+         //   &:before {
+               //width: 167%;
+            //}
+         //}
 
          .collapse-content {
             &__column {
@@ -246,9 +261,31 @@
                }
             }
 
+            &__title {
+               color: #4B5565;
+               font-size: 14px;
+               font-weight: 400;
+               line-height: 16px;
+               margin-bottom: 8px;
+            }
+
             & > div {
                & > div {
                   .collapse-content__element {
+                     &:not(:last-child) {
+                        .collapse-content__column {
+                           margin-bottom: 16px;
+                           padding-bottom: 16px;
+                           border-bottom: 1px solid #E3E8EF;
+                        }
+                     }
+                  }
+               }
+            }
+
+            & > div {
+               & > div {
+                  & > div {
                      &:not(:last-child) {
                         .collapse-content__column {
                            margin-bottom: 16px;
