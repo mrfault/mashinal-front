@@ -530,11 +530,15 @@
             &-description {
                position: absolute;
                left: 50%;
-               bottom: -19px;
+               bottom: -21px;
                transform: translateX(-50%);
                font-family: 'DinMittelschriftgepraegt', sans-serif;
+               width: 100%;
                font-size: 15px;
                line-height: 17px;
+               padding: 5px 0;
+               text-align: center;
+               background-color: #121926;
                color: #FFFFFF;
             }
 
