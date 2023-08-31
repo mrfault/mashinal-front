@@ -36,7 +36,7 @@
       <p v-if="showResend || codeSent || askToCallSupport" class="send-again-text">
          <a
             v-if="showResend && resendSmsAfterSecond === 0"
-            class="cursor-pointer text-decoration-underline"
+            class="resend_code_button"
             @click.prevent="resendCode"
          >
             {{ $t('resend_code') }}
@@ -103,6 +103,11 @@ export default {
             })
             .then((res) => {
                this.codeSent = true
+               setTimeout(()=>{
+                  this.codeSent = false;
+                  this.showResend = true;
+                  this.resendSmsAfterSecond = 30;
+               },1000)
             })
       },
       submit() {
@@ -149,3 +154,11 @@ export default {
    },
 }
 </script>
+
+<style>
+.resend_code_button{
+   text-decoration: underline !important;
+   color: #0a77e8 !important;
+   cursor: pointer !important;
+}
+</style>
