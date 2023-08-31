@@ -39,7 +39,13 @@
       </div>
 
       <div
-         :class="['id'+announcement.id,{'overflow-visible isProfilePage': isProfilePage}]"
+         :class="[
+            'id'+announcement.id,
+            {
+               'overflow-visible isProfilePage': isProfilePage,
+               'isComparisonPage': isComparisonPage,
+            }
+         ]"
          class="announcements-grid__item"
          @click="goToAnnouncement"
       >
@@ -188,7 +194,7 @@
                <span v-if="announcement?.description">{{ announcement?.description }}</span>
             </div>
 
-            <div v-if="!isProfilePage" class="item-details__item">
+            <div v-if="!isProfilePage && !isComparisonPage" class="item-details__item">
                {{ announcement.created_at }}
             </div>
 
@@ -210,10 +216,11 @@
                </span>
             </div>
 
-<!--            <call-button-->
-<!--               :phone="contact?.phone"-->
-<!--               :announcement-id="announcement?.id_unique"-->
-<!--            />-->
+            <call-button
+               v-if="isComparisonPage"
+               :phone="announcement?.phone"
+               :announcement-id="announcement?.id_unique"
+            />
          </div>
 
          <div v-if="isProfilePage" class="item-monetization">
@@ -250,6 +257,10 @@ export default {
       trackViews: Boolean,
       colClass: String,
       isProfilePage: {
+         type: Boolean,
+         default: false,
+      },
+      isComparisonPage: {
          type: Boolean,
          default: false,
       },
