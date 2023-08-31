@@ -90,6 +90,10 @@
                               <span class="badge-counter">{{ countNewNotifications }}</span>
                            </template>
 
+                           <template v-else-if="menu.title === 'comparisons' && comparisonCount > 0">
+                              <span class="badge-counter" style="top: -3px; right:-12px;">{{ comparisonCount }}</span>
+                           </template>
+
                            <template v-else-if="menu.title === 'favorites' && notViewedFavorites > 0">
                               <span class="badge-counter" style="top: -3px; right:-12px;">{{ notViewedFavorites }}</span>
                            </template>
@@ -367,11 +371,12 @@ export default {
    },
 
    computed: {
-      ...mapGetters([
-         'notViewedFavorites',
-         'notViewedSavedSearch',
-         'homePageSliders',
-      ]),
+      ...mapGetters({
+         notViewedFavorites: 'notViewedFavorites',
+         notViewedSavedSearch: 'notViewedSavedSearch',
+         homePageSliders: 'homePageSliders',
+         comparisonCount: 'comparison/count'
+      }),
 
       image() {
          if (this.user?.autosalon) {
@@ -391,6 +396,10 @@ export default {
             this.closeDropdownMenu = false
          }, 1000)
       }
+   },
+
+   mounted() {
+      // this.$store.dispatch('comparison/getInitialAnnouncements')
    }
 }
 </script>
