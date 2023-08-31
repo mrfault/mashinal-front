@@ -36,13 +36,15 @@
                <span class="cursor-pointer"
                      v-b-tooltip="blocked ? $t('unblock_user') : $t('block_user')"
                      @click.stop="$emit('block-chat', group)">
-                  <icon :name="blocked ? 'unblock' : 'block'"/>
+                     <inline-svg v-if="!blocked" src="/icons/block.svg" size="24"/>
+                     <inline-svg v-if="blocked" src="/icons/unblock.svg" class="block-icon-list" size="24"/>
+
+                     <!--<icon :name="blocked ? 'unblock' : 'block'"/>-->
                </span>
 
-               <span class="cursor-pointer"
-                     v-b-tooltip="$t('remove_message')"
-                     @click.stop="removeItem = group; showRemoveModal = true;">
-                  <icon name="garbage"/>
+               <span class="cursor-pointer" v-b-tooltip="$t('remove_message')" @click.stop="removeItem = group; showRemoveModal = true;">
+                  <!--<icon name="garbage"/>-->
+                  <inline-svg src="/icons/trash-msg.svg" size="24"/>
                </span>
             </template>
          </div>
@@ -490,3 +492,24 @@ export default {
    }
 }
 </script>
+
+<style lang="scss">
+.dark-mode{
+   .cursor-pointer {
+      svg{
+         path{
+            stroke: #FFF;
+         }
+      }
+
+   }
+   .cursor-pointer .block-icon-list {
+      svg{
+         path{
+            fill: #FFF;
+            stroke: #FFF;
+         }
+      }
+   }
+}
+</style>
