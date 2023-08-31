@@ -184,7 +184,7 @@
 
          <div v-if="modalType === 'rules'" v-html="getRulesPage.text[locale]"></div>
          <feedback-modal v-if="modalType === 'feedback'"/>
-         <monetization-alert-modal v-if="modalType === 'monetization_alert'" @onSubmit="onSubmitMonetizationModal" />
+         <monetization-alert-modal v-if="modalType === 'monetization_alert'" @onSubmit="onSubmitMonetizationModal" @close="showModal = false" />
       </modal-popup>
    </div>
 </template>
@@ -520,7 +520,12 @@ export default {
             this.$auth.setUser(data.user.original)
             await this.$auth.setUserToken(data.meta.token)
             this.authStep = 'loggedIn'
-            this.isReady = !this.isReady
+            if (this.form.add_monetization === 1) {
+               this.modalType = 'monetization_alert'
+               this.showModal = true
+            } else {
+               this.isReady = !this.isReady
+            }
             this.$v.authForm.$reset()
          } catch (e) {
             const errors = []
