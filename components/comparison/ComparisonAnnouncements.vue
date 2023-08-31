@@ -9,7 +9,9 @@
             <grid-item
                :announcement="announcement"
                :clickable="false"
+               :showOverlay="true"
                :isComparisonPage="true"
+               @removeItem="removeItem"
             />
 <!--            <div class="comparison__item__image">-->
 <!--               <img :src="getAnnouncementImage(announcement)" :alt="getAnnouncementTitle(announcement)">-->
@@ -76,7 +78,7 @@
 
       methods: {
          removeItem(id) {
-            this.$store.dispatch('comparison/removeAnnouncement', id)
+            this.$store.dispatch('comparison/removeAnnouncement', id);
          },
       },
 
@@ -212,6 +214,10 @@
 
       &__specifications {
          margin-top: 32px;
+
+         .title-with-line {
+            width: 200%;
+         }
 
          .collapse-content {
             &__column {
