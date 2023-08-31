@@ -1,11 +1,12 @@
 <template>
-  <div class="row">
+   <div >
+
     <form-radio v-for="(option,index) in options"
                 :id="`${option.key}-${option.name}-${keyItem}-${keyValue}`"
-                :key="keyValue+keyValue" v-model="computedValue"
+                :key="option.key" v-model="computedValue"
                 :label="$t(option.name)" :radio-value="option.key"
-                bigLabel class="mt-2 col-12 col-lg-4"/>
-  </div>
+                bigLabel/>
+   </div>
 </template>
 
 <script>

@@ -213,6 +213,9 @@ export default {
                enabled: true,
                pageUpDown: true,
             },
+            mousewheel: {
+               sensitivity: 1,
+            }
          },
          showIframe: true,
       }

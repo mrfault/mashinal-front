@@ -58,7 +58,7 @@
          </div>
 
          <div class="col-auto">
-            <div class="card mb-2 mb-lg-3">
+            <div class="card mt-2 mb-2 mb-lg-3 mt-lg-0">
                <h2 v-if="selectedBrand && selectedModel">
                   {{ selectedBrand.name }} {{ $translateHard(selectedModel.name) }}
                </h2>
@@ -595,6 +595,36 @@
                      }
                   }
                }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 992px) {
+      .catalog-inner {
+         .inner-gallery {
+            .swiper-slide-bg {
+               height: 500px;
+            }
+         }
+      }
+   }
+
+   @media (max-width: 600px) {
+      .catalog-inner {
+         .inner-gallery {
+            .swiper-slide-bg {
+               height: 400px;
+            }
+         }
+      }
+   }
+
+   @media (max-width: 425px) {
+      .catalog-inner {
+         .inner-gallery {
+            .swiper-slide-bg {
+               height: 300px;
             }
          }
       }
