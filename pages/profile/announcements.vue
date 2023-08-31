@@ -273,7 +273,7 @@ export default {
       },
       getStatistics() {
          this.$store.dispatch('getAutosalonStatistics',this.user.autosalon.id)
-         console.log("this.user.autosalon",this.user.autosalon)
+         // console.log("this.user.autosalon",this.user.autosalon)
       }
 
    },

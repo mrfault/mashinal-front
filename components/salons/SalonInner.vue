@@ -212,7 +212,7 @@
          ...mapActions(['getSalonById']),
 
          async changePage(page = 1) {
-            console.log('page', page)
+            // console.log('page', page)
             // page = this.$route.query.page || 1;
             this.pending = true
             await this.getSalonById({

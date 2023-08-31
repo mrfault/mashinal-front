@@ -669,6 +669,9 @@
          'form.additional_brands': {
             deep: true,
             handler(val) {
+               if (Object.values(val)?.find(item => item.category)) this.$emit('showSorting', true)
+               else this.$emit('showSorting', false)
+
                if (val[0].category === 1) this.form.moto_type = 'motorcycle';
                else if (val[0].category === 2) this.form.moto_type = 'scooter';
                else if (val[0].category === 3) this.form.moto_type = 'moto_atv';
