@@ -257,7 +257,7 @@
 
             this.announceType = filters.announce_type || 0;
 
-            console.log('filters.announce_type', filters.announce_type)
+            // console.log('filters.announce_type', filters.announce_type)
          }
       },
 

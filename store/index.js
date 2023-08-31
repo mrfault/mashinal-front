@@ -1754,7 +1754,7 @@ export const actions = {
                         await this.$axios
                            .post("/offer", state.offer_announcements)
                            .then(res => {
-                              console.log('Post error')
+                              // console.log('Post error')
                               commit("openOfferPaymentModal", {status: true});
                               commit("setOfferId", {offer_id: res.data.offer_id});
                            });

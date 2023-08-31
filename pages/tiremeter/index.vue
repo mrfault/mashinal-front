@@ -1,5 +1,5 @@
 <template>
-   <div class="visual-tire-calculator container">
+   <div class="visual-tire-calculator container pb-2">
       <div class="row">
          <div class="col-md-12">
             <breadcrumbs :crumbs="crumbs">
@@ -344,12 +344,13 @@
                   <div class="col-md-6 mt-2">
                      <div class="mini-card">
                         <div class="mini-card-icon">
-                           <img src="/tiremeter/speedometer.png" alt="" />
+                           <img src="/tiremeter/speedometer.png" alt=""/>
                         </div>
                         <div class="mini-card-content">
                            <p class="mini-card-content-title">{{ $t('speedometer_error_percentage') }}</p>
                            <p class="mini-card-content-result">
-                              <template v-if="(speedometerErrorPercentage * -1) > 0">+</template>{{speedometerErrorPercentage * -1}} %
+                              <template v-if="(speedometerErrorPercentage * -1) > 0">+</template>
+                              {{ speedometerErrorPercentage * -1 }} %
                            </p>
                         </div>
                      </div>
@@ -357,13 +358,17 @@
                   <div class="col-md-6 mt-2">
                      <div class="mini-card">
                         <div class="mini-card-icon">
-                           <img src="/tiremeter/car2.png" alt="" />
+                           <img src="/tiremeter/car2.png" alt=""/>
                         </div>
                         <div class="mini-card-content">
                            <p class="mini-card-content-title">{{ $t('clearance_change') }}</p>
                            <p class="mini-card-content-result">
-                              <template v-if="(clearanceChange / 10) > 0"> + </template> {{ (clearanceChange / 10) }} {{ $t('cm') }}
+                              <template v-if="(clearanceChange / 10) > 0"> +</template>
+                              {{ (clearanceChange / 10) }} {{ $t('cm') }}
                            </p>
+                           <div class="mini-card-content-icon" v-tooltip="">
+                              <inline-svg src="/icons/info.svg" size="22"/>
+                           </div>
                         </div>
                      </div>
                   </div>
@@ -372,7 +377,7 @@
          </div>
       </div>
 
-      <div class="row mb-3" id="resultTiremeter" v-if="showResults">
+      <div class="row" id="resultTiremeter" v-if="showResults">
          <div class="col-md-12 col-xs-12 p-1 pl-lg-1 pr-lg-1">
             <div class="card">
                <div class="row">
@@ -456,17 +461,25 @@
                            <h5 class="result-title mt-3 mt-lg-0">
                               <span class="result-title-inner">
                                  <template v-if="lists.increase.d">
-                                    {{$t('result_of_tire_size_change_title_1').replace('INCREASE', $t('will_increase')) }}
+                                    {{
+                                       $t('result_of_tire_size_change_title_1').replace('INCREASE', $t('will_increase'))
+                                    }}
                                  </template>
                                  <template v-else>
-                                    {{$t('result_of_tire_size_change_title_1').replace('INCREASE', $t('will_diminish')) }}
+                                    {{
+                                       $t('result_of_tire_size_change_title_1').replace('INCREASE', $t('will_diminish'))
+                                    }}
                                  </template>
                                  <span class="ma-tiremeter__results-text--title-d">"D"</span>
                                  <template v-if="lists.increase.d">
-                                    {{$t('result_of_tire_size_change_title_2').replace('INCREASE', $t('will_increase')) }}
+                                    {{
+                                       $t('result_of_tire_size_change_title_2').replace('INCREASE', $t('will_increase'))
+                                    }}
                                  </template>
                                  <template v-else>
-                                    {{$t('result_of_tire_size_change_title_2').replace('INCREASE', $t('will_diminish')) }}
+                                    {{
+                                       $t('result_of_tire_size_change_title_2').replace('INCREASE', $t('will_diminish'))
+                                    }}
                                  </template>
                               </span>
                            </h5>
@@ -477,7 +490,7 @@
                                     <inline-svg :src="'/icons/uncheck5.svg'" :size="22" v-else/>
                                  </div>
                                  <div class="result-list-content">
-                                    {{$t(item.text).replace('PERCENTAGE', `${Math.abs(errorPercentage)}%`) }}
+                                    {{ $t(item.text).replace('PERCENTAGE', `${Math.abs(errorPercentage)}%`) }}
                                  </div>
                               </li>
                            </ul>
@@ -486,10 +499,10 @@
                            <h5 class="result-title mt-3 mt-lg-0">
                               <span class="result-title-inner">
                                  <template v-if="lists.increase.h">
-                                    {{$t('result_of_tire_size_change_h').replace('INCREASE', $t('will_increase')) }}
+                                    {{ $t('result_of_tire_size_change_h').replace('INCREASE', $t('will_increase')) }}
                                  </template>
                                  <template v-else>
-                                    {{$t('result_of_tire_size_change_h').replace('INCREASE', $t('will_diminish')) }}
+                                    {{ $t('result_of_tire_size_change_h').replace('INCREASE', $t('will_diminish')) }}
                                  </template>
                                  <span class="ma-tiremeter__results-text--title-h">"H"</span>
                               </span>
@@ -510,10 +523,10 @@
                            <h5 class="result-title mt-3 mt-lg-0">
                               <span class="result-title-inner">
                                  <template v-if="lists.increase.l">
-                                    {{$t('result_of_tire_size_change_l').replace('INCREASE', $t('will_increase')) }}
+                                    {{ $t('result_of_tire_size_change_l').replace('INCREASE', $t('will_increase')) }}
                                  </template>
                                  <template v-else>
-                                    {{$t('result_of_tire_size_change_l').replace('INCREASE', $t('will_diminish')) }}
+                                    {{ $t('result_of_tire_size_change_l').replace('INCREASE', $t('will_diminish')) }}
                                  </template>
                                  <span class="ma-tiremeter__results-text--title-l">"L"</span>
                               </span>
@@ -1199,7 +1212,7 @@ export default {
 
 
 <style lang="scss" scoped>
-.mini-card{
+.mini-card {
    width: 100%;
    height: 80px;
    padding: 16px;
@@ -1210,28 +1223,33 @@ export default {
    justify-content: space-between;
    align-items: center;
 }
-.mini-card-icon{
+
+.mini-card-icon {
    width: 48px;
    height: 48px;
    display: flex;
    justify-content: center;
    align-items: center;
 }
-.mini-card-icon img{
+
+.mini-card-icon img {
    width: 48px;
    height: 48px;
    object-fit: cover;
    object-position: center right;
 }
-.mini-card-content{
+
+.mini-card-content {
    height: 48px;
    width: 100%;
 }
-.mini-card-content p{
+
+.mini-card-content p {
    padding: 0;
    margin: 0;
 }
-.mini-card-content-title{
+
+.mini-card-content-title {
    font-size: 14px;
    font-weight: 400;
    line-height: 16px;
@@ -1239,14 +1257,28 @@ export default {
    text-align: left;
    color: #364152;
 }
-.mini-card-content-result{
+
+.mini-card-content-result {
    font-size: 18px;
    font-weight: 500;
    line-height: 22px;
    letter-spacing: 0;
    text-align: left;
    color: #121926;
-   margin-top: 13px!important;
+   margin-top: 13px !important;
+}
+
+.mini-card-content-icon {
+   width: 22px;
+   height: 22px;
+   border-radius: 50%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   position: absolute;
+   top: 15px;
+   right: 25px;
+   cursor: pointer;
 }
 
 .card {
@@ -1356,7 +1388,7 @@ export default {
    border-left: none;
 }
 
-.result-title{
+.result-title {
    font-size: 16px;
    font-weight: 500;
    line-height: 20px;
@@ -1369,11 +1401,13 @@ export default {
    text-align: left;
    margin-bottom: 20px;
 }
-.result-list{
+
+.result-list {
    padding: 0;
    margin: 0;
 }
-.result-list li{
+
+.result-list li {
    display: flex;
    justify-content: start;
    align-items: center;
@@ -1381,7 +1415,8 @@ export default {
    border-bottom: 1px solid #eee;
    min-height: 70px;
 }
-.result-list-content{
+
+.result-list-content {
    font-size: 16px;
    font-weight: 400;
    line-height: 20px;
@@ -1389,12 +1424,14 @@ export default {
    text-align: left;
    color: #1B2434;
 }
-.result-list li svg{
+
+.result-list li svg {
    margin-right: 15px;
    width: 22px;
    height: 22px;
    object-fit: contain;
 }
+
 .dark-mode {
    .back-svg path {
       stroke: #fff;
@@ -1428,22 +1465,28 @@ export default {
    .table td:first-child, .table th:first-child {
       border-left: none;
    }
-   .result-title{
+
+   .result-title {
       border-bottom: 1px solid #364152;
    }
-   .result-list-content{
+
+   .result-list-content {
       color: #CDD5DF;
    }
-   .result-list li{
+
+   .result-list li {
       border-bottom: 1px solid #364152;
    }
+
    .mini-card {
       background-color: #121926;
    }
-   .mini-card-content-title{
+
+   .mini-card-content-title {
       color: #CDD5DF;
    }
-   .mini-card-content-result{
+
+   .mini-card-content-result {
       color: #CDD5DF;
    }
 }

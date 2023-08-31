@@ -362,6 +362,8 @@
                let joinedParams = ['name', 'model', 'generation'].map(key => this.form[key]).filter(o => o).join('/');
                // if (((this.form.model || this.form.generation) && !this.form.name) || (this.form.generation && !this.form.model)) joinedParams = '';
                // update route query params and search announcements
+
+               console.log('this.getFormData();', this.getFormData())
                let form = this.getFormData();
                let searchQuery = `filter=${encodeURI(JSON.stringify(form))}`;
                let pageUrl = `${this.$localePath('/catalog')}${joinedParams.length ? ('/' + joinedParams) : ''}`;

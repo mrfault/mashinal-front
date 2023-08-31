@@ -20,7 +20,6 @@
          />
       </template>
 
-
       <div class="container">
          <breadcrumbs
             :crumbs="crumbs"
