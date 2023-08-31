@@ -1393,25 +1393,22 @@ export const actions = {
       if (data.params.body) data.params.body = "body_" + data.params.body;
 
       let filteredData = {};
+      console.log('1', data.post)
       for (let key in data.post) {
-         if (
-            [
-               "kolichestvo-mest",
-               "privod",
-               "tip-dvigatelya",
-               "korobka",
-               "body"
-            ].includes(key)
-         ) {
-            filteredData[key] = {key, value: data.post[key]};
+         if (["kolichestvo-mest", "privod", "tip-dvigatelya", "korobka", "body"].includes(key)) {
+            filteredData[key] = { key, value: data.post[key] };
+            console.log('2', filteredData[key])
          } else if (key.includes("max_")) {
             let rangeKey = key.replace("max_", "");
-            filteredData[rangeKey] = `${data.post["min_" + rangeKey] || 0}-${data
-               .post["max_" + rangeKey] || 0}`;
+            filteredData[rangeKey] = `${data.post["min_" + rangeKey] || 0}-${data.post["max_" + rangeKey] || 0}`;
+            console.log('3', filteredData[rangeKey])
          } else if (key.includes("min_")) {
-            continue;
+            let rangeKey = key.replace("min_", "");
+            filteredData[rangeKey] = `${data.post["min_" + rangeKey] || 0}-${data.post["max_" + rangeKey] || 0}`;
+            // continue;
          } else {
             filteredData[key] = data.post[key];
+            console.log('5', filteredData[key])
          }
       }
 
