@@ -498,3 +498,14 @@
       }
    }
 }
+
+@media (max-width: 393px){
+   .ma-sms__box{
+      transform: scale(0.8);
+   }
+}
+@media (max-width: 340px){
+   .ma-sms__box{
+      transform: scale(0.7);
+   }
+}
