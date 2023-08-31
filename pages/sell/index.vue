@@ -91,8 +91,9 @@
                               <p>{{ $t("contacts_registration_info") }}</p>
                            </div>
                            <div class="resend_section" v-if="authStep === 'handleOTP'">
-                              <p :class="{link_active: resendSmsAfterSecond === 0}" @click="resendCode">Kodu
-                                 yenidən göndər</p>
+                              <p :class="{link_active: resendSmsAfterSecond === 0}" @click="resendCode">{{
+                                    $t('resend_otp')
+                                 }}</p>
                               <timer
                                  v-if="resendSmsAfterSecond > 0"
                                  class="otp_timer"
@@ -155,22 +156,18 @@
                            </button>
                         </div>
                         <div class="comment_info">
+                           <inline-svg
+                              :src="'/icons/info.svg'"
+                           />
                            <p>{{ $t("by_posting_an_ad_you_confirm_your_agreement_with_the_rules") }}:
                               <nuxt-link :to="`/page/${getRulesPage.slug[locale]}`"
-                                         @click.native.prevent="showRules = true"
+                                         @click.native.prevent="onShowModal('rules')"
                                          event="">
                                  <strong style="text-decoration: underline">{{ $t('general_rules') }}</strong>
                               </nuxt-link>
                            </p>
                         </div>
-                        <modal-popup
-                           :modal-class="'wider'"
-                           :toggle="showRules"
-                           :title="getRulesPage.title[locale]"
-                           @close="showRules = false"
-                        >
-                           <div v-html="getRulesPage.text[locale]"></div>
-                        </modal-popup>
+
                      </template>
 
                   </form>
@@ -200,7 +197,7 @@
                               />
                               <p>{{ $t('announce_help_text') }}</p>
                            </div>
-                           <button class="btn btn--red">{{ $t("let_us_know") }}</button>
+                           <button class="btn btn--red" @click="onShowModal('feedback')">{{ $t("let_us_know") }}</button>
                         </div>
                      </template>
                   </div>
@@ -218,6 +215,16 @@
             </div>
          </div>
       </div>
+      <modal-popup
+         :modal-class="'wider'"
+         :toggle="showModal"
+         :title="getRulesPage.title[locale]"
+         @close="showModal = false"
+      >
+
+         <div v-if="modalType === 'rules'" v-html="getRulesPage.text[locale]"></div>
+         <feedback-modal v-if="modalType === 'feedback'"/>
+      </modal-popup>
    </div>
 </template>
 
@@ -238,11 +245,13 @@ import Registration_mark from "~/components/sell/registration_mark.vue";
 import Moto_form from "~/components/sell/moto_form.vue";
 import {required, email, requiredIf} from "vuelidate/lib/validators";
 import {PaymentMixin} from "~/mixins/payment";
+import FeedbackModal from "~/components/sell/FeedbackModal.vue";
 
 export default {
    name: "add-announce",
    mixins: [MenusDataMixin, ToastErrorsMixin, PaymentMixin],
    components: {
+      FeedbackModal,
       Moto_form,
       Registration_mark,
       Part_form,
@@ -266,7 +275,8 @@ export default {
          resendSmsAfterSecond: 0,
          pending: false,
          submitShow: false,
-         showRules: false,
+         showModal: false,
+         modalType: "",
          isReady: false,
          announceTitle: "",
          navigationData: [
@@ -328,6 +338,10 @@ export default {
          if (payload) {
             await this.$store.dispatch(payload.api_key)
          }
+      },
+      onShowModal(type) {
+         this.showModal = true
+         this.modalType = type
       },
       onChangePartType(id) {
          switch (id) {
@@ -550,8 +564,8 @@ export default {
       }
    },
    async mounted() {
-      this.resetAnnouncement = {...this.announcement}
-      this.resetPartPreview = {...this.partPreview}
+      this.resetAnnouncement = JSON.parse(JSON.stringify(this.announcement));
+      this.resetPartPreview = JSON.parse(JSON.stringify(this.partPreview))
       this.announceTitle = this.$t('place_an_ad')
       if (Object.values(this.user).length) {
          this.authForm.name = this.user.full_name
@@ -567,23 +581,18 @@ export default {
       'form.announce_type'() {
          this.submitShow = false
          this.navigationData.forEach((nav) => nav.id !== 4 && (nav.isActive = false))
-         this.partPreview = {...this.resetPartPreview}
-         this.announcement = {...this.resetAnnouncement}
+         this.partPreview = JSON.parse(JSON.stringify(this.resetPartPreview))
+         this.announcement = JSON.parse(JSON.stringify(this.resetAnnouncement));
          switch (this.form.announce_type.title) {
             case "cars":
-               // this.partPreview = {...this.resetPartPreview}
                this.announceTitle = this.$t('vehicle_info')
                return this.announcement.image = "/img/car_default.svg"
             case "moto":
-               // this.partPreview = {...this.resetPartPreview}
                this.announceTitle = this.$t('vehicle_info')
                return this.announcement.image = "/img/motorbike.svg"
             case "parts":
-               // this.announcement = {...this.resetAnnouncement}
                return this.announceTitle = this.$t('part_info')
             case "registration_marks":
-               // this.announcement = {...this.resetAnnouncement}
-               // this.partPreview = {...this.resetPartPreview}
                this.announceTitle = this.$t('registration_mark_info')
                return this.submitShow = true
             default:
@@ -888,6 +897,16 @@ export default {
                   }
                }
 
+               .comment_info {
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+
+                  svg {
+                     min-width: 24px;
+                     min-height: 24px;
+                  }
+               }
 
             }
 

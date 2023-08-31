@@ -494,6 +494,9 @@ export default {
          padding-bottom: 70px;
          height: auto;
       }
+      .item-bg{
+         border-radius: 8px 8px 0 0 !important;
+      }
    }
 
    .ma-announcement-card__stats {
