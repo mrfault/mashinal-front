@@ -628,7 +628,7 @@
 
                if (this.isMobileBreakpoint) {
                   setTimeout(() => {
-                     console.log('sdsad')
+                     // console.log('sdsad')
                      this.scrollTo('.alco-form.result', [-80, 0]);
                   }, 100)
                }

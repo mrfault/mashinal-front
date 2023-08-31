@@ -85,7 +85,7 @@ export default {
          this.isEditing = false;
       },
       automobileDeleted() {
-         console.log("automobiles deleted")
+         // console.log("automobiles deleted")
          this.getAllCars()
          this.$nuxt.refresh();
       }
