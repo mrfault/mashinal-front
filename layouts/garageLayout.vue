@@ -226,7 +226,8 @@ export default {
 .ma-garage__nav--profile__avatar img{
    height: 36px;
    width: 36px;
-   object-fit: cover;
+   object-fit: contain;
+   border-radius: 50%;
 }
 .ma-garage__nav--profile__name{
    width: auto!important;
