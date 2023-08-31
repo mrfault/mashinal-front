@@ -117,7 +117,6 @@
          @pending="pending = true"
          @change-page="changePage"
          escape-duplicates
-         :needAutoScroll="true"
          :hasContainer="false"
       >
          <template #cap>
@@ -175,7 +174,7 @@
       data() {
          return {
             pending: false,
-            sorting: 'created_at_desc',
+            // sorting: 'created_at_desc',
             sortItems: [
                { id: 'created_at_desc', name: this.$t('show_by_date') },
                { id: 'price_asc', name: this.$t('show_cheap_first') },
@@ -212,14 +211,16 @@
       methods: {
          ...mapActions(['getSalonById']),
 
-         async changePage() {
+         async changePage(page = 1) {
+            console.log('page', page)
+            // page = this.$route.query.page || 1;
             this.pending = true
             await this.getSalonById({
                slug: this.$route.params.id,
-               page: this.$route.query.page || 1,
+               page: page || 1
             })
-            this.pending = false
-            this.scrollTo('.profile_info')
+            this.pending = false;
+            this.scrollTo('.cap', [-80, -190])
          },
 
          scrollFunc() {

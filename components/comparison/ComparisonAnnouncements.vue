@@ -8,7 +8,8 @@
          >
             <grid-item
                :announcement="announcement"
-               :clickable="true"
+               :clickable="false"
+               :isComparisonPage="true"
             />
 <!--            <div class="comparison__item__image">-->
 <!--               <img :src="getAnnouncementImage(announcement)" :alt="getAnnouncementTitle(announcement)">-->
