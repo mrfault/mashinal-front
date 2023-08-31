@@ -158,6 +158,10 @@
          &__title {
             color: #EEF2F6;
          }
+
+         .no-results {
+            background-color: transparent;
+         }
       }
    }
 </style>
