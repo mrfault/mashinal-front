@@ -138,7 +138,7 @@ export default {
          let data = [
             {
                title: 'menu_qn',
-               image: 'qn.png',
+               image: 'qn.gif',
                url: '/plates',
                description: 'menu_qn_desc',
                row: 1,
