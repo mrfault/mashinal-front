@@ -42,12 +42,12 @@
                                  <span class="registrationMarks__number-description">MASHIN.AL</span>
                               </div>
 
-                              <!--                           <add-favorite :announcement="registrationMark"  :type="'registrationMark'"/>-->
+                              <!-- <add-favorite :announcement="registrationMark"  :type="'registrationMark'"/>-->
                            </div>
                         </client-only>
                      </div>
 
-                     <comment :comment="registrationMark.comment" v-if="registrationMark.comment && !isMobileBreakpoint"></comment>
+                     <comment :comment="registrationMark.comment" v-if="registrationMark.comment"></comment>
                   </div>
 
                   <div class="col-auto">

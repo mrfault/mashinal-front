@@ -341,7 +341,7 @@
                   <div class="clearfix"></div>
                </div>
                <div class="row mt-5">
-                  <div class="col-md-6 mt-2">
+                  <div class="col-md-6 col-6 mt-2">
                      <div class="mini-card">
                         <div class="mini-card-icon">
                            <img src="/tiremeter/speedometer.png" alt=""/>
@@ -355,7 +355,7 @@
                         </div>
                      </div>
                   </div>
-                  <div class="col-md-6 mt-2">
+                  <div class="col-md-6 col-6 mt-2">
                      <div class="mini-card">
                         <div class="mini-card-icon">
                            <img src="/tiremeter/car2.png" alt=""/>
@@ -1214,7 +1214,7 @@ export default {
 <style lang="scss" scoped>
 .mini-card {
    width: 100%;
-   height: 80px;
+   min-height: 80px;
    padding: 16px;
    border-radius: 12px;
    gap: 12px;
@@ -1537,6 +1537,14 @@ export default {
    .table thead tr th:first-child,
    .table tbody tr td:first-child {
       width: auto;
+   }
+   .mini-card{
+      display: block;
+      padding: 10px;
+   }
+   .card{
+      padding: 24px;
+      min-height: auto;
    }
 }
 

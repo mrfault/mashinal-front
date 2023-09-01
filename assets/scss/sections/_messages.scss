@@ -44,8 +44,8 @@
    border-radius: 50%;
    font-size: 11px;
    font-weight: 500;
-   top: 16px;
-   right: 20px;
+   top: 50px;
+   right: 50px;
 }
 
 .dots {
@@ -809,6 +809,15 @@
       &-attachments {
          width: 270px;
       }
+   }
+}
+
+@media (max-width: 768px) {
+   .messages_chat-list{
+      min-height: calc(100% - 138px);
+      max-height: calc(100% - 138px);
+      height: 100%;
+      overflow: auto;
    }
 }
 

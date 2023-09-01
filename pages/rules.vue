@@ -1,5 +1,5 @@
 <template>
-   <div class="rules">
+   <div class="rules mb-3">
       <div class="container">
          <breadcrumbs :crumbs="crumbs"/>
 
