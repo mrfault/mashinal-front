@@ -1,5 +1,5 @@
 <template>
-   <div class="brandsList d-none d-md-block">
+   <div class="brandsList" :class="($nuxt.$route.path === '/ru' || $nuxt.$route.path === '/') ? 'd-md-block' : 'd-none d-md-block'">
       <div class="container">
          <div class="brandsList__inner">
             <ul class="brandsList__list" v-for="(item, i) in $chunk(options, Math.ceil(options.length / 6))" :key="i">
@@ -73,6 +73,9 @@
             type: Array,
             default() { return [] }
          }
+      },
+      mounted() {
+
       }
    }
 </script>
@@ -120,6 +123,15 @@
                }
             }
          }
+      }
+   }
+
+   @media (max-width: 960px) {
+      .brandsList__inner {
+         justify-content: unset;
+         display: grid;
+         gap: 30px 30px;
+         grid-template-columns: auto auto auto;
       }
    }
 </style>

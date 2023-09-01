@@ -137,6 +137,15 @@ export default {
       menuServices() {
          let data = [
             {
+               title: 'menu_qn',
+               image: 'qn.gif',
+               url: '/plates',
+               description: 'menu_qn_desc',
+               row: 1,
+               auth: false,
+               disabled: false
+            },
+            {
                title: 'menu_external_salon',
                image: 'auto-by-order.png',
                url: '/external-salons',
@@ -177,15 +186,6 @@ export default {
                image: 'guide.png',
                url: '/cars/assistant',
                description: 'menu_guide_desc',
-               row: 1,
-               auth: false,
-               disabled: false
-            },
-            {
-               title: 'menu_terms',
-               image: 'terms.png',
-               url: '/policy',
-               description: 'menu_terms_desc',
                row: 1,
                auth: false,
                disabled: false
@@ -240,6 +240,15 @@ export default {
                image: 'settings.png',
                url: '/settings',
                description: 'menu_settings_desc',
+               row: 2,
+               auth: false,
+               disabled: false
+            },
+            {
+               title: 'menu_terms',
+               image: 'terms.png',
+               url: '/policy',
+               description: 'menu_terms_desc',
                row: 2,
                auth: false,
                disabled: false

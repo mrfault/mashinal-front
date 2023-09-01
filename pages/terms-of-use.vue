@@ -1,5 +1,5 @@
 <template>
-   <div class="termsOfUse">
+   <div class="termsOfUse mb-3">
       <div class="container">
          <breadcrumbs :crumbs="crumbs"/>
 

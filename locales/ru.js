@@ -2767,6 +2767,8 @@ export default {
    "menu_comparisons_desc": "Сравнивайте атомобили",
    "menu_settings": "Настройки",
    "menu_settings_desc": "Системные настройки",
+   "menu_qn": "Регистрационные номера",
+   "menu_qn_desc": "Найдите pегистрационные регистрации",
    "start_subscription_desc1": "Уверены ли вы, что хотите продлить подписку?",
    "vehicle_is_processing": "ТС в процессе",
    "stop_subscription_desc1": "Уверены ли вы,что хотите отписаться?",
@@ -2821,5 +2823,6 @@ export default {
    "balance_present_description": "Сумма получена в виде подарочных бонусов. Бонус действителен в течение 30 дней.",
    "Vin or car number is required": "Введите ВИН или номер",
 
-   "Aktiv elan sayı 3-dən çox ola bilməz": "Aktiv elan sayı 3-dən çox ola bilməz ru"
+   "Aktiv elan sayı 3-dən çox ola bilməz": "Aktiv elan sayı 3-dən çox ola bilməz ru",
+   "terms_and_rule": "Условия и положения",
 };

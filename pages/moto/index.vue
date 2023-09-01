@@ -256,7 +256,7 @@
             ids.push({
                type: 'motoatv',
                ids: [
-                  ...this.motoAnnouncements.data?.filter(car => car.type === 'motoatv').map(item => item.id)
+                  ...this.motoAnnouncements.data?.filter(car => car.type === 'moto_atv').map(item => item.id)
                ]
             });
 
