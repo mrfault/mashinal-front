@@ -40,7 +40,7 @@ export default function ({app, store, error, $axios}) {
             window.location.reload();
          }
       } else if (code === 422) {
-         if(err.response.data && (err.response.data.message.includes("Aktiv elan sayı") || err.response.data.message.includes("Количество активных объявлений"))){
+         if(err.response && err.response.data && (err.response.data.message.includes("Aktiv elan sayı") || err.response.data.message.includes("Количество активных объявлений"))){
             app.$toast.error(err.response.data.message);
          }
          if (err.response.data.data) {
