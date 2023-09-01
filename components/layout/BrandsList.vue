@@ -13,10 +13,11 @@
 </template>
 
 <script>
-   // import { SearchMixin } from "~/mixins/search";
+   import { SearchMixin } from "~/mixins/search";
+   import { mapActions } from "vuex";
 
    export default {
-      // mixins: [SearchMixin],
+      mixins: [SearchMixin],
 
       data() {
         return {
@@ -25,25 +26,32 @@
       },
 
       methods: {
+         ...mapActions(['getGridSearch']),
+
          async searchBrand(brand) {
             let url = {
-               "additional_brands": {
-                  "0":{ "brand": brand.id, "brand_slug": brand.slug },
-                  "1":{},
-                  "2":{},
-                  "3":{},
-                  "4":{}
+               additional_brands: {
+                  0: { brand: brand.id, brand_slug: brand.slug },
+                  1: {},
+                  2: {},
+                  3: {},
+                  4: {}
                },
-               "announce_type": 0,
-               "currency": 1
+               announce_type: 0,
+               currency: 1,
+               brandsList: true
             }
 
             await this.$router.push({
                path: '/cars',
                query: { car_filter: JSON.stringify(url) }
-            }, () => {
-               this.scrollTo('.announcements-grid', [-60, -60]);
             });
+
+            // let searchParams = { url: '/car', prefix: 'cars' }
+            // let post = JSON.parse(this.$route.query?.car_filter || '{}');
+            //
+            // await this.getGridSearch({...searchParams, post});
+            // await this.$store.dispatch('fetchMonetizedCarsSearch', post);
          }
       },
 
@@ -52,8 +60,11 @@
             let post = JSON.parse(this.$route.query?.car_filter || '{}');
             let page = this.$route.query?.page || 1;
 
-            // this.$store.dispatch('getGridSearch', { url: '/car', prefix: 'cars', post, page });
-            // this.$store.dispatch('fetchMonetizedCarsSearch', post);
+            if (post?.brandsList) {
+               this.$store.dispatch('getGridSearch', { url: '/car', prefix: 'cars', post, page });
+               this.$store.dispatch('fetchMonetizedCarsSearch', post);
+               this.scrollTo('.breadcrumbs', [20, -120]);
+            }
         }
       },
 

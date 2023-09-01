@@ -44,6 +44,7 @@
             {
                'overflow-visible isProfilePage': isProfilePage,
                'isComparisonPage': isComparisonPage,
+               'isPromotion': announcement.is_promotion,
             }
          ]"
          class="announcements-grid__item"
@@ -130,7 +131,17 @@
                         v-if="announcement.has_monetization"
                         src="/icons/promote.svg"
                      />
+
+                     <div
+                        class="comparisonDelete"
+                        @click="$emit('removeItem', announcement.id_unique)"
+                        v-if="isComparisonPage"
+                     >
+                        <span>{{ $t('delete') }}</span>
+                        <inline-svg src="/icons/trash.svg" />
+                     </div>
                   </div>
+
                   <div class="item-overlay__bottom--right">
                      <inline-svg
                         v-if="announcement.show_vin"
@@ -153,7 +164,7 @@
 
          <div class="item-details">
             <div class="item-details__item d-flex align-items-center justify-content-between">
-               <h3>{{ announcement.price }}</h3>
+               <h3>{{ +announcement.price.split(' ')[0] ? announcement.price : $t('negotiable') }}</h3>
 
                <div v-if="announcement.tradeable || announcement.credit" class="item-details__icons">
                   <inline-svg

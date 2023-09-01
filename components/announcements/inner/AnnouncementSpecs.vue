@@ -102,6 +102,12 @@
                   for: ['cars', 'commercial', 'moto'],
                   icon: '/icons/color.svg'
                },
+               // {
+               //    key: 'type_of_motos',
+               //    value: this.color,
+               //    for: ['moto'],
+               //    icon: '/icons/motorcycle.svg'
+               // },
                {
                   key: 'engine',
                   value: this.engineSpecs,
