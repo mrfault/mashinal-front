@@ -674,8 +674,8 @@
    }
 }
 .messages_chat-list{
-   min-height: calc(100% - 138px);
-   max-height: calc(100% - 138px);
+   min-height: 610px;
+   max-height: 610px;
    height: 100%;
    overflow: auto;
 }
@@ -809,6 +809,15 @@
       &-attachments {
          width: 270px;
       }
+   }
+}
+
+@media (max-width: 768px) {
+   .messages_chat-list{
+      min-height: calc(100% - 138px);
+      max-height: calc(100% - 138px);
+      height: 100%;
+      overflow: auto;
    }
 }
 
