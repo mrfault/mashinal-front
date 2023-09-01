@@ -674,8 +674,8 @@
    }
 }
 .messages_chat-list{
-   min-height: 610px;
-   max-height: 610px;
+   min-height: calc(100% - 138px);
+   max-height: calc(100% - 138px);
    height: 100%;
    overflow: auto;
 }

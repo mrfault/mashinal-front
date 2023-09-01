@@ -137,6 +137,15 @@ export default {
       menuServices() {
          let data = [
             {
+               title: 'menu_qn',
+               image: 'qn.png',
+               url: '/plates',
+               description: 'menu_qn_desc',
+               row: 1,
+               auth: false,
+               disabled: false
+            },
+            {
                title: 'menu_external_salon',
                image: 'auto-by-order.png',
                url: '/external-salons',
