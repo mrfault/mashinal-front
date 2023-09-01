@@ -575,10 +575,11 @@
 
             &-text {
                left: 40px;
-               bottom: 30px;
+               //bottom: 30px;
 
                .breadcrumbs {
                   display: flex !important;
+                  padding: 0;
 
                   ul {
                      height: 40px;
@@ -660,10 +661,10 @@
                   }
                }
 
-               .registrationMarks__hero-text {
-                  left: 20px;
-                  bottom: 20px;
-               }
+               //.registrationMarks__hero-text {
+               //   left: 20px;
+               //   bottom: 20px;
+               //}
 
                .registrationMarks__hero-title {
                   font-size: 24px;
@@ -742,6 +743,12 @@
                      padding: 12px;
                   }
                }
+            }
+         }
+
+         &__hero {
+            &-text {
+               left: 25px;
             }
          }
 
