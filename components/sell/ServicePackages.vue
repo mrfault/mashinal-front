@@ -20,7 +20,7 @@
                </li>
             </ul>
             <div class="package_price">
-               <p>5.99 AZN</p>
+               <p>{{ data.price }} AZN</p>
                <span>10 AZN</span>
             </div>
             <div class="badge">
@@ -28,10 +28,11 @@
             </div>
             <div class="package_popover" v-if="!turboIsClosed && !$cookies.get('turboIsClosed')">
                <h3>Bu paketlə 4 dəfə tez sata bilərsən!</h3>
-               <p>Turbo paketi seçməklə elanını 4 dəfə tez sata və vizual olaraq digər elanlardan daha cəlbedici edə bilərsən. Beləliklə elanının alıcılar tərəfindən daha tez tapılacaq.</p>
+               <p>Turbo paketi seçməklə elanını 4 dəfə tez sata və vizual olaraq digər elanlardan daha cəlbedici edə
+                  bilərsən. Beləliklə elanının alıcılar tərəfindən daha tez tapılacaq.</p>
                <button type="button"
                        @click="closePopover"
-                  class="btn full-width btn--blue-new active">
+                       class="btn full-width btn--blue-new active">
                   Aydındır
                </button>
             </div>
@@ -74,12 +75,12 @@
                <p class="price">{{ info.price === 0 ? 'Ödənişsiz' : `${info.price} AZN` }}</p>
             </li>
             <li class="total" v-if="statistics_data.find(s => s.id === add_monetization).info.some(s => s.price > 0)">
-               <p>CƏMİ</p>
+               <p>{{ $t("total") }}</p>
                <p>
                   {{
-                     statistics_data.find(s => s.id === add_monetization).info.reduce((acc, obj) => {
+                     +(statistics_data.find(s => s.id === add_monetization).info.reduce((acc, obj) => {
                         return acc + obj.price
-                     }, 0)
+                     }, 0))
                   }} AZN</p>
             </li>
          </ul>
@@ -136,7 +137,7 @@ export default {
                   {
                      id: 3,
                      name: "Turbo satış 10 gün ərzində",
-                     price: 5.99
+                     price: this.data.price
                   }
                ],
             },
@@ -176,9 +177,6 @@ export default {
          this.turboIsClosed = true
       }
    },
-   mounted() {
-      console.log(this.data)
-   }
 }
 </script>
 
@@ -580,6 +578,7 @@ export default {
                      font-size: 18px;
                      font-weight: 600;
                      color: #1B2434 !important;
+                     text-transform: uppercase;
                   }
                }
 
@@ -604,7 +603,6 @@ export default {
          background-color: transparent;
 
          .package_statistics {
-
 
 
             .statistics_info {

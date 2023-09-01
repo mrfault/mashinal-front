@@ -1,49 +1,51 @@
 <template>
    <div class="registration_mark_form">
-      <form-select
-         :label="$t('region_2')"
-         :class="{form_error: $v.form.car_number.region_id.$error}"
-         :options="getRegionNumbers.map((rn) => ({...rn, id: rn.serial_number}))"
-         :clear-placeholder="true"
-         :clear-option="false"
-         :new-label="false"
-         has-search
-         v-model="form.car_number.region_id"
-         :invalid="$v.form.car_number.region_id.$error"
-         :disabled="isEdit"
-      />
-      <div class="car_number">
+      <div class="divider mobile-column">
          <form-select
-            :label="$t('letter')"
-            :class="{form_error: $v.form.car_number.first.$error}"
-            :options="numbers"
+            :label="$t('region_2')"
+            :class="{form_error: $v.form.car_number.region_id.$error}"
+            :options="getRegionNumbers.map((rn) => ({...rn, id: rn.serial_number}))"
             :clear-placeholder="true"
             :clear-option="false"
             :new-label="false"
             has-search
-            v-model="form.car_number.first"
-            :invalid="$v.form.car_number.first.$error"
+            v-model="form.car_number.region_id"
+            :invalid="$v.form.car_number.region_id.$error"
             :disabled="isEdit"
          />
-         <form-select
-            :label="$t('letter')"
-            :options="numbers"
-            :clear-placeholder="true"
-            :clear-option="false"
-            :new-label="false"
-            has-search
-            v-model="form.car_number.second"
-            :disabled="isEdit"
-         />
-         <form-numeric-input
-            placeholder="000"
-            :class="{form_error: $v.form.car_number.number.$error}"
-            v-model="form.car_number.number"
-            :maxlength="3"
-            :float="true"
-            :invalid="$v.form.car_number.number.$error"
-            :disabled="isEdit"
-         />
+         <div class="car_number">
+            <form-select
+               :label="'A'"
+               :class="{form_error: $v.form.car_number.first.$error}"
+               :options="numbers"
+               :clear-placeholder="true"
+               :clear-option="false"
+               :new-label="false"
+               has-search
+               v-model="form.car_number.first"
+               :invalid="$v.form.car_number.first.$error"
+               :disabled="isEdit"
+            />
+            <form-select
+               :label="'A'"
+               :options="numbers"
+               :clear-placeholder="true"
+               :clear-option="false"
+               :new-label="false"
+               has-search
+               v-model="form.car_number.second"
+               :disabled="isEdit"
+            />
+            <form-numeric-input
+               placeholder="000"
+               :class="{form_error: $v.form.car_number.number.$error}"
+               v-model="form.car_number.number"
+               :maxlength="3"
+               :float="true"
+               :invalid="$v.form.car_number.number.$error"
+               :disabled="isEdit"
+            />
+         </div>
       </div>
       <div class="divider mobile-column">
          <form-numeric-input
@@ -105,7 +107,6 @@ export default {
    props: {
       announcement: {
          type: Object,
-         default: {}
       },
       isReady: {
          type: Boolean,
@@ -240,22 +241,14 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .registration_mark_form {
    display: flex;
    flex-grow: 1;
    flex-direction: column;
    gap: 20px;
 
-   .car_number {
-      display: flex;
-      gap: 20px;
 
-      & > * {
-         width: 100%;
-         min-width: 0;
-      }
-   }
 
    &_with_info {
       &_inner {
@@ -276,7 +269,25 @@ export default {
       grid-template-columns: repeat(2, calc(50% - 8px));
       gap: 20px;
 
+      .car_number {
+         display: flex;
+         gap: 16px;
 
+         .select-menu_label {
+            padding: 0 12px !important;
+         }
+
+         .text-input {
+            input {
+               padding:  0 12px !important;
+            }
+         }
+
+         & > * {
+            width: 100%;
+            min-width: 0;
+         }
+      }
    }
 }
 
