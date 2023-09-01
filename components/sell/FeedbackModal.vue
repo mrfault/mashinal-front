@@ -23,27 +23,29 @@
          :invalid="$v.form.phone.$error || formError.includes('phone')"
       />
       <form-text-input
-         key="product_code"
+         key="title"
          v-model="form.title"
-         :class="{form_error: formError.includes('title')}"
+         :class="{form_error: $v.form.title.$error || formError.includes('title')}"
          :placeholder="$t('headline')"
-         :maxlength="32"
-         :invalid="formError.includes('title')"
+         :maxlength="50"
+         :invalid="$v.form.title.$error || formError.includes('title')"
       />
       <form-textarea
          v-model="form.message"
-         :placeholder="$t('additional_info')"
-         :maxlength="600"
+         :class="{form_error: $v.form.message.$error || formError.includes('message')}"
+         :placeholder="$t('request_text')"
+         :maxlength="500"
+         :invalid="$v.form.message.$error || formError.includes('message')"
       />
       <button
               :class="['btn', 'full-width', 'btn--blue-new', 'active', {pending}]">
-         Müraciəti göndər
+         {{ $t('send') }}
       </button>
    </form>
 </template>
 
 <script>
-import {email, required, requiredIf} from "vuelidate/lib/validators";
+import {email, maxLength, required} from "vuelidate/lib/validators";
 
 export default {
    data() {
@@ -78,7 +80,7 @@ export default {
             await this.$axios
                .$post('https://v2dev.mashin.al/api/v2/common/mail/inform-us', this.form)
             this.$v.form.$reset()
-            this.$toasted.success('Getdi')
+            this.$toasted.success(this.$t('request_success_message'))
             this.$emit("close")
          } catch (e) {
             const errors = []
@@ -98,6 +100,7 @@ export default {
             email: {
                email, required
             },
+            title: {maxLength: maxLength(35)},
             phone: {required},
             message: {required}
          }
