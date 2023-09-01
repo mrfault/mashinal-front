@@ -1206,91 +1206,88 @@ export default {
 </script>
 
 <style lang="scss">
-.cars-search-form {
-   //padding: 24px;
-   //border-radius: 12px;
-   //background-color: #FFFFFF;
+   .cars-search-form {
+      //padding: 24px;
+      //border-radius: 12px;
+      //background-color: #FFFFFF;
 
-   //&__head {
-   //   gap: 32px;
-   //}
-
-   &__gridMain {
-      display: grid;
-      grid-gap: 20px;
-
-      //.form-group {
-      //   min-width: 0;
+      //&__head {
+      //   gap: 32px;
       //}
 
-      //.form-merged {
-      //   height: 52px;
-      //
-      //   .select-menu_label {
-      //      height: 100%;
-      //   }
-      //}
-   }
+      &__gridMain {
+         display: grid;
+         grid-gap: 20px;
 
-   &__gridFooter {
-      display: grid;
-      grid-gap: 20px;
-      margin-top: 20px;
-      width: 100%;
-   }
+         //.form-group {
+         //   min-width: 0;
+         //}
 
-   .form-buttons {
-      width: 100%;
-   }
-
-   .btns {
-      display: flex;
-      grid-gap: 12px;
-      height: 52px;
-
-      i {
-         &:before {
-            font-size: 14px;
-         }
+         //.form-merged {
+         //   height: 52px;
+         //
+         //   .select-menu_label {
+         //      height: 100%;
+         //   }
+         //}
       }
-   }
 
-   .btn {
-      height: 52px;
-   }
+      &__gridFooter {
+         display: grid;
+         grid-gap: 20px;
+         margin-top: 20px;
+         width: 100%;
+      }
 
-   .checkboxes {
-      display: flex;
-      align-items: center;
-      column-gap: 12px;
-      height: max-content;
-   }
+      .form-buttons {
+         width: 100%;
+      }
 
-   .form-merged {
-      .form-group {
-         &:not(.text-input) {
-            &:first-child {
-               border-right: none;
+      .btns {
+         display: flex;
+         grid-gap: 12px;
+         height: 52px;
+
+         i {
+            &:before {
+               font-size: 14px;
             }
          }
       }
 
-      &.price {
-         .form-merged {
-            &__inputs {
-               .form-group {
-                  &:first-child {
-                     position: relative;
-                     &:before {
-                        content: '';
-                        position: absolute;
-                        top: 50%;
-                        right: 0;
-                        transform: translateY(-50%);
-                        width: 1px;
-                        height: 50%;
-                        background-color: #CDD5DF;
-                        z-index: 10;
+      .btn {
+         height: 52px;
+      }
+
+      .checkboxes {
+         display: flex;
+         align-items: center;
+         column-gap: 12px;
+         height: max-content;
+      }
+
+      .form-group {
+         height: max-content;
+
+         &.price {
+            .form-merged {
+               &__inputs {
+                  .form-group {
+                     &:first-child {
+                        position: relative;
+                        border-right: none;
+
+                        &:before {
+                           content: '';
+                           position: absolute;
+                           top: 50%;
+                           right: 0;
+                           transform: translateY(-50%);
+                           width: 1px;
+                           height: 50%;
+                           background-color: #CDD5DF;
+                           z-index: 10;
+                        }
                      }
                   }
                }
@@ -1299,57 +1296,48 @@ export default {
       }
    }
 
-   .form-group {
-      height: max-content;
+   @media (min-width: 992px) {
+      .cars-search-form {
+         //.form-buttons {
+         //   width: unset !important;
+         //}
 
-      &.price {
-         border: none !important;
-      }
-   }
-}
+         //&__head {
+         //   flex-direction: row !important;
+         //   gap: unset;
+         //
+         //   .announce_types {
+         //      .form-group {
+         //         .btn {
+         //            width: 120px !important;
+         //         }
+         //      }
+         //   }
+         //}
 
-@media (min-width: 992px) {
-   .cars-search-form {
-      //.form-buttons {
-      //   width: unset !important;
-      //}
+         &__gridMain {
+            grid-template-columns: repeat(3, 1fr);
+         }
 
-      //&__head {
-      //   flex-direction: row !important;
-      //   gap: unset;
-      //
-      //   .announce_types {
-      //      .form-group {
-      //         .btn {
-      //            width: 120px !important;
-      //         }
-      //      }
-      //   }
-      //}
-
-      &__gridMain {
-         grid-template-columns: repeat(3, 1fr);
-      }
-
-      &__gridFooter {
-         grid-template-columns: repeat(2, 1fr);
-      }
-   }
-}
-
-@media (min-width: 1150px) {
-   .cars-search-form {
-      &__gridMain {
-         grid-template-columns: 230px 230px 230px 285px;
-      }
-
-      &__gridFooter {
-         grid-template-columns: 230px 230px 230px 285px;
-
-         &.hasValue {
-            grid-template-columns: 230px 230px 290px 225px;
+         &__gridFooter {
+            grid-template-columns: repeat(2, 1fr);
          }
       }
    }
-}
+
+   @media (min-width: 1150px) {
+      .cars-search-form {
+         &__gridMain {
+            grid-template-columns: 230px 230px 230px 285px;
+         }
+
+         &__gridFooter {
+            grid-template-columns: 230px 230px 230px 285px;
+
+            &.hasValue {
+               grid-template-columns: 230px 230px 290px 225px;
+            }
+         }
+      }
+   }
 </style>

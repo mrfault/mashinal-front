@@ -164,7 +164,7 @@
 
          <div class="item-details">
             <div class="item-details__item d-flex align-items-center justify-content-between">
-               <h3>{{ announcement.price }}</h3>
+               <h3>{{ +announcement.price.split(' ')[0] ? announcement.price : $t('negotiable') }}</h3>
 
                <div v-if="announcement.tradeable || announcement.credit" class="item-details__icons">
                   <inline-svg

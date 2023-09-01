@@ -525,6 +525,22 @@
                }
             }
          }
+
+         .form-group {
+            &.price {
+               .form-merged {
+                  &__inputs {
+                     .form-group {
+                        &:first-child {
+                           &:before {
+                              background-color: rgba(89, 89, 90, .6);
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         }
       }
    }
 
