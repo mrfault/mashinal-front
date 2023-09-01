@@ -9,8 +9,8 @@
    >
       <template v-if="!showPhone">
          <template v-if="callAtOnce">
-            <template v-for="phone in phones" v-if="!isMobileBreakpoint">
-               <span v-mask="$maskPhone(true)">+{{ phone }}</span>
+            <template v-if="!isMobileBreakpoint">
+               <span v-mask="$maskPhone(true)" v-for="phone in phones">+{{ phone }}</span>
             </template>
 
             <span v-else>{{ $t('make_a_call') }}</span>

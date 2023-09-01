@@ -46,7 +46,7 @@
                   </template>
                </grid>
 
-               <HandleIds :single="true" :items="{ type: 'motorcycles', id: announcement.id }" />
+               <HandleIds :single="true" :items="{ type: $route.query?.type, id: announcement.id }" />
             </div>
          </div>
       </div>
