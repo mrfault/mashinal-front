@@ -453,7 +453,7 @@ export default {
          this.$nuxt.$off('select-announcement', this.selectAnnouncement)
       }
    }
-   </script>
+</script>
 
 <style lang="scss">
    .badge-icon {
