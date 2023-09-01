@@ -940,7 +940,7 @@ export default {
          display: flex;
          align-items: center;
          gap: 8px;
-         z-index: 10;
+         z-index: 1;
 
          p {
             color: white;
