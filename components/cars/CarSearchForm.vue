@@ -1,7 +1,5 @@
 <template>
    <div class="cars-search-form form">
-<!--      <pre>{{announceType}}</pre>-->
-<!--      <pre>{{form.announce_type}}</pre>-->
       <div class="cars-search-form__inner">
          <template v-if="assistant">
             <div class="col-12">

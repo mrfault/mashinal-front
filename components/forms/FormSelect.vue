@@ -121,9 +121,10 @@
                         <form-text-input
                            v-model="search"
                            :placeholder="$t('search')"
+                           icon-name="search"
                            block-class="placeholder-lighter"
                         />
-                        <!--                        icon-name="search"-->
+
                      </div>
                   </div>
                   <div v-if="custom" class="container">
