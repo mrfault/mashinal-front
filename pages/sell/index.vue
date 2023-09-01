@@ -995,6 +995,8 @@ export default {
          }
 
          .card {
+            padding: 24px;
+
             &_title {
                font-size: 20px;
             }
