@@ -577,8 +577,8 @@ export const actions = {
       commit("mutate", {property: "brandsList", value: res});
    },
 
-   async fetchAutosalonAnnouncementsId({commit}, id) {
-      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/autosalon/announcements/${id}?page=2`);
+   async fetchAutosalonAnnouncementsId({commit}, data) {
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/autosalon/announcements/${data.id}?page=${data.page || 1}`);
       commit("mutate", {property: "autosalonAnnouncementsId", value: res});
    },
 

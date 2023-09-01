@@ -235,11 +235,11 @@
                :template="'btn'"
                :text="$t('add_favorite')"
                :announcement="announcement"
-               v-if="![2,3].includes(announcement.status)"
+               v-if="![0,2,3].includes(announcement.status)"
             />
 
             <add-comparison
-               v-if="type !== 'plates' && type !== 'parts'"
+               v-if="type !== 'plates' && type !== 'parts' && ![0,2,3].includes(announcement.status)"
                class="h-52"
                :template="'btn'"
                :text="$t('compare')"

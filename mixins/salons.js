@@ -59,7 +59,7 @@ export const SalonsMixin = {
       },
       getWorkingDays(days, hours) {
          if (!days && !hours) return false
-         let strHours = hours?.start ? `<span style="font-weight: 500;">${hours.start} - ${hours.end}</span>` : ''
+         let strHours = hours?.start ? `<span>${hours.start} - ${hours.end}</span>` : ''
          if (!days || !days.length) return strHours
          let weekDays = [...days].sort(),
             dayRows = [],
@@ -70,7 +70,7 @@ export const SalonsMixin = {
             else if (day - 1 == weekDays[i - 1]) dayRows[lastKey].push(day)
             else dayRows[++lastKey] = [day]
          }
-         let strDays = this.$t('days-short')
+         let strDays = this.$t('days')
          let everyDay = this.$t('everyday')
          let everyDayEnabled = false;
 
@@ -82,10 +82,10 @@ export const SalonsMixin = {
             dayRows
                .map((row) =>
                   row.length === 1
-                     ? `<tr><td style="font-weight: 500">${strDays[row[0] - 1]}</td><td>${strHours}</td></tr>`
+                     ? `<tr><td>${strDays[row[0] - 1]}</td><td>${strHours}</td></tr>`
                      : `<tr>
-                    <td style="font-weight: 500">${everyDayEnabled ? everyDay : (strDays[row[0] - 1] + ' - ' + strDays[row[row.length - 1] - 1])} </td>
-                    <td style="font-weight: 500">${strHours}</td>
+                    <td >${everyDayEnabled ? everyDay : (strDays[row[0] - 1] + ' - ' + strDays[row[row.length - 1] - 1])} </td>
+                    <td >${strHours}</td>
                 </tr>`,
                )
                .join('') +

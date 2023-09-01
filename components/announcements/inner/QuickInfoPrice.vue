@@ -1,6 +1,6 @@
 <template>
    <div class="quickInfoPriceWrapper">
-      <div :class="['quickInfoPrice', {'plates' : type === 'plates'}]">
+      <div :class="['quickInfoPrice', {'plates pointer-events-none' : type === 'plates'}]">
          <template v-if="type !== 'plates'">
             <div class="quickInfoPrice__head">
                <span>{{ announcement.price }}</span>

@@ -2669,7 +2669,7 @@ export default {
 
    "go_ahead": "Войти",
    "your_phone_number": "Номер моб.телефона",
-   "my_vehicle_announcements": "Мои транспортные средства",
+   "my_vehicle_announcements": "Мои объявления",
    "my_car_number_announcements": "Мои регистрационные номера",
    "under_consideration_2": "На рассмотрении",
    "timed_out": "Истëкшие",
