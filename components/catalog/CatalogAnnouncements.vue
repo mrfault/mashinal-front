@@ -3,7 +3,8 @@
     <grid
       v-if="catalogAnnouncements.length"
       where="catalog"
-      :announcements="catalogAnnouncements" 
+      :announcements="catalogAnnouncements"
+      :hasContainer="false"
     />
   </div>
 </template>

@@ -212,7 +212,7 @@
                </div>
             </div>
 
-            <catalog-announcements class="" :catalog-id="firstGeneration.id" :key="firstGeneration.id" />
+            <catalog-announcements class="d-lg-none" :catalog-id="firstGeneration.id" :key="firstGeneration.id" />
          </div>
       </div>
    </div>
