@@ -191,15 +191,6 @@ export default {
                disabled: false
             },
             {
-               title: 'menu_terms',
-               image: 'terms.png',
-               url: '/policy',
-               description: 'menu_terms_desc',
-               row: 1,
-               auth: false,
-               disabled: false
-            },
-            {
                title: 'menu_e_services',
                image: 'e-services.png',
                url: '/e-services',
@@ -249,6 +240,15 @@ export default {
                image: 'settings.png',
                url: '/settings',
                description: 'menu_settings_desc',
+               row: 2,
+               auth: false,
+               disabled: false
+            },
+            {
+               title: 'menu_terms',
+               image: 'terms.png',
+               url: '/policy',
+               description: 'menu_terms_desc',
                row: 2,
                auth: false,
                disabled: false
