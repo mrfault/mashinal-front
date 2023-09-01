@@ -292,8 +292,7 @@
 
             ids.push({
                type: 'plate',
-               ids: [...this.getRegistrationMarks?.data?.map(item => item.id)
-               ]
+               ids: [...this.getRegistrationMarks?.data?.map(item => item.id)]
             });
 
             return ids;

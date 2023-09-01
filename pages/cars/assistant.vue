@@ -133,6 +133,9 @@ export default {
                announcements: this.mainAnnouncements?.data,
                meta: this.mainAnnouncements?.meta
             }
+            setTimeout(() => {
+               this.scrollTo('.overflow-hidden', [-50, -190])
+            });
          } catch (e) {
 
          } finally {
@@ -150,6 +153,9 @@ export default {
                announcements: this.mainAnnouncements?.data,
                meta: this.mainAnnouncements?.meta
             }
+            setTimeout(() => {
+               this.scrollTo('.overflow-hidden', [-50, -190])
+            });
          } catch (e) {
 
          } finally {
@@ -162,6 +168,9 @@ export default {
             monetized: null,
             announcements: null
          }
+         setTimeout(() => {
+            this.scrollTo('.pages-cars-assistant', [-50, -190])
+         });
       }
    }
 }

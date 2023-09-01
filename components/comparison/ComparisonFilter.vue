@@ -10,7 +10,7 @@
             />
          </div>
 
-         <div class="col-12 col-lg-1-5 mt-2 mt-lg-0" v-if="compareType === 'models' && models.length">
+         <div class="col-12 col-lg-1-5 mt-2 mt-lg-0" v-if="models.length < 5 && (compareType === 'models' && models.length)">
             <button
                :class="['btn full-width btn--pale-green', { disabled: models.length >= 5 }]"
                @click.stop="addModel()"

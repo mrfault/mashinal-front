@@ -52,7 +52,6 @@
                                         @getForm="getRegistrationMarksForm($event)"/>
 
 
-
                   </div>
                   <div
                      :class="['vehicle_card_info', {default_imgs: announcement.image.startsWith('/img/') || partPreview.image.startsWith('/img/') }]"
@@ -88,9 +87,10 @@
                      </template>
                   </div>
                </div>
-               <service-packages v-if="submitShow && (form.announce_type.title === 'cars' || form.announce_type.title === 'moto')"
-                                 v-model="form.add_monetization" :add_monetization="form.add_monetization"
-                                 :data="servicePackages"/>
+               <service-packages
+                  v-if="submitShow && (form.announce_type.title === 'cars' || form.announce_type.title === 'moto')"
+                  v-model="form.add_monetization" :add_monetization="form.add_monetization"
+                  :data="servicePackages"/>
                <template v-if="submitShow">
                   <div class="contacts">
                      <h2>{{ $t("contact_information") }}</h2>
@@ -183,7 +183,7 @@
       >
 
          <div v-if="modalType === 'rules'" v-html="getRulesPage.text[locale]"></div>
-         <feedback-modal v-if="modalType === 'feedback'"/>
+         <feedback-modal v-if="modalType === 'feedback'" @close="showModal = false"/>
          <monetization-alert-modal v-if="modalType === 'monetization_alert'" @onSubmit="onSubmitMonetizationModal"
                                    @close="showModal = false"/>
       </modal-popup>
@@ -635,6 +635,7 @@ export default {
          display: flex;
          flex-direction: column;
          gap: 20px;
+         padding: 40px;
 
          &_title {
             font-size: 24px;
@@ -695,9 +696,7 @@ export default {
                flex-grow: 1;
                flex-direction: column;
                gap: 20px;
-
-
-
+               width: 100%;
 
                .comment_info {
                   display: flex;
@@ -760,55 +759,56 @@ export default {
             }
 
          }
-            .contacts {
+
+         .contacts {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 24px;
+
+            svg {
+               min-width: 24px;
+               min-height: 24px;
+            }
+
+            h2 {
+               margin-bottom: 24px;
+            }
+
+            &_info {
                display: flex;
-               flex-direction: column;
-               gap: 16px;
-               margin-top: 24px;
+               align-items: center;
+               gap: 10px;
+               padding: 12px 16px;
+               background-color: #EEF2F6;
+               border-radius: 8px;
+            }
 
-               svg {
-                  min-width: 24px;
-                  min-height: 24px;
+            .resend_section {
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               gap: 4px;
+
+               .otp_timer {
+                  color: #2970FF;
                }
 
-               h2 {
-                  margin-bottom: 24px;
-               }
+               p {
+                  color: #9AA4B2;
+                  font-size: 16px;
+                  font-weight: 500;
 
-               &_info {
-                  display: flex;
-                  align-items: center;
-                  gap: 10px;
-                  padding: 12px 16px;
-                  background-color: #EEF2F6;
-                  border-radius: 8px;
-               }
-
-               .resend_section {
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  gap: 4px;
-
-                  .otp_timer {
+                  &.link_active {
                      color: #2970FF;
-                  }
-
-                  p {
-                     color: #9AA4B2;
                      font-size: 16px;
                      font-weight: 500;
-
-                     &.link_active {
-                        color: #2970FF;
-                        font-size: 16px;
-                        font-weight: 500;
-                        text-decoration-line: underline;
-                        cursor: pointer;
-                     }
+                     text-decoration-line: underline;
+                     cursor: pointer;
                   }
                }
             }
+         }
 
 
       }
