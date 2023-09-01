@@ -696,7 +696,7 @@ export default {
                flex-grow: 1;
                flex-direction: column;
                gap: 20px;
-
+               width: 100%;
 
                .comment_info {
                   display: flex;
