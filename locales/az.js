@@ -2837,6 +2837,8 @@ export default {
    "menu_comparisons_desc": "Avtomobilləri müqayisə edin",
    "menu_settings": "Tənzimləmələr",
    "menu_settings_desc": "Sistem parametrləri ",
+   "menu_qn": "Qeydiyyat nişanları",
+   "menu_qn_desc": "Qeydiyyat nişanını tap",
    "today": "Bu gün",
    "vehiclePassportExpired": "Nəqliyyat vasitəsinin qeydiyyat şəhadətnaməsi dəyişdirilib",
 

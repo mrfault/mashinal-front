@@ -2767,6 +2767,8 @@ export default {
    "menu_comparisons_desc": "Сравнивайте атомобили",
    "menu_settings": "Настройки",
    "menu_settings_desc": "Системные настройки",
+   "menu_qn": "Регистрационные номера",
+   "menu_qn_desc": "Найдите pегистрационные регистрации",
    "start_subscription_desc1": "Уверены ли вы, что хотите продлить подписку?",
    "vehicle_is_processing": "ТС в процессе",
    "stop_subscription_desc1": "Уверены ли вы,что хотите отписаться?",
