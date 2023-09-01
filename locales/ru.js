@@ -1600,8 +1600,8 @@ export default {
    "razgon-do-100-kmch-s": "Разгон до 100 км/ч, с",
    "razmer-koles": "Размер колес",
    "razmery-mm": "Размеры, мм",
-   reached_the_limit_announcement: "Вы превысили лимит добавления объявлений",
-   reached_the_limit_model: "Вы превысили лимит добавления модели",
+   reached_the_limit_announcement: "Для сравнения количество объявлений достигло предела",
+   reached_the_limit_model: "Для сравнения количество моделей достигло предела",
    read: "Прочитать",
    "real-car-number-will-make-post-faster":
       "Указание реального госномера ускорит процесс размещения объявления",
