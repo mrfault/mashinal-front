@@ -264,6 +264,7 @@
    &.wider {
       width: 680px;
    }
+
    &.medium {
       width: 490px;
    }
@@ -1202,6 +1203,13 @@
    .modal-popup {
       &_content {
          padding: 12px;
+      }
+   }
+   .upload-image {
+      &_thumbnail {
+         &_item {
+            height: 55px;
+         }
       }
    }
 }

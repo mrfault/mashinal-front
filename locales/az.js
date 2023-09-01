@@ -1617,8 +1617,8 @@ export default {
    "razgon-do-100-kmch-s": "Sürətlənmə 100 km/saat,s",
    "razmer-koles": "Təkərlərin ölçüsü",
    "razmery-mm": "Ölçülər,mm",
-   reached_the_limit_announcement: "Elan sayı limitə çatıb",
-   reached_the_limit_model: "Model sayı limitə çatıb",
+   reached_the_limit_announcement: "Müqayisə üçün elan sayı limitə çatıb",
+   reached_the_limit_model: "Müqayisə üçün model sayı limitə çatıb",
    read: "Oxumaq",
    "real-car-number-will-make-post-faster":
       "Qeydiyyat nişanını düzgün qeyd etdiyiniz halda elanınız saytda daha tez dərc olunacaq",
