@@ -17,13 +17,6 @@
                   <template #left>
                      <h3>{{ $t('featured_ads') }}</h3>
                   </template>
-
-                  <template #right>
-                     <nuxt-link :to="$localePath('/featured-ads')">
-                        <span>{{ $t('see_all') }}</span>
-                        <icon name="arrow-right"/>
-                     </nuxt-link>
-                  </template>
                </Cap>
             </template>
          </grid>
@@ -40,13 +33,6 @@
                <Cap :className="'mb40'">
                   <template #left>
                      <h3>{{ $t('recent_uploads') }}</h3>
-                  </template>
-
-                  <template #right>
-                     <nuxt-link :to="$localePath('/cars')">
-                        <span>{{ $t('see_all') }}</span>
-                        <icon name="arrow-right"/>
-                     </nuxt-link>
                   </template>
                </Cap>
             </template>
