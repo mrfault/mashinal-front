@@ -601,8 +601,58 @@
 
    @media (max-width: 500px) {
       .quick-info {
+         &__item {
+            padding: 16px;
+         }
+
+         &__details {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 10px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid #CDD5DF;
+
+            li {
+               position: relative;
+               white-space: nowrap;
+
+               &:not(:last-child) {
+                  margin-left: 0;
+
+                  &:after {
+                     content: '';
+                     position: absolute;
+                     top: 0;
+                     right: -12px;
+                     width: 1px;
+                     height: 100%;
+                     background-color: #CDD5DF;
+                  }
+               }
+            }
+         }
+
          .btns {
             grid-template-columns: repeat(1, 1fr);
+         }
+      }
+   }
+
+   @media (max-width: 375px) {
+      .quick-info {
+         &__details {
+            padding: 12px 10px;
+            gap: 12px;
+
+            li {
+               &:not(:last-child) {
+                  &:after {
+                     right: -8px;
+                  }
+               }
+            }
          }
       }
    }

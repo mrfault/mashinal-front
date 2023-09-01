@@ -62,11 +62,11 @@
          <div class="generation_grid_item">
             <img
                :src="item.image"
-               :alt="item.name"
+               :alt="item.name.replace('– 0', `– ${new Date().getFullYear()}`)"
                class="generation_img"
             />
             <div class="generation_grid_item_inner">
-               <p>{{ item.name }}</p>
+               <p>{{ item.name.replace("– 0", `– ${new Date().getFullYear()}`) }}</p>
             </div>
          </div>
       </grid-radio>
@@ -128,7 +128,6 @@
          v-model="form.modification"
          @change="preview.car_catalog.capacity = form.modification?.capacity"
       />
-      <!--      v-if="form.modification"-->
 
       <template v-if="isEdit || (form.modification && sellModificationsV2.length)">
          <div class="divider">

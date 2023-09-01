@@ -368,7 +368,7 @@ export default {
             this.alertShowed = false
             if (res?.data?.redirect_url) {
                this.handlePayment(res, false, this.$t('car_added'), 'v2')
-               this.$router.push(this.$localePath('/profile/announcements'))
+               !this.isMobileBreakpoint && this.$router.push(this.$localePath('/profile/announcements'))
             } else {
                this.$router.push(this.$localePath('/profile/announcements'), () => {
                   this.updatePaidStatus({
@@ -396,9 +396,10 @@ export default {
             formData.append('data', JSON.stringify(form))
             formData.append('add_monetization', this.form.add_monetization)
             const res = await this.motoPost({form: formData, isMobile: this.isMobileBreakpoint});
+            this.alertShowed = false
             if (res?.data?.redirect_url) {
                this.handlePayment(res, false, this.$t('car_added'), 'v2')
-               this.$router.push(this.$localePath('/profile/announcements'))
+               !this.isMobileBreakpoint && this.$router.push(this.$localePath('/profile/announcements'))
             } else {
                this.$router.push(this.$localePath('/profile/announcements'), () => {
                   this.updatePaidStatus({
@@ -423,7 +424,7 @@ export default {
             if (res?.redirect_url) {
                const response = {data: {...res}}
                this.handlePayment(response, false, this.$t('plate_added'), 'v2')
-               this.$router.push(this.$localePath('/profile/announcements'))
+               !this.isMobileBreakpoint && this.$router.push(this.$localePath('/profile/announcements'))
             } else {
                this.$router.push(this.$localePath('/profile/announcements'), () => {
                   this.updatePaidStatus({
@@ -447,7 +448,7 @@ export default {
             const res = await this.partsPost(formData);
             if (res?.data?.redirect_url) {
                this.handlePayment(res, false, this.$t('car_added'), 'v2')
-               this.$router.push(this.$localePath('/profile/announcements'))
+               !this.isMobileBreakpoint && this.$router.push(this.$localePath('/profile/announcements'))
             } else {
                this.$router.push(this.$localePath('/profile/announcements'), () => {
                   this.updatePaidStatus({
