@@ -52,7 +52,6 @@
                            show-phone-count
                            show-status
                            track-views
-                           :activeTab="activeTab"
                         />
                      </div>
                   </template>
