@@ -2874,6 +2874,7 @@ export default {
    "balance_present_description": "Hədiyyə bonuslara şəklində əldə olunmuş məbləğ. Bonusun istifadə müddəti 30 gün",
    "Vin or car number is required": "VIN və ya QN nömrəsini əlavə edin",
 
-   "Aktiv elan sayı 3-dən çox ola bilməz": "Aktiv elan sayı 3-dən çox ola bilməz"
+   "Aktiv elan sayı 3-dən çox ola bilməz": "Aktiv elan sayı 3-dən çox ola bilməz",
+   "terms_and_rule": "Qaydalar və şərtlər",
 };
 
