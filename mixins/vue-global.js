@@ -131,6 +131,7 @@ Vue.use({
                    link = false;
 
                if (item?.is_auto_salon) {
+                  console.log('item', item)
                   img = item?.user?.is_auto_salon?.logo;
                   link = this.$localePath(`/salons/${item?.user?.is_auto_salon?.slug}`);
                   name = item?.user?.is_auto_salon?.name || item?.user?.full_name;

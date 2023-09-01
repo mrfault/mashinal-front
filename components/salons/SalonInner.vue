@@ -72,6 +72,7 @@
                   <span class="working-time"
                         v-if="salonSingle.working_days && salonSingle.working_hours"
                         v-html="getWorkingDays(salonSingle.working_days, salonSingle.working_hours)"/>
+
                   <span class="working-time" v-else>
                         {{ $t('everyday') }} : 09:00 - 18:00
                   </span>
@@ -108,7 +109,7 @@
             </div>
          </div>
       </div>
-<pre>{{autosalonAnnouncementsId?.meta}}</pre>
+
       <grid
          v-if="autosalonAnnouncementsId?.data?.length"
          :announcements="autosalonAnnouncementsId?.data"
@@ -209,16 +210,17 @@
       },
 
       methods: {
-         ...mapActions(['getSalonById']),
+         // ...mapActions(['getSalonById']),
 
          async changePage(page = 1) {
             // console.log('page', page)
             page = this.$route.query.page || 1;
             this.pending = true
-            await this.getSalonById({
-               slug: this.$route.params.id,
-               page: page || 1
-            })
+            // await this.getSalonById({
+            //    slug: this.$route.params.id,
+            //    page: page || 1
+            // })
+            await this.$store.dispatch('fetchAutosalonAnnouncementsId', {id: this.$store.getters.salonSingle.id, page: page});
             this.pending = false;
             this.scrollTo('.cap', [-80, -190])
          },
@@ -239,21 +241,28 @@
          },
       },
 
-      watch: {
-        sorting(val) {
-           if (val === '') {
-              this.$store.dispatch('getSalonById', { slug: this.$route.params.id, sorting: 'created_at_desc' });
-           } else {
-              this.$store.dispatch('getSalonById', { slug: this.$route.params.id, sorting: this.sorting });
-           }
-        }
-      },
+      // watch: {
+      //   sorting(val) {
+      //      if (val === '') {
+      //         this.$store.dispatch('getSalonById', { slug: this.$route.params.id, sorting: 'created_at_desc' });
+      //      } else {
+      //         this.$store.dispatch('getSalonById', { slug: this.$route.params.id, sorting: this.sorting });
+      //      }
+      //   }
+      // },
 
       props: {
          gridTitle: {
             type: String,
             default: 'auto_salon_ads'
          }
+      },
+
+      async fetch() {
+        await this.$store.dispatch('fetchAutosalonAnnouncementsId', {
+           id: this.$store.getters.salonSingle.id,
+           page: this.$route.query.page || 1,
+        });
       },
 
       mounted() {

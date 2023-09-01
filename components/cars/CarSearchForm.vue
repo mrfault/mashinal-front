@@ -125,6 +125,7 @@
                </template>
 
                <form-select
+                  class-name="price"
                   :label="$t('price')"
                   custom
                   :new-label="false"
@@ -1265,16 +1266,53 @@ export default {
       height: max-content;
    }
 
+   .form-merged {
+      .form-group {
+         &:not(.text-input) {
+            &:first-child {
+               border-right: none;
+            }
+         }
+      }
+
+      &.price {
+         .form-merged {
+            &__inputs {
+               .form-group {
+                  &:first-child {
+                     position: relative;
+                     &:before {
+                        content: '';
+                        position: absolute;
+                        top: 50%;
+                        right: 0;
+                        transform: translateY(-50%);
+                        width: 1px;
+                        height: 50%;
+                        background-color: #CDD5DF;
+                        z-index: 10;
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+
    .form-group {
       height: max-content;
+
+      &.price {
+         border: none !important;
+      }
    }
 }
 
 @media (min-width: 992px) {
    .cars-search-form {
-      .form-buttons {
-         width: unset !important;
-      }
+      //.form-buttons {
+      //   width: unset !important;
+      //}
 
       //&__head {
       //   flex-direction: row !important;

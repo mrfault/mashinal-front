@@ -2691,7 +2691,7 @@ export default {
    confirmation_code: "Təsdiqləmə kodu",
    confirmation_code_desc: "Zəhmət olmasa nömrənizə göndərilən SMS kodu daxil edin",
    penalties: "Cərimələr",
-   my_vehicle_announcements: "Nəqliyyat vasitəsi elanlarım",
+   my_vehicle_announcements: "Menim elanlarim",
    my_car_number_announcements: "Qeydiyyat nişanı elanlarım",
    timed_out: "Vaxtı bitmiş",
    under_consideration_2: "Yoxlamada",
