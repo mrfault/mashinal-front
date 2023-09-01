@@ -47,11 +47,15 @@
                         </client-only>
                      </div>
 
-                     <comment :comment="registrationMark.comment" v-if="registrationMark.comment"></comment>
+                     <comment :comment="registrationMark.comment" v-if="registrationMark.comment && !isMobileBreakpoint"></comment>
                   </div>
 
                   <div class="col-auto">
                      <quick-info type="plates" />
+                  </div>
+
+                  <div class="col-auto" v-if="isMobileBreakpoint">
+                     <comment :comment="registrationMark.comment" v-if="registrationMark.comment"></comment>
                   </div>
                </div>
             </div>
