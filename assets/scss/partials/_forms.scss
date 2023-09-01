@@ -199,8 +199,13 @@ input::-webkit-inner-spin-button {
    img {
       position: absolute;
       top: 50%;
+      right: 16px;
       transform: translate(0, -50%);
       pointer-events: none;
+
+      &:before {
+         font-size: 16px;
+      }
 
       &.icon-alert-circle {
          position: absolute;

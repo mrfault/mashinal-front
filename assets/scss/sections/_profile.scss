@@ -883,6 +883,7 @@
 
 .tabsWrapper {
    overflow-x: auto;
+
    .tabs {
       display: flex;
       align-items: center;
@@ -943,9 +944,36 @@
    }
 }
 
-@media (max-width: 1025px) {
-   .tabs {
-      margin-top: 20px;
+@media (max-width: 992px) {
+   .tabsWrapper {
+      padding-bottom: 20px;
+
+      .tabs {
+         &__item {
+            border-radius: 50px;
+            border: 1px solid #CDD5DF;
+            color: #697586;
+            font-size: 14px;
+            line-height: 16px;
+
+            &.active {
+               color: $white;
+               border-bottom: unset;
+               border: 1px solid #155EEF;
+               background-color: #155EEF;
+            }
+
+            &:not(:first-child) {
+               margin-left: 15px;
+            }
+         }
+      }
+   }
+
+   .tabContent {
+      &__item {
+         padding-top: 20px;
+      }
    }
 }
 
