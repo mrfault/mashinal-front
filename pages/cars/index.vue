@@ -257,7 +257,7 @@
 
             this.announceType = filters.announce_type || 0;
 
-            console.log('filters.announce_type', filters.announce_type)
+            // console.log('filters.announce_type', filters.announce_type)
          }
       },
 
@@ -268,18 +268,21 @@
             page = this.$route.query.page || 1;
             let post = JSON.parse(this.$route.query.car_filter || '{}');
 
-            if (with_panorama) {
-               post = { ...post, with_video: true }
-            } else {
-               post = { ...post, sort_by: post.sort_by, sort_order: post.sort_order }
+            if (!post?.brandsList) {
+               if (with_panorama) {
+                  post = { ...post, with_video: true }
+               } else {
+                  post = { ...post, sort_by: post.sort_by, sort_order: post.sort_order }
+               }
+
+               this.pending = true;
+               await this.getGridSearch({...this.searchParams, post, page});
+               await this.$store.dispatch('fetchMonetizedCarsSearch', post);
+               // await this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'cars', data: post });
+               this.pending = false;
+               this.scrollTo('.breadcrumbs', [20, -120]);
             }
 
-            this.pending = true;
-            await this.getGridSearch({...this.searchParams, post, page});
-            await this.$store.dispatch('fetchMonetizedCarsSearch', post);
-            // await this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'cars', data: post });
-            this.pending = false;
-            this.scrollTo('.breadcrumbs', [20, -120]);
          }
       },
 

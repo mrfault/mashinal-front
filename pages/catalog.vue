@@ -20,7 +20,6 @@
          />
       </template>
 
-
       <div class="container">
          <breadcrumbs
             :crumbs="crumbs"
@@ -49,7 +48,7 @@
 
             <Cap>
                <template #left>
-                  <h3>{{ $t('choose_model') }}</h3>
+                  <h3>{{ catalogTitle }}</h3>
                </template>
 
                <template #right>
@@ -172,6 +171,7 @@
          async searchCatalog(page = 1, scroll = true) {
             page = this.$route.query.page || 1;
             let post = JSON.parse(this.$route.query.filter || '{}');
+
             let showDefaultItems = false; /* !Object.keys(post).length && !this.$route.params.brand; */
             this.pending = true;
             await this.getCatalogSearch({
@@ -180,7 +180,7 @@
                page
             });
             this.pending = false;
-            if (scroll) this.scrollTo('.cap', [-80, -150]);
+            if (scroll) this.scrollTo('.cap', [-80, -200]);
          }
       },
 
@@ -193,6 +193,16 @@
 
       computed: {
          ...mapGetters(['catalogItems', 'catalogTotal', 'firstGeneration', 'modelDescription', 'brands', 'models']),
+
+         catalogTitle() {
+            if (!this.$route.params.model)
+               return this.$t('select_model');
+            else if (!this.$route.params.generation)
+               return this.$t('select_generation');
+            else if (!this.$route.params.body)
+               return this.$t('select_carcase');
+            return '';
+         },
 
          crumbs() {
             let params = Object.keys(this.$route.params).map(key => this.$route.params[key]);

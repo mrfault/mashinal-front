@@ -1,6 +1,6 @@
 <template>
-  <grid 
-    :announcements="announcements" 
+  <grid
+    :announcements="announcements"
     :clickable="false"
   />
 </template>

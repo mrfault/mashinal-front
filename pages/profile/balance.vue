@@ -422,7 +422,7 @@ export default {
    },
    mounted() {
 
-      console.log(this.user)
+      // console.log(this.user)
 
       let intervalSwipper = setInterval(() => {
          if(this.balanceSwiper.init()) {

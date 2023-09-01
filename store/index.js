@@ -577,8 +577,8 @@ export const actions = {
       commit("mutate", {property: "brandsList", value: res});
    },
 
-   async fetchAutosalonAnnouncementsId({commit}, id) {
-      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/autosalon/announcements/${id}`);
+   async fetchAutosalonAnnouncementsId({commit}, data) {
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/autosalon/announcements/${data.id}?page=${data.page || 1}`);
       commit("mutate", {property: "autosalonAnnouncementsId", value: res});
    },
 
@@ -1393,25 +1393,22 @@ export const actions = {
       if (data.params.body) data.params.body = "body_" + data.params.body;
 
       let filteredData = {};
+      console.log('1', data.post)
       for (let key in data.post) {
-         if (
-            [
-               "kolichestvo-mest",
-               "privod",
-               "tip-dvigatelya",
-               "korobka",
-               "body"
-            ].includes(key)
-         ) {
-            filteredData[key] = {key, value: data.post[key]};
+         if (["kolichestvo-mest", "privod", "tip-dvigatelya", "korobka", "body"].includes(key)) {
+            filteredData[key] = { key, value: data.post[key] };
+            console.log('2', filteredData[key])
          } else if (key.includes("max_")) {
             let rangeKey = key.replace("max_", "");
-            filteredData[rangeKey] = `${data.post["min_" + rangeKey] || 0}-${data
-               .post["max_" + rangeKey] || 0}`;
+            filteredData[rangeKey] = `${data.post["min_" + rangeKey] || 0}-${data.post["max_" + rangeKey] || 0}`;
+            console.log('3', filteredData[rangeKey])
          } else if (key.includes("min_")) {
-            continue;
+            let rangeKey = key.replace("min_", "");
+            filteredData[rangeKey] = `${data.post["min_" + rangeKey] || 0}-${data.post["max_" + rangeKey] || 0}`;
+            // continue;
          } else {
             filteredData[key] = data.post[key];
+            console.log('5', filteredData[key])
          }
       }
 
@@ -1754,7 +1751,7 @@ export const actions = {
                         await this.$axios
                            .post("/offer", state.offer_announcements)
                            .then(res => {
-                              console.log('Post error')
+                              // console.log('Post error')
                               commit("openOfferPaymentModal", {status: true});
                               commit("setOfferId", {offer_id: res.data.offer_id});
                            });

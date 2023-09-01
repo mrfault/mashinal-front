@@ -52,6 +52,7 @@
                            show-phone-count
                            show-status
                            track-views
+                           :activeTab="activeTab"
                         />
                      </div>
                   </template>
@@ -130,7 +131,7 @@ export default {
    data() {
       return {
          activeTab: null,
-         loading: true,
+         loading: false,
          announceItems: [
             {
                id: null,
@@ -188,9 +189,9 @@ export default {
    },
    mounted() {
       if (this.user?.autosalon?.id)
-         this.getStatistics();
+      this.getStatistics();
       this.$nuxt.$on('refresh-my-announcements', () => this.refresh++);
-   },
+      },
    async asyncData({store, route}) {
       let status = ['0', '1', '2', '3'].includes(route.query.status) ? parseInt(route.query.status) : '';
       let shop = ['1', '2'].includes(route.query.type) ? (route.query.type == 2 ? 'part' : 'salon') : false;
@@ -272,8 +273,8 @@ export default {
          this.isDragging = false;
       },
       getStatistics() {
-         this.$store.dispatch('getAutosalonStatistics', this.user.autosalon.id)
-         console.log("this.user.autosalon", this.user.autosalon)
+         this.$store.dispatch('getAutosalonStatistics',this.user.autosalon.id)
+         console.log("this.user.autosalon",this.user.autosalon)
       }
 
    },

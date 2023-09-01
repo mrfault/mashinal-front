@@ -362,6 +362,7 @@
                let joinedParams = ['name', 'model', 'generation'].map(key => this.form[key]).filter(o => o).join('/');
                // if (((this.form.model || this.form.generation) && !this.form.name) || (this.form.generation && !this.form.model)) joinedParams = '';
                // update route query params and search announcements
+
                let form = this.getFormData();
                let searchQuery = `filter=${encodeURI(JSON.stringify(form))}`;
                let pageUrl = `${this.$localePath('/catalog')}${joinedParams.length ? ('/' + joinedParams) : ''}`;
@@ -377,6 +378,8 @@
                      else if (scroll) this.scrollTo('.catalog-grid', [-15, -20]);
                   });
                }
+
+               console.log('form', form)
             }, force ? 100 : 1000);
          },
          resetForm(submit = false) {

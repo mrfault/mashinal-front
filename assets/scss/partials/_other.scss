@@ -264,6 +264,9 @@
    &.wider {
       width: 680px;
    }
+   &.medium {
+      width: 490px;
+   }
 
    &_scrollview {
       @include calc-vh(max-height, calc(100vh - 170px));
@@ -682,6 +685,7 @@
 
    .modal-popup {
       &,
+      &.medium,
       &.wider,
       &.larger,
       &.modal-container {

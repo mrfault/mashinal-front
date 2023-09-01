@@ -14,7 +14,7 @@
 
                   <thumbs-gallery />
 
-                  <announcement-specs type="parts" />
+                  <announcement-specs type="parts" :title="$t('announcement_info')" />
 
                   <comment :comment="announcement.comment" v-if="announcement.comment">
                      <template #before>

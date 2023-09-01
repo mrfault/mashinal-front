@@ -1528,7 +1528,7 @@ export default {
 
     // post
     async transferToSupervisor(withRejectReason = false) {
-      console.log('transferToSupervisor')
+      // console.log('transferToSupervisor')
       this.button_loading = true
 
       if (withRejectReason) {

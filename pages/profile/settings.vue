@@ -109,7 +109,7 @@ export default {
       ChangePhone
    },
    mounted() {
-      console.log(this.getUserAvatar)
+      // console.log(this.getUserAvatar)
    },
    nuxtI18n: {
       paths: {
@@ -125,7 +125,7 @@ export default {
    async asyncData({$auth, app}) {
       await $auth.fetchUser();
 
-      console.log('$auth.user.gender', $auth.user.gender)
+      // console.log('$auth.user.gender', $auth.user.gender)
 
       return {
          form: {

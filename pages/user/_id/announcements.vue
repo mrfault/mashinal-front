@@ -111,6 +111,7 @@
          },
 
          userFullName() {
+            console.log('this.userAnnouncements', this.userAnnouncements)
             return this.userAnnouncements[0]?.user.full_name;
          },
 
