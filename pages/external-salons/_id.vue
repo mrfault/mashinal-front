@@ -34,18 +34,18 @@
 
       async asyncData({store, route}) {
          await Promise.all([
-            store.dispatch('getSalonById', {slug: route.params.id}),
+            // store.dispatch('getSalonById', {slug: route.params.id}),
             store.dispatch('getMotoOptions'),
          ]);
 
-         store.dispatch('fetchAutosalonAnnouncementsId', store.getters.salonSingle.id);
+         // store.dispatch('fetchAutosalonAnnouncementsId', {id: store.getters.salonSingle.id});
       },
 
       mounted() {
-         this.$store.commit('mutate', {
-            property: 'announcement',
-            value: {}
-         })
+         // this.$store.commit('mutate', {
+         //    property: 'announcement',
+         //    value: {}
+         // })
       },
 
       computed: {

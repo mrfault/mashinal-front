@@ -1439,6 +1439,7 @@ export default {
    paint_type: "Тип",
    painted: "Окрашено",
    "Panoramic roof / windshield": "Панорамная крыша / лобовое стекло",
+   main_parameters: "Основные показатели",
    parameter: "параметр",
    parameters: "Параметры",
    park_radar: "Парктроник",

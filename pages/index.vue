@@ -7,7 +7,7 @@
                   class="announce_types"
                   :options="getMileageOptions"
                   :group-by="3"
-                  :btnClass="'blue-new'"
+                  :btnClass="'blue-new-3'"
                   v-model="announceType"
                />
 
@@ -488,6 +488,19 @@
 
          .form-buttons {
             width: 100%;
+
+            &.announce_types {
+               padding: 8px;
+               border-radius: 12px;
+               background-color: #EEF2F6;
+               //gap: 0;
+
+               .form-group {
+                  button {
+                     height: 42px !important;
+                  }
+               }
+            }
          }
       }
    }
@@ -502,6 +515,8 @@
 
          &__head {
             .announce_types {
+               background-color: #121926;
+
                .btn {
                   &:hover {
                      background-color: #155EEF !important;
@@ -557,7 +572,7 @@
             .announce_types {
                .form-group {
                   .btn {
-                     width: 120px !important;
+                     width: 110px !important;
                   }
                }
             }

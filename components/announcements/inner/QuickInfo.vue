@@ -33,7 +33,7 @@
          <ul class="quick-info__details">
             <li>
                <inline-svg src="/icons/calendar-2.svg" />
-               {{ announcement.humanize_created_at }}
+               {{ announcement.created_at }}
             </li>
 
             <li>
@@ -239,7 +239,7 @@
             />
 
             <add-comparison
-               v-if="type !== 'plates' && type !== 'parts' && ![0,2,3].includes(announcement.status)"
+               v-if="comparisonExceptions"
                class="h-52"
                :template="'btn'"
                :text="$t('compare')"
@@ -355,6 +355,10 @@
                this.announcement.system_paid_announce &&
                !this.announcement.system_paid_announce.is_paid
             )
+         },
+
+         comparisonExceptions() {
+            return this.type === 'cars' && ![0,2,3].includes(this.announcement.status);
          }
       },
 
@@ -610,7 +614,7 @@
             grid-template-columns: repeat(4, 1fr);
             gap: 20px;
             margin-top: 10px;
-            padding: 12px 16px;
+            padding: 8px !important;
             border-radius: 8px;
             border: 1px solid #CDD5DF;
 

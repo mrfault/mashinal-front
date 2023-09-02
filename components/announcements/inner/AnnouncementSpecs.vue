@@ -82,6 +82,12 @@
 
             const specs = [
                {
+                  key: 'type_of_motos',
+                  value: this.motoType,
+                  for: ['moto'],
+                  icon: '/icons/motorcycle.svg'
+               },
+               {
                   key: 'years', value: this.announcement.year,
                   icon: '/icons/calendar-5.svg'
                },
@@ -102,12 +108,6 @@
                   for: ['cars', 'commercial', 'moto'],
                   icon: '/icons/color.svg'
                },
-               // {
-               //    key: 'type_of_motos',
-               //    value: this.color,
-               //    for: ['moto'],
-               //    icon: '/icons/motorcycle.svg'
-               // },
                {
                   key: 'engine',
                   value: this.engineSpecs,
@@ -130,7 +130,14 @@
                {
                   key: 'privod',
                   value: this.gear?.name,
-                  icon: `/icons/${gearIcon}.svg`
+                  icon: `/icons/${gearIcon}.svg`,
+                  for: ['cars', 'commercial']
+               },
+               {
+                  key: 'privod',
+                  value: this.gearMoto,
+                  icon: `/icons/gear.svg`,
+                  for: ['moto']
                },
                {
                   key: 'vin',
@@ -162,7 +169,7 @@
 
 
                // {key: 'the_number_of_measures', value: this.tact, for: ['moto']},
-               {key: 'cylinder_block', value: this.cylinderBlock, for: ['moto']},
+               // {key: 'cylinder_block', value: this.cylinderBlock, for: ['moto']},
                {
                   key: 'fuel_type',
                   value: this.fuelType,

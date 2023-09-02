@@ -146,7 +146,10 @@
          :show-slider="false"
       />
 
-      <HandleIds :items="[{type: 'commercial', ids: autosalonAnnouncementsId?.data?.map(item => item.id)}]" />
+      <HandleIds
+         :items="[{type: 'commercial', ids: autosalonAnnouncementsId?.data?.map(item => item.id)}]"
+         :watchIds="false"
+      />
    </div>
 </template>
 

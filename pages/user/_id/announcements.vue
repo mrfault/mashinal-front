@@ -4,15 +4,17 @@
 <!--         <h4 class="pages-user-announcements__title">{{ $t('all_announcements_of_user', { name: userFullName }) }}</h4>-->
 
          <breadcrumbs :crumbs="crumbs" />
+         <div class="tabsWrapper">
+            <ul class="tabs">
+               <li
+                  :class="['tabs__item', {'active' : tab.id === activeTab }]"
+                  v-for="tab in tabs"
+                  :key="tab.id"
+                  @click="activeTab = tab.id"
+               >{{ tab.name }}</li>
+            </ul>
+         </div>
 
-         <ul class="tabs">
-            <li
-               :class="['tabs__item', {'active' : tab.id === activeTab }]"
-               v-for="tab in tabs"
-               :key="tab.id"
-               @click="activeTab = tab.id"
-            >{{ tab.name }}</li>
-         </ul>
 
          <div class="tabContent">
             <div class="tabContent__item" v-if="activeTab === 1">

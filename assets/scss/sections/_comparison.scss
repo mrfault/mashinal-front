@@ -251,6 +251,12 @@ $column-width-xs: calc(100% / 1.8);
          //flex-wrap: nowrap;
          //overflow: auto;
 
+         .announcements-grid {
+            &__item {
+               box-shadow: unset;
+            }
+         }
+
          .add-item {
             display: flex;
             align-items: center;

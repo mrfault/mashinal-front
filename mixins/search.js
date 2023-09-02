@@ -55,7 +55,7 @@ export const SearchMixin = {
             }
 
 
-            if (this.form.drive && form?.gearing) {
+            if (this.form?.drive && form?.gearing) {
                form.gearing = form?.gearing?.map(item => {
                   return { key: item }
                });
@@ -194,7 +194,7 @@ export const SearchMixin = {
 
                }
 
-               if (this.loggedIn && this.meta.type === 'cars') {
+               if (this.loggedIn && this.meta?.type === 'cars') {
                   this.fetchSavedSearch({search_url: `${this.meta.path}?${searchQuery}`});
                }
             }, () => {

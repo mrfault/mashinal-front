@@ -53,8 +53,6 @@
                   </div>
                </div>
             </div>
-
-            <catalog-announcements class="d-none d-lg-block" :catalog-id="firstGeneration.id" :key="firstGeneration.id" />
          </div>
 
          <div class="col-auto">
@@ -215,6 +213,8 @@
             <catalog-announcements class="d-lg-none" :catalog-id="firstGeneration.id" :key="firstGeneration.id" />
          </div>
       </div>
+
+      <catalog-announcements class="d-none d-lg-block" :catalog-id="firstGeneration.id" :key="firstGeneration.id" />
    </div>
 </template>
 

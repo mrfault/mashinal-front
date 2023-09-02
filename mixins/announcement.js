@@ -12,9 +12,9 @@ export const AnnouncementDataMixin = {
 
    computed: {
       motoTypeKey() {
-         if (this.announcement.moto_brand) return 1;
-         else if (this.announcement.scooter_brand) return 2;
-         else if (this.announcement.moto_atv_brand) return 3;
+         if (this.announcement.type === "motorcycle") return 1;
+         else if (this.announcement.type === "scooter") return 2;
+         else if (this.announcement.type === "moto_atv") return 3;
       },
       region() {
          if (!this.announcement.region_id || !this.sellOptions) return false;
@@ -27,12 +27,18 @@ export const AnnouncementDataMixin = {
             ? color.filter(color => color.name).map(color => color.name).join(', ') || ' '
             : color.name || ' ';
       },
+      motoType() {
+         if (this.announcement?.type === 'motorcycle') return this.$t('type_moto');
+         else if (this.announcement?.type === 'scooter') return this.$t('category_scooter');
+         else if (this.announcement?.type === 'moto_atv') return this.$t('atv');
+      },
       box() {
          switch (this.type) {
             case 'cars':
                return this.$t('box_values')[this.catalog.main[' ']['box']];
             case 'moto':
                if (!this.motoOptions.config) return false;
+               console.log('this.announcement', this.motoOptions)
                return this.$t(getName(this.announcement.box_id, this.motoOptions.config.box.sell_values[this.motoTypeKey]));
             case 'commercial':
                return getName(this.announcement.box_id, [
@@ -45,6 +51,11 @@ export const AnnouncementDataMixin = {
             default:
                return null;
          }
+      },
+      gearMoto() {
+         if (this.announcement.gear_id === 1) return this.$t('kardan');
+         else if (this.announcement.gear_id === 2) return this.$t('remen');
+         else if (this.announcement.gear_id === 3) return this.$t('tsep');
       },
       gear() {
          switch (this.type) {

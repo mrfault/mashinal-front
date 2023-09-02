@@ -7,9 +7,7 @@
       ]"
       @click.stop="handleClick"
    >
-      <template v-if="circle">
-         <inline-svg src="/icons/phone_new.svg" />
-      </template>
+      <inline-svg src="/icons/phone_new.svg" v-if="circle" />
 
       <template v-else>
          <template v-if="callAtOnce">

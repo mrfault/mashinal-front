@@ -24,8 +24,7 @@
 
       <div class="registrationMarksGridItem__main">
          <div class="divider">
-            <p>{{ item?.price }}</p>
-
+            <p>{{ +item.price.split(' ')[0] ? item.price : $t('negotiable') }}</p>
 
             <add-favorite v-if="showFavoriteBtn" :announcement="item" :whiteBorder="false"/>
 
@@ -211,7 +210,7 @@ export default {
       height: 50px;
       padding: 0 8px;
       border-radius: 5px;
-      border: 5px solid #000000;
+      border: 3px solid #000000;
 
       .divider {
          &:first-child {
@@ -250,10 +249,11 @@ export default {
 
          &:first-child {
             p {
-               font-weight: 600;
-               font-size: 20px;
-               line-height: 24px;
+               font-weight: 700;
+               font-size: 18px;
+               line-height: 17px;
                color: #00359E;
+               padding-right: 8px;
             }
          }
 
@@ -264,15 +264,15 @@ export default {
                white-space: nowrap;
 
                font-weight: 500;
-               font-size: 20px;
-               line-height: 24px;
+               font-size: 16px;
+               line-height: 17px;
                color: #364152;
             }
          }
 
          &:last-child {
             p {
-               font-weight: 500;
+               font-weight: 400;
                font-size: 14px;
                line-height: 17px;
                color: #697586;
@@ -366,14 +366,6 @@ export default {
    }
 }
 
-@media (max-width: 540px) {
-   .registrationMarksGridItem {
-      &__head {
-         border-width: 4px;
-      }
-   }
-}
-
 @media (max-width: 500px) {
    .registrationMarksGridItem {
       &__head {
@@ -415,16 +407,15 @@ export default {
             &:first-child {
                p {
                   font-weight: 700;
-                  font-size: 18px;
-                  line-height: 22px;
+                  font-size: 15px;
+                  //line-height: 22px;
                }
             }
 
             &:nth-child(2) {
                p {
-                  font-weight: 600;
-                  font-size: 15px;
-                  line-height: 18px;
+                  font-size: 14px;
+                  //line-height: 18px;
                }
             }
          }
@@ -440,7 +431,7 @@ export default {
 @media (max-width: 450px) {
    .registrationMarksGridItem {
       &__head {
-         border-width: 3px;
+         //border-width: 3px;
 
          h3 {
             font-size: 28px;
