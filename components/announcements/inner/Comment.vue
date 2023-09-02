@@ -51,6 +51,23 @@
       }
    }
 
+   @media (max-width: 960px) {
+
+      .announcement-comment {
+         padding: 32px;
+         border-radius: 12px;
+         border: 1px solid #E3E8EF;
+
+         &__title {
+            color: var(--gray-800, #1B2434);
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 24px;
+         }
+
+      }
+   }
    @media (max-width: 385px) {
       .announcement-comment {
          padding: 16px;

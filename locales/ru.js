@@ -2694,6 +2694,9 @@ export default {
    package_information: "Информация о моем пакете",
    package_refresh: "Обновить пакет",
    package_current: "Доступный пакет",
+   request_success_message: "Обращение успешно отправлено",
+   request_text: "Текст обращения",
+   request2: "Обращение",
 
 
    "subscription_registration_date_on_site": "Дата начала подписки на сайте",

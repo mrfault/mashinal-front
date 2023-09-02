@@ -3,11 +3,10 @@
       <div class="ma-garage-card__body" v-if="true">
          <div class="ma-garage-card--image">
             <img :src="`${item.image}`" v-if="item.auth === true" alt="">
-            <img :src="`/menu/${item.image}`" :style="item.title === 'menu_qn' ? 'transform: scale(3) translateX(58px);' : ''" v-else alt="">
+            <img :src="`/menu/${item.image}`" :style="item.title === 'menu_qn' ? 'width: 140px; height: 60px; object-fit: cover;' : ''" v-else alt="">
          </div>
          <h5 class="ma-garage-card__title" v-if="item.auth === true">{{ item.title }}</h5>
          <h5 class="ma-garage-card__title" v-else>{{ $t(item.title) }}</h5>
-
          <p class="ma-garage-card__description">{{ $t(item.description) }}</p>
       </div>
    </nuxt-link>

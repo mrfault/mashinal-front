@@ -240,7 +240,7 @@ export default {
          .content {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 16px;
 
             &_list {
                display: flex;
@@ -543,7 +543,7 @@ export default {
 
          .package {
             min-width: 312px;
-            box-shadow: -2px -2px 3px 0px rgba(0, 0, 0, 0.10);
+            box-shadow: 0 0 3px 0px rgba(0, 0, 0, 0.10);
 
             &.selected {
                box-shadow: unset;

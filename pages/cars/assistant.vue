@@ -6,8 +6,8 @@
                     @onSubmit="onGuideSubmit" @reset="resetForm" :pending="pending"/>
       </div>
       <no-results
-         v-if="result.announcements?.length === 0 && result.monetized?.length === 0"/>
-      <div class="overflow-hidden" v-if="result.monetized?.length">
+         v-if="result.announcements?.length === 0 && result.monetized?.length === 0" class="for_scroll" />
+      <div class="for_scroll overflow-hidden" v-if="result.monetized?.length">
          <grid
             :announcements="result.monetized"
             :pending="pending"
@@ -17,18 +17,11 @@
                   <template #left>
                      <h3>{{ $t('featured_ads') }}</h3>
                   </template>
-
-                  <template #right>
-                     <nuxt-link :to="$localePath('/featured-ads')">
-                        <span>{{ $t('see_all') }}</span>
-                        <icon name="arrow-right"/>
-                     </nuxt-link>
-                  </template>
                </Cap>
             </template>
          </grid>
       </div>
-      <div class="overflow-hidden bg-white" v-if="result.announcements?.length">
+      <div class="for_scroll overflow-hidden bg-white" v-if="result.announcements?.length">
          <grid
             :announcements="result.announcements"
             :paginate="result.meta"
@@ -40,13 +33,6 @@
                <Cap :className="'mb40'">
                   <template #left>
                      <h3>{{ $t('recent_uploads') }}</h3>
-                  </template>
-
-                  <template #right>
-                     <nuxt-link :to="$localePath('/cars')">
-                        <span>{{ $t('see_all') }}</span>
-                        <icon name="arrow-right"/>
-                     </nuxt-link>
                   </template>
                </Cap>
             </template>
@@ -134,7 +120,7 @@ export default {
                meta: this.mainAnnouncements?.meta
             }
             setTimeout(() => {
-               this.scrollTo('.overflow-hidden', [-50, -190])
+               this.scrollTo('.for_scroll', [-50, -190])
             });
          } catch (e) {
 
@@ -154,7 +140,7 @@ export default {
                meta: this.mainAnnouncements?.meta
             }
             setTimeout(() => {
-               this.scrollTo('.overflow-hidden', [-50, -190])
+               this.scrollTo('.for_scroll', [-50, -190])
             });
          } catch (e) {
 

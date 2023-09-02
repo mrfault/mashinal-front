@@ -79,7 +79,7 @@
                               />
                               <p>{{ $t('announce_help_text') }}</p>
                            </div>
-                           <button class="btn btn--red" @click="onShowModal('feedback')">{{
+                           <button class="btn btn--red" @click="onShowModal('feedback', $t('request2'))">{{
                                  $t("let_us_know")
                               }}
                            </button>
@@ -153,7 +153,7 @@
                      />
                      <p>{{ $t("by_posting_an_ad_you_confirm_your_agreement_with_the_rules") }}:
                         <nuxt-link :to="`/page/${getRulesPage.slug[locale]}`"
-                                   @click.native.prevent="onShowModal('rules')"
+                                   @click.native.prevent="onShowModal('rules', getRulesPage.title[locale])"
                                    event="">
                            <strong style="text-decoration: underline">{{ $t('general_rules') }}</strong>
                         </nuxt-link>
@@ -178,7 +178,7 @@
       <modal-popup
          :modal-class="modalType === 'monetization_alert' ? 'medium' : 'wider'"
          :toggle="showModal"
-         :title="getRulesPage.title[locale]"
+         :title="modalTitle"
          @close="showModal = false"
       >
 
@@ -244,6 +244,7 @@ export default {
          submitShow: false,
          showModal: false,
          modalType: "",
+         modalTitle: "",
          isReady: false,
          announceTitle: "",
          navigationData: [
@@ -306,9 +307,10 @@ export default {
             await this.$store.dispatch(payload.api_key)
          }
       },
-      onShowModal(type) {
+      onShowModal(type, title) {
          this.showModal = true
          this.modalType = type
+         this.modalTitle = title || ""
       },
       onChangePartType(id) {
          switch (id) {
@@ -355,6 +357,7 @@ export default {
       async getCarForm({form}) {
          if (this.form.add_monetization === 1 && !this.alertShowed) {
             this.modalType = 'monetization_alert'
+            this.modalTitle = ""
             this.alertShowed = true
             this.showModal = true
             return
@@ -386,6 +389,7 @@ export default {
       async getMotoForm({form}) {
          if (this.form.add_monetization === 1 && !this.alertShowed) {
             this.modalType = 'monetization_alert'
+            this.modalTitle = ""
             this.alertShowed = true
             this.showModal = true
             return

@@ -2779,6 +2779,9 @@ export default {
    package_information: "Paket məlumatlarım",
    package_refresh: "Paketi yenilə",
    package_current: "Mövcud paket",
+   request_success_message: "Müraciətiniz uğurla göndərildi",
+   request_text: "Müraciətin mətni",
+   request2: "Müraciət",
 
 
    "remove_announcement": "Elanı sil",
