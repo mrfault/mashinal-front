@@ -374,6 +374,18 @@
       );
    }
 
+   &--blue-new-3 {
+      @include btn-style(
+         $color: $grey-2-new,
+         $color-hover: $white,
+         $bg-color: transparent,
+         $bg-hover: $blue-new,
+         $border-color: transparent,
+         $active-bg: $blue-new,
+         $outline: false
+      );
+   }
+
    &--blue-new-light {
       @include btn-style(
          $color: $grey-2-new,

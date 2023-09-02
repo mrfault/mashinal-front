@@ -113,7 +113,7 @@
      },
 
       async asyncData({store, route}) {
-         // console.log('moto', route)
+         // console.log('moto', this.announcement)
          await Promise.all([
             store.dispatch('getMotoInnerV2', { id: route.params.id, type: route.query.type }),
             store.dispatch('motoRelativesV2', { id: route.params.id, type: route.query.type }),

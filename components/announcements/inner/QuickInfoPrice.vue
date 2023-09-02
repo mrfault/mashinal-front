@@ -1,6 +1,6 @@
 <template>
-   <div class="quickInfoPriceWrapper">
-      <div :class="['quickInfoPrice', {'plates pointer-events-none' : type === 'plates'}]">
+   <div :class="['quickInfoPriceWrapper', {'plates' : type === 'plates'}]">
+      <div :class="['quickInfoPrice', {'pointer-events-none' : type === 'plates'}]">
          <template v-if="type !== 'plates'">
             <div class="quickInfoPrice__head">
                <span>{{ announcement.price }}</span>
@@ -61,6 +61,7 @@
          margin-left: -20px;
          cursor: pointer;
          background-color: #FFFFFF;
+         z-index: 5;
 
          &:hover {
             height: max-content;
@@ -122,8 +123,13 @@
                }
             }
          }
+      }
 
-         &.plates {
+      &.plates {
+         margin-bottom: 0;
+
+         .quickInfoPrice {
+            position: unset;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -181,8 +187,10 @@
                   }
                }
             }
+         }
 
-            &.plates {
+         &.plates {
+            .quickInfoPrice {
                &:hover {
                   background-color: transparent !important;
                }
@@ -190,6 +198,20 @@
                p {
                   color: #EEF2F6;
                }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 500px) {
+      .quickInfoPriceWrapper {
+         &.plates {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+
+            .quickInfoPrice {
+               padding-bottom: 0;
             }
          }
       }

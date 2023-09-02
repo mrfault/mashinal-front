@@ -1422,7 +1422,7 @@ export const actions = {
          commit("mutate", {property: "catalogTotal", value: res.total});
    },
    async getCatalogAnnouncements({commit}, id) {
-      const res = await this.$axios.$get(`/catalog/${id}/announces`);
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/car-catalog/${id}/announcements`);
       commit("mutate", {property: "catalogAnnouncements", value: res});
    },
    // Sell

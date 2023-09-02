@@ -1,34 +1,43 @@
 <template>
-  <div class="mt-lg-n1 mb-n5 mb-lg-0">
-    <grid
-      v-if="catalogAnnouncements.length"
-      where="catalog"
-      :announcements="catalogAnnouncements"
-      :hasContainer="false"
-    />
-  </div>
+   <div class="mt-lg-n1 mb-n5 mb-lg-0">
+      <grid
+         v-if="catalogAnnouncements?.data?.length"
+         where="catalog"
+         :announcements="catalogAnnouncements?.data"
+         :paginate="catalogAnnouncements?.meta"
+         @change-page="changePage"
+         :hasContainer="false"
+      />
+   </div>
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex';
+   import Grid from '~/components/announcements/Grid';
+   import { mapGetters, mapActions } from 'vuex';
 
-  import Grid from '~/components/announcements/Grid';
+   export default {
+      props: {
+         catalogId: Number
+      },
 
-  export default {
-    props: {
-      catalogId: Number
-    },
-    components: {
-      Grid
-    },
-    computed: {
-      ...mapGetters(['catalogAnnouncements'])
-    },
-    methods: {
-      ...mapActions(['getCatalogAnnouncements'])
-    },
-    created() {
-      this.getCatalogAnnouncements(this.catalogId);
-    }
-  }
+      components: {
+         Grid
+      },
+
+      computed: {
+         ...mapGetters(['catalogAnnouncements'])
+      },
+
+      methods: {
+         ...mapActions(['getCatalogAnnouncements']),
+
+         changePage(page = 1) {
+
+         }
+      },
+
+      created() {
+         this.getCatalogAnnouncements(this.catalogId);
+      }
+   }
 </script>

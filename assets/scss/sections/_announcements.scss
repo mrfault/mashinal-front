@@ -150,6 +150,8 @@
          }
 
          .call-button {
+            position: relative;
+            z-index: 50;
             margin-top: 12px;
             pointer-events: all;
          }
@@ -710,6 +712,30 @@
    .announcements-grid {
       &__inner {
          gap: 10px;
+      }
+
+      &__item {
+         .item-details {
+            &__item {
+               &:first-child {
+                  h3 {
+                     font-size: 15px;
+                  }
+               }
+
+               &:nth-child(2) {
+                  font-size: 14px;
+               }
+
+               &:nth-child(3) {
+                  font-size: 14px;
+               }
+
+               &:last-child {
+                  font-size: 12px;
+               }
+            }
+         }
       }
    }
 }
