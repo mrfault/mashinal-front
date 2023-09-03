@@ -716,10 +716,13 @@
 
       &__item {
          .item-details {
+            padding: 8px;
+
             &__item {
                &:first-child {
                   h3 {
                      font-size: 15px;
+                     font-weight: 600;
                   }
                }
 
