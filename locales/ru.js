@@ -92,7 +92,7 @@ export default {
    add_description: "Добавить описание",
    add_email: "Добавить E-mail",
    add_feedback: "Добавить отзыв",
-   add_favorite: "Добавить в избранные",
+   add_favorite: "В избранное",
    add_image: "Добавить изображение",
    add_keywords: "Добавить теги...",
    add_logo_image: "Добавьте лого",

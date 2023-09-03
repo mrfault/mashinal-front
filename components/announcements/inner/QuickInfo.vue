@@ -515,9 +515,15 @@
 
       .btns {
          display: grid;
-         grid-template-columns: repeat(1, 1fr);
+         grid-template-columns: repeat(2, 1fr);
          gap: 12px;
       }
+
+      //.wrapp {
+      //   display: grid;
+      //   grid-template-columns: repeat(2, 1fr);
+      //   gap: 12px;
+      //}
 
       &.registration-marks {
          .registration-marks__number {
