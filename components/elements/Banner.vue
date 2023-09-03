@@ -90,7 +90,7 @@ export default {
 
    @media (max-width: 600px) {
       .banner {
-         border-radius: unset;
+         border-radius: 0;
 
          &__title {
             bottom: 40px;

@@ -1,8 +1,26 @@
 <template>
    <div class="pages-parts-index">
+      <Banner
+         class="mt-0 d-sm-none"
+         :bg="'/img/part_bg.png'"
+         :title="$t('parts')"
+      >
+         <template #content>
+            <breadcrumbs :crumbs="crumbs" />
+         </template>
+      </Banner>
+
+      <part-search-form
+         class="mt-0 d-sm-none"
+         :pending="pending"
+         :sorting="sorting"
+         @pending="pending = true"
+         @submit="searchParts"
+      />
+
       <div class="container">
          <Banner
-            class="mb-5"
+            class="d-none d-sm-block"
             :bg="'/img/part_bg.png'"
             :title="$t('parts')"
          >
@@ -12,6 +30,7 @@
          </Banner>
 
          <part-search-form
+            class="d-none d-sm-block"
             :pending="pending"
             :sorting="sorting"
             @pending="pending = true"
@@ -51,6 +70,7 @@
             :paginate="parts?.meta"
             @change-page="searchParts"
             :has-container="false"
+            escape-duplicates
          >
             <template #cap>
                <Cap :className="'mb40'">
@@ -139,10 +159,10 @@
 
       async asyncData({ store, route }) {
          const data = JSON.parse(route.query.parts_filter || '{}');
+         let page = route.query.page || 1;
 
-         // console.log('data', data)
          await Promise.all([
-            store.dispatch('getInfiniteMainPartsPageSearch', { body: data }),
+            store.dispatch('getInfiniteMainPartsPageSearch', { body: data, page: page }),
             store.dispatch('fetchPartMonetized', { body: data })
             // store.dispatch('fetchPartsAnnouncements'),
             // store.dispatch('fetchPartMonetized')
@@ -186,7 +206,7 @@
             await this.$store.dispatch('fetchPartMonetized', { body: data });
             this.pending = false
             // await this.$store.dispatch('parts/setSearchActive', true)
-            this.scrollTo('.breadcrumbs', [20, -120]);
+            this.scrollTo('.cap', [-80, -200]);
          }
       },
 
@@ -234,10 +254,6 @@
 <style lang="scss">
    .pages-parts-index {
       padding-bottom: 120px;
-
-      //.announcements-grid {
-      //   margin: 32px -15px 0 -15px;
-      //}
    }
 
    .dark-mode {
@@ -268,12 +284,9 @@
    @media (max-width: 600px) {
       .pages-parts-index {
          .part-search-form {
-            margin: -30px -20px 0 -20px;
-
-            //.cart {
-               //padding: 24px 16px !important;
-               //border-radius: unset;
-            //}
+            .card {
+               border-radius: 0;
+            }
          }
       }
    }

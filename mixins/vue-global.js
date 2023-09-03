@@ -131,9 +131,8 @@ Vue.use({
                    link = false;
 
                if (item?.is_auto_salon) {
-                  console.log('item', item)
                   img = item?.user?.is_auto_salon?.logo;
-                  link = this.$localePath(`/salons/${item?.user?.is_auto_salon?.slug}`);
+                  link = this.$localePath(`/salons/${item?.user?.auto_salon?.slug}`);
                   name = item?.user?.is_auto_salon?.name || item?.user?.full_name;
                } else if (item?.is_external_salon) {
                   img = item?.user?.external_salon?.logo;

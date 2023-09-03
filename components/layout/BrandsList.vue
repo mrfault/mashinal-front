@@ -1,5 +1,8 @@
 <template>
-   <div class="brandsList" :class="($nuxt.$route.path === '/ru' || $nuxt.$route.path === '/') ? 'd-md-block' : 'd-none d-md-block'">
+   <div
+      class="brandsList"
+      :class="($nuxt.$route.path === '/ru' || $nuxt.$route.path === '/') ? 'd-md-block' : 'd-none d-md-block'"
+   >
       <div class="container">
          <div class="brandsList__inner">
             <ul class="brandsList__list" v-for="(item, i) in $chunk(options, Math.ceil(options.length / 6))" :key="i">

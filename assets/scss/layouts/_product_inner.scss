@@ -53,6 +53,18 @@
             }
          }
       }
+
+      .status {
+         border: 1px dashed;
+         color: $dark-blue-3;
+         line-height: 38px;
+         white-space: nowrap;
+         padding: 0 15px;
+         margin-bottom: 15px;
+         border-radius: 4px;
+         opacity: 0.6;
+         text-align: center;
+      }
    }
 }
 

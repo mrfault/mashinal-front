@@ -125,8 +125,8 @@
                />
             </div>
 
-            <div class="col-12 mt-2 mt-lg-3" v-if="!isMobileBreakpoint && announcement?.status === 2">
-               <div class="status"> {{ $t('announcement_pending') }}</div>
+            <div class="col-12 mt-2 mt-lg-3" v-if="announcement?.status === 2">
+               <div class="status">{{ $t('announcement_pending') }}</div>
             </div>
          </div>
       </div>
@@ -261,7 +261,6 @@
             v-if="showDeactivateButton(announcement)"
          />
       </div>
-
 
 <!--      <template v-if="!brief && announcement.status != 2 && !(announcement.is_auto_salon && announcement.status == 3)">-->
 <!--         <div class="row mt-n2 mt-lg-n3">-->

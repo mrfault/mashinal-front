@@ -204,7 +204,12 @@
                   icon: '/icons/vin_3.svg',
                   for: ['parts']
                },
-               {key: 'category', value: this.announcement?.category?.name[this.locale], for: ['parts']},
+               {
+                  key: 'category',
+                  value: this.announcement?.category?.name[this.locale],
+                  icon: '/icons/category.svg',
+                  for: ['parts']
+               },
                {key: 'sub_category', value: this.announcement?.sub_category?.name[this.locale], for: ['parts']},
                {
                   key: 'brand_name',
@@ -267,6 +272,7 @@
             if (this.type === 'parts') {
                Object.keys(this.announcement?.filters)?.forEach(filter => {
                   let value = this.announcement?.filters[filter]
+                  console.log('value', value)
 
                   if (value) {
                      if (typeof value === 'boolean') {
