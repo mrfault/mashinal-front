@@ -53,10 +53,11 @@
                   this.$toasted.error('Sizin düzəliş etmə hüququnuz yoxdur')
                }
             } else {
+               console.log('this.announcement', this.announcement)
                // this.changeEditPath(this.$route.params.id);
                // this.changeEditing(true);
                // this.changeEditPostAuthor(this.announcement.user_id);
-               this.changeEditPostAuthor(this.announcement.user_id);
+               this.changeEditPostAuthor(this.announcement.user.id);
                this.$router.push(this.$route.path + '?ref=' + this.path)
                this.$emit('openModal', true)
             }

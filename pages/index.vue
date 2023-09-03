@@ -478,6 +478,10 @@
 </script>
 
 <style lang="scss">
+   .pages-index {
+      padding-top: 32px;
+   }
+
    .filters-container {
       padding: 24px !important;
       border-radius: 12px;
@@ -505,10 +509,6 @@
       }
    }
 
-   .pages-index {
-      padding-top: 32px;
-   }
-
    .dark-mode {
       .filters-container {
          background-color: #1B2434;
@@ -517,15 +517,17 @@
             .announce_types {
                background-color: #121926;
 
-               .btn {
-                  &:hover {
-                     background-color: #155EEF !important;
-
-                     span {
-                        color: #FFFFFF !important;
-                     }
-                  }
-               }
+               //.btn {
+               //   &:not(:has(.active)) {
+               //      &:hover {
+               //         background-color: #1B2434 !important;
+               //
+               //         span {
+               //            color: #9AA4B2 !important;
+               //         }
+               //      }
+               //   }
+               //}
             }
 
             .no-bg {
