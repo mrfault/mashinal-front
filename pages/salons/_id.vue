@@ -7,8 +7,8 @@
 </template>
 
 <script>
-   import {mapGetters} from 'vuex';
    import SalonInner from '~/components/salons/SalonInner';
+   import { mapGetters } from 'vuex';
 
    export default {
        name: 'pages-salons-id',
@@ -32,16 +32,14 @@
 
        async asyncData({store, route}) {
            await Promise.all([
-               store.dispatch('getSalonById', { slug: route.params.id, sorting: 'created_at_desc' }),
-               store.dispatch('getMotoOptions'),
+               store.dispatch('getSalonById', { slug: route.params.id }),
+               store.dispatch('getMotoOptions')
            ]);
-       },
 
-       mounted() {
-           this.$store.commit('mutate', {
-               property: 'announcement',
-               value: {}
-           })
+          await store.dispatch('fetchAutosalonAnnouncementsId', {
+             id: store.getters.salonSingle.id,
+             page: route.query.page || 1
+          })
        },
 
        computed: {
@@ -53,6 +51,13 @@
                    {name: this.salonSingle.name || this.salonSingle.user.full_name}
                ]
            }
-       }
+       },
+
+      // mounted() {
+      //     this.$store.commit('mutate', {
+      //         property: 'announcement',
+      //         value: {}
+      //     })
+      // },
    }
 </script>

@@ -1,26 +1,37 @@
 <template>
    <div class="pages-user-announcements">
       <div class="container">
-<!--         <h4 class="pages-user-announcements__title">{{ $t('all_announcements_of_user', { name: userFullName }) }}</h4>-->
+         <h2 class="pages-user-announcements__title">{{ $t('all_announcements_of_user', { name: userFullName }) }}</h2>
 
-         <breadcrumbs :crumbs="crumbs" />
-         <div class="tabsWrapper">
-            <ul class="tabs">
-               <li
-                  :class="['tabs__item', {'active' : tab.id === activeTab }]"
-                  v-for="tab in tabs"
-                  :key="tab.id"
-                  @click="activeTab = tab.id"
-               >{{ tab.name }}</li>
-            </ul>
+         <div class="pages-user-announcements__subhead">
+            <div class="tabsWrapper">
+               <ul class="tabs">
+                  <li
+                     :class="['tabs__item', {'active' : tab.id === activeTab }]"
+                     v-for="tab in tabs"
+                     :key="tab.id"
+                     @click="activeTab = tab.id"
+                  >{{ tab.name }} ({{ tab.length }})</li>
+               </ul>
+            </div>
+
+            <form-select
+               class="d-none d-md-block"
+               :label="$t('sorting_2')"
+               :options="sortItems"
+               :clearPlaceholder="true"
+               :clear-option="false"
+               :allowClear="false"
+               :objectInValue="true"
+               v-model="sorting"
+            />
          </div>
-
 
          <div class="tabContent">
             <div class="tabContent__item" v-if="activeTab === 1">
                <grid
-                  v-if="userAnnouncements.length"
-                  :announcements="userAnnouncements"
+                  v-if="userAnnouncements.filter(item => item.type !== 'part').length"
+                  :announcements="userAnnouncements.filter(item => item.type !== 'part')"
                   :has-container="false"
                   escape-duplicates
                />
@@ -51,6 +62,20 @@
                   :url="'/images/empty_result_favorites.svg'"
                >
                </no-results>
+            </div>
+
+            <div class="tabContent__item" v-if="activeTab === 3">
+               <grid
+                  v-if="userAnnouncements.filter(item => item.type === 'part').length"
+                  :announcements="userAnnouncements.filter(item => item.type === 'part')"
+                  :has-container="false"
+                  escape-duplicates
+               />
+
+               <no-results
+                  v-else
+                  :text="$t('no_announcements')"
+               ></no-results>
             </div>
          </div>
       </div>
@@ -86,14 +111,22 @@
 
       data() {
         return {
-           activeTab: 1
+           activeTab: 1,
+           sorting: { key: 'created_at', value: 'desc', name: this.$t('show_by_date') },
+           sortItems: [
+              { key: 'created_at', value: 'desc', name: this.$t('show_by_date') },
+              { key: 'price_asc', value: 'asc', name: this.$t('show_cheap_first') },
+              { key: 'price_desc', value: 'desc', name: this.$t('show_expensive_first') },
+              { key: 'mileage', value: 'asc', name: this.$t('mileage') },
+              { key: 'year', value: 'desc', name: this.$t('years') }
+           ]
         }
       },
 
       methods: {
          changePageMarks(page) {
-            this.$store.dispatch('fetchUserRegistrationMarks', `?page=${page}`);
-            this.scrollTo('.tabs', [-15, -20]);
+            // this.$store.dispatch('fetchUserRegistrationMarks', `?page=${page}`);
+            // this.scrollTo('.tabs', [-15, -20]);
          },
       },
 
@@ -107,33 +140,63 @@
 
          tabs() {
             return [
-               { id: 1, name: this.$t('vehicles') },
-               { id: 2, name: this.$t('registration_badges_2') }
+               { id: 1, name: this.$t('vehicles'), length: this.userAnnouncements?.filter(item => item.type !== 'part')?.length },
+               { id: 2, name: this.$t('registration_badges_2'), length: this.getUserRegistrationMarks?.data?.length },
+               { id: 3, name: this.$t('menu_spare_parts'), length: this.userAnnouncements?.filter(item => item.type === 'part')?.length },
             ]
          },
 
          userFullName() {
-            console.log('this.userAnnouncements', this.userAnnouncements)
             return this.userAnnouncements[0]?.user.full_name;
          },
 
-         crumbs() {
-            return [
-               { name: this.$t('all_announcements_of_user', { name: this.userFullName }) },
-            ]
-         }
+         // crumbs() {
+         //    return [
+         //       { name: this.$t('all_announcements_of_user', { name: this.userFullName }) },
+         //    ]
+         // }
       }
    }
 </script>
 
 <style lang="scss" scoped>
    .pages-user-announcements {
+      padding: 40px 0;
+
       &__title {
          font-weight: 700;
          font-size: 28px;
          line-height: 32px;
          color: #1B2434;
-         margin: 0;
+         margin-bottom: 32px;
+      }
+
+      &__subhead {
+         display: flex;
+         align-items: center;
+         justify-content: space-between;
+
+         .form-group {
+            max-width: 200px;
+         }
+      }
+   }
+
+   @media (max-width: 992px) {
+      .pages-user-announcements {
+         &__title {
+            font-weight: 600;
+            font-size: 24px;
+         }
+      }
+   }
+
+   @media (max-width: 992px) {
+      .pages-user-announcements {
+         &__title {
+            font-size: 20px;
+            line-height: 24px;
+         }
       }
    }
 </style>

@@ -48,7 +48,7 @@
 
       .item-details {
          padding: 10px;
-         //height: 132px;
+         height: 100%;
 
          &__item {
             text-overflow: ellipsis;
@@ -62,6 +62,7 @@
             }
 
             &:first-child {
+               height: 26px;
                gap: 15px;
 
                h3 {
@@ -703,7 +704,7 @@
 @include media-max-width('md') {
    .announcements-grid {
       &__inner {
-         grid-template-columns: repeat(2, minmax(135px, 256px));
+         grid-template-columns: repeat(2, 1fr);
       }
    }
 }

@@ -157,7 +157,7 @@ export default {
    all: "Bütün",
    all2: "Hamısı",
    "all seasons": "bütün mövsümlər",
-   all_announcements_of_user: "{name} istifadəçinin bütün elanları",
+   all_announcements_of_user: '"{name}" adlı istifadəçinin bütün elanları',
    all_auto_products: "Bütün avto məhsullar",
    all_car_brands: "Bütün avtomobil markaları",
    all_models: "Bütün modellər",
