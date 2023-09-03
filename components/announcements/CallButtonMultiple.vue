@@ -91,13 +91,16 @@
                this.showSinglePhone = true;
                this.trackCall(1);
 
-               window.getManualClassifiedNumber(ringostat_announce,
-                  (number) => {
-                     this.ringostat_number = number.numberWithoutMask;
-                     this.ringostat_number_mask = number.number;
-                     // this.singlePhone = number?.numberWithoutMask.replace('+','')
-                  }, 0, `00${this.phone}`
-               );
+               if (window.getManualClassifiedNumber) {
+                  window.getManualClassifiedNumber(ringostat_announce,
+                     (number) => {
+                        this.ringostat_number = number.numberWithoutMask;
+                        this.ringostat_number_mask = number.number;
+                        // this.singlePhone = number?.numberWithoutMask.replace('+','')
+                     }, 0, `00${this.phones[0]}`
+                  )
+               }
+
             }
          },
 
@@ -106,6 +109,11 @@
             this.gtagTrack('AW-600951956/' + (n === 1 ? 'rgWNCOTA8IMCEJSZx54C' : 'VunMCPr51oMCEJSZx54C'));
             this.$axios.$get(`/announce/${this.announcementId}/show/phone`);
          }
+      },
+
+      mounted() {
+         console.log('phones', this.phones)
+         console.log('announcement-id', this.announcementId)
       }
    }
 </script>
