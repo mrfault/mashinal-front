@@ -224,7 +224,7 @@
       <div class="wrapp">
          <monetization-button
             v-if="type !== 'plates' && announcement.status === 1"
-            class="h-52 mb-2"
+            class="h-52 mb-3"
             :announcement="announcement"
             @openModal="openModal"
          />
@@ -253,12 +253,13 @@
                v-if="showEditButton(announcement)"
                @openModal="openModal"
             />
-
-            <deactivate-button
-               :announcement="announcement"
-               v-if="showDeactivateButton(announcement)"
-            />
          </div>
+
+         <deactivate-button
+            class="mt-3"
+            :announcement="announcement"
+            v-if="showDeactivateButton(announcement)"
+         />
       </div>
 
 

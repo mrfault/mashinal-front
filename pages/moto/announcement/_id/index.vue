@@ -13,6 +13,29 @@
 
                      <thumbs-gallery />
 
+                     <ul class="gallery-overlay__characteristics" v-if="isMobileBreakpoint">
+                        <li class="gallery-overlay__characteristics-item" v-if="announcement.tradeable">
+                           <inline-svg src="/icons/barter.svg" />
+                           <span>{{ $t('tradeable') }}</span>
+                        </li>
+
+                        <li class="gallery-overlay__characteristics-item" v-if="announcement.credit">
+                           <inline-svg src="/icons/credit.svg" />
+                           <span>{{ $t('credit_possible') }}</span>
+                        </li>
+
+                        <li class="gallery-overlay__characteristics-item" v-if="announcement.has_360">
+                           <inline-svg src="/icons/credit.svg" />
+                           <span>360 foto</span>
+                        </li>
+
+                        <li class="gallery-overlay__characteristics-item" v-if="announcement.show_vin">
+                           <inline-svg src="/icons/vin_2.svg" />
+                           <span>VIN kod</span>
+                           <span class="badgeMin">{{ $t('is_new') }}</span>
+                        </li>
+                     </ul>
+
                      <announcement-specs type="moto" :title="$t('vehicle_info')" brief/>
 
                      <comment :comment="announcement.comment" v-if="announcement.comment">

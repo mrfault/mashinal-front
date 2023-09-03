@@ -3,7 +3,7 @@
       :class="['edit-btn btn full-width', `btn--${className} `]"
       @click="gotoRoute()"
    >
-      <span>{{ $t('edit') }}</span>
+      <span>{{ $t('change_it_2') }}</span>
 
       <inline-svg src="/icons/edit.svg" />
    </button>

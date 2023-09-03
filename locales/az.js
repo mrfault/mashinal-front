@@ -2595,6 +2595,7 @@ export default {
    type_of_drink_not_defined: "İçki növü seçilçəyib",
    insurance_end_date_text: "Sığortanın bitmə tarixi",
    change_it: "Dəyiş",
+   change_it_2: "Düzəliş et",
    result_of_tire_size_change_title_1: "Təkərin xarici diametri ",
    result_of_tire_size_change_title_2: "və yerin təmizlənməsi INCREASE",
    new_1: "Yeni",
