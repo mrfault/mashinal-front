@@ -2594,6 +2594,7 @@ export default {
    already_paid: "Оплачено",
    not_paid: "Не оплачено",
    change_it: "Изменить",
+   change_it_2: "Изменить",
    video_choose: "Выбрать видеофайл",
    alcometer_0: "Трезв",
    alcometer_30: "В пределах нормы",

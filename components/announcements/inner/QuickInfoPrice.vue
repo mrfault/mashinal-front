@@ -1,18 +1,19 @@
 <template>
    <div :class="['quickInfoPriceWrapper', {'plates' : type === 'plates'}]">
-      <div :class="['quickInfoPrice', {'pointer-events-none' : type === 'plates'}]">
+      <div :class="['quickInfoPrice', {'pointer-events-none' : type === 'plates' || !+announcement.price.split(' ')[0]}]">
          <template v-if="type !== 'plates'">
             <div class="quickInfoPrice__head">
                <span>{{ announcement.price }}</span>
 
                <inline-svg
+                  v-if="+announcement.price.split(' ')[0]"
                   src="/icons/chevron-down.svg"
                   width="18px"
                   height="18px"
                />
             </div>
 
-            <ul class="quickInfoPrice__main">
+            <ul class="quickInfoPrice__main" v-if="+announcement.price.split(' ')[0]">
                <li
                   class="quickInfoPrice__main-item"
                   v-for="(price, i) in announcement?.price_converted"
@@ -22,11 +23,17 @@
          </template>
 
          <template v-else>
-            <p>{{ announcement.price }}</p>
+            <template v-if="+announcement.price.split(' ')[0]">
+               <p>{{ announcement.price }}</p>
 
-            <inline-svg src="/icons/exchange_2.svg" />
+               <inline-svg src="/icons/exchange_2.svg" />
 
-            <p>{{ announcement.price_converted }}</p>
+               <p>{{ announcement.price_converted }}</p>
+            </template>
+
+            <template v-else>
+               <p>{{ $t('is_negotiable') }}</p>
+            </template>
          </template>
       </div>
    </div>

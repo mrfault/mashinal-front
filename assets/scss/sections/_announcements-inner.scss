@@ -510,6 +510,8 @@
          gap: 8px;
 
          &-item {
+            display: flex;
+            align-items: center;
             padding: 7px 16px;
             border-radius: 6px;
             background-color: rgba(18, 25, 38, 0.32);

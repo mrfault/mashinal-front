@@ -68,7 +68,7 @@
             </div>
 
             <div class="gallery-overlay_bottom">
-               <ul class="gallery-overlay__characteristics">
+               <ul class="gallery-overlay__characteristics" v-if="!isMobileBreakpoint">
                   <li class="gallery-overlay__characteristics-item" v-if="announcement.tradeable">
                      <inline-svg src="/icons/barter.svg" />
                      <span>{{ $t('tradeable') }}</span>

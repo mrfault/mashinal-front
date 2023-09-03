@@ -7,7 +7,7 @@
                   class="announce_types"
                   :options="getMileageOptions"
                   :group-by="3"
-                  :btnClass="'blue-new'"
+                  :btnClass="'blue-new-3'"
                   v-model="announceType"
                />
 

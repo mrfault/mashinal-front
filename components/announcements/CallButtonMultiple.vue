@@ -91,16 +91,13 @@
                this.showSinglePhone = true;
                this.trackCall(1);
 
-               if (window.getManualClassifiedNumber) {
-                  window.getManualClassifiedNumber(ringostat_announce,
-                     (number) => {
-                        this.ringostat_number = number.numberWithoutMask;
-                        this.ringostat_number_mask = number.number;
-                        // this.singlePhone = number?.numberWithoutMask.replace('+','')
-                     }, 0, `00${this.phones[0]}`
-                  )
-               }
-
+               window.getManualClassifiedNumber(ringostat_announce,
+                  (number) => {
+                     this.ringostat_number = number.numberWithoutMask;
+                     this.ringostat_number_mask = number.number;
+                     // this.singlePhone = number?.numberWithoutMask.replace('+','')
+                  }, 0, `00${this.phone}`
+               );
             }
          },
 

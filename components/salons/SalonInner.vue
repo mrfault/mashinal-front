@@ -147,7 +147,7 @@
       />
 
       <HandleIds
-         :items="[{type: 'commercial', ids: autosalonAnnouncementsId?.data?.map(item => item.id)}]"
+         :items="[{type: 'commercial', ids: this.autosalonAnnouncementsId?.data?.map(item => item.id)}]"
          :watchIds="false"
       />
    </div>
