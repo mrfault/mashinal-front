@@ -80,7 +80,7 @@
                   </li>
 
                   <li class="gallery-overlay__characteristics-item" v-if="announcement.has_360">
-                     <inline-svg src="/icons/credit.svg" />
+                     <inline-svg src="/icons/360_deg_2.svg" />
                      <span>360 foto</span>
                   </li>
 

@@ -13,23 +13,23 @@
 
                      <thumbs-gallery />
 
-                     <ul class="gallery-overlay__characteristics" v-if="isMobileBreakpoint">
-                        <li class="gallery-overlay__characteristics-item" v-if="announcement.tradeable">
+                     <ul class="characteristics" v-if="isMobileBreakpoint">
+                        <li class="characteristics__item" v-if="announcement.tradeable">
                            <inline-svg src="/icons/barter.svg" />
-                           <span>{{ $t('tradeable') }}</span>
+                           <span>{{ $t('barter') }}</span>
                         </li>
 
-                        <li class="gallery-overlay__characteristics-item" v-if="announcement.credit">
+                        <li class="characteristics__item" v-if="announcement.credit">
                            <inline-svg src="/icons/credit.svg" />
-                           <span>{{ $t('credit_possible') }}</span>
+                           <span>{{ $t('credit') }}</span>
                         </li>
 
-                        <li class="gallery-overlay__characteristics-item" v-if="announcement.has_360">
-                           <inline-svg src="/icons/credit.svg" />
-                           <span>360 foto</span>
+                        <li class="characteristics__item" v-if="announcement.has_360">
+                           <inline-svg src="/icons/360_deg_2.svg" />
+                           <span>360</span>
                         </li>
 
-                        <li class="gallery-overlay__characteristics-item" v-if="announcement.show_vin">
+                        <li class="characteristics__item" v-if="announcement.show_vin">
                            <inline-svg src="/icons/vin_2.svg" />
                            <span>VIN kod</span>
                            <span class="badgeMin">{{ $t('is_new') }}</span>
