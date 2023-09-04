@@ -144,7 +144,8 @@
             store.dispatch('motoRelativesV2', { id: route.params.id, type: route.query.type }),
             store.dispatch('getComplaintOptions'),
             store.dispatch('getOptions'),
-            store.dispatch('getMotoOptions')
+            store.dispatch('getMotoOptions'),
+            store.dispatch('getSettingsV2')
          ]);
       },
 

@@ -95,7 +95,7 @@ export default {
       }
    },
    computed: {
-      ...mapGetters(['editPath', 'editingPostAuthor']),
+      ...mapGetters(['editPath', 'editingPostAuthor', 'settingsV2']),
    },
    methods: {
       ...mapActions('letterOfAttorney', ['updateStep']),
@@ -127,7 +127,7 @@ export default {
          }
          if (!this.form.name) delete form.name
          this.$axios
-            .$post('https://v2dev.mashin.al/api/v2/auth/confirm-otp', form)
+            .$post(this.$config.api_secret + '/auth/confirm-otp', form)
             .then(async (data) => {
                // track conversion
                this.fbTrack('Complete Registration Api')

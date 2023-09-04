@@ -66,7 +66,7 @@ export const actions = {
   async getAnnouncements({ commit, state }) {
 
     if (state.announcementIds.length) {
-      const data = await this.$axios.$post('https://v2dev.mashin.al/api/v2/car/compared', {
+      const data = await this.$axios.$post(this.$config.api_secret + '/car/compared', {
         ids: state.announcementIds.map(x => Math.floor((Number(x) / 10)))
       });
       commit('mutate', {
