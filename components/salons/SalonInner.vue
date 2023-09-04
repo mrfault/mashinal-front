@@ -216,15 +216,15 @@
 
          async changePage(page = 1) {
             // console.log('page', page)
-            // page = this.$route.query.page || 1;
-            // this.pending = true
+            page = this.$route.query.page || 1;
+            this.pending = true
             // await this.getSalonById({
             //    slug: this.$route.params.id,
             //    page: page || 1
             // })
-            // await this.$store.dispatch('fetchAutosalonAnnouncementsId', {id: this.$store.getters.salonSingle.id, page: page});
-            // this.pending = false;
-            // this.scrollTo('.cap', [-80, -190])
+            await this.$store.dispatch('fetchAutosalonAnnouncementsId', {id: this.$store.getters.salonSingle.id, page: page});
+            this.pending = false;
+            this.scrollTo('.cap', [-80, -190])
          },
 
          scrollFunc() {
@@ -373,8 +373,6 @@
             .divider {
                padding-right: 20px;
                border-right: 1px solid #CDD5DF;
-
-
             }
 
             ul {
@@ -397,6 +395,10 @@
                min-width: 24px;
                min-height: 24px;
                margin-right: 16px;
+
+               path {
+                  fill: #4B5565;
+               }
             }
          }
 
