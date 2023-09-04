@@ -628,8 +628,13 @@
             border: 1px solid #CDD5DF;
 
             li {
+               justify-content: center;
                position: relative;
                white-space: nowrap;
+
+               &:not(:first-child) {
+                  margin-left: 0;
+               }
 
                &:not(:last-child) {
                   margin-left: 0;

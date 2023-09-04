@@ -412,7 +412,7 @@
          align-items: center;
          justify-content: center;
          width: 100%;
-         height: 116px;
+         height: 105px;
          border-radius: 12px;
          margin-top: 32px;
          background: url("/images/plates_filters_bg.png") center center / cover no-repeat;
@@ -438,8 +438,15 @@
             .form-group {
                width: 72px;
 
+               .select-menu {
+                  &_label {
+                     height: 44px;
+                  }
+               }
+
                .text-input {
                   input {
+                     height: 44px;
                      padding: 0 12px;
                   }
                }
@@ -479,7 +486,6 @@
 
    .dark-mode {
       .registrationMarks {
-
          &__filters {
             &-item {
                background-color: #121926;
@@ -612,6 +618,10 @@
 
             .container {
                padding: 12px !important;
+            }
+
+            .registrationMarksGrid {
+               margin-top: 30px;
             }
          }
       }
