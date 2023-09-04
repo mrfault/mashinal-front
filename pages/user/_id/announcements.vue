@@ -159,7 +159,7 @@
    }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
    .pages-user-announcements {
       padding: 40px 0;
 
@@ -178,6 +178,14 @@
 
          .form-group {
             max-width: 200px;
+         }
+      }
+
+      .registrationMarksGrid {
+         margin-top: 0;
+
+         &__items {
+            margin-top: 0;
          }
       }
    }
