@@ -2037,6 +2037,7 @@ export default {
    total2: "Yekun",
    total_amount: "Yekun məbləğ",
    total_calls: "Ümumi zəng sayı",
+   restore_popup_alert: "Bərpa etmə {count} AZN təşkil edir. Elanı bərpa etmək istədiyinizə əminsiniz?",
    view_count: "Baxış sayı",
    incoming_calls: "Gələn zənglər",
    add_to_favorite: "Sevimlilərə əlavə edilmə",
