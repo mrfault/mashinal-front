@@ -127,7 +127,7 @@ export default {
          }
          if (!this.form.name) delete form.name
          this.$axios
-            .$post(this.$config.api_secret + '/auth/confirm-otp', form)
+            .$post(this.$env().API_SECRET + '/auth/confirm-otp', form)
             .then(async (data) => {
                // track conversion
                this.fbTrack('Complete Registration Api')

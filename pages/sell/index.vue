@@ -507,7 +507,7 @@ export default {
          this.pending = true;
          try {
             const res = await this.$axios
-               .$post(this.$config.api_secret + '/auth/login-or-register', {phone: this.authForm.phone.replace(/[^0-9]+/g, ''),})
+               .$post(this.$env().API_SECRET + '/auth/login-or-register', {phone: this.authForm.phone.replace(/[^0-9]+/g, ''),})
 
             this.authStep = 'handleOTP'
             this.$nextTick(() => {
@@ -526,7 +526,7 @@ export default {
          this.authError = []
          try {
             const data = await this.$axios
-               .$post(this.$config.api_secret + '/auth/confirm-otp', {
+               .$post(this.$env().API_SECRET + '/auth/confirm-otp', {
                   ...this.authForm,
                   phone: this.authForm.phone.replace(/[^0-9]+/g, '')
                })
