@@ -165,6 +165,10 @@
                   {{ announcement?.title }}
                </h2>
 
+<!--               <h2 v-else-if="type === 'catalog'">-->
+<!--                  {{ announcement?.title }}-->
+<!--               </h2>-->
+
                <h3>{{ announcement?.price }}</h3>
             </div>
 

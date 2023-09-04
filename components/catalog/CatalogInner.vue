@@ -2,7 +2,7 @@
    <div class="catalog-inner">
       <div class="row flex-column flex-lg-row">
          <div class="col-auto">
-            <gallery where="catalog" :media="selectedCar.transformed_media" :title="title" :subtitle="modName(main)" />
+            <gallery type="catalog" where="catalog" :media="selectedCar.transformed_media" :title="title" :subtitle="modName(main)" />
 
             <thumbs-gallery class="mt-3 mb-3" where="catalog" :media="selectedCar.transformed_media" />
 

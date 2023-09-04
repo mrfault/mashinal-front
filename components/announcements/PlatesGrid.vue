@@ -111,7 +111,7 @@
       .registrationMarksGrid {
          &.loading {
             &:before {
-               background-color: rgba(28, 28, 30, 0.50);
+               background-color: #1219265e;
             }
          }
       }

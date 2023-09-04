@@ -145,11 +145,6 @@
          :media="[salonSingle.gallery_urls, salonSingle.gallery_thumbs]"
          :show-slider="false"
       />
-
-<!--      <HandleIds-->
-<!--         :items="handleIdsOptions"-->
-<!--         :watchIds="false"-->
-<!--      />-->
    </div>
 </template>
 
@@ -211,18 +206,7 @@
             return this.routeName.includes('parts')
          },
 
-         handleIdsOptions() {
-            let ids = [];
 
-            ids.push({
-               type: 'commercial',
-               ids: [...this.autosalonAnnouncementsId?.data?.map(item => item.id)]
-            });
-
-            console.log('rrrrr', this.autosalonAnnouncementsId)
-
-            return ids;
-         }
       },
 
       methods: {
