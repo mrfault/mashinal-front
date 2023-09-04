@@ -260,16 +260,19 @@
             :announcement="announcement"
             v-if="showDeactivateButton(announcement)"
          />
+
+         <restore-button
+            :announcement="announcement"
+            v-if="userIsOwner(announcement) && announcement.status === 3"
+            :free="true"
+         />
+<!--         v-if="userIsOwner(announcement) && announcement.status === 3 && !announcement.is_external_salon"-->
       </div>
 
 <!--      <template v-if="!brief && announcement.status != 2 && !(announcement.is_auto_salon && announcement.status == 3)">-->
 <!--         <div class="row mt-n2 mt-lg-n3">-->
 <!--            <div class="col mt-2 mt-lg-3">-->
-<!--               <restore-button-->
-<!--                  :announcement="announcement"-->
-<!--                  v-if="userIsOwner(announcement) && announcement.status == 3 && !announcement.is_external_salon"-->
-<!--                  :free="true"-->
-<!--               />-->
+
 <!--               -->
 
 <!--            </div>-->
