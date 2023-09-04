@@ -48,8 +48,9 @@
                <h2 class="ma-title--md"> {{ $t('sign_in_to_account') }} </h2>
                <login-tabs :skip-sign-in="true" @update-tab="tab = $event"/>
             </div>
-            <div class="ma-login-tab--image">
-               <img alt="" src="/images/login-image.png">
+            <div class="ma-login-tab--image" v-if="settingsV2?.length"> 
+<!--               <img alt="" src="/images/login-image.png">-->
+               <img alt="" :src="settingsV2[0].login_image">
             </div>
          </div>
 
@@ -65,7 +66,7 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
 import MobileNav from '~/components/layout/MobileNav'
 
 export default {
@@ -89,6 +90,7 @@ export default {
       }
    },
    computed: {
+      ...mapGetters(['settingsV2']),
       crumbs() {
          return [{name: this.$t('login_or_register')}]
       },
@@ -107,9 +109,16 @@ export default {
          if (this.user.children.length) path = 'my-autosalons'
          this.$router.push(this.$localePath(path))
       },
+      async getSettings() {
+         await this.$store.dispatch('getSettingsV2')
+      }
    },
    created() {
-      this.$nuxt.$on('login', this.handleLogin)
+      this.$nuxt.$on('login', this.handleLogin);
+
+   },
+   mounted(){
+      this.getSettings()
    },
    beforeDestroy() {
       this.$nuxt.$off('login', this.handleLogin)

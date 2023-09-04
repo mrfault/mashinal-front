@@ -248,6 +248,8 @@ const getInitialState = () => ({
    monetizationPriceList: [],
 
    autosalonStatistics: {},
+
+   settingsV2: [],
 });
 
 export const state = () => getInitialState();
@@ -468,6 +470,8 @@ export const getters = {
    monetizationPriceList: s => s.monetizationPriceList,
 
    autosalonStatistics: s => s.autosalonStatistics,
+
+   settingsV2: s => s.settingsV2,
 };
 
 const objectNotEmpty = (state, commit, property) => {
@@ -1810,6 +1814,11 @@ export const actions = {
       const res = await this.$axios.$get(`/my/dashboard/statistics/${id}`)
       commit("mutate", {property: "autosalonStatistics", value: res});
 
+   },
+
+   async getSettingsV2({commit,state}){
+      const res = await this.$axios.$get(`https://v2dev.mashin.al/api/v2/common/settings`);
+      commit("mutate", {property: "settingsV2", value: res});
    }
 
 };
