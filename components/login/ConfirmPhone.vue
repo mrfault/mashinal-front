@@ -148,7 +148,8 @@ export default {
                // }
             })
             .catch((err) => {
-               this.pending = false
+               this.pending = false;
+               this.$toasted.error(err.response.data.message)
             })
       },
    },
