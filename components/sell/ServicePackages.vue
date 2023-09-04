@@ -539,7 +539,7 @@ export default {
 
       .packages {
          overflow: auto;
-         padding: 10px 4px;
+         padding: 20px 4px;
 
          .package {
             min-width: 312px;
