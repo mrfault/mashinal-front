@@ -146,10 +146,10 @@
          :show-slider="false"
       />
 
-      <HandleIds
-         :items="handleIdsOptions"
-         :watchIds="false"
-      />
+<!--      <HandleIds-->
+<!--         :items="handleIdsOptions"-->
+<!--         :watchIds="false"-->
+<!--      />-->
    </div>
 </template>
 
@@ -218,6 +218,8 @@
                type: 'commercial',
                ids: [...this.autosalonAnnouncementsId?.data?.map(item => item.id)]
             });
+
+            console.log('rrrrr', this.autosalonAnnouncementsId)
 
             return ids;
          }

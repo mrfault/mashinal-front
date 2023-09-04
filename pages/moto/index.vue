@@ -2,43 +2,57 @@
    <div class="pages-moto-index">
       <div class="container">
          <div class="filters-container mb-5">
-            <div class="filters-container__head d-flex align-items-center justify-content-between flex-column mb-5">
-               <form-buttons
-                  class="announce_types"
-                  :options="getMileageOptions"
-                  :group-by="3"
-                  :btnClass="'blue-new-3'"
-                  v-model="announceType"
+            <template v-if="isMobileBreakpoint && !advancedSearch">
+               <FiltersMobile @onClick="onClick" />
+            </template>
+
+            <template v-else>
+               <div class="filters-container__top" v-if="isMobileBreakpoint">
+                  <inline-svg src="/icons/back.svg" @click="advancedSearch = false" />
+
+                  <h4>{{ $t('advanced_search') }}</h4>
+
+                  <button class="btn" @click="resetForm(true)">{{ $t('clear_search') }}</button>
+               </div>
+
+               <div class="filters-container__head d-flex align-items-center justify-content-between flex-column mb-5">
+                  <form-buttons
+                     class="announce_types"
+                     :options="getMileageOptions"
+                     :group-by="3"
+                     :btnClass="'blue-new-3'"
+                     v-model="announceType"
+                  />
+
+                  <form-buttons
+                     class="no-bg"
+                     :options="getSearchTabs"
+                     :group-by="2"
+                     :btnClass="'blue-new'"
+                     v-model="searchType"
+                  />
+               </div>
+
+               <car-search-form
+                  v-if="searchType === 1"
+                  :pending="pending"
+                  :total-count="$paginate(mainAnnouncements).total"
+                  :announceType="announceType"
+                  @pending="pending = true"
                />
 
-               <form-buttons
-                  class="no-bg"
-                  :options="getSearchTabs"
-                  :group-by="2"
-                  :btnClass="'blue-new'"
-                  v-model="searchType"
+               <moto-search-form
+                  v-else
+                  :total-count="$paginate(motoAnnouncements).total"
+                  :pending="pending"
+                  :category="{}"
+                  :sorting="sorting"
+                  :announceType="announceType"
+                  @pending="pending = true"
+                  @showSorting="showSorting = $event"
+                  @submit="searchMoto"
                />
-            </div>
-
-            <car-search-form
-               v-if="searchType === 1"
-               :pending="pending"
-               :total-count="$paginate(mainAnnouncements).total"
-               :announceType="announceType"
-               @pending="pending = true"
-            />
-
-            <moto-search-form
-               v-else
-               :total-count="$paginate(motoAnnouncements).total"
-               :pending="pending"
-               :category="{}"
-               :sorting="sorting"
-               :announceType="announceType"
-               @pending="pending = true"
-               @showSorting="showSorting = $event"
-               @submit="searchMoto"
-            />
+            </template>
          </div>
 
          <breadcrumbs :crumbs="crumbs" />
@@ -90,18 +104,22 @@
 
 <script>
    import {mapGetters, mapActions} from 'vuex';
-
    import CarSearchForm from "~/components/cars/CarSearchForm.vue";
    import MotoSearchForm from '~/components/moto/MotoSearchForm';
    import Grid from '~/components/announcements/Grid';
    import NoResults from '~/components/elements/NoResults';
    import HandleIds from "~/components/announcements/HandleIds.vue";
    import Cap from "~/components/elements/Cap.vue";
+   import FiltersMobile from "~/components/elements/FiltersMobile.vue";
+   import {SearchMixin} from "~/mixins/search";
+   import is from "vue2-datepicker/locale/es/is";
 
    export default {
       name: 'pages-moto-index',
 
       layout: 'search',
+
+      mixins: [SearchMixin],
 
       components: {
          CarSearchForm,
@@ -109,7 +127,8 @@
          Grid,
          NoResults,
          HandleIds,
-         Cap
+         Cap,
+         FiltersMobile
       },
 
       nuxtI18n: {
@@ -127,6 +146,7 @@
 
       data() {
          return {
+            advancedSearch: false,
             announceType: 0,
             searchType: 1,
             showSorting: false,
@@ -176,7 +196,13 @@
       methods: {
          ...mapActions(['getGridSearch']),
 
+         onClick(id) {
+            // if (id === 1) this.showFillters = true;
+            if (id === 2) this.advancedSearch = true;
+         },
+
          async searchMoto(page = 1) {
+            this.advancedSearch = false;
             page = this.$route.query.page || 1;
             let post = JSON.parse(this.$route.query.filter || '{}');
 
@@ -195,6 +221,9 @@
       },
 
       computed: {
+         is() {
+            return is
+         },
          ...mapGetters(['motoAnnouncements', 'getMainMonetized', 'mainAnnouncements', 'brandsList']),
 
          crumbs() {

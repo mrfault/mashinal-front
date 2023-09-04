@@ -1,7 +1,6 @@
 <template>
    <div class="inner-gallery">
       <div class="position-relative">
-<!--         <pre>{{slides}}</pre>-->
          <div
             class="swiper-container"
             v-swiper:gallerySwiper="swiperOps"
@@ -38,7 +37,7 @@
                      :class="['swiper-slide-bg', { 'youtube-play': showYtVideo(index) }]"
                      :style="`background-image:url(${showYtVideo(index) ? getYtVideoImage('hq') : slide}?width=716)`"
                   >
-                     <!--              <loader />-->
+<!--                                   <loader />-->
                   </div>
                </div>
             </div>
@@ -93,7 +92,6 @@
             </div>
          </div>
 
-<!--         <pre>{{slides}}</pre>-->
          <div class="inner-gallery-lightbox" v-touch:swipe.top="handleSwipeTop">
             <FsLightbox
                v-if="isMobileBreakpoint"
@@ -150,12 +148,13 @@
                      </div>
                   </div>
 
-                  <div class="blur-bg_slider" :key="2" v-if="!isMobileBreakpoint">
+                  <div class="blur-bg_slider" :key="2" v-if="!isMobileBreakpoint" @click="closeLightbox">
                      <images-slider
                         :announcement="announcement"
                         :current-slide="currentSlide"
                         :slides="slides"
                         :has-sidebar="where === 'announcement'"
+                        :type="type"
                         @close="closeLightbox"
                         @slide-change="currentSlide = $event"
                      >
@@ -185,6 +184,7 @@
 
    export default {
       props: {
+         type: String,
          where: {
             type: String,
             default: 'announcement',

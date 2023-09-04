@@ -24,6 +24,15 @@
                   <!-- Part name -->
                   <div class="col-12 col-md-6" :class="{'mb-3': isMobileBreakpoint}">
                      <form-text-input
+                        v-if="isMobileBreakpoint"
+                        :placeholder="$t('part_name')"
+                        v-model="form.title"
+                        icon-name="search"
+                        @keyup.native.enter="submitForm"
+                     />
+
+                     <form-text-input
+                        v-else
                         :placeholder="$t('part_name')"
                         v-model="form.title"
                         @keyup.native.enter="submitForm"
@@ -422,5 +431,13 @@
 <style lang="scss">
    .part-search-form {
       margin-top: 32px;
+
+      .form-group {
+         .text-input {
+            i {
+               color: #9AA4B2;
+            }
+         }
+      }
    }
 </style>

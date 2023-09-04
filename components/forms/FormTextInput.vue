@@ -1,5 +1,6 @@
 <template>
-   <div class="form-group" :class="{'ma-input--white': isPromotionsPage, 'lighterOnDarkMode': lighterOnDarkMode, 'isSearchInput':isSearchInput}">
+   <div class="form-group"
+        :class="{'ma-input--white': isPromotionsPage, 'lighterOnDarkMode': lighterOnDarkMode, 'isSearchInput':isSearchInput}">
       <div :class="['text-input', {[`${blockClass}`]:blockClass}]">
          <img :src="imgSrc" v-if="imgSrc" :class="{disabled}" :alt="placeholder"/>
 
@@ -33,7 +34,7 @@
             </date-picker>
          </template>
 
-         <template v-else >
+         <template v-else>
             <input
                ref="input"
                :id="id"
@@ -55,9 +56,9 @@
             </span>
          </template>
 
-         <icon :name="iconName" v-if="iconName && !isSearchInput" :class="{invalid, disabled}" />
-         <icon name="alert-circle" v-if="invalid && !inputDate && !hasPopover" class="invalid" />
-         <icon name="check-circle" v-else-if="valid && type !== 'password'" class="valid" />
+         <icon :name="iconName" v-if="iconName && !isSearchInput" :class="{invalid, disabled}"/>
+         <icon name="alert-circle" v-if="invalid && !inputDate && !hasPopover" class="invalid"/>
+         <icon name="check-circle" v-else-if="valid && type !== 'password'" class="valid"/>
          <slot name="default"/>
       </div>
 
@@ -196,7 +197,7 @@ export default {
    height: 52px !important;
 }
 
-.dark-mode{
+.dark-mode {
    .lighterOnDarkMode {
       input {
          border: 1px solid #4B5565;
@@ -207,15 +208,17 @@ export default {
    }
 
 }
-.isSearchInput{
-   input{
+
+.isSearchInput {
+   input {
       height: 48px;
    }
 
-   i{
+   i {
       right: 16px;
    }
-   svg{
+
+   svg {
       position: absolute;
       top: 50%;
       right: 16px;

@@ -7,10 +7,8 @@
             <div class="product-inner__info">
                <div class="product-inner__info-left">
                   <client-only>
-                     <gallery>
+                     <gallery type="cars">
                         <quick-info type="cars" brief />
-
-<!--                        <announcement-specs type="cars" brief />-->
                      </gallery>
                   </client-only>
 

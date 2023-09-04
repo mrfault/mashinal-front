@@ -7,21 +7,21 @@
 </template>
 
 <script>
-import PageLayout from '~/components/layout/PageLayout';
+   import PageLayout from '~/components/layout/PageLayout';
 
-export default {
-   name: 'layout-default',
+   export default {
+      name: 'layout-default',
 
-   middleware: ['main'],
+      middleware: ['main'],
 
-   components: {PageLayout},
+      components: {PageLayout},
 
-   mounted() {
-      if (this.loggedIn) {
-         this.$axios.$get('https://dev.mashin.al/api/new-notifications-count')
+      mounted() {
+         if (this.loggedIn) {
+            this.$axios.$get('https://dev.mashin.al/api/new-notifications-count')
+         }
+
+         window.ringostat_announce = parseInt(this.$route.params?.id);
       }
-
-      window.ringostat_announce = parseInt(this.$route.params?.id);
    }
-}
 </script>

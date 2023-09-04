@@ -20,7 +20,7 @@
 
             <div class="row flex-column flex-lg-row">
                <div class="col-auto">
-                  <gallery>
+                  <gallery type="commercial">
                      <quick-info type="commercial" brief/>
                      <announcement-specs type="commercial" brief/>
                   </gallery>

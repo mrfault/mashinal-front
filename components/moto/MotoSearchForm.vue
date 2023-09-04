@@ -348,6 +348,7 @@
 <!--         </button>-->
 
          <button
+            v-if="!isMobileBreakpoint"
             type="button"
             :class="['btn', 'full-width', 'btn--white', { 'pointer-events-none': pending }]"
             @click="resetForm(true)"
