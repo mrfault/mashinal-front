@@ -66,7 +66,7 @@ export const actions = {
   async getAnnouncements({ commit, state }) {
 
     if (state.announcementIds.length) {
-      const data = await this.$axios.$post(this.$config.api_secret + '/car/compared', {
+      const data = await this.$axios.$post(this.$env().API_SECRET + '/car/compared', {
         ids: state.announcementIds.map(x => Math.floor((Number(x) / 10)))
       });
       commit('mutate', {

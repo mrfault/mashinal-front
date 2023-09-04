@@ -488,37 +488,37 @@ const objectNotEmpty = (state, commit, property) => {
 export const actions = {
    // New API ++++++++++++++++++++
    async fetchMonetizedAnnouncementsPage({commit}, page = 1) {
-      const res = await this.$axios.$get(`${this.$config.api_secret}/monetized-announcements?${page}`);
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/monetized-announcements?${page}`);
       commit("mutate", {property: "monetizedPage", value: res});
    },
 
    async fetchMonetizedAnnouncementsHome({commit}) {
-      const res = await this.$axios.$get(this.$config.api_secret + '/monetized-announcements/home');
+      const res = await this.$axios.$get(this.$env().API_SECRET + '/monetized-announcements/home');
       commit("mutate", {property: "mainMonetized", value: res});
    },
 
    async fetchAllAnnouncementsHome({commit}) {
-      const res = await this.$axios.$get(this.$config.api_secret + '/all-announcements/home');
+      const res = await this.$axios.$get(this.$env().API_SECRET + '/all-announcements/home');
       commit("mutate", {property: "mainAnnouncements", value: res});
    },
 
    async fetchCarShowroomAnnouncementsHome({commit}) {
-      const res = await this.$axios.$get(this.$config.api_secret + '/autosalon/announcements/home');
+      const res = await this.$axios.$get(this.$env().API_SECRET + '/autosalon/announcements/home');
       commit("mutate", {property: "carShowroom", value: res});
    },
 
    async fetchPlateNumbersHome({commit}) {
-      const res = await this.$axios.$get(this.$config.api_secret + '/plate-numbers/home');
+      const res = await this.$axios.$get(this.$env().API_SECRET + '/plate-numbers/home');
       commit("mutate", {property: "plateNumbers", value: res});
    },
 
    async fetchPartsAnnouncementsHome({commit}) {
-      const res = await this.$axios.$get(this.$config.api_secret + '/parts/home');
+      const res = await this.$axios.$get(this.$env().API_SECRET + '/parts/home');
       commit("mutate", {property: "partsHome", value: res});
    },
 
    async fetchPartsAnnouncements({commit}, page = 1) {
-      const res = await this.$axios.$post(`${this.$config.api_secret}/parts?page=${page}`);
+      const res = await this.$axios.$post(`${this.$env().API_SECRET}/parts?page=${page}`);
       commit("mutate", {property: "partsV2", value: res});
    },
 
@@ -536,7 +536,7 @@ export const actions = {
       //    }
       // };
 
-      const res = await this.$axios.$post(`${this.$config.api_secret}/parts/monetized`, body, payload?.params?.page || 1);
+      const res = await this.$axios.$post(`${this.$env().API_SECRET}/parts/monetized`, body, payload?.params?.page || 1);
       commit("mutate", {property: "partsV2Monetized", value: res});
    },
 
@@ -553,7 +553,7 @@ export const actions = {
       //       page: payload?.params?.page || 1
       //    }
       // };
-      const res = await this.$axios.$post(`${this.$config.api_secret}/parts?page=${payload?.page || 1}`, body);
+      const res = await this.$axios.$post(`${this.$env().API_SECRET}/parts?page=${payload?.page || 1}`, body);
 
       commit("parts/mutate", {
          property: "showNotFound",
@@ -577,47 +577,47 @@ export const actions = {
    },
 
    async fetchBrandsList({commit}) {
-      const res = await this.$axios.$get(this.$config.api_secret + '/brands/list-with-count');
+      const res = await this.$axios.$get(this.$env().API_SECRET + '/brands/list-with-count');
       commit("mutate", {property: "brandsList", value: res});
    },
 
    async fetchAutosalonAnnouncementsId({commit}, data) {
-      const res = await this.$axios.$get(`${this.$config.api_secret}/autosalon/announcements/${data.id}?page=${data.page || 1}`);
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/autosalon/announcements/${data.id}?page=${data.page || 1}`);
       commit("mutate", {property: "autosalonAnnouncementsId", value: res});
    },
 
    async fetchPartsAnnouncementsId({commit}, id) {
-      const res = await this.$axios.$get(`${this.$config.api_secret}/parts/announcements/${id}`);
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/parts/announcements/${id}`);
       commit("mutate", {property: "autosalonAnnouncementsId", value: res});
    },
 
    async fetchMonetizedCars({commit}) {
-      const res = await this.$axios.$get(this.$config.api_secret + '/car/monetized-cars');
+      const res = await this.$axios.$get(this.$env().API_SECRET + '/car/monetized-cars');
       commit("mutate", {property: "monetizedCars", value: res});
    },
 
    async fetchMonetizedCarsSearch({commit}, data = {}) {
-      const res = await this.$axios.$post(`${this.$config.api_secret}/car/monetized`, data);
+      const res = await this.$axios.$post(`${this.$env().API_SECRET}/car/monetized`, data);
       commit("mutate", {property: "monetizedCars", value: res});
    },
 
    async getAnnouncementInnerV2({commit}, id) {
-      const res = await this.$axios.$get(`${this.$config.api_secret}/car/${id}`);
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/car/${id}`);
       commit("mutate", {property: "announcement", value: res});
    },
 
    async getMotoGearboxV2({commit}) {
-      const res = await this.$axios.$get(this.$config.api_secret + '/moto/gearbox');
+      const res = await this.$axios.$get(this.$env().API_SECRET + '/moto/gearbox');
       commit("mutate", {property: "motoGearbox", value: res});
    },
 
    async getMotoTransmissionsV2({commit}) {
-      const res = await this.$axios.$get(this.$config.api_secret + '/moto/transmissions');
+      const res = await this.$axios.$get(this.$env().API_SECRET + '/moto/transmissions');
       commit("mutate", {property: "motoTransmissions", value: res});
    },
 
    async getMotoFuelTypesV2({commit}) {
-      const res = await this.$axios.$get(this.$config.api_secret + '/moto/fuel-types');
+      const res = await this.$axios.$get(this.$env().API_SECRET + '/moto/fuel-types');
       commit("mutate", {property: "motoFuelTypes", value: res});
    },
    // New API --------------------
@@ -645,12 +645,12 @@ export const actions = {
    },
 
    async fetchRegionNumbers({commit}) {
-      const res = await this.$axios.$get(this.$config.api_secret + "/regions/list-serial-number")
+      const res = await this.$axios.$get(this.$env().API_SECRET + "/regions/list-serial-number")
       commit("mutate", {property: "regionNumbers", value: res || []})
    },
 
    async fetchRegistrationMarks({commit}, data = '') {
-      const res = await this.$axios.$get(`${this.$config.api_secret}/plate-numbers${data}`);
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/plate-numbers${data}`);
 
       if (res.data.length) commit("mutate", {property: "loadingData", value: false});
       commit("mutate", {property: "registrationMarks", value: res || []});
@@ -668,18 +668,18 @@ export const actions = {
    async fetchPlatesV2({commit}, data = {}) {
 
       const res = await this.$axios.$get(
-         `${this.$config.api_secret}/me/announcements/plate-numbers?status=${data.status}`
+         `${this.$env().API_SECRET}/me/announcements/plate-numbers?status=${data.status}`
       );
       commit("mutate", {property: "myPlatesV2", value: res});
    },
 
    async fetchMySavedPlates({commit}, data = '') {
-      const res = await this.$axios.$get(`${this.$config.api_secret}/me/bookmarks/plate-numbers${data}`)
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/me/bookmarks/plate-numbers${data}`)
       commit("mutate", {property: "mySavedPlates", value: res || []})
    },
 
    async fetchMySavedParts({commit}, data = '') {
-      const res = await this.$axios.$get(`${this.$config.api_secret}/me/bookmarks/parts${data}`)
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/me/bookmarks/parts${data}`)
       commit("mutate", {property: "mySavedParts", value: res || []})
    },
 
@@ -830,7 +830,7 @@ export const actions = {
       await this.$axios.$post(`/announce/${id}/favorite`);
    },
    async getFavoriteAnnouncements({commit}, data = {}) {
-      const res = await this.$axios.$get(`${this.$config.api_secret}/me/bookmarks?page=${data.page || 1}`);
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/me/bookmarks?page=${data.page || 1}`);
       commit("mutate", {property: "favoriteAnnouncements", value: res});
    },
    async getNotViewedFavorites({commit}) {
@@ -959,7 +959,7 @@ export const actions = {
       });
    },
    async getMotoModelsV2({commit}, data) {
-      const res = await this.$axios.$get(`${this.$config.api_secret}/moto/${data.value}/brand/${data.id}/models?whereHas=${data.whereHas || 1}`);
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/moto/${data.value}/brand/${data.id}/models?whereHas=${data.whereHas || 1}`);
       commit("mutate", {
          property: "motoModelsV2",
          value: res,
@@ -1150,12 +1150,12 @@ export const actions = {
    },
    async getMotoOptionsV2({state, commit}) {
       if (objectNotEmpty(state, commit, "motoOptionsV2")) return;
-      const res = await this.$axios.$get(`${this.$config.api_secret}/moto/types`);
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/moto/types`);
       commit("mutate", {property: "motoOptionsV2", value: res});
    },
    async getMotoBrandsV2({state, commit}, data) {
       // if (objectNotEmpty(state, commit, "motoBrands")) return;
-      const res = await this.$axios.$get(`${this.$config.api_secret}/moto/${data.value}/brands?whereHas=${data.whereHas || 1}`);
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/moto/${data.value}/brands?whereHas=${data.whereHas || 1}`);
       commit("mutate", {property: "motoBrands", value: res});
    },
    async getScooterOptions({commit}) {
@@ -1272,12 +1272,12 @@ export const actions = {
    },
 
    async getGridSearch({commit, dispatch}, data) {
-      const res = await this.$axios.$post(`${this.$config.api_secret}${data.url}?page=${data.page || 1}`, data.post);
+      const res = await this.$axios.$post(`${this.$env().API_SECRET}${data.url}?page=${data.page || 1}`, data.post);
       commit("mutate", {property: data.prefix + "Announcements", value: res});
    },
    // Announcements
    async getRelativeAnnouncements({commit}, id) {
-      const res = await this.$axios.$get(`${this.$config.api_secret}/car/similar/${id}`);
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/car/similar/${id}`);
       commit("mutate", {property: "relativeAnnouncements", value: res});
    },
    async getRelativeAnnouncementsWithoutMutate({commit, state}, data) {
@@ -1302,7 +1302,7 @@ export const actions = {
       commit("mutate", {property: "temporaryLazyData", value: res});
    },
    async getUserAnnouncements({commit}, id) {
-      const res = await this.$axios.$get(`${this.$config.api_secret}/all-announcements/user/${id}`);
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/all-announcements/user/${id}`);
       commit("mutate", {property: "userAnnouncements", value: res});
    },
    async getMyAllAnnouncements({commit}, data = {}) {
@@ -1315,7 +1315,7 @@ export const actions = {
    },
    async getMyAllAnnouncementsV2({commit}, data = {}) {
       const res = await this.$axios.$get(
-         `${this.$config.api_secret}/me/announcements?status=${data.status}`
+         `${this.$env().API_SECRET}/me/announcements?status=${data.status}`
       );
       commit("mutate", {property: "myAnnouncementsV2", value: res});
    },
@@ -1327,17 +1327,17 @@ export const actions = {
    },
 
    async getMotoInnerV2({commit}, payload) {
-      const res = await this.$axios.$get(`${this.$config.api_secret}/moto/${payload.type}/${payload.id}`);
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/moto/${payload.type}/${payload.id}`);
       commit("mutate", {property: "announcement", value: res});
    },
 
    async motoRelativesV2({commit}, payload) {
-      const res = await this.$axios.$get(`${this.$config.api_secret}/moto/${payload.type}/similar/${payload.id}`);
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/moto/${payload.type}/similar/${payload.id}`);
       commit("mutate", {property: "motoRelatives", value: res});
    },
 
    async getPartsInnerV2({commit}, id) {
-      const res = await this.$axios.$get(`${this.$config.api_secret}/parts/${id}`);
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/parts/${id}`);
       commit("mutate", {property: "announcement", value: res});
    },
 
@@ -1425,7 +1425,7 @@ export const actions = {
          commit("mutate", {property: "catalogTotal", value: res.total});
    },
    async getCatalogAnnouncements({commit}, id) {
-      const res = await this.$axios.$get(`${this.$config.api_secret}/car-catalog/${id}/announcements`);
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/car-catalog/${id}/announcements`);
       commit("mutate", {property: "catalogAnnouncements", value: res});
    },
    // Sell
@@ -1489,7 +1489,7 @@ export const actions = {
    },
    async getSellGenerationsV2({commit}, data) {
       const res = await this.$axios.$get(
-         `${this.$config.api_secret}/${data.brand}/${data.model}/year/${data.year}/body/${data.body}/generations`
+         `${this.$env().API_SECRET}/${data.brand}/${data.model}/year/${data.year}/body/${data.body}/generations`
       );
       commit("mutate", {property: "sellGenerationsV2", value: res});
    },
@@ -1519,7 +1519,7 @@ export const actions = {
    },
    async getSellModificationsV2({commit}, data) {
       const res = await this.$axios.$get(
-         `${this.$config.api_secret}/car-catalog/${data.brand}/${data.model}/body/${data.body}/generation/${data.generation}/engine/${data.engine}/gearing/${data.gearing}/trns/${data.transmission}/modifications`
+         `${this.$env().API_SECRET}/car-catalog/${data.brand}/${data.model}/body/${data.body}/generation/${data.generation}/engine/${data.engine}/gearing/${data.gearing}/trns/${data.transmission}/modifications`
       );
       commit("mutate", {property: "sellModificationsV2", value: res});
    },
@@ -1586,13 +1586,13 @@ export const actions = {
       await this.$axios.$post(`/my/autosalon/${id}/edit`, form);
    },
    async getServicePackages({commit}) {
-      const res = await this.$axios.$get(`${this.$config.api_secret}/promotion/list`);
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/promotion/list`);
       commit("mutate", {property: "servicePackages", value: res});
    },
 
    //SELL POSTS
    async plateNumbersPost({}, {form, isMobile}) {
-         const res = await this.$axios.$post(`${this.$config.api_secret}/plate-numbers/post?is_mobile=${isMobile}`, form);
+         const res = await this.$axios.$post(`${this.$env().API_SECRET}/plate-numbers/post?is_mobile=${isMobile}`, form);
          return res;
    },
    async partsPost({}, form) {
@@ -1788,20 +1788,20 @@ export const actions = {
    },
 
    async UserCabinetCarsAdd({commit, state}, payload) {
-      const res = await this.$axios.$post(`${this.$config.api_secret}/me/cars/create`, payload);
+      const res = await this.$axios.$post(`${this.$env().API_SECRET}/me/cars/create`, payload);
       // commit("mutate", {property: "userCabinetCars", value: res});
    },
    async UserCabinetCarsEdit({commit, state}, payload) {
-      const res = await this.$axios.$post(`${this.$config.api_secret}/me/cars/${payload.id}/update?brand_id=${payload.brand_id}&model_id=${payload.model_id}&generation_id=${payload.generation_id}&car_type_id=${payload.car_type_id}&car_catalog_id=${payload.car_catalog_id}&vin=${payload.vin}&car_number=${payload.car_number}`);
+      const res = await this.$axios.$post(`${this.$env().API_SECRET}/me/cars/${payload.id}/update?brand_id=${payload.brand_id}&model_id=${payload.model_id}&generation_id=${payload.generation_id}&car_type_id=${payload.car_type_id}&car_catalog_id=${payload.car_catalog_id}&vin=${payload.vin}&car_number=${payload.car_number}`);
    },
    async UserCabinetCarsGetAll({commit, state}, payload) {
-      const res = await this.$axios.$get(`${this.$config.api_secret}/me/cars?page=${payload}`);
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/me/cars?page=${payload}`);
       const newData = res.data; // Data from the current page
 
       commit("append", {property: "userCabinetCars", value: newData});
    },
    async UserCabinetCarDelete({commit, state}, payload) {
-      const res = await this.$axios.$post(`${this.$config.api_secret}/me/cars/${payload.id}/delete`);
+      const res = await this.$axios.$post(`${this.$env().API_SECRET}/me/cars/${payload.id}/delete`);
    },
 
    async getMonetizationPriceList({commit, state}, payload) {
@@ -1817,7 +1817,7 @@ export const actions = {
    },
 
    async getSettingsV2({commit,state}){
-      const res = await this.$axios.$get(`${this.$config.api_secret}/common/settings`);
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/common/settings`);
       commit("mutate", {property: "settingsV2", value: res});
    }
 
