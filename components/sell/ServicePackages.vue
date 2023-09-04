@@ -1,8 +1,7 @@
 <template>
    <div class="service_packages">
-      <h2>Son addım, satışı sürətləndir !</h2>
-      <p>Hər şey hazırdır! Turbo paketin seçməklə elanını daha gözə çarpan edəcəksən. Hər kəs sənin elanından danışacaq
-         və daha tez alıcı tapacaqsan. Xeyirli olsun!</p>
+      <h2>{{ $t('promotion_title') }}</h2>
+      <p>{{ $t('promotion_description') }}</p>
       <div class="packages">
          <div
             :class="['package', 'premium_package', add_monetization === 1 ? 'selected': '' ]"
@@ -53,7 +52,7 @@
                </li>
             </ul>
             <div class="package_price">
-               <p>Pulsuz</p>
+               <p>{{ $t('price_free') }}</p>
             </div>
          </div>
       </div>
@@ -109,17 +108,17 @@ export default {
                statistics: [
                   {
                      id: 1,
-                     name: "Baxış sayı",
+                     name: this.$t('view_count'),
                      percentage: 80
                   },
                   {
                      id: 2,
-                     name: "Sevimlilərə əlavə edilmə",
+                     name: this.$t('add_to_favorite'),
                      percentage: 80
                   },
                   {
                      id: 3,
-                     name: "Gələn zənglər",
+                     name: this.$t('incoming_calls'),
                      percentage: 60
                   },
                ],
@@ -146,17 +145,17 @@ export default {
                statistics: [
                   {
                      id: 1,
-                     name: "Baxış sayı",
+                     name: this.$t('view_count'),
                      percentage: 35
                   },
                   {
                      id: 2,
-                     name: "Sevimlilərə əlavə edilmə",
+                     name: this.$t('add_to_favorite'),
                      percentage: 40
                   },
                   {
                      id: 3,
-                     name: "Gələn zənglər",
+                     name: this.$t('incoming_calls'),
                      percentage: 30
                   },
                ],
