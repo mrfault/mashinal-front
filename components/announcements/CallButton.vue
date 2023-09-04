@@ -91,6 +91,7 @@
    .call-button {
       flex-direction: column;
       height: 56px !important;
+      gap: 3px;
 
       &.circle {
          display: flex;

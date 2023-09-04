@@ -292,6 +292,10 @@
       @include btn-style($bg-color: $green-new-3, $bg-hover: $green-2);
    }
 
+   &--new-green-2 {
+      @include btn-style($bg-color: $green-dark-new, $bg-hover: $green-2);
+   }
+
    &--green-outline {
       @include btn-style(
          $bg-color: $green-1,

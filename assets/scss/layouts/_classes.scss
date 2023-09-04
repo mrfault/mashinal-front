@@ -176,6 +176,7 @@ hr {
    display: flex;
    flex-direction: column;
    min-height: 100%;
+   min-width: 0;
 
    //& > div {
    //   flex: 1;

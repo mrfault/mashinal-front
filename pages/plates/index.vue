@@ -99,7 +99,7 @@
                   <template #head>
                      <Cap :className="'mb40'">
                         <template #left>
-                           <h3>{{ $t('search_result') }}</h3>
+                           <h3>{{ $t('announcements') }}</h3>
                         </template>
 
                         <template #right>

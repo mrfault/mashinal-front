@@ -18,6 +18,6 @@ label {
 
 body {
    min-height: min-content !important;
-   overflow-y: scroll !important;
+   overflow-y: scroll;
    background: $grey-1-new;
 }

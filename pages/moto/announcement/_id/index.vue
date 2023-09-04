@@ -7,9 +7,11 @@
 
                <div class="product-inner__info">
                   <div class="product-inner__info-left">
-                     <gallery>
-                        <quick-info type="moto" brief/>
-                     </gallery>
+                     <client-only>
+                        <gallery type="moto">
+                           <quick-info type="moto" brief/>
+                        </gallery>
+                     </client-only>
 
                      <thumbs-gallery />
 

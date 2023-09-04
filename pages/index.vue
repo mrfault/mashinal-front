@@ -2,39 +2,65 @@
    <div class="pages-index">
       <div class="container">
          <div class="filters-container">
-            <div class="filters-container__head d-flex align-items-center justify-content-between flex-column mb-5">
-               <form-buttons
-                  class="announce_types"
-                  :options="getMileageOptions"
-                  :group-by="3"
-                  :btnClass="'blue-new-3'"
-                  v-model="announceType"
+            <template v-if="isMobileBreakpoint && !advancedSearch">
+               <FiltersMobile @onClick="onClick" />
+
+<!--               <form-select-->
+<!--                  :label="$t('mark')"-->
+<!--                  :options="existsBrands"-->
+<!--                  :clear-placeholder="true"-->
+<!--                  :clear-option="false"-->
+<!--                  :input-placeholder="$t('mark_search')"-->
+<!--                  v-model="form.additional_brands[0]['brand']"-->
+<!--                  ref="www"-->
+<!--                  @change="setBrand($event, 0)"-->
+<!--                  has-search-->
+<!--               />-->
+            </template>
+
+            <template v-else>
+               <div class="filters-container__top" v-if="isMobileBreakpoint">
+                  <inline-svg src="/icons/back.svg" @click="advancedSearch = false" />
+
+                  <h4>{{ $t('advanced_search') }}</h4>
+
+                  <button class="btn" @click="resetForm(true)">{{ $t('clear_search') }}</button>
+               </div>
+
+               <div class="filters-container__head d-flex align-items-center justify-content-between flex-column mb-5">
+                  <form-buttons
+                     class="announce_types"
+                     :options="getMileageOptions"
+                     :group-by="3"
+                     :btnClass="'blue-new-3'"
+                     v-model="announceType"
+                  />
+
+                  <form-buttons
+                     class="no-bg"
+                     :options="getSearchTabs"
+                     :group-by="2"
+                     :btnClass="'blue-new'"
+                     v-model="searchType"
+                  />
+               </div>
+
+               <car-search-form
+                  v-if="searchType === 1"
+                  :pending="pending"
+                  :announceType="announceType"
+                  @pending="pending = true"
                />
 
-               <form-buttons
-                  class="no-bg"
-                  :options="getSearchTabs"
-                  :group-by="2"
-                  :btnClass="'blue-new'"
-                  v-model="searchType"
+               <moto-search-form
+                  v-else
+                  :pending="pending"
+                  :total-count="$paginate(motoAnnouncements).total"
+                  @pending="pending = true"
+                  :announceType="announceType"
+                  :category="{}"
                />
-            </div>
-
-            <car-search-form
-               v-if="searchType === 1"
-               :pending="pending"
-               :announceType="announceType"
-               @pending="pending = true"
-            />
-
-            <moto-search-form
-               v-else
-               :pending="pending"
-               :total-count="$paginate(motoAnnouncements).total"
-               @pending="pending = true"
-               :announceType="announceType"
-               :category="{}"
-            />
+            </template>
          </div>
       </div>
 
@@ -163,16 +189,18 @@
    import PlatesGrid from "~/components/announcements/PlatesGrid.vue";
    import HandleIds from "~/components/announcements/HandleIds.vue";
    import Cap from "~/components/elements/Cap.vue";
+   import FiltersMobile from "~/components/elements/FiltersMobile.vue";
    import {SearchMixin} from "~/mixins/search";
 
    export default {
       name: 'pages-index',
 
-      // mixins: [SearchMixin],
-
       transition: 'fade-y-20',
 
       layout: 'search',
+
+      mixins: [SearchMixin],
+
       middleware: 'payment_redirect',
 
       components: {
@@ -182,6 +210,7 @@
          HandleIds,
          Cap,
          PlatesGrid,
+         FiltersMobile
       },
 
       head() {
@@ -193,6 +222,10 @@
 
       data() {
          return {
+            form: {
+               additional_brands: {0: {}, 1: {}, 2: {}, 3: {}, 4: {}}
+            },
+            advancedSearch: false,
             announceType: 0,
             searchType: 1,
             currentSlide: 0,
@@ -268,6 +301,7 @@
             'carShowroom',
             'plateNumbers',
             'partsHome',
+            'existsBrands'
          ]),
 
          photos() {
@@ -390,6 +424,14 @@
             }
          },
 
+         onClick(id) {
+            if (id === 1) {
+               console.log('sssssss', this.$refs.www)
+               console.log('22222222222')
+            }
+            else if (id === 2) this.advancedSearch = true;
+         },
+
          async getSliderData() {
             if (this.homePageSliders && this.homePageSliders.length) {
                return;
@@ -413,6 +455,7 @@
             }
             return url
          },
+
          onElementObserved() {
             const observer = new IntersectionObserver((entries) => {
                entries.forEach((entry) => {
@@ -438,6 +481,10 @@
       },
 
       watch: {
+         '$route'() {
+            this.advancedSearch = false
+         },
+
          searchType() {
             this.announceType = 0;
          }
@@ -487,6 +534,30 @@
       border-radius: 12px;
       background-color: #FFFFFF;
 
+      &__top {
+         display: flex;
+         align-items: center;
+         justify-content: space-between;
+         margin-bottom: 32px;
+
+
+         h4 {
+            color: #121926;
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 24px
+         }
+
+         .btn {
+            color: #F81734;
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 20px;
+            padding: 0;
+            background-color: transparent;
+         }
+      }
+
       &__head {
          gap: 32px;
 
@@ -512,6 +583,18 @@
    .dark-mode {
       .filters-container {
          background-color: #1B2434;
+
+         &__top {
+            svg {
+               path {
+                  stroke: #EEF2F6;
+               }
+            }
+
+            h4 {
+               color: #EEF2F6;
+            }
+         }
 
          &__head {
             .announce_types {
@@ -563,6 +646,7 @@
 
    @media (min-width: 992px) {
       .filters-container {
+
          &__head {
             flex-direction: row !important;
             gap: unset;
