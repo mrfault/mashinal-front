@@ -29,7 +29,7 @@ export default function({ app, route, store }, inject) {
          useBaseUrl: true
       }
       return {
-         API_SECRET: app.context.$config.API_SECRET,
+         API_SECRET: app.$config.API_SECRET,
          DEV: conf.isDev ,
          BASE_URL: conf.useBaseUrl ? (conf.isProd ? 'https://mashin.al' : 'https://dev.mashin.al') : '',
          API_BASE_URL: conf.isProd ? '/api' : 'https://dev.mashin.al/api',
