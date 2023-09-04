@@ -374,6 +374,18 @@
       );
    }
 
+   &--blue-new-3 {
+      @include btn-style(
+         $color: $grey-2-new,
+         $color-hover: $grey-2-new,
+         $bg-color: transparent,
+         $bg-hover: $grey-8-new,
+         $border-color: transparent,
+         $active-bg: $blue-new,
+         $outline: false
+      );
+   }
+
    &--blue-new-light {
       @include btn-style(
          $color: $grey-2-new,
@@ -545,6 +557,18 @@
             $border-color: $grey-1,
             $outline: true,
             $override: false
+         );
+      }
+
+      &--blue-new-3 {
+         @include btn-style(
+            $color: $grey-5-new,
+            $color-hover: $grey-5-new,
+            $bg-color: transparent,
+            $bg-hover: $dark-light-new,
+            $border-color: transparent,
+            $active-bg: $blue-new,
+            $outline: false
          );
       }
 

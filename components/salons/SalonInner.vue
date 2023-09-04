@@ -146,7 +146,10 @@
          :show-slider="false"
       />
 
-      <HandleIds :items="[{type: 'commercial', ids: autosalonAnnouncementsId?.data?.map(item => item.id)}]" />
+      <HandleIds
+         :items="handleIdsOptions"
+         :watchIds="false"
+      />
    </div>
 </template>
 
@@ -206,6 +209,17 @@
 
          isShop() {
             return this.routeName.includes('parts')
+         },
+
+         handleIdsOptions() {
+            let ids = [];
+
+            ids.push({
+               type: 'commercial',
+               ids: [...this.autosalonAnnouncementsId?.data?.map(item => item.id)]
+            });
+
+            return ids;
          }
       },
 
@@ -214,15 +228,15 @@
 
          async changePage(page = 1) {
             // console.log('page', page)
-            page = this.$route.query.page || 1;
-            this.pending = true
+            // page = this.$route.query.page || 1;
+            // this.pending = true
             // await this.getSalonById({
             //    slug: this.$route.params.id,
             //    page: page || 1
             // })
-            await this.$store.dispatch('fetchAutosalonAnnouncementsId', {id: this.$store.getters.salonSingle.id, page: page});
-            this.pending = false;
-            this.scrollTo('.cap', [-80, -190])
+            // await this.$store.dispatch('fetchAutosalonAnnouncementsId', {id: this.$store.getters.salonSingle.id, page: page});
+            // this.pending = false;
+            // this.scrollTo('.cap', [-80, -190])
          },
 
          scrollFunc() {
@@ -241,16 +255,6 @@
          },
       },
 
-      // watch: {
-      //   sorting(val) {
-      //      if (val === '') {
-      //         this.$store.dispatch('getSalonById', { slug: this.$route.params.id, sorting: 'created_at_desc' });
-      //      } else {
-      //         this.$store.dispatch('getSalonById', { slug: this.$route.params.id, sorting: this.sorting });
-      //      }
-      //   }
-      // },
-
       props: {
          gridTitle: {
             type: String,
@@ -258,16 +262,16 @@
          }
       },
 
-      async fetch() {
-        await this.$store.dispatch('fetchAutosalonAnnouncementsId', {
-           id: this.$store.getters.salonSingle.id,
-           page: this.$route.query.page || 1,
-        });
-      },
+      // async fetch() {
+      //   await this.$store.dispatch('fetchAutosalonAnnouncementsId', {
+      //      id: this.$store.getters.salonSingle.id,
+      //      page: this.$route.query.page || 1
+      //   });
+      // },
 
-      mounted() {
-         this.scrollFunc();
-      }
+      // mounted() {
+         // this.scrollFunc();
+      // }
    }
 </script>
 

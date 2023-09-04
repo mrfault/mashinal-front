@@ -13,6 +13,29 @@
 
                      <thumbs-gallery />
 
+                     <ul class="characteristics" v-if="isMobileBreakpoint">
+                        <li class="characteristics__item" v-if="announcement.tradeable">
+                           <inline-svg src="/icons/barter.svg" />
+                           <span>{{ $t('barter') }}</span>
+                        </li>
+
+                        <li class="characteristics__item" v-if="announcement.credit">
+                           <inline-svg src="/icons/credit.svg" />
+                           <span>{{ $t('credit') }}</span>
+                        </li>
+
+                        <li class="characteristics__item" v-if="announcement.has_360">
+                           <inline-svg src="/icons/360_deg_2.svg" />
+                           <span>360</span>
+                        </li>
+
+                        <li class="characteristics__item" v-if="announcement.show_vin">
+                           <inline-svg src="/icons/vin_2.svg" />
+                           <span>VIN kod</span>
+                           <span class="badgeMin">{{ $t('is_new') }}</span>
+                        </li>
+                     </ul>
+
                      <announcement-specs type="moto" :title="$t('vehicle_info')" brief/>
 
                      <comment :comment="announcement.comment" v-if="announcement.comment">
@@ -113,7 +136,7 @@
      },
 
       async asyncData({store, route}) {
-         // console.log('moto', route)
+         // console.log('moto', this.announcement)
          await Promise.all([
             store.dispatch('getMotoInnerV2', { id: route.params.id, type: route.query.type }),
             store.dispatch('motoRelativesV2', { id: route.params.id, type: route.query.type }),

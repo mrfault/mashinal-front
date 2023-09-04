@@ -1541,10 +1541,28 @@ export default {
    .mini-card{
       display: block;
       padding: 10px;
+      min-height: 140px;
+   }
+   .mini-card-content-title{
+      height: 32px;
+      margin-top: 10px;
+      display: flex;
+      justify-content: start;
    }
    .card{
       padding: 24px;
       min-height: auto;
+   }
+   .mini-card-content{
+      padding: 7px 0;
+   }
+   .mini-card-content-result{
+      margin: 0;
+      padding: 0;
+   }
+   .mini-card-content-icon{
+      top: 10px;
+      right: 17px;
    }
 }
 

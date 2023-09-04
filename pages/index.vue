@@ -7,7 +7,7 @@
                   class="announce_types"
                   :options="getMileageOptions"
                   :group-by="3"
-                  :btnClass="'blue-new'"
+                  :btnClass="'blue-new-3'"
                   v-model="announceType"
                />
 
@@ -478,6 +478,10 @@
 </script>
 
 <style lang="scss">
+   .pages-index {
+      padding-top: 32px;
+   }
+
    .filters-container {
       padding: 24px !important;
       border-radius: 12px;
@@ -488,12 +492,21 @@
 
          .form-buttons {
             width: 100%;
+
+            &.announce_types {
+               padding: 8px;
+               border-radius: 12px;
+               background-color: #EEF2F6;
+               //gap: 0;
+
+               .form-group {
+                  button {
+                     height: 42px !important;
+                  }
+               }
+            }
          }
       }
-   }
-
-   .pages-index {
-      padding-top: 32px;
    }
 
    .dark-mode {
@@ -502,15 +515,19 @@
 
          &__head {
             .announce_types {
-               .btn {
-                  &:hover {
-                     background-color: #155EEF !important;
+               background-color: #121926;
 
-                     span {
-                        color: #FFFFFF !important;
-                     }
-                  }
-               }
+               //.btn {
+               //   &:not(:has(.active)) {
+               //      &:hover {
+               //         background-color: #1B2434 !important;
+               //
+               //         span {
+               //            color: #9AA4B2 !important;
+               //         }
+               //      }
+               //   }
+               //}
             }
 
             .no-bg {
@@ -557,7 +574,7 @@
             .announce_types {
                .form-group {
                   .btn {
-                     width: 120px !important;
+                     width: 110px !important;
                   }
                }
             }

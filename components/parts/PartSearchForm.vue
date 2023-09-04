@@ -1,5 +1,5 @@
 <template>
-   <div :class="['part-search-form mb-5', { 'pb-2': showDynamicFilter }]">
+   <div :class="['part-search-form', { 'pb-2': showDynamicFilter }]">
       <div class="card p-2 p-sm-3 p-md-4">
          <div class="row">
             <!-- Mileage options -->
@@ -182,6 +182,7 @@
                </div>
             </div>
          </div>
+
          <div class="collapse-toggle" v-if="showDynamicFilter">
             <button type="button" class="btn" @click="collapsed = !collapsed">
                <span>{{ $t(`search_${collapsed ? 'more' : 'less'}`) }}</span>
@@ -417,3 +418,9 @@
       }
    }
 </script>
+
+<style lang="scss">
+   .part-search-form {
+      margin-top: 32px;
+   }
+</style>

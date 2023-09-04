@@ -33,7 +33,7 @@
          <ul class="quick-info__details">
             <li>
                <inline-svg src="/icons/calendar-2.svg" />
-               {{ announcement.humanize_created_at }}
+               {{ announcement.created_at }}
             </li>
 
             <li>
@@ -125,8 +125,8 @@
                />
             </div>
 
-            <div class="col-12 mt-2 mt-lg-3" v-if="!isMobileBreakpoint && announcement?.status === 2">
-               <div class="status"> {{ $t('announcement_pending') }}</div>
+            <div class="col-12 mt-2 mt-lg-3" v-if="announcement?.status === 2">
+               <div class="status">{{ $t('announcement_pending') }}</div>
             </div>
          </div>
       </div>
@@ -224,7 +224,7 @@
       <div class="wrapp">
          <monetization-button
             v-if="type !== 'plates' && announcement.status === 1"
-            class="h-52 mb-2"
+            class="h-52 mb-3"
             :announcement="announcement"
             @openModal="openModal"
          />
@@ -239,7 +239,7 @@
             />
 
             <add-comparison
-               v-if="type !== 'plates' && type !== 'parts' && ![0,2,3].includes(announcement.status)"
+               v-if="comparisonExceptions"
                class="h-52"
                :template="'btn'"
                :text="$t('compare')"
@@ -253,14 +253,14 @@
                v-if="showEditButton(announcement)"
                @openModal="openModal"
             />
-
-            <deactivate-button
-               :announcement="announcement"
-               v-if="showDeactivateButton(announcement)"
-            />
          </div>
-      </div>
 
+         <deactivate-button
+            class="mt-3"
+            :announcement="announcement"
+            v-if="showDeactivateButton(announcement)"
+         />
+      </div>
 
 <!--      <template v-if="!brief && announcement.status != 2 && !(announcement.is_auto_salon && announcement.status == 3)">-->
 <!--         <div class="row mt-n2 mt-lg-n3">-->
@@ -355,6 +355,10 @@
                this.announcement.system_paid_announce &&
                !this.announcement.system_paid_announce.is_paid
             )
+         },
+
+         comparisonExceptions() {
+            return this.type === 'cars' && ![0,2,3].includes(this.announcement.status);
          }
       },
 
@@ -511,9 +515,15 @@
 
       .btns {
          display: grid;
-         grid-template-columns: repeat(1, 1fr);
+         grid-template-columns: repeat(2, 1fr);
          gap: 12px;
       }
+
+      //.wrapp {
+      //   display: grid;
+      //   grid-template-columns: repeat(2, 1fr);
+      //   gap: 12px;
+      //}
 
       &.registration-marks {
          .registration-marks__number {
@@ -610,7 +620,7 @@
             grid-template-columns: repeat(4, 1fr);
             gap: 20px;
             margin-top: 10px;
-            padding: 12px 16px;
+            padding: 8px !important;
             border-radius: 8px;
             border: 1px solid #CDD5DF;
 

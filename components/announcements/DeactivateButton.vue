@@ -7,7 +7,7 @@
       <modal-popup
          :modal-class="'deactivate'"
          :toggle="showDeactivateModal"
-         :title="$t('are_you_sure_you_want_to_delete_the_announcement')"
+         :title="$t('are_you_sure_you_want_to_deactivate_the_announcement')"
          @close="showDeactivateModal = false"
       >
          <form class="form" @submit.prevent="deactivateAnouncement" novalidate>
@@ -21,7 +21,7 @@
                <button
                   type="submit"
                   class="btn btn--white btn-dark-text"
-               >{{ $t('confirm') }}</button>
+               >{{ $t('inactive_make') }}</button>
             </div>
 
 <!--            <button type="button" class="btn btn&#45;&#45;white btn-dark-text">-->

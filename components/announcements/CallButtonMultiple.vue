@@ -106,6 +106,11 @@
             this.gtagTrack('AW-600951956/' + (n === 1 ? 'rgWNCOTA8IMCEJSZx54C' : 'VunMCPr51oMCEJSZx54C'));
             this.$axios.$get(`/announce/${this.announcementId}/show/phone`);
          }
+      },
+
+      mounted() {
+         console.log('phones', this.phones)
+         console.log('announcement-id', this.announcementId)
       }
    }
 </script>

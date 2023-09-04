@@ -68,7 +68,7 @@
             <!--        <span class="sr-only">{{ getAnnouncementTitle(announcement) }}</span>-->
          </a>
 
-<!--         +'&width=308'-->
+         <!--         +'&width=308'-->
          <div
             v-if="!showGallery"
             v-lazy:background-image="getImage"
@@ -138,7 +138,7 @@
                         v-if="isComparisonPage"
                      >
                         <span>{{ $t('delete') }}</span>
-                        <inline-svg src="/icons/trash.svg" />
+                        <inline-svg src="/icons/trash.svg"/>
                      </div>
                   </div>
 
@@ -252,40 +252,40 @@
    import ProfileGridActions from "~/components/profile/ProfileGridActions";
    import CallButton from "~/components/announcements/CallButton.vue";
 
-export default {
-   props: {
-      announcement: {},
-      showStatus: Boolean,
-      showMonetizationActions: {
-         type: Boolean,
-         default: true,
+   export default {
+      props: {
+         announcement: {},
+         showStatus: Boolean,
+         showMonetizationActions: {
+            type: Boolean,
+            default: true,
+         },
+         showCheckbox: Boolean,
+         showPhoneCount: Boolean,
+         showGallery: Boolean,
+         showOverlay: Boolean,
+         clickable: Boolean,
+         trackViews: Boolean,
+         colClass: String,
+         isProfilePage: {
+            type: Boolean,
+            default: false,
+         },
+         isComparisonPage: {
+            type: Boolean,
+            default: false,
+         },
+         hideFavoriteBtn: {
+            type: Boolean,
+            default: true,
+         },
+         isLastChild: Boolean,
+         mileage: {
+            type: Boolean,
+            default: true
+         },
+         activeTab: Number,
       },
-      showCheckbox: Boolean,
-      showPhoneCount: Boolean,
-      showGallery: Boolean,
-      showOverlay: Boolean,
-      clickable: Boolean,
-      trackViews: Boolean,
-      colClass: String,
-      isProfilePage: {
-         type: Boolean,
-         default: false,
-      },
-      isComparisonPage: {
-         type: Boolean,
-         default: false,
-      },
-      hideFavoriteBtn: {
-         type: Boolean,
-         default: true,
-      },
-      isLastChild: Boolean,
-      mileage: {
-         type: Boolean,
-         default: true
-      },
-      activeTab: Number,
-   },
 
       components: {
          MonetizationStatsButton,
@@ -318,7 +318,7 @@ export default {
 
          getLink() {
             let type = 'cars',
-                motoType = '';
+               motoType = '';
 
             if (this.getType === 'Motorcycle') motoType = '?type=motorcycle';
             else if (this.getType === 'Scooter') motoType = '?type=scooter';
@@ -328,7 +328,6 @@ export default {
             if (['Motorcycle', 'Scooter', 'Atv'].includes(this.getType)) type = 'moto'
             else if (['Commercial'].includes(this.getType)) type = 'commercial'
             else if (['Part'].includes(this.getType)) type = 'parts'
-            // console.log('motoType', motoType)
             let path = `/${type}/announcement/${this.announcement.id}${motoType}`
             return this.$localePath(path)
          },
@@ -440,7 +439,7 @@ export default {
          },
 
          getActiveTabAnnouncements() {
-            this.$store.dispatch('getMyAllAnnouncementsV2', { status: this.activeTab });
+            this.$store.dispatch('getMyAllAnnouncementsV2', {status: this.activeTab});
          }
       },
 
@@ -505,7 +504,8 @@ export default {
          padding-bottom: 70px;
          height: auto;
       }
-      .item-bg{
+
+      .item-bg {
          border-radius: 8px 8px 0 0 !important;
       }
    }

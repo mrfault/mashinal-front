@@ -1,26 +1,50 @@
 <template>
    <div class="registrationMarks index">
-      <div class="registrationMarks__hero mobile">
-         <div class="registrationMarks__hero-text">
-            <breadcrumbs :crumbs="crumbs" />
-
-            <h4 class="registrationMarks__hero-title">{{ $t('registration_marks') }}</h4>
-         </div>
-      </div>
-
       <div class="container">
          <div class="row">
             <div class="col">
-               <div class="registrationMarks__hero">
-                  <div class="registrationMarks__hero-text">
-                     <breadcrumbs class="light-color" :crumbs="crumbs" />
-
-                     <h4 class="registrationMarks__hero-title">{{ $t('registration_marks') }}</h4>
-                  </div>
-               </div>
+               <h2 class="registrationMarks__title">{{ $t('registration_marks') }}</h2>
 
                <div class="registrationMarks__filters">
-                  <div class="divider">
+                  <div class="registrationMarks__filters-item">
+                     <svg fill="none" viewBox="0 0 20 29" height="29" width="20" xmlns="http://www.w3.org/2000/svg">
+                        <g xmlns="http://www.w3.org/2000/svg" clip-path="url(#clip0_2752_3219)">
+                           <path d="M20 -0.666504H0V12.6665H20V-0.666504Z" fill="#EF3340"></path>
+                           <path d="M20 -0.666504H0V3.77783H20V-0.666504Z" fill="#00B5E2"></path>
+                           <path d="M20 8.22217H0V12.6665H20V8.22217Z" fill="#509E2F"></path>
+                           <path d="M10.125 7.625C9.22754 7.625 8.5 6.89746 8.5 6C8.5 5.10254 9.22754 4.375 10.125 4.375C10.4048 4.375 10.6681 4.44574 10.898 4.57031C10.5374 4.21769 10.0442 4 9.5 4C8.39543 4 7.5 4.89543 7.5 6C7.5 7.10457 8.39543 8 9.5 8C10.0442 8 10.5374 7.7823 10.898 7.42969C10.6681 7.55426 10.4048 7.625 10.125 7.625Z" fill="#F0F0F0"></path>
+                           <path d="M11.375 4.875L11.5902 5.48035L12.1705 5.20449L11.8946 5.78473L12.5 6L11.8946 6.21527L12.1705 6.79551L11.5902 6.51965L11.375 7.125L11.1598 6.51965L10.5795 6.79551L10.8554 6.21527L10.25 6L10.8554 5.78473L10.5795 5.20449L11.1598 5.48035L11.375 4.875Z" fill="#F0F0F0"></path>
+                        </g>
+                        <rect xmlns="http://www.w3.org/2000/svg" x="0.602151" y="15.0108" width="18.7957" height="12.7957" rx="1.80645" fill="white"></rect>
+                        <path class="text" xmlns="http://www.w3.org/2000/svg" d="M9.39327 24.4194H10.632L8.02552 18.3979H6.82982L4.18896 24.4194H5.38466L5.918 23.1462H8.85993L9.39327 24.4194ZM6.3309 22.157L7.39757 19.628L8.44703 22.157H6.3309Z" fill="#364152"></path>
+                        <path class="text" xmlns="http://www.w3.org/2000/svg" d="M10.7788 18.3979L10.7702 19.4043H14.2111L10.667 23.6022V24.4194H15.8111V23.4129H12.224L15.7681 19.2065V18.3979H10.7788Z" fill="#364152"></path>
+                        <rect xmlns="http://www.w3.org/2000/svg" x="0.602151" y="15.0108" width="18.7957" height="12.7957" rx="1.80645" stroke="#9AA4B2" stroke-width="1.2043"></rect>
+                        <defs xmlns="http://www.w3.org/2000/svg">
+                           <clipPath id="clip0_2752_3219">
+                              <rect width="20" height="12" rx="2" fill="white"></rect>
+                           </clipPath>
+                        </defs>
+                     </svg>
+
+                     <svg width="30" height="46" viewBox="0 0 30 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g clip-path="url(#clip0_8077_50420)">
+                           <path d="M30 -0.0214844H0V19.9781H30V-0.0214844Z" fill="#EF3340"/>
+                           <path d="M30 -0.0214844H0V6.64502H30V-0.0214844Z" fill="#00B5E2"/>
+                           <path d="M30 13.3115H0V19.978H30V13.3115Z" fill="#509E2F"/>
+                           <path d="M15.1875 12.416C13.8413 12.416 12.75 11.3247 12.75 9.97852C12.75 8.63232 13.8413 7.54102 15.1875 7.54102C15.6073 7.54102 16.0022 7.64713 16.347 7.83398C15.8061 7.30506 15.0663 6.97852 14.25 6.97852C12.5931 6.97852 11.25 8.32166 11.25 9.97852C11.25 11.6354 12.5931 12.9785 14.25 12.9785C15.0663 12.9785 15.8061 12.652 16.347 12.123C16.0022 12.3099 15.6073 12.416 15.1875 12.416Z" fill="#F0F0F0"/>
+                           <path d="M17.0625 8.29102L17.3854 9.19904L18.2558 8.78525L17.842 9.65561L18.75 9.97852L17.842 10.3014L18.2558 11.1718L17.3854 10.758L17.0625 11.666L16.7396 10.758L15.8692 11.1718L16.283 10.3014L15.375 9.97852L16.283 9.65561L15.8692 8.78525L16.7396 9.19904L17.0625 8.29102Z" fill="#F0F0F0"/>
+                        </g>
+                        <rect x="1.04827" y="23.6293" width="27.9032" height="20.4624" rx="2.79032" fill="#1B2434"/>
+                        <path d="M14.0627 38.511H15.9761L11.95 29.21H10.1031L6.02393 38.511H7.87085L8.69466 36.5445H13.2389L14.0627 38.511ZM9.33245 35.0165L10.9801 31.11L12.6011 35.0165H9.33245Z" fill="#9AA4B2"/>
+                        <path d="M16.2029 29.21L16.1896 30.7646H21.5045L16.0302 37.2487V38.511H23.9759V36.9564H18.4352L23.9095 30.459V29.21H16.2029Z" fill="#9AA4B2"/>
+                        <rect x="1.04827" y="23.6293" width="27.9032" height="20.4624" rx="2.79032" stroke="#364152" stroke-width="1.86021"/>
+                        <defs>
+                           <clipPath id="clip0_8077_50420">
+                              <rect y="0.978516" width="30" height="18" rx="4" fill="white"/>
+                           </clipPath>
+                        </defs>
+                     </svg>
+
                      <form-select
                         :label="$t('region_2')"
                         :input-placeholder="$t('region_search')"
@@ -62,38 +86,6 @@
                         :invalid="$v.car_number.$error"
                         @change="$v.$touch()"
                         v-model="form.car_number"
-                     />
-                  </div>
-
-                  <div class="divider">
-                     <form-numeric-input
-                        :placeholder="$t('price_from')"
-                        v-model="form.price_from"
-                     />
-
-                     <form-numeric-input
-                        :placeholder="$t('price_to')"
-                        v-model="form.price_to"
-                     />
-                  </div>
-
-                  <div class="divider">
-                     <form-select
-                        :label="$t('currency')"
-                        :options="currencies"
-                        :clearPlaceholder="true"
-                        :clear-option="false"
-                        v-model="form.currency"
-                     />
-
-                     <form-select
-                        :label="$t('city')"
-                        :input-placeholder="$t('city_search')"
-                        :options="cities.regions"
-                        :clear-placeholder="true"
-                        :clear-option="false"
-                        v-model="form.region_id"
-                        has-search
                      />
                   </div>
                </div>
@@ -377,26 +369,12 @@
 
 <style lang="scss">
    .registrationMarks {
-      .breadcrumbs {
-         ul {
-            li {
-               font-weight: 500;
-               font-size: 16px;
-               line-height: 20px;
-               opacity: 0.9;
-               color: #FFFFFF;
-
-               i {
-                  &:before {
-                     color: #FFFFFF;
-                  }
-               }
-
-               .active {
-                  color: #FFFFFF;
-               }
-            }
-         }
+      &__title {
+         margin-top: 8px;
+         color: #121926;
+         font-size: 32px;
+         font-weight: 600;
+         line-height: 38px;
       }
 
       &__hero {
@@ -433,52 +411,41 @@
             margin: 0;
          }
 
-         &.mobile {
-            display: none;
-         }
       }
 
       &__filters {
          display: flex;
          align-items: center;
+         justify-content: center;
          width: 100%;
-         padding: 24px;
+         height: 116px;
          border-radius: 12px;
-         background-color: #FFFFFF;
-         margin-top: 40px;
+         margin-top: 32px;
+         background: url("/images/plates_filters_bg.png") center center / cover no-repeat;
 
-         .divider {
+         &-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 20px;
+            gap: 12px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background-color: #FFFFFF;
 
-            &:not(:first-child) {
-               margin-left: 20px;
-            }
+            svg {
+               min-width: 30px;
+               height: 38px;
 
-            &:first-child {
-               .form-group {
-                  width: 72px;
-                  &:first-child {
-                     width: 160px;
-                  }
+               &:last-of-type {
+                  display: none;
                }
             }
 
-            &:nth-child(2) {
-               .form-group {
-                  width: 120px;
-               }
-            }
+            .form-group {
+               width: 72px;
 
-            &:last-child {
-               .form-group {
-                  width: 128px;
-
-                  &:last-child {
-                     width: 152px;
-                  }
+               &:first-of-type {
+                  width: 160px;
                }
             }
          }
@@ -512,6 +479,42 @@
 
    .dark-mode {
       .registrationMarks {
+
+         &__filters {
+            &-item {
+               background-color: #121926;
+
+               .form-group {
+                  .select-menu {
+                     &_label {
+                        background-color: #1B2434 !important;
+
+                        .text-truncate {
+                           color: #CDD5DF;
+                        }
+                     }
+                  }
+
+                  .text-input {
+                     input {
+                        color: #CDD5DF;
+                        background-color: #1B2434 !important;
+                     }
+                  }
+               }
+
+               svg {
+                  &:first-of-type {
+                     display: none;
+                  }
+
+                  &:last-of-type {
+                     display: block;
+                  }
+               }
+            }
+         }
+
          &.index {
             .pagination {
                li {
@@ -526,102 +529,41 @@
       }
    }
 
-   @media (max-width: 1150px) {
-      .registrationMarks {
-         &__filters {
-            padding: 20px;
-
-            .divider {
-               gap: 16px;
-
-               &:not(:first-child) {
-                  margin-left: 16px;
-               }
-
-               &:first-child {
-                  .form-group {
-                     width: 67px;
-
-                     &:first-child {
-                        width: 140px;
-                     }
-                  }
-               }
-
-               &:nth-child(2) {
-                  .form-group {
-                     width: 105px;
-                  }
-               }
-
-               &:last-child {
-                  .form-group {
-                     width: 105px;
-
-                     &:last-child {
-                        width: 119px;
-                     }
-                  }
-               }
-            }
-         }
-      }
-   }
-
    @media (max-width: 992px) {
       .registrationMarks {
-         &__hero {
-            height: 230px;
-
-            &-text {
-               left: 40px;
-               //bottom: 30px;
-
-               .breadcrumbs {
-                  display: flex !important;
-                  padding: 0;
-
-                  ul {
-                     height: 40px;
-                  }
-               }
-            }
-
-            &-title {
-               font-size: 30px;
-            }
-         }
-
          &__filters {
-            flex-wrap: wrap;
+            height: 100px;
+            background: unset;
+            background-color: #FFFFFF;
+            border: 4px solid #121926;
+         }
+      }
 
-            .divider {
-               &:not(:first-child) {
-                  margin-left: unset;
-                  margin-top: 15px;
-               }
+      .dark-mode {
+         .registrationMarks {
+            &__filters {
+               border-color: #1B2434;
+               background-color: #1B2434;
 
-               &:first-child {
+               &-item {
+                  background-color: #1B2434;
+
                   .form-group {
-                     width: 69px;
-                     &:first-child {
-                        width: 240px;
+                     .select-menu {
+                        &_label {
+                           background-color: #121926 !important;
+
+                           .text-truncate {
+                              color: #CDD5DF;
+                           }
+                        }
                      }
-                  }
-               }
 
-               &:nth-child(2) {
-                  .form-group {
-                     width: 112px;
-                  }
-               }
-
-               &:last-child {
-                  margin-left: 17px;
-                  .form-group {
-                     width: 112px;
-                     &:last-child {
-                        width: 112px;
+                     .text-input {
+                        input {
+                           color: #CDD5DF;
+                           background-color: #121926 !important;
+                        }
                      }
                   }
                }
@@ -632,78 +574,30 @@
 
    @media (max-width: 570px) {
       .registrationMarks {
-         &__hero {
-            display: none;
-
-            &.mobile {
-               display: block;
-               border-radius: unset;
-
-               .breadcrumbs {
-                  ul {
-                     height: 20px;
-
-                     li {
-                        font-size: 12px;
-
-                        .icon-home {
-                           &:before {
-                              font-size: 12px;
-                           }
-                        }
-
-                        .icon-chevron-right {
-                           &:before {
-                              font-size: 8px;
-                           }
-                        }
-                     }
-                  }
-               }
-
-               //.registrationMarks__hero-text {
-               //   left: 20px;
-               //   bottom: 20px;
-               //}
-
-               .registrationMarks__hero-title {
-                  font-size: 24px;
-               }
-            }
+         &__title {
+            margin-top: 0;
+            font-size: 20px;
+            line-height: 24px;
          }
 
          &__filters {
-            position: absolute;
-            top: 231px;
-            left: 0;
-            margin: 0;
-            border: none;
-            border-radius: unset;
+            height: 68px;
 
-            .divider {
-               &:not(:first-child) {
-                  margin-left: 0;
-               }
+            &-item {
+               gap: 8px;
+               padding: 0;
 
-               &:first-child {
-                  width: 100%;
-                  .form-group {
-                     width: 20%;
-                     &:first-child {
-                        width: 40%;
+               .form-group {
+                  width: 57px;
+
+                  .select-menu {
+                     &_label {
+                        padding: 0 12px;
                      }
                   }
-               }
 
-               &:nth-child(2), &:last-child {
-                  width: 100%;
-
-                  .form-group {
-                     width: 100%;
-                     &:last-child {
-                        width: 100%;
-                        margin-left: 0;
-                     }
+                  &:first-of-type {
+                     width: 100px;
                   }
                }
             }
@@ -711,59 +605,14 @@
 
          &.index {
             position: relative;
-            margin-top: -32px;
 
             .col {
                position: unset;
             }
 
-            .registrationMarksGrid {
-               margin-top: 270px;
-            }
-
-            .no-results {
-               margin: 280px 0 80px 0;
-            }
-         }
-      }
-   }
-
-   @media (max-width: 430px) {
-      .registrationMarks {
-         &__filters {
-            padding: 24px 16px;
-
-            .divider {
-               &:first-child {
-                  gap: 8px;
-               }
-
-               .text-input {
-                  input {
-                     padding: 12px;
-                  }
-               }
-            }
-         }
-
-         &__hero {
-            &-text {
-               left: 25px;
-            }
-         }
-
-         &.index {
             .container {
-               padding: 0 10px;
+               padding: 12px !important;
             }
-         }
-      }
-   }
-
-   @media (max-width: 365px) {
-      .registrationMarks {
-         &__filters {
-            padding: 20px 12px;
          }
       }
    }

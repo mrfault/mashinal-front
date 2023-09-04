@@ -68,7 +68,7 @@
             </div>
 
             <div class="gallery-overlay_bottom">
-               <ul class="gallery-overlay__characteristics">
+               <ul class="gallery-overlay__characteristics" v-if="!isMobileBreakpoint">
                   <li class="gallery-overlay__characteristics-item" v-if="announcement.tradeable">
                      <inline-svg src="/icons/barter.svg" />
                      <span>{{ $t('tradeable') }}</span>
@@ -80,7 +80,7 @@
                   </li>
 
                   <li class="gallery-overlay__characteristics-item" v-if="announcement.has_360">
-                     <inline-svg src="/icons/credit.svg" />
+                     <inline-svg src="/icons/360_deg_2.svg" />
                      <span>360 foto</span>
                   </li>
 

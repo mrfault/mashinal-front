@@ -1,5 +1,8 @@
 <template>
-   <div class="brandsList" :class="($nuxt.$route.path === '/ru' || $nuxt.$route.path === '/') ? 'd-md-block' : 'd-none d-md-block'">
+   <div
+      class="brandsList"
+      :class="($nuxt.$route.path === '/ru' || $nuxt.$route.path === '/') ? 'd-md-block' : 'd-none d-md-block'"
+   >
       <div class="container">
          <div class="brandsList__inner">
             <ul class="brandsList__list" v-for="(item, i) in $chunk(options, Math.ceil(options.length / 6))" :key="i">
@@ -73,9 +76,6 @@
             type: Array,
             default() { return [] }
          }
-      },
-      mounted() {
-
       }
    }
 </script>
@@ -85,9 +85,11 @@
       padding: 56px 0;
       background-color: #FFFFFF;
       border-top: 1px solid #eee;
+
       &__inner {
-         display: flex;
-         justify-content: space-between;
+         display: grid;
+         grid-template-columns: repeat(6, 1fr);
+         gap: 20px;
       }
 
       &__list {
@@ -101,7 +103,6 @@
             line-height: 30px;
             color: inherit;
             cursor: pointer;
-            //transition: all .3s;
 
             &:hover {
                color: #F81734;
@@ -126,12 +127,19 @@
       }
    }
 
-   @media (max-width: 960px) {
-      .brandsList__inner {
-         justify-content: unset;
-         display: grid;
-         gap: 30px 30px;
-         grid-template-columns: auto auto auto;
+   @media (max-width: 992px) {
+      .brandsList {
+         &__inner {
+            grid-template-columns: repeat(3, 1fr);
+         }
+      }
+   }
+
+   @media (max-width: 600px) {
+      .brandsList {
+         &__inner {
+            grid-template-columns: repeat(2, 1fr);
+         }
       }
    }
 </style>

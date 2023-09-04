@@ -3,7 +3,8 @@
       <Banner
          class="mt-0 d-sm-none"
          :bg="'/img/salon-bg.png'"
-         :title="$t('auto_salons')">
+         :title="$t('auto_salons')"
+      >
          <template #content>
             <breadcrumbs class="light-color" :crumbs="crumbs" />
          </template>
