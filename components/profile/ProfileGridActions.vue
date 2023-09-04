@@ -128,7 +128,7 @@ export default {
             {
                name: 'remove_announcement',
                icon: 'trash.svg',
-               show: true,
+               show: this.announcement.status == 3 || this.announcement.status == 0,
                method: this.openModal,
                modalTitle: 'are_you_sure_you_want_to_delete_the_car'
             },
