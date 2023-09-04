@@ -30,7 +30,7 @@ export default {
       PageLayout
    },
    mounted(){
-      this.$axios.$get('https://dev.mashin.al/api/new-notifications-count')
+      this.$axios.$get('/new-notifications-count')
    }
 }
 </script>
