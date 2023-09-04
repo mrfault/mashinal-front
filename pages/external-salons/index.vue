@@ -22,7 +22,6 @@
                v-for="salon in nonOfficialSalons"
                :key="salon.id"
             >
-               {{ salon.slug }}
                <nuxt-link
                   class="keep-colors"
                   :to="$localePath(`/external-salons/${salon.slug}`)"

@@ -1358,6 +1358,7 @@ export default {
    no_cars_found: "Avtomobil yoxdur",
    no_decision: "Qərarsız",
    no_favorites: "Seçilmişlərə əlavə etməmisiniz",
+   no_plates: "QN elani yoxdur",
    no_fines_count: "Nəqliyyat vasitəsinə dair cərimələri mövcud deyil",
    no_inspection: "Nəqliyyat vasitəsinin texniki baxışı mövcud deyil",
    no_insurance: "Nəqliyyat vasitəsinin icbari siğortası mövcud deyil",

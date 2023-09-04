@@ -66,7 +66,7 @@
                <address v-if="announcement.status !== 3 && getAddress">{{ getAddress }}</address>
 
                <p class="text-red" v-else-if="announcement.status === 3">{{ $t('sold') }}</p>
-
+<!--               <pre>{{announcement?.is_external_salon}}</pre>-->
                <nuxt-link
                   :to="contact?.link"
                   v-if="
