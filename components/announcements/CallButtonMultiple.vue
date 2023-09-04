@@ -26,7 +26,7 @@
       <template v-else>
          <template v-if="callAtOnce">
 <!--            <template v-for="phone in phones" v-if="!isMobileBreakpoint">-->
-               <a class="call-a" :href="`tel:${ringostat_number}`">{{ ringostat_number_mask }}</a>
+               <a class="call-a" :href="`tel:${ringostat_number}`">{{ String(ringostat_number_mask).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') }}</a>
 <!--            {{ ringostat_number }}-->
 <!--            </template>-->
 
@@ -93,8 +93,9 @@
 
                window.getManualClassifiedNumber(ringostat_announce,
                   (number) => {
+                     console.log('numberbbbbb', number)
                      this.ringostat_number = number.numberWithoutMask;
-                     this.ringostat_number_mask = number.number;
+                     this.ringostat_number_mask = number.numberWithoutMask;
                      // this.singlePhone = number?.numberWithoutMask.replace('+','')
                   }, 0, `00${this.phone}`
                );
