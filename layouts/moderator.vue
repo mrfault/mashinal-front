@@ -17,7 +17,7 @@ export default {
    },
    mounted() {
       if (this.loggedIn) {
-         this.$axios.$get('https://dev.mashin.al/api/new-notifications-count')
+         this.$axios.$get('/new-notifications-count')
       }
    }
 }
