@@ -373,6 +373,8 @@
             .divider {
                padding-right: 20px;
                border-right: 1px solid #CDD5DF;
+
+
             }
 
             ul {
@@ -391,8 +393,10 @@
                }
             }
 
-            .svg {
+            svg {
                min-width: 24px;
+               min-height: 24px;
+               margin-right: 16px;
             }
          }
 
@@ -440,6 +444,15 @@
 
    .dark-mode {
       .salon-inner {
+         &__details {
+            &-tels {
+               svg {
+                  path {
+                     fill: #CDD5DF;
+                  }
+               }
+            }
+         }
          table {
             border: none;
             background-color: unset;
