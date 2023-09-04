@@ -137,14 +137,13 @@
 
       async asyncData({store, route}) {
          await Promise.all([
-            store.dispatch('getAnnouncementInnerV2', route.params.id),
+            route.params.id && store.dispatch('getAnnouncementInnerV2', route.params.id),
             store.dispatch('getComplaintOptions'),
             store.dispatch('getOptions'),
             store.dispatch('getAllOtherOptions'),
             store.dispatch('getPopularOptions')
          ]);
       },
-
       methods: {
          getFilterLink(type) {
             let form = {
