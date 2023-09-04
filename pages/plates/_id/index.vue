@@ -149,7 +149,7 @@
 
       async asyncData({ store, route }) {
          await Promise.all([
-            store.dispatch('fetchRegistrationMark', route.params.id.slice(0, route.params.id.length - 1)),
+            store.dispatch('fetchRegistrationMark', route.params?.id?.slice(0, route?.params?.id?.length - 1)),
             store.dispatch('fetchRegistrationMarks')
          ]);
       },

@@ -28,9 +28,8 @@
       width: 100%;
 
       h3 {
-         color: var(--gray-900, #121926);
-         font-size: 28px;
-         font-style: normal;
+         color: #121926;
+         font-size: 20px;
          font-weight: 700;
          line-height: 32px;
       }
@@ -45,9 +44,11 @@
          gap: 10px;
          transition: all .2s;
 
-         //&:hover {
-         //   color: #004EEB;
-         //}
+         i {
+            &:before {
+               font-size: 18px;
+            }
+         }
       }
 
       p {
@@ -66,7 +67,7 @@
          //}
 
          span {
-            color: var(--gray-600, #4B5565);
+            color: #4B5565;
             text-align: right;
             font-size: 20px;
             font-style: normal;

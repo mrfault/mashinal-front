@@ -411,12 +411,12 @@ export const SearchMixin = {
       }
    },
 
-   watch: {
-      '$route.query'(query) {
-         if (this.routeName === 'index') return;
-         if (!Object.keys(query || {}).length) this.resetForm(true);
-      }
-   },
+   // watch: {
+   //    '$route.query'(query) {
+         // if (this.routeName === 'index') return;
+         // if (!Object.keys(query || {}).length) this.resetForm(true);
+      // }
+   // },
 
    created() {
       var route = this.$route.path.split('/');

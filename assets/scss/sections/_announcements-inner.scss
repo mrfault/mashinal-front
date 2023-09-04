@@ -758,7 +758,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 104px;
+      height: 80px;
       padding: 0 24px;
       color: $white;
       width: 100%;
@@ -770,7 +770,7 @@
          align-items: center;
 
          h2, h3 {
-            font-size: 24px;
+            font-size: 16px;
             font-weight: 600;
             line-height: 28px;
          }
@@ -795,6 +795,7 @@
             gap: 12px;
 
             .call-button {
+               height: 50px;
                border-color: $green-dark-new;
                background-color: $green-dark-new;
 
@@ -804,7 +805,13 @@
                }
             }
 
+            .call-button-multiple {
+               height: 50px;
+               gap: 3px;
+            }
+
             .chat-button {
+               height: 50px;
                color: $white;
                border: none;
                background-color: #2970FF29;
@@ -820,7 +827,7 @@
 
             .favorite-btn {
                width: 56px;
-               height: 56px;
+               height: 50px;
                gap: 0;
                border-color: $dark-light-new;
                background-color: $dark-light-new;
@@ -838,7 +845,7 @@
 
             .compare-btn {
                width: 56px;
-               height: 56px;
+               height: 50px;
                padding: 0 15px;
                border-color: $dark-light-new;
                background-color: $dark-light-new;
