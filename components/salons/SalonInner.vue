@@ -67,7 +67,8 @@
                </div>
 
                <div class="salon-inner__details-time">
-                  <icon name="time"/>
+<!--                  <icon name="time"/>-->
+                  <inline-svg src="/icons/clock_new.svg" />
 
                   <span class="working-time"
                         v-if="salonSingle.working_days && salonSingle.working_hours"
@@ -79,8 +80,9 @@
                </div>
 
                <div class="salon-inner__details-tels justify-content-between" v-if="salonSingle.phones && salonSingle.phones.length">
-                  <div class="divider d-flex">
-                     <icon name="phone-call"/>
+                  <div class="divider d-flex align-items-center">
+<!--                     <icon name="phone-call"/>-->
+                     <inline-svg src="/icons/phone-2.svg" />
 
                      <ul>
                         <li v-if="salonSingle?.short_number">
@@ -145,11 +147,6 @@
          :media="[salonSingle.gallery_urls, salonSingle.gallery_thumbs]"
          :show-slider="false"
       />
-
-      <HandleIds
-         :items="handleIdsOptions"
-         :watchIds="false"
-      />
    </div>
 </template>
 
@@ -211,16 +208,7 @@
             return this.routeName.includes('parts')
          },
 
-         handleIdsOptions() {
-            let ids = [];
 
-            ids.push({
-               type: 'commercial',
-               ids: [...this.autosalonAnnouncementsId?.data?.map(item => item.id)]
-            });
-
-            return ids;
-         }
       },
 
       methods: {
@@ -354,6 +342,18 @@
             background-color: #EEF2F6;
             border-radius: 12px;
 
+            svg {
+               path {
+                  &:first-child {
+                     fill: #4B5565;
+                  }
+
+                  &:last-child {
+                     fill: #FFFFFF;
+                  }
+               }
+            }
+
             span {
                margin-left: 14px;
                font-size: 15px;
@@ -391,10 +391,8 @@
                }
             }
 
-            .icon-phone-call {
-               align-items: center;
-               font-size: 24px;
-               margin-right: 16px;
+            .svg {
+               min-width: 24px;
             }
          }
 

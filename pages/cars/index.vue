@@ -2,41 +2,55 @@
    <div class="pages-cars-index">
       <div class="container">
          <div class="filters-container mb-5">
-            <div class="filters-container__head d-flex align-items-center justify-content-between flex-column mb-5">
-               <form-buttons
-                  class="announce_types"
-                  :options="getMileageOptions"
-                  :group-by="3"
-                  :btnClass="'blue-new-3'"
-                  v-model="announceType"
+            <template v-if="isMobileBreakpoint && !advancedSearch">
+               <FiltersMobile @onClick="onClick" :selectedItems="getCarDetails" />
+            </template>
+
+            <template v-else>
+               <div class="filters-container__top" v-if="isMobileBreakpoint">
+                  <inline-svg src="/icons/back.svg" @click="advancedSearch = false" />
+
+                  <h4>{{ $t('advanced_search') }}</h4>
+
+                  <button class="btn" @click="resetForm(true)">{{ $t('clear_search') }}</button>
+               </div>
+
+               <div class="filters-container__head d-flex align-items-center justify-content-between flex-column mb-5">
+                  <form-buttons
+                     class="announce_types"
+                     :options="getMileageOptions"
+                     :group-by="3"
+                     :btnClass="'blue-new-3'"
+                     v-model="announceType"
+                  />
+
+                  <form-buttons
+                     class="no-bg"
+                     :options="getSearchTabs"
+                     :group-by="2"
+                     :btnClass="'blue-new'"
+                     v-model="searchType"
+                  />
+               </div>
+
+               <car-search-form
+                  v-if="searchType === 1"
+                  :only-saved-search="!!$route.query.saved || false"
+                  :pending="pending"
+                  :sorting="sorting"
+                  :announceType="announceType"
+                  @pending="pending = true"
+                  @submit="searchCars"
                />
 
-               <form-buttons
-                  class="no-bg"
-                  :options="getSearchTabs"
-                  :group-by="2"
-                  :btnClass="'blue-new'"
-                  v-model="searchType"
+               <moto-search-form
+                  v-else
+                  :pending="pending"
+                  @pending="pending = true"
+                  :announceType="announceType"
+                  :category="{}"
                />
-            </div>
-
-            <car-search-form
-               v-if="searchType === 1"
-               :only-saved-search="!!$route.query.saved || false"
-               :pending="pending"
-               :sorting="sorting"
-               :announceType="announceType"
-               @pending="pending = true"
-               @submit="searchCars"
-            />
-
-            <moto-search-form
-               v-else
-               :pending="pending"
-               @pending="pending = true"
-               :announceType="announceType"
-               :category="{}"
-            />
+            </template>
          </div>
 
          <breadcrumbs :crumbs="crumbs" />
@@ -117,6 +131,7 @@
    import brand from "../../components/moderator/brand.vue";
    import HandleIds from "~/components/announcements/HandleIds.vue";
    import Cap from "~/components/elements/Cap.vue";
+   import FiltersMobile from "~/components/elements/FiltersMobile.vue";
 
    export default {
       name: 'pages-cars-index',
@@ -131,7 +146,8 @@
          Grid,
          NoResults,
          HandleIds,
-         Cap
+         Cap,
+         FiltersMobile
       },
 
       nuxtI18n: {
@@ -152,6 +168,7 @@
 
       data() {
          return {
+            advancedSearch: false,
             announceType: 0,
             searchType: 1,
             sorting: { key: 'created_at', value: 'desc', name: this.$t('show_by_date') },
@@ -264,7 +281,13 @@
       methods: {
          ...mapActions(['getGridSearch']),
 
+         onClick(id) {
+            // if (id === 1) this.showFillters = true;
+            if (id === 2) this.advancedSearch = true;
+         },
+
          async searchCars(page = 1, with_panorama = false) {
+            this.advancedSearch = false;
             page = this.$route.query.page || 1;
             let post = JSON.parse(this.$route.query.car_filter || '{}');
 
@@ -309,8 +332,8 @@
 
          getCarDetails() {
             let carInfo;
-
             if (this.$route?.query?.car_filter) carInfo = JSON.parse(this.$route?.query?.car_filter);
+            console.log('carInfo', carInfo)
 
             if (!carInfo?.additional_brands[1]?.brand) {
                for (let i = 0; i < this.brandsList?.length; i++) {

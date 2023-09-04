@@ -242,13 +242,13 @@
                },
                {
                   key: 'delivery',
-                  value: this.announcement.have_delivery ? this.$t('yes') : this.$t('no'),
+                  value: this.announcement.has_delivery ? this.$t('yes') : this.$t('no'),
                   icon: '/icons/delivery.svg',
                   for: ['parts']
                },
                {
                   key: 'have_warranty',
-                  value: this.announcement.have_warranty ? this.$t('yes') : this.$t('no'),
+                  value: this.announcement.has_warranty ? this.$t('yes') : this.$t('no'),
                   icon: '/icons/guaranty.svg',
                   for: ['parts']
                },

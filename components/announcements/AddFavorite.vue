@@ -5,7 +5,6 @@
       :class="{'btn-favorite-active': isAdded, 'white-border' : whiteBorder}"
       @click.stop="handleClick()"
    >
-<!--      {{announcement.id}}-->
    </button>
 
    <div
@@ -14,7 +13,7 @@
       :class="[`btn--${btnClass}`]"
       @click.stop="handleClick()"
    >
-      <span>{{ text }}</span>
+      <span v-if="text">{{ text }}</span>
 
       <button
          v-if="template === 'btn'"

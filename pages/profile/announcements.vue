@@ -32,7 +32,7 @@
                  class="ma-announcements__body--row" @mousedown.prevent="startDragging" @mouseup.prevent="mouseUp">
                <!--                                loading-->
                <div v-if="loading">
-                  <loader/>
+                  <loader class="profile-announcements-loader"/>
                </div>
                <div v-else-if="!loading && myAnnouncements && myAnnouncements.length"
                     class="ma-announcements__body--row__inner">
@@ -42,16 +42,16 @@
                      >
                         <grid-item
                            :key="announcement.id_unique +  '_' + index"
+                           :activeTab="activeTab"
                            :announcement="announcement"
-                           :isLastChild="index === myAnnouncements.length - 1"
                            :clickable="!isDragging"
+                           :isLastChild="index === myAnnouncements.length - 1"
                            isProfilePage
                            show-monetization-actions
                            show-overlay
                            show-phone-count
                            show-status
                            track-views
-                           :activeTab="activeTab"
                         />
                      </div>
                   </template>
@@ -72,7 +72,7 @@
             <div id="platesContainer" :class="{'overflow-x-hidden': !allMyPlates.length}"
                  class="ma-announcements__body--row" @mousedown.prevent="startDragging" @mouseup.prevent="mouseUp">
                <div v-if="loading" style="height: 420px !important;width:100%; display: flex;justify-content: center;">
-                  <loader/>
+                  <loader class="profile-announcements-loader"/>
                </div>
                <div v-else-if="allMyPlates.length" class="ma-announcements__body--row__inner">
                   <template v-for="(item,index) in allMyPlates">
@@ -82,12 +82,12 @@
                      >
                         <plates-grid-item
                            :key="index"
+                           :activeTab="activeTab"
+                           :clickable="!isDragging"
                            :isLastChild="index === allMyPlates.length - 1"
                            :item="item"
                            is-profile-page
                            moreInfo
-                           :clickable="!isDragging"
-                           :activeTab="activeTab"
                         />
                      </div>
                   </template>
@@ -273,7 +273,7 @@ export default {
       },
       getStatistics() {
          this.$store.dispatch('getAutosalonStatistics',this.user.autosalon.id)
-         // console.log("this.user.autosalon",this.user.autosalon)
+         console.log("this.user.autosalon",this.user.autosalon)
       }
 
    },
@@ -532,6 +532,15 @@ export default {
    .stratch-child-block {
       height: 100% !important;
       min-height: auto !important;
+   }
+}
+
+@media(min-width: 991px) {
+
+   .profile-announcements-loader {
+      .loader {
+         margin-left: 50px;
+      }
    }
 }
 </style>

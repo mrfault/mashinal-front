@@ -46,8 +46,6 @@
                      </svg>
 
                      <form-select
-                        :label="$t('region_2')"
-                        :input-placeholder="$t('region_search')"
                         :options="getRegionNumbers"
                         :clear-placeholder="true"
                         :clear-option="false"
@@ -57,25 +55,21 @@
                      />
 
                      <form-select
-                        :label="'A'"
                         :options="numbers"
                         :clear-placeholder="true"
                         :clear-option="false"
                         :new-label="false"
                         :searchInputLength="1"
-                        :inputSearchType="'text'"
                         v-model="form.serial_letter1"
                         has-search
                      />
 
                      <form-select
-                        :label="'A'"
                         :options="numbers"
                         :clear-placeholder="true"
                         :clear-option="false"
                         :new-label="false"
                         :searchInputLength="1"
-                        :inputSearchType="'text'"
                         v-model="form.serial_letter2"
                         has-search
                      />
@@ -99,7 +93,7 @@
                   <template #head>
                      <Cap :className="'mb40'">
                         <template #left>
-                           <h3>{{ $t('search_result') }}</h3>
+                           <h3>{{ $t('announcements') }}</h3>
                         </template>
 
                         <template #right>
@@ -444,6 +438,12 @@
             .form-group {
                width: 72px;
 
+               .text-input {
+                  input {
+                     padding: 0 12px;
+                  }
+               }
+
                &:first-of-type {
                   width: 160px;
                }
@@ -535,7 +535,7 @@
             height: 100px;
             background: unset;
             background-color: #FFFFFF;
-            border: 4px solid #121926;
+            border: 2px solid #121926;
          }
       }
 

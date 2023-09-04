@@ -7,9 +7,11 @@
 
                <div class="product-inner__info">
                   <div class="product-inner__info-left">
-                     <gallery>
-                        <quick-info type="moto" brief/>
-                     </gallery>
+                     <client-only>
+                        <gallery type="moto">
+                           <quick-info type="moto" brief/>
+                        </gallery>
+                     </client-only>
 
                      <thumbs-gallery />
 
@@ -36,7 +38,7 @@
                         </li>
                      </ul>
 
-                     <announcement-specs type="moto" :title="$t('vehicle_info')" brief/>
+                     <announcement-specs type="moto" :title="$t('announcement_info')" brief/>
 
                      <comment :comment="announcement.comment" v-if="announcement.comment">
                         <template #before>
