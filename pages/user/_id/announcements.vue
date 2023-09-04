@@ -57,7 +57,7 @@
 
                <no-results
                   v-if="!getUserRegistrationMarks.data.length"
-                  :text="$t('no_favorites')"
+                  :text="$t('no_plates')"
                   :template="'new'"
                   :url="'/images/empty_result_favorites.svg'"
                >

@@ -209,7 +209,8 @@
          width: 100%;
          width: calc(100% + 1px);
          max-width: 540px;
-         bottom: 0px;
+         height: 650px;
+         bottom: 0;
          top: auto;
          transform: translate(-50%, 0px);
          border-radius: 4px 4px 0 0;
@@ -233,6 +234,14 @@
    .dark-mode {
       .pages-login {
          background: linear-gradient(180deg, $dark-3 379px, $dark-2 50%);
+      }
+   }
+}
+
+@media (max-width: 600px) {
+   .login-forms {
+      &--popup {
+         height: 100%;
       }
    }
 }

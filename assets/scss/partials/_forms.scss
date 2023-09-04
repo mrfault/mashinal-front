@@ -869,6 +869,56 @@ input::-webkit-inner-spin-button {
                   max-width: 87px;
                }
             }
+
+            &.price {
+               background-color: transparent;
+
+               h3 {
+                  width: 100%;
+                  color: #121926;
+                  font-size: 20px;
+                  font-weight: 600;
+                  line-height: 24px;
+                  margin-bottom: 20px;
+                  text-align: left;
+               }
+
+               .form-merged__inputs {
+                  width: 100%;
+                  border: 1px solid #CDD5DF;
+
+                  .form-group {
+                     &:first-child {
+                        position: relative;
+                        border-right: unset;
+                        &:after {
+                           content: '';
+                           position: absolute;
+                           top: 50%;
+                           right: 0;
+                           transform: translateY(-50%);
+                           width: 1px;
+                           height: 50%;
+                           background-color: #CDD5DF;
+                        }
+                     }
+                  }
+
+                  input {
+                     background-color: transparent;
+                  }
+               }
+
+               .form-buttons {
+                  margin-bottom: 16px;
+
+                  .form-group {
+                     .btn {
+                        height: 42px;
+                     }
+                  }
+               }
+            }
          }
 
          .select-menu_dropdown-option {
