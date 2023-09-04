@@ -147,7 +147,6 @@
          }
       },
       async mounted() {
-         console.log("process.env.API_SECRET", this.$env().API_SECRET)
          if (this.$auth.loggedIn) {
             await Promise.all([
                this.$store.dispatch("getNotifications"),
