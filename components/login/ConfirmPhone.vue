@@ -17,12 +17,12 @@
          />
          <separated-input v-if="isMobileBreakpoint" v-model="form.code"/>
 
-<!--         <p-->
-<!--            v-if="!form.staticPhone && isNewUser"-->
-<!--            style="color: #92959a; margin-top: -12px;"-->
-<!--         >-->
-<!--            {{ $t('filled_in_at_will') }}-->
-<!--         </p>-->
+         <!--         <p-->
+         <!--            v-if="!form.staticPhone && isNewUser"-->
+         <!--            style="color: #92959a; margin-top: -12px;"-->
+         <!--         >-->
+         <!--            {{ $t('filled_in_at_will') }}-->
+         <!--         </p>-->
          <form-text-input
             v-if="!isMobileBreakpoint"
             v-model="form.code"
@@ -103,11 +103,11 @@ export default {
             })
             .then((res) => {
                this.codeSent = true
-               setTimeout(()=>{
+               setTimeout(() => {
                   this.codeSent = false;
                   this.showResend = true;
                   this.resendSmsAfterSecond = 30;
-               },1000)
+               }, 1000)
             })
       },
       submit() {
@@ -146,6 +146,12 @@ export default {
                //   }
                //   // this.$router.push("ehtiyat-hisseleri/magazalar")
                // }
+               setTimeout(()=>{
+                  if (this.$route.name == 'cars-announcement-id___az' || this.$route.name == 'cars-announcement-id___ru') {
+                     this.$toasted.error(this.$t('this_announcement_belongs_to_another_user'))
+                  }
+               },1500)
+
             })
             .catch((err) => {
                this.pending = false;
@@ -157,7 +163,7 @@ export default {
 </script>
 
 <style>
-.resend_code_button{
+.resend_code_button {
    text-decoration: underline !important;
    color: #0a77e8 !important;
    cursor: pointer !important;
