@@ -141,7 +141,8 @@
             store.dispatch('getComplaintOptions'),
             store.dispatch('getOptions'),
             store.dispatch('getAllOtherOptions'),
-            store.dispatch('getPopularOptions')
+            store.dispatch('getPopularOptions'),
+            store.dispatch('getSettingsV2')
          ]);
       },
       methods: {

@@ -7,7 +7,7 @@
       <modal-popup
          :modal-class="'wider'"
          :toggle="showModal"
-         :title="$t('restore_popup_alert', {count: amount})"
+         :title="$t('restore_popup_alert', {count: settingsV2.settings.restore_price})"
          @close="showModal = false"
       >
 
@@ -22,13 +22,13 @@
 import {PaymentMixin} from '~/mixins/payment';
 import FeedbackModal from "~/components/sell/FeedbackModal.vue";
 import MonetizationAlertModal from "~/components/sell/MonetizationAlertModal.vue";
+import {mapGetters} from "vuex";
 
 export default {
    components: {MonetizationAlertModal, FeedbackModal},
    props: {
       free: Boolean,
       announcement: {},
-      amount: '',
       className: {
          default: 'dark-blue-outline'
       }
@@ -39,6 +39,9 @@ export default {
          showModal: false,
          pending: false
       }
+   },
+   computed: {
+      ...mapGetters(['settingsV2'])
    },
    methods: {
       async restoreAnnouncement() {
