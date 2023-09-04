@@ -107,7 +107,7 @@ export default {
       },
       toggleSidebarMenu(show) {
          this.showSidebar = show;
-         this.setBodyOverflow(show ? 'hidden' : 'scroll');
+         //this.setBodyOverflow(show ? 'hidden' : 'scroll');
       },
       handleIconClick(path, event) {
          if (path) {
