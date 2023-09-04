@@ -9,11 +9,11 @@
    >
       <template v-if="!showPhone">
          <template v-if="callAtOnce">
-            <template v-if="!isMobileBreakpoint">
+<!--            <template v-if="!isMobileBreakpoint">-->
                <span v-mask="$maskPhone(true)" v-for="phone in phones">+{{ phone }}</span>
-            </template>
+<!--            </template>-->
 
-            <span v-else>{{ $t('make_a_call') }}</span>
+<!--            <span v-else>{{ $t('make_a_call') }}</span>-->
          </template>
 
          <template v-else>
@@ -26,7 +26,9 @@
       <template v-else>
          <template v-if="callAtOnce">
 <!--            <template v-for="phone in phones" v-if="!isMobileBreakpoint">-->
-               <a class="call-a" :href="`tel:${ringostat_number}`">{{ String(ringostat_number_mask).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') }}</a>
+               <a class="call-a pending" :href="`tel:${ringostat_number}`">
+                  {{formatPhoneNumber(ringostat_number)}}
+               </a>
 <!--            {{ ringostat_number }}-->
 <!--            </template>-->
 
@@ -56,7 +58,7 @@
 
       computed: {
          callAtOnce() {
-            return this.showPhone || this.isMobileBreakpoint;
+            return this.showPhone;
          },
 
          id() {
@@ -65,6 +67,10 @@
       },
 
       methods: {
+         formatPhoneNumber(phoneNumber) {
+            phoneNumber = phoneNumber.replace(/\D/g, '');
+            return `+${phoneNumber.slice(0, 3)} (${phoneNumber.slice(3, 5)}) ${phoneNumber.slice(5, 8)}-${phoneNumber.slice(8, 10)}-${phoneNumber.slice(10)}`;
+         },
          // handleClick() {
          //    if (this.callAtOnce) {
          //       window.location.href = `tel:+${this.phone}`;
