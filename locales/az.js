@@ -2889,5 +2889,6 @@ export default {
 
    "Aktiv elan sayı 3-dən çox ola bilməz": "Aktiv elan sayı 3-dən çox ola bilməz",
    "terms_and_rule": "Qaydalar və şərtlər",
+   "this_announcement_belongs_to_another_user": "Bu elan başqa istifadəçiyə aiddir",
 };
 

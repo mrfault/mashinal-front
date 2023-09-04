@@ -2505,7 +2505,7 @@ export default {
    auction: "Аукцион",
    sell: "Продажа",
    end_date: "Дата окончания",
-   announcement_info: "Информация об объявлении",
+   announcement_info: "Информация объявления",
    announcement_end_date: "Дата окончания объявления",
    country: "Страна",
    dont_drink_so_much: "Не пей так много",
@@ -2839,4 +2839,5 @@ export default {
 
    "Aktiv elan sayı 3-dən çox ola bilməz": "Aktiv elan sayı 3-dən çox ola bilməz ru",
    "terms_and_rule": "Условия и положения",
+   "this_announcement_belongs_to_another_user": "Это объявление принадлежит другому пользователю",
 };
