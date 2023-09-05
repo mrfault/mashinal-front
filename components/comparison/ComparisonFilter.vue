@@ -55,7 +55,7 @@
                   key: 'announcements'
                },
                {
-                  name: this.$t('comparison_models'),
+                  name: this.$t('autocatalog'),
                   key: 'models'
                },
             ]

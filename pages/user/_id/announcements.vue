@@ -15,16 +15,16 @@
                </ul>
             </div>
 
-            <form-select
-               class="d-none d-md-block"
-               :label="$t('sorting_2')"
-               :options="sortItems"
-               :clearPlaceholder="true"
-               :clear-option="false"
-               :allowClear="false"
-               :objectInValue="true"
-               v-model="sorting"
-            />
+<!--            <form-select-->
+<!--               class="d-none d-md-block"-->
+<!--               :label="$t('sorting_2')"-->
+<!--               :options="sortItems"-->
+<!--               :clearPlaceholder="true"-->
+<!--               :clear-option="false"-->
+<!--               :allowClear="false"-->
+<!--               :objectInValue="true"-->
+<!--               v-model="sorting"-->
+<!--            />-->
          </div>
 
          <div class="tabContent">
@@ -57,7 +57,7 @@
 
                <no-results
                   v-if="!getUserRegistrationMarks.data.length"
-                  :text="$t('no_favorites')"
+                  :text="$t('no_plates')"
                   :template="'new'"
                   :url="'/images/empty_result_favorites.svg'"
                >

@@ -1315,7 +1315,7 @@ export const actions = {
    },
    async getMyAllAnnouncementsV2({commit}, data = {}) {
       const res = await this.$axios.$get(
-         `${this.$env().API_SECRET}/me/announcements?status=${data.status}`
+         `${this.$env().API_SECRET}/me/announcements?status=${data.status}&sorting=${data.sorting}`
       );
       commit("mutate", {property: "myAnnouncementsV2", value: res});
    },
