@@ -46,8 +46,6 @@
                      </svg>
 
                      <form-select
-                        :label="$t('region_2')"
-                        :input-placeholder="$t('region_search')"
                         :options="getRegionNumbers"
                         :clear-placeholder="true"
                         :clear-option="false"
@@ -57,25 +55,21 @@
                      />
 
                      <form-select
-                        :label="'A'"
                         :options="numbers"
                         :clear-placeholder="true"
                         :clear-option="false"
                         :new-label="false"
                         :searchInputLength="1"
-                        :inputSearchType="'text'"
                         v-model="form.serial_letter1"
                         has-search
                      />
 
                      <form-select
-                        :label="'A'"
                         :options="numbers"
                         :clear-placeholder="true"
                         :clear-option="false"
                         :new-label="false"
                         :searchInputLength="1"
-                        :inputSearchType="'text'"
                         v-model="form.serial_letter2"
                         has-search
                      />
@@ -418,7 +412,7 @@
          align-items: center;
          justify-content: center;
          width: 100%;
-         height: 116px;
+         height: 105px;
          border-radius: 12px;
          margin-top: 32px;
          background: url("/images/plates_filters_bg.png") center center / cover no-repeat;
@@ -443,6 +437,19 @@
 
             .form-group {
                width: 72px;
+
+               .select-menu {
+                  &_label {
+                     height: 44px;
+                  }
+               }
+
+               .text-input {
+                  input {
+                     height: 44px;
+                     padding: 0 12px;
+                  }
+               }
 
                &:first-of-type {
                   width: 160px;
@@ -479,7 +486,6 @@
 
    .dark-mode {
       .registrationMarks {
-
          &__filters {
             &-item {
                background-color: #121926;
@@ -535,7 +541,7 @@
             height: 100px;
             background: unset;
             background-color: #FFFFFF;
-            border: 4px solid #121926;
+            border: 2px solid #121926;
          }
       }
 
@@ -612,6 +618,10 @@
 
             .container {
                padding: 12px !important;
+            }
+
+            .registrationMarksGrid {
+               margin-top: 30px;
             }
          }
       }

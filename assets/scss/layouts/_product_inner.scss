@@ -70,6 +70,17 @@
 
 .dark-mode {
    .product-inner {
+      &__info {
+         .characteristics {
+            &__item {
+               background-color: #1B2434;
+
+               span {
+                  color: #9AA4B2;
+               }
+            }
+         }
+      }
       .bg-white {
          background-color: transparent;
       }

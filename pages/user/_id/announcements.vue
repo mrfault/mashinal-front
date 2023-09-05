@@ -15,16 +15,16 @@
                </ul>
             </div>
 
-            <form-select
-               class="d-none d-md-block"
-               :label="$t('sorting_2')"
-               :options="sortItems"
-               :clearPlaceholder="true"
-               :clear-option="false"
-               :allowClear="false"
-               :objectInValue="true"
-               v-model="sorting"
-            />
+<!--            <form-select-->
+<!--               class="d-none d-md-block"-->
+<!--               :label="$t('sorting_2')"-->
+<!--               :options="sortItems"-->
+<!--               :clearPlaceholder="true"-->
+<!--               :clear-option="false"-->
+<!--               :allowClear="false"-->
+<!--               :objectInValue="true"-->
+<!--               v-model="sorting"-->
+<!--            />-->
          </div>
 
          <div class="tabContent">
@@ -57,7 +57,7 @@
 
                <no-results
                   v-if="!getUserRegistrationMarks.data.length"
-                  :text="$t('no_favorites')"
+                  :text="$t('no_plates')"
                   :template="'new'"
                   :url="'/images/empty_result_favorites.svg'"
                >
@@ -117,8 +117,8 @@
               { key: 'created_at', value: 'desc', name: this.$t('show_by_date') },
               { key: 'price_asc', value: 'asc', name: this.$t('show_cheap_first') },
               { key: 'price_desc', value: 'desc', name: this.$t('show_expensive_first') },
-              { key: 'mileage', value: 'asc', name: this.$t('mileage') },
-              { key: 'year', value: 'desc', name: this.$t('years') }
+              // { key: 'mileage', value: 'asc', name: this.$t('mileage') },
+              // { key: 'year', value: 'desc', name: this.$t('years') }
            ]
         }
       },
@@ -159,7 +159,7 @@
    }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
    .pages-user-announcements {
       padding: 40px 0;
 
@@ -178,6 +178,14 @@
 
          .form-group {
             max-width: 200px;
+         }
+      }
+
+      .registrationMarksGrid {
+         margin-top: 0;
+
+         &__items {
+            margin-top: 0;
          }
       }
    }

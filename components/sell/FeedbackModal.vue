@@ -78,7 +78,7 @@ export default {
          this.pending = true;
          try {
             await this.$axios
-               .$post('https://v2dev.mashin.al/api/v2/common/mail/inform-us', this.form)
+               .$post(this.$env().API_SECRET + '/common/mail/inform-us', this.form)
             this.$v.form.$reset()
             this.$toasted.success(this.$t('request_success_message'))
             this.$emit("close")

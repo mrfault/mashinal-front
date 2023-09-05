@@ -14,6 +14,8 @@
             :maxlength="30"
             :placeholder="$t('your_name')"
             auto-focus
+            :class="{form_error: authError.includes('name')}"
+            :invalid=" authError.includes('name')"
          />
          <separated-input v-if="isMobileBreakpoint" v-model="form.code"/>
 
@@ -26,7 +28,8 @@
          <form-text-input
             v-if="!isMobileBreakpoint"
             v-model="form.code"
-            :invalid="validator.code.$error"
+            :class="{form_error: authError.includes('code')}"
+            :invalid="validator.code.$error || authError.includes('code')"
             :mask="'99999'"
             :placeholder="$t('enter_the_code')"
             auto-focus
@@ -83,6 +86,7 @@ export default {
    },
    data() {
       return {
+         authError: [],
          pending: false,
          showResend: this.resendData.showResend || true,
          resendSmsAfterSecond: this.resendData.resendSmsAfterSecond || 30,
@@ -91,7 +95,7 @@ export default {
       }
    },
    computed: {
-      ...mapGetters(['editPath', 'editingPostAuthor']),
+      ...mapGetters(['editPath', 'editingPostAuthor', 'settingsV2']),
    },
    methods: {
       ...mapActions('letterOfAttorney', ['updateStep']),
@@ -111,6 +115,7 @@ export default {
             })
       },
       submit() {
+         this.authError = []
          this.validator.$touch()
          if (this.pending || this.validator.$pending || this.validator.$error)
             return
@@ -122,7 +127,7 @@ export default {
          }
          if (!this.form.name) delete form.name
          this.$axios
-            .$post('/confirm/phone', form)
+            .$post(this.$env().API_SECRET + '/auth/confirm-otp', form)
             .then(async (data) => {
                // track conversion
                this.fbTrack('Complete Registration Api')
@@ -155,7 +160,12 @@ export default {
             })
             .catch((err) => {
                this.pending = false;
-               this.$toasted.error(err.response.data.message)
+               const errors = []
+               for (const key in err.response.data?.data) {
+                  errors.push(key)
+               }
+               this.authError = errors
+               // this.$toasted.error(err.response.data.message)
             })
       },
    },

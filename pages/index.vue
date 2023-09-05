@@ -222,9 +222,6 @@
 
       data() {
          return {
-            form: {
-               additional_brands: {0: {}, 1: {}, 2: {}, 3: {}, 4: {}}
-            },
             advancedSearch: false,
             announceType: 0,
             searchType: 1,

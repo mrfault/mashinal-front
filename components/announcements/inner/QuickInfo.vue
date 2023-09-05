@@ -66,7 +66,7 @@
                <address v-if="announcement.status !== 3 && getAddress">{{ getAddress }}</address>
 
                <p class="text-red" v-else-if="announcement.status === 3">{{ $t('sold') }}</p>
-
+<!--               <pre>{{announcement?.is_external_salon}}</pre>-->
                <nuxt-link
                   :to="contact?.link"
                   v-if="
@@ -260,16 +260,19 @@
             :announcement="announcement"
             v-if="showDeactivateButton(announcement)"
          />
+
+         <restore-button
+            :announcement="announcement"
+            v-if="userIsOwner(announcement) && announcement.status === 3"
+            :free="true"
+         />
+<!--         v-if="userIsOwner(announcement) && announcement.status === 3 && !announcement.is_external_salon"-->
       </div>
 
 <!--      <template v-if="!brief && announcement.status != 2 && !(announcement.is_auto_salon && announcement.status == 3)">-->
 <!--         <div class="row mt-n2 mt-lg-n3">-->
 <!--            <div class="col mt-2 mt-lg-3">-->
-<!--               <restore-button-->
-<!--                  :announcement="announcement"-->
-<!--                  v-if="userIsOwner(announcement) && announcement.status == 3 && !announcement.is_external_salon"-->
-<!--                  :free="true"-->
-<!--               />-->
+
 <!--               -->
 
 <!--            </div>-->
@@ -625,8 +628,13 @@
             border: 1px solid #CDD5DF;
 
             li {
+               justify-content: center;
                position: relative;
                white-space: nowrap;
+
+               &:not(:first-child) {
+                  margin-left: 0;
+               }
 
                &:not(:last-child) {
                   margin-left: 0;

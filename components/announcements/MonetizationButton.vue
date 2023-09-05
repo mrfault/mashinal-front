@@ -73,7 +73,7 @@
                         :checked="paymentMethod === 'balance'"
                         name="payment_type"
                         type="radio"
-                        @change="paymentMethod = 'balance'"
+                        @change="paymentMethod = 'balance'; paymentType = 1"
                      >
                      <span class="checkmark"></span>
                   </label>

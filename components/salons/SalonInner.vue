@@ -67,7 +67,8 @@
                </div>
 
                <div class="salon-inner__details-time">
-                  <icon name="time"/>
+<!--                  <icon name="time"/>-->
+                  <inline-svg src="/icons/clock_new.svg" />
 
                   <span class="working-time"
                         v-if="salonSingle.working_days && salonSingle.working_hours"
@@ -79,8 +80,9 @@
                </div>
 
                <div class="salon-inner__details-tels justify-content-between" v-if="salonSingle.phones && salonSingle.phones.length">
-                  <div class="divider d-flex">
-                     <icon name="phone-call"/>
+                  <div class="divider d-flex align-items-center">
+<!--                     <icon name="phone-call"/>-->
+                     <inline-svg src="/icons/phone-2.svg" />
 
                      <ul>
                         <li v-if="salonSingle?.short_number">
@@ -214,15 +216,15 @@
 
          async changePage(page = 1) {
             // console.log('page', page)
-            // page = this.$route.query.page || 1;
-            // this.pending = true
+            page = this.$route.query.page || 1;
+            this.pending = true
             // await this.getSalonById({
             //    slug: this.$route.params.id,
             //    page: page || 1
             // })
-            // await this.$store.dispatch('fetchAutosalonAnnouncementsId', {id: this.$store.getters.salonSingle.id, page: page});
-            // this.pending = false;
-            // this.scrollTo('.cap', [-80, -190])
+            await this.$store.dispatch('fetchAutosalonAnnouncementsId', {id: this.$store.getters.salonSingle.id, page: page});
+            this.pending = false;
+            this.scrollTo('.cap', [-80, -190])
          },
 
          scrollFunc() {
@@ -340,6 +342,18 @@
             background-color: #EEF2F6;
             border-radius: 12px;
 
+            svg {
+               path {
+                  &:first-child {
+                     fill: #4B5565;
+                  }
+
+                  &:last-child {
+                     fill: #FFFFFF;
+                  }
+               }
+            }
+
             span {
                margin-left: 14px;
                font-size: 15px;
@@ -377,10 +391,14 @@
                }
             }
 
-            .icon-phone-call {
-               align-items: center;
-               font-size: 24px;
+            svg {
+               min-width: 24px;
+               min-height: 24px;
                margin-right: 16px;
+
+               path {
+                  fill: #4B5565;
+               }
             }
          }
 
@@ -428,6 +446,15 @@
 
    .dark-mode {
       .salon-inner {
+         &__details {
+            &-tels {
+               svg {
+                  path {
+                     fill: #CDD5DF;
+                  }
+               }
+            }
+         }
          table {
             border: none;
             background-color: unset;
