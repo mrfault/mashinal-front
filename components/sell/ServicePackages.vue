@@ -71,7 +71,7 @@
             <li v-for="info in statistics_data.find(s => s.id === add_monetization).info">
                <p class="title">{{ info.name }}</p>
                <div class="dashed"></div>
-               <p class="price">{{ info.price === 0 ? 'Ödənişsiz' : `${info.price} AZN` }}</p>
+               <p class="price">{{ info.price === 0 ? $t('price_free') : `${info.price} AZN` }}</p>
             </li>
             <li class="total" v-if="statistics_data.find(s => s.id === add_monetization).info.some(s => s.price > 0)">
                <p>{{ $t("total") }}</p>
@@ -125,17 +125,17 @@ export default {
                info: [
                   {
                      id: 1,
-                     name: "Elanınız 30 gün müddətinə dərc edilir",
+                     name: this.$t('service_package_desc_1'),
                      price: 0
                   },
                   {
                      id: 2,
-                     name: "Hər gün ön sıralarda yerləşdirilmə",
+                     name: this.$t('service_package_desc_2'),
                      price: 0
                   },
                   {
                      id: 3,
-                     name: "Turbo satış 10 gün ərzində",
+                     name: this.$t('service_package_desc_3'),
                      price: this.data.price
                   }
                ],
@@ -162,7 +162,7 @@ export default {
                info: [
                   {
                      id: 1,
-                     name: "Elanınız 30 gün müddətinə dərc edilir",
+                     name: this.$t('service_package_desc_1'),
                      price: 0
                   }
                ]
@@ -383,6 +383,7 @@ export default {
             width: 100%;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
             gap: 10px;
 
             p {
