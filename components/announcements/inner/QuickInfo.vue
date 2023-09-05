@@ -66,15 +66,15 @@
                <address v-if="announcement.status !== 3 && getAddress">{{ getAddress }}</address>
 
                <p class="text-red" v-else-if="announcement.status === 3">{{ $t('sold') }}</p>
-<!--               <pre>{{announcement?.is_external_salon}}</pre>-->
+
                <nuxt-link
-                  :to="contact?.link"
                   v-if="
                      announcement?.active_announcements_count > 1 ||
                      announcement?.is_part_salon ||
                      announcement?.is_auto_salon ||
                      announcement?.is_external_salon
                   "
+                  :to="contact?.link"
                >
                   <span v-if="announcement?.is_part_salon">{{ $t('go_to_shop') }}</span>
 
@@ -83,11 +83,6 @@
                   </span>
 
                   <span v-else>{{ $t('other_announcements_of_user') }}</span>
-<!--                  <pre>{{announcement.is_auto_salon}} - {{ announcement.is_external_salon }}</pre>-->
-
-
-<!--                  <icon name="chevron-right" />-->
-                  <!-- <inline-svg src="/icons/chevron-right.svg" :height="14" /> -->
                </nuxt-link>
             </div>
          </div>
@@ -131,95 +126,10 @@
          </div>
       </div>
 
-<!--      <template v-if="isMobileBreakpoint">-->
-<!--         <div class="more-data d-flex">-->
-<!--            <span class="text-data">№ {{ announcement.id_unique }}</span>-->
-<!--            <span class="text-data">-->
-<!--             <icon name="eye"/>-->
-<!--             {{ announcement.view_count }}-->
-<!--             <icon name="cursor"/>-->
-<!--             {{ announcement.open_count || announcement.show_phone_number_count }}-->
-<!--             <icon name="star"/>-->
-<!--             {{ announcement.favorites_count }}-->
-<!--           </span>-->
-<!--            <span class="text-data">-->
-<!--          <icon name="calendar"/>-->
-<!--          {{ announcement.humanize_created_at }}-->
-<!--        </span>-->
-<!--         </div>-->
-<!--         <div class="status" v-if="announcement.status == 2">-->
-<!--            <template v-if="needToPay">-->
-<!--               {{ $t('need_pay') }}-->
-<!--            </template>-->
-<!--            <template v-else>-->
-<!--               {{ $t('announcement_pending') }}-->
-<!--            </template>-->
-<!--         </div>-->
-<!--         <div class="d-flex">-->
-<!--            <share-it type="publish" class="btns"/>-->
-
-<!--            <button-->
-<!--               class="btn btn&#45;&#45;dark-blue-2-outline full-width"-->
-<!--               @click.stop="copyToClipboard($route.path)"-->
-<!--            >-->
-<!--               <icon name="link"/>-->
-<!--               {{ $t('copy_to_clipboard') }}-->
-<!--            </button>-->
-<!--         </div>-->
-<!--      </template>-->
-
-<!--      <template v-if="(((announcement.status == 1 || announcement.has_monetization)) || needToPay)">-->
-<!--&lt;!&ndash;         <hr class="mt-3"&ndash;&gt;-->
-<!--&lt;!&ndash;             v-if="needToPay ||&ndash;&gt;-->
-<!--&lt;!&ndash;             (!this.isMobileBreakpoint && announcement.has_monetization && $auth.loggedIn) ||&ndash;&gt;-->
-<!--&lt;!&ndash;             (!this.isMobileBreakpoint && !announcement.has_monetization) && this.type !== 'registration-marks'"&ndash;&gt;-->
-<!--&lt;!&ndash;         />&ndash;&gt;-->
-
-<!--         <div :class="{'mb-2 mb-lg-3': !needToPay }" v-if="type !== 'plates'">-->
-<!--            <pay-announcement-button-->
-<!--               :announcement="announcement"-->
-<!--               v-if="needToPay"-->
-<!--            />-->
-
-<!--            <monetization-stats-button-->
-<!--               :announcement="announcement"-->
-<!--               v-else-if="!this.isMobileBreakpoint && announcement.has_monetization && $auth.loggedIn && $auth.user.id === announcement.user_id && !needToPay"-->
-<!--            />-->
-<!--         </div>-->
-<!--      </template>-->
-
-<!--      <div class="quick-info__item" v-if="brief">-->
-<!--         <monetization-button-->
-<!--            class="h-52"-->
-<!--            :announcement="announcement"-->
-<!--            @openModal="openModal"-->
-<!--         />-->
-
-<!--         <div class="btns">-->
-<!--            <add-favorite-->
-<!--               class="h-52"-->
-<!--               :template="'btn'"-->
-<!--               :text="$t('add_favorite')"-->
-<!--               :announcement="announcement"-->
-<!--            />-->
-
-<!--            <add-comparison-->
-<!--               v-if="type !== 'plates' && type !== 'parts'"-->
-<!--               class="h-52"-->
-<!--               :template="'btn'"-->
-<!--               :text="$t('compare')"-->
-<!--               :id="announcement.id_unique"-->
-<!--            />-->
-
-<!--            <edit-button-->
-<!--               :announcement="announcement"-->
-<!--               :type="type"-->
-<!--               :className="'white h-52'"-->
-<!--               v-if="showEditButton(announcement)"-->
-<!--               @openModal="openModal"-->
-<!--            />-->
-<!--         </div>-->
-<!--      </div>-->
+<!--      <ReasonForRejection-->
+<!--         class="mb-3"-->
+<!--         :options="announcement?.moderator?.reject_reason"-->
+<!--      />-->
 
       <div class="wrapp">
          <monetization-button
@@ -258,7 +168,7 @@
          <deactivate-button
             class="mt-3"
             :announcement="announcement"
-            v-if="showDeactivateButton(announcement)"
+            v-if="showDeactivateButton(announcement) && announcement.status === 1"
          />
 
          <restore-button
@@ -266,22 +176,7 @@
             v-if="userIsOwner(announcement) && announcement.status === 3"
             :free="true"
          />
-<!--         v-if="userIsOwner(announcement) && announcement.status === 3 && !announcement.is_external_salon"-->
       </div>
-
-<!--      <template v-if="!brief && announcement.status != 2 && !(announcement.is_auto_salon && announcement.status == 3)">-->
-<!--         <div class="row mt-n2 mt-lg-n3">-->
-<!--            <div class="col mt-2 mt-lg-3">-->
-
-<!--               -->
-
-<!--            </div>-->
-<!--            -->
-<!--            <div class="col mt-2 mt-lg-3">-->
-
-<!--            </div>-->
-<!--         </div>-->
-<!--      </template>-->
 
       <VinCode
          class="mt-4"
@@ -299,6 +194,7 @@
 </template>
 
 <script>
+   import ReasonForRejection from "~/components/announcements/ReasonForRejection.vue";
    import RestoreButton from '~/components/announcements/RestoreButton'
    import DeactivateButton from '~/components/announcements/DeactivateButton'
    import EditButton from '~/components/announcements/EditButton'
@@ -318,6 +214,7 @@
 
    export default {
       components: {
+         ReasonForRejection,
          CallButtonMultiple,
          RestoreButton,
          DeactivateButton,
@@ -337,7 +234,7 @@
 
       data() {
          return {
-            showModal: false,
+            showModal: false
          }
       },
 
@@ -401,7 +298,7 @@
       },
 
       created() {
-         this.$nuxt.$on('closeModal', () => this.closeModal())
+         this.$nuxt.$on('closeModal', () => this.closeModal());
       },
 
       props: {

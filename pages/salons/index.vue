@@ -64,7 +64,7 @@
                         >
                            <nuxt-link
                               class="keep-colors"
-                              :to="$localePath(`/salons/${salon.id}`)"
+                              :to="$localePath(`/salons/${salon.slug}`)"
                            >
                               <salon-card :salon="salon"/>
                            </nuxt-link>

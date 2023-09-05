@@ -11,7 +11,10 @@
             </template>
          </Banner>
 
-         <salon-filters-form :count="salonsFiltered.length" />
+         <salon-filters-form
+            v-if="nonOfficialSalons"
+            :count="salonsFiltered.length"
+         />
 
          <div
             class="mb-lg-0 mb-n2 mt-2 row salon-card-list"
@@ -24,14 +27,14 @@
             >
                <nuxt-link
                   class="keep-colors"
-                  :to="$localePath(`/external-salons/${salon.id}`)"
+                  :to="$localePath(`/external-salons/${salon.slug}`)"
                >
                   <salon-card :salon="salon"/>
                </nuxt-link>
             </div>
          </div>
 
-         <no-results v-else-if="!officialSalons.length"/>
+         <no-results v-if="!nonOfficialSalons.length && !salonsFiltered.length" />
       </div>
    </div>
 </template>
