@@ -756,6 +756,15 @@ export default {
    }
 }
 
+.dark-mode {
 
+   .ma-announcements {
+      &-sort-switch {
+         p{
+            color: #EEF2F6 !important;
+         }
+      }
+   }
+}
 </style>
 
