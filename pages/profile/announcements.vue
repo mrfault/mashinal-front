@@ -3,7 +3,7 @@
       <portal to="breadcrumbs">
          <breadcrumbs :crumbs="crumbs"/>
       </portal>
-      <div class="container">
+      <div :class="{'ma-announcements-autosalon-container': user.autosalon}" class="container">
          <div class="ma-announcements">
             <h2 class="ma-title--md">{{ $t('my_announces') }}</h2>
             <div v-if="user.autosalon" class="ma-announcements__top-cards">
@@ -11,11 +11,17 @@
                   <div class="ma-announcements__top-card--image">
                      <inline-svg :src="`/new-icons/announcements/${item.image}.svg`"/>
                   </div>
-                  <div class="ma-announcements__top-card--title">{{ $t(item.name) }}</div>
-                  <div class="ma-announcements__top-card--count">{{ $t(item.value) || 0 }}</div>
+                  <div class="ma-announcements__top-card__content">
+                     <div class="ma-announcements__top-card--title">{{ $t(item.name) }}</div>
+                     <div class="ma-announcements__top-card--count">{{ $t(item.value) || 0 }}</div>
+                  </div>
+
                </div>
             </div>
-            <div class="ma-announcements__head">
+            <div
+               v-if="showHeadCategories"
+               :class="{'ma-announcements__head-autosalon': user.autosalon}"
+               class="ma-announcements__head">
                <button
                   v-for="(item,index) in announceItems"
                   :class="{'ma-announcements__head--item--active': item.id == activeTab}"
@@ -24,10 +30,23 @@
                >
                   {{ $t(item.title) }}
                </button>
+               <div class="ma-announcements-sort-switch" v-if="user.autosalon">
+                  <p>{{ $t('sorting_view') }}</p>
+                  <custom-switch :value="sortSwitch" @input="sortAnnounces"/>
+                  <p>{{ $t('sorting_call') }}</p>
+               </div>
+            </div>
+            <h2 v-if="isMobileBreakpoint && user.autosalon" class="ma-announcements-autosalon-title">
+               {{ $t('most_viewed_announcements') }}</h2>
+            <div class="ma-announcements-sort-switch pt-0 pb-2" v-if="isMobileBreakpoint && user.autosalon">
+               <p>{{ $t('sorting_view') }}</p>
+               <custom-switch :value="sortSwitch" @input="sortAnnounces"/>
+               <p>{{ $t('sorting_call') }}</p>
             </div>
          </div>
-         <div class="ma-announcements__body">
-            <h4 v-if="!loading" class="ma-subtitle--lg">{{ $t('my_vehicle_announcements') }}</h4>
+         <div :class="{'ma-announcements__body-autosalon': user.autosalon}" class="ma-announcements__body">
+            <h4 v-if="!loading && !user.autosalon" class="ma-subtitle--lg">{{ $t('my_vehicle_announcements') }}</h4>
+
             <div id="announcementsContainer" :class="{'overflow-x-hidden': !myAnnouncements.length}"
                  class="ma-announcements__body--row" @mousedown.prevent="startDragging" @mouseup.prevent="mouseUp">
                <!--                                loading-->
@@ -68,9 +87,14 @@
             </div>
 
             <!--            number plates-->
-            <h4 v-if="!loading" class="ma-subtitle--lg">{{ $t('my_car_number_announcements') }}</h4>
-            <div id="platesContainer" :class="{'overflow-x-hidden': !allMyPlates.length}"
-                 class="ma-announcements__body--row" @mousedown.prevent="startDragging" @mouseup.prevent="mouseUp">
+            <h4 v-if="!loading && !user.autosalon" class="ma-subtitle--lg">{{ $t('my_car_number_announcements') }}</h4>
+            <div v-if="!user.autosalon"
+                 id="platesContainer"
+                 :class="{'overflow-x-hidden': !allMyPlates.length}"
+                 class="ma-announcements__body--row"
+                 @mousedown.prevent="startDragging"
+                 @mouseup.prevent="mouseUp"
+            >
                <div v-if="loading" style="height: 420px !important;width:100%; display: flex;justify-content: center;">
                   <loader class="profile-announcements-loader"/>
                </div>
@@ -121,6 +145,7 @@ import PlatesGrid from "~/components/announcements/PlatesGrid.vue";
 import GridItem from "~/components/announcements/GridItem";
 import AnnouncementCard from "~/components/cards/AnnouncementCard";
 import PlatesGridItem from "~/components/announcements/PlatesGridItem";
+import CustomSwitch from "~/components/elements/CustomSwitch";
 // import tr from "vue2-datepicker/locale/es/tr";
 
 export default {
@@ -165,6 +190,7 @@ export default {
          ],
          escapeDuplicates: false,
          isDragging: false,
+         sortSwitch: false,
       }
    },
    components: {
@@ -175,6 +201,7 @@ export default {
       PlatesGrid,
       AnnouncementCard,
       PlatesGridItem,
+      CustomSwitch,
    },
    nuxtI18n: {
       paths: {
@@ -188,9 +215,9 @@ export default {
    },
    mounted() {
       if (this.user?.autosalon?.id)
-      this.getStatistics();
+         this.getStatistics();
       this.$nuxt.$on('refresh-my-announcements', () => this.refresh++);
-      },
+   },
    async asyncData({store, route}) {
       let status = ['0', '1', '2', '3'].includes(route.query.status) ? parseInt(route.query.status) : '';
       let shop = ['1', '2'].includes(route.query.type) ? (route.query.type == 2 ? 'part' : 'salon') : false;
@@ -272,8 +299,13 @@ export default {
          this.isDragging = false;
       },
       getStatistics() {
-         this.$store.dispatch('getAutosalonStatistics',this.user.autosalon.id)
-         console.log("this.user.autosalon",this.user.autosalon)
+         this.$store.dispatch('getAutosalonStatistics', this.user.autosalon.id)
+         console.log("this.user.autosalon", this.user.autosalon)
+      },
+
+      sortAnnounces() {
+         this.sortSwitch = !this.sortSwitch
+         console.log("announces sorted")
       }
 
    },
@@ -340,6 +372,13 @@ export default {
 
       showTopCards() {
          return !this.isMobileBreakpoint && (this.$route.query.type == 1)
+      },
+
+      showHeadCategories() {
+         if (this.user.autosalon && this.isMobileBreakpoint) {
+            return false
+         } else
+            return true
       }
    }
 }
@@ -358,6 +397,7 @@ export default {
       border-radius: 12px;
       border: 1px solid #D8DCE0;
       padding: 16px;
+
 
       &--image {
          width: 40px;
@@ -493,6 +533,11 @@ export default {
       &__top-card {
          width: calc(50% - 20px) !important;
          margin: 10px !important;
+         display: flex;
+
+         &__content {
+            padding-left: 12px;
+         }
 
          &:nth-of-type(odd) {
             margin-left: 0 !important;
@@ -500,6 +545,19 @@ export default {
 
          &:nth-of-type(even) {
             margin-right: 0 !important;
+         }
+
+         &:last-of-type {
+            width: 100% !important;
+         }
+      }
+
+      &__head {
+         padding-left: 0 !important;
+
+         &--item {
+            padding: 11px 12px 11px 12px !important;
+            margin-right: 12px;
          }
       }
    }
@@ -543,5 +601,127 @@ export default {
       }
    }
 }
+
+
+.ma-announcements__body {
+   &-autosalon {
+      background: #EEF2F6;
+      border-radius: 0 0 8px 8px;
+      //border-radius: 8px;
+
+      .ma-announcements__body--row__inner {
+         padding: 32px 12px 0px 32px;
+         flex-wrap: wrap;
+         cursor: initial;
+         box-sizing: border-box;
+         overflow: hidden;
+
+         &--item-plate {
+            margin-bottom: 32px;
+            width: 254px;
+         }
+      }
+   }
+}
+
+.ma-announcements-autosalon-title {
+   font: 600 20px/24px 'TTHoves';
+   margin-bottom: 16px;
+}
+
+@media (max-width: 600px) {
+   .ma-announcements-autosalon-container {
+      padding: 0 !important;
+
+      .ma-announcements__body--row {
+         margin: 0 -17px;
+      }
+
+      .ma-announcements {
+         &__top-cards {
+            justify-content: space-between;
+         }
+
+         &__top-card {
+            width: calc(50% - 6px) !important;
+            margin: 6px 0 !important;
+            height: 74px;
+            padding: 16px 12px;
+
+            &:last-of-type {
+               width: 100% !important;
+            }
+
+            &--title {
+               font: 500 15px/20px 'TTHoves';
+               white-space: nowrap;
+            }
+
+            &--count {
+               font: 500 17px/20px 'TTHoves';
+            }
+         }
+
+         &__body {
+            &-autosalon {
+               background: transparent;
+
+               .ma-announcements__body--row__inner {
+                  padding: 0;
+                  background: transparent;
+
+                  .ma-announcements__body--row__inner--item-plate {
+                     margin: 0;
+                     width: 50%;
+                     padding: 9px;
+
+                     .announcements-grid__item {
+                        box-shadow: 0px 0px 16px 0px #0000001A;
+                     }
+
+                  }
+               }
+            }
+         }
+      }
+   }
+
+}
+
+.ma-announcements {
+   &-sort-switch {
+      display: flex;
+      align-items: center;
+      margin-left: auto;
+      padding-top: 8px;
+
+      p {
+         font: 400 16px/24px 'TTHoves';
+         color: #1b2434;
+         margin-bottom: 6px;
+      }
+
+      .toggle-wrapper {
+         margin: 0 12px;
+      }
+   }
+
+   &__head {
+
+      overflow-y: hidden;
+
+      &-autosalon {
+         border-radius: 8px 8px 0 0;
+         margin-bottom: 0;
+         padding-left: 32px;
+
+         .ma-announcements__head--item {
+            padding: 24px 12px 20px 12px;
+         }
+      }
+   }
+}
+
+
 </style>
 
