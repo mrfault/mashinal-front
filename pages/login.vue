@@ -48,9 +48,9 @@
                <h2 class="ma-title--md"> {{ $t('sign_in_to_account') }} </h2>
                <login-tabs :skip-sign-in="true" @update-tab="tab = $event"/>
             </div>
-            <div class="ma-login-tab--image" v-if="settingsV2?.length"> 
+            <div class="ma-login-tab--image" v-if="settingsV2?.media?.length">
 <!--               <img alt="" src="/images/login-image.png">-->
-               <img alt="" :src="settingsV2[0].login_image">
+               <img alt="" :src="settingsV2.media[0].login_image">
             </div>
          </div>
 
