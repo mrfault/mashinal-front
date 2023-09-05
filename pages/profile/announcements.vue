@@ -211,7 +211,7 @@ export default {
          ],
          escapeDuplicates: false,
          isDragging: false,
-         sortSwitch: 2,
+         sortSwitch: 1,
          sortedAnnouncements: {},
       }
    },
@@ -331,12 +331,12 @@ export default {
          if (this.sortSwitch == true) {
             this.getMyAllAnnouncements({
                status: this.activeTab,
-               sorting: 1
+               sorting: 2
             });
          } else {
             this.getMyAllAnnouncements({
                status: this.activeTab,
-               sorting: 2
+               sorting: 1
             });
          }
       },
@@ -756,6 +756,25 @@ export default {
    }
 }
 
+.dark-mode {
+   .ma-announcements {
+      &-sort-switch {
+         p {
+            color: #EEF2F6 !important;
+         }
+      }
+   }
 
+   .ma-announcements__body {
+      &-autosalon {
+
+         .ma-announcements__body--row__inner {
+            background: #1b2434;
+
+    
+         }
+      }
+   }
+}
 </style>
 
