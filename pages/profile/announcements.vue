@@ -30,7 +30,7 @@
                >
                   {{ $t(item.title) }}
                </button>
-               <div class="ma-announcements-sort-switch" v-if="user.autosalon">
+               <div v-if="user.autosalon" class="ma-announcements-sort-switch">
                   <p>{{ $t('sorting_view') }}</p>
                   <custom-switch :value="sortSwitch" @input="sortAnnounces"/>
                   <p>{{ $t('sorting_call') }}</p>
@@ -38,7 +38,7 @@
             </div>
             <h2 v-if="isMobileBreakpoint && user.autosalon" class="ma-announcements-autosalon-title">
                {{ $t('most_viewed_announcements') }}</h2>
-            <div class="ma-announcements-sort-switch pt-0 pb-2" v-if="isMobileBreakpoint && user.autosalon">
+            <div v-if="isMobileBreakpoint && user.autosalon" class="ma-announcements-sort-switch pt-0 pb-2">
                <p>{{ $t('sorting_view') }}</p>
                <custom-switch :value="sortSwitch" @input="sortAnnounces"/>
                <p>{{ $t('sorting_call') }}</p>
@@ -55,25 +55,46 @@
                </div>
                <div v-else-if="!loading && myAnnouncements && myAnnouncements.length"
                     class="ma-announcements__body--row__inner">
-                  <template v-for="(announcement,index) in myAnnouncements">
-                     <div
-                        class="ma-announcements__body--row__inner--item-plate"
-                     >
-                        <grid-item
-                           :key="announcement.id_unique +  '_' + index"
-                           :activeTab="activeTab"
-                           :announcement="announcement"
-                           :clickable="!isDragging"
-                           :isLastChild="index === myAnnouncements.length - 1"
-                           isProfilePage
-                           show-monetization-actions
-                           show-overlay
-                           show-phone-count
-                           show-status
-                           track-views
-                        />
-                     </div>
+                  <template v-if="true">
+                     <template v-for="(announcement,index) in myAnnouncements">
+                        <div class="ma-announcements__body--row__inner--item-plate">
+                           <grid-item
+                              :key="announcement.id_unique +  '_' + index"
+                              :activeTab="activeTab"
+                              :announcement="announcement"
+                              :clickable="!isDragging"
+                              :isLastChild="index === myAnnouncements.length - 1"
+                              isProfilePage
+                              show-monetization-actions
+                              show-overlay
+                              show-phone-count
+                              show-status
+                              track-views
+                           />
+                        </div>
+                     </template>
                   </template>
+
+                  <!--                  <template v-if="user.autosalon">-->
+                  <!--                     <template v-for="(announcement,index) in myAnnouncementStats.most_viewed_announces">-->
+                  <!--                        <div class="ma-announcements__body&#45;&#45;row__inner&#45;&#45;item-plate">-->
+                  <!--                           <grid-item-->
+                  <!--                              :key="announcement.id_unique +  '_' + index + 654"-->
+                  <!--                              :activeTab="activeTab"-->
+                  <!--                              :announcement="announcement"-->
+                  <!--                              :clickable="!isDragging"-->
+                  <!--                              :isLastChild="index === myAnnouncements.length - 1"-->
+                  <!--                              isProfilePage-->
+                  <!--                              show-monetization-actions-->
+                  <!--                              show-overlay-->
+                  <!--                              show-phone-count-->
+                  <!--                              show-status-->
+                  <!--                              track-views-->
+                  <!--                           />-->
+                  <!--                        </div>-->
+                  <!--                     </template>-->
+                  <!--                  </template>-->
+
                </div>
                <template v-else>
                   <no-results
@@ -190,7 +211,8 @@ export default {
          ],
          escapeDuplicates: false,
          isDragging: false,
-         sortSwitch: false,
+         sortSwitch: 2,
+         sortedAnnouncements: {},
       }
    },
    components: {
@@ -214,8 +236,9 @@ export default {
       });
    },
    mounted() {
-      if (this.user?.autosalon?.id)
+      if (this.user?.autosalon?.id) {
          this.getStatistics();
+      }
       this.$nuxt.$on('refresh-my-announcements', () => this.refresh++);
    },
    async asyncData({store, route}) {
@@ -304,9 +327,19 @@ export default {
       },
 
       sortAnnounces() {
-         this.sortSwitch = !this.sortSwitch
-         console.log("announces sorted")
-      }
+         this.sortSwitch = !this.sortSwitch;
+         if (this.sortSwitch == true) {
+            this.getMyAllAnnouncements({
+               status: this.activeTab,
+               sorting: 1
+            });
+         } else {
+            this.getMyAllAnnouncements({
+               status: this.activeTab,
+               sorting: 2
+            });
+         }
+      },
 
    },
    computed: {
@@ -314,7 +347,7 @@ export default {
          myAnnouncements: 'myAnnouncementsV2',
          allMyPlates: 'myPlatesV2',
          autosalonStatistics: 'autosalonStatistics',
-
+         myAnnouncementStats: 'myAnnouncementStats'
       }),
 
       crumbs() {
@@ -380,7 +413,8 @@ export default {
          } else
             return true
       }
-   }
+   },
+
 }
 </script>
 
