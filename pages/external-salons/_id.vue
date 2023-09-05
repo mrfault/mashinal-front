@@ -4,7 +4,6 @@
          <salon-inner />
       </div>
 
-      <pre>{{autosalonAnnouncementsId}}</pre>
 <!--      <HandleIds-->
 <!--         :items="handleIdsOptions"-->
 <!--         :watchIds="false"-->

@@ -46,7 +46,7 @@
          <div class="gallery-overlay" v-if="showSlider">
             <div class="gallery-overlay_top d-flex">
                <ViewAspect
-                  v-if="announcement?.media?.interior_360 && announcement?.media?.images_360"
+                  v-if="announcement?.media?.interior_360 && announcement?.media?.images_360?.length"
                   :options="viewAspectOptions"
                   v-model="viewAspect"
                />

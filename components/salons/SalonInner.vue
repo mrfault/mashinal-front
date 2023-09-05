@@ -3,28 +3,28 @@
       <div :class="['profile-card salon-single-card overflow-hidden']">
          <div class="cover-with-avatar position-relative">
              <img
-                 :class="['cover-with-avatar__img', {full : !salonSingle.gallery_thumbs.length}]"
-                 :src="getCover(salonSingle.cover, salonSingle.type_id)"
+                 :class="['cover-with-avatar__img', {full : !salonSingle?.gallery_thumbs?.length}]"
+                 :src="getCover(salonSingle?.cover, salonSingle?.type_id)"
                  alt="img"
              >
 
             <div
                class="cover-with-avatar__gallery d-none"
                :class="{
-                  'big-img' : salonSingle.gallery_thumbs.length === 2,
-                  'more' : salonSingle.gallery_thumbs.length > 6,
+                  'big-img' : salonSingle?.gallery_thumbs?.length === 2,
+                  'more' : salonSingle?.gallery_thumbs?.length > 6,
                }"
-               v-if="salonSingle.gallery_thumbs.length"
+               v-if="salonSingle?.gallery_thumbs?.length"
             >
                <div
                   class="cover-with-avatar__gallery-item"
-                  v-for="(item, i) in salonSingle.gallery_thumbs"
+                  v-for="(item, i) in salonSingle?.gallery_thumbs"
                   :style="{background: `url('${item}') center center / cover no-repeat`}"
                   @click="$nuxt.$emit('show-lightbox', i)"
                />
 
-               <span class="count pointer-events-none" v-if="salonSingle.gallery_thumbs.length > 6">
-                  + {{ salonSingle.gallery_thumbs.length - 6 }} {{ $t('image_small') }}
+               <span class="count pointer-events-none" v-if="salonSingle?.gallery_thumbs?.length > 6">
+                  + {{ salonSingle?.gallery_thumbs?.length - 6 }} {{ $t('image_small') }}
                </span>
             </div>
          </div>
@@ -33,29 +33,29 @@
             <div class="salon-inner__details-left">
                <div
                   class="salon-inner__details-logo"
-                  :style="`background: url('${getLogo(salonSingle.logo)}') center center / cover no-repeat`"
+                  :style="`background: url('${getLogo(salonSingle?.logo)}') center center / cover no-repeat`"
                />
 
                <div class="salon-inner__details-info">
                   <h4 class="salon-inner__details-name">
-                     <template v-if="!salonSingle.is_official">
+                     <template v-if="!salonSingle?.is_official">
                         {{ $t(isShop ? 'shop' : 'autosalon') }}
-                        "{{ salonSingle.name || salonSingle.user.full_name }}"
+                        "{{ salonSingle?.name || salonSingle?.user?.full_name }}"
                      </template>
 
-                     <template v-else>{{ salonSingle.name || salonSingle.user.full_name }}</template>
+                     <template v-else>{{ salonSingle?.name || salonSingle?.user?.full_name }}</template>
                   </h4>
 
-                  <h5 class="salon-inner__details-description">{{ salonSingle.description }}</h5>
+                  <h5 class="salon-inner__details-description">{{ salonSingle?.description }}</h5>
 
-                  <h5 class="salon-inner__details-address">
+                  <h5 class="salon-inner__details-address" v-if="salonSingle?.address">
                      <icon name="placeholder"/>
 
                      <a
-                        :href="`https://www.google.com/maps?q=${salonSingle.lat}%2C${salonSingle.lng}&ll=${salonSingle.lat}%2C${salonSingle.lng}&z=15`"
+                        :href="`https://www.google.com/maps?q=${salonSingle?.lat}%2C${salonSingle?.lng}&ll=${salonSingle?.lat}%2C${salonSingle?.lng}&z=15`"
                         target="_blank"
                      >
-                        {{ salonSingle.address }}
+                        {{ salonSingle?.address }}
                      </a>
                   </h5>
                </div>
@@ -63,7 +63,7 @@
 
             <div class="salon-inner__details-right">
                <div class="d-md-none">
-                  <thumbs-gallery where="salon" :media="salonSingle.gallery_thumbs"/>
+                  <thumbs-gallery where="salon" :media="salonSingle?.gallery_thumbs"/>
                </div>
 
                <div class="salon-inner__details-time">
@@ -71,15 +71,15 @@
                   <inline-svg src="/icons/clock_new.svg" />
 
                   <span class="working-time"
-                        v-if="salonSingle.working_days && salonSingle.working_hours"
-                        v-html="getWorkingDays(salonSingle.working_days, salonSingle.working_hours)"/>
+                        v-if="salonSingle?.working_days && salonSingle?.working_hours"
+                        v-html="getWorkingDays(salonSingle?.working_days, salonSingle?.working_hours)"/>
 
                   <span class="working-time" v-else>
                         {{ $t('everyday') }} : 09:00 - 18:00
                   </span>
                </div>
 
-               <div class="salon-inner__details-tels justify-content-between" v-if="salonSingle.phones && salonSingle.phones.length">
+               <div class="salon-inner__details-tels justify-content-between" v-if="salonSingle?.phones && salonSingle?.phones?.length">
                   <div class="divider d-flex align-items-center">
 <!--                     <icon name="phone-call"/>-->
                      <inline-svg src="/icons/phone-2.svg" />
@@ -142,9 +142,9 @@
       </grid>
 
       <gallery
-         v-if="salonSingle.gallery_urls.length"
+         v-if="salonSingle?.gallery_urls?.length"
          where="salon"
-         :media="[salonSingle.gallery_urls, salonSingle.gallery_thumbs]"
+         :media="[salonSingle?.gallery_urls, salonSingle?.gallery_thumbs]"
          :show-slider="false"
       />
    </div>
