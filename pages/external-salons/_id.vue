@@ -38,13 +38,13 @@
       // },
 
       async asyncData({store, route}) {
-         // await Promise.all([
-            // store.dispatch('getSalonById', {slug: route.params.id}),
+         await Promise.all([
+            store.dispatch('getSalonById', {slug: route.params.id}),
             store.dispatch('getMotoOptions')
-         // ]);
+         ]);
 
-           store.dispatch('fetchAutosalonAnnouncementsId', {
-              id: route.params.id,
+           await store.dispatch('fetchAutosalonAnnouncementsId', {
+              id: store.getters.salonSingle.id,
               page: route.query.page || 1
            });
 

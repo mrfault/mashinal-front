@@ -323,7 +323,6 @@ export default {
       },
       getStatistics() {
          this.$store.dispatch('getAutosalonStatistics', this.user.autosalon.id)
-         console.log("this.user.autosalon", this.user.autosalon)
       },
 
       sortAnnounces() {
@@ -331,12 +330,12 @@ export default {
          if (this.sortSwitch == true) {
             this.getMyAllAnnouncements({
                status: this.activeTab,
-               sorting: 1
+               sorting: 2
             });
          } else {
             this.getMyAllAnnouncements({
                status: this.activeTab,
-               sorting: 2
+               sorting: 1
             });
          }
       },

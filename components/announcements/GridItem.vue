@@ -68,10 +68,9 @@
             <!--        <span class="sr-only">{{ getAnnouncementTitle(announcement) }}</span>-->
          </a>
 
-         <!--         +'&width=308'-->
          <div
             v-if="!showGallery"
-            v-lazy:background-image="getImage"
+            v-lazy:background-image="getImage +'&width=256'"
             :aria-label="getAnnouncementTitle(announcement)"
             class="item-bg"
             role="img"
@@ -164,7 +163,7 @@
 
          <div class="item-details">
             <div class="item-details__item d-flex align-items-center justify-content-between">
-               <h3>{{ +announcement.price.split(' ')[0] ? announcement.price : $t('negotiable') }}</h3>
+               <h3>{{ (+announcement.price.split(' ')[0] && announcement.id) ? announcement.price : $t('negotiable') }}</h3>
 
                <div v-if="announcement.tradeable || announcement.credit" class="item-details__icons">
                   <inline-svg
