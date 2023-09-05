@@ -198,6 +198,7 @@ export default {
       await Promise.all([
          store.dispatch('getMyAllAnnouncementsV2', {status, shop}),
          store.dispatch('fetchPlatesV2', {status}),
+         store.dispatch('getSettingsV2')
       ]);
 
       return {
