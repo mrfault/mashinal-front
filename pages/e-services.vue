@@ -52,8 +52,8 @@
          return {
             tabs: [
                {
-                  title: this.$t('customs_calculator'),
-                  description: this.$t('customs_calculator_desc'),
+                  title: this.$t('customs_clearance_calculator'),
+                  description: this.$t('customs_clearance_calculator_description'),
                   // description: this.$t('dollar_course'),
                   value: '1 $ = 1.7₼',
                   // icon: 'customs-calculator-police',
@@ -63,8 +63,8 @@
                   isAvailable: true
                },
                {
-                  title: this.$t('helper_search'),
-                  description: this.$t('helper_search_desc'),
+                  title: this.$t('guide'),
+                  description: this.$t('guide_description'),
                   value: null,
                   // icon: 'helper-tab',
                   url: '/cars/assistant',
@@ -73,8 +73,8 @@
                   isAvailable: true,
                },
                {
-                  title: this.$t('fines'),
-                  description: this.$t('fines_desc'),
+                  title: this.$t('penalties'),
+                  description: this.$t('penalties_description'),
                   value: null,
                   // icon: 'receipe',
                   url: '/garage',
@@ -83,8 +83,8 @@
                   isAvailable: true,
                },
                {
-                  title: this.$t('alcometer'),
-                  description: this.$t('alcometer_desc'),
+                  title: this.$t('alcotest'),
+                  description: this.$t('alcotest_description'),
                   value: null,
                   // icon: 'alco',
                   url: '/alcometer',
@@ -94,7 +94,7 @@
                },
                {
                   title: this.$t('comparisons'),
-                  description: this.$t('comparisons_desc'),
+                  description: this.$t('comparisons_description'),
                   value: null,
                   // icon: 'comparisons',
                   url: '/comparison',
@@ -103,8 +103,8 @@
                   isAvailable: true,
                },
                {
-                  title: this.$t('my_searches'),
-                  description: this.$t('my_searches_desc'),
+                  title: this.$t('search_templates'),
+                  description: this.$t('search_templates_description'),
                   value: null,
                   // icon: 'template',
                   url: '/profile/templates',
@@ -114,7 +114,7 @@
                },
                {
                   title: this.$t('visual_tire_calculator'),
-                  description: this.$t('visual_tire_calculator_desc'),
+                  description: this.$t('visual_tire_calculator_description'),
                   value: null,
                   // icon: 'part-2',
                   url: '/tiremeter',
@@ -123,8 +123,8 @@
                   isAvailable: true,
                },
                {
-                  title: this.$t('external_salon'),
-                  description: this.$t('external_salon_desc'),
+                  title: this.$t('external_salon_2'),
+                  description: this.$t('external_salon_2_description'),
                   value: null,
                   // icon: 'part-2',
                   url: '/external-salons',
@@ -144,7 +144,7 @@
                // },
                {
                   title: this.$t('autocatalog'),
-                  description: 'Lorem ipsum dolor sit amet consectetur. Fermentum euismod nunc massa tristique. Vitae nisi dignissim viverra neque nisl.',
+                  description: this.$t('autocatalog_description'),
                   value: null,
                   // icon: 'part-2',
                   url: '/catalog',

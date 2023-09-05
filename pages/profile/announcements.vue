@@ -211,7 +211,7 @@ export default {
          ],
          escapeDuplicates: false,
          isDragging: false,
-         sortSwitch: 2,
+         sortSwitch: 1,
          sortedAnnouncements: {},
       }
    },
@@ -248,6 +248,7 @@ export default {
       await Promise.all([
          store.dispatch('getMyAllAnnouncementsV2', {status, shop}),
          store.dispatch('fetchPlatesV2', {status}),
+         store.dispatch('getSettingsV2')
       ]);
 
       return {
@@ -755,6 +756,25 @@ export default {
    }
 }
 
+.dark-mode {
+   .ma-announcements {
+      &-sort-switch {
+         p {
+            color: #EEF2F6 !important;
+         }
+      }
+   }
 
+   .ma-announcements__body {
+      &-autosalon {
+
+         .ma-announcements__body--row__inner {
+            background: #1b2434;
+
+    
+         }
+      }
+   }
+}
 </style>
 
