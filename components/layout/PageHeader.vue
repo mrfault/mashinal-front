@@ -206,11 +206,11 @@
                   <div class="row align-items-center">
                      <div class="col-lg-10 position-static">
                         <ul class="menu position-relative">
+                           <!-- v-if="(user.children && user.children.length) || user.parent_id ? !['eservices','salons','shops'].includes(menu.title) :true"-->
                            <li v-for="menu in navbarMenus"
                               :key="menu.title"
                               @mouseover="menu.children ? (hoverMenu = true) : ''"
                               @mouseleave="hoverMenu = false, activeCategory = 0"
-                              v-if="(user.children && user.children.length) || user.parent_id ? !['eservices','salons','shops'].includes(menu.title) :true"
                               :class="{ dropdown: menu.children }">
                               <nuxt-link
                                  class="external_salon_hover"
