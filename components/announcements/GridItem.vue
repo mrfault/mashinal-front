@@ -305,7 +305,6 @@
       computed: {
          getType() {
             let item = this.announcement
-            // console.log('item', this.announcement)
 
             if (item.type === "motorcycle") return 'Motorcycle'
             else if (item.type === "scooter") return 'Scooter'
@@ -317,19 +316,13 @@
          },
 
          getLink() {
-            let type = 'cars',
-               motoType = '';
-
-            if (this.getType === 'Motorcycle') motoType = '?type=motorcycle';
-            else if (this.getType === 'Scooter') motoType = '?type=scooter';
-            else if (this.getType === 'Atv') motoType = '?type=atv';
-            else motoType = ''
+            let type = 'cars';
 
             if (['Motorcycle', 'Scooter', 'Atv'].includes(this.getType)) type = 'moto'
             else if (['Commercial'].includes(this.getType)) type = 'commercial'
             else if (['Part'].includes(this.getType)) type = 'parts'
-            let path = `/${type}/announcement/${this.announcement.id}${motoType}`
-            return this.$localePath(path)
+            let path = `/${type}/announcement/${type=== 'moto' ? this.announcement.id_unique : this.announcement.id}`
+            return this.$localePath(path);
          },
 
          getTextLine() {

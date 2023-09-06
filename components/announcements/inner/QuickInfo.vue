@@ -66,7 +66,7 @@
                <address v-if="announcement.status !== 3 && getAddress">{{ getAddress }}</address>
 
                <p class="text-red" v-else-if="announcement.status === 3">{{ $t('sold') }}</p>
-<!--               <pre>{{announcement?.is_external_salon}}</pre>-->
+
                <nuxt-link
                   :to="contact?.link"
                   v-if="
@@ -131,8 +131,6 @@
          </div>
       </div>
 
-
-
       <div class="wrapp">
          <monetization-button
             v-if="type !== 'plates' && announcement.status === 1"
@@ -180,7 +178,6 @@
          />
 <!--         v-if="userIsOwner(announcement) && announcement.status === 3 && !announcement.is_external_salon"-->
       </div>
-
 
       <VinCode
          class="mt-4"

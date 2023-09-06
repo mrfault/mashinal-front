@@ -138,10 +138,13 @@
      },
 
       async asyncData({store, route}) {
-         // console.log('moto', this.announcement)
+         let types = { 1: 'motorcycle', 2: 'scooter', 3: 'atv' },
+         type = parseInt(route.params.id.slice(-1)),
+         id = route.params.id.slice(0, route.params.id.length - 1);
+
          await Promise.all([
-            store.dispatch('getMotoInnerV2', { id: route.params.id, type: route.query.type }),
-            store.dispatch('motoRelativesV2', { id: route.params.id, type: route.query.type }),
+            store.dispatch('getMotoInnerV2', { id: id, type: types[type] }),
+            store.dispatch('motoRelativesV2', { id: id, type: types[type] }),
             store.dispatch('getComplaintOptions'),
             store.dispatch('getOptions'),
             store.dispatch('getMotoOptions'),
