@@ -771,7 +771,7 @@ export default {
          .ma-announcements__body--row__inner {
             background: #1b2434;
 
-    
+
          }
       }
    }
