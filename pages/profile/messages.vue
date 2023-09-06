@@ -23,19 +23,22 @@
                               :placeholder="isMobileBreakpoint ? $t('search') : $t('message_or_name')"
                            />
                         </div>
-                        <div class="chat-list-switch cursor-pointer"
-                             @click="showBlockedGroups = !showBlockedGroups">
-                           <template v-if="showBlockedGroups">
-                              <span class="switch-icon"><icon name="chat"/></span>
-                              <span class="switch-text">{{ $t('chat_list') }}</span>
-                              <span class="switch-count text-dark-blue-3">{{ countGroups(false) }}</span>
+                        <div class="chat-list-switch cursor-pointer justify-content-between align-items-center">
+                           <template>
+                              <div class="d-flex justify-content-center align-items-center chat-menu-list" :class="!showBlockedGroups ? 'active' : ''" @click="showBlockedGroups = false">
+                                 <span class="switch-icon">
+                                    <inline-svg src="/icons/chatnew.svg" size="24"/>
+                                 </span>
+                                 <span class="switch-text">{{ $t('chat_list') }} ({{ countGroups(false) }})</span>
+                              </div>
                            </template>
-                           <template v-else>
-                              <span class="switch-icon text-dark-blue-2">
-                                 <inline-svg src="/icons/block-user.svg"/>
-                              </span>
-                              <span class="switch-text text-dark-blue-2">{{ $t('blocked_users') }}</span>
-                              <span class="switch-count text-dark-blue-3">{{ countGroups(true) }}</span>
+                           <template>
+                              <div class="d-flex justify-content-center align-items-center chat-menu-list" :class="showBlockedGroups ? 'active' : ''" @click="showBlockedGroups = true">
+                                 <span class="switch-icon">
+                                    <inline-svg src="/icons/blocknew.svg" size="24"/>
+                                 </span>
+                                 <span class="switch-text text-dark-blue-2">{{ $t('blocked_users') }} ({{ countGroups(true) }})</span>
+                              </div>
                            </template>
                         </div>
                      </template>
@@ -91,6 +94,19 @@
                         @block-chat="blockChat"
                         @delete-chat="deleteChat"
                      />
+                     <template v-else>
+                        <div class="no-messages">
+                           <div class="row">
+                              <div class="col-md-12 d-flex justify-content-center align-items-center">
+                                 <inline-svg src="/icons/no-message.svg"/>
+                              </div>
+                              <div class="col-md-12 no-messages-content">
+                                 <h3>{{$t('no_message')}}</h3>
+                                 <p>{{$t('no_message_text')}}</p>
+                              </div>
+                           </div>
+                        </div>
+                     </template>
                   </div>
                </div>
             </div>
@@ -126,12 +142,14 @@ import {MessagesMixin} from '~/mixins/messages';
 
 import ChatItem from '~/components/profile/messages/ChatItem';
 import ChatMessages from '~/components/profile/messages/ChatMessages';
+import GarageEmpty from "~/components/garage/GarageEmpty.vue";
 
 export default {
    name: 'pages-profile-messages',
    middleware: 'auth_general',
    mixins: [SocketMixin, MessagesMixin],
    components: {
+      GarageEmpty,
       ChatItem,
       ChatMessages
    },
@@ -685,7 +703,7 @@ export default {
    }
    .chat-list-switch .switch-text,
    .chat-list-switch .switch-icon{
-      color: #FFF;
+      color: #CDD5DF;
    }
 
 }
