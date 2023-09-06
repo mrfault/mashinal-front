@@ -892,6 +892,7 @@ input::-webkit-inner-spin-button {
                      &:first-child {
                         position: relative;
                         border-right: unset;
+
                         &:after {
                            content: '';
                            position: absolute;
@@ -1161,6 +1162,10 @@ input::-webkit-inner-spin-button {
 
 .dark-mode {
    .form-merged.flex-column.price {
+      h3 {
+         color: #E3E8EF;
+      }
+
       button {
          background-color: #121926 !important;
          border-color: #121926 !important;

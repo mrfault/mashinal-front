@@ -42,9 +42,8 @@
          :title="$t('restore_popup_alert', {count: settingsV2.settings.restore_price})"
          @close="showRestore = false"
       >
-
          <div>
-            <button :class="['btn', 'full-width', 'btn--blue-new', 'active', { pending }]" @click.stop="restoreAnnouncement">{{ $t('pay') }}</button>
+            <button :class="['btn', 'full-width', 'btn--blue-new', 'active', { pending }]" @click.stop="user.autosalon || user.external_salon ? restore() : restoreAnnouncement()">{{ user.autosalon || user.external_salon ? $t('restore_free') : $t('pay') }}</button>
          </div>
       </modal-popup>
 
@@ -118,6 +117,9 @@ export default {
          selectedItem: {}
       };
    },
+   mounted() {
+      console.log(this.options)
+   },
    computed: {
       ...mapGetters(['settingsV2']),
       options() {
@@ -133,7 +135,7 @@ export default {
             {
                name: 'restore_free',
                icon: 'fi_check-square.svg',
-               show: this.announcement.status == 3 && !this.isNumberPlate,
+               show: (this.announcement.status == 3 || (!(this.user.autosalon || this.user.external_salon) && this.announcement.status == 4)) && !this.isNumberPlate,
                method: () => this.showRestore = true,
                modalTitle: 'restore_announcement'
             },
@@ -146,7 +148,7 @@ export default {
             {
                name: 'remove_announcement',
                icon: 'trash.svg',
-               show: this.announcement.status == 3 || this.announcement.status == 0,
+               show: this.announcement.status == 3 || this.announcement.status == 0 || this.announcement.status == 4,
                method: this.openModal,
                modalTitle: 'are_you_sure_you_want_to_delete_the_car'
             },
@@ -208,7 +210,6 @@ export default {
                this.pending = false;
             } else {
                this.pending = false;
-               console.log('res.data')
                this.handlePayment(res, false, this.$t('announcement_restored'));
             }
          } catch (err) {
@@ -254,7 +255,7 @@ export default {
 
             this.$emit('restoredMyAnnounement');
             this.$toasted.success(this.$t('announcement_restored'))
-            this.closeModal();
+            this.showRestore = false
             this.$store.commit('closeDropdown');
          } catch (e) {
             this.$toasted.error(this.$t(e.message))

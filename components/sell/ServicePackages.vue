@@ -26,13 +26,14 @@
                <p>40% {{ $t('discount') }}</p>
             </div>
             <div class="package_popover" v-if="!turboIsClosed && !$cookies.get('turboIsClosed')">
-               <h3>Bu paketlə 4 dəfə tez sata bilərsən!</h3>
-               <p>Turbo paketi seçməklə elanını 4 dəfə tez sata və vizual olaraq digər elanlardan daha cəlbedici edə
-                  bilərsən. Beləliklə elanının alıcılar tərəfindən daha tez tapılacaq.</p>
+               <h3>{{ $t('turbo_package_popover_title') }}</h3>
+               <p>{{
+                     $t('turbo_package_popover_description')
+                  }}</p>
                <button type="button"
                        @click="closePopover"
                        class="btn full-width btn--blue-new active">
-                  Aydındır
+                  {{ $t('got_it') }}
                </button>
             </div>
          </div>
