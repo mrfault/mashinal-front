@@ -250,6 +250,8 @@ const getInitialState = () => ({
    autosalonStatistics: {},
 
    settingsV2: [],
+
+   loginInEditModal: false,
 });
 
 export const state = () => getInitialState();
@@ -472,6 +474,10 @@ export const getters = {
    autosalonStatistics: s => s.autosalonStatistics,
 
    settingsV2: s => s.settingsV2,
+   
+   loginInEditModal: s => s.loginInEditModal,
+
+
 };
 
 const objectNotEmpty = (state, commit, property) => {
@@ -657,7 +663,7 @@ export const actions = {
    },
 
    async fetchRegistrationMark({commit}, id) {
-      const res = await this.$axios.$get(`/plate/announce/${id}`)
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/plate-numbers/${id}`)
       commit("mutate", {property: "announcement", value: res?.data || []})
    },
 
@@ -1315,7 +1321,7 @@ export const actions = {
    },
    async getMyAllAnnouncementsV2({commit}, data = {}) {
       const res = await this.$axios.$get(
-         `${this.$env().API_SECRET}/me/announcements?status=${data.status}`
+         `${this.$env().API_SECRET}/me/announcements?status=${data.status}&sorting=${data.sorting}`
       );
       commit("mutate", {property: "myAnnouncementsV2", value: res});
    },

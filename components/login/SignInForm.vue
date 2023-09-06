@@ -22,6 +22,7 @@
             :placeholder="$t('your_phone_number')"
             autocomplete="tel"
             style="margin-bottom: 32px"
+            name="mashinal-login-phone"
          />
 
       </div>
@@ -155,7 +156,8 @@ export default {
             this.mutate({property: 'sellPhoneEntered', value: this.form.phone})
             this.pending = false
          } catch (error) {
-            this.pending = false
+            this.pending = false;
+            this.$toasted.error(error.response.data.message)
          }
       },
    },
