@@ -54,27 +54,27 @@
 <!--                     <comment :comment="announcement.comment" v-if="isMobileBreakpoint"/>-->
                   </div>
                </div>
-
-               <grid
-                  v-if="motoRelatives?.length"
-                  :announcements="motoRelatives"
-                  escape-duplicates
-                  :needAutoScroll="true"
-                  :hasContainer="false"
-               >
-                  <template #cap>
-                     <Cap :className="'mb40'">
-                        <template #left>
-                           <h3>{{ $t('relative_announcements') }}</h3>
-                        </template>
-                     </Cap>
-                  </template>
-               </grid>
-
-               <HandleIds :single="true" :items="{ type: $route.query?.type, id: announcement.id }" />
             </div>
          </div>
       </div>
+
+      <grid
+         class="dark-bg"
+         v-if="motoRelatives?.length"
+         :announcements="motoRelatives"
+         escape-duplicates
+         :needAutoScroll="true"
+      >
+         <template #cap>
+            <Cap :className="'mb40'">
+               <template #left>
+                  <h3>{{ $t('relative_announcements') }}</h3>
+               </template>
+            </Cap>
+         </template>
+      </grid>
+
+      <HandleIds :single="true" :items="{ type: $route.query?.type, id: announcement.id }" />
    </div>
 </template>
 
@@ -205,3 +205,16 @@
       }
    }
 </script>
+
+<style lang="scss">
+   .dark-mode {
+      .pages-moto-id {
+         //background-color: #1B2434;
+         //&.product-inner {
+         //   .bg-white {
+         //      background-color: #121926 !important;
+         //   }
+         //}
+      }
+   }
+</style>

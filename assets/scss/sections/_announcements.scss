@@ -605,6 +605,12 @@
             }
          }
       }
+
+      &.dark-bg {
+         .item-details {
+            background-color: #121926;
+         }
+      }
    }
 
    .no-results {
