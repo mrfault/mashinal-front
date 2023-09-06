@@ -106,6 +106,8 @@
                               :objectInValue="true"
                               v-model="form.sorting"
                            />
+
+                           <pre>{{form.sorting}}</pre>
                         </template>
                      </Cap>
                   </template>
@@ -244,17 +246,30 @@
                         this.form[item] = query.split('=')[1];
                      }
                   } else if (typeof this.form[item] === 'object' && query.split('=')[0] !== 'page') {
-                     if (query.split('=')[0] === 'sort_by') {
-                        this.form.sorting.key = query.split('=')[1];
-                     } else {
-                        this.form.sorting.value = query.split('=')[1];
-                     }
+                     let a1 = '';
+                     let a2 = '';
 
-                     this.sortItems.forEach(item => {
-                        if (item.key === this.form.sorting.key && item.value === this.form.sorting.value) {
-                           this.form.sorting.name = item.name;
-                        }
-                     });
+                     console.log('0', query.split('='))
+                     if (query.split('=')[0] === 'sort_by') {
+                        a1 = query.split('=')[1];
+                        console.log('1', query.split('=')[1])
+                     }
+                     // if (query.split('=')[0] === 'sort_order') {
+                     //    a2 = query.split('=')[1];
+                     //    console.log('2', query.split('=')[1])
+                     // }
+                     // console.log('3', `${a1}_${a2}`)
+
+                     this.form.sorting.key = `${a1}_${a2}`;
+
+                     // console.log('a1', a1)
+                     // console.log('a2', a2)
+
+                     // this.sortItems.forEach(item => {
+                     //    if (item.key === this.form.sorting.key && item.value === this.form.sorting.value) {
+                     //       this.form.sorting.name = item.name;
+                     //    }
+                     // });
                   }
                }
             });
@@ -323,7 +338,11 @@
                         this.form.serial_number = this.form.serial_number.split('-')[0].replace(/\s/g, "");
                         query.append('serial_number', value);
                      } else if (key === 'sorting') {
-                        query.append('sort_by', value.key);
+                        if (value.key === 'price_desc' || value.key === 'price_asc') {
+                           query.append('sort_by', 'price');
+                        } else {
+                           query.append('sort_by', value.key);
+                        }
                         query.append('sort_order', value.value);
                      } else {
                         query.append(key, value);
@@ -347,6 +366,20 @@
 
       mounted() {
          this.setInitialValues();
+
+         // if (this.$route.query?.filters) {
+         //    this.$route.query?.filters.slice(1).split('&').forEach(item => {
+         //       console.log('111', item.split('='))
+         //       if (item.split('=')[1] === 'price') {
+         //          console.log('222', item.split('='))
+         //          // this.form.sorting.key = `${item.split('=')[1]}_${item.split('=')[0].sort_order}`;
+         //          // this.form.sorting.value = item.split('=')[0].sort_order;
+         //       } else {
+         //          // this.form.sorting.key = item.split('=')[0].sort_by;
+         //          // this.form.sorting.value = item.split('=')[0].sort_order;
+         //       }
+         //    })
+         // }
       },
 
       async asyncData({ store }) {

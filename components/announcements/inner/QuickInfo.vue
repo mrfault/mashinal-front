@@ -70,7 +70,7 @@
                <nuxt-link
                   :to="contact?.link"
                   v-if="
-                     announcement?.active_announcements_count > 1 ||
+                     contact?.user?.active_announcements_count > 1 ||
                      announcement?.is_part_salon ||
                      announcement?.is_auto_salon ||
                      announcement?.is_external_salon
@@ -130,6 +130,12 @@
             </div>
          </div>
       </div>
+
+      <ReasonForRejection
+         v-if="announcement?.status !== 1"
+         class="mb-3"
+         :options="announcement?.moderator?.reject_reason"
+      />
 
       <div class="wrapp">
          <monetization-button
@@ -195,6 +201,7 @@
 </template>
 
 <script>
+   import ReasonForRejection from "~/components/announcements/ReasonForRejection.vue";
    import RestoreButton from '~/components/announcements/RestoreButton'
    import DeactivateButton from '~/components/announcements/DeactivateButton'
    import EditButton from '~/components/announcements/EditButton'
@@ -214,6 +221,7 @@
 
    export default {
       components: {
+         ReasonForRejection,
          CallButtonMultiple,
          RestoreButton,
          DeactivateButton,
