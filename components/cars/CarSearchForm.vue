@@ -133,7 +133,7 @@
                   @clear="(form.price_from = ''), (form.price_to = '')"
                >
                   <div class="form-merged flex-column price">
-                     <h3 class="d-md-none">Qiymət aralığı</h3>
+                     <h3 class="d-md-none">{{ $t('price_range') }}</h3>
 
                      <form-buttons
                         :options="getCurrencyOptions"

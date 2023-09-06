@@ -34,7 +34,7 @@
                   </div>
 
                   <div class="col-auto">
-<!--                     <quick-info type="plates" />-->
+                     <quick-info type="plates" />
                   </div>
 
                   <div class="col-auto" v-if="isMobileBreakpoint">

@@ -112,16 +112,19 @@
                {
                   name: this.$t('all_parts'),
                   route: '/parts'
-               }, {
-                  name: this.announcement?.category?.name[this.locale],
-                  route: `/parts/${this.announcement?.category?.slug[this.locale]}`
-               }, {
-                  name: this.announcement?.sub_category?.name[this.locale],
-                  route: `/parts/${this.announcement?.category?.slug[this.locale]}?parts_filter={"subcategory":${this.announcement?.sub_category?.id}}`
-               }, {
-                  name: this.announcement?.brand?.name,
-                  route: `/parts/${this.announcement?.category?.slug[this.locale]}?parts_filter={"brand_ids":[${this.announcement?.brand?.id}]}`
                },
+               // {
+               //    name: this.announcement?.category?.name[this.locale],
+               //    route: `/parts/${this.announcement?.category?.slug[this.locale]}`
+               // },
+               // {
+               //    name: this.announcement?.sub_category?.name[this.locale],
+               //    route: `/parts/${this.announcement?.category?.slug[this.locale]}?parts_filter={"subcategory":${this.announcement?.sub_category?.id}}`
+               // },
+               // {
+               //    name: this.announcement?.brand?.name,
+               //    route: `/parts/${this.announcement?.category?.slug[this.locale]}?parts_filter={"brand_ids":[${this.announcement?.brand?.id}]}`
+               // },
                {
                   name: '#' + this.announcement.id_unique
                }

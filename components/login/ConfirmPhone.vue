@@ -160,7 +160,6 @@ export default {
                   this.$store.commit("mutate", {property: "loginInEditModal", value: false})
                }
 
-
             })
             .catch((err) => {
                this.pending = false;
