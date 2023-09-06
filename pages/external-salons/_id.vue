@@ -4,6 +4,7 @@
          <salon-inner />
       </div>
 
+      <pre>{{autosalonAnnouncementsId}}</pre>
 <!--      <HandleIds-->
 <!--         :items="handleIdsOptions"-->
 <!--         :watchIds="false"-->
@@ -38,13 +39,13 @@
       // },
 
       async asyncData({store, route}) {
-         await Promise.all([
-            store.dispatch('getSalonById', {slug: route.params.id}),
+         // await Promise.all([
+            // store.dispatch('getSalonById', {slug: route.params.id}),
             store.dispatch('getMotoOptions')
-         ]);
+         // ]);
 
-           await store.dispatch('fetchAutosalonAnnouncementsId', {
-              id: store.getters.salonSingle.id,
+           store.dispatch('fetchAutosalonAnnouncementsId', {
+              id: route.params.id,
               page: route.query.page || 1
            });
 

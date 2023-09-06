@@ -36,18 +36,6 @@
          <!--         options-->
       </modal-popup>
 
-      <modal-popup
-         :modal-class="'wider'"
-         :toggle="showRestore"
-         :title="$t('restore_popup_alert', {count: settingsV2.settings.restore_price})"
-         @close="showRestore = false"
-      >
-
-         <div>
-            <button :class="['btn', 'full-width', 'btn--blue-new', 'active', { pending }]" @click.stop="restoreAnnouncement">{{ $t('pay') }}</button>
-         </div>
-      </modal-popup>
-
       <!--      delete,deactivate-->
       <modal-popup
          :modal-class="!isMobileBreakpoint ? 'midsize': 'larger'"
@@ -90,9 +78,6 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
-import {PaymentMixin} from "~/mixins/payment";
-
 export default {
    props: {
       announcement: Object,
@@ -102,13 +87,11 @@ export default {
       },
       isNumberPlate: Boolean,
    },
-   mixins: [PaymentMixin],
    data() {
       return {
          pending: false,
          showModal: false,
          showOptions: false,
-         showRestore: false,
          modal: {
             title: '',
             buttonText: '',
@@ -119,7 +102,6 @@ export default {
       };
    },
    computed: {
-      ...mapGetters(['settingsV2']),
       options() {
          return [
             {
@@ -134,7 +116,7 @@ export default {
                name: 'restore_free',
                icon: 'fi_check-square.svg',
                show: this.announcement.status == 3 && !this.isNumberPlate,
-               method: () => this.showRestore = true,
+               method: this.restore,
                modalTitle: 'restore_announcement'
             },
             {
@@ -191,30 +173,7 @@ export default {
             method: null,
          }
       },
-      async restoreAnnouncement() {
-         if (this.pending) return;
-         this.pending = true;
-         try {
-            const res = await this.$axios.$get(`/restore/${this.announcement.id_unique}?is_mobile=${this.isMobileBreakpoint}`);
-            this.showRestore = false
-            this.$store.commit('closeDropdown');
-            if (!res?.data?.redirect_url) {
-               await this.$nuxt.refresh();
-               this.updatePaidStatus({
-                  type: 'success',
-                  text: this.$t('announcement_restored'),
-                  title: this.$t('success_payment')
-               });
-               this.pending = false;
-            } else {
-               this.pending = false;
-               console.log('res.data')
-               this.handlePayment(res, false, this.$t('announcement_restored'));
-            }
-         } catch (err) {
-            this.pending = false;
-         }
-      },
+
       async deactivate(event) {
          this.$store.commit('closeDropdown');
          this.pending = true;

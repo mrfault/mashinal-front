@@ -11,10 +11,7 @@
             </template>
          </Banner>
 
-         <salon-filters-form
-            v-if="nonOfficialSalons"
-            :count="salonsFiltered.length"
-         />
+         <salon-filters-form :count="salonsFiltered.length" />
 
          <div
             class="mb-lg-0 mb-n2 mt-2 row salon-card-list"
@@ -34,7 +31,7 @@
             </div>
          </div>
 
-         <no-results v-if="!nonOfficialSalons.length && !salonsFiltered.length" />
+         <no-results v-else-if="!officialSalons.length"/>
       </div>
    </div>
 </template>

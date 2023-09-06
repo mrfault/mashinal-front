@@ -26,7 +26,7 @@
     </div>
     <!-- <div ref="floatingBefore"></div>
     <div ref="floatingAfter"></div> -->
-    <modal-popup :toggle="showModal" @close="showModal = false">
+    <modal-popup :toggle="showModal" @close="showModal = false" :title="!isMobileBreakpoint ? $t('sign_in_to_account') : '' ">
       <login-tabs></login-tabs>
     </modal-popup>
   </div>

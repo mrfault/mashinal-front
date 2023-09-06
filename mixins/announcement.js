@@ -214,7 +214,7 @@ export const AnnouncementDataMixin = {
          return this.announcement.number_of_axles && `${this.announcement.number_of_axles} ${this.$t('axles')}`;
       },
       condition() {
-         return this.announcement.is_new ? this.$t('new') : this.$t('used')
+         return this.announcement.is_new ? this.$t('new') : this.$t('S_H')
       }
    }
 }

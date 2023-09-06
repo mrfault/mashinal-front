@@ -56,16 +56,12 @@
 
                   <div class="col-md-12">
                      <div class="mb-lg-5 mt-4 mt-lg-5 row salon-card-list" v-if="officialSalons.length">
-                        <div
-                           class="col-12 col-md-6 col-lg-4 mb-2 mb-lg-3"
-                           v-for="salon in officialSalons"
-                           :key="salon.id"
-                           v-if="salon.announcement_count"
-                        >
+                        <div class="col-12 col-md-6 col-lg-4 mb-2 mb-lg-3" v-for="salon in officialSalons"
+                             :key="salon.id"
+                             v-if="salon.announcement_count">
                            <nuxt-link
                               class="keep-colors"
-                              :to="$localePath(`/salons/${salon.slug}`)"
-                           >
+                              :to="$localePath(`/salons/${salon.slug}`)">
                               <salon-card :salon="salon"/>
                            </nuxt-link>
                         </div>

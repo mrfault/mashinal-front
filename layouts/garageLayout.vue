@@ -10,7 +10,7 @@
                         <template v-if="image">
                            <img :src="image" :alt="user?.full_name"/>
                         </template>
-                        <h5 v-else class="ma-garage__nav--profile__name">{{ user?.full_name?.charAt(0) }}</h5>
+                        <h5 v-else class="ma-garage__nav--profile__name">{{ user?.full_name.charAt(0) }}</h5>
                      </div>
                      <h5 class="ma-garage__nav--profile__name"> {{ user?.full_name }}</h5>
                   </NuxtLink>
@@ -53,7 +53,7 @@
                               <template v-if="image">
                                  <img :src="image" :alt="user.full_name"/>
                               </template>
-                              <h5 v-else class="ma-garage__nav--profile__name">{{ user.full_name?.charAt(0) }}</h5>
+                              <h5 v-else class="ma-garage__nav--profile__name">{{ user.full_name.charAt(0) }}</h5>
                            </div>
                            <h5 class="ma-garage__nav--profile__name"> {{ user.full_name }}</h5>
                         </div>

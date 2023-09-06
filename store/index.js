@@ -250,6 +250,8 @@ const getInitialState = () => ({
    autosalonStatistics: {},
 
    settingsV2: [],
+
+   loginInEditModal: false,
 });
 
 export const state = () => getInitialState();
@@ -472,6 +474,10 @@ export const getters = {
    autosalonStatistics: s => s.autosalonStatistics,
 
    settingsV2: s => s.settingsV2,
+   
+   loginInEditModal: s => s.loginInEditModal,
+
+
 };
 
 const objectNotEmpty = (state, commit, property) => {

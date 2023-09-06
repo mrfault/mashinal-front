@@ -248,7 +248,6 @@ export default {
       await Promise.all([
          store.dispatch('getMyAllAnnouncementsV2', {status, shop}),
          store.dispatch('fetchPlatesV2', {status}),
-         store.dispatch('getSettingsV2')
       ]);
 
       return {
@@ -324,6 +323,7 @@ export default {
       },
       getStatistics() {
          this.$store.dispatch('getAutosalonStatistics', this.user.autosalon.id)
+         console.log("this.user.autosalon", this.user.autosalon)
       },
 
       sortAnnounces() {
@@ -771,7 +771,7 @@ export default {
          .ma-announcements__body--row__inner {
             background: #1b2434;
 
-    
+
          }
       }
    }

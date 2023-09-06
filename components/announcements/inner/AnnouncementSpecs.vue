@@ -271,7 +271,8 @@
             // Dynamic specs
             if (this.type === 'parts') {
                Object.keys(this.announcement?.filters)?.forEach(filter => {
-                  let value = this.announcement?.filters[filter];
+                  let value = this.announcement?.filters[filter]
+                  console.log('value', value)
 
                   if (value) {
                      if (typeof value === 'boolean') {
@@ -280,16 +281,17 @@
                         value = this.$t(value.name)
                      }
 
-                     // if (mergedKeys.includes(filter)) {
-                     //    mergedValues[filter] = value;
-                     // } else {
-                     //    specs.push({
-                     //          key: filter.replace('capacity', 'battery_capacity'),
-                     //          value,
-                     //          icon: '/icons/thorns.svg',
-                     //          for: ['parts']
-                     //       })
-                     // }
+                     if (mergedKeys.includes(filter)) {
+                        mergedValues[filter] = value;
+                     } else {
+                        specs.push({
+                              key: filter.replace('capacity', 'battery_capacity'),
+                              value,
+                              icon: '/icons/thorns.svg',
+                              for: ['parts']
+                           }
+                        )
+                     }
                   }
                })
 
@@ -317,6 +319,7 @@
          },
 
          catalogLink() {
+            console.log('this.catalog', this.catalog)
             let path = this.catalog && `/catalog/${this.catalog.brand.slug}/${this.catalog.model.slug}/${this.catalog.generation.id}/${this.catalog.car_type.id}/mod/${this.announcement?.car_catalog_id}`;
             return path && this.$localePath(path);
          }

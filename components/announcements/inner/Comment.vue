@@ -19,7 +19,6 @@
       padding: 32px;
       border-radius: 12px;
       border: 1px solid #E3E8EF;
-      overflow: hidden;
 
       &__title {
          font-size: 24px;

@@ -66,15 +66,15 @@
                <address v-if="announcement.status !== 3 && getAddress">{{ getAddress }}</address>
 
                <p class="text-red" v-else-if="announcement.status === 3">{{ $t('sold') }}</p>
-
+<!--               <pre>{{announcement?.is_external_salon}}</pre>-->
                <nuxt-link
+                  :to="contact?.link"
                   v-if="
                      announcement?.active_announcements_count > 1 ||
                      announcement?.is_part_salon ||
                      announcement?.is_auto_salon ||
                      announcement?.is_external_salon
                   "
-                  :to="contact?.link"
                >
                   <span v-if="announcement?.is_part_salon">{{ $t('go_to_shop') }}</span>
 
@@ -83,6 +83,11 @@
                   </span>
 
                   <span v-else>{{ $t('other_announcements_of_user') }}</span>
+<!--                  <pre>{{announcement.is_auto_salon}} - {{ announcement.is_external_salon }}</pre>-->
+
+
+<!--                  <icon name="chevron-right" />-->
+                  <!-- <inline-svg src="/icons/chevron-right.svg" :height="14" /> -->
                </nuxt-link>
             </div>
          </div>
@@ -126,10 +131,7 @@
          </div>
       </div>
 
-<!--      <ReasonForRejection-->
-<!--         class="mb-3"-->
-<!--         :options="announcement?.moderator?.reject_reason"-->
-<!--      />-->
+
 
       <div class="wrapp">
          <monetization-button
@@ -161,14 +163,14 @@
                :type="type"
                :className="'white h-52'"
                v-if="showEditButton(announcement)"
-               @openModal="openModal"
+               @openModal="openModal('isEdit')"
             />
          </div>
 
          <deactivate-button
             class="mt-3"
             :announcement="announcement"
-            v-if="showDeactivateButton(announcement) && announcement.status === 1"
+            v-if="showDeactivateButton(announcement)"
          />
 
          <restore-button
@@ -176,7 +178,9 @@
             v-if="userIsOwner(announcement) && announcement.status === 3"
             :free="true"
          />
+<!--         v-if="userIsOwner(announcement) && announcement.status === 3 && !announcement.is_external_salon"-->
       </div>
+
 
       <VinCode
          class="mt-4"
@@ -194,7 +198,6 @@
 </template>
 
 <script>
-   import ReasonForRejection from "~/components/announcements/ReasonForRejection.vue";
    import RestoreButton from '~/components/announcements/RestoreButton'
    import DeactivateButton from '~/components/announcements/DeactivateButton'
    import EditButton from '~/components/announcements/EditButton'
@@ -214,7 +217,6 @@
 
    export default {
       components: {
-         ReasonForRejection,
          CallButtonMultiple,
          RestoreButton,
          DeactivateButton,
@@ -234,12 +236,12 @@
 
       data() {
          return {
-            showModal: false
+            showModal: false,
          }
       },
 
       computed: {
-         ...mapGetters(['announcement']),
+         ...mapGetters(['announcement','loginInEditModal']),
 
          getAddress() {
             return this.announcement.is_auto_salon ? this.announcement.user?.auto_salon?.address : this.announcement.is_part_salon ? this.announcement.user?.part_salon?.address : this.announcement.address
@@ -288,9 +290,14 @@
                return this.$auth.user?.id === item?.user?.id && item?.status !== 2 && item?.status !== 3 && item?.status !== 5;
             }
          },
-         openModal() {
+         openModal(actionCase) {
             // console.log('sadsad')
             this.showModal = true
+            if (actionCase == 'isEdit'){
+               console.log("loginInEditModal",this.loginInEditModal)
+               this.$store.commit("mutate", {property: "loginInEditModal", value: true});
+               console.log("loginInEditModal",this.loginInEditModal)
+            }
          },
          closeModal() {
             this.showModal = false
@@ -298,7 +305,7 @@
       },
 
       created() {
-         this.$nuxt.$on('closeModal', () => this.closeModal());
+         this.$nuxt.$on('closeModal', () => this.closeModal())
       },
 
       props: {
