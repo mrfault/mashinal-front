@@ -474,7 +474,7 @@ export const getters = {
    autosalonStatistics: s => s.autosalonStatistics,
 
    settingsV2: s => s.settingsV2,
-   
+
    loginInEditModal: s => s.loginInEditModal,
 
 
@@ -664,7 +664,7 @@ export const actions = {
 
    async fetchRegistrationMark({commit}, id) {
       const res = await this.$axios.$get(`${this.$env().API_SECRET}/plate-numbers/${id}`)
-      commit("mutate", {property: "announcement", value: res?.data || []})
+      commit("mutate", {property: "announcement", value: res || []})
    },
 
    async fetchPlates({commit}, data = '') {
