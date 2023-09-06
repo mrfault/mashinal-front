@@ -2,37 +2,27 @@
    <button
       class="call-button-multiple btn full-width"
       :class="[
-         {'active': showPhone},
+         {'active': showPhone}, { pending },
          `btn--${callAtOnce ? '' : 'new-'}green`
       ]"
       @click.stop="handleClick"
    >
       <template v-if="!showPhone">
          <template v-if="callAtOnce">
-<!--            <template v-if="!isMobileBreakpoint">-->
-               <span v-mask="$maskPhone(true)" v-for="phone in phones">+{{ phone }}</span>
-<!--            </template>-->
-
-<!--            <span v-else>{{ $t('make_a_call') }}</span>-->
+            <span v-mask="$maskPhone(true)" v-for="phone in phones">+{{ phone }}</span>
          </template>
 
          <template v-else>
             <span>{{ $t('show_number') }}</span>
             <span>+994 {{ String(phones[0]).slice(3, 8).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') }} ** **</span>
-            <!--         <span>+994 {{ String(phone).slice(3, 8).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') }} ** **</span>-->
          </template>
       </template>
 
       <template v-else>
          <template v-if="callAtOnce">
-<!--            <template v-for="phone in phones" v-if="!isMobileBreakpoint">-->
-               <a class="call-a pending" :href="`tel:${ringostat_number}`">
-                  {{formatPhoneNumber(ringostat_number)}}
-               </a>
-<!--            {{ ringostat_number }}-->
-<!--            </template>-->
-
-<!--            <span v-else>{{ $t('make_a_call') }}</span>-->
+            <a class="call-a pending" :href="`tel:${ringostat_number}`">
+               {{ formatPhoneNumber(ringostat_number) }}
+            </a>
          </template>
       </template>
    </button>
@@ -50,6 +40,7 @@
 
       data() {
          return {
+            pending: false,
             showPhone: false,
             ringostat_number: '',
             ringostat_number_mask: '',
@@ -96,15 +87,17 @@
                this.showPhone = true;
                this.showSinglePhone = true;
                this.trackCall(1);
+               this.pending = true
 
                window.getManualClassifiedNumber(ringostat_announce,
                   (number) => {
-                     console.log('numberbbbbb', number)
                      this.ringostat_number = number.numberWithoutMask;
                      this.ringostat_number_mask = number.numberWithoutMask;
+                     this.pending = false
                      // this.singlePhone = number?.numberWithoutMask.replace('+','')
                   }, 0, `00${this.phone}`
                );
+
             }
          },
 
@@ -115,10 +108,10 @@
          }
       },
 
-      mounted() {
-         console.log('phones', this.phones)
-         console.log('announcement-id', this.announcementId)
-      }
+      // mounted() {
+      //    console.log('phones', this.phones)
+      //    console.log('announcement-id', this.announcementId)
+      // }
    }
 </script>
 

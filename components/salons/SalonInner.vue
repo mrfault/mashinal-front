@@ -38,24 +38,24 @@
 
                <div class="salon-inner__details-info">
                   <h4 class="salon-inner__details-name">
-                     <template v-if="!salonSingle?.is_official">
+                     <template v-if="!salonSingle.is_official">
                         {{ $t(isShop ? 'shop' : 'autosalon') }}
-                        "{{ salonSingle?.name || salonSingle?.user?.full_name }}"
+                        "{{ salonSingle.name || salonSingle.user.full_name }}"
                      </template>
 
-                     <template v-else>{{ salonSingle?.name || salonSingle?.user?.full_name }}</template>
+                     <template v-else>{{ salonSingle.name || salonSingle.user.full_name }}</template>
                   </h4>
 
-                  <h5 class="salon-inner__details-description">{{ salonSingle?.description }}</h5>
+                  <h5 class="salon-inner__details-description">{{ salonSingle.description }}</h5>
 
-                  <h5 class="salon-inner__details-address" v-if="salonSingle?.address">
+                  <h5 class="salon-inner__details-address">
                      <icon name="placeholder"/>
 
                      <a
-                        :href="`https://www.google.com/maps?q=${salonSingle?.lat}%2C${salonSingle?.lng}&ll=${salonSingle?.lat}%2C${salonSingle?.lng}&z=15`"
+                        :href="`https://www.google.com/maps?q=${salonSingle.lat}%2C${salonSingle.lng}&ll=${salonSingle.lat}%2C${salonSingle.lng}&z=15`"
                         target="_blank"
                      >
-                        {{ salonSingle?.address }}
+                        {{ salonSingle.address }}
                      </a>
                   </h5>
                </div>
@@ -63,7 +63,7 @@
 
             <div class="salon-inner__details-right">
                <div class="d-md-none">
-                  <thumbs-gallery where="salon" :media="salonSingle?.gallery_thumbs"/>
+                  <thumbs-gallery where="salon" :media="salonSingle.gallery_thumbs"/>
                </div>
 
                <div class="salon-inner__details-time">
@@ -71,15 +71,15 @@
                   <inline-svg src="/icons/clock_new.svg" />
 
                   <span class="working-time"
-                        v-if="salonSingle?.working_days && salonSingle?.working_hours"
-                        v-html="getWorkingDays(salonSingle?.working_days, salonSingle?.working_hours)"/>
+                        v-if="salonSingle.working_days && salonSingle.working_hours"
+                        v-html="getWorkingDays(salonSingle.working_days, salonSingle.working_hours)"/>
 
                   <span class="working-time" v-else>
                         {{ $t('everyday') }} : 09:00 - 18:00
                   </span>
                </div>
 
-               <div class="salon-inner__details-tels justify-content-between" v-if="salonSingle?.phones && salonSingle?.phones?.length">
+               <div class="salon-inner__details-tels justify-content-between" v-if="salonSingle.phones && salonSingle.phones.length">
                   <div class="divider d-flex align-items-center">
 <!--                     <icon name="phone-call"/>-->
                      <inline-svg src="/icons/phone-2.svg" />
@@ -142,9 +142,9 @@
       </grid>
 
       <gallery
-         v-if="salonSingle?.gallery_urls?.length"
+         v-if="salonSingle.gallery_urls.length"
          where="salon"
-         :media="[salonSingle?.gallery_urls, salonSingle?.gallery_thumbs]"
+         :media="[salonSingle.gallery_urls, salonSingle.gallery_thumbs]"
          :show-slider="false"
       />
    </div>
@@ -152,7 +152,6 @@
 
 <script>
    import { mapGetters, mapActions } from 'vuex'
-   import HandleIds from "~/components/announcements/HandleIds.vue";
    import { SalonsMixin } from '~/mixins/salons'
    import Grid from '~/components/announcements/Grid'
    import Gallery from '~/components/announcements/inner/Gallery'
@@ -167,7 +166,6 @@
          ThumbsGallery,
          CustomDropdown,
          Cap,
-         HandleIds
       },
 
       mixins: [SalonsMixin],

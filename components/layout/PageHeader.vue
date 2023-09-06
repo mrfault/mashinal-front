@@ -135,7 +135,7 @@
 
                               <NuxtLink v-else :to="getUserSettingsLink" class="ma-garage__nav--profile">
                                  <div class="ma-garage__nav--profile__avatar">
-                                    <h5  class="ma-garage__nav--profile__name">{{ user?.full_name?.charAt(0) }}</h5>
+                                    <h5  class="ma-garage__nav--profile__name">{{ user?.full_name.charAt(0) }}</h5>
                                  </div>
                                  <h5 class="ma-garage__nav--profile__name"> {{ user?.full_name }}</h5>
                               </NuxtLink>
@@ -145,11 +145,11 @@
                               <ul>
                                  <template
                                     v-for="menu in userMenus"
-                                    v-if="menu.isAvailable && ((user.parent_id || (user.children && user.children.length)) ? menu.title !== 'garage' : true )"
+                                    v-if="menu.isAvailable && ((user.parent_id || (user.children && user.children.length)) ? menu.title !== 'garage':true )"
                                  >
 
                                     <li
-                                       v-if="menu.title === 'my_account' ? !user.parent_id : true"
+                                       v-if="menu.title === 'my_account' ? !user.parent_id: true"
                                        :key="menu.title"
                                     >
                                        <nuxt-link :to="$localePath(menu.route)">{{ $t(menu.title) }}</nuxt-link>
@@ -206,11 +206,11 @@
                   <div class="row align-items-center">
                      <div class="col-lg-10 position-static">
                         <ul class="menu position-relative">
+                           <!-- v-if="(user.children && user.children.length) || user.parent_id ? !['eservices','salons','shops'].includes(menu.title) :true"-->
                            <li v-for="menu in navbarMenus"
                               :key="menu.title"
                               @mouseover="menu.children ? (hoverMenu = true) : ''"
                               @mouseleave="hoverMenu = false, activeCategory = 0"
-                              v-if="(user.children && user.children.length) || user.parent_id ? !['eservices','salons','shops'].includes(menu.title) :true"
                               :class="{ dropdown: menu.children }">
                               <nuxt-link
                                  class="external_salon_hover"

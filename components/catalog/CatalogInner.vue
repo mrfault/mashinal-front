@@ -522,6 +522,12 @@
             }
          }
       }
+
+      .images-slider {
+         .toolbar {
+            display: none;
+         }
+      }
    }
 
    .dark-mode {

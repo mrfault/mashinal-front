@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col-12 col-lg-4 my-3" @click="loginToSubAccount(child.id, child.part_salon)"  v-for="child in user.children" v-if="child.autosalon || child.part_salon">
+      <div class="col-12 col-lg-3 my-3" @click="loginToSubAccount(child.id, child.part_salon)"  v-for="child in user.children">
         <salon-login-card v-if="child.autosalon" :count="auto_count(child)" :salon="child.autosalon" :shop="false" />
         <salon-login-card v-if="child.part_salon" :count="child.parts_count" :salon="child.part_salon" :shop="true" />
       </div>
@@ -43,7 +43,8 @@ export default {
           this.$nuxt.$emit('login', true)
 
           this.$nuxt.$emit('closeModal')
-          await this.$router.push('/profile/announcements')
+          if(shop) await this.$router.push('/dashboard/2')
+          else await this.$router.push('/dashboard/1')
         })
         .catch((err) => {})
     }

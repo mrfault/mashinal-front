@@ -219,8 +219,8 @@
             ],
             sortItems: [
                { key: 'created_at', value: 'desc', name: this.$t('show_by_date') },
-               { key: 'price', value: 'asc', name: this.$t('show_cheap_first') },
-               { key: 'price', value: 'desc', name: this.$t('show_expensive_first') }
+               { key: 'price_asc', value: 'asc', name: this.$t('show_cheap_first') },
+               { key: 'price_desc', value: 'desc', name: this.$t('show_expensive_first') }
             ]
          }
       },
@@ -245,9 +245,9 @@
                      }
                   } else if (typeof this.form[item] === 'object' && query.split('=')[0] !== 'page') {
                      if (query.split('=')[0] === 'sort_by') {
-                        this.form.sorting.key = query.split('=')[1]
+                        this.form.sorting.key = query.split('=')[1];
                      } else {
-                        this.form.sorting.value = query.split('=')[1]
+                        this.form.sorting.value = query.split('=')[1];
                      }
 
                      this.sortItems.forEach(item => {

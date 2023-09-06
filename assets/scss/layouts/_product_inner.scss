@@ -81,8 +81,15 @@
             }
          }
       }
+
       .bg-white {
          background-color: transparent;
+      }
+
+      .announcements-grid {
+         margin: 0;
+         padding: 56px 0;
+         background-color: #1B2434;
       }
    }
 }

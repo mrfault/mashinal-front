@@ -211,7 +211,7 @@ export default {
          ],
          escapeDuplicates: false,
          isDragging: false,
-         sortSwitch: 2,
+         sortSwitch: false,
          sortedAnnouncements: {},
       }
    },
@@ -237,32 +237,64 @@ export default {
    },
    mounted() {
       if (this.user?.autosalon?.id) {
-         this.getStatistics();
+         // this.getStatistics();
       }
+
+      this.getAllData();
       this.$nuxt.$on('refresh-my-announcements', () => this.refresh++);
    },
-   async asyncData({store, route}) {
-      let status = ['0', '1', '2', '3'].includes(route.query.status) ? parseInt(route.query.status) : '';
-      let shop = ['1', '2'].includes(route.query.type) ? (route.query.type == 2 ? 'part' : 'salon') : false;
-
-      await Promise.all([
-         store.dispatch('getMyAllAnnouncementsV2', {status, shop}),
-         store.dispatch('fetchPlatesV2', {status}),
-         store.dispatch('getSettingsV2')
-      ]);
-
-      return {
-         pending: false,
-         statusReady: status,
-         form: {status},
-         refresh: 0,
-      }
-   },
+   // async asyncData({store, route}) {
+   //    let status = ['0', '1', '2', '3'].includes(route.query.status) ? parseInt(route.query.status) : '';
+   //    let shop = ['1', '2'].includes(route.query.type) ? (route.query.type == 2 ? 'part' : 'salon') : false;
+   //
+   // await Promise.all([
+   //    store.dispatch('getMyAllAnnouncementsV2', {status, shop}),
+   //    store.dispatch('fetchPlatesV2', {status}),
+   // ]);
+   //
+   // return {
+   //    pending: false,
+   //    statusReady: status,
+   //    form: {status},
+   //    refresh: 0,
+   // }
+   // },
    methods: {
       ...mapActions({
          getMyAllAnnouncements: 'getMyAllAnnouncementsV2',
          getMyPlates: 'fetchPlatesV2',
       }),
+
+      async getAllData() {
+         this.loading = true;
+         this.pending = true;
+         let store = this.$store;
+         let route = this.$route;
+
+         let status = ['0', '1', '2', '3'].includes(route.query.status) ? parseInt(route.query.status) : '';
+         let shop = ['1', '2'].includes(route.query.type) ? (route.query.type == 2 ? 'part' : 'salon') : false;
+
+         if (!this.user.autosalon) {
+            await Promise.all([
+               store.dispatch('getMyAllAnnouncementsV2', {status, shop}),
+               store.dispatch('fetchPlatesV2', {status}),
+            ]);
+         } else {
+            await this.getMyAllAnnouncements({
+               status: this.activeTab,
+               sorting: 1
+            });
+         }
+
+
+         // return {
+         this.pending = false;
+         this.loading = false;
+         this.statusReady = this.form.status;
+         // form: {status},
+         // refresh: 0,
+         // }
+      },
 
       changePageMarks(page) {
          this.$store.dispatch('fetchPlatesV2', `?page=${page}`);
@@ -322,24 +354,28 @@ export default {
       mouseUp() {
          this.isDragging = false;
       },
-      getStatistics() {
-         this.$store.dispatch('getAutosalonStatistics', this.user.autosalon.id)
-         console.log("this.user.autosalon", this.user.autosalon)
-      },
+      // getStatistics() {
+      //    this.$store.dispatch('getAutosalonStatistics', this.user.autosalon.id)
+      //    console.log("this.user.autosalon", this.user.autosalon)
+      // },
 
-      sortAnnounces() {
+      async sortAnnounces() {
          this.sortSwitch = !this.sortSwitch;
+         this.loading = true;
+         this.pending = true;
          if (this.sortSwitch == true) {
-            this.getMyAllAnnouncements({
-               status: this.activeTab,
-               sorting: 1
-            });
-         } else {
-            this.getMyAllAnnouncements({
+            await this.getMyAllAnnouncements({
                status: this.activeTab,
                sorting: 2
             });
+         } else {
+            await this.getMyAllAnnouncements({
+               status: this.activeTab,
+               sorting: 1
+            });
          }
+         this.loading = false;
+         this.pending = false;
       },
 
    },
@@ -632,7 +668,18 @@ export default {
 
    .profile-announcements-loader {
       .loader {
+         margin-top: 50px;
          margin-left: 50px;
+      }
+   }
+}
+
+@media(max-width: 991px) {
+
+   .profile-announcements-loader {
+      .loader {
+         margin-top: 250px;
+
       }
    }
 }
@@ -697,6 +744,15 @@ export default {
             }
          }
 
+
+      }
+   }
+
+}
+
+@media(max-width: 991px) {
+   .ma-announcements-autosalon-container {
+      .ma-announcements {
          &__body {
             &-autosalon {
                background: transparent;
@@ -720,7 +776,6 @@ export default {
          }
       }
    }
-
 }
 
 .ma-announcements {
@@ -757,6 +812,35 @@ export default {
    }
 }
 
+.dark-mode {
+   .ma-announcements {
+      &-sort-switch {
+         p {
+            color: #EEF2F6 !important;
+         }
+      }
+   }
 
+   .ma-announcements__body {
+      &-autosalon {
+
+         .ma-announcements__body--row__inner {
+            background: #1b2434;
+
+            .announcements-grid__item {
+               .item-details {
+                  border: 1px solid rgba(#9AA4B2, .3);
+                  border-top: none;
+                  border-radius: 0 0 8px 8px;
+               }
+            }
+         }
+      }
+   }
+
+   .ma-announcements__body-autosalon {
+      background: transparent;
+   }
+}
 </style>
 

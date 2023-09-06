@@ -117,9 +117,6 @@ export default {
          selectedItem: {}
       };
    },
-   mounted() {
-      console.log(this.options)
-   },
    computed: {
       ...mapGetters(['settingsV2']),
       options() {

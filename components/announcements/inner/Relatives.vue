@@ -17,6 +17,7 @@
 
       <template v-else>
          <grid
+            class="dark-bg"
             v-if="relativeAnnouncements && relativeAnnouncements.length"
             :announcements="relativeAnnouncements"
          >

@@ -3,24 +3,7 @@
       <div class="bg-white">
          <div class="container">
             <div class="announcements-inner">
-               <breadcrumbs :crumbs="crumbs">
-<!--                  <share-it type="publish"/>-->
-
-<!--                  <span class="text-data">-->
-<!--                     <icon name="eye" />-->
-<!--                     {{ registrationMark.view_count }}-->
-<!--                     <icon name="cursor" />-->
-<!--                     {{ registrationMark.open_count }}-->
-<!--                     <icon name="star" />-->
-<!--                     {{ registrationMark.favorites_count }}-->
-<!--                  </span>-->
-
-<!--                  <span class="text-data">-->
-<!--                     <icon name="calendar"/>-->
-<!--   -->
-<!--                     {{ registrationMark.humanize_created_at }}-->
-<!--                  </span>-->
-               </breadcrumbs>
+               <breadcrumbs :crumbs="crumbs" />
 
                <div class="row flex-column flex-lg-row">
                   <div class="col-auto">
