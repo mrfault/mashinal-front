@@ -131,95 +131,7 @@
          </div>
       </div>
 
-<!--      <template v-if="isMobileBreakpoint">-->
-<!--         <div class="more-data d-flex">-->
-<!--            <span class="text-data">№ {{ announcement.id_unique }}</span>-->
-<!--            <span class="text-data">-->
-<!--             <icon name="eye"/>-->
-<!--             {{ announcement.view_count }}-->
-<!--             <icon name="cursor"/>-->
-<!--             {{ announcement.open_count || announcement.show_phone_number_count }}-->
-<!--             <icon name="star"/>-->
-<!--             {{ announcement.favorites_count }}-->
-<!--           </span>-->
-<!--            <span class="text-data">-->
-<!--          <icon name="calendar"/>-->
-<!--          {{ announcement.humanize_created_at }}-->
-<!--        </span>-->
-<!--         </div>-->
-<!--         <div class="status" v-if="announcement.status == 2">-->
-<!--            <template v-if="needToPay">-->
-<!--               {{ $t('need_pay') }}-->
-<!--            </template>-->
-<!--            <template v-else>-->
-<!--               {{ $t('announcement_pending') }}-->
-<!--            </template>-->
-<!--         </div>-->
-<!--         <div class="d-flex">-->
-<!--            <share-it type="publish" class="btns"/>-->
 
-<!--            <button-->
-<!--               class="btn btn&#45;&#45;dark-blue-2-outline full-width"-->
-<!--               @click.stop="copyToClipboard($route.path)"-->
-<!--            >-->
-<!--               <icon name="link"/>-->
-<!--               {{ $t('copy_to_clipboard') }}-->
-<!--            </button>-->
-<!--         </div>-->
-<!--      </template>-->
-
-<!--      <template v-if="(((announcement.status == 1 || announcement.has_monetization)) || needToPay)">-->
-<!--&lt;!&ndash;         <hr class="mt-3"&ndash;&gt;-->
-<!--&lt;!&ndash;             v-if="needToPay ||&ndash;&gt;-->
-<!--&lt;!&ndash;             (!this.isMobileBreakpoint && announcement.has_monetization && $auth.loggedIn) ||&ndash;&gt;-->
-<!--&lt;!&ndash;             (!this.isMobileBreakpoint && !announcement.has_monetization) && this.type !== 'registration-marks'"&ndash;&gt;-->
-<!--&lt;!&ndash;         />&ndash;&gt;-->
-
-<!--         <div :class="{'mb-2 mb-lg-3': !needToPay }" v-if="type !== 'plates'">-->
-<!--            <pay-announcement-button-->
-<!--               :announcement="announcement"-->
-<!--               v-if="needToPay"-->
-<!--            />-->
-
-<!--            <monetization-stats-button-->
-<!--               :announcement="announcement"-->
-<!--               v-else-if="!this.isMobileBreakpoint && announcement.has_monetization && $auth.loggedIn && $auth.user.id === announcement.user_id && !needToPay"-->
-<!--            />-->
-<!--         </div>-->
-<!--      </template>-->
-
-<!--      <div class="quick-info__item" v-if="brief">-->
-<!--         <monetization-button-->
-<!--            class="h-52"-->
-<!--            :announcement="announcement"-->
-<!--            @openModal="openModal"-->
-<!--         />-->
-
-<!--         <div class="btns">-->
-<!--            <add-favorite-->
-<!--               class="h-52"-->
-<!--               :template="'btn'"-->
-<!--               :text="$t('add_favorite')"-->
-<!--               :announcement="announcement"-->
-<!--            />-->
-
-<!--            <add-comparison-->
-<!--               v-if="type !== 'plates' && type !== 'parts'"-->
-<!--               class="h-52"-->
-<!--               :template="'btn'"-->
-<!--               :text="$t('compare')"-->
-<!--               :id="announcement.id_unique"-->
-<!--            />-->
-
-<!--            <edit-button-->
-<!--               :announcement="announcement"-->
-<!--               :type="type"-->
-<!--               :className="'white h-52'"-->
-<!--               v-if="showEditButton(announcement)"-->
-<!--               @openModal="openModal"-->
-<!--            />-->
-<!--         </div>-->
-<!--      </div>-->
 
       <div class="wrapp">
          <monetization-button
@@ -251,7 +163,7 @@
                :type="type"
                :className="'white h-52'"
                v-if="showEditButton(announcement)"
-               @openModal="openModal"
+               @openModal="openModal('isEdit')"
             />
          </div>
 
@@ -269,19 +181,6 @@
 <!--         v-if="userIsOwner(announcement) && announcement.status === 3 && !announcement.is_external_salon"-->
       </div>
 
-<!--      <template v-if="!brief && announcement.status != 2 && !(announcement.is_auto_salon && announcement.status == 3)">-->
-<!--         <div class="row mt-n2 mt-lg-n3">-->
-<!--            <div class="col mt-2 mt-lg-3">-->
-
-<!--               -->
-
-<!--            </div>-->
-<!--            -->
-<!--            <div class="col mt-2 mt-lg-3">-->
-
-<!--            </div>-->
-<!--         </div>-->
-<!--      </template>-->
 
       <VinCode
          class="mt-4"
@@ -342,10 +241,10 @@
       },
 
       computed: {
-         ...mapGetters(['announcement']),
+         ...mapGetters(['announcement','loginInEditModal']),
 
          getAddress() {
-            return this.announcement.is_auto_salon ? this.announcement.user?.auto_salon?.address : this.announcement.is_part_salon ? this.announcement.user?.part_salon?.address : this.announcement.address
+            return this.announcement?.is_auto_salon ? this.announcement?.user?.auto_salon?.address : this.announcement?.is_part_salon ? this.announcement?.user?.part_salon?.address : this.announcement?.address
          },
 
          contact() {
@@ -361,7 +260,7 @@
          },
 
          comparisonExceptions() {
-            return this.type === 'cars' && ![0,2,3].includes(this.announcement.status);
+            return this.type === 'cars' && ![0,2,3].includes(this.announcement?.status);
          }
       },
 
@@ -391,9 +290,14 @@
                return this.$auth.user?.id === item?.user?.id && item?.status !== 2 && item?.status !== 3 && item?.status !== 5;
             }
          },
-         openModal() {
+         openModal(actionCase) {
             // console.log('sadsad')
             this.showModal = true
+            if (actionCase == 'isEdit'){
+               console.log("loginInEditModal",this.loginInEditModal)
+               this.$store.commit("mutate", {property: "loginInEditModal", value: true});
+               console.log("loginInEditModal",this.loginInEditModal)
+            }
          },
          closeModal() {
             this.showModal = false
