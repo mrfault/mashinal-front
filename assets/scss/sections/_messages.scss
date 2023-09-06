@@ -28,7 +28,23 @@
       }
    }
 }
+.chat-list-switch .chat-menu-list{
+   padding-bottom: 10px;
+   border-bottom: 2px solid transparent;
+}
 
+.chat-list-switch .chat-menu-list:first-child{
+   width: 40%;
+   margin-right: 5px;
+}
+
+.chat-list-switch .chat-menu-list:last-child{
+   width: 60%;
+}
+.chat-list-switch .chat-menu-list.active{
+   padding-bottom: 10px;
+   border-bottom: 2px solid #155EEF;
+}
 
 .badge-counter {
    position: absolute;
@@ -87,11 +103,13 @@
       .switch-text {
          width: 100%;
          transition: color .15s ease-out;
-         color: var(--gray-800, #1B2434);
-         font-size: 16px;
+         font-size: 15px;
+         font-weight: 500;
+         line-height: 18px;
+         letter-spacing: 0em;
+         text-align: center;
          font-style: normal;
-         font-weight: 400;
-         line-height: 20px; /* 125% */
+         color: #4B5565;
       }
 
       .switch-icon {
@@ -99,11 +117,11 @@
          flex-shrink: 0;
          align-items: center;
          justify-content: center;
-         width: 16px;
-         height: 28px;
+         width: 24px;
+         height: 24px;
          border-radius: 50%;
          //background-color: rgba($dark-blue-1, .15);
-         margin-right: 9px;
+         margin-right: 5px;
          color: var(--gray-800, #1B2434);
          font-size: 16px;
          font-style: normal;
@@ -116,6 +134,7 @@
          width: 24px;
          height: 24px;
       }
+
    }
 
    &-item {
@@ -729,9 +748,9 @@
 
    .chat {
       &-list-switch {
-         .switch-icon svg path{
-            fill: #FFF;
-            stroke: #FFF;
+         .switch-icon svg{
+            fill: #CDD5DF;
+            stroke: #CDD5DF;
          }
 
          .text-dark-blue-2 {
