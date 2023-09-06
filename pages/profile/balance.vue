@@ -147,8 +147,8 @@
                                           <template
                                              v-else-if="row.what_bought && ['App\\Motorcycle','App\\Scooter','App\\MotoAtv'].includes(row.what_bought_type) && row.operation_key !== 'plate_announce_key'">
                                              ( <nuxt-link
-                                             :to="$localePath('/moto/announcement/'+row.what_bought.id)">{{
-                                                row.what_bought.id
+                                             :to="$localePath('/moto/announcement/'+row.what_bought.id_unique)">{{
+                                                row.what_bought.id_unique
                                              }}</nuxt-link> )
                                           </template>
 
