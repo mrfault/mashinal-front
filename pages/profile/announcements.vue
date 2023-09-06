@@ -457,18 +457,20 @@ export default {
 
 
 <style lang="scss">
-.ma-announcements__top-cards {
-   display: flex;
-   justify-content: space-between;
-   margin-bottom: 40px;
+.ma-announcements {
 
-   .ma-announcements__top-card {
+   &__top-cards {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 40px;
+   }
+
+   &__top-card {
       min-height: 100%;
       width: calc((100% - 80px) / 5);
       border-radius: 12px;
       border: 1px solid #D8DCE0;
       padding: 16px;
-
 
       &--image {
          width: 40px;
@@ -492,7 +494,81 @@ export default {
          color: #10243C;
       }
    }
+
+   &__body--row__inner, .ma-announcements__body--row__inner--item-plate {
+      .stratch-child-block {
+         height: 100% !important;
+         min-height: auto !important;
+      }
+   }
+
+   &-sort-switch {
+      display: flex;
+      align-items: center;
+      margin-left: auto;
+      padding-top: 8px;
+
+      p {
+         font: 400 16px/24px 'TTHoves';
+         color: #1b2434;
+         margin-bottom: 6px;
+      }
+
+      .toggle-wrapper {
+         margin: 0 12px;
+      }
+   }
+
+   &__head {
+
+      overflow-y: hidden;
+
+      &-autosalon {
+         border-radius: 8px 8px 0 0;
+         margin-bottom: 0;
+         padding-left: 32px;
+
+         .ma-announcements__head--item {
+            padding: 24px 12px 20px 12px;
+         }
+      }
+   }
+
+   &-autosalon-title {
+      font: 600 20px/24px 'TTHoves';
+      margin-bottom: 16px;
+   }
+
+   &__body {
+      &-autosalon {
+         background: #EEF2F6;
+         border-radius: 0 0 8px 8px;
+         //border-radius: 8px;
+
+         .ma-announcements__body--row__inner {
+            padding: 32px 12px 0px 32px;
+            flex-wrap: wrap;
+            cursor: initial;
+            box-sizing: border-box;
+            overflow: hidden;
+
+            &--item-plate {
+               margin-bottom: 32px;
+               width: 254px;
+            }
+         }
+      }
+   }
 }
+
+.profile-announcements-loader {
+   .loader {
+      margin-top: 50px;
+      margin-left: 50px;
+   }
+}
+
+
 
 @media (max-width: 991px) {
    .ma-announcements {
@@ -573,7 +649,6 @@ export default {
 
    }
 
-
    .dark-mode {
       .ma-announcements {
          &__head {
@@ -595,6 +670,13 @@ export default {
                }
             }
          }
+      }
+   }
+
+   .profile-announcements-loader {
+      .loader {
+         margin-top: 250px;
+
       }
    }
 }
@@ -634,82 +716,9 @@ export default {
    }
 }
 
-.dark-mode {
-   .ma-announcements {
-      &__top-cards {
-         .ma-announcements__top-card {
-            background: #1B2434;
-            border: 1px solid #1b2434;
-
-            &--title {
-               color: #fff;
-            }
-
-            &--count {
-               color: #fff;
-            }
-         }
-      }
 
 
-   }
 
-}
-
-
-.ma-announcements__body--row__inner, .ma-announcements__body--row__inner--item-plate {
-   .stratch-child-block {
-      height: 100% !important;
-      min-height: auto !important;
-   }
-}
-
-@media(min-width: 991px) {
-
-   .profile-announcements-loader {
-      .loader {
-         margin-top: 50px;
-         margin-left: 50px;
-      }
-   }
-}
-
-@media(max-width: 991px) {
-
-   .profile-announcements-loader {
-      .loader {
-         margin-top: 250px;
-
-      }
-   }
-}
-
-
-.ma-announcements__body {
-   &-autosalon {
-      background: #EEF2F6;
-      border-radius: 0 0 8px 8px;
-      //border-radius: 8px;
-
-      .ma-announcements__body--row__inner {
-         padding: 32px 12px 0px 32px;
-         flex-wrap: wrap;
-         cursor: initial;
-         box-sizing: border-box;
-         overflow: hidden;
-
-         &--item-plate {
-            margin-bottom: 32px;
-            width: 254px;
-         }
-      }
-   }
-}
-
-.ma-announcements-autosalon-title {
-   font: 600 20px/24px 'TTHoves';
-   margin-bottom: 16px;
-}
 
 @media (max-width: 600px) {
    .ma-announcements-autosalon-container {
@@ -778,68 +787,47 @@ export default {
    }
 }
 
-.ma-announcements {
-   &-sort-switch {
-      display: flex;
-      align-items: center;
-      margin-left: auto;
-      padding-top: 8px;
-
-      p {
-         font: 400 16px/24px 'TTHoves';
-         color: #1b2434;
-         margin-bottom: 6px;
-      }
-
-      .toggle-wrapper {
-         margin: 0 12px;
-      }
-   }
-
-   &__head {
-
-      overflow-y: hidden;
-
-      &-autosalon {
-         border-radius: 8px 8px 0 0;
-         margin-bottom: 0;
-         padding-left: 32px;
-
-         .ma-announcements__head--item {
-            padding: 24px 12px 20px 12px;
-         }
-      }
-   }
-}
 
 .dark-mode {
    .ma-announcements {
+      &__top-cards {
+         .ma-announcements__top-card {
+            background: #1B2434;
+            border: 1px solid #1b2434;
+
+            &--title {
+               color: #fff;
+            }
+
+            &--count {
+               color: #fff;
+            }
+         }
+      }
+
       &-sort-switch {
          p {
             color: #EEF2F6 !important;
          }
       }
-   }
 
-   .ma-announcements__body {
-      &-autosalon {
+      &__body {
+         &-autosalon {
+            background: transparent;
 
-         .ma-announcements__body--row__inner {
-            background: #1b2434;
+            .ma-announcements__body--row__inner {
+               background: #1b2434;
 
-            .announcements-grid__item {
-               .item-details {
-                  border: 1px solid rgba(#9AA4B2, .3);
-                  border-top: none;
-                  border-radius: 0 0 8px 8px;
+               .announcements-grid__item {
+                  .item-details {
+                     border: 1px solid rgba(#9AA4B2, .3);
+                     border-top: none;
+                     border-radius: 0 0 8px 8px;
+                  }
                }
             }
          }
       }
-   }
-
-   .ma-announcements__body-autosalon {
-      background: transparent;
    }
 }
 </style>
