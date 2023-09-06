@@ -657,7 +657,7 @@ export const actions = {
    },
 
    async fetchRegistrationMark({commit}, id) {
-      const res = await this.$axios.$get(`/plate/announce/${id}`)
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/plate-numbers/${id}`)
       commit("mutate", {property: "announcement", value: res?.data || []})
    },
 

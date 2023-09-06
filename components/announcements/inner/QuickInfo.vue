@@ -242,7 +242,7 @@
          ...mapGetters(['announcement']),
 
          getAddress() {
-            return this.announcement.is_auto_salon ? this.announcement.user?.auto_salon?.address : this.announcement.is_part_salon ? this.announcement.user?.part_salon?.address : this.announcement.address
+            return this.announcement?.is_auto_salon ? this.announcement?.user?.auto_salon?.address : this.announcement?.is_part_salon ? this.announcement?.user?.part_salon?.address : this.announcement?.address
          },
 
          contact() {
@@ -258,7 +258,7 @@
          },
 
          comparisonExceptions() {
-            return this.type === 'cars' && ![0,2,3].includes(this.announcement.status);
+            return this.type === 'cars' && ![0,2,3].includes(this.announcement?.status);
          }
       },
 
