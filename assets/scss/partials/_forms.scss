@@ -145,12 +145,12 @@ input::-webkit-inner-spin-button {
          opacity: 0.4;
          pointer-events: none;
 
-         &:hover {
+         &:hover{
             border-color: transparent;
          }
       }
 
-      &:hover {
+      &:hover{
          border-color: $blue-new;
       }
    }
@@ -305,6 +305,7 @@ input::-webkit-inner-spin-button {
 //}
 
 
+
 .checkbox-input {
    position: relative;
    user-select: none;
@@ -433,7 +434,6 @@ input::-webkit-inner-spin-button {
       height: 52px;
       padding: 0 15px;
       cursor: pointer;
-
       &.transparent {
          background: transparent !important;
       }
@@ -766,7 +766,6 @@ input::-webkit-inner-spin-button {
 
             svg {
                margin-right: 10px;
-
                path {
                   fill: $grey-4-new;
                   stroke: $grey-4-new;
@@ -1128,7 +1127,6 @@ input::-webkit-inner-spin-button {
       .form-buttons {
          .form-group {
             border-right: none;
-
             .btn {
                height: 34px;
             }
@@ -1158,23 +1156,6 @@ input::-webkit-inner-spin-button {
       }
    }
 }
-
-.dark-mode {
-   .form-merged.flex-column.price {
-      button {
-         background-color: #121926 !important;
-         border-color: #121926 !important;
-         color: white;
-      }
-
-      .active {
-         button {
-            border-color: #2970FF !important;
-         }
-      }
-   }
-}
-
 
 .text-input.no-bg input,
 .checkbox-input.no-bg label,
@@ -1386,7 +1367,6 @@ input::-webkit-inner-spin-button {
             .form-group {
                .text-input {
                   position: relative;
-
                   i {
                      right: 20px !important;
                   }

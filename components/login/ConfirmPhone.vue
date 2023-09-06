@@ -95,7 +95,7 @@ export default {
       }
    },
    computed: {
-      ...mapGetters(['editPath', 'editingPostAuthor', 'settingsV2']),
+      ...mapGetters(['editPath', 'editingPostAuthor', 'settingsV2', 'loginInEditModal']),
    },
    methods: {
       ...mapActions('letterOfAttorney', ['updateStep']),
@@ -151,11 +151,15 @@ export default {
                //   }
                //   // this.$router.push("ehtiyat-hisseleri/magazalar")
                // }
-               setTimeout(()=>{
-                  if (this.$route.name == 'cars-announcement-id___az' || this.$route.name == 'cars-announcement-id___ru') {
-                     this.$toasted.error(this.$t('this_announcement_belongs_to_another_user'))
-                  }
-               },1500)
+               if (this.loginInEditModal){
+                  setTimeout(()=>{
+                     if (this.$route.name == 'cars-announcement-id___az' || this.$route.name == 'cars-announcement-id___ru') {
+                        this.$toasted.error(this.$t('this_announcement_belongs_to_another_user'))
+                     }
+                  },1500)
+                  this.$store.commit("mutate", {property: "loginInEditModal", value: false})
+               }
+
 
             })
             .catch((err) => {
