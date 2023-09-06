@@ -151,11 +151,11 @@ export default {
                //   }
                //   // this.$router.push("ehtiyat-hisseleri/magazalar")
                // }
-               setTimeout(()=>{
-                  if (this.$route.name == 'cars-announcement-id___az' || this.$route.name == 'cars-announcement-id___ru') {
-                     this.$toasted.error(this.$t('this_announcement_belongs_to_another_user'))
-                  }
-               },1500)
+               // setTimeout(()=>{
+               //    if (this.$route.name == 'cars-announcement-id___az' || this.$route.name == 'cars-announcement-id___ru') {
+               //       this.$toasted.error(this.$t('this_announcement_belongs_to_another_user'))
+               //    }
+               // },1500)
 
             })
             .catch((err) => {

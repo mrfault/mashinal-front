@@ -139,16 +139,16 @@
                                           <template
                                              v-else-if="row.what_bought && ['App\\Announcement'].includes(row.what_bought_type) && row.operation_key !== 'plate_announce_key'">
                                              ( <nuxt-link
-                                             :to="$localePath('/cars/announcement/'+row.what_bought.id_unique)">{{
-                                                row.what_bought.id_unique
+                                             :to="$localePath('/cars/announcement/'+row.what_bought.id)">{{
+                                                row.what_bought.id
                                              }}</nuxt-link> )
                                           </template>
 
                                           <template
                                              v-else-if="row.what_bought && ['App\\Motorcycle','App\\Scooter','App\\MotoAtv'].includes(row.what_bought_type) && row.operation_key !== 'plate_announce_key'">
                                              ( <nuxt-link
-                                             :to="$localePath('/moto/announcement/'+row.what_bought.id_unique)">{{
-                                                row.what_bought.id_unique
+                                             :to="$localePath('/moto/announcement/'+row.what_bought.id)">{{
+                                                row.what_bought.id
                                              }}</nuxt-link> )
                                           </template>
 
@@ -163,8 +163,8 @@
                                           <template
                                              v-else-if="row.what_bought && row.what_bought_type === 'App\\Part' && row.operation_key !== 'plate_announce_key'">
                                              ( <nuxt-link
-                                             :to="$localePath('/parts/announcement/'+row.what_bought.id_unique)">{{
-                                                row.what_bought.id_unique
+                                             :to="$localePath('/parts/announcement/'+row.what_bought.id)">{{
+                                                row.what_bought.id
                                              }}</nuxt-link> )
                                           </template>
 
@@ -425,8 +425,12 @@ export default {
       // console.log(this.user)
 
       let intervalSwipper = setInterval(() => {
-         if(this.balanceSwiper.init()) {
-            clearInterval(intervalSwipper);
+         if (this.balanceSwiper?.destroyed) {
+             clearInterval(intervalSwipper);
+         } else {
+            if(this.balanceSwiper.init()) {
+               clearInterval(intervalSwipper);
+            }
          }
       }, 1000);
 
