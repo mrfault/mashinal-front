@@ -151,7 +151,6 @@ export default {
                //   }
                //   // this.$router.push("ehtiyat-hisseleri/magazalar")
                // }
-
                if (this.loginInEditModal){
                   setTimeout(()=>{
                      if (this.$route.name == 'cars-announcement-id___az' || this.$route.name == 'cars-announcement-id___ru') {

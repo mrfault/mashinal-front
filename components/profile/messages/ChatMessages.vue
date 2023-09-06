@@ -498,7 +498,7 @@ export default {
    .cursor-pointer {
       svg{
          path{
-            stroke: #FFF;
+            stroke: #CDD5DF;
          }
       }
 
@@ -506,8 +506,8 @@ export default {
    .cursor-pointer .block-icon-list {
       svg{
          path{
-            fill: #FFF;
-            stroke: #FFF;
+            fill: #CDD5DF;
+            stroke: #CDD5DF;
          }
       }
    }
