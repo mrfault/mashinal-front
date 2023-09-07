@@ -144,7 +144,7 @@
                // },
                {
                   title: this.$t('autocatalog'),
-                  description: 'Lorem ipsum dolor sit amet consectetur. Fermentum euismod nunc massa tristique. Vitae nisi dignissim viverra neque nisl.',
+                  description: this.$t('autocatalog_desc'),
                   value: null,
                   // icon: 'part-2',
                   url: '/catalog',

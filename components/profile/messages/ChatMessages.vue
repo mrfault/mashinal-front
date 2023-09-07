@@ -452,7 +452,7 @@ export default {
       }
    },
    mounted() {
-      //console.log(this.attachments);
+      console.log(this.chatAnnouncement);
       this.checkIfRead();
       this.handleScrollToMessage(this.messagePin, false);
       this.$nextTick(() => {
