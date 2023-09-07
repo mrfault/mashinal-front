@@ -132,7 +132,7 @@
       </div>
 
       <ReasonForRejection
-         v-if="announcement?.status !== 1"
+         v-if="announcement?.status === 0"
          class="mb-3"
          :options="announcement?.moderator?.reject_reason"
       />
