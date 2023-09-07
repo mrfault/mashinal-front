@@ -145,6 +145,7 @@ export default {
             })
             .catch((err) => {
                this.pending = false
+               this.$toasted.error(error.response.data.message)
             })
       },
       async checkPhone() {

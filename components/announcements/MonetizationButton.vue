@@ -276,7 +276,8 @@ export default {
          }
       },
 
-      openPaymentModal(e) {
+      async openPaymentModal(e) {
+         await this.getPriceList();
          // console.log('this.announcement', this.announcement)
          if (this.announcement.status != 1) {
             e.stopPropagation()
@@ -293,33 +294,38 @@ export default {
       handlePaymentType(id) {
          this.paymentMethod = 'card';
          this.paymentType = id;
+      },
+
+      async getPriceList() {
+         this.$axios.$get('/monetization/price/list').then((res) => {
+            this.priceList = res;
+            this.price.value = res[0].price;
+            this.day.value = res[0].days;
+
+            /*      this.price.min = this.pricesForPlan[0]
+                  this.price.value = this.pricesForPlan[2]
+                  this.price.max = this.pricesForPlan[this.pricesForPlan.length - 1]*/
+         })
       }
    },
 
    created() {
-      this.$axios.$get('/monetization/price/list').then((res) => {
-         this.priceList = res;
-         this.price.value = res[0].price;
-         this.day.value = res[0].days;
 
-         /*      this.price.min = this.pricesForPlan[0]
-               this.price.value = this.pricesForPlan[2]
-               this.price.max = this.pricesForPlan[this.pricesForPlan.length - 1]*/
-      })
    }
 }
 </script>
 
 <style lang="scss">
 .btn--red-opacity-2 {
-   svg{
+   svg {
       margin-left: 9px;
    }
+
    &.disabled {
       cursor: context-menu;
       opacity: 50%;
       pointer-events: all;
-      @media (min-width: 992px){
+      @media (min-width: 992px) {
          .btn--red-opacity-2:hover {
             color: #fff;
             border-radius: 8px;
