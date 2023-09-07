@@ -98,7 +98,8 @@
                         <div class="no-messages">
                            <div class="row">
                               <div class="col-md-12 d-flex justify-content-center align-items-center">
-                                 <inline-svg src="/icons/no-message.svg"/>
+                                 <inline-svg src="/icons/no-message.svg" v-if="!isDarkMode"/>
+                                 <inline-svg src="/icons/no-message-dark.svg" v-if="isDarkMode"/>
                               </div>
                               <div class="col-md-12 no-messages-content">
                                  <h3>{{$t('no_message')}}</h3>
@@ -705,7 +706,15 @@ export default {
    .chat-list-switch .switch-icon{
       color: #CDD5DF;
    }
+   .no-messages-content{
+      h3{
+         color: #EEF2F6;
+      }
 
+      p{
+         color: #CDD5DF;
+      }
+   }
 }
 .fslightbox-container{
    background: #000;

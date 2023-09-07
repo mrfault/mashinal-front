@@ -221,9 +221,6 @@
       },
 
       computed: {
-         is() {
-            return is
-         },
          ...mapGetters(['motoAnnouncements', 'getMainMonetized', 'mainAnnouncements', 'brandsList']),
 
          crumbs() {
