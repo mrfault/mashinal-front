@@ -213,6 +213,7 @@ export default {
          isDragging: false,
          sortSwitch: false,
          sortedAnnouncements: {},
+         refresh: 0,
       }
    },
    components: {
@@ -290,7 +291,7 @@ export default {
          // return {
          this.pending = false;
          this.loading = false;
-         this.statusReady = this.form.status;
+         // this.statusReady = this.form.status;
          // form: {status},
          // refresh: 0,
          // }
@@ -715,10 +716,6 @@ export default {
       }
    }
 }
-
-
-
-
 
 @media (max-width: 600px) {
    .ma-announcements-autosalon-container {
