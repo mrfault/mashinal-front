@@ -40,10 +40,16 @@ export default function ({app, store, error, $axios}) {
             window.location.reload();
          }
       } else if (code === 422) {
-         console.log("err", err.response)
+         if (err.response.data.data.code ){
+            app.$toast.error(app.i18n.t(err.response.data.data.code[0]));
+         }
+         if (err.response.data.message ){
+            app.$toast.error(app.i18n.t(err.response.data.message));
+         }
          if(err.response && err.response.data && (err.response.data.message.includes("Aktiv elan sayı") || err.response.data.message.includes("Количество активных объявлений"))){
             app.$toast.error(err.response.data.message);
          }
+
          if (err.response.data.data) {
             Object.values(err.response.data.data).forEach((val) => {
                app.$toast.error(app.i18n.t(val[0]))

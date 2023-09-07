@@ -263,6 +263,7 @@ export default {
       }
    }
    .ma-announcements__head{
+      width: auto;
       background: #1B2434;
       overflow-y: auto !important;
       &::-webkit-scrollbar {
