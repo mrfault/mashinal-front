@@ -49,12 +49,12 @@
          // store.dispatch('fetchAutosalonAnnouncementsId', {id: store.getters.salonSingle.id});
       },
 
-      mounted() {
+      // mounted() {
          // this.$store.commit('mutate', {
          //    property: 'announcement',
          //    value: {}
          // })
-      },
+      // },
 
       computed: {
          ...mapGetters(['salonSingle', 'autosalonAnnouncementsId']),
