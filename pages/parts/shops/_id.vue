@@ -31,12 +31,14 @@
       },
 
       async asyncData({store, route}) {
-         await Promise.all([
-            store.dispatch('getSalonById', {slug: route.params.id, page: (route.query.page || 1)}),
-            store.dispatch('getMotoOptions'),
-         ]);
+         if (route.params.id) {
+            await store.dispatch('getSalonById', {slug: route.params.id, page: (route.query.page || 1)});
+         }
+         await store.dispatch('getMotoOptions');
 
-         store.dispatch('fetchPartsAnnouncementsId', store.getters?.salonSingle?.id);
+         if (store.getters?.salonSingle?.id) {
+            await store.dispatch('fetchPartsAnnouncementsId', store.getters?.salonSingle?.id);
+         }
       },
 
       computed: {
