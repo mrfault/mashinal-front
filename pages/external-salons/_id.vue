@@ -44,7 +44,7 @@
          ]);
 
            await store.dispatch('fetchAutosalonAnnouncementsId', {
-              id: store.getters.salonSingle.id,
+              id: store?.getters?.salonSingle?.id,
               page: route.query.page || 1
            });
 

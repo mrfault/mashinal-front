@@ -1039,6 +1039,8 @@ export default {
    hub: "Mərkəz",
    "Hub (DIA)": "təkər topu (DIA)",
    hybrid: "Hibrid",
+   hybrid_benzin: "Hibrid-benzin",
+   hybrid_dizel: "Hibrid-dizel",
    "Plug-in hybrid": "Plug-in hibrid",
    hybrid_engine_type: "Hibrid mühərrikin növü",
    if_you_do_not_have_an_account: "Hesabınız olmadığı halda",
