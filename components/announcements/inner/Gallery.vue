@@ -364,11 +364,8 @@
                hasVideo = false,
                has360 = false
             if (this.where === 'catalog') {
-               thumbs = this.getMediaByKey(this.media, 'thumb')
-               main = this.getMediaByKey(this.media, 'main')
-
-               // console.log('thumbs', thumbs)
-               // console.log('main', main)
+               thumbs = this.getMediaByKey(this.media, 'thumb');
+               main = this.getMediaByKey(this.media, 'main');
             } else if (this.where === 'announcement') {
                let media = this.announcement.media.main
                if (media?.length === 0) return []
