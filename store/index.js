@@ -474,7 +474,7 @@ export const getters = {
    autosalonStatistics: s => s.autosalonStatistics,
 
    settingsV2: s => s.settingsV2,
-   
+
    loginInEditModal: s => s.loginInEditModal,
 
 
@@ -1321,7 +1321,7 @@ export const actions = {
    },
    async getMyAllAnnouncementsV2({commit}, data = {}) {
       const res = await this.$axios.$get(
-         `${this.$env().API_SECRET}/me/announcements?status=${data.status}&sorting=${data.sorting}`
+         `${this.$env().API_SECRET}/me/announcements`, {params: data}
       );
       commit("mutate", {property: "myAnnouncementsV2", value: res});
    },
