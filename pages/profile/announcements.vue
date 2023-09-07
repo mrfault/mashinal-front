@@ -18,19 +18,21 @@
 
                </div>
             </div>
-            <div
-               v-if="showHeadCategories"
-               :class="{'ma-announcements__head-autosalon': user.autosalon}"
-               class="ma-announcements__head">
-               <button
-                  v-for="(item,index) in announceItems"
-                  :class="{'ma-announcements__head--item--active': item.id == activeTab}"
-                  class="ma-announcements__head--item"
-                  @click="changeTab(item)"
-               >
-                  {{ $t(item.title) }}
-               </button>
-               <div v-if="user.autosalon" class="ma-announcements-sort-switch">
+            <div :class="{'ma-announcements__head-autosalon-container': user.autosalon}">
+               <div
+                  v-if="showHeadCategories"
+                  :class="{'ma-announcements__head-autosalon': user.autosalon}"
+                  class="ma-announcements__head">
+                  <button
+                     v-for="(item,index) in announceItems"
+                     :class="{'ma-announcements__head--item--active': item.id == activeTab}"
+                     class="ma-announcements__head--item"
+                     @click="changeTab(item)"
+                  >
+                     {{ $t(item.title) }}
+                  </button>
+               </div>
+               <div v-if="user.autosalon && !isMobileBreakpoint" class="ma-announcements-sort-switch">
                   <p>{{ $t('sorting_view') }}</p>
                   <custom-switch :value="sortSwitch" @input="sortAnnounces"/>
                   <p>{{ $t('sorting_call') }}</p>
@@ -38,7 +40,8 @@
             </div>
             <h2 v-if="isMobileBreakpoint && user.autosalon" class="ma-announcements-autosalon-title">
                {{ $t('most_viewed_announcements') }}</h2>
-            <div v-if="isMobileBreakpoint && user.autosalon" class="ma-announcements-sort-switch pt-0 pb-2">
+            <div v-if="isMobileBreakpoint && user.autosalon" :class="{'pl-0': isMobileBreakpoint}"
+                 class="ma-announcements-sort-switch pt-0 pb-2">
                <p>{{ $t('sorting_view') }}</p>
                <custom-switch :value="sortSwitch" @input="sortAnnounces"/>
                <p>{{ $t('sorting_call') }}</p>
@@ -316,7 +319,7 @@ export default {
          this.loading = true;
          this.pending = true;
          await this.getMyAllAnnouncements({status: this.activeTab});
-         this.statusReady = this.form.status;
+         // this.statusReady = this.form.status;
          this.pending = false;
          this.scrollTo('.announcements-grid.paginated', [-15, -20]);
          this.loading = false;
@@ -503,33 +506,32 @@ export default {
       }
    }
 
-   &-sort-switch {
-      display: flex;
-      align-items: center;
-      margin-left: auto;
-      padding-top: 8px;
-
-      p {
-         font: 400 16px/24px 'TTHoves';
-         color: #1b2434;
-         margin-bottom: 6px;
-      }
-
-      .toggle-wrapper {
-         margin: 0 12px;
-      }
-   }
 
    &__head {
 
-      overflow-y: hidden;
+      overflow-y: hidden !important;
 
       &-autosalon {
          border-radius: 8px 8px 0 0;
          margin-bottom: 0;
          padding-left: 32px;
+         flex-wrap: wrap;
+         padding-right: 0;
+         width: auto;
+
+         &-container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            background: #EEF2F6;
+            border-radius: 8px 8px 0 0;
+
+
+         }
+
 
          .ma-announcements__head--item {
+            white-space: nowrap;
             padding: 24px 12px 20px 12px;
          }
       }
@@ -560,6 +562,29 @@ export default {
          }
       }
    }
+
+   .ma-announcements-sort-switch {
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      //margin-left: auto;
+      padding-top: 8px;
+      white-space: nowrap;
+      padding-left: 38px;
+      padding-right: 35px;
+
+      p {
+         font: 400 16px/24px 'TTHoves';
+         color: #1b2434;
+         margin-bottom: 6px;
+      }
+
+      .toggle-wrapper {
+         margin: 0 12px;
+      }
+   }
+
+
 }
 
 .profile-announcements-loader {
@@ -569,9 +594,78 @@ export default {
    }
 }
 
+.dark-mode {
 
+   .ma-announcements {
+      &__head {
+         &-autosalon {
+            &-container {
+               background: #1b2434;
+            }
+         }
+      }
 
-@media (max-width: 991px) {
+      &__top-cards {
+         .ma-announcements__top-card {
+            background: #1B2434;
+            border: 1px solid #1b2434;
+
+            &--title {
+               color: #fff;
+            }
+
+            &--count {
+               color: #fff;
+            }
+         }
+      }
+
+      &-sort-switch {
+         p {
+            color: #EEF2F6 !important;
+         }
+      }
+
+      &__body {
+         &-autosalon {
+            background: transparent;
+
+            .ma-announcements__body--row__inner {
+               background: #1b2434;
+
+               .announcements-grid__item {
+                  .item-details {
+                     border: 1px solid rgba(#9AA4B2, .3);
+                     border-top: none;
+                     border-radius: 0 0 8px 8px;
+                  }
+               }
+            }
+         }
+      }
+
+      &-autosalon-head {
+         background: #1B2434;
+      }
+   }
+}
+
+@media (max-width: 1149px) {
+   .ma-announcements-autosalon-container{
+      .ma-announcements__body--row__inner--item-plate {
+         margin: 0;
+         width: 50% !important;
+         padding: 9px;
+
+         .announcements-grid__item {
+            box-shadow: 0px 0px 16px 0px #0000001A;
+         }
+
+      }
+   }
+}
+
+@media (max-width: 990px) {
    .ma-announcements {
       &__body {
          h4 {
@@ -624,6 +718,12 @@ export default {
                   border-radius: 3px 3px 0 0;
 
                }
+            }
+         }
+
+         &-autosalon {
+            &-container {
+
             }
          }
       }
@@ -680,6 +780,34 @@ export default {
 
       }
    }
+
+   .ma-announcements-autosalon-container {
+      .ma-announcements {
+         &__body {
+            &-autosalon {
+               background: transparent;
+
+               .ma-announcements__body--row__inner {
+                  padding: 0;
+                  background: transparent;
+                  width: 100%;
+                  border-radius: 8px;
+
+                  .ma-announcements__body--row__inner--item-plate {
+                     margin: 0;
+                     width: 50%;
+                     padding: 9px;
+
+                     .announcements-grid__item {
+                        box-shadow: 0px 0px 16px 0px #0000001A;
+                     }
+
+                  }
+               }
+            }
+         }
+      }
+   }
 }
 
 @media(max-width: 600px) {
@@ -715,14 +843,23 @@ export default {
          }
       }
    }
-}
 
-@media (max-width: 600px) {
    .ma-announcements-autosalon-container {
       padding: 0 !important;
 
       .ma-announcements__body--row {
          margin: 0 -17px;
+
+         &__inner--item-plate {
+            margin: 0;
+            width: 50% !important;
+            padding: 9px;
+
+            .announcements-grid__item {
+               box-shadow: 0px 0px 16px 0px #0000001A;
+            }
+
+         }
       }
 
       .ma-announcements {
@@ -756,76 +893,6 @@ export default {
 
 }
 
-@media(max-width: 991px) {
-   .ma-announcements-autosalon-container {
-      .ma-announcements {
-         &__body {
-            &-autosalon {
-               background: transparent;
 
-               .ma-announcements__body--row__inner {
-                  padding: 0;
-                  background: transparent;
-
-                  .ma-announcements__body--row__inner--item-plate {
-                     margin: 0;
-                     width: 50%;
-                     padding: 9px;
-
-                     .announcements-grid__item {
-                        box-shadow: 0px 0px 16px 0px #0000001A;
-                     }
-
-                  }
-               }
-            }
-         }
-      }
-   }
-}
-
-
-.dark-mode {
-   .ma-announcements {
-      &__top-cards {
-         .ma-announcements__top-card {
-            background: #1B2434;
-            border: 1px solid #1b2434;
-
-            &--title {
-               color: #fff;
-            }
-
-            &--count {
-               color: #fff;
-            }
-         }
-      }
-
-      &-sort-switch {
-         p {
-            color: #EEF2F6 !important;
-         }
-      }
-
-      &__body {
-         &-autosalon {
-            background: transparent;
-
-            .ma-announcements__body--row__inner {
-               background: #1b2434;
-
-               .announcements-grid__item {
-                  .item-details {
-                     border: 1px solid rgba(#9AA4B2, .3);
-                     border-top: none;
-                     border-radius: 0 0 8px 8px;
-                  }
-               }
-            }
-         }
-      }
-   }
-}
 </style>
 

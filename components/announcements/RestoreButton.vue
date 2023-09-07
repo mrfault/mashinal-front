@@ -7,7 +7,7 @@
       <modal-popup
          :modal-class="'wider'"
          :toggle="showModal"
-         :title="$t('restore_popup_alert', {count: settingsV2.settings.restore_price})"
+         :title="$t('restore_popup_alert', {count: settingsV2?.settings?.restore_price})"
          @close="showModal = false"
       >
 
