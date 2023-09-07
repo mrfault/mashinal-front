@@ -42,11 +42,28 @@
          </div>
       </div>
 
+      <grid
+         class="dark-bg"
+         v-if="autosalonAnnouncementsId?.length"
+         :announcements="autosalonAnnouncementsId"
+         escape-duplicates
+      >
+         <template #cap>
+            <Cap :className="'mb40'">
+               <template #left>
+                  <h3>{{ $t('relative_announcements') }}</h3>
+               </template>
+            </Cap>
+         </template>
+      </grid>
+
       <HandleIds :single="true" :items="{ type: 'parts', id: announcement.id }" />
    </div>
 </template>
 
 <script>
+   import Cap from "~/components/elements/Cap.vue";
+   import Grid from "~/components/announcements/Grid.vue";
    import Gallery from '~/components/announcements/inner/Gallery';
    import Comment from '~/components/announcements/inner/Comment';
    import QuickInfo from '~/components/announcements/inner/QuickInfo';
@@ -72,7 +89,9 @@
          CollapseContent,
          Keywords,
          Relatives,
-         HandleIds
+         HandleIds,
+         Grid,
+         Cap
       },
 
       nuxtI18n: {
@@ -92,6 +111,7 @@
       async asyncData({store, route}) {
          await Promise.all([
             store.dispatch('getPartsInnerV2', route.params.id),
+            store.dispatch('fetchPartsAnnouncementsId', route.params.id),
             store.dispatch('getComplaintOptions'),
             store.dispatch('getOptions'),
             store.dispatch('getAllOtherOptions')
@@ -105,7 +125,7 @@
       },
 
       computed: {
-         ...mapGetters(['announcement']),
+         ...mapGetters(['announcement', 'autosalonAnnouncementsId']),
 
          crumbs() {
             const items = [
