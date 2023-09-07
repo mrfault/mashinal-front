@@ -3,28 +3,28 @@
       <div :class="['profile-card salon-single-card overflow-hidden']">
          <div class="cover-with-avatar position-relative">
              <img
-                 :class="['cover-with-avatar__img', {full : !salonSingle.gallery_thumbs.length}]"
-                 :src="getCover(salonSingle.cover, salonSingle.type_id)"
+                 :class="['cover-with-avatar__img', {full : !salonSingle?.gallery_thumbs?.length}]"
+                 :src="getCover(salonSingle?.cover, salonSingle?.type_id)"
                  alt="img"
              >
 
             <div
                class="cover-with-avatar__gallery d-none"
                :class="{
-                  'big-img' : salonSingle.gallery_thumbs.length === 2,
-                  'more' : salonSingle.gallery_thumbs.length > 6,
+                  'big-img' : salonSingle?.gallery_thumbs?.length === 2,
+                  'more' : salonSingle?.gallery_thumbs?.length > 6,
                }"
-               v-if="salonSingle.gallery_thumbs.length"
+               v-if="salonSingle?.gallery_thumbs?.length"
             >
                <div
                   class="cover-with-avatar__gallery-item"
-                  v-for="(item, i) in salonSingle.gallery_thumbs"
+                  v-for="(item, i) in salonSingle?.gallery_thumbs"
                   :style="{background: `url('${item}') center center / cover no-repeat`}"
                   @click="$nuxt.$emit('show-lightbox', i)"
                />
 
-               <span class="count pointer-events-none" v-if="salonSingle.gallery_thumbs.length > 6">
-                  + {{ salonSingle.gallery_thumbs.length - 6 }} {{ $t('image_small') }}
+               <span class="count pointer-events-none" v-if="salonSingle?.gallery_thumbs?.length > 6">
+                  + {{ salonSingle?.gallery_thumbs?.length - 6 }} {{ $t('image_small') }}
                </span>
             </div>
          </div>
@@ -33,7 +33,7 @@
             <div class="salon-inner__details-left">
                <div
                   class="salon-inner__details-logo"
-                  :style="`background: url('${getLogo(salonSingle.logo)}') center center / cover no-repeat`"
+                  :style="`background: url('${getLogo(salonSingle?.logo)}') center center / cover no-repeat`"
                />
 
                <div class="salon-inner__details-info">
@@ -152,7 +152,6 @@
 
 <script>
    import { mapGetters, mapActions } from 'vuex'
-   import HandleIds from "~/components/announcements/HandleIds.vue";
    import { SalonsMixin } from '~/mixins/salons'
    import Grid from '~/components/announcements/Grid'
    import Gallery from '~/components/announcements/inner/Gallery'
@@ -167,7 +166,6 @@
          ThumbsGallery,
          CustomDropdown,
          Cap,
-         HandleIds
       },
 
       mixins: [SalonsMixin],

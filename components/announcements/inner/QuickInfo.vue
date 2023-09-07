@@ -66,11 +66,11 @@
                <address v-if="announcement.status !== 3 && getAddress">{{ getAddress }}</address>
 
                <p class="text-red" v-else-if="announcement.status === 3">{{ $t('sold') }}</p>
-<!--               <pre>{{announcement?.is_external_salon}}</pre>-->
+
                <nuxt-link
                   :to="contact?.link"
                   v-if="
-                     announcement?.active_announcements_count > 1 ||
+                     contact?.user?.active_announcements_count > 1 ||
                      announcement?.is_part_salon ||
                      announcement?.is_auto_salon ||
                      announcement?.is_external_salon
@@ -131,7 +131,11 @@
          </div>
       </div>
 
-
+      <ReasonForRejection
+         v-if="announcement?.status !== 1"
+         class="mb-3"
+         :options="announcement?.moderator?.reject_reason"
+      />
 
       <div class="wrapp">
          <monetization-button
@@ -181,7 +185,6 @@
 <!--         v-if="userIsOwner(announcement) && announcement.status === 3 && !announcement.is_external_salon"-->
       </div>
 
-
       <VinCode
          class="mt-4"
          :vin="announcement.vin"
@@ -198,6 +201,7 @@
 </template>
 
 <script>
+   import ReasonForRejection from "~/components/announcements/ReasonForRejection.vue";
    import RestoreButton from '~/components/announcements/RestoreButton'
    import DeactivateButton from '~/components/announcements/DeactivateButton'
    import EditButton from '~/components/announcements/EditButton'
@@ -217,6 +221,7 @@
 
    export default {
       components: {
+         ReasonForRejection,
          CallButtonMultiple,
          RestoreButton,
          DeactivateButton,
@@ -244,7 +249,7 @@
          ...mapGetters(['announcement','loginInEditModal']),
 
          getAddress() {
-            return this.announcement.is_auto_salon ? this.announcement.user?.auto_salon?.address : this.announcement.is_part_salon ? this.announcement.user?.part_salon?.address : this.announcement.address
+            return this.announcement?.is_auto_salon ? this.announcement?.user?.auto_salon?.address : this.announcement?.is_part_salon ? this.announcement?.user?.part_salon?.address : this.announcement?.address
          },
 
          contact() {
@@ -260,7 +265,7 @@
          },
 
          comparisonExceptions() {
-            return this.type === 'cars' && ![0,2,3].includes(this.announcement.status);
+            return this.type === 'cars' && ![0,2,3].includes(this.announcement?.status);
          }
       },
 

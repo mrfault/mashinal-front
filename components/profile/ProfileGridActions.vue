@@ -36,6 +36,17 @@
          <!--         options-->
       </modal-popup>
 
+      <modal-popup
+         :modal-class="'wider'"
+         :toggle="showRestore"
+         :title="$t('restore_popup_alert', {count: settingsV2.settings.restore_price})"
+         @close="showRestore = false"
+      >
+         <div>
+            <button :class="['btn', 'full-width', 'btn--blue-new', 'active', { pending }]" @click.stop="user.autosalon || user.external_salon ? restore() : restoreAnnouncement()">{{ user.autosalon || user.external_salon ? $t('restore_free') : $t('pay') }}</button>
+         </div>
+      </modal-popup>
+
       <!--      delete,deactivate-->
       <modal-popup
          :modal-class="!isMobileBreakpoint ? 'midsize': 'larger'"
@@ -78,6 +89,9 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
+import {PaymentMixin} from "~/mixins/payment";
+
 export default {
    props: {
       announcement: Object,
@@ -87,11 +101,13 @@ export default {
       },
       isNumberPlate: Boolean,
    },
+   mixins: [PaymentMixin],
    data() {
       return {
          pending: false,
          showModal: false,
          showOptions: false,
+         showRestore: false,
          modal: {
             title: '',
             buttonText: '',
@@ -102,6 +118,7 @@ export default {
       };
    },
    computed: {
+      ...mapGetters(['settingsV2']),
       options() {
          return [
             {
@@ -115,8 +132,8 @@ export default {
             {
                name: 'restore_free',
                icon: 'fi_check-square.svg',
-               show: this.announcement.status == 3 && !this.isNumberPlate,
-               method: this.restore,
+               show: (this.announcement.status == 3 || (!(this.user.autosalon || this.user.external_salon) && this.announcement.status == 4)) && !this.isNumberPlate,
+               method: () => this.showRestore = true,
                modalTitle: 'restore_announcement'
             },
             {
@@ -128,7 +145,7 @@ export default {
             {
                name: 'remove_announcement',
                icon: 'trash.svg',
-               show: this.announcement.status == 3 || this.announcement.status == 0,
+               show: this.announcement.status == 3 || this.announcement.status == 0 || this.announcement.status == 4,
                method: this.openModal,
                modalTitle: 'are_you_sure_you_want_to_delete_the_car'
             },
@@ -173,7 +190,29 @@ export default {
             method: null,
          }
       },
-
+      async restoreAnnouncement() {
+         if (this.pending) return;
+         this.pending = true;
+         try {
+            const res = await this.$axios.$get(`/restore/${this.announcement.id_unique}?is_mobile=${this.isMobileBreakpoint}`);
+            this.showRestore = false
+            this.$store.commit('closeDropdown');
+            if (!res?.data?.redirect_url) {
+               await this.$nuxt.refresh();
+               this.updatePaidStatus({
+                  type: 'success',
+                  text: this.$t('announcement_restored'),
+                  title: this.$t('success_payment')
+               });
+               this.pending = false;
+            } else {
+               this.pending = false;
+               this.handlePayment(res, false, this.$t('announcement_restored'));
+            }
+         } catch (err) {
+            this.pending = false;
+         }
+      },
       async deactivate(event) {
          this.$store.commit('closeDropdown');
          this.pending = true;
@@ -213,7 +252,7 @@ export default {
 
             this.$emit('restoredMyAnnounement');
             this.$toasted.success(this.$t('announcement_restored'))
-            this.closeModal();
+            this.showRestore = false
             this.$store.commit('closeDropdown');
          } catch (e) {
             this.$toasted.error(this.$t(e.message))
