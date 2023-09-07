@@ -55,7 +55,7 @@
                         />
                      </div>
 
-                     <div class="col-12 col-sm-6">
+                     <div class="col-12">
                         <form-select
                            :label="$t('production_country')"
                            :options="countries"
@@ -102,13 +102,13 @@
                         />
                      </div>
 
-                     <div class="col-12 col-sm-6">
-                        <form-checkbox
-                           :label="$t('more_than_one_year')"
-                           v-model="filled.isMoreThanOneYear"
-                           input-name="isMoreThanOneYear"
-                        />
-                     </div>
+<!--                     <div class="col-12 col-sm-6">-->
+<!--                        <form-checkbox-->
+<!--                           :label="$t('more_than_one_year')"-->
+<!--                           v-model="filled.isMoreThanOneYear"-->
+<!--                           input-name="isMoreThanOneYear"-->
+<!--                        />-->
+<!--                     </div>-->
 
 <!--                     <div class="col-6">-->
 <!--                        <form-numeric-input-->
@@ -245,6 +245,9 @@
                {name: this.$t('dizel'), id: 2},
                {name: this.$t('hybrid'), id: 3},
                {name: this.$t('electrical'), id: 4},
+               {name: this.$t('gas'), id: 5},
+               {name: this.$t('hybrid_benzin'), id: 6},
+               {name: this.$t('hybrid_dizel'), id: 7}
             ],
             hybridEngineTypes: [
                {name: this.$t('benzin'), id: 1},

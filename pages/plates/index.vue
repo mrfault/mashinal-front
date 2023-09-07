@@ -107,7 +107,6 @@
                               v-model="form.sorting"
                            />
 
-                           <pre>{{form.sorting}}</pre>
                         </template>
                      </Cap>
                   </template>
@@ -235,6 +234,8 @@
          },
 
          setInitialValues() {
+            let params = new URLSearchParams(this.$route.query?.filters);
+
             this.$route.query?.filters?.slice(1).split('&').forEach(query => {
                if (query.split('=')[0] === 'page') this.page = +query.split('=')[1];
 
@@ -245,31 +246,9 @@
                      } else {
                         this.form[item] = query.split('=')[1];
                      }
-                  } else if (typeof this.form[item] === 'object' && query.split('=')[0] !== 'page') {
-                     let a1 = '';
-                     let a2 = '';
-
-                     console.log('0', query.split('='))
-                     if (query.split('=')[0] === 'sort_by') {
-                        a1 = query.split('=')[1];
-                        console.log('1', query.split('=')[1])
-                     }
-                     // if (query.split('=')[0] === 'sort_order') {
-                     //    a2 = query.split('=')[1];
-                     //    console.log('2', query.split('=')[1])
-                     // }
-                     // console.log('3', `${a1}_${a2}`)
-
-                     this.form.sorting.key = `${a1}_${a2}`;
-
-                     // console.log('a1', a1)
-                     // console.log('a2', a2)
-
-                     // this.sortItems.forEach(item => {
-                     //    if (item.key === this.form.sorting.key && item.value === this.form.sorting.value) {
-                     //       this.form.sorting.name = item.name;
-                     //    }
-                     // });
+                  } else if (params.get('sort_by') === 'price') {
+                     this.form.sorting.key = `${params.get('sort_by')}_${params.get('sort_order')}`;
+                     this.form.sorting.value = params.get('sort_order');
                   }
                }
             });
