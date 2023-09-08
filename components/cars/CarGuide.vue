@@ -3,9 +3,7 @@
       <div class="guide_wrapper">
          <div class="guide">
             <h1>{{ $t('menu_guide') }}</h1>
-            <p>İçkili vəziyyətdə avtomobili idarə etmək qadağandır. Bu, sizin və başqalarının həyatını riskə atır. Lorem
-               ipsum dolor sit amet consectur emprario merbaken culirius lorem ipsum dolor sit amet consectur. Lorem
-               ipsum dolor sit amet consectur emprario</p>
+            <p>{{ $t('assistant_description') }}</p>
          </div>
          <div class="guide_filter">
             <div class="guide_filter_radios">
@@ -152,6 +150,8 @@ export default {
    gap: 25px;
 
    .guide_wrapper {
+      display: flex;
+      flex-direction: column;
       width: 100%;
       background-color: #fff;
       padding: 32px 24px;
@@ -167,6 +167,7 @@ export default {
       .guide_filter {
          display: flex;
          flex-direction: column;
+         height: 100%;
          gap: 32px;
 
          &_radios {
@@ -189,7 +190,7 @@ export default {
             display: flex;
             gap: 20px;
             align-items: stretch;
-            margin-top: 24px;
+            margin-top: auto;
 
             button {
                height: 52px;

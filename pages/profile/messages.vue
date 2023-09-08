@@ -266,6 +266,8 @@ export default {
          if (announcement.status !== 1) return;
          let type = group.announce_type.replace('App\\', '').toLowerCase();
 
+         console.log(announcement);
+
          // get inner link
          if (type === 'announcement') type = 'cars';
          else if (['motorcycle', 'scooter', 'motoatv'].includes(type)) type = 'moto';
@@ -273,10 +275,15 @@ export default {
          else if (type === 'part') type = 'parts';
 
          if (group.announce.type === 6) {
-            type = 'registration-marks';
-            this.$router.push(this.$localePath(`/${type}/${announcement.id}`));
+            type = 'plates';
+            this.$router.push(this.$localePath(`/${type}/${announcement.id_unique}`));
          } else {
-            this.$router.push(this.$localePath(`/${type}/announcement/${announcement.id}`));
+            if (type === 'moto') {
+               this.$router.push(this.$localePath(`/${type}/announcement/${announcement.id_unique}`));
+            } else {
+               this.$router.push(this.$localePath(`/${type}/announcement/${announcement.id}`));
+            }
+
          }
       },
 
