@@ -2,8 +2,8 @@
    <div class="pages-index">
       <div class="container">
          <div class="filters-container">
-            <template v-if="isMobileBreakpoint && !advancedSearch">
-               <FiltersMobile @onClick="onClick" />
+            <template  v-if="isMobileBreakpoint && !advancedSearch" >
+               <FiltersMobile  :additional-brands="additionalBrands" @openMore="openMore" />
 
 <!--               <form-select-->
 <!--                  :label="$t('mark')"-->
@@ -18,9 +18,9 @@
 <!--               />-->
             </template>
 
-            <template v-else>
+            <div v-else>
                <div class="filters-container__top" v-if="isMobileBreakpoint">
-                  <inline-svg src="/icons/back.svg" @click="advancedSearch = false" />
+                  <inline-svg src="/icons/back.svg" @click="goBack" />
 
                   <h4>{{ $t('advanced_search') }}</h4>
 
@@ -47,6 +47,7 @@
 
                <car-search-form
                   v-if="searchType === 1"
+                  @submit-filters-mobile="additionalBrands = $event"
                   :pending="pending"
                   :announceType="announceType"
                   @pending="pending = true"
@@ -60,7 +61,7 @@
                   :announceType="announceType"
                   :category="{}"
                />
-            </template>
+            </div>
          </div>
       </div>
 
@@ -222,6 +223,7 @@
 
       data() {
          return {
+            additionalBrands: { 0 :{} },
             advancedSearch: false,
             announceType: 0,
             searchType: 1,
@@ -397,6 +399,12 @@
             'getGridSearch',
          ]),
 
+         goBack() {
+            this.advancedSearch = false
+            if(this.isMobileBreakpoint) {
+               this.$nuxt.$emit('submit-car-search-form-mobile')
+            }
+         },
          async handleLogoClick() {
             this.$scrollTo('body')
             this.$nuxt.$emit('reset-search-form')
@@ -421,12 +429,9 @@
             }
          },
 
-         onClick(id) {
-            if (id === 1) {
-               console.log('sssssss', this.$refs.www)
-               console.log('22222222222')
-            }
-            else if (id === 2) this.advancedSearch = true;
+         openMore() {
+            console.log("yesss")
+            this.advancedSearch = true;
          },
 
          async getSliderData() {

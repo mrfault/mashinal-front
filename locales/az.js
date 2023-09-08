@@ -2042,6 +2042,7 @@ export default {
    total_calls: "Ümumi zəng sayı",
    restore_popup_alert: "Bərpa etmə {count} AZN təşkil edir. Elanı bərpa etmək istədiyinizə əminsiniz?",
    view_count: "Baxış sayı",
+   assistant_description: "Avtomobil axtarmağın daha rahat yolu! Axtardığınız avtomobilin parametrlərini  daxil edin, bələdçi sizə köməkçi olsun!",
    service_package_desc_1: "Elanınız 30 gün müddətinə dərc edilir",
    service_package_desc_2: "Hər gün ön sıralarda yerləşdirilmə",
    service_package_desc_3: "Turbo satış 10 gün ərzində",
