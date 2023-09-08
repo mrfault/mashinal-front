@@ -112,6 +112,8 @@
                class="mt-2 mt-lg-3"
                :class="(contact?.lat && contact?.lng) ? 'col-12' : 'col-7'"
             >
+<!--               <pre>{{announcement?.is_auto_salon}}</pre>-->
+<!--               <pre>{{announcement?.user?.auto_salon?.phones}}</pre>-->
                <call-button-multiple
                   v-if="announcement?.is_auto_salon"
                   :phones="announcement?.user?.auto_salon?.phones"
