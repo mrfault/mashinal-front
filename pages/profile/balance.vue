@@ -414,7 +414,7 @@ export default {
          if (this.balanceSwiper?.destroyed) {
              clearInterval(intervalSwipper);
          } else {
-            if(this.balanceSwiper.init()) {
+            if(this.balanceSwiper?.init()) {
                clearInterval(intervalSwipper);
             }
          }
