@@ -138,13 +138,16 @@
      },
 
       async asyncData({store, route}) {
-         let types = { 1: 'motorcycle', 2: 'scooter', 3: 'atv' },
-         type = parseInt(route.params.id.slice(-1)),
-         id = route.params.id.slice(0, route.params.id.length - 1);
+         if (route.params.id) {
+            let types = { 1: 'motorcycle', 2: 'scooter', 3: 'atv' },
+               type = parseInt(route?.params?.id?.slice(-1)),
+               id = route?.params?.id?.slice(0, route?.params?.id?.length - 1);
+
+            await store.dispatch('getMotoInnerV2', { id: id, type: types[type] });
+            await store.dispatch('motoRelativesV2', { id: id, type: types[type] });
+         }
 
          await Promise.all([
-            store.dispatch('getMotoInnerV2', { id: id, type: types[type] }),
-            store.dispatch('motoRelativesV2', { id: id, type: types[type] }),
             store.dispatch('getComplaintOptions'),
             store.dispatch('getOptions'),
             store.dispatch('getMotoOptions'),
