@@ -132,7 +132,7 @@ export default {
          }
       },
       onClickOutside(event) {
-         if (!this.$refs.actionsRef.contains(event.target)) {
+         if (!this.$refs?.actionsRef?.contains(event.target)) {
             this.$store.commit('closeDropdown');
             document.removeEventListener('click', this.onClickOutside);
          }
@@ -169,7 +169,6 @@ export default {
          this.$toasted.success(this.$t('car_deleted'));
          this.closeModal();
          this.$nuxt.refresh();
-         this.isOpen = false;
          this.$emit('automobileDeleted',true)
          this.$store.commit('closeDropdown');
       }
