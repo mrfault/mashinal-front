@@ -96,8 +96,8 @@
                                     <interior360-viewer v-if="showInterior" :url="announcement.media.interior_360"/>
                                     <vue-three-sixty
                                        v-else
-                                       :amount="announcement?.images_360?.length"
-                                       :files="announcement?.images_360"
+                                       :amount="announcement?.media.images_360?.length"
+                                       :files="announcement?.media.images_360"
                                        :show-interior="showInterior"
                                        buttonClass="d-none"
                                        disable-zoom
