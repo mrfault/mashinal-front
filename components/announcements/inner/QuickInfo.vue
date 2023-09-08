@@ -66,7 +66,7 @@
                <address v-if="announcement.status !== 3 && getAddress">{{ getAddress }}</address>
 
                <p class="text-red" v-else-if="announcement.status === 3">{{ $t('sold') }}</p>
-
+<!--               <pre>{{contact}}</pre>-->
                <nuxt-link
                   :to="contact?.link"
                   v-if="
@@ -112,6 +112,8 @@
                class="mt-2 mt-lg-3"
                :class="(contact?.lat && contact?.lng) ? 'col-12' : 'col-7'"
             >
+<!--               <pre>{{announcement?.is_auto_salon}}</pre>-->
+<!--               <pre>{{announcement?.user?.auto_salon?.phones}}</pre>-->
                <call-button-multiple
                   v-if="announcement?.is_auto_salon"
                   :phones="announcement?.user?.auto_salon?.phones"
@@ -132,7 +134,7 @@
       </div>
 
       <ReasonForRejection
-         v-if="announcement?.status === 0"
+         v-if="announcement?.moderator?.reject_reason?.length && announcement?.status === 0"
          class="mb-3"
          :options="announcement?.moderator?.reject_reason"
       />

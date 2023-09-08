@@ -41,14 +41,14 @@
             :placeholder="$t('title_max_character', {max: 25})"
             :class="{form_error: $v.form.title.$error}"
             @change="preview.title = $event || $t('headline')"
-            maxlength="25"
+            :maxlength="25"
             :invalid="$v.form.title.$error"
          />
          <form-text-input
             key="product_code"
             v-model="form.product_code"
             :placeholder="$t('product_code_not_required')"
-            maxlength="32"
+            :maxlength="32"
          />
          <div class="divider">
             <form-radio

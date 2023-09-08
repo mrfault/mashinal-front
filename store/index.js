@@ -252,6 +252,12 @@ const getInitialState = () => ({
    settingsV2: [],
 
    loginInEditModal: false,
+
+   filterVehicle: {
+      brand: "",
+      model: "",
+      generation: "",
+   }
 });
 
 export const state = () => getInitialState();
@@ -477,6 +483,7 @@ export const getters = {
 
    loginInEditModal: s => s.loginInEditModal,
 
+   filterVehicle: s => s.filterVehicle,
 
 };
 
@@ -1040,14 +1047,18 @@ export const actions = {
       commit("mutate", {property: "generations", value: res.generations});
    },
    async getModelsArray({commit}, data) {
+      console.log(data.value, 'slug inside here')
       const res = data.value
          ? await this.$axios.$get(`/brand/${data.value}/models`)
          : [];
-      commit("mutate", {
-         property: "carModels",
-         value: res || [],
-         key: data.index
-      });
+      if(data.value) {
+         commit("mutate", {
+            property: "carModels",
+            value: res || [],
+            key: data.index
+         });
+      }
+
    },
    async getModelsArrayExclude({commit}, data) {
       const res = data.value
@@ -1065,11 +1076,14 @@ export const actions = {
             `/brand/${data.brand_slug}/model/${data.value}/generations`
          )
          : [];
-      commit("mutate", {
-         property: "carGenerations",
-         value: res.generations || [],
-         key: data.index
-      });
+      if(data.value) {
+         commit("mutate", {
+            property: "carGenerations",
+            value: res.generations || [],
+            key: data.index
+         });
+      }
+
    },
    async getModelGenerationsArrayExclude({commit}, data) {
       const res = data.value

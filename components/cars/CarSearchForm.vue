@@ -673,7 +673,8 @@
             'allSellOptions2',
             'singleSavedSearch',
             'colors',
-            'popularOptions'
+            'popularOptions',
+            "filterVehicle"
          ]),
 
          parameters() {
@@ -796,7 +797,10 @@
                ...p, key: this.$t(p.label), slug: p.name, name: this.$t(p.label)
             }));
          }
-
+         this.$nuxt.$on('submit-car-search-form-mobile', () => {
+            this.$emit('submit-filters-mobile', this.form.additional_brands)
+            this.submitForm();
+         })
          this.$nuxt.$on('saved-search-created', () => {
             if (this.singleSavedSearch.id) {
                this.selected.push(this.singleSavedSearch.id)
