@@ -599,7 +599,7 @@ export default {
          .divider {
 
             &.mobile-column {
-               display: flex;
+               display: flex !important;
                flex-direction: column;
             }
          }

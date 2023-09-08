@@ -181,6 +181,7 @@ export const SearchMixin = {
             this.$router.push(searchUrl, () => {
                this.$emit('submit');
 
+
                if (this.routeName !== prevRouteName) {
                   if (scroll) {
                      setTimeout(() => {

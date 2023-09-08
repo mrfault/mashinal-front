@@ -3,12 +3,12 @@
       <div class="container">
          <div class="filters-container mb-5">
             <template v-if="isMobileBreakpoint && !advancedSearch">
-               <FiltersMobile @onClick="onClick" :selectedItems="getCarDetails" />
+               <FiltersMobile :additional-brands="additionalBrands"  @pending="pending = true" @openMore="openMore"  @submit="submitOnMobile" />
             </template>
 
             <template v-else>
                <div class="filters-container__top" v-if="isMobileBreakpoint">
-                  <inline-svg src="/icons/back.svg" @click="advancedSearch = false" />
+                  <inline-svg src="/icons/back.svg" @click="goBack" />
 
                   <h4>{{ $t('advanced_search') }}</h4>
 
@@ -34,6 +34,7 @@
                </div>
 
                <car-search-form
+                  @submit-filters-mobile="additionalBrands = $event"
                   v-if="searchType === 1"
                   :only-saved-search="!!$route.query.saved || false"
                   :pending="pending"
@@ -168,6 +169,7 @@
 
       data() {
          return {
+            additionalBrands: { 0: {}},
             advancedSearch: false,
             announceType: 0,
             searchType: 1,
@@ -184,6 +186,7 @@
 
       watch: {
          '$route.query'(query) {
+            console.log('bu bir')
             if (query && query.with_panorama == 'true') {
                this.searchCars(1, true);
             }
@@ -280,10 +283,18 @@
 
       methods: {
          ...mapActions(['getGridSearch']),
+         goBack() {
+            this.advancedSearch = false
+            if(this.isMobileBreakpoint) {
+               this.$nuxt.$emit('submit-car-search-form-mobile')
+            }
+         },
+         openMore() {
+            this.advancedSearch = true;
+         },
 
-         onClick(id) {
-            // if (id === 1) this.showFillters = true;
-            if (id === 2) this.advancedSearch = true;
+         submitOnMobile() {
+            this.searchCars()
          },
 
          async searchCars(page = 1, with_panorama = false) {
@@ -317,7 +328,8 @@
             'brandsList',
             'monetizedCars',
             'motoAnnouncements',
-            'popularOptions'
+            'popularOptions',
+            'filterVehicle'
          ]),
 
          brand() {
