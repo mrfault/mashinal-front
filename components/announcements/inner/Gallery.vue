@@ -98,6 +98,7 @@
                :zoomIncrement="0"
                :toggler="toggleFsLightbox"
                :sources="getSourcesFsLightbox"
+               :types="slides.types"
                :slide="currentSlide + 1"
                :key="lightboxKey"
                :onClose="refreshLightbox"
