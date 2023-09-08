@@ -19,15 +19,15 @@
                   >
                      <div class="position-relative">
                         <no-ssr>
-                           <Interior360Viewer :url="announcement?.media?.interior_360" v-if="viewAspect === 1" />
-
                            <vue-three-sixty
-                              v-else
+                              v-if="viewAspect === 1"
                               :amount="announcement?.media?.images_360?.length"
                               buttonClass="d-none"
                               disableZoom
                               :files="announcement?.media?.images_360"
                            />
+
+                           <Interior360Viewer :url="announcement?.media?.interior_360" v-else />
                         </no-ssr>
                      </div>
                   </div>
@@ -428,7 +428,7 @@
 
          viewAspectOptions() {
             return [
-               { id: 1, name: this.$t('viewAspect') },
+               { id: 1, name: this.$t('exterior') },
                { id: 2, name: this.$t('interior') }
             ]
          },
@@ -454,6 +454,7 @@
       mounted() {
          if(this.announcement.media.images_360 && !this.announcement.media.images_360.length) {
             this.showInterior = true;
+            this.viewAspect = 2;
          }
 
          let swiperTouchStartX;
