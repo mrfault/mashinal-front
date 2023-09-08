@@ -52,16 +52,21 @@
             </li>
          </ul>
 
-         <div
-            :class="['quick-info__contact', { 'cursor-pointer': !!contact.link }]"
-            @click.stop="handleContactClick"
-         >
-            <div :class="['quick-info__contact-img', { 'is-online': contact?.user?.is_online }]">
-               <img :src="contact.img" alt="user_logo"/>
+         <div :class="['quick-info__contact', ]">
+            <div
+               :class="[
+                  'quick-info__contact-img',
+                  { 'pointer-events-none': contact?.user?.active_announcements_count < 2 },
+                  { 'cursor-pointer': contact?.user?.active_announcements_count > 1 },
+                  { 'is-online': contact?.user?.is_online }
+               ]"
+               @click.stop="handleContactClick"
+            >
+               <img :src="contact.img" alt="user_logo" />
             </div>
 
-            <div class="quick-info__contact-info">
-               <h2>{{ contact.name }}</h2>
+            <div class="quick-info__contact-info" @click.stop="handleContactClick">
+               <h2 @click.stop>{{ contact.name }}</h2>
 
                <address v-if="announcement.status !== 3 && getAddress">{{ getAddress }}</address>
 

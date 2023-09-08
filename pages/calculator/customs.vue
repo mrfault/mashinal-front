@@ -11,19 +11,19 @@
                   <h4 class="calculator__inputs--heading">{{ $t('customs_calculator') }}</h4>
 
                   <div class="row">
-                     <div class="col-12" v-if="false">
-                        <form-select
-                           :label="$t('passenger_car')"
-                           :options="vehicleTypes"
-                           v-model="filled.vehicleType"
-                           :invalid="$v.filled.vehicleType.$error"
-                           :allowClear="false"
-                           :showLabelOnlyOnActionBar="false"
-                           :clearOption="false"
-                           :hideOptions="true"
-                           disabled
-                        />
-                     </div>
+<!--                     <div class="col-12" v-if="false">-->
+<!--                        <form-select-->
+<!--                           :label="$t('passenger_car')"-->
+<!--                           :options="vehicleTypes"-->
+<!--                           v-model="filled.vehicleType"-->
+<!--                           :invalid="$v.filled.vehicleType.$error"-->
+<!--                           :allowClear="false"-->
+<!--                           :showLabelOnlyOnActionBar="false"-->
+<!--                           :clearOption="false"-->
+<!--                           :hideOptions="true"-->
+<!--                           disabled-->
+<!--                        />-->
+<!--                     </div>-->
 
                      <div class="col-12">
                         <form-text-input
@@ -55,28 +55,6 @@
                         />
                      </div>
 
-                     <div class="col-12">
-                        <form-select
-                           :label="$t('production_country')"
-                           :options="countries"
-                           v-model="filled.producerCountry"
-                           :invalid="$v.filled.producerCountry.$error"
-                           :clear-placeholder="true"
-                           :clearOption="false"
-                        />
-                     </div>
-
-                     <div class="col-12 col-sm-6">
-                        <form-select
-                           :label="$t('sender_country')"
-                           :options="countries"
-                           v-model="filled.senderCountry"
-                           :invalid="$v.filled.senderCountry.$error"
-                           :clear-placeholder="true"
-                           :clearOption="false"
-                        />
-                     </div>
-
                      <div class="col-12 col-sm-6">
                         <form-numeric-input
                            :placeholder="$t('customs_value_of_vehicle')"
@@ -93,7 +71,7 @@
                         />
                      </div>
 
-                     <div class="col-12 col-sm-6">
+                     <div class="col-12">
                         <form-text-input
                            input-date
                            :placeholder="$t('production_year')"
@@ -102,22 +80,14 @@
                         />
                      </div>
 
-<!--                     <div class="col-12 col-sm-6">-->
-<!--                        <form-checkbox-->
-<!--                           :label="$t('more_than_one_year')"-->
-<!--                           v-model="filled.isMoreThanOneYear"-->
-<!--                           input-name="isMoreThanOneYear"-->
-<!--                        />-->
-<!--                     </div>-->
-
-<!--                     <div class="col-6">-->
-<!--                        <form-numeric-input-->
-<!--                           :placeholder="`${$t('production_year')}`"-->
-<!--                           v-model="filled.productionYear"-->
-<!--                           maxlegth="4"-->
-<!--                           :invalid="$v.filled.productionYear.$error"-->
-<!--                        />-->
-<!--                     </div>-->
+                     <div class="col-12">
+                        <h3>Mənşə (istehsal) ölkəsi və göndərən ölkə haqqında</h3>
+                        <radio-group
+                           class="mileage_types"
+                           v-model="form.issueDate"
+                           :options="commerceTypes"
+                        />
+                     </div>
 
                      <div class="col-12">
                         <div class="dollar__exchange">
@@ -196,6 +166,7 @@
             </div>
 
             <div class="col-12 col-md-12 col-lg-6 d-none d-sm-block mt-4 mt-lg-0" v-else>
+               <pre>{{form}}</pre>
                <div class="calculator__empty-results">
                   <div class="calculator__empty-results--image">
                      <img class="light-mode" src="/images/calculator.svg" alt="image"/>
@@ -224,11 +195,14 @@
 
 <script>
    import Models from '@/models'
+   import RadioGroup from "~/components/moderator/RadioGroup.vue";
    import { mapGetters } from 'vuex'
    import { required, requiredIf } from 'vuelidate/lib/validators'
 
    export default {
       name: 'CalculatorCustoms',
+
+      components: { RadioGroup },
 
       head() {
          return this.$headMeta({
@@ -239,13 +213,24 @@
 
       data() {
          return {
+            form: {
+               autoType: 0,
+               engineType: '',
+               price: '',
+               issueDate: '',
+               commerceType: ''
+            },
+            commerceTypes: [
+               { key: 'nonFree', name: 'Digər ölkələr' },
+               { key: 'free', name: 'Azad ticarət sazişi bağlanan ölkədə istehsal olunub və oradan gətirilir' }
+            ],
             vehicleTypes: [{name: this.$t('passenger_car'), id: 1}],
             engineTypes: [
                {name: this.$t('benzin'), id: 1},
                {name: this.$t('dizel'), id: 2},
-               {name: this.$t('hybrid'), id: 3},
-               {name: this.$t('electrical'), id: 4},
-               {name: this.$t('gas'), id: 5},
+               {name: this.$t('gas'), id: 3},
+               {name: this.$t('hybrid'), id: 4},
+               {name: this.$t('electrical'), id: 5},
                {name: this.$t('hybrid_benzin'), id: 6},
                {name: this.$t('hybrid_dizel'), id: 7}
             ],
@@ -562,6 +547,10 @@
             }
          },
 
+         calculateNew() {
+
+         },
+
          async submit() {
             try {
                this.$v.$touch();
@@ -570,7 +559,7 @@
                   return;
                }
 
-               this.calculate();
+               this.calculateNew();
 
                if (this.isMobileBreakpoint) {
                   setTimeout(() => {
@@ -585,7 +574,7 @@
 
       validations: {
          filled: {
-            vehicleType: {required},
+            vehicleType: { required },
             engineType: {
                required: requiredIf(function () {
                   return this.filled.engineType !== 4
@@ -610,8 +599,8 @@
                // required: requiredIf(function () {
                //    return this.filled.isMoreThanOneYear === true
                // }),
-            },
-         },
+            }
+         }
       }
    }
 </script>
@@ -672,6 +661,17 @@
                   font-weight: 600;
                   line-height: 24px;
                }
+            }
+         }
+      }
+
+      .mileage_types {
+         .form-group {
+            .text-truncate {
+               text-overflow: unset;
+               white-space: unset;
+               margin-bottom: 0;
+               line-height: 20px;
             }
          }
       }

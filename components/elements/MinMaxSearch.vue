@@ -165,7 +165,7 @@
             // this.dropdownItems.min = this.selectedValue.min;
             // this.dropdownItems.max = this.selectedValue.max;
 
-            console.log('selectedValue', this.selectedValue)
+            // console.log('selectedValue', this.selectedValue)
          }, 500)
 
          window.addEventListener('click', this.close);

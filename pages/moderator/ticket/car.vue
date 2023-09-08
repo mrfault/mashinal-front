@@ -463,8 +463,8 @@
                     <div id="video360section">
                       <vue-three-sixty
                         :id="single_announce.id"
-                        :amount="single_announce.images_360.length"
-                        :files="single_announce.images_360"
+                        :amount="single_announce?.images_360?.length"
+                        :files="single_announce?.images_360"
                         buttonClass="d-none"
                         disable-zoom
                         putMainImage
