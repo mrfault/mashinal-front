@@ -131,32 +131,32 @@
                                           <span>{{ $t(row.operation_key) }} </span>&nbsp;
                                           <template
                                              v-if="row.what_bought && row.what_bought_type === 'App\\GarageCar' && row.operation_key !== 'plate_announce_key'">
-                                             ( <nuxt-link :to="$localePath('/garage?id='+row.what_bought_id)">{{row.what_bought.car_number }}</nuxt-link> )
+                                             ( <nuxt-link :to="$localePath('/garage?id='+row.what_bought_id)">{{row.what_bought?.car_number }}</nuxt-link> )
                                           </template>
 
                                           <template
                                              v-else-if="row.what_bought && ['App\\Announcement'].includes(row.what_bought_type) && row.operation_key !== 'plate_announce_key'">
-                                             ( <nuxt-link :to="$localePath('/cars/announcement/'+row.what_bought.id)">{{row.what_bought.id }}</nuxt-link> )
+                                             ( <nuxt-link :to="$localePath('/cars/announcement/'+row.what_bought?.id)">{{row.what_bought?.id }}</nuxt-link> )
                                           </template>
 
                                           <template
                                              v-else-if="row.what_bought && ['App\\Motorcycle','App\\Scooter','App\\MotoAtv'].includes(row.what_bought_type) && row.operation_key !== 'plate_announce_key'">
-                                             ( <nuxt-link :to="$localePath('/moto/announcement/'+row.what_bought.id_unique)">{{row.what_bought.id_unique }}</nuxt-link> )
+                                             ( <nuxt-link :to="$localePath('/moto/announcement/'+row.what_bought?.id_unique)">{{row.what_bought?.id_unique }}</nuxt-link> )
                                           </template>
 
                                           <template
                                              v-else-if="row.what_bought && row.what_bought_type === 'App\\Commercial' && row.operation_key !== 'plate_announce_key'">
-                                             ( <nuxt-link :to="$localePath('/commercial/announcement/'+row.what_bought.id_unique)">{{row.what_bought.id_unique }}</nuxt-link> )
+                                             ( <nuxt-link :to="$localePath('/commercial/announcement/'+row.what_bought?.id_unique)">{{row.what_bought?.id_unique }}</nuxt-link> )
                                           </template>
 
                                           <template
                                              v-else-if="row.what_bought && row.what_bought_type === 'App\\Part' && row.operation_key !== 'plate_announce_key'">
-                                             ( <nuxt-link :to="$localePath('/parts/announcement/'+row.what_bought.id)">{{row.what_bought.id }}</nuxt-link> )
+                                             ( <nuxt-link :to="$localePath('/parts/announcement/'+row.what_bought?.id)">{{row.what_bought?.id }}</nuxt-link> )
                                           </template>
 
                                           <template v-if="row.operation_key === 'plate_announce_key'">
-                                             ( <nuxt-link :to="$localePath('/plates/'+row.what_bought.id_unique)"> {{
-                                                row.what_bought.id_unique
+                                             ( <nuxt-link :to="$localePath('/plates/'+row.what_bought?.id_unique)"> {{
+                                                row.what_bought?.id_unique
                                              }}</nuxt-link> )
                                           </template>
                                        </span>
