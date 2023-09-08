@@ -108,6 +108,7 @@ export default {
             })
       },
       loginOrRegister() {
+         console.log("salam")
          this.validator.$touch()
          if (this.pending || this.validator.$pending || this.validator.$error)
             return
@@ -145,7 +146,7 @@ export default {
             })
             .catch((err) => {
                this.pending = false
-               this.$toasted.error(error.response.data.message)
+               this.$toasted.error(err.response.data.message)
             })
       },
       async checkPhone() {
@@ -153,12 +154,14 @@ export default {
          if (this.pending || this.$v.$error) return
          this.pending = true
          try {
+            console.log("salam")
             await this.checkSellTokens(this.form.phone.replace(/[^0-9]+/g, ''))
             this.mutate({property: 'sellPhoneEntered', value: this.form.phone})
             this.pending = false
          } catch (error) {
             this.pending = false;
-            this.$toasted.error(error.response.data.message)
+            console.log("sagol",err)
+            this.$toasted.error(error.response.data.message || error.response.data.data.message )
          }
       },
    },
