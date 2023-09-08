@@ -66,12 +66,12 @@
             </div>
 
             <div class="quick-info__contact-info" @click.stop="handleContactClick">
-               <h2 @click.stop>{{ contact.name }}</h2>
+               <h2 >{{ contact.name }}</h2>
 
                <address v-if="announcement.status !== 3 && getAddress">{{ getAddress }}</address>
 
                <p class="text-red" v-else-if="announcement.status === 3">{{ $t('sold') }}</p>
-<!--               <pre>{{contact}}</pre>-->
+
                <nuxt-link
                   :to="contact?.link"
                   v-if="

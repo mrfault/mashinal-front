@@ -428,8 +428,8 @@
 
          viewAspectOptions() {
             return [
-               { id: 1, name: this.$t('exterior') },
-               { id: 2, name: this.$t('interior') },
+               { id: 1, name: this.$t('viewAspect') },
+               { id: 2, name: this.$t('interior') }
             ]
          },
 
