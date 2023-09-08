@@ -16,7 +16,7 @@
                   :key="index"
                   v-if="item.isAvailable"
                >
-                  <e-service-card :item="item"></e-service-card>
+                  <e-service-card :item="item" />
                </div>
             </template>
          </div>
@@ -37,14 +37,14 @@
       nuxtI18n: {
          paths: {
             az: '/e-xidmetler',
-         },
+         }
       },
 
       transition: 'fade-y-20',
 
       head() {
          return this.$headMeta({
-            title: this.$t('eservices'),
+            title: this.$t('eservices')
          })
       },
 
@@ -235,7 +235,3 @@
       }
    }
 </script>
-
-<style>
-
-</style>

@@ -110,9 +110,9 @@
                                        v-else
                                        showZoom
                                        disable-zoom
-                                       :amount="announcement.images_360.length"
+                                       :amount="announcement?.images_360?.length"
                                        buttonClass="d-none"
-                                       :files="announcement.images_360"
+                                       :files="announcement?.images_360"
                                     />
                                  </no-ssr>
                               </div>

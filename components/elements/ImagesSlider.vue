@@ -88,22 +88,31 @@
                                  style="width: 100%;overflow: hidden;"
                               >
                                  <no-ssr>
-                                    <div v-if="announcement.interior_360" class="interior-switcher">
+                                    <div v-if="announcement.media.interior_360" class="interior-switcher">
                                        <form-switch v-model="showInterior" :options="interiorOptions"
                                                     auto-width
                                                     class="interior-exterior-switcher" style="width: fit-content;pointer-events: all;"/>
                                     </div>
-                                    <interior360-viewer v-if="showInterior" :url="announcement.interior_360"/>
+                                    <interior360-viewer v-if="showInterior" :url="announcement.media.interior_360"/>
                                     <vue-three-sixty
                                        v-else
-                                       :amount="announcement.images_360.length"
-                                       :files="announcement.images_360"
+                                       :amount="announcement?.images_360?.length"
+                                       :files="announcement?.images_360"
                                        :show-interior="showInterior"
                                        buttonClass="d-none"
                                        disable-zoom
                                        showZoom
                                        @interiorChange="showInterior = !showInterior"
                                     />
+                                 </no-ssr>
+                              </div>
+                              <div
+                                 class="position-relative"
+                                 style="width: 100%;overflow: hidden;"
+                                 v-else-if="slides.types && slides.types[index] === 'custom_interior'"
+                              >
+                                 <no-ssr>
+                                    <interior360-viewer :url="announcement?.media?.interior_360"/>
                                  </no-ssr>
                               </div>
                               <template v-else-if="isProtocolMedia">
