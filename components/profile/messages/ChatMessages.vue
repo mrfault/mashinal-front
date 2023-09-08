@@ -26,7 +26,7 @@
                <template>
                   <br/>
                   <span class="username-subtitle" style="cursor:pointer" @click.stop="$emit('go-to-announcement', group)">
-                    <span class="text-truncate">{{ getAnnouncementTitle(chatAnnouncement) }}</span>
+                    <span class="text-truncate">{{ getAnnouncementTitleMessage(chatAnnouncement) }}</span>
                     <span class="text-dark-blue-2">{{ chatAnnouncement.price || '' }}</span>
                   </span>
                </template>

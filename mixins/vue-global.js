@@ -125,6 +125,15 @@ Vue.use({
                return (brand || '') + ' ' + (model || '');
             },
 
+            getAnnouncementTitleMessage(item) {
+               if (item.title) return item.title;
+               if (item.car_number) return item.car_number;
+               let brand = this.getAnnouncementBrandName(item);
+               let model = this.getAnnouncementModelName(item);
+               if (!brand && !model) return '';
+               return (brand || '') + ' ' + (model || '');
+            },
+
             getAnnouncementContact(item) {
                // console.log('item', item)
                let img = item?.user?.avatar,
