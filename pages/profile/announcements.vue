@@ -178,11 +178,11 @@ export default {
    layout: 'garageLayout',
    data() {
       return {
-         activeTab: null,
+         activeTab: "null",
          loading: false,
          announceItems: [
             {
-               id: null,
+               id: "null",
                title: "all2",
                link: "/",
             },
@@ -241,7 +241,7 @@ export default {
    },
    mounted() {
       if (this.user?.autosalon?.id) {
-         // this.getStatistics();
+         this.getStatistics();
       }
 
       this.getAllData();
@@ -358,10 +358,9 @@ export default {
       mouseUp() {
          this.isDragging = false;
       },
-      // getStatistics() {
-      //    this.$store.dispatch('getAutosalonStatistics', this.user.autosalon.id)
-      //    console.log("this.user.autosalon", this.user.autosalon)
-      // },
+      getStatistics() {
+         this.$store.dispatch('getAutosalonStatistics', this.user.autosalon.id)
+      },
 
       async sortAnnounces() {
          this.sortSwitch = !this.sortSwitch;
@@ -500,9 +499,15 @@ export default {
    }
 
    &__body--row__inner, .ma-announcements__body--row__inner--item-plate {
+      //width: 100%;
+      border-radius: 0 0 8px 8px;
       .stratch-child-block {
          height: 100% !important;
          min-height: auto !important;
+         .item-details{
+            height: 178px;
+            border-radius: 0 0 8px 8px;
+         }
       }
    }
 
@@ -548,6 +553,10 @@ export default {
          border-radius: 0 0 8px 8px;
          //border-radius: 8px;
 
+         .ma-announcements__body--row__inner{
+            width: 100%;
+         }
+
          .ma-announcements__body--row__inner {
             padding: 32px 12px 0px 32px;
             flex-wrap: wrap;
@@ -589,7 +598,7 @@ export default {
 
 .profile-announcements-loader {
    .loader {
-      margin-top: 50px;
+      margin-top: 100px;
       margin-left: 50px;
    }
 }
@@ -840,6 +849,15 @@ export default {
          &--item {
             padding: 11px 12px 11px 12px !important;
             margin-right: 12px;
+         }
+
+         &-autosalon{
+            .profile-announcements-loader {
+               .loader {
+                  margin-top: 100px;
+                  margin-left: 0px;
+               }
+            }
          }
       }
    }
