@@ -505,7 +505,7 @@ export default {
          height: 100% !important;
          min-height: auto !important;
          .item-details{
-            height: 178px;
+            height: 178px;16915938145
             border-radius: 0 0 8px 8px;
          }
       }
