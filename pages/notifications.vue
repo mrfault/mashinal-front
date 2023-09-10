@@ -190,6 +190,9 @@ export default {
             switch (n.notifiable.type) {
                case 6 :
                   return this.$localePath('/plates/' + n.value)
+               case 2 :
+                  console.log("ahey ahey", n)
+                  return this.$localePath(this.getAnnounceTypePath(n.notifiable_type) + '/' + n.notifiable.id_unique)
             }
             return '/';
          } else {
@@ -197,7 +200,7 @@ export default {
                case '/messages_bnb' :
                   return this.$localePath('/profile/messages?group=' + n.value)
                case '/announcement_details' :
-                  return this.$localePath(this.getAnnounceTypePath(n.notifiable_type) + '/' + n.value)
+                  return this.$localePath(this.getAnnounceTypePath(n.notifiable_type) + '/' + n.notifiable.id)
                case '/garage_bnb' :
                   return this.$localePath(`/garage?id=${n.notifiable.id}`)
                case '/balance' :

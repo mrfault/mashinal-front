@@ -6,6 +6,7 @@
       <div :class="{'ma-announcements-autosalon-container': user.autosalon}" class="container">
          <div class="ma-announcements">
             <h2 class="ma-title--md">{{ $t('my_announces') }}</h2>
+            <!--            statistics-->
             <div v-if="user.autosalon" class="ma-announcements__top-cards">
                <div v-for="(item,index) in topCards" :key="index + 8923764" class="ma-announcements__top-card">
                   <div class="ma-announcements__top-card--image">
@@ -18,9 +19,19 @@
 
                </div>
             </div>
+
             <div :class="{'ma-announcements__head-autosalon-container': user.autosalon}">
+               <!--            sort switch-->
+               <h2 v-if="isMobileBreakpoint && user.autosalon" class="ma-announcements-autosalon-title">
+                  {{ $t('most_viewed_announcements') }}</h2>
+               <div v-if="isMobileBreakpoint && user.autosalon" :class="{'pl-0': isMobileBreakpoint}"
+                    class="ma-announcements-sort-switch pt-0 pb-2">
+                  <p>{{ $t('sorting_view') }}</p>
+                  <custom-switch :value="sortSwitch" @input="sortAnnounces"/>
+                  <p>{{ $t('sorting_call') }}</p>
+               </div>
+
                <div
-                  v-if="showHeadCategories"
                   :class="{'ma-announcements__head-autosalon': user.autosalon}"
                   class="ma-announcements__head">
                   <button
@@ -38,14 +49,8 @@
                   <p>{{ $t('sorting_call') }}</p>
                </div>
             </div>
-            <h2 v-if="isMobileBreakpoint && user.autosalon" class="ma-announcements-autosalon-title">
-               {{ $t('most_viewed_announcements') }}</h2>
-            <div v-if="isMobileBreakpoint && user.autosalon" :class="{'pl-0': isMobileBreakpoint}"
-                 class="ma-announcements-sort-switch pt-0 pb-2">
-               <p>{{ $t('sorting_view') }}</p>
-               <custom-switch :value="sortSwitch" @input="sortAnnounces"/>
-               <p>{{ $t('sorting_call') }}</p>
-            </div>
+
+
          </div>
          <div :class="{'ma-announcements__body-autosalon': user.autosalon}" class="ma-announcements__body">
             <h4 v-if="!loading && !user.autosalon" class="ma-subtitle--lg">{{ $t('my_vehicle_announcements') }}</h4>
@@ -178,11 +183,11 @@ export default {
    layout: 'garageLayout',
    data() {
       return {
-         activeTab: null,
+         activeTab: "null",
          loading: false,
          announceItems: [
             {
-               id: null,
+               id: "null",
                title: "all2",
                link: "/",
             },
@@ -241,7 +246,7 @@ export default {
    },
    mounted() {
       if (this.user?.autosalon?.id) {
-         // this.getStatistics();
+         this.getStatistics();
       }
 
       this.getAllData();
@@ -358,10 +363,9 @@ export default {
       mouseUp() {
          this.isDragging = false;
       },
-      // getStatistics() {
-      //    this.$store.dispatch('getAutosalonStatistics', this.user.autosalon.id)
-      //    console.log("this.user.autosalon", this.user.autosalon)
-      // },
+      getStatistics() {
+         this.$store.dispatch('getAutosalonStatistics', this.user.autosalon.id)
+      },
 
       async sortAnnounces() {
          this.sortSwitch = !this.sortSwitch;
@@ -450,7 +454,7 @@ export default {
 
       showHeadCategories() {
          if (this.user.autosalon && this.isMobileBreakpoint) {
-            return false
+            return true
          } else
             return true
       }
@@ -500,9 +504,17 @@ export default {
    }
 
    &__body--row__inner, .ma-announcements__body--row__inner--item-plate {
+      //width: 100%;
+      border-radius: 0 0 8px 8px;
+
       .stratch-child-block {
          height: 100% !important;
          min-height: auto !important;
+
+         .item-details {
+            height: 178px;
+            border-radius: 0 0 8px 8px;
+         }
       }
    }
 
@@ -515,7 +527,7 @@ export default {
          border-radius: 8px 8px 0 0;
          margin-bottom: 0;
          padding-left: 32px;
-         flex-wrap: wrap;
+         flex-wrap: nowrap;
          padding-right: 0;
          width: auto;
 
@@ -524,6 +536,7 @@ export default {
             justify-content: space-between;
             flex-wrap: wrap;
             background: #EEF2F6;
+
             border-radius: 8px 8px 0 0;
 
 
@@ -547,6 +560,10 @@ export default {
          background: #EEF2F6;
          border-radius: 0 0 8px 8px;
          //border-radius: 8px;
+
+         .ma-announcements__body--row__inner {
+            width: 100%;
+         }
 
          .ma-announcements__body--row__inner {
             padding: 32px 12px 0px 32px;
@@ -589,7 +606,7 @@ export default {
 
 .profile-announcements-loader {
    .loader {
-      margin-top: 50px;
+      margin-top: 100px;
       margin-left: 50px;
    }
 }
@@ -601,6 +618,7 @@ export default {
          &-autosalon {
             &-container {
                background: #1b2434;
+               //background: transparent;
             }
          }
       }
@@ -651,7 +669,7 @@ export default {
 }
 
 @media (max-width: 1149px) {
-   .ma-announcements-autosalon-container{
+   .ma-announcements-autosalon-container {
       .ma-announcements__body--row__inner--item-plate {
          margin: 0;
          width: 50% !important;
@@ -723,7 +741,7 @@ export default {
 
          &-autosalon {
             &-container {
-
+               background: transparent;
             }
          }
       }
@@ -782,6 +800,8 @@ export default {
    }
 
    .ma-announcements-autosalon-container {
+      background: transparent;
+
       .ma-announcements {
          &__body {
             &-autosalon {
@@ -806,6 +826,12 @@ export default {
                }
             }
          }
+      }
+   }
+
+   .dark-mode{
+      .ma-announcements__head-autosalon-container {
+         background: #121926 !important;
       }
    }
 }
@@ -840,6 +866,15 @@ export default {
          &--item {
             padding: 11px 12px 11px 12px !important;
             margin-right: 12px;
+         }
+
+         &-autosalon {
+            .profile-announcements-loader {
+               .loader {
+                  margin-top: 100px;
+                  margin-left: 0px;
+               }
+            }
          }
       }
    }
@@ -892,6 +927,9 @@ export default {
    }
 
 }
+
+
+
 
 
 </style>

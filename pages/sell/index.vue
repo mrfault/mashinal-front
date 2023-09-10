@@ -184,8 +184,7 @@
 
          <div v-if="modalType === 'rules'" v-html="getRulesPage.text[locale]"></div>
          <feedback-modal v-if="modalType === 'feedback'" @close="showModal = false"/>
-         <monetization-alert-modal v-if="modalType === 'monetization_alert'" @onSubmit="onSubmitMonetizationModal"
-                                   @close="showModal = false"/>
+         <monetization-alert-modal v-if="modalType === 'monetization_alert'" @onSubmit="onSubmitMonetizationModal" @close="showModal = false"/>
       </modal-popup>
    </div>
 </template>

@@ -1,9 +1,15 @@
 <template>
   <div>
     <div v-if="onFsLightBox" class="switch-pnlm2">
-      <form-switch class="interior-exterior-switcher" auto-width style="width: fit-content;pointer-events: all;"
-                   v-model="showInteriorSwitcher" :options="interiorOptions"/>
+      <form-switch
+         class="interior-exterior-switcher"
+         auto-width
+         style="width: fit-content; pointer-events: all"
+         v-model="showInteriorSwitcher"
+         :options="interiorOptions"
+      />
     </div>
+
     <client-only>
       <vue-pannellum :on-fs-light-box="onFsLightBox" :src="url"/>
     </client-only>

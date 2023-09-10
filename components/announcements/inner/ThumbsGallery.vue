@@ -78,8 +78,8 @@
                   return item.thumb;
                })
 
-               if (this.announcement.images_360 && this.announcement.images_360.length) {
-                  thumbs.splice(0, 0, this.announcement.images_360[0])
+               if (this.announcement?.media.images_360 && this.announcement?.media.images_360?.length) {
+                  thumbs.splice(0, 0, this.announcement?.media.images_360[0])
                }
             } else if (this.where === 'salon') {
                return this.media;

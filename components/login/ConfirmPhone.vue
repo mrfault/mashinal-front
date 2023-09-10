@@ -165,10 +165,10 @@ export default {
                this.pending = false;
                const errors = []
                // this.$toasted.error(err.response.data.code || err.response.data.message || err.response)
-               errors.push(err.name);
                // for (const key in err.response.data?.data) {
                //    errors.push(key)
                // }
+
                this.authError = errors
                // this.$toasted.error(err.response.data.message)
             })

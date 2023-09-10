@@ -14,7 +14,7 @@
         <template v-if="!no360">
 
           <title-with-line-and-reject-reason
-            :no-approval="!single_announce.images_360.length"
+            :no-approval="!single_announce?.images_360?.length"
             title="360_exterior"
             @change="changeReason"
           />

@@ -15,7 +15,7 @@
                >
                   <div
                      style="width: 100%;"
-                     v-if="index === 0 && announcement?.media?.images_360 && announcement?.media?.images_360?.length"
+                     v-if="index === 0 && ((announcement?.media?.images_360 && announcement?.media?.images_360?.length) || announcement?.media?.interior_360)"
                   >
                      <div class="position-relative">
                         <no-ssr>
@@ -98,6 +98,7 @@
                :zoomIncrement="0"
                :toggler="toggleFsLightbox"
                :sources="getSourcesFsLightbox"
+               :types="slides.types"
                :slide="currentSlide + 1"
                :key="lightboxKey"
                :onClose="refreshLightbox"
@@ -349,11 +350,28 @@
                         files: this.announcement?.media?.images_360,
                         amount: this.announcement?.media?.images_360?.length,
                         fromFsPopup: true,
+                     }
+                  },
+                  ...this.slides.main.slice(1, this.slides.main.length),
+               ]
+            }
+
+            if (this.slides.types[0] === 'custom_interior') {
+               return [
+                  {
+                     component: 'interior360-viewer',
+                     props: {
+                        onFsLightBox: false,
+                        url: this.announcement?.media.interior_360,
+                        files: this.announcement?.media.images_360,
+                        amount: this.announcement?.media.images_360?.length,
+                        fromFsPopup: true,
                      },
                   },
                   ...this.slides.main.slice(1, this.slides.main.length),
                ]
             }
+
             return this.slides.main
          },
 
@@ -362,7 +380,9 @@
                main = [],
                types = [],
                hasVideo = false,
-               has360 = false
+               has360 = false,
+               hasInteriorOnly = false;
+
             if (this.where === 'catalog') {
                thumbs = this.getMediaByKey(this.media, 'thumb');
                main = this.getMediaByKey(this.media, 'main');
@@ -384,10 +404,14 @@
                      `https://www.youtube.com/watch?v=${this.announcement.youtube_id}`,
                   )
                }
-               if (this.announcement?.images_360 && this.announcement?.images_360?.length) {
-                  thumbs.splice(0, 0, this.announcement.images_360[0])
-                  main.splice(0, 0, this.announcement.images_360[0])
+               if (this.announcement?.media.images_360 && this.announcement?.media.images_360?.length) {
+                  thumbs.splice(0, 0, this.announcement.media.images_360[0])
+                  main.splice(0, 0, this.announcement.media.images_360[0])
                   has360 = true
+               } else if ( this.announcement?.media.interior_360) {
+                  thumbs.splice(0, 0, this.announcement.media.interior_360)
+                  main.splice(0, 0, this.announcement.media.interior_360)
+                  hasInteriorOnly = true
                }
                //360 here
             } else if (this.where === 'salon') {
@@ -398,13 +422,14 @@
 
             if (hasVideo) types.splice(1, 0, 'youtube')
             if (has360) types.splice(0, 0, 'custom')
+            if (hasInteriorOnly) types.splice(0, 0, 'custom_interior')
             return {thumbs, main, types}
          },
 
          viewAspectOptions() {
             return [
                { id: 1, name: this.$t('exterior') },
-               { id: 2, name: this.$t('interior') },
+               { id: 2, name: this.$t('interior') }
             ]
          },
 
@@ -427,6 +452,11 @@
       },
 
       mounted() {
+         if(this.announcement.media.images_360 && !this.announcement.media.images_360.length) {
+            this.showInterior = true;
+            this.viewAspect = 2;
+         }
+
          let swiperTouchStartX;
 
          this.$nextTick(() => {
