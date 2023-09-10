@@ -1047,7 +1047,6 @@ export const actions = {
       commit("mutate", {property: "generations", value: res.generations});
    },
    async getModelsArray({commit}, data) {
-      console.log(data.value, 'slug inside here')
       const res = data.value
          ? await this.$axios.$get(`/brand/${data.value}/models`)
          : [];
@@ -1207,7 +1206,6 @@ export const actions = {
       commit("mutate", {property: "commercialAllOptions", value: res});
    },
    async getCommercialFilters({commit}, id) {
-      // console.log("getCommercialFilters");
       const res = await this.$axios.$get(`/commercial/type/${id}/get_filters`);
       commit("mutate", {property: "commercialFilters", value: res});
    },
