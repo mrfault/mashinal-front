@@ -2040,6 +2040,7 @@ export default {
    traction_class: "Тяговый класс",
    tractors: "Седельные тягачи",
    tradeable: "Возможен бартер",
+   announce_limit_alert: "Вы превысили лимит бесплатных объявлений. Данное объявление подлежит оплате. Цена {price} AZN.",
    "Traffic sign recognition": "Датчик усталости водителя",
    trailers_and_semi_trailers: "Прицепы",
    transaction: "Операция",
@@ -2868,5 +2869,6 @@ export default {
    "Aktiv elan sayı 3-dən çox ola bilməz": "Aktiv elan sayı 3-dən çox ola bilməz ru",
    "terms_and_rule": "Условия и положения",
    "this_announcement_belongs_to_another_user": "Это объявление принадлежит другому пользователю",
-   "код":"Hеверный код"
+   "код":"Hеверный код",
+   "profile_notification_desc": "Перейди к уведомлениям!"
 };

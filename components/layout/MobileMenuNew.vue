@@ -146,6 +146,15 @@ export default {
                disabled: false
             },
             {
+               title: 'notification',
+               image: 'notification.png',
+               url: '/notifications',
+               description: 'profile_notification_desc',
+               row: 1,
+               auth: false,
+               disabled: false
+            },
+            {
                title: 'menu_external_salon',
                image: 'auto-by-order.png',
                url: '/external-salons',

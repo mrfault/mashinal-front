@@ -190,6 +190,7 @@
             :className="'white h-52'"
             :announcement="announcement"
             v-if="userIsOwner(announcement) && (announcement.status === 3 || announcement.status === 4) && (!announcement.is_auto_salon || !announcement.is_external_salon)"
+            @refreshData="$nuxt.refresh()"
             :free="true"
          />
 <!--         v-if="userIsOwner(announcement) && announcement.status === 3 && !announcement.is_external_salon"-->
