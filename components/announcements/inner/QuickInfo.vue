@@ -66,11 +66,14 @@
             </div>
 
             <div class="quick-info__contact-info" @click.stop="handleContactClick">
-               <h2 >{{ contact.name }}</h2>
+               <h2
+                  class="cursor-pointer"
+                  :class="{ 'pointer-events-none': contact?.user?.active_announcements_count < 2 }"
+               >{{ contact.name }}</h2>
 
                <address v-if="announcement.status !== 3 && getAddress">{{ getAddress }}</address>
-
                <p class="text-red" v-else-if="announcement.status === 3">{{ $t('sold') }}</p>
+               <p class="text-red" v-if="announcement.status === 4">{{ $t('time_is_up') }}</p>
 
                <nuxt-link
                   :to="contact?.link"
@@ -88,7 +91,6 @@
                   </span>
 
                   <span v-else>{{ $t('other_announcements_of_user') }}</span>
-<!--                  <pre>{{announcement.is_auto_salon}} - {{ announcement.is_external_salon }}</pre>-->
 
 
 <!--                  <icon name="chevron-right" />-->
@@ -158,7 +160,7 @@
                :template="'btn'"
                :text="$t('add_favorite')"
                :announcement="announcement"
-               v-if="![0,2,3].includes(announcement.status)"
+               v-if="![0,2,3,4].includes(announcement.status)"
             />
 
             <add-comparison
@@ -173,7 +175,7 @@
                :announcement="announcement"
                :type="type"
                :className="'white h-52'"
-               v-if="showEditButton(announcement)"
+               v-if="showEditButton(announcement) && announcement.status !== 4"
                @openModal="openModal('isEdit')"
             />
          </div>
@@ -181,12 +183,14 @@
          <deactivate-button
             class="mt-3"
             :announcement="announcement"
-            v-if="showDeactivateButton(announcement)"
+            v-if="showDeactivateButton(announcement) && announcement.status !== 4"
          />
 
          <restore-button
+            :className="'white h-52'"
             :announcement="announcement"
-            v-if="userIsOwner(announcement) && announcement.status === 3"
+            v-if="userIsOwner(announcement) && (announcement.status === 3 || announcement.status === 4) && (!announcement.is_auto_salon || !announcement.is_external_salon)"
+            @refreshData="$nuxt.refresh()"
             :free="true"
          />
 <!--         v-if="userIsOwner(announcement) && announcement.status === 3 && !announcement.is_external_salon"-->
@@ -272,13 +276,16 @@
          },
 
          comparisonExceptions() {
-            return this.type === 'cars' && ![0,2,3].includes(this.announcement?.status);
+            return this.type === 'cars' && ![0,2,3,4].includes(this.announcement?.status);
          }
       },
 
       methods: {
          handleContactClick() {
-            if (this.contact.link) {
+            if (this.contact?.user?.active_announcements_count > 1 ||
+               this.announcement?.is_part_salon ||
+               this.announcement?.is_auto_salon ||
+               this.announcement?.is_external_salon) {
                this.$router.push(this.contact.link)
             }
          },

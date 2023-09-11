@@ -1,7 +1,7 @@
 <template>
    <div class="filtersMobile">
       <div class="filtersMobile__list">
-         <div class="filtersMobile__list-item">
+         <div class="filtersMobile__list-item mark_item">
             <form-select
                :label="$t('mark')"
                :options="existsBrands"
@@ -13,7 +13,7 @@
                @change="changeBrand"
                has-search
             />
-            <inline-svg src="/icons/car-3.svg"/>
+            <inline-svg class="car_svg" src="/icons/car-3.svg"/>
          </div>
          <div class="filtersMobile__list-item" v-if="form.additional_brands[0].brand && carModels">
             <form-select
@@ -195,6 +195,19 @@ export default {
          align-items: center;
          justify-content: space-between;
 
+         &.mark_item{
+            position: relative;
+
+            .car_svg {
+               position: absolute;
+               top: 50%;
+               right: 0;
+               transform: translateY(-50%);
+               pointer-events: none !important;
+            }
+         }
+
+
          .select-menu_label {
             border: none;
             padding: 0;
@@ -263,6 +276,14 @@ export default {
 
       &__list {
          &-item {
+
+            .select-menu_label {
+               background-color: transparent !important;
+
+               .text {
+                  color: #9AA4B2 !important;
+               }
+            }
             span {
                color: #9AA4B2;
             }

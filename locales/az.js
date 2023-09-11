@@ -2057,6 +2057,7 @@ export default {
    traction_class: "Dartı sinifləri",
    tractors: "Ağır yük maşınları",
    tradeable: "Barter mümkündür",
+   announce_limit_alert: "Siz elan yerləşdirmə limitini keçdiyinizə görə bu elan ödənişlidir. Qiymət {price} AZN.",
    "Traffic sign recognition": "Sürücünün yorğunluq sensoru",
    trailers_and_semi_trailers: "Qoşqulu və yarı qoşqulu yük maşınları",
    transaction: "Əməliyyat",
@@ -2401,6 +2402,9 @@ export default {
    filled_in_at_will: "İstəyə dair qeyd oluna bilər",
    dollar_course: "Dolların məzənnəsi",
    profile: "Profilim",
+   country_of_origin: "Mənşə (istehsal) ölkəsi və göndərən ölkə haqqında",
+   other_countries: "Digər ölkələr",
+   free_trade: "Azad ticarət sazişi bağlanan ölkədə istehsal olunub və oradan gətirilir",
    passenger_car: "Minik avtomobili",
    customs_info_title: "Vətəndaşların nəzərinə!",
    customs_info_part_1:
@@ -2711,6 +2715,7 @@ export default {
    my_vehicle_announcements: "Menim elanlarim",
    my_car_number_announcements: "Qeydiyyat nişanı elanlarım",
    timed_out: "Vaxtı bitmiş",
+   time_is_up: "Vaxtı bitib",
    under_consideration_2: "Yoxlamada",
    search_number: "Nömrəni axtar",
    my_vehicle_info: "NV məlumatlarım",
@@ -2915,5 +2920,6 @@ export default {
    "terms_and_rule": "Qaydalar və şərtlər",
    "this_announcement_belongs_to_another_user": "Bu elan başqa istifadəçiyə aiddir",
    "kod": "Kod yanlışdır",
+   "profile_notification_desc": "Bildirişlərə burdan bax!"
 };
 

@@ -31,14 +31,9 @@
       },
 
       async asyncData({store, route}) {
-         if (route.params.id) {
-            await store.dispatch('getSalonById', {slug: route.params.id, page: (route.query.page || 1)});
-         }
+         await store.dispatch('getSalonById', {slug: route.params.id, page: (route.query.page || 1)});
          await store.dispatch('getMotoOptions');
-
-         if (store.getters?.salonSingle?.id) {
-            await store.dispatch('fetchPartsAnnouncementsId', store.getters?.salonSingle?.id);
-         }
+         await store.dispatch('fetchPartsAnnouncementsId', store.getters?.salonSingle?.id);
       },
 
       computed: {

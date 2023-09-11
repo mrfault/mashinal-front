@@ -142,6 +142,10 @@
                            @timeOver="resendSmsAfterSecond = 0"
                         />
                      </div>
+                     <div class="limit_error"
+                          v-if="(form.announce_type?.id === 1 && user.announce_left_car < 1) || (form.announce_type?.id === 4 && user.announce_left_moto < 1)">
+                        <p>{{ $t('announce_limit_alert', {price: 25}) }}</p>
+                     </div>
                      <button type="button" @click="onClick()"
                              :class="['btn', 'full-width', 'btn--pale-green-outline', 'active', {pending}]">
                         {{ authStep === "notLoggedIn" ? $t("enter_sms_code") : $t("place_announcement") }}
@@ -184,7 +188,8 @@
 
          <div v-if="modalType === 'rules'" v-html="getRulesPage.text[locale]"></div>
          <feedback-modal v-if="modalType === 'feedback'" @close="showModal = false"/>
-         <monetization-alert-modal v-if="modalType === 'monetization_alert'" @onSubmit="onSubmitMonetizationModal" @close="showModal = false"/>
+         <monetization-alert-modal v-if="modalType === 'monetization_alert'" @onSubmit="onSubmitMonetizationModal"
+                                   @close="showModal = false"/>
       </modal-popup>
    </div>
 </template>
@@ -811,6 +816,20 @@ export default {
                      cursor: pointer;
                   }
                }
+            }
+
+            .limit_error {
+               display: flex;
+               align-items: center;
+               padding: 16px;
+               gap: 12px;
+               border: 1px solid #F81734;
+               background-color: #FEF3F2;
+               color: #F81734;
+               border-radius: 12px;
+               font-size: 15px;
+               font-style: normal;
+               font-weight: 500;
             }
          }
 

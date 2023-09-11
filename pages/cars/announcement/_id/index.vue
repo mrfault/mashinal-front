@@ -135,9 +135,9 @@
          });
       },
 
-      async asyncData({store, route}) {
+      async fetch({store, route}) {
          await Promise.all([
-            route.params.id && store.dispatch('getAnnouncementInnerV2', route.params.id),
+            store.dispatch('getAnnouncementInnerV2', route.params.id),
             store.dispatch('getComplaintOptions'),
             store.dispatch('getOptions'),
             store.dispatch('getAllOtherOptions'),

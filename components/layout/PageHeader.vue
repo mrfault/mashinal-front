@@ -135,7 +135,7 @@
 
                               <NuxtLink v-else :to="getUserSettingsLink" class="ma-garage__nav--profile">
                                  <div class="ma-garage__nav--profile__avatar">
-                                    <h5  class="ma-garage__nav--profile__name">{{ user?.full_name.charAt(0) }}</h5>
+                                    <h5  class="ma-garage__nav--profile__name">{{ user?.full_name?.charAt(0) }}</h5>
                                  </div>
                                  <h5 class="ma-garage__nav--profile__name"> {{ user?.full_name }}</h5>
                               </NuxtLink>

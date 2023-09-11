@@ -196,6 +196,7 @@
                />
 
                <chat-button
+                  v-if="![2, 3, 4].includes(announcement.status)"
                   :announcement="announcement"
                   has-after-login
                />
@@ -203,7 +204,7 @@
                <add-favorite
                   :template="'btn'"
                   :announcement="announcement"
-                  v-if="![0,2,3].includes(announcement.status)"
+                  v-if="![0,2,3,4].includes(announcement.status)"
                />
 
                <add-comparison
@@ -349,7 +350,7 @@
          },
 
          comparisonExceptions() {
-            return this.type === 'cars' && ![0,2,3].includes(this.announcement.status);
+            return this.type === 'cars' && ![0,2,3,4].includes(this.announcement.status);
          }
       },
 

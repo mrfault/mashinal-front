@@ -2040,6 +2040,7 @@ export default {
    traction_class: "Тяговый класс",
    tractors: "Седельные тягачи",
    tradeable: "Возможен бартер",
+   announce_limit_alert: "Вы превысили лимит бесплатных объявлений. Данное объявление подлежит оплате. Цена {price} AZN.",
    "Traffic sign recognition": "Датчик усталости водителя",
    trailers_and_semi_trailers: "Прицепы",
    transaction: "Операция",
@@ -2388,6 +2389,9 @@ export default {
       "Добавьте своё ТС в «Гараж», заплатив всего 1 AZN, и сэкономьте деньги, вовремя оплачивая штрафы.",
    transition_count_to_number: "Количество переходов по номеру:",
    end_time_of_package: "Дата окончания пакета",
+   country_of_origin: "О стране происхождения (производства) и стране отправителя",
+   other_countries: "Другие страны",
+   free_trade: "Производится в стране, с которой заключено соглашение о свободной торговле, и импортируется оттуда",
    passenger_car: "Легковые",
    electric: "Электричество",
    notification_not_found: "Нет уведомлений.",
@@ -2691,6 +2695,7 @@ export default {
    "my_car_number_announcements": "Мои регистрационные номера",
    "under_consideration_2": "На рассмотрении",
    "timed_out": "Истëкшие",
+   "time_is_up": "Время истекло",
    "my_vehicle_info": "Инфо о ТС",
    "search_number": "Номер автомобиля",
    "add_vehicle": "Добавить ТС",
@@ -2864,5 +2869,6 @@ export default {
    "Aktiv elan sayı 3-dən çox ola bilməz": "Aktiv elan sayı 3-dən çox ola bilməz ru",
    "terms_and_rule": "Условия и положения",
    "this_announcement_belongs_to_another_user": "Это объявление принадлежит другому пользователю",
-   "код":"Hеверный код"
+   "код":"Hеверный код",
+   "profile_notification_desc": "Перейди к уведомлениям!"
 };
