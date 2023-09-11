@@ -16,11 +16,9 @@
 </template>
 
 <script>
-   import { SearchMixin } from "~/mixins/search";
    import { mapActions } from "vuex";
 
    export default {
-      mixins: [SearchMixin],
 
       data() {
         return {

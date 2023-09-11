@@ -55,8 +55,8 @@ export const LayoutMixin = {
       handleResize() {
          // update grid breakpoint
          this.windowWidth = window.innerWidth;
-         let breakpoint = false
-         ;['xs', 'sm', 'md', 'lg', 'xl'].map((name) => {
+         let breakpoint = false;
+         ['xs', 'sm', 'md', 'lg', 'xl'].map((name) => {
             let value = window
                .getComputedStyle(document.documentElement)
                .getPropertyValue('--breakpoint-' + name)
@@ -129,7 +129,6 @@ export const LayoutMixin = {
          }
       },
       handleScroll() {
-
          let scrolled = window.scrollY
          this.handleHideMenu()
          let layout = document.querySelector('.layout')

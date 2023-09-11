@@ -452,7 +452,7 @@
       },
 
       mounted() {
-         if(this.announcement.media.images_360 && !this.announcement.media.images_360.length) {
+         if(this.announcement?.media?.images_360 && !this.announcement?.media?.images_360?.length) {
             this.showInterior = true;
             this.viewAspect = 2;
          }
