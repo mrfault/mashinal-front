@@ -2868,5 +2868,6 @@ export default {
    "Aktiv elan sayı 3-dən çox ola bilməz": "Aktiv elan sayı 3-dən çox ola bilməz ru",
    "terms_and_rule": "Условия и положения",
    "this_announcement_belongs_to_another_user": "Это объявление принадлежит другому пользователю",
-   "код":"Hеверный код"
+   "код":"Hеверный код",
+   "profile_notification_desc": "Перейди к уведомлениям!"
 };

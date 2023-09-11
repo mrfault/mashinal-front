@@ -2919,5 +2919,6 @@ export default {
    "terms_and_rule": "Qaydalar və şərtlər",
    "this_announcement_belongs_to_another_user": "Bu elan başqa istifadəçiyə aiddir",
    "kod": "Kod yanlışdır",
+   "profile_notification_desc": "Bildirişlərə burdan bax!"
 };
 
