@@ -1,7 +1,7 @@
 <template>
    <div class="pages-salons-id">
       <div class="container">
-         <salon-inner v-if="$store.getters.salonSingle.id"/>
+         <salon-inner />
       </div>
 
       <HandleIds
@@ -37,19 +37,14 @@
       //    });
       // },
 
-      async created() {
+      async asyncData({store, route}) {
+         await store.dispatch('getSalonById', {slug: route.params.id});
+         await store.dispatch('getMotoOptions');
 
-            await this.$store.dispatch('getSalonById', {slug: this.$route.params.id});
-            await this.$store.dispatch('getMotoOptions');
-
-
-            await this.$store.dispatch('fetchAutosalonAnnouncementsId', {
-               id: this.$store?.getters?.salonSingle?.id,
-               page: this.$route.query.page || 1
-            });
-
-         console.log('test');
-
+         await store.dispatch('fetchAutosalonAnnouncementsId', {
+            id: store?.getters?.salonSingle?.id,
+            page: route.query.page || 1
+         });
 
          // store.dispatch('fetchAutosalonAnnouncementsId', {id: store.getters.salonSingle.id});
       },
@@ -73,7 +68,7 @@
 
          handleIdsOptions() {
             let ids = [];
-            if(!this.autosalonAnnouncementsId?.data) return [];
+
             ids.push({
                type: 'commercial',
                ids: [...this.autosalonAnnouncementsId?.data?.map(item => item.id)]
