@@ -13,6 +13,8 @@
 
          <salon-filters-form v-if="nonOfficialSalons.length" :count="salonsFiltered.length" />
 
+         <no-results v-else />
+
          <div
             class="mb-lg-0 mb-n2 mt-2 row salon-card-list"
             v-if="nonOfficialSalons.length"
