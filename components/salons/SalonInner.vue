@@ -255,9 +255,9 @@
       //   });
       // },
 
-      // mounted() {
-         // this.scrollFunc();
-      // }
+      mounted() {
+       console.log('salon inner mounted')
+      }
    }
 </script>
 
