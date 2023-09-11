@@ -1302,8 +1302,15 @@ export const actions = {
       commit("mutate", {property: data.prefix + "Announcements", value: res});
    },
    // Announcements
-   async getRelativeAnnouncements({commit}, id) {
-      const res = await this.$axios.$get(`${this.$env().API_SECRET}/car/similar/${id}`);
+   async getRelativeAnnouncements({commit}, obj) {
+      let types = {
+         light_vehicle: 'car',
+         motorcycle: 'motorcycle',
+         scooter: 'scooter',
+         moto_atv: 'atv',
+         part: 'parts'
+      }
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/${types[obj.type]}/similar/${obj.id}`);
       commit("mutate", {property: "relativeAnnouncements", value: res});
    },
 
@@ -1319,11 +1326,14 @@ export const actions = {
       );
       commit("mutate", {property: "temporaryLazyData", value: res});
    },
-   async getShopOtherAnnouncements({commit, state}, data) {
-      const res = await this.$axios.$get(
-         `/grid/shop/announcements/${data.id ||
-         state.announcement.id_unique}?page=${data.page || 1}`
-      );
+
+   async getShopOtherAnnouncements({commit, state}, id) {
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/****/${id}`);
+      commit("mutate", {property: "shopAnnouncements", value: res});
+   },
+
+   async getAutoSalonOtherAnnouncements({commit, state}, id) {
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/****/${id}`);
       commit("mutate", {property: "shopAnnouncements", value: res});
    },
    async getShopOtherAnnouncementsWithoutMutate({commit, state}, data) {
