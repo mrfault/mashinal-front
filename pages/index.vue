@@ -134,10 +134,10 @@
          </div>
       </div>
 
-<!--      <pre>{{carShowroom?.announcements}}</pre>-->
       <div class="overflow-hidden bg-white" v-if="carShowroom?.announcements?.length">
          <grid
             :announcements="carShowroom?.announcements"
+            :announcementsBanner="carShowroom?.autosalon"
             :pending="pending"
          >
             <template #cap>
