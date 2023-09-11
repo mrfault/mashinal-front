@@ -18,8 +18,8 @@
       <template v-else>
          <grid
             class="dark-bg"
-            v-if="relativeAnnouncements && relativeAnnouncements.length"
-            :announcements="relativeAnnouncements"
+            v-if="relativeAnnouncements?.data && relativeAnnouncements?.data?.length"
+            :announcements="relativeAnnouncements?.data"
          >
             <template #cap>
                <Cap :className="'mb40'">
@@ -54,23 +54,25 @@
          },
 
          title() {
-            if (this.announcement?.is_part_salon)
+            if (this.announcement?.is_part_salon) {
                return this.$t('shop_other_announcements', {name: this.announcement?.user?.part_salon?.name});
-            else if (this.announcement?.is_auto_salon && (this.announcement?.user?.auto_salon?.possible_announce_count > 5 || this.announcement?.user?.auto_salon?.possible_announce_count == 0))
+            } else if (this.announcement?.is_auto_salon && (this.announcement?.user?.auto_salon?.possible_announce_count > 5 || this.announcement?.user?.auto_salon?.possible_announce_count == 0)) {
                return this.$t('salon_other_announcements', {name: this.announcement?.user?.auto_salon?.name});
-            else if (this.announcement?.is_external_salon && (this.announcement?.user?.external_salon?.possible_announce_count > 5 || this.announcement?.user?.external_salon?.possible_announce_count == 0))
+            } else if (this.announcement?.is_external_salon && (this.announcement?.user?.external_salon?.possible_announce_count > 5 || this.announcement?.user?.external_salon?.possible_announce_count == 0)) {
                return this.$t('salon_other_announcements', {name: this.announcement?.user?.external_salon?.name});
-            return this.$t('relative_announcements');
+            } else {
+               return this.$t('relative_announcements');
+            }
          }
       },
 
       methods: {
-         ...mapActions(['getRelativeAnnouncements', 'getShopOtherAnnouncements'])
+         ...mapActions(['getRelativeAnnouncementsOld', 'getShopOtherAnnouncements'])
       },
 
       created() {
-         if (this.isShop) this.getShopOtherAnnouncements(this.announcement.id);
-         else this.getRelativeAnnouncements(this.announcement.id);
+         if (this.isShop) this.getShopOtherAnnouncements(this.announcement.id_unique);
+         else this.getRelativeAnnouncementsOld(this.announcement.id_unique);
       },
 
       beforeDestroy() {

@@ -11,20 +11,6 @@
                   <h4 class="calculator__inputs--heading">{{ $t('customs_calculator') }}</h4>
 
                   <div class="row">
-<!--                     <div class="col-12" v-if="false">-->
-<!--                        <form-select-->
-<!--                           :label="$t('passenger_car')"-->
-<!--                           :options="vehicleTypes"-->
-<!--                           v-model="filled.vehicleType"-->
-<!--                           :invalid="$v.filled.vehicleType.$error"-->
-<!--                           :allowClear="false"-->
-<!--                           :showLabelOnlyOnActionBar="false"-->
-<!--                           :clearOption="false"-->
-<!--                           :hideOptions="true"-->
-<!--                           disabled-->
-<!--                        />-->
-<!--                     </div>-->
-
                      <div class="col-12">
                         <form-text-input
                            :disabled="true"
@@ -35,56 +21,52 @@
 
                      <div class="col-12">
                         <form-select
+                           :class="{'hasError' : $v.form.engineType.$error}"
                            :label="$t('engine_type')"
                            :options="engineTypes"
                            :clear-placeholder="true"
                            :clearOption="false"
-                           :invalid="$v.filled.engineType.$error"
-                           v-model="filled.engineType"
-                        />
-                     </div>
-
-                     <div class="col-12" v-if="filled.engineType == 3">
-                        <form-select
-                           :label="$t('hybrid_engine_type')"
-                           :options="hybridEngineTypes"
-                           v-model="filled.hybridEngineType"
-                           :invalid="$v.filled.hybridEngineType.$error"
-                           :clear-placeholder="true"
-                           :clearOption="false"
+                           :invalid="$v.form.engineType.$error"
+                           v-model="form.engineType"
                         />
                      </div>
 
                      <div class="col-12 col-sm-6">
                         <form-numeric-input
+                           :class="{'hasError' : $v.form.price.$error}"
                            :placeholder="$t('customs_value_of_vehicle')"
-                           :invalid="$v.filled.customsValueOfVehicle.$error"
-                           v-model="filled.customsValueOfVehicle"
+                           :invalid="$v.form.price.$error"
+                           :maxlength="13"
+                           v-model="form.price"
                         />
                      </div>
 
-                     <div class="col-12 col-sm-6" v-if="filled.engineType !== 4">
+                     <div class="col-12 col-sm-6">
                         <form-numeric-input
+                           :class="{'hasError' : $v.form.engine.$error}"
                            :placeholder="$t('engine_volume2')"
-                           :invalid="$v.filled.engineVolume.$error"
-                           v-model="filled.engineVolume"
+                           :disabled="form.engineType === 6"
+                           :invalid="$v.form.engine.$error"
+                           :maxlength="7"
+                           v-model="form.engine"
                         />
                      </div>
 
                      <div class="col-12">
                         <form-text-input
+                           :class="{'hasError' : $v.form.issueDate.$error}"
                            input-date
                            :placeholder="$t('production_year')"
-                           :invalid="$v.filled.productionYear.$error"
-                           v-model="filled.productionYear"
+                           :invalid="$v.form.issueDate.$error"
+                           v-model="form.issueDate"
                         />
                      </div>
 
                      <div class="col-12">
-                        <h3>Mənşə (istehsal) ölkəsi və göndərən ölkə haqqında</h3>
+                        <h3 class="wrappTitle">{{ $t('country_of_origin') }}</h3>
                         <radio-group
-                           class="mileage_types"
-                           v-model="form.issueDate"
+                           class="wrapp"
+                           v-model="form.commerceType"
                            :options="commerceTypes"
                         />
                      </div>
@@ -110,7 +92,7 @@
                         <button
                            @click.prevent="submit"
                            type="button"
-                           :class="['btn', 'full-width', 'btn--green']"
+                           :class="['btn', 'full-width', 'btn--green', {pending}]"
                         >
                            {{ $t('calculate') }}
                         </button>
@@ -119,46 +101,26 @@
                </div>
             </div>
 
-            <div class="col-12 col-md-12 col-lg-6" v-if="hasResult">
+            <div class="col-12 col-md-12 col-lg-6" v-if="customsResult?.data?.autoDuty?.duties?.length">
                <div class="calculator__results">
                   <div class="calculator__results--content">
                      <h2 class="calculator__results--title">{{ $t('result') }}</h2>
 
                      <div class="vehicle-specs">
                         <ul>
-                           <li>
-                              <span>{{ $t('excise_tax') }}</span>
-                              <span>{{ result.aksizvergi || 0 }}</span>
+                           <li
+                              v-for="(item, i) in customsResult?.data?.autoDuty?.duties"
+                              :key="i"
+                           >
+                              <span>{{ item.name }}</span>
+                              <span>{{ item.value }}</span>
                            </li>
-                           <li>
-                              <span>{{ $t('custom_duty') }}</span>
-                              <span>{{ result.rusum }}</span>
-                           </li>
-                           <li>
-                              <span>{{ $t('operating_fee') }}</span>
-                              <span>{{ result.sbor }}</span>
-                           </li>
-                           <li>
-                              <span>{{ $t('license_fee') }}</span>
-                              <span>{{ result.vesiqe }}</span>
-                           </li>
-                           <li>
-                              <span>{{ $t('vat') }}</span>
-                              <span>{{ result.edv || 0 }}</span>
-                           </li>
-                           <li>
-                              <span>{{$t('for_the_provision_of_electronic_customs_service') }}</span>
-                              <span>{{ result.elprice }}</span>
-                           </li>
-                           <li>
-                              <span>{{$t('vat_for_the_provision_of_electronic_customs_services') }}</span>
-                              <span>{{ result.gomrukedv }}</span>
-                           </li>
+
                         </ul>
 
                         <div class="sum">
                            <span>{{ $t('total') }}</span>
-                           <span>{{ result.cem }} AZN</span>
+                           <span>{{ customsResult?.data?.autoDuty?.total?.value }} AZN</span>
                         </div>
                      </div>
                   </div>
@@ -166,15 +128,11 @@
             </div>
 
             <div class="col-12 col-md-12 col-lg-6 d-none d-sm-block mt-4 mt-lg-0" v-else>
-               <pre>{{form}}</pre>
                <div class="calculator__empty-results">
                   <div class="calculator__empty-results--image">
                      <img class="light-mode" src="/images/calculator.svg" alt="image"/>
                      <img class="dark-mode" src="/images/calculator_dark.svg" alt="image"/>
                   </div>
-<!--                  <p class="calculator__empty-results&#45;&#45;message">-->
-<!--                     {{ $t('learn_customs_duty') }}-->
-<!--                  </p>-->
                </div>
             </div>
          </div>
@@ -194,7 +152,6 @@
 </template>
 
 <script>
-   import Models from '@/models'
    import RadioGroup from "~/components/moderator/RadioGroup.vue";
    import { mapGetters } from 'vuex'
    import { required, requiredIf } from 'vuelidate/lib/validators'
@@ -216,53 +173,31 @@
             form: {
                autoType: 0,
                engineType: '',
+               engine: '',
                price: '',
                issueDate: '',
-               commerceType: ''
+               commerceType: 0
             },
-            commerceTypes: [
-               { key: 'nonFree', name: 'Digər ölkələr' },
-               { key: 'free', name: 'Azad ticarət sazişi bağlanan ölkədə istehsal olunub və oradan gətirilir' }
-            ],
-            vehicleTypes: [{name: this.$t('passenger_car'), id: 1}],
             engineTypes: [
                {name: this.$t('benzin'), id: 1},
                {name: this.$t('dizel'), id: 2},
                {name: this.$t('gas'), id: 3},
-               {name: this.$t('hybrid'), id: 4},
-               {name: this.$t('electrical'), id: 5},
-               {name: this.$t('hybrid_benzin'), id: 6},
-               {name: this.$t('hybrid_dizel'), id: 7}
+               {name: this.$t('hybrid_benzin'), id: 4},
+               {name: this.$t('hybrid_dizel'), id: 5},
+               {name: this.$t('electrical'), id: 6}
             ],
-            hybridEngineTypes: [
-               {name: this.$t('benzin'), id: 1},
-               {name: this.$t('dizel'), id: 2},
+            commerceTypes: [
+               { key: 0, name: this.$t('other_countries') },
+               { key: 1, name: this.$t('free_trade') }
             ],
-            hasResult: false,
-            result: {},
-            filled: {
-               vehicleType: 1,
-               engineType: '',
-               isHybrid: false,
-               hybridEngineType: '',
-               producerCountry: '',
-               senderCountry: '',
-               customsValueOfVehicle: '',
-               engineVolume: '',
-               isMoreThanOneYear: false,
-               productionYear: '',
-            },
-            values: Models.calculationValues,
-            open: false
+            pending: false
          }
       },
 
       computed: {
-         ...mapGetters(['brands']),
-
-         countries() {
-            return Models['countries_' + this.locale]
-         },
+         ...mapGetters({
+            customsResult: 'customsData'
+         }),
 
          crumbs() {
             return [
@@ -271,335 +206,95 @@
             ]
          },
 
-         isHybrid: function () {
-            if (this.filled.engineType == 'hybrid12345') {
-               return true
-            } else {
-               return false
-            }
-         },
-
          selectedVehicleType() {
             return this.$t('passenger_car')
          }
       },
 
       methods: {
-         reset() {
-            this.$v.$reset()
-            this.filled = {
-               vehicleType: 1,
+         async reset() {
+            this.$v.form.$reset();
+
+            this.form = {
+               autoType: 0,
                engineType: '',
-               isHybrid: false,
-               hybridEngineType: '',
-               producerCountry: '',
-               senderCountry: '',
-               customsValueOfVehicle: '',
-               engineVolume: '',
-               isMoreThanOneYear: false,
-               productionYear: '',
+               engine: '',
+               price: '',
+               issueDate: '',
+               commerceType: 0
             }
-            this.hasResult = false
+
+            const form = {
+               autoType: 'Car',
+               engineType: 'Petrol',
+               engine: 1300,
+               price: 0,
+               issueDate: "01.04.2020",
+               commerceType: 'Free'
+            };
+
+            await this.$store.dispatch('fetchCustoms', form);
          },
 
-         calculate() {
-            let senderCountryObj = this.countries.find(item => item.id === this.filled.senderCountry)
-            let producerCountryObj = this.countries.find(item => item.id === this.filled.producerCountry)
-            var engine_id = this.filled.engineType
-            var hybrid_id = this.filled.hybridEngineType
+         async calculate() {
+            let engineType, commerceType;
 
-            var pro_date = this.filled.productionYear
-            var cur_date = new Date().getFullYear()
-            var diff_p_date = cur_date - pro_date
+            if (this.form.engineType === 1) engineType = 'Petrol';
+            else if (this.form.engineType === 2) engineType = 'Diesel';
+            else if (this.form.engineType === 3) engineType = 'Gas';
+            else if (this.form.engineType === 4) engineType = 'HybridPetrol';
+            else if (this.form.engineType === 5) engineType = 'Electric';
+            else engineType = 'HybridDiesel';
 
-            var prices = [],
-               prices_o = [],
-               changes = [],
-               changes_o = [],
-               engines = [],
-               engineminuses = []
-            engines = this.values.engines
-            engineminuses = this.values.engineminuses
-            prices = this.values.prices
-            prices_o = this.values.prices_o
-            changes = this.values.changes
-            changes_o = this.values.changes_o
+            if (this.form.commerceType === 0) commerceType = 'nonFree';
+            else commerceType = 'free';
 
-            var radio_year = this.filled.isMoreThanOneYear ? 'on' : 1
-            var productionCity = producerCountryObj.value
-            var productionCityRel = producerCountryObj.rel
-            var senderCountry = senderCountryObj.value
-            var senderCountryRel = senderCountryObj.rel
-            var CustomsValue = this.filled.customsValueOfVehicle
-            var EngineValue = engine_id == 4 ? 1 : this.filled.engineVolume
-            var rad = diff_p_date
-            var GR = 0
-            var Type = 0
-            var Price_ = 0
-            var Emel = 0
-            var SBOR = 0
-            var cem = 0
-            var vesiqe = ''
-            var ElPrice = ''
-            var ElPriceEdv = ''
-            var aks = ''
-            var OUT = 0
-            var ElPrc = 0
-            var rusum = ''
-            var edv = ''
-            var currency = 1.7
-            var auto_id = 1
-            if (
-               productionCity == 0 ||
-               senderCountry == 0 ||
-               CustomsValue.length == 0
-            ) {
-               return false
-            } else {
-               if (radio_year == 1) {
-                  rad = 0
-               }
+            const form = {
+               autoType: 0,
+               engineType: engineType,
+               engine: this.form.engine,
+               price: this.form.price,
+               issueDate: this.form.issueDate,
+               commerceType: commerceType
+            };
 
-               if (rad == 0) {
-                  if (auto_id == 2) GR = 0.4
-                  if (auto_id == 1 && EngineValue <= 1500) GR = 0.4
-               }
-
-               if (rad > 0) {
-                  if (auto_id == 2) GR = 0.7
-                  if (auto_id == 1 && EngineValue <= 1500) GR = 0.7
-               }
-
-               if (rad == 0) {
-                  if (auto_id == 2) GR = 0.7
-                  if (auto_id == 1 && EngineValue > 1500) GR = 0.7
-               }
-
-               if (rad > 0) {
-                  if (auto_id == 2) GR = 1.2
-                  if (auto_id == 1 && EngineValue > 1500) GR = 1.2
-               }
-
-               if (engine_id == 4) {
-                  if (auto_id == 1) {
-                     GR = 0.15
-                  }
-               }
-
-               ///new
-               if (EngineValue <= parseFloat(engines.engine_0)) Type = 1
-               else if (
-                  EngineValue <= parseFloat(engines.engine_1) &&
-                  EngineValue > parseFloat(engines.engine_0)
-               )
-                  Type = 2
-               else if (
-                  EngineValue <= parseFloat(engines.engine_2) &&
-                  EngineValue > parseFloat(engines.engine_1)
-               )
-                  Type = 3
-               else if (
-                  EngineValue <= parseFloat(engines.engine_3) &&
-                  EngineValue > parseFloat(engines.engine_2)
-               )
-                  Type = 4
-               else if (EngineValue > parseFloat(engines.engine_3)) Type = 5
-
-               Price_ = CustomsValue * currency
-
-               if (Price_ <= 1000) SBOR = 15
-               else if (Price_ <= 10000) SBOR = 60
-               else if (Price_ <= 50000) SBOR = 120
-               else if (Price_ <= 100000) SBOR = 200
-               else if (Price_ <= 500000) SBOR = 300
-               else if (Price_ <= 1000000) SBOR = 600
-               else if (Price_ > 1000000) SBOR = 1000
-
-               vesiqe = 30
-               ElPrice = 30
-               ElPriceEdv = 5.4
-
-               if (auto_id == 1 && rad <= 3 && 3000 < EngineValue) {
-                  prices.price_0 = parseFloat(prices_o.price_0)
-                  prices.price_1 = parseFloat(prices_o.price_1)
-                  prices.price_2 = parseFloat(prices_o.price_2)
-                  prices.price_3 = parseFloat(prices_o.price_3)
-                  prices.price_4 = parseFloat(prices_o.price_4)
-
-                  changes.change_0 = parseFloat(changes_o.change_0)
-                  changes.change_1 = parseFloat(changes_o.change_1)
-                  changes.change_2 = parseFloat(changes_o.change_2)
-                  changes.change_3 = parseFloat(changes_o.change_3)
-                  changes.change_4 = parseFloat(changes_o.change_4)
-               }
-
-               if (Type == 1) {
-                  OUT =
-                     parseFloat(prices.price_0) +
-                     (EngineValue - parseFloat(engineminuses.engineminus_0)) *
-                     parseFloat(changes.change_0)
-               } else if (Type == 2) {
-                  OUT =
-                     parseFloat(prices.price_1) +
-                     (EngineValue - parseFloat(engineminuses.engineminus_1)) *
-                     parseFloat(changes.change_1)
-               } else if (Type == 3) {
-                  OUT =
-                     parseFloat(prices.price_2) +
-                     (EngineValue - parseFloat(engineminuses.engineminus_2)) *
-                     parseFloat(changes.change_2)
-               } else if (Type == 4) {
-                  OUT =
-                     parseFloat(prices.price_3) +
-                     (EngineValue - parseFloat(engineminuses.engineminus_3)) *
-                     parseFloat(changes.change_3)
-               } else if (Type == 5) {
-                  OUT =
-                     parseFloat(prices.price_4) +
-                     (EngineValue - parseFloat(engineminuses.engineminus_4)) *
-                     parseFloat(changes.change_4)
-               }
-
-               if (rad > 7) {
-                  if (auto_id == 1 && engine_id != 4) {
-                     if (engine_id == 1) {
-                        OUT = OUT * 1.2
-                     } else if (engine_id == 2) {
-                        OUT = OUT * 1.5
-                     } else if (engine_id == 3) {
-                        if (hybrid_id == 1) {
-                           OUT = OUT * 1.2
-                        } else if (hybrid_id == 2) {
-                           OUT = OUT * 1.5
-                        }
-                     }
-                  }
-               }
-
-               ElPrc = 35.4
-
-               if (
-                  productionCityRel == 1 &&
-                  senderCountryRel == 1 &&
-                  productionCity == senderCountry
-               ) {
-                  rusum = 0
-                  GR = 0
-               } else {
-                  if (engine_id == 4) {
-                     rusum = Price_ * GR
-                  } else {
-                     rusum = EngineValue * GR * currency
-                  }
-               }
-
-               if ((rad > 0) & (auto_id == 2)) {
-                  OUT = OUT * 1.5
-               }
-               const ifLessThanOneYear = !this.filled.isMoreThanOneYear
-               if (
-                  (hybrid_id == 1 || hybrid_id == 2) &&
-                  engine_id == 3 &&
-                  rad <= 3 &&
-                  EngineValue <= 2500
-               ) {
-                  edv = 0
-               } else {
-                  edv =
-                     (Price_ + OUT + EngineValue * GR * currency + SBOR + vesiqe) * 0.18
-               }
-
-               //edv = (Price_ + OUT + (EngineValue * GR * currency) + SBOR + vesiqe) * 0.18;
-
-               //cem = OUT + rusum + SBOR + vesiqe + edv + ElPrice + ElPriceEdv;
-               //cem = OUT + EngineValue * GR * currency + SBOR + 20 +
-               cem = OUT + rusum + SBOR + vesiqe + edv + ElPrice + (ElPrice * 18) / 100
-               ElPrc + (Price_ + OUT + EngineValue * GR * currency + SBOR + 20) * 0.18
-
-               const result = {}
-               if (engine_id == 4) {
-                  cem =
-                     parseFloat(rusum) +
-                     parseFloat(SBOR) +
-                     parseFloat(vesiqe) +
-                     parseFloat(ElPrice) +
-                     parseFloat((ElPrice * 18) / 100)
-                  result['cem'] = cem.toFixed(2)
-                  result['sbor'] = SBOR.toFixed(2)
-                  result['rusum'] = rusum.toFixed(2)
-                  result['vesiqe'] = vesiqe.toFixed(2)
-                  result['elprice'] = ElPrice.toFixed(2)
-                  result['gomrukedv'] = ((ElPrice * 18) / 100).toFixed(2)
-
-                  //  $('#cem').html(+cem.toFixed(2) + ' AZN')
-               } else {
-                  result['aksizvergi'] = OUT.toFixed(2)
-                  result['edv'] = edv.toFixed(2)
-                  result['sbor'] = SBOR.toFixed(2)
-                  result['rusum'] = rusum.toFixed(2)
-                  result['vesiqe'] = vesiqe.toFixed(2)
-                  result['elprice'] = ElPrice.toFixed(2)
-                  result['gomrukedv'] = ((ElPrice * 18) / 100).toFixed(2)
-                  result['cem'] = cem.toFixed(2)
-               }
-               this.result = result
-               this.hasResult = true
-            }
-         },
-
-         calculateNew() {
-
+            await this.$store.dispatch('fetchCustoms', form);
          },
 
          async submit() {
             try {
-               this.$v.$touch();
-               if (this.$v.$error) {
+               this.$v.form.$touch();
+               if (this.$v.form.$error) {
                   this.$toasted.error(this.$t('required_fields'));
+                  setTimeout(() => this.scrollTo('.hasError', [-75, -190]), 20);
                   return;
                }
 
-               this.calculateNew();
-
-               if (this.isMobileBreakpoint) {
-                  setTimeout(() => {
-                     this.scrollTo('.calculator__results', [-15]);
-                  }, 100)
-               }
+               this.pending = true;
+               await this.calculate();
+               this.pending = false;
             } catch (e) {
                console.error(e);
             }
          }
       },
 
+      watch: {
+         'form.engineType'(val) {
+            if (val === 6) this.form.engine = 0;
+         }
+      },
+
       validations: {
-         filled: {
-            vehicleType: { required },
-            engineType: {
+         form: {
+            engineType: { required },
+            price: { required },
+            engine: {
                required: requiredIf(function () {
-                  return this.filled.engineType !== 4
+                  return this.form.engineType === '' || this.form.engineType !== 6;
                }),
             },
-            hybridEngineType: {
-               required: requiredIf(function () {
-                  return this.filled.isHybrid == true
-               }),
-            },
-            producerCountry: {required},
-            senderCountry: {required},
-            customsValueOfVehicle: {required},
-            engineVolume: {
-               required: requiredIf(function () {
-                  return this.filled.engineType !== 4
-               }),
-            },
-            isMoreThanOneYear: false,
-            productionYear: {
-               required
-               // required: requiredIf(function () {
-               //    return this.filled.isMoreThanOneYear === true
-               // }),
-            }
+            issueDate: { required },
          }
       }
    }
@@ -665,8 +360,21 @@
          }
       }
 
-      .mileage_types {
+      .wrappTitle {
+         font-weight: 700;
+         font-size: 18px;
+         line-height: 28px;
+         color: #121926;
+         margin: 15px 0;
+      }
+
+      .wrapp {
          .form-group {
+            label {
+               padding: 14px 16px;
+               height: max-content;
+            }
+
             .text-truncate {
                text-overflow: unset;
                white-space: unset;
@@ -695,6 +403,10 @@
                   color: #EEF2F6 !important;
                }
             }
+         }
+
+         .wrappTitle {
+            color: #EEF2F6;
          }
       }
    }
@@ -733,6 +445,15 @@
                            color: #CDD5DF;
                         }
                      }
+                  }
+               }
+            }
+
+            .wrapp {
+               .form-group {
+                  label {
+                     border-color: #364152;
+                     background-color: #1B2434 !important;
                   }
                }
             }

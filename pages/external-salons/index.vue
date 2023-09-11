@@ -11,7 +11,7 @@
             </template>
          </Banner>
 
-         <salon-filters-form :count="salonsFiltered.length" />
+         <salon-filters-form v-if="nonOfficialSalons.length" :count="salonsFiltered.length" />
 
          <div
             class="mb-lg-0 mb-n2 mt-2 row salon-card-list"
