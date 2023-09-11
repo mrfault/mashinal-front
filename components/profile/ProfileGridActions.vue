@@ -43,7 +43,7 @@
          @close="showRestore = false"
       >
          <div>
-            <button :class="['btn', 'full-width', 'btn--blue-new', 'active', { pending }]" @click.stop="user.autosalon || user.external_salon ? restore() : restoreAnnouncement()">{{ user.autosalon || user.external_salon ? $t('restore_free') : $t('pay') }}</button>
+            <button :class="['btn', 'full-width', 'btn--blue-new', 'active', { pending }]" @click.stop="restoreAnnouncement()">{{ $t('pay') }}</button>
          </div>
       </modal-popup>
 
@@ -133,7 +133,7 @@ export default {
                name: 'restore_free',
                icon: 'fi_check-square.svg',
                show: (this.announcement.status == 3 || (!(this.user.autosalon || this.user.external_salon) && this.announcement.status == 4)) && !this.isNumberPlate,
-               method: () => this.showRestore = true,
+               method: (this.user.autosalon || this.user.external_salon || this.announcement.type === "part") ? this.restore : () => this.showRestore = true,
                modalTitle: 'restore_announcement'
             },
             {

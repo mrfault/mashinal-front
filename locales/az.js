@@ -2057,6 +2057,7 @@ export default {
    traction_class: "Dartı sinifləri",
    tractors: "Ağır yük maşınları",
    tradeable: "Barter mümkündür",
+   announce_limit_alert: "Siz elan yerləşdirmə limitini keçdiyinizə görə bu elan ödənişlidir. Qiymət {price} AZN.",
    "Traffic sign recognition": "Sürücünün yorğunluq sensoru",
    trailers_and_semi_trailers: "Qoşqulu və yarı qoşqulu yük maşınları",
    transaction: "Əməliyyat",
