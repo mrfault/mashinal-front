@@ -134,9 +134,10 @@
          </div>
       </div>
 
-      <div class="overflow-hidden bg-white" v-if="carShowroom.length">
+      <div class="overflow-hidden bg-white" v-if="carShowroom?.announcements?.length">
          <grid
-            :announcements="carShowroom"
+            :announcements="carShowroom?.announcements"
+            :announcementsBanner="carShowroom?.autosalon"
             :pending="pending"
          >
             <template #cap>
@@ -362,14 +363,14 @@
                ]
             });
 
-            ids.push({
-               type: 'commercial',
-               ids: [
-                  ...this.getMainMonetized?.filter(car => car.type === 'commercial').map(item => item.id),
-                  ...this.mainAnnouncements?.filter(car => car.type === 'commercial').map(item => item.id),
-                  ...this.carShowroom?.filter(car => car.type === 'commercial').map(item => item.id)
-               ]
-            });
+            // ids.push({
+            //    type: 'commercial',
+            //    ids: [
+            //       ...this.getMainMonetized?.filter(car => car.type === 'commercial').map(item => item.id),
+            //       ...this.mainAnnouncements?.filter(car => car.type === 'commercial').map(item => item.id),
+            //       ...this.carShowroom?.filter(car => car.type === 'commercial').map(item => item.id)
+            //    ]
+            // });
 
             ids.push({
                type: 'parts',

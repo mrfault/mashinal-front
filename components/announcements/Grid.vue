@@ -17,6 +17,8 @@
                :track-views="trackViews"
                :isProfilePage="isProfilePage"
             />
+
+            <div v-if="announcementsBanner" :style="{ background: `url('${bannerLogo}') center center / cover no-repeat` }"></div>
          </div>
       </div>
 
@@ -75,7 +77,7 @@
          bannerPlace: Number,
          bannerCount: Number,
          bannerFor: String,
-         bannerLink: String,
+         // bannerLink: String,
          where: String,
          showOverlay: {
             type: Boolean,
@@ -88,6 +90,10 @@
          isProfilePage: Boolean,
          needAutoScroll: Boolean,
          myAnnouncementsPage: Boolean,
+         announcementsBanner: {
+            type: Object,
+            default() { return{} }
+         },
       },
 
       components: {
@@ -178,6 +184,10 @@
       computed: {
          registrationMarks() {
             return this.announcements.filter(item => item.type === 6);
+         },
+
+         bannerLogo() {
+            return this.announcementsBanner?.logo ? this.announcementsBanner?.logo : `/img/parts_banner_${this.locale}.jpg`
          }
       },
 

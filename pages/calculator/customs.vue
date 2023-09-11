@@ -102,6 +102,7 @@
             </div>
 
             <div class="col-12 col-md-12 col-lg-6" v-if="customsResult?.data?.autoDuty?.duties?.length">
+               <pre>{{form}}</pre>
                <div class="calculator__results">
                   <div class="calculator__results--content">
                      <h2 class="calculator__results--title">{{ $t('result') }}</h2>
@@ -160,11 +161,13 @@
       name: 'CalculatorCustoms',
 
       components: { RadioGroup },
+
       nuxtI18n: {
          paths: {
             az: '/gomruk',
          }
       },
+
       head() {
          return this.$headMeta({
             title: this.$t('customs_calculator'),
@@ -260,6 +263,7 @@
             };
 
             await this.$store.dispatch('fetchCustoms', form);
+            await this.$cookies.set('customsData', form);
          },
 
          async submit() {
@@ -283,7 +287,13 @@
       watch: {
          'form.engineType'(val) {
             if (val === 6) this.form.engine = 0;
-         }
+         },
+
+         // locale(val) {
+         //    setTimeout(() => this.form.price = this.$cookies.get('customsData').price, 300)
+         //    // console.log(this.form)
+         //    console.log(this.$cookies.get('customsData'));
+         // }
       },
 
       validations: {
