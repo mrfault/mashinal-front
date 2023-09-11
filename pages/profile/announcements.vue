@@ -252,6 +252,9 @@ export default {
       this.getAllData();
       this.$nuxt.$on('refresh-my-announcements', () => this.refresh++);
    },
+   async asyncData({store, route}) {
+      await store.dispatch('getSettingsV2')
+   },
    // async asyncData({store, route}) {
    //    let status = ['0', '1', '2', '3'].includes(route.query.status) ? parseInt(route.query.status) : '';
    //    let shop = ['1', '2'].includes(route.query.type) ? (route.query.type == 2 ? 'part' : 'salon') : false;
@@ -272,6 +275,7 @@ export default {
       ...mapActions({
          getMyAllAnnouncements: 'getMyAllAnnouncementsV2',
          getMyPlates: 'fetchPlatesV2',
+         getSettingsV2: 'getSettingsV2'
       }),
 
       async getAllData() {

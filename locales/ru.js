@@ -2040,6 +2040,7 @@ export default {
    traction_class: "Тяговый класс",
    tractors: "Седельные тягачи",
    tradeable: "Возможен бартер",
+   announce_limit_alert: "Вы превысили лимит бесплатных объявлений. Данное объявление подлежит оплате. Цена {price} AZN.",
    "Traffic sign recognition": "Датчик усталости водителя",
    trailers_and_semi_trailers: "Прицепы",
    transaction: "Операция",
