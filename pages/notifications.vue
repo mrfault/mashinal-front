@@ -4,7 +4,7 @@
          <breadcrumbs :crumbs="crumbs"/>
          <h2 class="ma-notifications__title">{{ $t('notifications') }}</h2>
       </div>
-      <div class="container " :class="{'px-0':isMobileBreakpoint}">
+      <div :class="{'px-0':isMobileBreakpoint}" class="container ">
          <div class="ma-notifications">
 
             <template v-if="notifications.data.length && getNotificationsList.length">
@@ -191,8 +191,12 @@ export default {
                case 6 :
                   return this.$localePath('/plates/' + n.value)
                case 2 :
-                  console.log("ahey ahey", n)
-                  return this.$localePath(this.getAnnounceTypePath(n.notifiable_type) + '/' + n.notifiable.id_unique)
+                  console.log("this.getAnnounceTypePath(n.notifiable_type)", this.getAnnounceTypePath(n.notifiable_type))
+                  if (this.getAnnounceTypePath(n.notifiable_type) == '/cars/announcement') {
+                     return this.$localePath(this.getAnnounceTypePath(n.notifiable_type) + '/' + Math.floor(n.notifiable.id_unique / 10))
+                  } else {
+                     return this.$localePath(this.getAnnounceTypePath(n.notifiable_type) + '/' + n.notifiable.id_unique)
+                  }
             }
             return '/';
          } else {
