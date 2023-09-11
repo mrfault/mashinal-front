@@ -15,7 +15,7 @@
                         <form-text-input
                            :disabled="true"
                            :class="'override-disabled'"
-                           v-model="selectedVehicleType"
+                           :value="$t('passenger_car')"
                         />
                      </div>
 
@@ -160,7 +160,11 @@
       name: 'CalculatorCustoms',
 
       components: { RadioGroup },
-
+      nuxtI18n: {
+         paths: {
+            az: '/gomruk',
+         }
+      },
       head() {
          return this.$headMeta({
             title: this.$t('customs_calculator'),
@@ -206,9 +210,6 @@
             ]
          },
 
-         selectedVehicleType() {
-            return this.$t('passenger_car')
-         }
       },
 
       methods: {
