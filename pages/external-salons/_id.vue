@@ -41,10 +41,10 @@
          if (route.params.id) await store.dispatch('getSalonById', {slug: route.params.id});
          await store.dispatch('getMotoOptions');
 
-           await store.dispatch('fetchAutosalonAnnouncementsId', {
-              id: store?.getters?.salonSingle?.id,
-              page: route.query.page || 1
-           });
+         await store.dispatch('fetchAutosalonAnnouncementsId', {
+            id: store?.getters?.salonSingle?.id,
+            page: route.query.page || 1
+         });
 
          // store.dispatch('fetchAutosalonAnnouncementsId', {id: store.getters.salonSingle.id});
       },

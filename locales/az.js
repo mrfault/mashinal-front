@@ -2401,6 +2401,9 @@ export default {
    filled_in_at_will: "İstəyə dair qeyd oluna bilər",
    dollar_course: "Dolların məzənnəsi",
    profile: "Profilim",
+   country_of_origin: "Mənşə (istehsal) ölkəsi və göndərən ölkə haqqında",
+   other_countries: "Digər ölkələr",
+   free_trade: "Azad ticarət sazişi bağlanan ölkədə istehsal olunub və oradan gətirilir",
    passenger_car: "Minik avtomobili",
    customs_info_title: "Vətəndaşların nəzərinə!",
    customs_info_part_1:
@@ -2711,6 +2714,7 @@ export default {
    my_vehicle_announcements: "Menim elanlarim",
    my_car_number_announcements: "Qeydiyyat nişanı elanlarım",
    timed_out: "Vaxtı bitmiş",
+   time_is_up: "Vaxtı bitib",
    under_consideration_2: "Yoxlamada",
    search_number: "Nömrəni axtar",
    my_vehicle_info: "NV məlumatlarım",

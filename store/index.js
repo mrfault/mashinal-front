@@ -65,6 +65,7 @@ const getInitialState = () => ({
    myAnnouncement: {},
    mainAnnouncements: {},
    mainMonetized: [],
+   customsData: [],
    monetizedPage: [],
    carShowroom: [],
    partsHome: [],
@@ -264,6 +265,7 @@ export const state = () => getInitialState();
 
 export const getters = {
    motoRelatives: s => s.motoRelatives,
+   customsData: s => s.customsData,
    monetizedPage: s => s.monetizedPage,
    getAgreements: s => s.agreements,
    getResetForm: s => s.resetForm,
@@ -500,6 +502,12 @@ const objectNotEmpty = (state, commit, property) => {
 };
 export const actions = {
    // New API ++++++++++++++++++++
+   async fetchCustoms({commit}, payload) {
+      const res = await this.$axios.$post('/cal_auto_duty', payload);
+      if (res?.exception?.errorMessage) this._vm.$toasted.error(res?.exception?.errorMessage);
+      else commit("mutate", {property: "customsData", value: res});
+   },
+
    async fetchMonetizedAnnouncementsPage({commit}, page = 1) {
       const res = await this.$axios.$get(`${this.$env().API_SECRET}/monetized-announcements?${page}`);
       commit("mutate", {property: "monetizedPage", value: res});
@@ -1300,6 +1308,12 @@ export const actions = {
       const res = await this.$axios.$get(`${this.$env().API_SECRET}/car/similar/${id}`);
       commit("mutate", {property: "relativeAnnouncements", value: res});
    },
+
+   async getRelativeAnnouncementsOld({ commit }, id) {
+      const res = await this.$axios.$get(`/grid/same/announcements_new/${id}`);
+      commit("mutate", { property: "relativeAnnouncements", value: res });
+   },
+
    async getRelativeAnnouncementsWithoutMutate({commit, state}, data) {
       const res = await this.$axios.$get(
          `/grid/same/announcements_new/${data.id ||
