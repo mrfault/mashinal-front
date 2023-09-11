@@ -190,6 +190,9 @@ export default {
             switch (n.notifiable.type) {
                case 6 :
                   return this.$localePath('/plates/' + n.value)
+               case 2 :
+                  console.log("ahey ahey", n)
+                  return this.$localePath(this.getAnnounceTypePath(n.notifiable_type) + '/' + n.notifiable.id_unique)
             }
             return '/';
          } else {
