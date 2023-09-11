@@ -244,8 +244,8 @@
             else if (this.form.engineType === 2) engineType = 'Diesel';
             else if (this.form.engineType === 3) engineType = 'Gas';
             else if (this.form.engineType === 4) engineType = 'HybridPetrol';
-            else if (this.form.engineType === 5) engineType = 'Electric';
-            else engineType = 'HybridDiesel';
+            else if (this.form.engineType === 5) engineType = 'HybridDiesel';
+            else engineType = 'Electric';
 
             if (this.form.commerceType === 0) commerceType = 'nonFree';
             else commerceType = 'free';
