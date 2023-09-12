@@ -268,6 +268,10 @@
                      }
                   }
                }
+               console.log("motoInfo", carInfo)
+               this.additionalBrands[0] = carInfo.additional_brands[0];
+               this.additionalBrands[0].category = carInfo.additional_brands[0].category;
+
             }
          },
 
@@ -342,6 +346,9 @@
             // console.log('filters.announce_type', filters.announce_type)
          }
          this.$nuxt.$on("submitSearchMixin", this.submitOnMobile)
+      },
+      beforeDestroy() {
+         this.$nuxt.$off("submitSearchMixin", this.submitOnMobile)
       },
 
       beforeRouteLeave(to, from, next) {

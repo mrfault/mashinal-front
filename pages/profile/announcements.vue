@@ -68,7 +68,7 @@
                         <div class="ma-announcements__body--row__inner--item-plate">
                            <grid-item
                               :key="announcement.id_unique +  '_' + index"
-                              :activeTab="index + 666"
+                              :activeTab="index"
                               :announcement="announcement"
                               :clickable="!isDragging"
                               :isLastChild="index === myAnnouncements.length - 1"
