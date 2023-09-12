@@ -96,11 +96,12 @@ export default {
         default: 1,
       },
       meta: {
-         default: {
-            type: '',
-            path: '',
-            param: '',
-         }
+         type: Object
+         // default: {
+         //    type: '',
+         //    path: '',
+         //    param: '',
+         // }
       }
    },
    mixins: [SearchMixin],
@@ -135,16 +136,18 @@ export default {
       ]),
 
       async setCategory(type) {
-         this.form.moto_type = type;
+         this.form.moto_type = this.motoTypeIds[type];
+         this.form.additional_brands[0] = {};
+         this.brand = null;
+         this.model = null;
+
+
          this.form.additional_brands[0]['category'] = type
          this.$set(this, 'motoType', type);
 
-         if(!type) {
-            this.brand = null;
-            this.model = null;
-            this.form.additional_brands[0] = {};
-            this.submit();
-         }
+
+
+         this.submit();
       },
       async changeBrand(id) {
 

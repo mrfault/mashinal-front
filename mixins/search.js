@@ -159,6 +159,7 @@ export const SearchMixin = {
       },
 
       async submitForm(scroll = true) {
+         this.$emit('submit-filters-mobile', this.form.additional_brands)
          this.beforeSubmitForm();
 
          try {

@@ -248,14 +248,16 @@
 
 .qr-box {
    background: $greyish-blue-2;
-   padding: 14px 18px 20px 10px;
+   //padding: 14px 18px 20px 10px;
+   padding: 16px;
    position: relative;
    margin: 12px 0;
    display: flex;
+   gap: 16px;
 
    &__image {
-      width: 32%;
-      height: 80px;
+      //width: 32%;
+      height: 90px;
       padding-right: 3px;
 
       img {
@@ -267,7 +269,8 @@
 
    &__content {
       // width: calc(100% - 89px);
-      width: 68%;
+      //width: 68%;
+      width: 100%;
 
       &--text {
          width: 100%;
@@ -293,9 +296,9 @@
 
    .btn-close {
       position: absolute;
-      top: 0;
+      top: 16px;
       right: 0;
-      padding: 15px 3px;
+      //padding: 15px 3px;
       width: auto;
       height: auto;
 
