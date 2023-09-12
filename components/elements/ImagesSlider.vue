@@ -121,7 +121,7 @@
                               </template>
 
                               <template v-else>
-                                 <img :src="`${slide}&width=944`" alt="car_img" class="swiper-lazy"/>
+                                 <img :src="`${slide}?width=944`" alt="car_img" class="swiper-lazy"/>
                                  <loader/>
                               </template>
                            </div>
@@ -160,7 +160,7 @@
 <!--            </div>-->
          </div>
 
-         <div class="toolbar" @click.stop>
+         <div class="toolbar" v-if="showToolbar" @click.stop>
             <div class="toolbar__item">
                <h2 v-if="type === 'cars'">
                   {{ announcement?.car_catalog?.brand?.name }} {{ announcement?.car_catalog?.model?.name }}
@@ -243,6 +243,10 @@
          currentSlide: Number,
          hasSidebar: Boolean,
          isProtocolMedia: Boolean,
+         showToolbar: {
+            type: Boolean,
+            default: true,
+         },
       },
 
       data() {

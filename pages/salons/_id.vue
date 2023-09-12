@@ -1,7 +1,7 @@
 <template>
    <div class="pages-salons-id">
       <div class="container">
-         <salon-inner/>
+         <salon-inner />
       </div>
 
       <HandleIds

@@ -115,6 +115,7 @@
       <grid
          v-if="shopAnnouncements?.data?.length"
          :announcements="shopAnnouncements?.data"
+         :paginate="shopAnnouncements?.meta"
          :pending="pending"
          @pending="pending = true"
          @change-page="changePage"
@@ -145,6 +146,7 @@
          where="salon"
          :media="[salonSingle.gallery_urls, salonSingle.gallery_thumbs]"
          :show-slider="false"
+         :show-toolbar="false"
       />
    </div>
 </template>
