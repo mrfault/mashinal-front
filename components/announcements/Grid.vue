@@ -17,6 +17,13 @@
                :track-views="trackViews"
                :isProfilePage="isProfilePage"
             />
+
+            <nuxt-link
+               class="announcements-grid__banner"
+               :to="'/'"
+               v-if="showBanner"
+               :style="{ background: `url('${bannerLogo}') center center / cover no-repeat` }"
+            />
          </div>
       </div>
 
@@ -75,7 +82,7 @@
          bannerPlace: Number,
          bannerCount: Number,
          bannerFor: String,
-         bannerLink: String,
+         // bannerLink: String,
          where: String,
          showOverlay: {
             type: Boolean,
@@ -88,6 +95,10 @@
          isProfilePage: Boolean,
          needAutoScroll: Boolean,
          myAnnouncementsPage: Boolean,
+         announcementsBanner: {
+            type: Object,
+            default() { return{} }
+         },
       },
 
       components: {
@@ -95,12 +106,6 @@
          GridItem,
          PlatesGrid,
          PlatesGridItem
-      },
-
-      data() {
-         return {
-            showBanner: false,
-         }
       },
 
       methods: {
@@ -178,12 +183,21 @@
       computed: {
          registrationMarks() {
             return this.announcements.filter(item => item.type === 6);
+         },
+
+         bannerLogo() {
+            console.log('this.announcements', this.announcements)
+            return this.announcementsBanner?.logo ? this.announcementsBanner?.logo : `/img/parts_banner_${this.locale}.jpg`
+         },
+
+         showBanner() {
+            return this.announcementsBanner && (this.$route.path === '/' || this.$route.path === '/ru');
          }
       },
 
       watch: {
          '$route.query.page'(page) {
-            if (this.watchRoute) this.changePage(page)
+            if (this.watchRoute) this.changePage(page);
          },
       },
 

@@ -1,4 +1,4 @@
-<template>
+<template   >
    <div :key="refresh" class="pages-annoucements pt-2 pt-lg-6">
       <portal to="breadcrumbs">
          <breadcrumbs :crumbs="crumbs"/>
@@ -68,7 +68,7 @@
                         <div class="ma-announcements__body--row__inner--item-plate">
                            <grid-item
                               :key="announcement.id_unique +  '_' + index"
-                              :activeTab="activeTab"
+                              :activeTab="index + 666"
                               :announcement="announcement"
                               :clickable="!isDragging"
                               :isLastChild="index === myAnnouncements.length - 1"
