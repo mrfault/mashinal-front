@@ -1328,12 +1328,12 @@ export const actions = {
    },
 
    async getShopOtherAnnouncements({commit, state}, id) {
-      const res = await this.$axios.$get(`${this.$env().API_SECRET}/****/${id}`);
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/parts/announcements/${id}`);
       commit("mutate", {property: "shopAnnouncements", value: res});
    },
 
    async getAutoSalonOtherAnnouncements({commit, state}, id) {
-      const res = await this.$axios.$get(`${this.$env().API_SECRET}/****/${id}`);
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/autosalon/announcements/${id}`);
       commit("mutate", {property: "shopAnnouncements", value: res});
    },
    async getShopOtherAnnouncementsWithoutMutate({commit, state}, data) {

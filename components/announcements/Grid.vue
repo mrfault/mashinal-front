@@ -18,7 +18,12 @@
                :isProfilePage="isProfilePage"
             />
 
-            <div v-if="announcementsBanner" :style="{ background: `url('${bannerLogo}') center center / cover no-repeat` }"></div>
+            <nuxt-link
+               class="announcements-grid__banner"
+               :to="'/'"
+               v-if="showBanner"
+               :style="{ background: `url('${bannerLogo}') center center / cover no-repeat` }"
+            />
          </div>
       </div>
 
@@ -103,12 +108,6 @@
          PlatesGridItem
       },
 
-      data() {
-         return {
-            showBanner: false,
-         }
-      },
-
       methods: {
          changePage(page) {
             if (this.showAll) {
@@ -187,13 +186,18 @@
          },
 
          bannerLogo() {
+            console.log('this.announcements', this.announcements)
             return this.announcementsBanner?.logo ? this.announcementsBanner?.logo : `/img/parts_banner_${this.locale}.jpg`
+         },
+
+         showBanner() {
+            return this.announcementsBanner && (this.$route.path === '/' || this.$route.path === '/ru');
          }
       },
 
       watch: {
          '$route.query.page'(page) {
-            if (this.watchRoute) this.changePage(page)
+            if (this.watchRoute) this.changePage(page);
          },
       },
 

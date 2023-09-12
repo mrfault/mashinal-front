@@ -189,7 +189,7 @@
          <restore-button
             :className="'white h-52'"
             :announcement="announcement"
-            v-if="userIsOwner(announcement) && (announcement.status === 3 && announcement.status === 4) && (!announcement.is_auto_salon && !announcement.is_external_salon)"
+            v-if="restoreCondition"
             @refreshData="$nuxt.refresh()"
             :free="true"
          />
@@ -277,6 +277,12 @@
 
          comparisonExceptions() {
             return this.type === 'cars' && ![0,2,3,4].includes(this.announcement?.status);
+         },
+
+         restoreCondition() {
+            return this.userIsOwner(this.announcement) &&
+               (this.announcement.status === 3 || this.announcement.status === 4) &&
+               (!this.announcement.is_auto_salon && !this.announcement.is_external_salon);
          }
       },
 
