@@ -144,7 +144,7 @@
                      </div>
                      <div class="limit_error"
                           v-if="(form.announce_type?.id === 1 && user.announce_left_car < 1) || (form.announce_type?.id === 4 && user.announce_left_moto < 1)">
-                        <p>{{ $t('announce_limit_alert', {price: 25}) }}</p>
+                        <p>{{ $t('announce_limit_alert', {price: settingsV2?.settings?.promotion_price}) }}</p>
                      </div>
                      <button type="button" @click="onClick()"
                              :class="['btn', 'full-width', 'btn--pale-green-outline', 'active', {pending}]">
@@ -228,7 +228,7 @@ export default {
       Car_form, GridItem, PickOnMapButton, ImageComponent, GridRadio, ToggleGroup, FormNumericInput, FormRadio
    },
    computed: {
-      ...mapGetters(['staticPages', 'servicePackages']),
+      ...mapGetters(['staticPages', 'servicePackages', 'settingsV2']),
       getRulesPage() {
          return this.staticPages.find(page => page.id == 1);
       },
@@ -303,6 +303,7 @@ export default {
    },
    async asyncData({store}) {
       await store.dispatch('getServicePackages')
+      await store.dispatch('getSettingsV2')
    },
    methods: {
       ...mapActions(['carsPost', 'motoPost', 'partsPost', 'plateNumbersPost', 'updatePaidStatus']),

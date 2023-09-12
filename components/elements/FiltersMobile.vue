@@ -1,10 +1,23 @@
 <template>
    <div class="filtersMobile">
       <div class="filtersMobile__list">
-         <div class="filtersMobile__list-item mark_item">
+         <div v-if="type === 2" class="filtersMobile__list-item mark_item">
+            <form-select
+               :label="$t('type_of_motos')"
+               :options="motoTypes"
+               :clear-placeholder="true"
+               :clear-option="false"
+               :new-label="false"
+               :input-placeholder="$t('type_of_motos')"
+               v-model="motoType"
+               @change="setCategory($event)"
+            />
+            <inline-svg class="motorbike_svg" src="/img/motorbike2.svg"/>
+         </div>
+         <div class="filtersMobile__list-item mark_item" v-if="type === 1 || (type ===2 && motoType)">
             <form-select
                :label="$t('mark')"
-               :options="existsBrands"
+               :options="type === 2 ? motoBrands :existsBrands"
                :clear-placeholder="true"
                :clear-option="false"
                :new-label="false"
@@ -13,12 +26,12 @@
                @change="changeBrand"
                has-search
             />
-            <inline-svg class="car_svg" src="/icons/car-3.svg"/>
+            <inline-svg v-if="type === 1" class="car_svg" src="/icons/car-3.svg"/>
          </div>
-         <div class="filtersMobile__list-item" v-if="form.additional_brands[0].brand && carModels">
+         <div class="filtersMobile__list-item" v-if="(brand && carModels) || (type === 2 && brand)">
             <form-select
                :label="$t('model')"
-               :options="carModels[0]"
+               :options="type === 2 ? models(form.additional_brands[0]['category'])[0] : carModels[0]"
                :clear-placeholder="true"
                :clear-option="false"
                :new-label="false"
@@ -28,7 +41,7 @@
                has-search
             />
          </div>
-         <div class="filtersMobile__list-item" v-if="form.additional_brands[0].brand && form.additional_brands[0].model && carGenerations">
+         <div class="filtersMobile__list-item" v-if="brand && model && carGenerations && type === 1">
             <form-select
                :label="$t('generation')"
                :options="carGenerations[0]"
@@ -75,13 +88,27 @@ export default {
    props: {
       additionalBrands: {
          default: () => { return {0 :{ } } }
+      },
+      formMotoType: {
+
+      },
+      type: {
+        default: 1,
+      },
+      meta: {
+         default: {
+            type: '',
+            path: '',
+            param: '',
+         }
       }
    },
    mixins: [SearchMixin],
-   mounted() {
-      this.brand = this.form.additional_brands[0].brand || this.additionalBrands[0].brand || null;
-      this.model = this.form.additional_brands[0].model || this.additionalBrands[0].model || null;
-      this.generation = this.form.additional_brands[0].generation || this.additionalBrands[0].generation || null;
+   async mounted() {
+      this.brand = this.additionalBrands[0].brand || null;
+      this.model = this.additionalBrands[0].model || null;
+      this.generation = this.additionalBrands[0].generation || null;
+      this.motoType = this.additionalBrands[0].category || null;
    },
    methods: {
       submit() {
@@ -102,32 +129,76 @@ export default {
       },
       ...mapActions([
          'getModelsArray',
-         'getModelGenerationsArray'
+         'getModelGenerationsArray',
+         'getMotoBrandsV2',
+         'getMotoModels'
       ]),
-      async changeBrand(id) {
-         this.form.additional_brands[0].brand = id;
 
+      async setCategory(type) {
+         this.form.moto_type = type;
+         this.form.additional_brands[0]['category'] = type
+         this.$set(this, 'motoType', type);
+
+         if(!type) {
+            this.brand = null;
+            this.model = null;
+            this.form.additional_brands[0] = {};
+            this.submit();
+         }
+      },
+      async changeBrand(id) {
+
+         this.form.additional_brands[0].brand = id;
+         this.form.additional_brands[0].model = null;
+         this.model = null;
          let brand = this.existsBrands.find((option) => option.id === id)
          let slug = brand?.slug || ''
          this.form.additional_brands[0].brand_slug = slug;
+         console.log('get models')
 
+         if(!id) {
+            this.submit()
+            return;
+         }
          try {
-            await this.getModelsArray({value: slug, index: 0});
+            if(this.type === 2) {
+               await this.getMotoModels({
+                  category:  this.form.additional_brands[0]['category'],
+                  id,
+                  index: 0
+               })
+            }
+            else {
+               await this.getModelsArray({value: slug, index: 0});
+            }
+
          } catch (e) {
             console.log(e)
          }
 
-
          this.submit()
+
+
+      },
+
+      models(category) {
+         return {
+            1: this.motorcycleModels,
+            2: this.scooterModels,
+            3: this.atvModels
+         }[parseInt(category) || 1];
       },
       async changeModel(id) {
          this.form.additional_brands[0].model = id;
          let model = this.carModels[0].find((option) => option.id === id)
          let slug = model?.slug || ''
          let brand_slug = this.form.additional_brands[0].brand_slug
+         this.generation = null
 
          try {
-            await this.getModelGenerationsArray({value: slug, brand_slug, index: 0})
+            if(this.type === 1) {
+               await this.getModelGenerationsArray({value: slug, brand_slug, index: 0})
+            }
          } catch (e) {
             console.log(e)
          }
@@ -143,6 +214,7 @@ export default {
          brand: null,
          model: null,
          generation: null,
+         motoType: null,
          form: {
             additional_brands: {0: {
                   brand: null,
@@ -153,12 +225,27 @@ export default {
       }
    },
    computed: {
-      meta() {
+      motoTypes() {
+         return [
+            {key: 1, name: this.$t('motorcycles')},
+            {key: 2, name: this.$t('scooters')},
+            {key: 3, name: this.$t('atvs')}
+         ]
+      },
+      motoTypeIds() {
          return {
-            type: 'cars',
-            path: '/cars',
-            param: 'car_filter',
+            1:'motorcycle',
+            2:'scooter',
+            3:'moto_atv',
          }
+      },
+
+      motoBrands() {
+         return {
+            1: this.motoOptions.brands,
+            2: this.motoOptions.scooter_brands,
+            3: this.motoOptions.atv_brands
+         }[parseInt(this.motoType) || 1];
       },
       // ...mapGetters([
       //    'brands',
@@ -176,9 +263,13 @@ export default {
       // ]),
       ...mapGetters({
          brands: 'brands',
+         motoOptions: 'motoOptions',
          existsBrands: 'existsBrands',
          carModels: 'carModels',
          carGenerations: 'carGenerations',
+         motorcycleModels: 'motorcycleModels',
+         scooterModels: 'scooterModels',
+         atvModels: 'atvModels',
       })
    },
 }
@@ -213,8 +304,9 @@ export default {
             padding: 0;
             height: 20px;
 
-            .text-truncate.full-width {
+            .text-truncate {
                order: 2;
+               width: 100%;
 
                .text {
                   font-weight: 500;

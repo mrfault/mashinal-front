@@ -3,7 +3,9 @@
       <div class="container">
          <div class="filters-container mb-5">
             <template v-if="isMobileBreakpoint && !advancedSearch">
-               <FiltersMobile :additional-brands="additionalBrands"  @pending="pending = true" @openMore="openMore"  @submit="submitOnMobile" />
+               <FiltersMobile :additional-brands="additionalBrands"  @pending="pending = true" @openMore="openMore"  @submit="submitOnMobile" :meta="{type: 'cars',
+            path: '/cars',
+            param: 'car_filter'}" />
             </template>
 
             <template v-else>
@@ -186,7 +188,6 @@
 
       watch: {
          '$route.query'(query) {
-            console.log('bu bir')
             if (query && query.with_panorama == 'true') {
                this.searchCars(1, true);
             }
@@ -276,9 +277,10 @@
             }
 
             this.announceType = filters.announce_type || 0;
-
+            this.additionalBrands[0] = filters.additional_brands[0];
             // console.log('filters.announce_type', filters.announce_type)
          }
+         this.$nuxt.$on("submitSearchMixin", this.submitOnMobile)
       },
 
       methods: {
@@ -294,10 +296,12 @@
          },
 
          submitOnMobile() {
+            console.log('searchCars worked in mobile')
             this.searchCars()
          },
 
          async searchCars(page = 1, with_panorama = false) {
+
             this.advancedSearch = false;
             page = this.$route.query.page || 1;
             let post = JSON.parse(this.$route.query.car_filter || '{}');
@@ -412,6 +416,9 @@
 
             return ids;
          }
+      },
+      beforeDestroy() {
+         this.$nuxt.$off("submitSearchMixin", this.submitOnMobile)
       },
 
       beforeRouteLeave(to, from, next) {

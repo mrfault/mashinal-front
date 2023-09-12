@@ -171,16 +171,17 @@ export const SearchMixin = {
          let searchQuery = `${this.meta?.param}=${encodeURI(JSON.stringify(this.getFormData()))}`;
          let searchUrl = `${this.$localePath(this.meta?.path)}?${searchQuery}`;
          let searchSame = decodeURIComponent(searchUrl) === decodeURIComponent(this.$route.fullPath);
-
          this.$emit('pending');
 
          if (searchSame) {
+            console.log('submit 1')
             this.$emit('submit');
          } else {
             let prevRouteName = this.routeName;
             this.$router.push(searchUrl, () => {
                this.$emit('submit');
-
+               this.$nuxt.$emit('submitSearchMixin');
+               console.log('submit 2')
 
                if (this.routeName !== prevRouteName) {
                   if (scroll) {
@@ -200,6 +201,7 @@ export const SearchMixin = {
                }
             }, () => {
                this.$emit('submit');
+               console.log('submit 3')
             });
          }
 
