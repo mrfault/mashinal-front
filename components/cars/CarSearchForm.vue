@@ -790,7 +790,6 @@
             this.submitForm();
          }
       },
-
       mounted() {
          if (this.$route.query?.car_filter && JSON.parse(this.$route.query?.car_filter)?.all_options) {
             this.form.all_options = this.popularOptions?.filter((option) => Object.keys(JSON.parse(this.$route.query?.car_filter)?.all_options)?.includes(option.name))?.map((p) => ({
@@ -828,6 +827,7 @@
          async updateNotifications() {
             if (this.pending2) return
             this.pending2 = true
+            console.log("car search form notification")
             try {
                await this.updateSavedSearchNotificationsInterval({
                   id: this.selected,
@@ -968,6 +968,7 @@
       beforeDestroy() {
          this.$nuxt.$off('extend-options', this.goToSearch);
          if (this.routeName === 'index') this.$nuxt.$off('reset-search-form', this.resetForm);
+         this.$nuxt.$off('submit-car-search-form-mobile')
       }
    }
 </script>
