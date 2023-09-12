@@ -797,7 +797,6 @@
             }));
          }
          this.$nuxt.$on('submit-car-search-form-mobile', () => {
-            this.$emit('submit-filters-mobile', this.form.additional_brands)
             this.submitForm();
          })
          this.$nuxt.$on('saved-search-created', () => {
