@@ -45,11 +45,14 @@
          ...mapGetters(['announcement', 'relativeAnnouncements', 'shopAnnouncements']),
 
          isShop() {
-            if (this.announcement?.is_part_salon) return true;
-            else if (this.announcement?.is_auto_salon) return true;
-               // return this.announcement?.user?.auto_salon?.possible_announce_count > 5 || this.announcement?.user?.auto_salon?.possible_announce_count == 0
-            else if (this.announcement?.is_external_salon)
+            if (this.announcement?.is_part_salon) {
+               return true;
+            } else if (this.announcement?.is_auto_salon) {
+               return this.announcement?.user?.auto_salon?.possible_announce_count > 5 || this.announcement?.user?.auto_salon?.possible_announce_count == 0;
+            } else if (this.announcement?.is_external_salon) {
                return (this.announcement?.user?.external_salon?.possible_announce_count > 5 || this.announcement?.user?.external_salon?.possible_announce_count == 0);
+            }
+
             return false
          },
 
@@ -71,6 +74,7 @@
       },
 
       created() {
+         console.log('this.announcement', this.announcement)
          if (this.announcement?.is_part_salon) this.getShopOtherAnnouncements(this.announcement.id);
          else if (this.isShop) this.getAutoSalonOtherAnnouncements(this.announcement.id);
          else this.getRelativeAnnouncements({type: this.announcement.type || 'light_vehicle', id: this.announcement.id});
