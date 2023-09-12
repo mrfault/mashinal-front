@@ -57,6 +57,8 @@
          </template>
       </grid>
 
+      <relatives />
+
       <HandleIds :single="true" :items="{ type: 'parts', id: announcement.id }" />
    </div>
 </template>
@@ -111,7 +113,7 @@
       async asyncData({store, route}) {
          await Promise.all([
             store.dispatch('getPartsInnerV2', route.params.id),
-            store.dispatch('fetchPartsAnnouncementsId', route.params.id),
+            // store.dispatch('fetchPartsAnnouncementsId', route.params.id),
             store.dispatch('getComplaintOptions'),
             store.dispatch('getOptions'),
             store.dispatch('getAllOtherOptions')

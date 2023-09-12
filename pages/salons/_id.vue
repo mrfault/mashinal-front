@@ -38,19 +38,19 @@
       },
 
       async asyncData({store, route}) {
-         if (route.params.id) await store.dispatch('getSalonById', {slug: route.params.id});
+         await store.dispatch('getSalonById', {slug: route.params.id});
          await store.dispatch('getMotoOptions')
+         await store.dispatch('getAutoSalonOtherAnnouncements', store?.getters?.salonSingle?.id);
 
-         if (store?.getters?.salonSingle?.id) {
-            await store.dispatch('fetchAutosalonAnnouncementsId', {
-               id: store?.getters?.salonSingle?.id,
-               page: route.query.page || 1
-            })
-         }
+
+         // await store.dispatch('fetchAutosalonAnnouncementsId', {
+         //    id: store?.getters?.salonSingle?.id,
+         //    page: route.query.page || 1
+         // })
       },
 
       computed: {
-         ...mapGetters(['salonSingle', 'autosalonAnnouncementsId']),
+         ...mapGetters(['salonSingle', 'autosalonAnnouncementsId', 'shopAnnouncements']),
 
          crumbs() {
             return [
@@ -64,7 +64,7 @@
 
             ids.push({
                type: 'commercial',
-               ids: [...this.autosalonAnnouncementsId?.data?.map(item => item.id)]
+               ids: [...this.shopAnnouncements?.data?.map(item => item.id)]
             });
 
             return ids;
