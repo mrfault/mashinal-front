@@ -102,7 +102,6 @@
             </div>
 
             <div class="col-12 col-md-12 col-lg-6" v-if="customsResult?.data?.autoDuty?.duties?.length">
-               <pre>{{form}}</pre>
                <div class="calculator__results">
                   <div class="calculator__results--content">
                      <h2 class="calculator__results--title">{{ $t('result') }}</h2>
@@ -161,12 +160,6 @@
       name: 'CalculatorCustoms',
 
       components: { RadioGroup },
-
-      nuxtI18n: {
-         paths: {
-            az: '/gomruk',
-         }
-      },
 
       head() {
          return this.$headMeta({
@@ -287,14 +280,27 @@
       watch: {
          'form.engineType'(val) {
             if (val === 6) this.form.engine = 0;
-         },
-
-         // locale(val) {
-         //    setTimeout(() => this.form.price = this.$cookies.get('customsData').price, 300)
-         //    // console.log(this.form)
-         //    console.log(this.$cookies.get('customsData'));
-         // }
+         }
       },
+
+      // mounted() {
+      //    if (this.$cookies.get('customsData')) {
+      //       this.form.autoType = 0;
+      //       this.form.engineType =  this.$cookies.get('customsData').engineType;
+      //       this.form.engineType =  this.$cookies.get('customsData').engineType;
+      //       this.form.engine =  this.$cookies.get('customsData').engine;
+      //       this.form.price =  this.$cookies.get('customsData').price;
+      //       this.form.issueDate =  this.$cookies.get('customsData').issueDate;
+      //
+      //       if (this.$cookies.get('customsData').commerceType === 'nonFree') this.form.commerceType = 0;
+      //       else this.form.commerceType = 1;
+      //    }
+      // },
+      //
+      // beforeRouteLeave(to, from, next) {
+      //    this.$cookies.set("customsData", {}, { path: '/', maxAge: 1 });
+      //    next();
+      // },
 
       validations: {
          form: {

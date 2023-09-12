@@ -20,8 +20,8 @@
 
             <nuxt-link
                class="announcements-grid__banner"
-               :to="'/'"
-               v-if="showBanner"
+               :to="$localePath(urlBanner ? urlBanner : `/external-salons/${announcementsBanner?.slug}`)"
+               v-if="isShowBanner"
                :style="{ background: `url('${bannerLogo}') center center / cover no-repeat` }"
             />
          </div>
@@ -95,6 +95,10 @@
          isProfilePage: Boolean,
          needAutoScroll: Boolean,
          myAnnouncementsPage: Boolean,
+         urlBanner: {
+            required: false
+         },
+         showBanner: Boolean,
          announcementsBanner: {
             type: Object,
             default() { return{} }
@@ -186,12 +190,11 @@
          },
 
          bannerLogo() {
-            console.log('this.announcements', this.announcements)
             return this.announcementsBanner?.logo ? this.announcementsBanner?.logo : `/img/parts_banner_${this.locale}.jpg`
          },
 
-         showBanner() {
-            return this.announcementsBanner && (this.$route.path === '/' || this.$route.path === '/ru');
+         isShowBanner() {
+            return this.showBanner || (this.announcementsBanner && (this.$route.path === '/' || this.$route.path === '/ru'));
          }
       },
 

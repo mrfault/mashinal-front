@@ -80,10 +80,11 @@
                <div class="item-overlay__top">
                   <div class="item-overlay__top--left">
                      <div
-                        v-if="(announcement.is_auto_salon || announcement.is_external_salon) && !isProfilePage"
+                        v-if="(announcement.is_auto_salon || announcement.is_external_salon || announcement.is_part_salon) && !isProfilePage"
                         class="item-overlay__top--left_item"
                      >
                         <template v-if="announcement.is_auto_salon">{{ $t('salon') }}</template>
+                        <template v-if="announcement.is_part_salon">{{ $t('shop') }}</template>
                         <template v-else-if="announcement.is_external_salon">{{ $t('external_salon') }}</template>
                      </div>
 

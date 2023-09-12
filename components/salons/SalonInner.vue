@@ -113,9 +113,9 @@
       </div>
 
       <grid
-         v-if="autosalonAnnouncementsId?.data?.length"
-         :announcements="autosalonAnnouncementsId?.data"
-         :paginate="autosalonAnnouncementsId?.meta"
+         v-if="shopAnnouncements?.data?.length"
+         :announcements="shopAnnouncements?.data"
+         :paginate="shopAnnouncements?.meta"
          :pending="pending"
          @pending="pending = true"
          @change-page="changePage"
@@ -146,6 +146,7 @@
          where="salon"
          :media="[salonSingle.gallery_urls, salonSingle.gallery_thumbs]"
          :show-slider="false"
+         :show-toolbar="false"
       />
    </div>
 </template>
@@ -183,7 +184,7 @@
       },
 
       computed: {
-         ...mapGetters(['salonSingle', 'autosalonAnnouncementsId']),
+         ...mapGetters(['salonSingle', 'autosalonAnnouncementsId', 'shopAnnouncements']),
 
          hasWorkingHours() {
             return !!this.getWorkingDays(
@@ -204,9 +205,7 @@
 
          isShop() {
             return this.routeName.includes('parts')
-         },
-
-
+         }
       },
 
       methods: {
@@ -256,7 +255,7 @@
       // },
 
       mounted() {
-       console.log('salon inner mounted')
+         console.log('salon inner mounted')
       }
    }
 </script>

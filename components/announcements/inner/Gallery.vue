@@ -155,6 +155,7 @@
                         :current-slide="currentSlide"
                         :slides="slides"
                         :has-sidebar="where === 'announcement'"
+                        :showToolbar="showToolbar"
                         :type="type"
                         @close="closeLightbox"
                         @slide-change="currentSlide = $event"
@@ -194,6 +195,11 @@
          title: String,
          subtitle: String,
          showSlider: {
+            type: Boolean,
+            default: true,
+         },
+
+         showToolbar: {
             type: Boolean,
             default: true,
          },

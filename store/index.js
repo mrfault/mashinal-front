@@ -604,7 +604,7 @@ export const actions = {
 
    async fetchAutosalonAnnouncementsId({commit}, data) {
       const res = await this.$axios.$get(`${this.$env().API_SECRET}/autosalon/announcements/${data.id}?page=${data.page || 1}`);
-      commit("mutate", {property: "autosalonAnnouncementsId", value: res});
+      commit("mutate", {property: "shopAnnouncements", value: res});
    },
 
    async fetchPartsAnnouncementsId({commit}, id) {
@@ -1305,9 +1305,9 @@ export const actions = {
    async getRelativeAnnouncements({commit}, obj) {
       let types = {
          light_vehicle: 'car',
-         motorcycle: 'motorcycle',
-         scooter: 'scooter',
-         moto_atv: 'atv',
+         motorcycle: 'moto/motorcycle',
+         scooter: 'moto/scooter',
+         moto_atv: 'moto/atv',
          part: 'parts'
       }
       const res = await this.$axios.$get(`${this.$env().API_SECRET}/${types[obj.type]}/similar/${obj.id}`);

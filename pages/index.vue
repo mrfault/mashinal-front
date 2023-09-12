@@ -160,6 +160,8 @@
       <div class="overflow-hidden" v-if="partsHome.length">
          <grid
             :announcements="partsHome"
+            :showBanner="true"
+            :urlBanner="'/parts'"
             :pending="pending"
          >
             <template #cap>

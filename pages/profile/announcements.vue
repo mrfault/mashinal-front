@@ -134,7 +134,7 @@
 
                      >
                         <plates-grid-item
-                           :key="index"
+                           :key="index + 6565"
                            :activeTab="activeTab"
                            :clickable="!isDragging"
                            :isLastChild="index === allMyPlates.length - 1"
