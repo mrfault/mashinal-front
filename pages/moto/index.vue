@@ -3,12 +3,12 @@
       <div class="container">
          <div class="filters-container mb-5">
             <template v-if="isMobileBreakpoint && !advancedSearch">
-               <FiltersMobile @onClick="onClick" />
+               <FiltersMobile :type="2" :additional-brands="additionalBrands" :form-moto-type="formMotoType"  @pending="pending = true" @openMore="openMore"  @submit="submitOnMobile" :meta="{ type: 'moto', path: '/moto', param: 'filter' }" />
             </template>
 
             <template v-else>
                <div class="filters-container__top" v-if="isMobileBreakpoint">
-                  <inline-svg src="/icons/back.svg" @click="advancedSearch = false" />
+                  <inline-svg src="/icons/back.svg" @click="goBack"  />
 
                   <h4>{{ $t('advanced_search') }}</h4>
 
@@ -43,6 +43,7 @@
 
                <moto-search-form
                   v-else
+                  @submit-filters-mobile="additionalBrands = $event"
                   :total-count="$paginate(motoAnnouncements).total"
                   :pending="pending"
                   :category="{}"
@@ -146,6 +147,9 @@
 
       data() {
          return {
+            category: null,
+            additionalBrands: { 0: {}},
+            formMotoType: null,
             advancedSearch: false,
             announceType: 0,
             searchType: 1,
@@ -195,23 +199,28 @@
 
       methods: {
          ...mapActions(['getGridSearch']),
-
-         onClick(id) {
-            // if (id === 1) this.showFillters = true;
-            if (id === 2) this.advancedSearch = true;
+         openMore() {
+            this.advancedSearch = true;
          },
-
+         submitOnMobile() {
+            this.searchMoto()
+         },
+         goBack() {
+            this.advancedSearch = false
+            if(this.isMobileBreakpoint) {
+               this.$nuxt.$emit('submit-car-search-form-mobile')
+            }
+         },
          async searchMoto(page = 1) {
+            console.log("searchMoto 1");
             this.advancedSearch = false;
             page = this.$route.query.page || 1;
             let post = JSON.parse(this.$route.query.filter || '{}');
-
             // Object.values(post.additional_brands).map(item => {
             //    if (item.category) this.showSorting = true;
             // })
             // console.log('post', post.additional_brands)
             post = { ...post, sort_by: post.sort_by, sort_order: post.sort_order }
-
             this.pending = true;
             await this.getGridSearch({...this.searchParams, post, page});
             await this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'moto', data: post });
@@ -326,11 +335,13 @@
                this.sorting.key = filters.sort_by;
                this.sorting.value = filters.sort_order;
             }
-
+         console.log(filters,'asdasd');
             this.announceType = filters.announce_type || 0;
-
+            this.additionalBrands[0] = filters.additional_brands[0];
+            this.formMotoType = filters.moto_type;
             // console.log('filters.announce_type', filters.announce_type)
          }
+         this.$nuxt.$on("submitSearchMixin", this.submitOnMobile)
       },
 
       beforeRouteLeave(to, from, next) {
