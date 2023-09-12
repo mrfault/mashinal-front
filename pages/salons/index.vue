@@ -241,7 +241,7 @@ export default {
          return this.salonsFiltered.filter(item => !item.is_official && item.announcement_count);
       },
       officialSalons() {
-         return this.salonsFiltered.filter(item => item.is_official).sort((a, b) => a.name.localeCompare(b.name));
+         return this.salonsFiltered.filter(item => item.is_official).filter(a => a.announcement_count > 0).sort((a, b) => a.name.localeCompare(b.name));
       },
       crumbs() {
          return [{ name: this.$t('auto_salons') }]

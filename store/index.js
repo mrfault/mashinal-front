@@ -604,7 +604,7 @@ export const actions = {
 
    async fetchAutosalonAnnouncementsId({commit}, data) {
       const res = await this.$axios.$get(`${this.$env().API_SECRET}/autosalon/announcements/${data.id}?page=${data.page || 1}`);
-      commit("mutate", {property: "autosalonAnnouncementsId", value: res});
+      commit("mutate", {property: "shopAnnouncements", value: res});
    },
 
    async fetchPartsAnnouncementsId({commit}, id) {
@@ -1328,7 +1328,7 @@ export const actions = {
    },
 
    async getShopOtherAnnouncements({commit, state}, id) {
-      const res = await this.$axios.$get(`${this.$env().API_SECRET}/parts/${id}`);
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/parts/announcements/${id}`);
       commit("mutate", {property: "shopAnnouncements", value: res});
    },
 
