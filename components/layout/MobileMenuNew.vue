@@ -128,9 +128,9 @@ export default {
       }),
       image() {
          if (this.user?.autosalon) {
-            return (this.user?.autosalon?.logo.includes('http') ? '' : 'https://dev.mashin.al/storage/') + this.user?.autosalon?.logo;
+            return (this.user?.autosalon?.logo.includes('http') ? '' : 'https://mashin.al/storage/') + this.user?.autosalon?.logo;
          } else if (this.user?.avatar){
-            return (this.user?.avatar?.includes('http') ? '' : 'https://dev.mashin.al/storage/') + this.user?.avatar;
+            return (this.user?.avatar?.includes('http') ? '' : 'https://mashin.al/storage/') + this.user?.avatar;
          } else {
             return false;
          }
