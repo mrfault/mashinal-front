@@ -319,7 +319,7 @@
          },
 
          catalogLink() {
-            console.log('this.catalog', this.catalog)
+            // console.log('this.catalog', this.catalog)
             let path = this.catalog && `/catalog/${this.catalog.brand.slug}/${this.catalog.model.slug}/${this.catalog.generation.id}/${this.catalog.car_type.id}/mod/${this.announcement?.car_catalog_id}`;
             return path && this.$localePath(path);
          }
