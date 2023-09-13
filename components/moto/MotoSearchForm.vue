@@ -604,6 +604,7 @@
             this.$set(this.form.additional_brands[index], 'category', id);
             this.$set(this.form.additional_brands[index], 'brand', "");
             this.$set(this.form.additional_brands[index], 'model', "");
+            !id && (this.form.moto_type = null);
          },
 
          async setBrand(id, index) {
