@@ -14,7 +14,7 @@
       name: 'pages-parts-shops-id',
 
       components: {
-         SalonInner
+         SalonInner,
       },
 
       nuxtI18n: {
@@ -37,7 +37,7 @@
       },
 
       computed: {
-         ...mapGetters(['salonSingle']),
+         ...mapGetters(['salonSingle', 'shopAnnouncements']),
 
          crumbs() {
             return [
@@ -45,7 +45,9 @@
                {name: this.$t('shops'), route: '/parts/shops'},
                {name: this.salonSingle.name || this.salonSingle.user.full_name}
             ]
-         }
+         },
+
+
       },
 
       mounted() {

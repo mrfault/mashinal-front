@@ -183,7 +183,7 @@
          NoResults,
          ClusteredMap,
          Banners,
-         Banner
+         Banner,
       },
 
       nuxtI18n: {
