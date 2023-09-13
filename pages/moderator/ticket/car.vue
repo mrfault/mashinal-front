@@ -1239,7 +1239,7 @@ export default {
 
     },
     gotoList() {
-      window.location.href = "https://dev.mashin.al/alvcp/resources/announcements"
+      window.location.href = "https://mashin.al/alvcp/resources/announcements"
     },
     getSellLastStepRejectObj(value) {
       // console.log('value', value)
