@@ -2,8 +2,10 @@
    <div>
       <template v-if="isShop">
          <grid
-            v-if="shopAnnouncements.data && shopAnnouncements.data.length"
-            :announcements="shopAnnouncements.data"
+            v-if="shopAnnouncements?.data && shopAnnouncements?.data?.length"
+            :announcements="shopAnnouncements?.data"
+            :paginate="shopAnnouncements?.meta"
+            @change-page="searchAnnouncements"
          >
             <template #cap>
                <Cap :className="'mb40'">
@@ -72,12 +74,27 @@
       },
 
       methods: {
-         ...mapActions(['getShopOtherAnnouncements', 'getAutoSalonOtherAnnouncements', 'getRelativeAnnouncements'])
+         ...mapActions(['getShopOtherAnnouncements', 'getAutoSalonOtherAnnouncements', 'getRelativeAnnouncements']),
+
+         async searchAnnouncements(page = 1) {
+            page = this.$route.query.page || 1;
+
+            await this.getAutoSalonOtherAnnouncements({
+               id: this.announcement?.user?.auto_salon?.id,
+               excluded_id: this.announcement.id,
+               page: page
+            });
+            this.scrollTo('.announcements-grid', [-90, -200]);
+         }
       },
 
       created() {
          if (this.announcement?.is_part_salon) this.getShopOtherAnnouncements(this.announcement.id);
-         else if (this.isShop) this.getAutoSalonOtherAnnouncements(`${this.announcement?.user?.auto_salon?.id}?excluded_id=${this.announcement.id}`);
+         else if (this.isShop) this.getAutoSalonOtherAnnouncements({
+            id: this.announcement?.user?.auto_salon?.id,
+            excluded_id: this.announcement.id,
+            page: this.$route.query.page || 1
+         });
          else this.getRelativeAnnouncements({type: this.announcement.type || 'light_vehicle', id: this.announcement.id});
       },
 

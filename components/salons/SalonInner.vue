@@ -148,6 +148,11 @@
          :show-slider="false"
          :show-toolbar="false"
       />
+
+      <HandleIds
+         :items="handleIdsOptions"
+         :watchIds="false"
+      />
    </div>
 </template>
 
@@ -159,6 +164,8 @@
    import ThumbsGallery from '~/components/announcements/inner/ThumbsGallery'
    import CustomDropdown from "~/components/elements/CustomDropdown.vue";
    import Cap from "~/components/elements/Cap.vue";
+   import Relatives from "~/components/announcements/inner/Relatives.vue";
+   import HandleIds from "~/components/announcements/HandleIds.vue";
 
    export default {
       components: {
@@ -167,6 +174,8 @@
          ThumbsGallery,
          CustomDropdown,
          Cap,
+         Relatives,
+         HandleIds
       },
 
       mixins: [SalonsMixin],
@@ -185,6 +194,17 @@
 
       computed: {
          ...mapGetters(['salonSingle', 'autosalonAnnouncementsId', 'shopAnnouncements']),
+
+         handleIdsOptions() {
+            let ids = [];
+
+            ids.push({
+               type: 'commercial',
+               ids: [...this.shopAnnouncements?.data?.map(item => item.id)]
+            });
+
+            return ids;
+         },
 
          hasWorkingHours() {
             return !!this.getWorkingDays(
