@@ -1,6 +1,5 @@
 <template>
    <div class="moto-search-form form" ref="searchForm">
-      <pre>{{form.additional_brands[0]}}</pre>
       <div class="moto-search-form__grid">
          <form-select
             :label="$t('type_of_motos')"
