@@ -279,12 +279,12 @@ export default {
       },
 
       toggleSearch() {
-         this.showSearch = !this.showSearch
+         this.showSearch = !this.showSearch;
       },
 
       callEvent() {
          this.$nextTick(() => {
-            this.$nuxt.$emit('showMapEvent', this.mapView)
+            this.$nuxt.$emit('showMapEvent', this.mapView);
             window.dispatchEvent(new Event('scroll'));
          });
       },

@@ -1333,7 +1333,8 @@ export const actions = {
    },
 
    async getAutoSalonOtherAnnouncements({commit, state}, payload) {
-      const res = await this.$axios.$get(`${this.$env().API_SECRET}/autosalon/announcements/${payload.id}?page=${payload.page || 1}&excluded_id=${payload.excluded_id}`);
+      let excluded_id = payload.excluded_id ? `&excluded_id=${payload.excluded_id}` : ''
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/autosalon/announcements/${payload.id}?page=${payload.page || 1}${excluded_id}`);
       commit("mutate", {property: "shopAnnouncements", value: res});
    },
    async getShopOtherAnnouncementsWithoutMutate({commit, state}, data) {
