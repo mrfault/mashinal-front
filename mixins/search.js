@@ -159,7 +159,7 @@ export const SearchMixin = {
       },
 
       async submitForm(scroll = true) {
-         console.log("this.form.additional_brands", this.form.additional_brands)
+         console.log('Marat', scroll);
          this.$emit('submit-filters-mobile', this.form.additional_brands)
          this.beforeSubmitForm();
 
@@ -185,15 +185,18 @@ export const SearchMixin = {
 
                if (this.routeName !== prevRouteName) {
                   if (scroll) {
+                     console.log('Marat2')
                      setTimeout(() => {
                         this.scrollTo('.breadcrumbs', [-56, -96]);
                      }, 500);
                   }
                } else {
-                  setTimeout(() => {
-                     this.scrollTo('.breadcrumbs', [-56, -96]);
-                  }, 500);
-
+                  if (scroll) {
+                     setTimeout(() => {
+                        console.log('Marat3')
+                        this.scrollTo('.breadcrumbs', [-56, -96]);
+                     }, 500);
+                  }
                }
 
                if (this.loggedIn && this.meta?.type === 'cars') {
@@ -210,7 +213,7 @@ export const SearchMixin = {
 
       resetForm(submit = false) {
          this.setFormData({});
-         if (submit) this.submitForm();
+         if (submit) this.submitForm(false);
       },
 
       getOptionValue(name, key) {

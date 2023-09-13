@@ -71,7 +71,7 @@
          <!--         +'&width=308'-->
          <div
             v-if="!showGallery"
-            v-lazy:background-image="getImage"
+            v-lazy:background-image="getImage +'&width=256'"
             :aria-label="getAnnouncementTitle(announcement)"
             class="item-bg"
             role="img"

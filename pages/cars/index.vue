@@ -300,16 +300,15 @@ export default {
       },
 
       async searchCars(page = 1, with_panorama = false) {
-
          this.advancedSearch = false;
          page = this.$route.query.page || 1;
          let post = JSON.parse(this.$route.query.car_filter || '{}');
 
          if (!post?.brandsList) {
             if (with_panorama) {
-               post = {...post, with_video: true}
+               post = {...post, with_video: true};
             } else {
-               post = {...post, sort_by: post.sort_by, sort_order: post.sort_order}
+               post = {...post, sort_by: post.sort_by, sort_order: post.sort_order};
             }
             this.pending = true;
             await this.getGridSearch({...this.searchParams, post, page});

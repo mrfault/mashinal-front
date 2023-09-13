@@ -395,7 +395,7 @@
                >
                   {{ $t('clear_search') }}
 
-                  <icon name="cross"/>
+                  <icon name="cross" />
                </button>
 
                <div class="btns">
