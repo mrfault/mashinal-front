@@ -92,7 +92,7 @@
       created() {
          if (this.announcement?.is_part_salon) this.getShopOtherAnnouncements(this.announcement.id);
          else if (this.isShop) this.getAutoSalonOtherAnnouncements({
-            id: this.announcement?.user?.auto_salon?.id,
+            id: this.announcement?.user?.auto_salon?.id || this.announcement?.user?.external_salon?.id,
             excluded_id: this.announcement.id,
             page: this.$route.query.page || 1
          });
