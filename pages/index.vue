@@ -3,7 +3,9 @@
       <div class="container">
          <div class="filters-container">
             <template  v-if="isMobileBreakpoint && !advancedSearch" >
-               <FiltersMobile  :additional-brands="additionalBrands" @openMore="openMore" />
+               <FiltersMobile  :additional-brands="additionalBrands" @openMore="openMore" :meta="{type: 'cars',
+            path: '/cars',
+            param: 'car_filter'}" />
 
 <!--               <form-select-->
 <!--                  :label="$t('mark')"-->
