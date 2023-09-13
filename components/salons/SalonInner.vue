@@ -159,6 +159,7 @@
    import ThumbsGallery from '~/components/announcements/inner/ThumbsGallery'
    import CustomDropdown from "~/components/elements/CustomDropdown.vue";
    import Cap from "~/components/elements/Cap.vue";
+   import Relatives from "~/components/announcements/inner/Relatives.vue";
 
    export default {
       components: {
@@ -167,6 +168,7 @@
          ThumbsGallery,
          CustomDropdown,
          Cap,
+         Relatives
       },
 
       mixins: [SalonsMixin],

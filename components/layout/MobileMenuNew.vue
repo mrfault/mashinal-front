@@ -23,15 +23,14 @@
 
             <span class="cursor-pointer" @click="handleIconClick($localePath('/cars'))"
                   v-else-if="exceptions">
-
             </span>
 
-            <span class="cursor-pointer" @click="handleIconClick($localePath('/cars'))"
-                  v-else-if="hasSearchNav || !loggedIn">
-               <icon name="options"/>
-            </span>
+<!--            <span class="cursor-pointer" @click="handleIconClick($localePath('/cars'))"-->
+<!--                  v-else-if="hasSearchNav || !loggedIn">-->
+<!--               <icon name="options"/>-->
+<!--            </span>-->
 
-            <span class="cursor-pointer" @click="logout" v-else>
+            <span class="cursor-pointer" @click="logout" v-else-if="$auth.loggedIn">
                <icon name="logout"/>
             </span>
          </div>

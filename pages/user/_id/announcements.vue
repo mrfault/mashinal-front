@@ -147,7 +147,7 @@
          },
 
          userFullName() {
-            return this.userAnnouncements.find(item => item.user.full_name);
+            return this.userAnnouncements.find(item => item.user.full_name) || this.getUserRegistrationMarks?.data?.find(item => item.user.full_name);
          },
 
          // crumbs() {

@@ -33,7 +33,7 @@
             </div>
          </div>
 
-         <no-results v-else-if="!officialSalons.length"/>
+         <no-results v-else-if="!officialSalons.length" />
       </div>
    </div>
 </template>

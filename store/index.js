@@ -1332,8 +1332,8 @@ export const actions = {
       commit("mutate", {property: "shopAnnouncements", value: res});
    },
 
-   async getAutoSalonOtherAnnouncements({commit, state}, id) {
-      const res = await this.$axios.$get(`${this.$env().API_SECRET}/autosalon/announcements/${id}`);
+   async getAutoSalonOtherAnnouncements({commit, state}, payload) {
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/autosalon/announcements/${payload.id}?page=${payload.page || 1}&excluded_id=${payload.excluded_id}`);
       commit("mutate", {property: "shopAnnouncements", value: res});
    },
    async getShopOtherAnnouncementsWithoutMutate({commit, state}, data) {
