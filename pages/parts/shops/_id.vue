@@ -14,7 +14,7 @@
       name: 'pages-parts-shops-id',
 
       components: {
-         SalonInner
+         SalonInner,
       },
 
       nuxtI18n: {
@@ -33,11 +33,11 @@
       async asyncData({store, route}) {
          await store.dispatch('getSalonById', { slug: route.params.id, page: (route.query.page || 1) });
          await store.dispatch('getMotoOptions', store.getters.salonSingle.id);
-         await store.dispatch('getAutoSalonOtherAnnouncements', store?.getters?.salonSingle?.id);
+         await store.dispatch('getAutoSalonOtherAnnouncements', {id: store?.getters?.salonSingle?.id});
       },
 
       computed: {
-         ...mapGetters(['salonSingle']),
+         ...mapGetters(['salonSingle', 'shopAnnouncements']),
 
          crumbs() {
             return [
@@ -45,7 +45,9 @@
                {name: this.$t('shops'), route: '/parts/shops'},
                {name: this.salonSingle.name || this.salonSingle.user.full_name}
             ]
-         }
+         },
+
+
       },
 
       mounted() {

@@ -4,6 +4,7 @@
          <salon-inner />
       </div>
 
+
 <!--      <HandleIds-->
 <!--         :items="handleIdsOptions"-->
 <!--         :watchIds="false"-->
@@ -21,7 +22,7 @@
 
       components: {
          SalonInner,
-         HandleIds
+         HandleIds,
       },
 
       nuxtI18n: {
@@ -30,12 +31,12 @@
          }
       },
 
-      // head() {
-      //    return this.$headMeta({
-      //       title: `${this.$t('autosalon')} "${this.salonSingle.name || this.salonSingle.user.full_name}" | ${this.$t('salons')}`,
-      //       description: this.salonSingle.short_description
-      //    });
-      // },
+      head() {
+         return this.$headMeta({
+            title: `${this.$t('autosalon')} "${this.salonSingle.name || this.salonSingle.user.full_name}" | ${this.$t('salons')}`,
+            description: this.salonSingle.short_description
+         });
+      },
 
       async asyncData({store, route}) {
          await store.dispatch('getSalonById', {slug: route.params.id});
