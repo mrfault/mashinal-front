@@ -21,18 +21,20 @@
                <icon name="store"/>
             </span>
 
-            <span class="cursor-pointer" @click="handleIconClick($localePath('/cars'))"
-                  v-else-if="exceptions">
-            </span>
+
 
 <!--            <span class="cursor-pointer" @click="handleIconClick($localePath('/cars'))"-->
 <!--                  v-else-if="hasSearchNav || !loggedIn">-->
 <!--               <icon name="options"/>-->
 <!--            </span>-->
 
-            <span class="cursor-pointer" @click="logout" v-else-if="$auth.loggedIn">
+            <span class="cursor-pointer" @click="logout" v-if="$auth.loggedIn">
                <icon name="logout"/>
             </span>
+
+            <nuxt-link to="/notifications" class="cursor-pointer" v-else>
+               <inline-svg src="/icons/notification.svg" />
+            </nuxt-link>
          </div>
       </div>
 
