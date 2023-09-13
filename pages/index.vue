@@ -139,6 +139,7 @@
             :announcements="carShowroom?.announcements"
             :announcementsBanner="carShowroom?.autosalon"
             :pending="pending"
+            :showBanner="true"
          >
             <template #cap>
                <Cap :className="'mb40'">

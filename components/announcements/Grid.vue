@@ -98,7 +98,10 @@
          urlBanner: {
             required: false
          },
-         showBanner: Boolean,
+         showBanner: {
+            type: Boolean,
+            default: false
+         },
          announcementsBanner: {
             type: Object,
             default() { return{} }
@@ -194,7 +197,7 @@
          },
 
          isShowBanner() {
-            return this.showBanner || (this.announcementsBanner && (this.$route.path === '/' || this.$route.path === '/ru'));
+            return this.showBanner && (this.announcementsBanner && (this.$route.path === '/' || this.$route.path === '/ru'));
          }
       },
 
