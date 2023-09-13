@@ -280,7 +280,7 @@
          },
 
          restoreCondition() {
-            console.log('tt', this.announcement)
+            // console.log('tt', this.announcement)
             return (this.announcement.status == 3 || (!(this.announcement.is_auto_salon || this.announcement.is_external_salon) && this.announcement.status == 4))
          }
       },

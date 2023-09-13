@@ -59,22 +59,22 @@
 
          <breadcrumbs :crumbs="crumbs"/>
 
-         <grid
-            class="mt-2"
-            v-if="monetizedCars?.length"
-            :announcements="monetizedCars"
-            :numberOfAds="monetizedCars?.length"
-            :hasContainer="false"
-            escape-duplicates
-         >
-            <template #cap>
-               <Cap :className="'mb40'">
-                  <template #left>
-                     <h3>{{ $t('featured_ads') }}</h3>
-                  </template>
-               </Cap>
-            </template>
-         </grid>
+<!--         <grid-->
+<!--            class="mt-2"-->
+<!--            v-if="monetizedCars?.length"-->
+<!--            :announcements="monetizedCars"-->
+<!--            :numberOfAds="monetizedCars?.length"-->
+<!--            :hasContainer="false"-->
+<!--            escape-duplicates-->
+<!--         >-->
+<!--            <template #cap>-->
+<!--               <Cap :className="'mb40'">-->
+<!--                  <template #left>-->
+<!--                     <h3>{{ $t('featured_ads') }}</h3>-->
+<!--                  </template>-->
+<!--               </Cap>-->
+<!--            </template>-->
+<!--         </grid>-->
 
          <grid
             v-if="carsAnnouncements?.meta?.total > 0"
@@ -223,7 +223,7 @@ export default {
          store.dispatch('getMotoOptions'),
          store.dispatch('getColors'),
          store.dispatch('getPopularOptions'),
-         store.dispatch('fetchMonetizedCarsSearch', post),
+         // store.dispatch('fetchMonetizedCarsSearch', post),
          // store.dispatch('fetchMonetizedCars'),
 
          // get model options for brands
@@ -312,7 +312,7 @@ export default {
             }
             this.pending = true;
             await this.getGridSearch({...this.searchParams, post, page});
-            await this.$store.dispatch('fetchMonetizedCarsSearch', post);
+            // await this.$store.dispatch('fetchMonetizedCarsSearch', post);
             // await this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'cars', data: post });
             this.pending = false;
             this.scrollTo('.breadcrumbs', [20, -120]);
@@ -326,7 +326,7 @@ export default {
          'getMainMonetized',
          'singleSavedSearch',
          'brandsList',
-         'monetizedCars',
+         // 'monetizedCars',
          'motoAnnouncements',
          'popularOptions',
          'filterVehicle'
@@ -408,7 +408,7 @@ export default {
             type: 'car',
             ids: [
                ...this.carsAnnouncements.data.map(item => item.id),
-               ...this.monetizedCars.map(item => item.id)
+               // ...this.monetizedCars.map(item => item.id)
             ]
          });
 
