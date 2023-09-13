@@ -110,10 +110,10 @@ export default {
       },
       image() {
          if (this.initialImage ) {
-            return (this.initialImage.includes('http') ? '' : 'https://dev.mashin.al/') + this.initialImage;
+            return (this.initialImage.includes('http') ? '' : 'https://mashin.al/') + this.initialImage;
          }
 
-         return 'https://dev.mashin.al/'+this.initialImage;
+         return 'https://mashin.al/'+this.initialImage;
       }
    },
    methods: {
