@@ -50,7 +50,7 @@
             </div>
             <div class="ma-login-tab--image" v-if="settingsV2?.media?.login_image">
 <!--               <img alt="" src="/images/login-image.png">-->
-               <img alt="" :src="settingsV2.media?.login_image">
+               <img alt="" :src="settingsV2.media?.login_image+'?width=644'">
             </div>
          </div>
 
