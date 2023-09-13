@@ -149,10 +149,10 @@
          :show-toolbar="false"
       />
 
-      <HandleIds
-         :items="handleIdsOptions"
-         :watchIds="false"
-      />
+<!--      <HandleIds-->
+<!--         :items="handleIdsOptions"-->
+<!--         :watchIds="false"-->
+<!--      />-->
    </div>
 </template>
 
@@ -267,15 +267,9 @@
          }
       },
 
-      // async fetch() {
-      //   await this.$store.dispatch('fetchAutosalonAnnouncementsId', {
-      //      id: this.$store.getters.salonSingle.id,
-      //      page: this.$route.query.page || 1
-      //   });
-      // },
-
-      mounted() {
-         console.log('salon inner mounted')
+      async fetch() {
+         await this.$store.dispatch('getSalonById', {slug: this.$route.params.id});
+         await this.$store.dispatch('getAutoSalonOtherAnnouncements', {id: this.$store?.getters?.salonSingle?.id});
       }
    }
 </script>
