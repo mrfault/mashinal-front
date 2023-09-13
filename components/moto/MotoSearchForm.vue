@@ -1,5 +1,6 @@
 <template>
    <div class="moto-search-form form" ref="searchForm">
+      <pre>{{form.additional_brands[0]}}</pre>
       <div class="moto-search-form__grid">
          <form-select
             :label="$t('type_of_motos')"
@@ -602,13 +603,13 @@
 
          async setCategory(id, index) {
             this.$set(this.form.additional_brands[index], 'category', id);
-            this.$set(this.form.additional_brands[index], 'brand', '');
-            this.$set(this.form.additional_brands[index], 'model', '');
+            this.$set(this.form.additional_brands[index], 'brand', "");
+            this.$set(this.form.additional_brands[index], 'model', "");
          },
 
          async setBrand(id, index) {
             this.$set(this.form.additional_brands[index], 'brand', id);
-            this.$set(this.form.additional_brands[index], 'model', '');
+            this.$set(this.form.additional_brands[index], 'model', "");
             if (id) await this.getMotoModels({
                category: this.category.id || this.form.additional_brands[index]['category'],
                id,

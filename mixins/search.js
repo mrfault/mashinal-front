@@ -159,6 +159,7 @@ export const SearchMixin = {
       },
 
       async submitForm(scroll = true) {
+         console.log("this.form.additional_brands", this.form.additional_brands)
          this.$emit('submit-filters-mobile', this.form.additional_brands)
          this.beforeSubmitForm();
 
@@ -175,14 +176,12 @@ export const SearchMixin = {
          this.$emit('pending');
 
          if (searchSame) {
-            console.log('submit 1')
             this.$emit('submit');
          } else {
             let prevRouteName = this.routeName;
             this.$router.push(searchUrl, () => {
                this.$emit('submit');
-               this.$nuxt.$emit('submitSearchMixin');
-               console.log('submit 2')
+               this.isMobileBreakpoint && this.$nuxt.$emit('submitSearchMixin');
 
                if (this.routeName !== prevRouteName) {
                   if (scroll) {
@@ -202,7 +201,6 @@ export const SearchMixin = {
                }
             }, () => {
                this.$emit('submit');
-               console.log('submit 3')
             });
          }
 

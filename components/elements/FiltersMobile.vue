@@ -87,13 +87,13 @@ import {SearchMixin} from "~/mixins/search";
 export default {
    props: {
       additionalBrands: {
-         default: () => { return {0 :{ } } }
+         default: () => {
+            return {0: {}}
+         }
       },
-      formMotoType: {
-
-      },
+      formMotoType: {},
       type: {
-        default: 1,
+         default: 1,
       },
       meta: {
          type: Object
@@ -146,7 +146,6 @@ export default {
          this.$set(this, 'motoType', type);
 
 
-
          this.submit();
       },
       async changeBrand(id) {
@@ -159,19 +158,18 @@ export default {
          this.form.additional_brands[0].brand_slug = slug;
          console.log('get models')
 
-         if(!id) {
+         if (!id) {
             this.submit()
             return;
          }
          try {
-            if(this.type === 2) {
+            if (this.type === 2) {
                await this.getMotoModels({
-                  category:  this.form.additional_brands[0]['category'],
+                  category: this.form.additional_brands[0]['category'],
                   id,
                   index: 0
                })
-            }
-            else {
+            } else {
                await this.getModelsArray({value: slug, index: 0});
             }
 
@@ -199,7 +197,7 @@ export default {
          this.generation = null
 
          try {
-            if(this.type === 1) {
+            if (this.type === 1) {
                await this.getModelGenerationsArray({value: slug, brand_slug, index: 0})
             }
          } catch (e) {
@@ -219,11 +217,13 @@ export default {
          generation: null,
          motoType: null,
          form: {
-            additional_brands: {0: {
+            additional_brands: {
+               0: {
                   brand: null,
                   model: null,
                   generation: null,
-               }, 1: {}, 2: {}, 3: {}, 4: {}},
+               }, 1: {}, 2: {}, 3: {}, 4: {}
+            },
          },
       }
    },
@@ -237,9 +237,9 @@ export default {
       },
       motoTypeIds() {
          return {
-            1:'motorcycle',
-            2:'scooter',
-            3:'moto_atv',
+            1: 'motorcycle',
+            2: 'scooter',
+            3: 'moto_atv',
          }
       },
 
@@ -275,6 +275,17 @@ export default {
          atvModels: 'atvModels',
       })
    },
+   watch: {
+      additionalBrands: {
+         deep: true,
+         handler() {
+            this.brand = this.additionalBrands[0].brand || null;
+            this.model = this.additionalBrands[0].model || null;
+            this.generation = this.additionalBrands[0].generation || null;
+            this.motoType = this.additionalBrands[0].category || null;
+         }
+      }
+   }
 }
 </script>
 
@@ -289,7 +300,7 @@ export default {
          align-items: center;
          justify-content: space-between;
 
-         &.mark_item{
+         &.mark_item {
             position: relative;
 
             .car_svg {
@@ -379,6 +390,7 @@ export default {
                   color: #9AA4B2 !important;
                }
             }
+
             span {
                color: #9AA4B2;
             }
