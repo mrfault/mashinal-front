@@ -68,10 +68,9 @@
             <!--        <span class="sr-only">{{ getAnnouncementTitle(announcement) }}</span>-->
          </a>
 
-         <!--         +'&width=308'-->
          <div
             v-if="!showGallery"
-            v-lazy:background-image="getImage +'&width=256'"
+            v-lazy:background-image="getImage.startsWith('/img/') ? getImage : getImage+'&width=256'"
             :aria-label="getAnnouncementTitle(announcement)"
             class="item-bg"
             role="img"
@@ -345,6 +344,7 @@ export default {
 
       getImage() {
          let item = this.announcement;
+
          return this.$withBaseUrl(item.image);
 
          // if (item.has_360 == false || !item.has_360) {
