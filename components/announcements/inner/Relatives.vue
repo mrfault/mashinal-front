@@ -2,6 +2,7 @@
    <div>
       <template v-if="isShop">
          <grid
+            class="dark-bg"
             v-if="shopAnnouncements?.data && shopAnnouncements?.data?.length"
             :announcements="shopAnnouncements?.data"
             :paginate="shopAnnouncements?.meta"
@@ -81,7 +82,7 @@
 
             await this.getAutoSalonOtherAnnouncements({
                id: this.announcement?.user?.auto_salon?.id,
-               excluded_id: this.announcement.id || '',
+               excluded_id: this.announcement.id,
                page: page
             });
             this.scrollTo('.announcements-grid', [-90, -200]);
@@ -91,8 +92,8 @@
       created() {
          if (this.announcement?.is_part_salon) this.getShopOtherAnnouncements(this.announcement.id);
          else if (this.isShop) this.getAutoSalonOtherAnnouncements({
-            id: this.announcement?.user?.auto_salon?.id,
-            excluded_id: this.announcement.id || '',
+            id: this.announcement?.user?.auto_salon?.id || this.announcement?.user?.external_salon?.id,
+            excluded_id: this.announcement.id,
             page: this.$route.query.page || 1
          });
          else this.getRelativeAnnouncements({type: this.announcement.type || 'light_vehicle', id: this.announcement.id});

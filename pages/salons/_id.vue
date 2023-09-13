@@ -40,7 +40,7 @@
       async asyncData({store, route}) {
          await store.dispatch('getSalonById', {slug: route.params.id});
          await store.dispatch('getMotoOptions');
-         await store.dispatch('getAutoSalonOtherAnnouncements', {id: store?.getters?.salonSingle?.id});
+         // await store.dispatch('getAutoSalonOtherAnnouncements', {id: store?.getters?.salonSingle?.id});
 
          // await store.dispatch('fetchAutosalonAnnouncementsId', {
          //    id: store?.getters?.salonSingle?.id,
