@@ -212,7 +212,6 @@
             }
          },
          async searchMoto(page = 1) {
-            console.log("searchMoto 1");
             this.advancedSearch = false;
             page = this.$route.query.page || 1;
             let post = JSON.parse(this.$route.query.filter || '{}');
@@ -268,10 +267,6 @@
                      }
                   }
                }
-               console.log("motoInfo", carInfo)
-               this.additionalBrands[0] = carInfo.additional_brands[0];
-               this.additionalBrands[0].category = carInfo.additional_brands[0].category;
-
             }
          },
 
@@ -339,13 +334,12 @@
                this.sorting.key = filters.sort_by;
                this.sorting.value = filters.sort_order;
             }
-         console.log(filters,'asdasd');
             this.announceType = filters.announce_type || 0;
             this.additionalBrands[0] = filters.additional_brands[0];
             this.formMotoType = filters.moto_type;
             // console.log('filters.announce_type', filters.announce_type)
          }
-         this.$nuxt.$on("submitSearchMixin", this.submitOnMobile)
+         this.isMobileBreakpoint && this.$nuxt.$on("submitSearchMixin", this.submitOnMobile)
       },
       beforeDestroy() {
          this.$nuxt.$off("submitSearchMixin", this.submitOnMobile)

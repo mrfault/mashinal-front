@@ -190,7 +190,6 @@ export default {
    watch: {
       '$route.query'(query) {
          if (query && query.with_panorama == 'true') {
-            console.log("queryWatch")
             this.searchCars(1, true);
          }
       },
@@ -280,7 +279,6 @@ export default {
 
          this.announceType = filters.announce_type || 0;
          this.additionalBrands[0] = filters.additional_brands[0];
-         // console.log('filters.announce_type', filters.announce_type)
       }
       this.$nuxt.$on("submitSearchMixin", this.submitOnMobile)
    },
@@ -298,7 +296,6 @@ export default {
       },
 
       submitOnMobile() {
-         console.log('searchCars worked in mobile')
          this.searchCars()
       },
 
@@ -352,7 +349,6 @@ export default {
             carInfo = JSON.parse(this.$route?.query?.car_filter);
             this.additionalBrands[0] = carInfo.additional_brands[0];
          }
-         console.log('carInfo', carInfo)
 
          if (!carInfo?.additional_brands[1]?.brand) {
             for (let i = 0; i < this.brandsList?.length; i++) {
