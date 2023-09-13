@@ -194,8 +194,7 @@ export const MenusDataMixin = {
       },
 
       hasShops() {
-         return ['parts-category'
-         ].includes(this.routeName);
+         return ['parts-category'].includes(this.routeName);
       }
    }
 }

@@ -24,8 +24,8 @@ export default function({ app, route, store }, inject) {
   });
    inject('env',() => {
       let conf = {
-         isDev: true,
-         isProd: false,
+         isDev: false,
+         isProd: true,
          useBaseUrl: true
       }
       return {
