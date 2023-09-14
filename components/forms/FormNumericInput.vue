@@ -141,7 +141,7 @@ export default {
 
       handleKeyDown(e) {
          if (this.typingInterval) clearTimeout(this.typingTimer);
-         if (this.ignoredSymbols.includes(e.key)) e.preventDefault()
+         if (this.ignoredSymbols?.includes(e.key)) e.preventDefault()
       },
    },
 
