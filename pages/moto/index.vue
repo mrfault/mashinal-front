@@ -1,9 +1,9 @@
 <template>
    <div class="pages-moto-index">
       <div class="container">
-         <div class="filters-container mb-5">
+         <div class="filters-container mb-3">
             <template v-if="isMobileBreakpoint && !advancedSearch">
-               <FiltersMobile :type="2" :additional-brands="additionalBrands" :form-moto-type="formMotoType"  @pending="pending = true" @openMore="openMore"  @submit="submitOnMobile" :meta="{ type: 'moto', path: '/moto', param: 'filter' }" />
+               <FiltersMobile :type="2" :sorting="sorting" :additional-brands="additionalBrands" :form-moto-type="formMotoType" @showSorting="showSorting = $event"  @pending="pending = true" @openMore="openMore"  @submit="submitOnMobile" :meta="{ type: 'moto', path: '/moto', param: 'filter' }" />
             </template>
 
             <template v-else>

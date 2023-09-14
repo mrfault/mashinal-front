@@ -42,6 +42,7 @@
                v-model="form.car_number.number"
                :maxlength="3"
                :float="true"
+               :ignored-symbols="['.']"
                :invalid="$v.form.car_number.number.$error"
                :disabled="isEdit"
             />

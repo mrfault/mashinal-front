@@ -1,6 +1,6 @@
 <template>
    <div :class="['car-body-shortcuts',{'has-value': !!Object.keys(value).length}]">
-      <div :class="['shortcut', {'active': !!selected[index]}]" @click="selected = index"
+      <div :class="['shortcut', {'disable': Object.keys(value).length > 1}, {'active': !!selected[index]}]" @click="selected = index"
            v-for="(shortcut, index) in shortcuts" :key="index">
          <img :src="`/img/car-body-shortcuts/${index + 1}.png`" :alt="$t(shortcut.name)"/>
          <span>{{ $t(shortcut.name) }}</span>
@@ -40,10 +40,14 @@ export default {
          },
          set(index) {
             let value = {};
-            for (let key in this.value)
-               if (key != index) value[key] = [...this.shortcuts[key].keys];
-            if (!this.value[index]) value[index] = [...this.shortcuts[index].keys];
-            this.$emit('input', value);
+            if (Object.keys(this.value).length < 2 || !!this.value[index]) {
+               console.log("worked")
+               for (let key in this.value)
+                  if (key != index) value[key] = [...this.shortcuts[key].keys];
+               if (!this.value[index]) value[index] = [...this.shortcuts[index].keys];
+               this.$emit('input', value);
+            }
+
          }
       }
    },
@@ -76,9 +80,13 @@ export default {
       transition: opacity .2s ease-out, transform .2s ease-out;
 
       img {
-         height: 100px;
+         height: 80px;
          width: 100%;
          object-fit: contain;
+      }
+
+      &.disable {
+         opacity: 0.6;
       }
 
       &:hover,

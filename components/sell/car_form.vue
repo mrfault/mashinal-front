@@ -139,6 +139,7 @@
                :clear-option="false"
                v-model="form.color"
                multiple
+               has-search
                :invalid="$v.form.color.$error"
                :limit="2"
             />
@@ -234,6 +235,7 @@
             :clear-placeholder="true"
             :clear-option="false"
             :new-label="false"
+            has-search
             v-model="form.region_id"
             :invalid="$v.form.region_id.$error"
          />
@@ -245,6 +247,7 @@
             :clear-placeholder="true"
             :clear-option="false"
             :new-label="false"
+            has-search
             v-model="form.country_id"
             :invalid="$v.form.country_id.$error"
          />

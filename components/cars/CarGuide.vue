@@ -33,11 +33,14 @@
             <car-option-packs v-model="formAssistant.packs" @getObjects="getPackObjects"/>
             <div class="guide_range">
                <p class="mb-5">{{ $t("price_range") }}</p>
-               <vue-slider v-model="formAssistant.price" :tooltip="'always'"
+               <vue-slider v-model="formAssistant.price"
                            :tooltip-placement="['top', 'bottom']"
                            :min="5000"
                            :max="100000"
-                           :interval="1000"></vue-slider>
+                           :interval="1000"
+                           :tooltip="'always'"
+                           :tooltip-formatter="Tformatter"
+               ></vue-slider>
             </div>
             <div class="guide_buttons">
                <button type="button"
@@ -84,6 +87,9 @@ export default {
    },
    data() {
       return {
+         Tformatter: val => {
+            return val + ' AZN';
+         },
          form: {
             announce_type: 0,
             additional_brands: {0: {}, 1: {}, 2: {}, 3: {}, 4: {}},
@@ -190,7 +196,7 @@ export default {
             display: flex;
             gap: 20px;
             align-items: stretch;
-            margin-top: auto;
+            margin-top: 20px;
 
             button {
                height: 52px;
