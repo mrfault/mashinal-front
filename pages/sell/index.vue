@@ -1,7 +1,7 @@
 <template>
    <div class="add_announce">
       <div class="container">
-         <h1 class="add_announce_title">{{ $t('new_announce') }}</h1>
+         <h1 class="add_announce_title">{{ $t('place_an_ad') }}</h1>
          <div class="announce_container">
             <div class="card">
                <div class="add_announce_info">

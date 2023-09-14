@@ -95,6 +95,12 @@ export default {
       type: {
          default: 1,
       },
+      sorting: {
+         type: Object,
+         default() {
+            return {}
+         }
+      },
       meta: {
          type: Object
          // default: {
@@ -110,6 +116,8 @@ export default {
       this.model = this.additionalBrands[0].model || null;
       this.generation = this.additionalBrands[0].generation || null;
       this.motoType = this.additionalBrands[0].category || null;
+      if (this.additionalBrands[0].category) this.$emit('showSorting', true)
+      else this.$emit('showSorting', false)
    },
    methods: {
       submit() {
@@ -120,8 +128,6 @@ export default {
          if (!searchSame) {
             this.$router.push(searchUrl, () => {
                this.$emit('submit');
-               console.log('bu ola biler 3')
-
                // if (this.loggedIn && this.meta?.type === 'cars') {
                //    this.fetchSavedSearch({search_url: `${this.meta.path}?${searchQuery}`});
                // }
@@ -134,14 +140,13 @@ export default {
          'getMotoBrandsV2',
          'getMotoModels'
       ]),
-
       async setCategory(type) {
          this.form.moto_type = this.motoTypeIds[type];
          this.form.additional_brands[0] = {};
          this.brand = null;
          this.model = null;
-
-
+         if (type) this.$emit('showSorting', true)
+         else this.$emit('showSorting', false)
          this.form.additional_brands[0]['category'] = type
          this.$set(this, 'motoType', type);
 
@@ -156,7 +161,6 @@ export default {
          let brand = this.existsBrands.find((option) => option.id === id)
          let slug = brand?.slug || ''
          this.form.additional_brands[0].brand_slug = slug;
-         console.log('get models')
 
          if (!id) {
             this.submit()
@@ -212,11 +216,14 @@ export default {
    },
    data() {
       return {
+
          brand: null,
          model: null,
          generation: null,
          motoType: null,
          form: {
+            sort_by: 'created_at',
+            sort_order: 'desc',
             additional_brands: {
                0: {
                   brand: null,
@@ -276,6 +283,15 @@ export default {
       })
    },
    watch: {
+      sorting(val) {
+         console.log("this.motoType", this.motoType)
+         this.form.sort_by = val.key.split('_')[0];
+         this.form.sort_order = val.value;
+         this.form.moto_type = this.motoTypeIds[this.motoType]
+         this.$set(this, 'sort_by', val.key.split('_')[0]);
+         this.$set(this, 'sort_order', val.value);
+         this.submit();
+      },
       additionalBrands: {
          deep: true,
          handler() {
