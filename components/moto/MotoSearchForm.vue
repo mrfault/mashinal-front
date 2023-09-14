@@ -1,5 +1,5 @@
 <template>
-   <div class="moto-search-form form" ref="searchForm">
+   <div class="moto-search-form mini form" ref="searchForm">
       <div class="moto-search-form__grid">
          <form-select
             :label="$t('type_of_motos')"
@@ -148,7 +148,7 @@
 
          <div class="form-merged custom">
             <form-select
-               :label="$t('capacity_from')"
+               :label="$t('capacity_from_2')"
                v-model="form.capacity_from"
                :options="getMotoCapacityOptions"
                :show-label-on-select="false"
@@ -720,6 +720,60 @@
          grid-gap: 12px;
          display: flex;
          height: 52px;
+      }
+
+      &.mini {
+         //.cars-search-form__gridMain {
+         //   grid-gap: 10px;
+         //}
+
+         .form-group {
+            height: max-content;
+
+            .select-menu {
+               &_label {
+                  height: 48px;
+               }
+
+               &_dropdown {
+                  top: 55px;
+
+                  .form-merged {
+                     height: unset;
+                  }
+               }
+            }
+
+            input {
+               height: 44px;
+            }
+         }
+
+         .form-merged {
+            height: 48px;
+
+            .form-group {
+               .select-menu {
+                  &_label {
+                     height: 100%;
+                  }
+
+                  &_dropdown {
+                     top: 45px;
+                  }
+               }
+            }
+         }
+
+         .checkbox-input {
+            label {
+               height: 48px;
+            }
+         }
+
+         .btn {
+            height: 48px;
+         }
       }
    }
 

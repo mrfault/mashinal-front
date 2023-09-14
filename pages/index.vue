@@ -1,11 +1,13 @@
 <template>
    <div class="pages-index">
       <div class="container">
-         <div class="filters-container">
-            <template  v-if="isMobileBreakpoint && !advancedSearch" >
-               <FiltersMobile  :additional-brands="additionalBrands" @openMore="openMore" :meta="{type: 'cars',
-            path: '/cars',
-            param: 'car_filter'}" />
+         <div class="filters-container mini">
+            <template v-if="isMobileBreakpoint && !advancedSearch" >
+               <FiltersMobile
+                  :additional-brands="additionalBrands"
+                  :meta="{type: 'cars', path: '/cars', param: 'car_filter'}"
+                  @openMore="openMore"
+               />
 
 <!--               <form-select-->
 <!--                  :label="$t('mark')"-->
@@ -586,6 +588,24 @@
             }
          }
       }
+
+      &.mini {
+         .filters-container__head {
+            .announce_types {
+               .form-group {
+                  .btn {
+                     height: 36px !important;
+                  }
+               }
+            }
+
+            .form-buttons {
+               .btn {
+                  height: 42px;
+               }
+            }
+         }
+      }
    }
 
    .dark-mode {
@@ -673,6 +693,7 @@
          }
       }
    }
+
 //.swiper-container {
 //   .btn--green {
 //      height: 25px !important;

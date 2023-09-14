@@ -1,5 +1,5 @@
 <template>
-   <div class="cars-search-form form">
+   <div class="cars-search-form mini form">
       <div class="cars-search-form__inner">
          <template v-if="assistant">
             <div class="col-12">
@@ -172,7 +172,7 @@
 
                <div class="form-merged custom">
                   <form-select
-                     :label="$t('capacity_from')"
+                     :label="$t('capacity_from_2')"
                      v-model="form.min_capacity"
                      :options="bodyOptions.main.custom_options['capacity'].values"
                      :show-label-on-select="false"
@@ -975,14 +975,6 @@
 
 <style lang="scss">
    .cars-search-form {
-      //padding: 24px;
-      //border-radius: 12px;
-      //background-color: #FFFFFF;
-
-      //&__head {
-      //   gap: 32px;
-      //}
-
       &__gridMain {
          display: grid;
          grid-gap: 20px;
@@ -1060,6 +1052,83 @@
                   }
                }
             }
+         }
+      }
+
+      &.mini {
+         //.cars-search-form__gridMain {
+         //   grid-gap: 10px;
+         //}
+
+         .form-group {
+            height: max-content;
+
+            .select-menu {
+               &_label {
+                  height: 48px;
+               }
+
+               &_dropdown {
+                  top: 55px;
+
+                  .form-merged {
+                     height: unset;
+                  }
+               }
+            }
+
+            input {
+               height: 44px;
+            }
+         }
+
+         .form-merged {
+            height: 48px;
+
+            .form-group {
+               .select-menu {
+                  &_label {
+                     height: 100%;
+                  }
+
+                  &_dropdown {
+                     top: 45px;
+                  }
+               }
+            }
+         }
+
+         .checkboxes {
+            .checkbox-input {
+               input {
+                  &:checked {
+                     & + {
+                        label {
+                           background-color: #155EEF;
+
+                           span {
+                              color: #FFFFFF;
+                           }
+                        }
+                     }
+                  }
+               }
+               label {
+                  height: 48px;
+
+                  //&:hover {
+                  //   background-color: #155EEF;
+                  //
+                  //   span {
+                  //      color: #FFFFFF;
+                  //   }
+                  //}
+               }
+            }
+         }
+
+         .btn {
+            height: 48px;
          }
       }
    }
