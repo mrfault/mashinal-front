@@ -252,9 +252,9 @@
 </script>
 
 <style lang="scss">
-   .pages-parts-index {
-      padding-bottom: 120px;
-   }
+   //.pages-parts-index {
+   //   padding-bottom: 20px;
+   //}
 
    .dark-mode {
       .pages-parts-index {

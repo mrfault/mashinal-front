@@ -410,6 +410,7 @@ export default {
       "Выбранные объявления должны быть деактивированы",
    capacity: "Объем",
    capacity_from: "Мотор от.",
+   capacity_from_2: "Мотор от.",
    capacity_from_l: "Объем от, л",
    capacity_from_sm3: "Объем от, см³",
    plate_added: "Регистрационный номер добавлен",

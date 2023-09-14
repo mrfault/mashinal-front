@@ -303,7 +303,7 @@
                         <div class="row">
                            <div class="col-5 col-lg-12 col-xl-12 d-flex justify-content-end">
                               <nuxt-link
-                                 class="btn full-width btn--pale-green-outline"
+                                 class="btn full-width btn--green"
                                  :to="$localePath('/sell')"
                                  @click.native="handleBtnClick('sell')"
                               >

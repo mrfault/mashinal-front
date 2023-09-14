@@ -378,7 +378,6 @@
       },
 
       mounted() {
-         console.log('ggggg')
          window.addEventListener('keydown', this.handleEscapeKey);
 
          this.$nextTick(() => {
@@ -422,6 +421,17 @@
                   }, 1)
                }
             })
+
+            // this.thumbsSwiper.on("keyPress", (swiper, keyCode) => {
+            //    switch (keyCode) {
+            //       case 38:
+            //          this.slidePrev();
+            //          break;
+            //       case 40:
+            //          this.slideNext();
+            //          break;
+            //    }
+            // });
          })
       },
 
