@@ -295,6 +295,7 @@
                spaceBetween: 12,
                keyboard: {
                   enabled: true,
+                  onlyInViewport: true,
                   pageUpDown: true,
                },
                mousewheel: {
