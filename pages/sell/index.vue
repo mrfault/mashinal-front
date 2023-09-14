@@ -23,7 +23,7 @@
                   <div class="add_announce_form">
                      <form-select
                         :label="$t('announcement_type')"
-                        :options="searchMenus.filter((menu) => menu.id !== 3).map((menu) => ({...menu,name: $t(menu.title)}))"
+                        :options="searchMenus.filter((menu) => menu.id !== 3).map((menu) => ({...menu,name: $t(menu.label)}))"
                         :clear-placeholder="true"
                         :clear-option="false"
                         :new-label="false"
