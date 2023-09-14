@@ -22,13 +22,17 @@
                         v-for="(slide, index) in slides?.thumbs"
                         :key="index"
                         class="swiper-slide"
+                        :class="{'active': index === activeIndex}"
                      >
-                        <div class="protocolVideoThumb" v-if="slides.types[index] == 'video' && isProtocolMedia"
-                             @click="changeSlide(index)"
+                        <div
+                           class="protocolVideoThumb"
+                           v-if="slides.types[index] == 'video' && isProtocolMedia"
+                           @click="changeSlide(index)"
                         />
+
                         <div
                            v-else
-                           :style="{ backgroundImage: `url('${slide}')` }"
+                           :style="{ backgroundImage: `url('${slide}&width=104')` }"
                            :class="{'protocolImageThumb': isProtocolMedia}"
                            @click="changeSlide(index)"
                         ></div>
@@ -74,6 +78,7 @@
                                     frameborder="0"
                                  ></iframe>
                               </div>
+
                               <div
                                  v-else-if="slides.types && slides.types[index] === 'video'"
                                  class="video"
@@ -82,18 +87,28 @@
                                     <source :src="slide"/>
                                  </video>
                               </div>
+
                               <div
                                  v-else-if="slides.types && slides.types[index] === 'custom'"
                                  class="position-relative"
-                                 style="width: 100%;overflow: hidden;"
+                                 style="width: 100%;overflow: hidden"
                               >
                                  <no-ssr>
-                                    <div v-if="announcement.media.interior_360" class="interior-switcher">
-                                       <form-switch v-model="showInterior" :options="interiorOptions"
-                                                    auto-width
-                                                    class="interior-exterior-switcher" style="width: fit-content;pointer-events: all;"/>
+                                    <div
+                                       v-if="announcement.media.interior_360"
+                                       class="interior-switcher"
+                                    >
+                                       <form-switch
+                                          v-model="showInterior"
+                                          :options="interiorOptions"
+                                          auto-width
+                                          class="interior-exterior-switcher"
+                                          style="width: fit-content; pointer-events: all"
+                                       />
                                     </div>
-                                    <interior360-viewer v-if="showInterior" :url="announcement.media.interior_360"/>
+
+                                    <interior360-viewer v-if="showInterior" :url="announcement.media.interior_360" />
+
                                     <vue-three-sixty
                                        v-else
                                        :amount="announcement?.media.images_360?.length"
@@ -106,6 +121,7 @@
                                     />
                                  </no-ssr>
                               </div>
+
                               <div
                                  class="position-relative"
                                  style="width: 100%;overflow: hidden;"
@@ -115,6 +131,7 @@
                                     <interior360-viewer :url="announcement?.media?.interior_360"/>
                                  </no-ssr>
                               </div>
+
                               <template v-else-if="isProtocolMedia">
                                  <img :src="`${slide}`" alt="car_img" class="swiper-lazy"/>
                                  <loader/>
@@ -278,6 +295,7 @@
                spaceBetween: 12,
                keyboard: {
                   enabled: true,
+                  onlyInViewport: true,
                   pageUpDown: true,
                },
                mousewheel: {
@@ -285,6 +303,7 @@
                }
             },
             showIframe: true,
+            activeIndex: 0
          }
       },
 
@@ -294,31 +313,31 @@
                this.imagesSwiper.slideTo(this.slides.main.length - 1)
             } else this.imagesSwiper.slidePrev()
 
+            this.activeIndex = this.imagesSwiper.activeIndex;
             this.updateTouchEvents()
          },
          slideNext() {
-            if (this.slides.main.length - 1 === this.imagesSwiper.activeIndex) {
-               this.imagesSwiper.slideTo(0)
-            } else this.imagesSwiper.slideNext()
+            if (this.slides.main.length - 1 === this.imagesSwiper.activeIndex) this.imagesSwiper.slideTo(0);
+            else this.imagesSwiper.slideNext();
 
+            this.activeIndex = this.imagesSwiper.activeIndex;
             this.updateTouchEvents()
          },
          thumbsPrev() {
             this.thumbsSwiper.slidePrev()
          },
          updateTouchEvents() {
-            if (this.imagesSwiper.activeIndex > 0) {
-               this.imagesSwiper.allowTouchMove = true
-            } else {
-               this.imagesSwiper.allowTouchMove = false
-            }
+            this.imagesSwiper.allowTouchMove = this.imagesSwiper.activeIndex > 0;
+            this.activeIndex = this.imagesSwiper.activeIndex;
          },
          thumbsNext() {
             this.thumbsSwiper.slideNext()
          },
          changeSlide(index) {
+            this.activeIndex = index;
             this.imagesSwiper.slideTo(index, 0)
          },
+
          handleEscapeKey(e) {
             if (e.key === 'Escape') {
                this.$emit('close')
@@ -359,10 +378,12 @@
       },
 
       mounted() {
+         console.log('ggggg')
          window.addEventListener('keydown', this.handleEscapeKey);
 
          this.$nextTick(() => {
-            this.imagesSwiper.thumbs.swiper = this.thumbsSwiper
+            this.imagesSwiper.thumbs.swiper = this.thumbsSwiper;
+            this.activeIndex = this.imagesSwiper.activeIndex;
             this.imagesSwiper.on('slideChange', () => {
                this.showIframe = false
                this.$refs.video?.[0]?.pause()
@@ -405,7 +426,7 @@
       },
 
       beforeDestroy() {
-         window.removeEventListener('keydown', this.handleEscapeKey)
+         window.removeEventListener('keydown', this.handleEscapeKey);
       }
    }
 </script>

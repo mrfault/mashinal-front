@@ -68,10 +68,9 @@
             <!--        <span class="sr-only">{{ getAnnouncementTitle(announcement) }}</span>-->
          </a>
 
-         <!--         +'&width=308'-->
          <div
             v-if="!showGallery"
-            v-lazy:background-image="getImage +'&width=256'"
+            v-lazy:background-image="getImage.startsWith('/img/') ? getImage : getImage+'&width=256'"
             :aria-label="getAnnouncementTitle(announcement)"
             class="item-bg"
             role="img"
@@ -165,7 +164,13 @@
 
          <div class="item-details">
             <div class="item-details__item d-flex align-items-center justify-content-between">
-               <h3>{{ +announcement.price.split(' ')[0] ? announcement.price : $t('negotiable') }}</h3>
+               <h3>
+                  <template v-if="announcement.id">
+                     {{ +announcement.price.split(' ')[0] ? announcement.price : $t('negotiable') }}
+                  </template>
+
+                  <template v-else>{{ announcement.price }}</template>
+               </h3>
 
                <div v-if="announcement.tradeable || announcement.credit" class="item-details__icons">
                   <inline-svg
@@ -345,6 +350,7 @@ export default {
 
       getImage() {
          let item = this.announcement;
+
          return this.$withBaseUrl(item.image);
 
          // if (item.has_360 == false || !item.has_360) {

@@ -790,6 +790,7 @@
             this.submitForm();
          }
       },
+
       mounted() {
          if (this.$route.query?.car_filter && JSON.parse(this.$route.query?.car_filter)?.all_options) {
             this.form.all_options = this.popularOptions?.filter((option) => Object.keys(JSON.parse(this.$route.query?.car_filter)?.all_options)?.includes(option.name))?.map((p) => ({

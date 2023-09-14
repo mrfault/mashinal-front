@@ -70,6 +70,7 @@
             <!-- /portal targets -->
             <comparison-badge :window-width="windowWidth" />
 <!--            <mobile-nav/>-->
+
             <mobile-nav-new/>
 
             <BrandsList v-if="brandsList.length" :options="brandsList" />
@@ -125,6 +126,7 @@
 
    export default {
       mixins: [LayoutMixin],
+
       components: {
          MobileNavNew,
          MobileMenuNew,
@@ -146,6 +148,7 @@
             checkEmitting: 0,
          }
       },
+
       async mounted() {
          if (this.$auth.loggedIn) {
             await Promise.all([
@@ -160,6 +163,7 @@
             this.$store.dispatch("getCommercialTypes")
          ]);
       },
+
       methods: {
          detectDevice() {
             const userAgent = window.navigator.userAgent;
@@ -178,6 +182,7 @@
             this.$store.commit('closeSmartBanner', false)
          },
       },
+
       computed: {
          ...mapState(['mapView', 'timestamp']),
          ...mapGetters({

@@ -141,25 +141,20 @@ Vue.use({
                    link = false;
 
                if (item?.is_auto_salon) {
-                  console.log('1')
-                  img = item?.user?.is_auto_salon?.logo;
+                  img = item?.user?.auto_salon?.logo;
                   link = this.$localePath(`/salons/${item?.user?.auto_salon?.slug}`);
-                  name = item?.user?.is_auto_salon?.name || item?.user?.full_name;
+                  name = item?.user?.auto_salon?.name || item?.user?.full_name;
                } else if (item?.is_external_salon) {
-                  console.log('2', item)
                   img = item?.user?.external_salon?.logo;
                   link = this.$localePath(`/external-salons/${item?.user?.external_salon?.slug}`);
                   name = item?.user?.external_salon?.name || item?.user?.full_name;
                } else if (item?.is_part_salon) {
-                  console.log('3')
                   img = item?.user?.part_salon?.logo;
                   link = this.$localePath(`/parts/shops/${item?.user?.part_salon?.slug}`);
                   name = item?.user?.part_salon?.name || item?.user?.full_name;
                } else if (item?.user?.active_announcements_count > 1) {
-                  console.log('4')
                   link = this.$localePath(`/user/${item?.user?.id}/announcements`);
                } else {
-                  console.log('5')
                   link = this.$localePath(`/user/${item?.user?.id}/announcements`);
                }
 
