@@ -1,5 +1,9 @@
-export default function ({app, store, error, $axios}) {
+export default function ({app, store, error, $axios, $cookies}) {
    $axios.onRequest(config => {
+      if ($cookies.get('btl') && $cookies.get('btl_token')) {
+         config.headers['btl'] = $cookies.get('btl');
+         config.headers['btl_token'] = $cookies.get('btl_token');
+      }
 
       config.headers['locale'] = app.i18n.locale;
       config.headers['breakpointm'] = ['xs', 'sm', 'md'].includes(store.getters.breakpoint);

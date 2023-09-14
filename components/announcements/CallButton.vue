@@ -56,6 +56,7 @@
 
       methods: {
          handleClick() {
+            console.log('this.phone', this.phone)
             // console.log(this.phone)
             if (this.callAtOnce) {
                window.location.href = `tel:+${this.phone}`;
