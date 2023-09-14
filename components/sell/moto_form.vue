@@ -89,6 +89,7 @@
                :clear-placeholder="true"
                :clear-option="false"
                :new-label="false"
+               has-search
                v-model="form.color"
                :invalid="$v.form.color.$error"
             />

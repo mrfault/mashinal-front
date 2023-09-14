@@ -8,11 +8,11 @@ export const MenusDataMixin = {
 
       searchMenus() {
          return [
-            {id: 1, title: 'cars', api_key: "getBrands", route: '/cars', icon: 'car-1'},
+            {id: 1, title: 'car', api_key: "getBrands", route: '/cars', icon: 'car-1'},
+            {id: 4, title: 'moto', api_key: "getMotoOptionsV2", route: '/moto', children: this.motoMenus, icon: 'moto-1'},
+            {id: 5, title: 'parts', api_key: "getPartCategories", route: '/parts', children: this.partsMenus, icon: 'parts'},
             {id: 2, title: 'registration_marks', api_key: "fetchRegionNumbers", route: '/plates', icon: '/icons/registration_marks.svg'},
             {id: 3, title: 'commercial', api_key: "getBrands", route: '/commercial', children: this.commercialMenus, icon: 'commercial-1'},
-            {id: 4, title: 'moto', api_key: "getMotoOptionsV2", route: '/moto', children: this.motoMenus, icon: 'moto-1'},
-            {id: 5, title: 'parts', api_key: "getPartCategories", route: '/parts', children: this.partsMenus, icon: 'parts'}
          ];
       },
 

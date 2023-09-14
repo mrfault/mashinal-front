@@ -1,12 +1,11 @@
 <template>
    <div class="pages-cars-index">
       <div class="container">
-         <div class="filters-container mb-5">
+         <div class="filters-container mb-3">
             <template v-if="isMobileBreakpoint && !advancedSearch">
-               <FiltersMobile :additional-brands="additionalBrands" @pending="pending = true" @openMore="openMore"
-                              @submit="submitOnMobile" :meta="{type: 'cars',
-            path: '/cars',
-            param: 'car_filter'}"/>
+               <FiltersMobile :sorting="sorting" :additional-brands="additionalBrands" @pending="pending = true"
+                              @openMore="openMore"
+                              @submit="submitOnMobile" :meta="{type: 'cars', path: '/cars', param: 'car_filter'}"/>
             </template>
 
             <template v-else>
@@ -35,7 +34,6 @@
                      v-model="searchType"
                   />
                </div>
-
                <car-search-form
                   @submit-filters-mobile="additionalBrands = $event"
                   v-if="searchType === 1"
@@ -193,7 +191,6 @@ export default {
             this.searchCars(1, true);
          }
       },
-
       // searchType() {
       //    this.announceType = 0;
       // }
@@ -261,7 +258,6 @@ export default {
 
    mounted() {
       this.searchType = 1;
-
       if (!Object.keys(this.$route.query).length) {
          this.$store.dispatch('fetchInfiniteMainMonetized', {type: 'cars'});
       }

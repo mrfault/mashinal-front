@@ -826,7 +826,6 @@
          async updateNotifications() {
             if (this.pending2) return
             this.pending2 = true
-            console.log("car search form notification")
             try {
                await this.updateSavedSearchNotificationsInterval({
                   id: this.selected,
