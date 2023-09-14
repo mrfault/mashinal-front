@@ -328,6 +328,25 @@
 }
 
 .inner-gallery {
+   .images-slider {
+      &__grid {
+         &.has-sidebar {
+            .images-slider__grid-item {
+               &:first-child {
+                  .swiper-slide {
+                     filter: blur(1px);
+                     transition: all .3s;
+
+                     &.active {
+                        filter: unset;
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+
    .swiper-slide {
       &-bg {
          width: 100%;
