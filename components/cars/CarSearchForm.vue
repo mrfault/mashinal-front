@@ -1055,9 +1055,10 @@
       }
 
       &.mini {
-         //.cars-search-form__gridMain {
-         //   grid-gap: 10px;
-         //}
+         .cars-search-form__gridMain,
+         .cars-search-form__gridFooter {
+            grid-gap: 12px;
+         }
 
          .form-group {
             height: 100%;
@@ -1099,7 +1100,7 @@
             }
          }
 
-         .checkboxes {
+         .checkboxes, .btns {
             .checkbox-input {
                input {
                   &:checked {
@@ -1174,6 +1175,16 @@
 
             &.hasValue {
                grid-template-columns: 230px 230px 290px 225px;
+            }
+         }
+
+         &.mini {
+            .cars-search-form__gridMain {
+               grid-template-columns: 235px 235px 245px 285px;
+            }
+
+            .cars-search-form__gridFooter {
+               grid-template-columns: 235px 235px 245px 285px;
             }
          }
       }

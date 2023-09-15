@@ -748,6 +748,33 @@
             input {
                height: 44px;
             }
+
+            .checkbox-input {
+               input {
+                  &:checked {
+                     & + {
+                        label {
+                           background-color: #155EEF;
+
+                           span {
+                              color: #FFFFFF;
+                           }
+                        }
+                     }
+                  }
+               }
+               label {
+                  height: 48px;
+
+                  //&:hover {
+                  //   background-color: #155EEF;
+                  //
+                  //   span {
+                  //      color: #FFFFFF;
+                  //   }
+                  //}
+               }
+            }
          }
 
          .form-merged {
@@ -762,6 +789,35 @@
                   &_dropdown {
                      top: 55px;
                   }
+               }
+            }
+         }
+
+         .checkboxes {
+            .checkbox-input {
+               input {
+                  &:checked {
+                     & + {
+                        label {
+                           background-color: #155EEF;
+
+                           span {
+                              color: #FFFFFF;
+                           }
+                        }
+                     }
+                  }
+               }
+               label {
+                  height: 48px;
+
+                  //&:hover {
+                  //   background-color: #155EEF;
+                  //
+                  //   span {
+                  //      color: #FFFFFF;
+                  //   }
+                  //}
                }
             }
          }
