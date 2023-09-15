@@ -159,8 +159,7 @@ export const SearchMixin = {
       },
 
       async submitForm(scroll = true) {
-         console.log('Marat', scroll);
-         this.$emit('submit-filters-mobile', this.form.additional_brands)
+         this.$emit('submit-filters-mobile', this.form?.additional_brands)
          this.beforeSubmitForm();
 
          try {
@@ -213,6 +212,7 @@ export const SearchMixin = {
 
       resetForm(submit = false) {
          this.setFormData({});
+         this.$nuxt.$emit("resetSubmit")
          if (submit) this.submitForm(false);
       },
 
