@@ -2,12 +2,12 @@
    position: sticky;
    z-index: 20;
    top: 0;
-   margin-bottom: 76px;
+   margin-bottom: 34px;
 
    .topbar {
       display: flex;
       align-items: center;
-      height: 96px;
+      height: 70px;
       //padding: 20px;
       background-color: $dark-blue-1;
       // border-bottom: 1px solid $greyish-blue-1;
@@ -234,13 +234,17 @@
    .navbar {
       display: flex;
       align-items: center;
-      height: 77px;
+      height: 60px;
       background-color: $white;
       border-bottom: 1px solid #CDD5DF;
       //border-radius: 0 0 20px 20px;
 
       .iconNovelties {
          margin-left: 4px;
+      }
+
+      .btn {
+         height: 40px;
       }
 
       //& > .container {
@@ -263,9 +267,9 @@
                display: inline-flex;
                align-items: center;
                color: #121926;
-               font-size: 16px;
+               font-size: 15px;
                line-height: 20px;
-               font-weight: 500;
+               font-weight: 400;
 
                &.active,
                &:hover {
@@ -274,7 +278,7 @@
             }
 
             & > a {
-               line-height: 52px;
+               line-height: 45px;
                white-space: nowrap;
                //padding: 0 25px;
             }

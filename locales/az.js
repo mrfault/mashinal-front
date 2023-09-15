@@ -411,6 +411,7 @@ export default {
    cant_delete_selected_announcements: "Seçilmiş elanlar deaktiv edilməlidir",
    capacity: "Mühərrik həcmi",
    capacity_from: "Motor min.",
+   capacity_from_2: "Həcm min.",
    capacity_from_l: "Mühərrik həcmi min., l",
    capacity_from_sm3: "Mühərrik həcmi min., sm³",
    plate_added: "Qeydiyyat nişanı əlavə edildi",

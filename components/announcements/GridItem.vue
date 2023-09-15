@@ -78,39 +78,41 @@
             <div v-if="showOverlay" class="item-overlay">
                <div class="item-overlay__top">
                   <div class="item-overlay__top--left">
-                     <div
-                        v-if="(announcement.is_auto_salon || announcement.is_external_salon || announcement.is_part_salon) && !isProfilePage"
-                        class="item-overlay__top--left_item"
-                     >
-                        <template v-if="announcement.is_auto_salon">{{ $t('salon') }}</template>
-                        <template v-if="announcement.is_part_salon">{{ $t('shop') }}</template>
-                        <template v-else-if="announcement.is_external_salon">{{ $t('external_salon') }}</template>
-                     </div>
+                     <template v-if="!isComparisonPage">
+                        <div
+                           v-if="(announcement.is_auto_salon || announcement.is_external_salon || announcement.is_part_salon) && !isProfilePage"
+                           class="item-overlay__top--left_item"
+                        >
+                           <template v-if="announcement.is_auto_salon">{{ $t('salon') }}</template>
+                           <template v-if="announcement.is_part_salon">{{ $t('shop') }}</template>
+                           <template v-else-if="announcement.is_external_salon">{{ $t('external_salon') }}</template>
+                        </div>
 
-                     <div
-                        v-if="isProfilePage"
-                        :class="{
+                        <div
+                           v-if="isProfilePage"
+                           :class="{
                            'activeStatus': announcement.status == 1,
                            'deactiveStatus': announcement.status == 3,
                            'consideration': announcement.status == 2,
                            'rejectedStatus': announcement.status == 0,
                         }"
-                        class="item-overlay__top--left_item"
-                     >
-                        <template v-if="isProfilePage && announcement.status == 0">
-                           {{ $t('rejected_many') }}
-                        </template>
-                        <template v-else-if="isProfilePage && announcement.status == 1">{{ $t('active') }}</template>
-                        <template v-else-if="isProfilePage && announcement.status == 2">
-                           {{ $t('under_consideration') }}
-                        </template>
-                        <template v-else-if="isProfilePage && announcement.status == 3">
-                           {{ $t('sold') }}
-                        </template>
-                        <template v-else-if="isProfilePage && announcement.status == 4">
-                           {{ $t('timed_out') }}
-                        </template>
-                     </div>
+                           class="item-overlay__top--left_item"
+                        >
+                           <template v-if="isProfilePage && announcement.status == 0">
+                              {{ $t('rejected_many') }}
+                           </template>
+                           <template v-else-if="isProfilePage && announcement.status == 1">{{ $t('active') }}</template>
+                           <template v-else-if="isProfilePage && announcement.status == 2">
+                              {{ $t('under_consideration') }}
+                           </template>
+                           <template v-else-if="isProfilePage && announcement.status == 3">
+                              {{ $t('sold') }}
+                           </template>
+                           <template v-else-if="isProfilePage && announcement.status == 4">
+                              {{ $t('timed_out') }}
+                           </template>
+                        </div>
+                     </template>
                   </div>
 
                   <div
@@ -118,28 +120,34 @@
                      class="item-overlay__top--right"
                   >
                      <add-favorite
-                        v-if="!isProfilePage && hideFavoriteBtn"
+                        v-if="!isProfilePage && !isComparisonPage && hideFavoriteBtn"
                         :announcement="announcement"
                      />
-                     <!--                     <pre>{{announcement}}</pre>-->
+
+                     <div class="comparisonDelete" v-if="isComparisonPage">
+                        <inline-svg
+                           src="/icons/close.svg"
+                           @click="$emit('removeItem', announcement.id_unique)"
+                        />
+                     </div>
                   </div>
                </div>
 
-               <div class="item-overlay__bottom">
+               <div class="item-overlay__bottom" v-if="!isComparisonPage">
                   <div class="item-overlay__bottom--left">
                      <inline-svg
                         v-if="announcement.has_monetization"
                         src="/icons/promote.svg"
                      />
 
-                     <div
-                        v-if="isComparisonPage"
-                        class="comparisonDelete"
-                        @click="$emit('removeItem', announcement.id_unique)"
-                     >
-                        <span>{{ $t('delete') }}</span>
-                        <inline-svg src="/icons/trash.svg"/>
-                     </div>
+<!--                     <div-->
+<!--                        v-if="isComparisonPage"-->
+<!--                        class="comparisonDelete"-->
+<!--                        @click="$emit('removeItem', announcement.id_unique)"-->
+<!--                     >-->
+<!--                        <span>{{ $t('delete') }}</span>-->
+<!--                        <inline-svg src="/icons/trash.svg"/>-->
+<!--                     </div>-->
                   </div>
 
                   <div class="item-overlay__bottom--right">
