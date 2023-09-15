@@ -512,7 +512,7 @@ export default {
          this.form.model = "";
          this.clearFields(['brand', 'model', 'year'])
          if (value) {
-            await this.getMotoBrandsV2({value, whereHas: 1});
+            await this.getMotoBrandsV2({value, whereHas: 0});
          }
       },
       async onChangeMotoBrand(val) {
@@ -520,7 +520,7 @@ export default {
          const value = this.form.type_of_moto.value;
          !this.isEdit && (this.announcement.brand = this.form.brand.name || this.$t('mark'))
          if (this.form.brand.name) {
-            await this.getMotoModelsV2({value, id: val.id, whereHas: 1});
+            await this.getMotoModelsV2({value, id: val.id, whereHas: 0});
          }
       },
       onChangeMotoModel() {
