@@ -237,7 +237,10 @@
             let params = new URLSearchParams(this.$route.query?.filters);
 
             this.$route.query?.filters?.slice(1).split('&').forEach(query => {
-               if (query.split('=')[0] === 'page') this.page = +query.split('=')[1];
+               if (query.split('=')[0] === 'page') {
+                  this.page = +query.split('=')[1];
+                  console.log('222222222', +query.split('=')[1])
+               }
 
                for (const item in this.form) {
                   if (query.split('=')[0] === item) {
@@ -290,7 +293,9 @@
                   if (key !== 'sorting') {
                      query.append(key, value);
                   } else {
-                     query.append('sort_by', value.key);
+                     if (value.key === 'price_desc' || value.key === 'price_asc') query.append('sort_by', 'price');
+                     else query.append('sort_by', value.key);
+
                      query.append('sort_order', value.value);
                   }
                }
@@ -317,11 +322,9 @@
                         this.form.serial_number = this.form.serial_number.split('-')[0].replace(/\s/g, "");
                         query.append('serial_number', value);
                      } else if (key === 'sorting') {
-                        if (value.key === 'price_desc' || value.key === 'price_asc') {
-                           query.append('sort_by', 'price');
-                        } else {
-                           query.append('sort_by', value.key);
-                        }
+                        if (value.key === 'price_desc' || value.key === 'price_asc') query.append('sort_by', 'price');
+                        else query.append('sort_by', value.key);
+
                         query.append('sort_order', value.value);
                      } else {
                         query.append(key, value);
@@ -330,15 +333,15 @@
                }
 
                this.$router.push({
-                  query: { filters: `?page=1&${query.toString()}` }
+                  query: { filters: `?page=${this.page}&${query.toString()}` }
                })
 
                clearTimeout(this.timeout);
                this.timeout = setTimeout(() => {
-                  this.$store.dispatch('fetchRegistrationMarks', `?page=1&${query.toString()}`);
+                  this.$store.dispatch('fetchRegistrationMarks', `?page=${this.page}&${query.toString()}`);
                }, 300);
 
-               this.page = 1;
+               // this.page = 1;
             }
          },
       },
@@ -599,14 +602,20 @@
          }
 
          &__filters {
+            justify-content: unset;
+            padding: 0 10px;
             height: 68px;
 
             &-item {
+               justify-content: unset;
+               width: 100%;
                gap: 8px;
                padding: 0;
 
                .form-group {
-                  width: 57px;
+                  width: 100%;
+                  min-width: 50px;
+                  max-width: 70px;
 
                   .select-menu {
                      &_label {
@@ -615,7 +624,9 @@
                   }
 
                   &:first-of-type {
-                     width: 100px;
+                     width: 100%;
+                     min-width: 90px;
+                     max-width: 240px;
                   }
                }
             }
@@ -635,6 +646,14 @@
             .registrationMarksGrid {
                margin-top: 30px;
             }
+         }
+      }
+   }
+
+   @media (max-width: 425px) {
+      .registrationMarks {
+         &__filters {
+            padding: 0 5px;
          }
       }
    }
