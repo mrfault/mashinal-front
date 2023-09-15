@@ -617,8 +617,11 @@ export default {
 }
 
 .vue_component__upload--image .upload_image_form__thumbnails {
-  margin-left: 27px;
-  margin-bottom: 1em;
+  //margin-left: 27px;
+  //margin-bottom: 1em;
+   display: grid;
+   grid-template-columns: repeat(3, 1fr);
+   gap: 16px;
 }
 
 
@@ -793,4 +796,16 @@ export default {
     object-fit: cover;
   }
 }
+
+@media (max-width: 1150px) {
+   .vue_component__upload--image .upload_image_form__thumbnails {
+      grid-template-columns: repeat(2, 1fr);
+   }
+}
+@media (max-width: 992px) {
+   .vue_component__upload--image .upload_image_form__thumbnails {
+      grid-template-columns: 1fr
+   }
+}
+
 </style>
