@@ -1060,9 +1060,11 @@
          //}
 
          .form-group {
-            height: max-content;
+            height: 100%;
 
             .select-menu {
+               height: 100%;
+
                &_label {
                   height: 48px;
                }

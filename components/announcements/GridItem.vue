@@ -124,7 +124,7 @@
                         :announcement="announcement"
                      />
 
-                     <div class="comparisonDelete">
+                     <div class="comparisonDelete" v-if="isComparisonPage">
                         <inline-svg
                            src="/icons/close.svg"
                            @click="$emit('removeItem', announcement.id_unique)"
