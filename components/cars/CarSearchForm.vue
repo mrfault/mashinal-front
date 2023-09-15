@@ -1093,7 +1093,7 @@
                   }
 
                   &_dropdown {
-                     top: 45px;
+                     top: 55px;
                   }
                }
             }
