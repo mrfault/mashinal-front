@@ -175,6 +175,7 @@ export default {
          announceType: 0,
          searchType: 1,
          sorting: {key: 'created_at', value: 'desc', name: this.$t('show_by_date')},
+         resetSubmit: false,
          sortItems: [
             {key: 'created_at', value: 'desc', name: this.$t('show_by_date')},
             {key: 'price_asc', value: 'asc', name: this.$t('show_cheap_first')},
@@ -277,6 +278,7 @@ export default {
          this.additionalBrands[0] = filters.additional_brands[0];
       }
       this.$nuxt.$on("submitSearchMixin", this.submitOnMobile)
+      this.$nuxt.$on("resetSubmit", () => this.resetSubmit = true)
    },
 
    methods: {
@@ -311,7 +313,8 @@ export default {
             // await this.$store.dispatch('fetchMonetizedCarsSearch', post);
             // await this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'cars', data: post });
             this.pending = false;
-            this.scrollTo('.breadcrumbs', [20, -120]);
+            !this.resetSubmit && this.scrollTo('.breadcrumbs', [20, -120]);
+            this.resetSubmit = false
          }
       }
    },

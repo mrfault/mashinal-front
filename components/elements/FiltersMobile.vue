@@ -216,7 +216,6 @@ export default {
    },
    data() {
       return {
-
          brand: null,
          model: null,
          generation: null,
@@ -284,7 +283,6 @@ export default {
    },
    watch: {
       sorting(val) {
-         console.log("this.motoType", this.motoType)
          this.form.sort_by = val.key.split('_')[0];
          this.form.sort_order = val.value;
          this.form.moto_type = this.motoTypeIds[this.motoType]
