@@ -33,7 +33,7 @@
          font-weight: 400;
          line-height: 24px;
          color: #202939;
-         white-space: pre;
+         white-space: pre-wrap;
       }
    }
 
