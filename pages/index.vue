@@ -75,7 +75,7 @@
             :pending="pending"
          >
             <template #cap>
-               <Cap :className="'mb40'">
+               <Cap :className="'mb20'">
                   <template #left>
                      <h3>{{ $t('featured_ads') }}</h3>
                   </template>
@@ -98,7 +98,7 @@
             :pending="pending"
          >
             <template #cap>
-               <Cap :className="'mb40'">
+               <Cap :className="'mb20'">
                   <template #left>
                      <h3>{{ $t('recent_uploads') }}</h3>
                   </template>
@@ -146,7 +146,7 @@
             :showBanner="true"
          >
             <template #cap>
-               <Cap :className="'mb40'">
+               <Cap :className="'mb20'">
                   <template #left>
                      <h3>{{ $t('external_salon') }}</h3>
                   </template>
@@ -170,7 +170,7 @@
             :pending="pending"
          >
             <template #cap>
-               <Cap :className="'mb40'">
+               <Cap :className="'mb20'">
                   <template #left>
                      <h3>{{ $t('parts') }}</h3>
                   </template>
@@ -537,6 +537,10 @@
 <style lang="scss">
    .pages-index {
       padding-top: 32px;
+
+      .announcements-grid {
+         margin: 30px 0;
+      }
    }
 
    .filters-container {

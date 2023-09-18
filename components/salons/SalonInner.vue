@@ -268,6 +268,10 @@
       async fetch() {
          // await this.$store.dispatch('getSalonById', {slug: this.$route.params.id});
          await this.$store.dispatch('getAutoSalonOtherAnnouncements', {id: this.$store?.getters?.salonSingle?.id});
+      },
+
+      beforeDestroy() {
+         this.$store.commit("mutate", {property: "shopAnnouncements", value: []});
       }
    }
 </script>
