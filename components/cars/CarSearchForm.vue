@@ -1184,7 +1184,7 @@
             }
 
             .cars-search-form__gridFooter {
-               grid-template-columns: 235px 235px 245px 285px;
+               grid-template-columns: 235px 235px 285px 245px;
             }
          }
       }

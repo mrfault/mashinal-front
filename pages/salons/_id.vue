@@ -49,7 +49,7 @@
       },
 
       computed: {
-         ...mapGetters(['salonSingle', 'autosalonAnnouncementsId', 'shopAnnouncements']),
+         ...mapGetters(['salonSingle', 'shopAnnouncements']),
 
          crumbs() {
             return [

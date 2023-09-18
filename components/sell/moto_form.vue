@@ -45,6 +45,7 @@
             :clear-placeholder="true"
             :clear-option="false"
             :new-label="false"
+            :has-search="true"
             v-model="form.year"
             :invalid="$v.form.year.$error"
             @change="preview.year = ($event || '0000')"

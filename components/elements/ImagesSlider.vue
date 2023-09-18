@@ -289,6 +289,10 @@
                },
             },
             thumbOps: {
+               watchSlidesVisibility: true,
+               watchSlidesProgress: true,
+               // autoScrollOffset: 5,
+               freeMode: true,
                initialSlide: this.currentSlide,
                direction: 'vertical',
                slidesPerView: 'auto',
