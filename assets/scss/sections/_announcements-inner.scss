@@ -898,11 +898,11 @@
    }
 
    .swiper-wrapper {
-      max-height: 800px !important;
+      max-height: 815px !important;
    }
 
    .swiper-slide {
-      max-height: 800px;
+      max-height: 815px;
       height: 100vh;
       border-radius: 12px;
       overflow: hidden;
@@ -1145,7 +1145,7 @@
       //margin-top: 40px;
 
       .swiper-slide {
-         height: 700px;
+         height: 725px;
       }
 
       &__container {
@@ -1158,7 +1158,7 @@
       }
 
       .swiper-wrapper {
-         max-height: 700px !important;
+         max-height: 725px !important;
       }
    }
 }

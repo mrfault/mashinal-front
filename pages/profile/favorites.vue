@@ -3,7 +3,7 @@
       <div class="container">
          <breadcrumbs :crumbs="crumbs" />
 
-         <h2 class="pages-favorites__title">{{ this.$t('favorites_ads') }}</h2>
+         <h2 class="pages-favorites__title">{{ $t('favorites_ads') }}</h2>
 
          <div class="tabsWrapper">
             <ul class="tabs">
@@ -12,14 +12,12 @@
                   v-for="tab in tabs"
                   :key="tab.id"
                   @click="activeTab = tab.id"
-               >{{ tab.name }}</li>
+               >{{ tab.name }} ({{ tab.count || 0 }})</li>
             </ul>
          </div>
 
          <div class="tabContent">
             <div class="tabContent__item" v-if="activeTab === 1">
-               <!--         :title="$t('favorites')"-->
-               <!--         :show-title="isMobileBreakpoint"-->
                <grid
                   v-if="favoriteAnnouncements.data.length"
                   :announcements="favoriteAnnouncements.data"
@@ -41,8 +39,6 @@
             </div>
 
             <div class="tabContent__item" v-if="activeTab === 2">
-               <!--         :title="$t('favorites')"-->
-               <!--         :show-title="isMobileBreakpoint"-->
                <grid
                   v-if="getMySavedParts?.data?.length"
                   :announcements="getMySavedParts?.data"
@@ -65,7 +61,7 @@
 
             <div class="tabContent__item" v-if="activeTab === 3">
                <PlatesGrid
-                  :items="getMySavedPlates.data"
+                  :items="getMySavedPlates?.data"
                   :showFavoriteBtn="true"
                   :escapeDuplicates="true"
                >
@@ -76,7 +72,6 @@
                   :page-count="getMySavedPlates?.meta?.last_page"
                   @change-page="changePageMarks"
                />
-<!--               :value="page"-->
 
                <no-results
                   :text="$t('no_favorites')"
@@ -202,9 +197,9 @@
 
          tabs() {
             return [
-               { id: 1, name: this.$t('vehicles') },
-               { id: 2, name: this.$t('menu_spare_parts') },
-               { id: 3, name: this.$t('registration_badges_2') }
+               { id: 1, name: this.$t('vehicles'), count: this.favoriteAnnouncements?.data?.length },
+               { id: 2, name: this.$t('menu_spare_parts'), count: this.getMySavedParts?.data?.length },
+               { id: 3, name: this.$t('registration_badges_2'), count: this.getMySavedPlates?.data?.length }
             ]
          }
       },

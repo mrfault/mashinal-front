@@ -23,7 +23,9 @@
                         :key="index"
                         class="swiper-slide"
                         :class="{'active': index === activeIndex}"
+
                      >
+<!--                        @mouseenter="imagesSwiper.slideTo(index)"-->
                         <div
                            class="protocolVideoThumb"
                            v-if="slides.types[index] == 'video' && isProtocolMedia"
@@ -289,8 +291,8 @@
                },
             },
             thumbOps: {
-               watchSlidesVisibility: true,
-               watchSlidesProgress: true,
+               // watchSlidesVisibility: true,
+               // watchSlidesProgress: true,
                // autoScrollOffset: 5,
                freeMode: true,
                initialSlide: this.currentSlide,
@@ -393,6 +395,7 @@
                this.$nextTick(() => {
                   this.showIframe = true
                   this.$emit('slide-change', this.imagesSwiper.realIndex)
+                  this.thumbsSwiper.slideTo(this.imagesSwiper.activeIndex)
                   this.updateTouchEvents()
                })
             })
