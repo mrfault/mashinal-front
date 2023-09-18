@@ -1,4 +1,4 @@
-import { mapGetters, mapActions } from 'vuex';
+import {mapGetters, mapActions} from 'vuex';
 import {all} from "core-js/internals/document-all";
 
 export const SearchMixin = {
@@ -12,7 +12,6 @@ export const SearchMixin = {
       ...mapActions(['fetchSavedSearch', 'createSavedSearch', 'deleteSavedSearch', 'getNotViewedSavedSearch']),
 
       getFormData() {
-         // console.log('this.form', this.form)
          let requiredKeys = [];
          if (this.meta?.type === 'cars') requiredKeys.push('all_options');
          let form = {};
@@ -44,20 +43,20 @@ export const SearchMixin = {
 
             if (form?.box) {
                form.box = form?.box?.map(item => {
-                  return { key: item }
+                  return {key: item}
                });
             }
 
             if (form?.fuel_type) {
                form.fuel_type = form?.fuel_type?.map(item => {
-                  return { key: item }
+                  return {key: item}
                });
             }
 
 
             if (this.form?.drive && form?.gearing) {
                form.gearing = form?.gearing?.map(item => {
-                  return { key: item }
+                  return {key: item}
                });
             }
          } catch (e) {
@@ -111,8 +110,8 @@ export const SearchMixin = {
             ['min_year', 'max_year', 'price_from', 'price_to', 'region', 'min_capacity',
                'max_capacity', 'mileage_from', 'mileage_to', 'damage', 'customs']
                .map(key => {
-               this.$set(this.form, key, '');
-            });
+                  this.$set(this.form, key, '');
+               });
 
             ['body', 'korobka', 'engine_type', 'gearing', 'n_of_seats', 'colors']
                .map(key => {
@@ -159,21 +158,28 @@ export const SearchMixin = {
       },
 
       async submitForm(scroll = true) {
-         this.$emit('submit-filters-mobile', this.form?.additional_brands)
+         this.form && this.$emit('submit-filters-mobile', this.form.additional_brands)
          this.beforeSubmitForm();
 
          try {
             // tracking
             this.fbTrack('Search Api');
             this.gtagTrack('AW-600951956/Qeu4CILAyPIBEJSZx54C');
-         } catch (e) {}
+         } catch (e) {
+         }
 
          // update route query params and search announcements
          let searchQuery = `${this.meta?.param}=${encodeURI(JSON.stringify(this.getFormData()))}`;
          let searchUrl = `${this.$localePath(this.meta?.path)}?${searchQuery}`;
          let searchSame = decodeURIComponent(searchUrl) === decodeURIComponent(this.$route.fullPath);
          this.$emit('pending');
-
+         console.log("this.meta", searchQuery)
+         // console.log("this.meta2", searchUrl)
+         // if(!Object.keys(this.getFormData()).length)   {
+         //    this.$router.replace(this.$localePath(this.meta.path))
+         //    this.$nuxt.refresh();
+         //    return
+         // }
          if (searchSame) {
             this.$emit('submit');
          } else {
@@ -211,9 +217,9 @@ export const SearchMixin = {
       },
 
       resetForm(submit = false) {
-         this.setFormData({});
-         this.$nuxt.$emit("resetSubmit")
-         if (submit) this.submitForm(false);
+            this.setFormData({});
+            this.$nuxt.$emit("resetSubmit")
+            if (submit) this.submitForm(false);
       },
 
       getOptionValue(name, key) {
@@ -373,8 +379,8 @@ export const SearchMixin = {
 
       getSearchTabs() {
          return [
-            { name: this.$t('auto'), key: 1 },
-            { name: this.$t('category_moto'), key: 2 }
+            {name: this.$t('auto'), key: 1},
+            {name: this.$t('category_moto'), key: 2}
          ];
       },
 
@@ -418,9 +424,9 @@ export const SearchMixin = {
 
    // watch: {
    //    '$route.query'(query) {
-         // if (this.routeName === 'index') return;
-         // if (!Object.keys(query || {}).length) this.resetForm(true);
-      // }
+   // if (this.routeName === 'index') return;
+   // if (!Object.keys(query || {}).length) this.resetForm(true);
+   // }
    // },
 
    created() {
