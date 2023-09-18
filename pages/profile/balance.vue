@@ -17,18 +17,10 @@
                </div>
             </div>
             <div class="row pt-lg-0 pt-2">
-               <!--<div class="col-md-5 col-xs-12 p-0 p-1">
-                  <div class="card card-gray d-flex justify-content-start align-items-center">
-                     <div class="icon-cashier">
-                        <img src="/img/cashier.png" alt="">
-                     </div>
-                     <div class="balance-info">
-                        <h2>{{ $readNumber(totalBalance) }} ALManat</h2>
-                        <p>{{ $t('wallet_balance') }}</p>
-                     </div>
-                  </div>
-               </div>-->
                <div class="col-md-12 col-xs-12 p-0 p-1">
+<!--                  <div class="card p-5" v-if="loader">-->
+<!--                     <loader class="p-5" />-->
+<!--                  </div>-->
                   <client-only>
                      <div class="swiper-container" v-swiper:balanceSwiper="swiperOps">
                         <div class="swiper-wrapper">
@@ -259,6 +251,7 @@ export default {
    },
    data() {
       return {
+         loader: true,
          openModal: false,
          activeFilter: 0,
          refreshInfinity: 0,
@@ -408,17 +401,16 @@ export default {
    },
    mounted() {
 
-      // console.log(this.user)
-
       let intervalSwipper = setInterval(() => {
          if (this.balanceSwiper?.destroyed) {
-             clearInterval(intervalSwipper);
+            clearInterval(intervalSwipper);
          } else {
             if(this.balanceSwiper?.init()) {
                clearInterval(intervalSwipper);
             }
          }
       }, 1000);
+
 
       this.$nextTick(() => {
          if (this.$route.query.scrollto) {
