@@ -79,6 +79,9 @@
                return this.$store.getters['comparison/filter'].showDifferences
             },
             set(val) {
+               if (val) this.$cookies.set('showDifferences', true);
+               else this.$cookies.remove('showDifferences');
+
                this.$store.commit('comparison/mutate', {
                   property: 'filter',
                   key: 'showDifferences',
@@ -92,6 +95,9 @@
                return this.$store.getters['comparison/filter'].hideEmptyCells
             },
             set(val) {
+               if (val) this.$cookies.set('hideEmptyCells', true);
+               else this.$cookies.remove('hideEmptyCells');
+
                this.$store.commit('comparison/mutate', {
                   property: 'filter',
                   key: 'hideEmptyCells',
@@ -108,6 +114,11 @@
                value: true
             })
          }
+      },
+
+      mounted() {
+         this.showDifferences = !!this.$cookies.get('showDifferences');
+         this.hideEmptyCells = !!this.$cookies.get('hideEmptyCells');
       }
    }
 </script>
