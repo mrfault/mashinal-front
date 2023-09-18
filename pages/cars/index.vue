@@ -170,6 +170,7 @@ export default {
 
    data() {
       return {
+         meta: {type: 'cars', path: '/cars', param: 'car_filter'},
          additionalBrands: {0: {}},
          advancedSearch: false,
          announceType: 0,
