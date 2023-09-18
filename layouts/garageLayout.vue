@@ -5,7 +5,7 @@
             <portal-target name="breadcrumbs"/>
             <div class="ma-garage">
                <div class="ma-garage__nav">
-                  <NuxtLink :to="$localePath('garage-services')" class="ma-garage__nav--profile" >
+                  <NuxtLink :to="$localePath('garage-services')" class="ma-garage__nav--profile">
                      <div class="ma-garage__nav--profile__avatar">
                         <template v-if="image">
                            <img :src="image" :alt="user?.full_name"/>
@@ -14,15 +14,14 @@
                      </div>
                      <h5 class="ma-garage__nav--profile__name"> {{ user?.full_name }}</h5>
                   </NuxtLink>
-                  <template v-for="(item, index) in garageNavs">
+                  <template v-for="item in garageNavs">
                      <nuxt-link
                         v-if="!item.isButton"
                         :class="{'ma-garage-link-active': isRouteActive(item.link) }"
                         :to="$localePath(item.link)"
                         :active-class="''"
                         :exact-active-clas="'active'"
-                        class="ma-garage__nav--item"
-                     >
+                        class="ma-garage__nav--item">
                         <inline-svg :src="`/new-icons/${item.icon}-new.svg`"/>
                         <h6 class="ma-garage__nav--item__title">{{ item.title }}</h6>
                      </nuxt-link>
@@ -59,7 +58,6 @@
                         </div>
                         <template v-for="(item) in garageNavs">
                            <nuxt-link v-if="!item.isButton" :to="item.link" class="ma-garage__nav--item">
-                              <!--<icon :name="item.icon"/>-->
                               <inline-svg :src="`/new-icons/${item.icon}-new.svg`"/>
                               <h6 class="ma-garage__nav--item__title">{{ item.title }}</h6>
                            </nuxt-link>
@@ -89,7 +87,7 @@ export default {
    name: 'garage',
    middleware: ['main'],
    mixins: [MenusDataMixin, UserDataMixin],
-   mounted(){
+   mounted() {
       if (this.loggedIn) {
          this.$axios.$get('/new-notifications-count')
       }
@@ -101,7 +99,7 @@ export default {
       image() {
          if (this.user?.autosalon) {
             return (this.user?.autosalon?.logo.includes('http') ? '' : 'https://mashin.al/storage/') + this.user?.autosalon?.logo;
-         } else if (this.user?.avatar){
+         } else if (this.user?.avatar) {
             return (this.user?.avatar?.includes('http') ? '' : 'https://mashin.al/storage/') + this.user?.avatar;
          } else {
             return false;
@@ -120,11 +118,6 @@ export default {
                   icon: 'layers',
                   link: '/profile/announcements?type=1',
                },
-               // {
-               //    icon: 'invoice',
-               //    title: this.$t('penalties'),
-               //    link: '/garage',
-               // },
                {
                   title: this.$t('my_balance'),
                   icon: 'wallet',
@@ -153,7 +146,7 @@ export default {
                },
             ];
          } else {
-            let data =  [
+            let data = [
                {
                   title: this.$t('my_announces'),
                   icon: 'layers',
@@ -201,11 +194,7 @@ export default {
    },
    methods: {
       isRouteActive(link) {
-         if (this.$route.path === this.$localePath(link)) {
-            return true
-         } else {
-            return false
-         }
+         return this.$route.path === this.$localePath(link);
       },
    }
 
@@ -213,37 +202,45 @@ export default {
 </script>
 
 <style lang="scss">
-.max-container{
-   background-color: #fff!important;
+.max-container {
+   background-color: #fff !important;
    min-height: 900px;
 }
-.breadcrumbs_main{
+
+.breadcrumbs_main {
    background-color: #EEF2F6;
 }
-.ma-garage__nav--profile{
+
+.ma-garage__nav--profile {
    margin-bottom: 30px;
 }
-.ma-garage__nav--profile__avatar img{
+
+.ma-garage__nav--profile__avatar img {
    height: 36px;
    width: 36px;
    object-fit: contain;
    border-radius: 50%;
 }
-.ma-garage__nav--profile__name{
-   width: auto!important;
+
+.ma-garage__nav--profile__name {
+   width: auto !important;
 }
-.dark-mode{
-   .breadcrumbs_main{
+
+.dark-mode {
+   .breadcrumbs_main {
       background-color: #121926;
    }
-   .max-container{
-      background-color: #121926!important;
+
+   .max-container {
+      background-color: #121926 !important;
    }
-   .ma-garage__nav--item__title{
-      color: #9AA4B2!important;
+
+   .ma-garage__nav--item__title {
+      color: #9AA4B2 !important;
    }
-   .ma-garage__nav--profile__name{
-      color: #fff!important;
+
+   .ma-garage__nav--profile__name {
+      color: #fff !important;
    }
 }
 </style>
@@ -254,18 +251,21 @@ export default {
       background: #121926 !important;
    }
 
-   .ma-announcements{
-      .no-results{
+   .ma-announcements {
+      .no-results {
          background: #1b2434 !important;
       }
-      .stratch-child-block{
+
+      .stratch-child-block {
          height: 100%;
       }
    }
-   .ma-announcements__head{
+
+   .ma-announcements__head {
       width: auto;
       background: #1B2434;
       overflow-y: auto !important;
+
       &::-webkit-scrollbar {
          width: 3px;
          height: 7px;
@@ -285,25 +285,27 @@ export default {
       &::-webkit-scrollbar-thumb:hover {
          background: #555;
       }
-      button{
+
+      button {
          color: #fff;
       }
    }
 
    .ma-garage {
       &__nav {
-         &--profile{
-            h5{
+         &--profile {
+            h5 {
                color: #fff;
             }
          }
+
          &--item {
-            h6,h5 {
+            h6, h5 {
                color: #fff;
             }
 
             svg {
-               path,ellipse,circle {
+               path, ellipse, circle {
 
                   stroke: #fff;
                }
@@ -311,9 +313,10 @@ export default {
          }
       }
 
-      .ma-garage__nav--profile__name{
-         width: auto!important;
+      .ma-garage__nav--profile__name {
+         width: auto !important;
       }
+
       .container {
          //background: #1B2434;
          border-radius: 8px;
@@ -329,7 +332,6 @@ export default {
    white-space: break-spaces;
    height: auto;
 }
-
 
 
 </style>
