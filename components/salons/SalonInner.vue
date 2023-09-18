@@ -229,8 +229,6 @@
       },
 
       methods: {
-         // ...mapActions(['getSalonById']),
-
          async changePage(page = 1) {
             // console.log('page', page)
             page = this.$route.query.page || 1;
@@ -268,7 +266,7 @@
       },
 
       async fetch() {
-         await this.$store.dispatch('getSalonById', {slug: this.$route.params.id});
+         // await this.$store.dispatch('getSalonById', {slug: this.$route.params.id});
          await this.$store.dispatch('getAutoSalonOtherAnnouncements', {id: this.$store?.getters?.salonSingle?.id});
       }
    }
