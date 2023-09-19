@@ -742,7 +742,7 @@
       width: 100%;
       height: 100%;
       max-width: 1148px;
-      max-height: 786px;
+      //max-height: 786px;
       margin: 0 auto;
       padding-bottom: 136px;
    }
@@ -898,11 +898,11 @@
    }
 
    .swiper-wrapper {
-      max-height: 650px !important;
+      max-height: 815px !important;
    }
 
    .swiper-slide {
-      max-height: 650px;
+      max-height: 815px;
       height: 100vh;
       border-radius: 12px;
       overflow: hidden;
@@ -1137,6 +1137,29 @@
    .vehicle-specs,
    .vinCode {
       display: none;
+   }
+}
+
+@media (max-width: 1920px) {
+   .images-slider {
+      //margin-top: 40px;
+
+      .swiper-slide {
+         height: 725px;
+      }
+
+      &__container {
+         //max-width: 1000px;
+         //max-height: 686px;
+      }
+
+      &__grid {
+         //grid-template-columns: 104px 870px;
+      }
+
+      .swiper-wrapper {
+         max-height: 725px !important;
+      }
    }
 }
 

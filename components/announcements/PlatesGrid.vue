@@ -84,13 +84,13 @@
 <style lang="scss">
    .registrationMarksGrid {
       position: relative;
-      margin: 56px 0;
+      margin: 30px 0;
 
       &__items {
          display: grid;
          gap: 20px;
          grid-template-columns: repeat(4, 1fr);
-         margin-top: 48px;
+         //margin-top: 48px;
       }
 
       &.loading {

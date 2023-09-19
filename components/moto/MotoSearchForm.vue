@@ -723,9 +723,9 @@
       }
 
       &.mini {
-         //.cars-search-form__gridMain {
-         //   grid-gap: 10px;
-         //}
+         .moto-search-form__grid {
+            gap: 12px;
+         }
 
          .form-group {
             height: 100%;
@@ -746,7 +746,7 @@
             }
 
             input {
-               height: 44px;
+               height: 46px;
             }
 
             .checkbox-input {
@@ -781,6 +781,10 @@
             height: 48px;
 
             .form-group {
+               &:first-child {
+                  width: 56%;
+               }
+
                .select-menu {
                   &_label {
                      height: 100%;

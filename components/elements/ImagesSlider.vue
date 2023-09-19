@@ -23,7 +23,9 @@
                         :key="index"
                         class="swiper-slide"
                         :class="{'active': index === activeIndex}"
+
                      >
+<!--                        @mouseenter="imagesSwiper.slideTo(index)"-->
                         <div
                            class="protocolVideoThumb"
                            v-if="slides.types[index] == 'video' && isProtocolMedia"
@@ -35,7 +37,7 @@
                            :style="{ backgroundImage: `url('${slide}&width=104')` }"
                            :class="{'protocolImageThumb': isProtocolMedia}"
                            @click="changeSlide(index)"
-                        ></div>
+                        />
                      </div>
                   </div>
                </div>
@@ -289,6 +291,10 @@
                },
             },
             thumbOps: {
+               // watchSlidesVisibility: true,
+               // watchSlidesProgress: true,
+               // autoScrollOffset: 5,
+               freeMode: true,
                initialSlide: this.currentSlide,
                direction: 'vertical',
                slidesPerView: 'auto',
@@ -389,6 +395,7 @@
                this.$nextTick(() => {
                   this.showIframe = true
                   this.$emit('slide-change', this.imagesSwiper.realIndex)
+                  this.thumbsSwiper.slideTo(this.imagesSwiper.activeIndex)
                   this.updateTouchEvents()
                })
             })

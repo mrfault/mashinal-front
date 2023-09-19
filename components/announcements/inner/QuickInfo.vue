@@ -318,9 +318,7 @@
             // console.log('sadsad')
             this.showModal = true
             if (actionCase == 'isEdit'){
-               console.log("loginInEditModal",this.loginInEditModal)
                this.$store.commit("mutate", {property: "loginInEditModal", value: true});
-               console.log("loginInEditModal",this.loginInEditModal)
             }
          },
          closeModal() {
@@ -345,6 +343,9 @@
 
 <style lang="scss">
    .quick-info {
+      position: sticky;
+      top: 150px;
+
       &__item {
          padding: 24px 20px;
          border-radius: 12px;
@@ -537,6 +538,12 @@
          .status {
             color: #EEF2F6;
          }
+      }
+   }
+
+   @media (max-width: 1150px) {
+      .quick-info {
+         top: 80px;
       }
    }
 
