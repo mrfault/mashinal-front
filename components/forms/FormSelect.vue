@@ -347,7 +347,6 @@
                                  <img
                                     :alt="getOptionName(option)"
                                     :src="$withBaseUrl(option[imgKey]) || imgPlaceholder"
-
                                  />
                               </div>
 
