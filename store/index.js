@@ -1652,16 +1652,20 @@ export const actions = {
 
    },
    async motoEdit({}, {id, isMobile, form}) {
-      await this.$axios.$post(`sell/moto/post/edit/${id}?is_mobile=${isMobile}`, form);
+      const res = await this.$axios.$post(`sell/moto/post/edit/${id}?is_mobile=${isMobile}`, form);
+      return res;
    },
    async carEdit({}, {id, isMobile, form}) {
-      await this.$axios.$post(`sell/post/edit/${id}?is_mobile=${isMobile}`, form);
+      const res = await this.$axios.$post(`sell/post/edit/${id}?is_mobile=${isMobile}`, form);
+      return res;
    },
    async partEdit({}, {id, form}) {
-      await this.$axios.$post(`/sell/part/edit/${id}`, form);
+      const res = await this.$axios.$post(`/sell/part/edit/${id}`, form);
+      return res;
    },
    async registrationMarkEdit({}, {id, form}) {
-      await this.$axios.$post(`/sell/plate/edit/${id}`, form);
+      const res = await this.$axios.$post(`${this.$env().API_SECRET}/plate-numbers/update/${id}`, form);
+      return res;
    },
 
 

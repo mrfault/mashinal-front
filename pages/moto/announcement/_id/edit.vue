@@ -35,6 +35,8 @@ import Moto_form from "~/components/sell/moto_form.vue";
 import GridItem from "~/components/announcements/GridItem.vue";
 import Car_form from "~/components/sell/car_form.vue";
 import Registration_mark from "~/components/sell/registration_mark.vue";
+import {ToastErrorsMixin} from "~/mixins/toast-errors";
+import {PaymentMixin} from "~/mixins/payment";
 
 export default {
    name: 'pages-cars-announcement-edit',
@@ -54,6 +56,7 @@ export default {
          title: this.$t('your_announcements')
       });
    },
+   mixins: [ToastErrorsMixin, PaymentMixin],
    data() {
       return {
          previewForm: {
@@ -160,12 +163,23 @@ export default {
          formData.append('data', JSON.stringify(form))
          formData.append('deletedImages', JSON.stringify(deletedImages))
          try {
-            await this.motoEdit({
+            const res = await this.motoEdit({
                id: this.$route.params.id.slice(0, -1),
                isMobile: this.isMobileBreakpoint,
                form: formData
             })
-            this.$router.push(this.$localePath('/profile/announcements'))
+            if (res?.data?.redirect_url) {
+               this.handlePayment(res, false, this.$t('car_added'), 'v2')
+               !this.isMobileBreakpoint && this.$router.push(this.$localePath('/profile/announcements'))
+            } else {
+               this.$router.push(this.$localePath('/profile/announcements'), () => {
+                  this.updatePaidStatus({
+                     type: 'success',
+                     text: this.$t('announcement_paid'),
+                     title: this.$t('success_payment')
+                  });
+               });
+            }
          } catch (e) {
          }
       },
