@@ -192,7 +192,7 @@ export default {
          this.form.currency_id = this.announcement.currency
          this.form.is_negotiable = this.announcement.is_negotiable
          this.form.region_id = this.announcement.region.id
-         this.form.comment = this.announcement.comment
+         this.form.comment = this.announcement.comment || ""
       }
    },
    watch: {
