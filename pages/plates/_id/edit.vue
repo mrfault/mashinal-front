@@ -24,6 +24,7 @@ import {mapActions, mapGetters} from "vuex";
 import {minLength, required} from "vuelidate/lib/validators";
 import {PaymentMixin} from '~/mixins/payment';
 import Registration_mark from "~/components/sell/registration_mark.vue";
+import {ToastErrorsMixin} from "~/mixins/toast-errors";
 
 export default {
    components: {Registration_mark},
@@ -38,7 +39,7 @@ export default {
       });
    },
 
-   mixins: [PaymentMixin],
+   mixins: [ToastErrorsMixin, PaymentMixin],
 
    middleware: ['auth_general'],
 
@@ -75,8 +76,19 @@ export default {
       ...mapActions(['registrationMarkEdit']),
       async getPlateForm(form) {
          try {
-            await this.registrationMarkEdit({id: this.$route.params.id.slice(0, -1), form: form})
-            this.$router.push(this.$localePath('/profile/announcements'))
+            const res = await this.registrationMarkEdit({id: this.$route.params.id.slice(0, -1), form: form})
+            if (res?.data?.redirect_url) {
+               this.handlePayment(res, false, this.$t('car_added'), 'v2')
+               !this.isMobileBreakpoint && this.$router.push(this.$localePath('/profile/announcements'))
+            } else {
+               this.$router.push(this.$localePath('/profile/announcements'), () => {
+                  this.updatePaidStatus({
+                     type: 'success',
+                     text: this.$t('announcement_paid'),
+                     title: this.$t('success_payment')
+                  });
+               });
+            }
          } catch (e) {
          }
       },
