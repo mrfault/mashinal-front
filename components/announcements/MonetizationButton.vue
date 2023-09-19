@@ -62,7 +62,7 @@
                   </label>
 
                   <label
-                     v-if="this.$auth.loggedIn && this.user.balance > 10 && this.user.balance > this.price.value"
+                     v-if="$auth.loggedIn && user.balance > price.value"
                      class="radio-container"
                   >
                      <div class="radio-container__description">
