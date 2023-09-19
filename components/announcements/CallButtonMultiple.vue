@@ -62,6 +62,7 @@
             phoneNumber = phoneNumber.replace(/\D/g, '');
             return `+${phoneNumber.slice(0, 3)} (${phoneNumber.slice(3, 5)}) ${phoneNumber.slice(5, 8)}-${phoneNumber.slice(8, 10)}-${phoneNumber.slice(10)}`;
          },
+
          // handleClick() {
          //    if (this.callAtOnce) {
          //       window.location.href = `tel:+${this.phone}`;
@@ -85,7 +86,7 @@
                this.trackCall(2);
             } else {
                this.showPhone = true;
-               this.showSinglePhone = true;
+               // this.showSinglePhone = true;
                this.trackCall(1);
                this.pending = true
 
@@ -95,6 +96,8 @@
                      this.ringostat_number_mask = number.numberWithoutMask;
                      this.pending = false
                      // this.singlePhone = number?.numberWithoutMask.replace('+','')
+                     console.log('this.phone', this.phone)
+
                   }, 0, `00${this.phone}`
                );
 
