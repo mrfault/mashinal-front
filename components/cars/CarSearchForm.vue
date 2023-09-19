@@ -1080,7 +1080,7 @@
             }
 
             input {
-               height: 44px;
+               height: 46px;
             }
          }
 
@@ -1088,6 +1088,10 @@
             height: 48px;
 
             .form-group {
+               &:first-child {
+                  width: 56%;
+               }
+
                .select-menu {
                   &_label {
                      height: 100%;

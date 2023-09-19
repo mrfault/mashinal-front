@@ -318,9 +318,7 @@
             // console.log('sadsad')
             this.showModal = true
             if (actionCase == 'isEdit'){
-               console.log("loginInEditModal",this.loginInEditModal)
                this.$store.commit("mutate", {property: "loginInEditModal", value: true});
-               console.log("loginInEditModal",this.loginInEditModal)
             }
          },
          closeModal() {
