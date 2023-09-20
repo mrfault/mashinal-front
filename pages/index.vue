@@ -121,7 +121,7 @@
                :showFavoriteBtn="true"
             >
                <template #head>
-                  <Cap>
+                  <Cap :className="'mb20'">
                      <template #left>
                         <h3>{{ $t('registration_marks') }}</h3>
                      </template>

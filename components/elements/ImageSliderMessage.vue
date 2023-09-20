@@ -18,7 +18,7 @@
                <div class="swiper-container" v-swiper:thumbsSwiper="thumbOps" ref="thumbsSwiper">
                   <div class="swiper-wrapper">
                      <div class="swiper-slide thump" :key="index" v-for="(slide, index) in slides.main">
-                        <img @click="changeSlide(index)" :src="`${slide}&width=130&height=77`" class="swiper-lazy img-fluid" alt=""/>
+                        <img @click="changeSlide(index)" :src="`${slide}?width=130&height=77`" class="swiper-lazy img-fluid" alt=""/>
                      </div>
                   </div>
                </div>
@@ -33,7 +33,7 @@
                      <div class="swiper-wrapper">
                         <div class="swiper-slide" :key="index" v-for="(slide, index) in slides.main">
                            <div class="swiper-slide-bg" @click.stop>
-                              <img alt="car_img" :src="`${slide}&width=944&height=944`" class="swiper-lazy"/>
+                              <img alt="car_img" :src="`${slide}?width=944&height=944`" class="swiper-lazy"/>
                            </div>
                         </div>
                      </div>
