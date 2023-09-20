@@ -980,7 +980,7 @@ export const actions = {
       });
    },
    async getMotoModelsV2({commit}, data) {
-      const res = await this.$axios.$get(`${this.$env().API_SECRET}/moto/${data.value}/brand/${data.id}/models?whereHas=${data.whereHas || 1}`);
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/moto/${data.value}/brand/${data.id}/models?whereHas=${data.whereHas ?? 1}`);
       commit("mutate", {
          property: "motoModelsV2",
          value: res,
@@ -1182,7 +1182,7 @@ export const actions = {
    },
    async getMotoBrandsV2({state, commit}, data) {
       // if (objectNotEmpty(state, commit, "motoBrands")) return;
-      const res = await this.$axios.$get(`${this.$env().API_SECRET}/moto/${data.value}/brands?whereHas=${data.whereHas || 1}`);
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/moto/${data.value}/brands?whereHas=${data.whereHas ?? 1}`);
       commit("mutate", {property: "motoBrands", value: res});
    },
    async getScooterOptions({commit}) {
