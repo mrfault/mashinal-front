@@ -13,7 +13,8 @@
                   :date="getDateString(item)" :link="getRoutePath(item)"
                   :notification="item"
                   :page="notifications.current_page"
-               />
+               ></NotificationItem>
+
             </template>
 
             <div v-else>
@@ -203,7 +204,8 @@ export default {
                case '/messages_bnb' :
                   return this.$localePath('/profile/messages?group=' + n.value)
                case '/announcement_details' :
-                  return this.$localePath(this.getAnnounceTypePath(n.notifiable_type) + '/' + n.notifiable.id)
+                  console.log("n./././",n)
+                  return this.$localePath(this.getAnnounceTypePath(n.notifiable_type) + '/' + (n.notifiable?.id || n.notifiable_id))
                case '/garage_bnb' :
                   return this.$localePath(`/garage?id=${n.notifiable.id}`)
                case '/balance' :
