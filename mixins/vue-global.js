@@ -127,11 +127,19 @@ Vue.use({
 
             getAnnouncementTitleMessage(item) {
                if (item.title) return item.title;
-               if (item.car_number) return item.car_number;
+               if (this.checkCarNumber(item)) return this.getCarNumber(item);
                let brand = this.getAnnouncementBrandName(item);
                let model = this.getAnnouncementModelName(item);
                if (!brand && !model) return '';
                return (brand || '') + ' ' + (model || '');
+            },
+
+            checkCarNumber(item) {
+               return (item.number1 && item.letter2 && item.letter2 && item.number2);
+            },
+
+            getCarNumber(item) {
+               return item.number1 +'-'+item.letter1+item.letter2+'-'+item.number2
             },
 
             getAnnouncementContact(item) {
