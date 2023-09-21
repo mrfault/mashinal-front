@@ -243,71 +243,75 @@ export default {
 </script>
 
 <style lang="scss">
-.registration_mark_form {
-   display: flex;
-   flex-grow: 1;
-   flex-direction: column;
-   gap: 20px;
-
-
-
-   &_with_info {
-      &_inner {
-         display: flex;
-         margin-top: 12px;
-         align-items: center;
-         gap: 10px;
-
-         svg {
-            min-width: 24px;
-            min-height: 24px;
-         }
-      }
-   }
-
-   .divider {
-      display: grid;
-      grid-template-columns: repeat(2, calc(50% - 8px));
+   .registration_mark_form {
+      display: flex;
+      flex-grow: 1;
+      flex-direction: column;
       gap: 20px;
 
-      .car_number {
-         display: flex;
-         gap: 16px;
+      &_with_info {
+         &_inner {
+            display: flex;
+            margin-top: 12px;
+            align-items: center;
+            gap: 10px;
 
-         .select-menu_label {
-            padding: 0 12px !important;
-         }
-
-         .text-input {
-            input {
-               padding:  0 12px !important;
+            svg {
+               min-width: 24px;
+               min-height: 24px;
             }
          }
-
-         & > * {
-            width: 100%;
-            min-width: 0;
-         }
       }
-   }
-}
 
-@media (max-width: 485px) {
-   .registration_mark_form {
       .divider {
+         display: grid;
+         grid-template-columns: repeat(2, calc(50% - 8px));
+         gap: 20px;
 
-         .price_types {
-            .toggle_container {
-               gap: 8px !important;
+         &:first-child {
+            .form_error {
+               i {
+                  display: none;
+               }
+            }
+         }
+
+         .car_number {
+            display: flex;
+            gap: 16px;
+
+            .select-menu_label {
+               padding: 0 12px !important;
             }
 
-            .price_item {
-               padding: 0 8px;
+            .text-input {
+               input {
+                  padding:  0 12px !important;
+               }
+            }
+
+            & > * {
+               width: 100%;
+               min-width: 0;
             }
          }
       }
-
-
    }
-}
+
+   @media (max-width: 485px) {
+      .registration_mark_form {
+         .divider {
+
+            .price_types {
+               .toggle_container {
+                  gap: 8px !important;
+               }
+
+               .price_item {
+                  padding: 0 8px;
+               }
+            }
+         }
+      }
+   }
 </style>

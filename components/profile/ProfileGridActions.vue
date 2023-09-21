@@ -35,7 +35,6 @@
 
          <!--         options-->
       </modal-popup>
-
       <modal-popup
          :modal-class="'wider'"
          :toggle="showRestore"
@@ -46,7 +45,6 @@
             <button :class="['btn', 'full-width', 'btn--blue-new', 'active', { pending }]" @click.stop="restoreAnnouncement()">{{ $t('pay') }}</button>
          </div>
       </modal-popup>
-
       <!--      delete,deactivate-->
       <modal-popup
          :modal-class="!isMobileBreakpoint ? 'midsize': 'larger'"
@@ -63,6 +61,7 @@
                >
                   {{ $t('reject') }}
                </button>
+
                <button
                   v-if="selectedItem.name == 'inactive_make'"
                   :class="{ 'pointer-events-none': pending }"
@@ -72,6 +71,7 @@
                >
                   {{ $t(selectedItem.name) }}
                </button>
+
                <button
                   v-else
                   :class="{ 'pointer-events-none': pending }"
@@ -82,7 +82,6 @@
                   {{ $t(selectedItem.name) }}
                </button>
             </div>
-
          </div>
       </modal-popup>
    </div>
@@ -217,7 +216,12 @@ export default {
          this.$store.commit('closeDropdown');
          this.pending = true;
          try {
-            await this.$store.dispatch('deactivateMyAnnounement', this.announcement.id_unique);
+            if (this.announcement.type === 'plate_number') {
+               await this.$store.dispatch('deactivateMyAnnouncementV2', this.announcement.id);
+            } else {
+               await this.$store.dispatch('deactivateMyAnnounement', this.announcement.id_unique);
+            }
+
             this.$emit('refreshData');
             this.$toasted.success(this.$t('vehicle_deactivated'))
             this.closeModal();
@@ -227,15 +231,21 @@ export default {
             this.$toasted.error(this.$t(e))
             this.pending = false;
          }
-
       },
       async deleteCar(event) {
+         // console.log('222', this.announcement)
+
          event.stopPropagation();
          this.pending = true;
          try {
-            await this.$store.dispatch('deleteMyAnnounementV2', this.announcement.id_unique);
+            if (this.announcement.type === 'plate_number') {
+               await this.$store.dispatch('deleteMyAnnouncementV2', this.announcement.id);
+            } else {
+               await this.$store.dispatch('deleteMyAnnouncement', this.announcement.id_unique);
+            }
+
             this.$emit('refreshData');
-            this.$emit('deleteMyAnnounement');
+            this.$emit('deleteMyAnnouncement');
             this.$toasted.success(this.$t('vehicle_deleted'))
             this.closeModal();
             this.pending = false;
