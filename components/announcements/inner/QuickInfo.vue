@@ -180,6 +180,7 @@
             />
          </div>
 
+<!--         <pre>{{announcement}}</pre>-->
          <deactivate-button
             class="mt-3"
             :announcement="announcement"
@@ -189,11 +190,10 @@
          <restore-button
             :className="'white h-52'"
             :announcement="announcement"
-            v-if="restoreCondition"
+            v-if="announcement.type !== 'plate_number' && restoreCondition"
             @refreshData="$nuxt.refresh()"
             :free="true"
          />
-<!--         v-if="userIsOwner(announcement) && announcement.status === 3 && !announcement.is_external_salon"-->
       </div>
 
       <VinCode

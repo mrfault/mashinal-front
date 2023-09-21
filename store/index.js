@@ -661,7 +661,7 @@ export const actions = {
    },
 
    async fetchUserRegistrationMarks({commit}, id) {
-      const res = await this.$axios.$get(`/user/${id}/plates`);
+      const res = await this.$axios.$get(this.$env().API_SECRET + `/plate-numbers/user/${id}`);
       commit("mutate", {property: "userRegistrationMarks", value: res});
    },
 
@@ -1388,16 +1388,23 @@ export const actions = {
       const res = await this.$axios.$get(`/announcement/edit/${id}`);
       commit("mutate", {property: "myAnnouncement", value: res});
    },
+
    async deactivateMyAnnounement({commit}, id) {
       await this.$axios.$delete(`/announcement/${id}/delete`);
       commit("mutate", {property: "myAnnouncement", value: {}});
    },
-   async deleteMyAnnounement({commit}, id) {
+   async deactivateMyAnnouncementV2({commit}, id) {
+      await this.$axios.$post(`${this.$env().API_SECRET}/plate-numbers/deactivate/${id}`);
+      commit("mutate", {property: "myAnnouncement", value: {}});
+   },
+
+   async deleteMyAnnouncement({commit}, id) {
       await this.$axios.$delete(`/announcement/${id}/remove`);
       commit("mutate", {property: "myAnnouncement", value: {}});
    },
-   async deleteMyAnnounementV2({commit}, id) {
-      await this.$axios.$delete(`/announcement/${id}/remove`);
+
+   async deleteMyAnnouncementV2({commit}, id) {
+      await this.$axios.$delete(`${this.$env().API_SECRET}/plate-numbers/delete/${id}`);
       commit("mutate", {property: "myAnnouncement", value: {}});
    },
    // Car announcements

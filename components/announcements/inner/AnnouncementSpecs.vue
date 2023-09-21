@@ -72,13 +72,9 @@
          announcementSpecs() {
             let gearIcon;
 
-            if (this.gear?.type === 1) {
-               gearIcon = 'gearing_back';
-            } else if (this.gear?.type === 2) {
-               gearIcon = 'gearing_front'
-            } else {
-               gearIcon = 'gearing_4x4';
-            }
+            if (this.gear?.type === 1) gearIcon = 'gearing_back';
+            else if (this.gear?.type === 2) gearIcon = 'gearing_front';
+            else gearIcon = 'gearing_4x4';
 
             const specs = [
                {

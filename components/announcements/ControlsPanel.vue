@@ -230,7 +230,7 @@
       },
 
       methods: {
-         ...mapActions(['deactivateMyAnnounement', 'deleteMyAnnounement']),
+         ...mapActions(['deactivateMyAnnounement', 'deleteMyAnnouncement']),
 
          closeChatModal() {
             this.showChatModal = false;
@@ -370,9 +370,9 @@
             this.pending = true;
             try {
                if (type === 'announcement') {
-                  await Promise.all(this.selected.map(this.deleteMyAnnounement));
+                  await Promise.all(this.selected.map(this.deleteMyAnnouncement));
                } else {
-                  await Promise.all(this.selectedMarks.map(this.deleteMyAnnounement));
+                  await Promise.all(this.selectedMarks.map(this.deleteMyAnnouncement));
                }
 
                this.handleSelectAll(false);
