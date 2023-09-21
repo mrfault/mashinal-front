@@ -18,9 +18,9 @@
             </div>
             <div class="row pt-lg-0 pt-2">
                <div class="col-md-12 col-xs-12 p-0 p-1">
-<!--                  <div class="card p-5" v-if="loader">-->
-<!--                     <loader class="p-5" />-->
-<!--                  </div>-->
+                  <!--   <div class="card p-5" v-if="loader">-->
+                  <!--      <loader class="p-5" />-->
+                  <!--   </div>-->
                   <client-only>
                      <div class="swiper-container" v-swiper:balanceSwiper="swiperOps">
                         <div class="swiper-wrapper">
@@ -442,6 +442,7 @@ export default {
    gap: 12px;
    flex: 1 0 0;
    min-height: 220px;
+   max-width: 390px;
 }
 
 .card-custom h4 {
@@ -793,6 +794,9 @@ export default {
          color: #EEF2F6;
          border-radius: 12px;
       }
+   }
+   .card-custom {
+      max-width: 100%;
    }
 }
 
