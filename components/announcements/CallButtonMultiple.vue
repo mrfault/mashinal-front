@@ -63,30 +63,12 @@
             return `+${phoneNumber.slice(0, 3)} (${phoneNumber.slice(3, 5)}) ${phoneNumber.slice(5, 8)}-${phoneNumber.slice(8, 10)}-${phoneNumber.slice(10)}`;
          },
 
-         // handleClick() {
-         //    if (this.callAtOnce) {
-         //       window.location.href = `tel:+${this.phone}`;
-         //       this.trackCall(2);
-         //    } else {
-         //       this.showPhone = true;
-         //       this.trackCall(1);
-         //    }
-         // },
-
          handleClick() {
-            /*    if (!this.showPhone) {
-                   this.showPhone = true;
-                   this.trackCall(1);
-                } else {
-                   window.location.href = `tel:+${this.phone}`;
-                   this.trackCall(2);
-                }*/
             if (this.callAtOnce) {
                window.location.href = `tel:+${this.phone}`;
                this.trackCall(2);
             } else {
                this.showPhone = true;
-               // this.showSinglePhone = true;
                this.trackCall(1);
                this.pending = true
 
@@ -95,12 +77,8 @@
                      this.ringostat_number = number.numberWithoutMask;
                      this.ringostat_number_mask = number.numberWithoutMask;
                      this.pending = false
-                     // this.singlePhone = number?.numberWithoutMask.replace('+','')
-                     console.log('this.phone', this.phone)
-
-                  }, 0, `00${this.phone}`
+                  }, 0, this.phones.map(item => `00${item}`).join(",")
                );
-
             }
          },
 
@@ -109,12 +87,7 @@
             this.gtagTrack('AW-600951956/' + (n === 1 ? 'rgWNCOTA8IMCEJSZx54C' : 'VunMCPr51oMCEJSZx54C'));
             this.$axios.$get(`/announce/${this.announcementId}/show/phone`);
          }
-      },
-
-      // mounted() {
-      //    console.log('phones', this.phones)
-      //    console.log('announcement-id', this.announcementId)
-      // }
+      }
    }
 </script>
 
