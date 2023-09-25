@@ -136,8 +136,11 @@
       },
 
       async fetch({store, route}) {
+         let id = route.params.id;
+         if (id.length > 10) id = id.slice(0, -1);
+
          await Promise.all([
-            store.dispatch('getAnnouncementInnerV2', route.params.id),
+            store.dispatch('getAnnouncementInnerV2', id),
             store.dispatch('getComplaintOptions'),
             store.dispatch('getOptions'),
             store.dispatch('getAllOtherOptions'),
@@ -145,6 +148,7 @@
             store.dispatch('getSettingsV2')
          ]);
       },
+
       methods: {
          getFilterLink(type) {
             let form = {
