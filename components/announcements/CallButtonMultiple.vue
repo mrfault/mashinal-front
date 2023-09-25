@@ -77,7 +77,7 @@
                      this.ringostat_number = number.numberWithoutMask;
                      this.ringostat_number_mask = number.numberWithoutMask;
                      this.pending = false
-                  }, 0, this.phones.map(item => `00${item}`).join(",")
+                  }, 0, this.phones.join(",")
                );
             }
          },
