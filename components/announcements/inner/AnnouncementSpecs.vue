@@ -41,11 +41,21 @@
          </li>
       </ul>
 
-      <nuxt-link class="vehicle-specs__btn" :to="catalogLink" v-if="catalog">
-         <span>{{ $t('catalog_model_specifications') }}</span>
+      <div class="vehicle-specs__bottom">
+         <nuxt-link class="vehicle-specs__btn" :to="catalogLink" v-if="catalog">
+            <div class="wrapp">
+               <span>{{ $t('catalog_model_specifications') }}</span>
+               <span>
+                  {{ $t('show_catalog') }}
+                  <inline-svg src="/icons/car-5.svg" />
+               </span>
+            </div>
 
-         <inline-svg src="/icons/arrow-right.svg" width="20px" height="20px" />
-      </nuxt-link>
+            <inline-svg src="/icons/arrow-right.svg" width="20px" height="20px" />
+         </nuxt-link>
+
+         <h4>{{ $t('announcement_number') }}: #{{ announcement.id }}</h4>
+      </div>
 
 <!--      <div v-if="isMobileBreakpoint && announcement.status != 3" class="mt-3 mt-lg-0">-->
 <!--         <floating-cta :announcement="announcement"/>-->
@@ -426,24 +436,57 @@
       &__btn {
          display: inline-flex;
          align-items: center;
-         margin-top: 24px;
          border-radius: 8px;
-         padding: 15px 20px;
-         background-color: #FFF;
-         border: 1px solid #CDD5DF;
+         padding: 7px 20px;
+         background-color: #155EEF;
          transition: all .3s;
 
-         span {
-            font-size: 16px;
-            font-weight: 500;
-            line-height: 20px;
-            color: #1B2434;
-            white-space: nowrap;
-            margin-right: 13px;
+         .wrapp {
+            display: flex;
+            flex-direction: column;
+            margin-right: 8px;
+
+            span {
+               color: #FFF;
+               font-size: 16px;
+               font-weight: 500;
+               line-height: 20px;
+
+               &:last-child {
+                  margin-top: 3px;
+                  font-size: 12px;
+                  font-weight: 400;
+                  line-height: 14px;
+
+                  svg {
+                     margin-left: 7px;
+                  }
+               }
+            }
+         }
+
+         svg {
+            path {
+               fill: #FFFFFF;
+            }
          }
 
          &:hover {
             border-color: #84ADFF;
+         }
+      }
+
+      &__bottom {
+         margin-top: 24px;
+         display: flex;
+         align-items: flex-end;
+         justify-content: space-between;
+
+         h4 {
+            color: #1B2434;
+            font-size: 15px;
+            font-weight: 400;
+            line-height: 18px;
          }
       }
    }
@@ -516,6 +559,16 @@
       .vehicle-specs {
          &__list {
             grid-template-columns: repeat(1, 1fr);
+         }
+
+         &__btn {
+            max-width: 320px;
+         }
+
+         &__bottom {
+            align-items: unset;
+            flex-direction: column;
+            gap: 20px;
          }
       }
    }
