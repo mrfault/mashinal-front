@@ -6,9 +6,9 @@
             :bg="'/img/salon-bg.png'"
             :title="$t('external_salon')"
          >
-            <template #content>
-               <breadcrumbs class="light-color" :crumbs="crumbs"/>
-            </template>
+<!--            <template #content>-->
+<!--               <breadcrumbs class="light-color" :crumbs="crumbs"/>-->
+<!--            </template>-->
          </Banner>
 
          <salon-filters-form v-if="nonOfficialSalons.length" :count="salonsFiltered.length" />

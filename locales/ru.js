@@ -134,6 +134,7 @@ export default {
    "Adjustable foot pedal switch": "Регулируемый педальный узел",
    advanced_search: "Расширенный поиск",
    advanced_search2: "Расш. поиск",
+   advanced_search3: "Подробнее",
    advantages_and_disadvantages: "Плюсы и минусы",
    advantages_desc_1:
       "Под вашим объявлением не будут появляться объявления конкурентов",
@@ -1057,6 +1058,8 @@ export default {
    is_main: "Основной",
    is_negotiable: "Договорная",
    is_new: "Новый",
+   is_new_2: "новый",
+   approved_vehicle: "Одобренный автомобиль",
    is_original: "Оригинальный",
    is_possible: "Возможен",
    is_sending: "отправляет фото...",

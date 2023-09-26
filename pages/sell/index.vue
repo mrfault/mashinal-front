@@ -50,8 +50,6 @@
                      <registration_mark v-if="form.announce_type.title === 'registration_marks'" :isReady="isReady"
                                         @navigationProgress="navigationData.find((nav) => nav.id === $event.id).isActive = $event.status"
                                         @getForm="getRegistrationMarksForm($event)"/>
-
-
                   </div>
                   <div
                      :class="['vehicle_card_info', {default_imgs: announcement.image.startsWith('/img/') || partPreview.image.startsWith('/img/') }]"

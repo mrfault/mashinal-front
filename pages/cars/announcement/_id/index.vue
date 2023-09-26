@@ -1,8 +1,34 @@
 <template>
    <div class="pages-cars-id product-inner">
       <div class="bg-white">
+         <breadcrumbs
+            :crumbs="crumbs"
+            :showHome="false"
+            :hasContainer="true"
+         />
+
          <div class="container">
-            <breadcrumbs :crumbs="crumbs" />
+            <div class="product-inner__head d-none d-md-flex">
+               <ProductInnerTitle :options="productInnerTitle" />
+
+               <div class="btns">
+                  <add-favorite
+                     class="h-52"
+                     :template="'btn'"
+                     :text="$t('add_favorite')"
+                     :announcement="announcement"
+                     v-if="![0,2,3,4].includes(announcement.status)"
+                  />
+
+                  <add-comparison
+                     v-if="comparisonExceptions"
+                     class="h-52"
+                     :template="'btn'"
+                     :text="$t('compare')"
+                     :id="announcement.id_unique"
+                  />
+               </div>
+            </div>
 
             <div class="product-inner__info">
                <div class="product-inner__info-left">
@@ -90,6 +116,9 @@
    import Relatives from '~/components/announcements/inner/Relatives';
    import SiteBanner from "~/components/banners/SiteBanner";
    import HandleIds from "~/components/announcements/HandleIds.vue";
+   import ProductInnerTitle from "~/components/announcements/ProductInnerTitle.vue";
+   import AddFavorite from "~/components/announcements/AddFavorite.vue";
+   import AddComparison from "~/components/announcements/AddComparison.vue";
    import { mapGetters } from 'vuex';
 
    export default {
@@ -106,6 +135,9 @@
          DamageOptions,
          Relatives,
          HandleIds,
+         ProductInnerTitle,
+         AddFavorite,
+         AddComparison
       },
 
       nuxtI18n: {
@@ -177,33 +209,51 @@
 
       computed: {
          ...mapGetters(['announcement', 'catalog']),
+
          getComplectOptions() {
             return typeof this.announcement.options === 'string'
                ? JSON.parse(this.announcement.options)
                : this.announcement.options;
          },
+
          hasComplects() {
             return Object.keys(this.getComplectOptions).length;
          },
+
          getCarHealth() {
             return this.announcement.car_body_health
                ? JSON.parse(this.announcement.car_body_health.options)
                : false;
          },
+
          imageIsActive() {
             return false
          },
+
+         comparisonExceptions() {
+            return this.announcement?.type === 'light_vehicle' && ![0,2,3,4].includes(this.announcement?.status);
+         },
+
          crumbs() {
-            // console.log('this.catalog', this.catalog)
             return [
-               {name: this.$t('cars'), route: '/cars'},
+               // {name: this.$t('cars'), route: '/cars'},
                {name: this.catalog?.brand?.name, route: this.getFilterLink('brand')},
                {name: this.catalog?.model?.name, route: this.getFilterLink('brand-model')},
-               {
-                  name: this.$translateHard(this.catalog?.generation?.name),
-                  route: this.getFilterLink('brand-model-generation')
-               },
-               {name: '#' + this.announcement.id_unique}
+               // {
+               //    name: this.$translateHard(this.catalog?.generation?.name),
+               //    route: this.getFilterLink('brand-model-generation')
+               // },
+               // {name: '#' + this.announcement.id_unique}
+            ]
+         },
+
+         productInnerTitle() {
+            return [
+               { id: 1, name: this.catalog?.brand?.name },
+               { id: 2, name: this.catalog?.model?.name },
+               { id: 3, name: this.announcement.car_catalog.main[' '].obem },
+               { id: 4, name: `${this.announcement.year} ${this.$t('year')}` },
+               { id: 5, name: `${this.announcement.mileage} ${this.$t('char_kilometre')}` }
             ]
          }
       }

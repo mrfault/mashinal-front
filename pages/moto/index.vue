@@ -1,7 +1,7 @@
 <template>
    <div class="pages-moto-index">
       <div class="container">
-         <div class="filters-container mb-3">
+         <div class="filters-container">
             <template v-if="isMobileBreakpoint && !advancedSearch">
                <FiltersMobile :type="2" :sorting="sorting" :additional-brands="additionalBrands" :form-moto-type="formMotoType" @showSorting="showSorting = $event"  @pending="pending = true" @openMore="openMore"  @submit="submitOnMobile" :meta="{ type: 'moto', path: '/moto', param: 'filter' }" />
             </template>
@@ -15,7 +15,7 @@
                   <button class="btn" @click="resetForm(true)">{{ $t('clear_search') }}</button>
                </div>
 
-               <div class="filters-container__head d-flex align-items-center justify-content-between flex-column mb-5">
+               <div class="filters-container__head d-flex align-items-center justify-content-between flex-column mb-3">
                   <form-buttons
                      class="announce_types"
                      :options="getMileageOptions"
@@ -68,7 +68,7 @@
             escape-duplicates
          >
             <template #cap>
-               <Cap :className="'mb40'">
+               <Cap :className="'mb32'">
                   <template #left>
                      <h3 v-if="getCarDetails && getCarDetails?.brand">
                         {{ getCarDetails && getCarDetails?.brand }}
@@ -357,7 +357,7 @@
       padding-top: 32px;
 
       .announcements-grid {
-         margin-top: 30px;
+         margin-top: 0;
       }
    }
 </style>

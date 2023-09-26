@@ -1,5 +1,5 @@
 <template>
-   <div class="moto-search-form mini form" ref="searchForm">
+   <div class="moto-search-form form" ref="searchForm">
       <div class="moto-search-form__grid">
          <form-select
             :label="$t('type_of_motos')"
@@ -332,72 +332,35 @@
             </div>
          </template>
 
-<!--         <button-->
-<!--            type="button"-->
-<!--            :class="[-->
-<!--                'btn',-->
-<!--                'full-width',-->
-<!--                'btn&#45;&#45;blue-new-light-2',-->
-<!--                { 'pointer-events-none': pending },-->
-<!--            ]"-->
-<!--            @click="savedSearch = true; $nuxt.$emit('login-popup', 'saved-search')"-->
-<!--         >-->
-<!--            {{ $t('search_save') }}-->
+         <div class="btns justify-content-between">
+            <button
+               v-if="!isMobileBreakpoint"
+               type="button"
+               class="btn-inline white"
+               @click="resetForm(true)"
+            >
+               <span>
+                  {{ $t('clear_search') }}
 
-<!--            <inline-svg :src="'/icons/save-search.svg'" />-->
-<!--         </button>-->
-
-         <button
-            v-if="!isMobileBreakpoint"
-            type="button"
-            :class="['btn', 'full-width', 'btn--white', { 'pointer-events-none': pending }]"
-            @click="resetForm(true)"
-         >
-            {{ $t('clear_search') }}
-
-            <icon name="cross" />
-         </button>
-
-<!--         <div class="btns" v-else>-->
-<!--            <button-->
-<!--               type="button"-->
-<!--               :class="['btn', 'full-width', 'btn&#45;&#45;white', { 'pointer-events-none': pending }]"-->
-<!--               @click="resetForm(true)"-->
-<!--            >-->
-<!--               {{ $t('clear_search') }}-->
-
-<!--               <icon name="cross" />-->
-<!--            </button>-->
-
-            <button class="btn btn--grey-new-2 full-width" @click="showMore = !showMore">
-<!--               <template v-if="!showMore">-->
-<!--                  {{ hasValue ? $t('detail') : $t('advanced_search') }}-->
-<!--               </template>-->
-               {{ $t('advanced_search') }}
-
-<!--               <template v-else>{{ $t('less_3') }}</template>-->
-
-               <inline-svg :src="'/icons/setting-2.svg'" v-if="!showMore" />
-
-               <icon name="chevron-up" v-else />
+                  <icon name="cross" />
+               </span>
             </button>
-<!--         </div>-->
 
-<!--         <button-->
-<!--            type="button"-->
-<!--            :class="[-->
-<!--                      'btn',-->
-<!--                      'full-width',-->
-<!--                      'btn&#45;&#45;white',-->
-<!--                      { 'pointer-events-none': pending },-->
-<!--                      { 'disabled': rows.length > 4 },-->
-<!--                  ]"-->
-<!--            @click="addSearchRow(rows.length - 1)"-->
-<!--         >-->
-<!--            {{ $t('add_next', { count: rows.length + 1 }) }}-->
+            <button
+               class="btn-inline white"
+               @click="showMore = !showMore"
+            >
+               <span>
+                  <template v-if="!showMore">{{ $t('advanced_search3') }}</template>
 
-<!--            <icon name="plus" />-->
-<!--         </button>-->
+                  <template v-else>{{ $t('less_2') }}</template>
+
+                  <inline-svg :src="'/icons/setting-2.svg'" v-if="!showMore"/>
+
+                  <icon name="chevron-up" v-else/>
+               </span>
+            </button>
+         </div>
 
          <button
             type="button"
@@ -409,21 +372,6 @@
             <inline-svg :src="'/icons/search_new.svg'" />
          </button>
       </div>
-
-<!--      <div class="announcements-sorting" v-show="routeName !== 'index' && totalCount">-->
-<!--         <div class="row">-->
-<!--            <div class="col-6 col-lg-auto mt-3 mt-lg-5 mb-n6 mb-lg-n1">-->
-<!--               <div class="form-info no-bg text-green" v-if="isMobileBreakpoint">-->
-<!--                  {{ $readPlural(totalCount, $t('plural_forms_announcements')) }}-->
-<!--               </div>-->
-<!--            </div>-->
-<!--            <div class="col-6 col-lg-auto mt-3 mt-lg-5 mb-n6 mb-lg-n1">-->
-<!--               <form-select :label="$t('sorting')" :options="getSortingOptions" v-model="form.sorting"-->
-<!--                            @change="submitForm" :allow-clear="false" :clear-option="false" skip-select-first-->
-<!--                            has-no-bg/>-->
-<!--            </div>-->
-<!--         </div>-->
-<!--      </div>-->
    </div>
 </template>
 
@@ -431,7 +379,6 @@
    import ColorOptions from '~/components/options/ColorOptions';
    import { mapGetters, mapActions } from 'vuex';
    import { SearchMixin } from '~/mixins/search';
-   import {set} from "lodash/object";
 
    export default {
       components: {
@@ -698,36 +645,46 @@
    .moto-search-form {
       &__grid {
          display: grid;
-         grid-gap: 20px;
+         grid-column-gap: 20px;
+         grid-row-gap: 16px;
 
          .checkboxes {
             display: flex;
             align-items: center;
             column-gap: 12px;
             height: max-content;
+
+            .checkbox-input {
+               input {
+                  &:checked {
+                     & + {
+                        label {
+                           background-color: #155EEF;
+
+                           span {
+                              color: #FFFFFF;
+                           }
+                        }
+                     }
+                  }
+               }
+               label {
+                  height: 48px;
+
+                  //&:hover {
+                  //   background-color: #155EEF;
+                  //
+                  //   span {
+                  //      color: #FFFFFF;
+                  //   }
+                  //}
+               }
+            }
          }
 
          .form-group {
             min-width: 0;
-         }
-      }
 
-      .btn {
-         height: 52px;
-      }
-
-      .btns {
-         grid-gap: 12px;
-         display: flex;
-         height: 52px;
-      }
-
-      &.mini {
-         .moto-search-form__grid {
-            gap: 12px;
-         }
-
-         .form-group {
             height: 100%;
 
             .select-menu {
@@ -797,35 +754,6 @@
             }
          }
 
-         .checkboxes {
-            .checkbox-input {
-               input {
-                  &:checked {
-                     & + {
-                        label {
-                           background-color: #155EEF;
-
-                           span {
-                              color: #FFFFFF;
-                           }
-                        }
-                     }
-                  }
-               }
-               label {
-                  height: 48px;
-
-                  //&:hover {
-                  //   background-color: #155EEF;
-                  //
-                  //   span {
-                  //      color: #FFFFFF;
-                  //   }
-                  //}
-               }
-            }
-         }
-
          .checkbox-input {
             label {
                height: 48px;
@@ -835,6 +763,16 @@
          .btn {
             height: 48px;
          }
+      }
+
+      .btn {
+         height: 52px;
+      }
+
+      .btns {
+         grid-gap: 12px;
+         display: flex;
+         height: 52px;
       }
    }
 

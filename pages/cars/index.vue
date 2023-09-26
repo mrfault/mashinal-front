@@ -1,7 +1,7 @@
 <template>
    <div class="pages-cars-index">
       <div class="container">
-         <div class="filters-container mb-3">
+         <div class="filters-container">
             <template v-if="isMobileBreakpoint && !advancedSearch">
                <FiltersMobile :sorting="sorting" :additional-brands="additionalBrands" @pending="pending = true"
                               @openMore="openMore"
@@ -17,7 +17,7 @@
                   <button class="btn" @click="resetForm(true)">{{ $t('clear_search') }}</button>
                </div>
 
-               <div class="filters-container__head d-flex align-items-center justify-content-between flex-column mb-5">
+               <div class="filters-container__head d-flex align-items-center justify-content-between flex-column mb-3">
                   <form-buttons
                      class="announce_types"
                      :options="getMileageOptions"
@@ -85,7 +85,7 @@
             escape-duplicates
          >
             <template #cap>
-               <Cap :className="'mb40'">
+               <Cap :className="'mb32'">
                   <template #left>
                      <h3>
                         <template v-if="getCarDetails && getCarDetails.brand">
@@ -439,7 +439,7 @@ export default {
    }
 
    .announcements-grid {
-      margin-top: 30px;
+      margin-top: 0;
    }
 }
 </style>

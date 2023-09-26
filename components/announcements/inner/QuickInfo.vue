@@ -156,7 +156,7 @@
 
          <div class="btns">
             <add-favorite
-               class="h-52"
+               class="h-52 d-md-none"
                :template="'btn'"
                :text="$t('add_favorite')"
                :announcement="announcement"
@@ -165,7 +165,7 @@
 
             <add-comparison
                v-if="comparisonExceptions"
-               class="h-52"
+               class="h-52 d-md-none"
                :template="'btn'"
                :text="$t('compare')"
                :id="announcement.id_unique"
