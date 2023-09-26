@@ -135,11 +135,11 @@ Vue.use({
             },
 
             checkCarNumber(item) {
-               return (item.number1 && item.letter1 && item.letter1 && item.number2);
+               return (item.number1 && item.letter2 && item.letter2 && item.number2);
             },
 
             getCarNumber(item) {
-               return item.number1 +'-'+item.letter1+item.letter1+'-'+item.number2
+               return item.number1 +'-'+item.letter1+item.letter2+'-'+item.number2
             },
 
             getAnnouncementContact(item) {

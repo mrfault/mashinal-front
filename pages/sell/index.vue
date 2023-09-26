@@ -350,15 +350,14 @@ export default {
             this.pending = false;
          }
       },
-
       async getRegistrationMarksForm(form) {
          this.pending = true;
          try {
             const res = await this.plateNumbersPost({form, isMobile: this.isMobileBreakpoint});
             if (res?.redirect_url) {
                const response = {data: {...res}}
-               this.handlePayment(response, false, this.$t('plate_added'), 'v2')
-               !this.isMobileBreakpoint && this.$router.push(this.$localePath('/profile/announcements'))
+               this.handlePayment(response, false, this.$t('plate_added'), 'v2');
+               !this.isMobileBreakpoint && this.$router.push(this.$localePath('/profile/announcements'));
             } else {
                this.$router.push(this.$localePath('/profile/announcements'), () => {
                   this.updatePaidStatus({
@@ -366,10 +365,10 @@ export default {
                      text: this.$t('announcement_paid'),
                      title: this.$t('success_payment')
                   });
-
                });
             }
          } catch (e) {
+            this.$toasted.error(e.response?.data?.message);
          } finally {
             this.pending = false;
          }

@@ -797,7 +797,7 @@
 
 .ma-announcements {
    .ma-title--md {
-      margin-bottom: 28px;
+      margin-bottom: 24px;
    }
 
    &__head {
@@ -806,13 +806,28 @@
       align-items: center;
       border-radius: 12px;
       background: $grey-1-new;
-      padding: 0px 24px;
+      padding: 0 24px;
       margin-bottom: 32px;
 
       &--item {
-         padding: 20px 12px 20px 12px;
+         padding: 18px 12px;
          border: none;
          background: transparent;
+
+         span {
+            color: #4B5565;
+            font-weight: 500;
+
+            //&:first-child {
+            //   color: #155EEF;
+            //   font-size: 14px;
+            //   padding: 2px 6px;
+            //   line-height: 16px;
+            //   border-radius: 4px;
+            //   margin-right: 2px;
+            //   background-color: #DCE3EB;
+            //}
+         }
 
          &:hover {
             background: rgba(#155EEF, 0.1);
@@ -820,6 +835,12 @@
 
          &--active {
             position: relative;
+
+            span {
+               &:last-child {
+                  color: $dark-light-new;
+               }
+            }
 
             &:before {
                position: absolute;
@@ -877,7 +898,7 @@
             display: flex;
             flex-wrap: nowrap;
             width: fit-content;
-            padding-bottom: 10px;
+            padding: 10px;
 
             &--item {
                width: 256px;

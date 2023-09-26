@@ -11,6 +11,7 @@
 
             <div class="registrationMarks__create-inner">
                <form
+                  @submit.prevent
                   class="registrationMarks__create-form"
                   ref="form"
                >
@@ -273,19 +274,16 @@
 
             try {
                await this.$axios.$post('/ticket/plate/' + this.announce_id, this.form)
-                  .then(() => {
-                     this.pending = false;
-                     this.$toasted.success(this.$t('success_payment'));
 
-                     if (this.user.admin_group == 2) {
-                        location.href = '/alvcp/resources/announce-moderators';
-                     } else {
-                        location.href = '/alvcp/resources/plates';
-                     }
-                  })
-                  .catch(() => {
-                     this.$toasted.error(this.$t('error'))
-                  })
+               this.pending = false;
+               this.$toasted.success(this.$t('success_payment'));
+
+               if (this.user.admin_group == 2) {
+                  location.href = '/alvcp/resources/announce-moderators';
+               } else {
+                  location.href = '/alvcp/resources/plates';
+               }
+
             } catch (err) {
                console.log(err)
             }

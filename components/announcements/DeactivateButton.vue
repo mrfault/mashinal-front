@@ -42,6 +42,7 @@
    export default {
       props: {
          announcement: {},
+
          className: {
             default: 'white'
          }
@@ -55,13 +56,19 @@
       },
 
       methods: {
-         ...mapActions(['deactivateMyAnnounement']),
+         ...mapActions(['deactivateMyAnnounement', 'deactivateMyAnnouncementV2']),
 
          async deactivateAnouncement() {
             if (this.pending) return;
             this.pending = true;
             try {
-               await this.deactivateMyAnnounement(this.announcement.id_unique);
+
+               if (this.announcement.type === 'plate_number') {
+                  await this.deactivateMyAnnouncementV2(this.announcement.id);
+               } else {
+                  await this.deactivateMyAnnounement(this.announcement.id_unique);
+               }
+
                await this.$nuxt.refresh();
                this.pending = false;
                this.showDeactivateModal = false;

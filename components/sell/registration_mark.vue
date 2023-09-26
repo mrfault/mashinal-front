@@ -266,9 +266,17 @@ export default {
          gap: 20px
       }
 
-      .car_number {
-         display: flex;
-         gap: 16px;
+         &:first-child {
+            .form_error {
+               i {
+                  display: none;
+               }
+            }
+         }
+
+         .car_number {
+            display: flex;
+            gap: 16px;
 
          .select-menu_label {
             padding: 0 12px !important;

@@ -11,6 +11,7 @@
       <div class="ma-notification__content">
          <div class="ma-notification__content--body">
             <h6 class="ma-notification__content--title">{{ notification.title }}</h6>
+            <slot/>
             <p class="ma-notification__content--desc" v-html="notification.body"></p>
          </div>
          <span class="ma-notification__date">

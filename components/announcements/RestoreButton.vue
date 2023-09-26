@@ -12,7 +12,10 @@
          @close="showModal = false"
       >
          <div>
-            <button :class="['btn', 'full-width', 'btn--blue-new', 'active', { pending }]" @click.stop="restoreAnnouncement">{{ $t('pay') }}</button>
+            <button
+               :class="['btn', 'full-width', 'btn--blue-new', 'active', { pending }]"
+               @click.stop="restoreAnnouncement"
+            >{{ $t('pay') }}</button>
          </div>
       </modal-popup>
    </div>
@@ -53,8 +56,10 @@ export default {
       async restoreAnnouncement() {
          if (this.pending) return;
          this.pending = true;
+
          try {
             const res = await this.$axios.$get(`/restore/${this.announcement.id_unique}?is_mobile=${this.isMobileBreakpoint}`);
+
             this.showModal = false
             if (!res?.data?.redirect_url) {
                await this.$nuxt.refresh();

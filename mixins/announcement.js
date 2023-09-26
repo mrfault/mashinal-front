@@ -58,6 +58,7 @@ export const AnnouncementDataMixin = {
          else if (this.announcement.gear_id === 3) return this.$t('tsep');
       },
       gear() {
+         // console.log('this.announcement', this.announcement)
          switch (this.type) {
             case 'cars':
                return {
