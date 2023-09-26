@@ -12,6 +12,8 @@
 
          <inline-svg src="/icons/search_new.svg" />
       </button>
+
+      <div class="badge">{{ $t('is_new_2') }}</div>
    </div>
 </template>
 
@@ -31,11 +33,12 @@
 
 <style lang="scss" scoped>
    .vinCode {
+      position: relative;
       padding: 24px 20px;
       border-radius: 12px;
-      border: 1px solid #12B76A;
+      border: 1px solid #F81734;
       background-color: #FFFFFF;
-      overflow: hidden;
+      //overflow: hidden;
 
       &__title {
          font-size: 18px;
@@ -80,11 +83,26 @@
             border-color: #84ADFF;
          }
       }
+
+      .badge {
+         position: absolute;
+         top: -10px;
+         left: 20px;
+         height: 16px;
+         font-size: 12px;
+         font-style: normal;
+         font-weight: 500;
+         line-height: 14px;
+         padding: 0 2px;
+         color: #FFFFFF;
+         border-radius: 2px;
+         background-color: #F81734;
+      }
    }
 
    .dark-mode {
       .vinCode {
-         border-color: #05603A;
+         //border-color: #05603A;
          background-color: #1B2434;
 
          &__title {

@@ -1,7 +1,14 @@
 <template>
    <div class="vehicle-specs">
-      <h4 class="vehicle-specs__title">{{ title }}</h4>
-<!--      <pre>{{announcement.region}}</pre>-->
+      <div class="vehicle-specs__head">
+         <h4 class="vehicle-specs__title">{{ title }}</h4>
+
+         <div class="vehicle-specs__info">
+            <inline-svg src="/icons/car-4.svg" />
+
+            <span>{{ $t('approved_vehicle') }}</span>
+         </div>
+      </div>
 
       <ul class="vehicle-specs__list">
          <li
@@ -329,11 +336,40 @@
       border-radius: 12px;
       border: 1px solid #E3E8EF;
 
+      &__head {
+         display: flex;
+         align-items: center;
+         justify-content: space-between;
+         gap: 20px;
+      }
+
       &__title {
          font-size: 24px;
          font-weight: 600;
          line-height: 28px;
          color: #1B2434;
+      }
+
+      &__info {
+         display: flex;
+         align-items: center;
+         gap: 7px;
+         width: 160px;
+         padding: 12px;
+         border-radius: 7px;
+         border: 1px solid #32B878;
+
+         svg {
+            min-width: 25px;
+            height: 25px;
+         }
+
+         span {
+            color: #32B878;
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 13px;
+         }
       }
 
       &__list {

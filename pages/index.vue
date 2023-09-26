@@ -1,7 +1,7 @@
 <template>
    <div class="pages-index">
       <div class="container">
-         <div class="filters-container mini">
+         <div class="filters-container">
             <template v-if="isMobileBreakpoint && !advancedSearch" >
                <FiltersMobile
                   :additional-brands="additionalBrands"
@@ -31,7 +31,7 @@
                   <button class="btn" @click="resetForm(true)">{{ $t('clear_search') }}</button>
                </div>
 
-               <div class="filters-container__head d-flex align-items-center justify-content-between flex-column mb-5">
+               <div class="filters-container__head d-flex align-items-center justify-content-between flex-column mb-3">
                   <form-buttons
                      class="announce_types"
                      :options="getMileageOptions"
@@ -536,15 +536,15 @@
 
 <style lang="scss">
    .pages-index {
-      padding-top: 32px;
+      padding-top: 24px;
 
       .announcements-grid {
-         margin: 30px 0;
+         margin: 32px 0;
       }
    }
 
    .filters-container {
-      padding: 24px !important;
+      padding: 20px !important;
       border-radius: 12px;
       background-color: #FFFFFF;
 
@@ -578,6 +578,10 @@
          .form-buttons {
             width: 100%;
 
+            .btn {
+               height: 42px;
+            }
+
             &.announce_types {
                padding: 8px;
                border-radius: 12px;
@@ -586,26 +590,8 @@
 
                .form-group {
                   button {
-                     height: 42px !important;
+                     height: 32px !important;
                   }
-               }
-            }
-         }
-      }
-
-      &.mini {
-         .filters-container__head {
-            .announce_types {
-               .form-group {
-                  .btn {
-                     height: 36px !important;
-                  }
-               }
-            }
-
-            .form-buttons {
-               .btn {
-                  height: 42px;
                }
             }
          }

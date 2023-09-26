@@ -3,13 +3,16 @@
       :is="tag"
       :class="{
       [classes]: classes,
-      [`btn btn--${className} full-width`]: !classes,
+      [`monetization-btn btn btn--${className} full-width`]: !classes,
       'disabled': disabled
     }"
       @click="openPaymentModal"
    >
       <div :class="['d-flex align-items-center', {'disabled': disabled}]">
-         {{ $t('featured_ads_2') }}
+         <div class="wrapp">
+            <span>{{ $t('featured_ads_2') }}</span>
+            <span>2 AZN-dən</span>
+         </div>
 
          <inline-svg src="/icons/megaphone.svg"/>
 
@@ -114,7 +117,7 @@ export default {
 
    props: {
       className: {
-         default: 'red-opacity-2',
+         default: 'grey-new-2',
       },
       multipleAnnouncements: {
          default: () => []
@@ -316,24 +319,72 @@ export default {
 </script>
 
 <style lang="scss">
-.btn--red-opacity-2 {
-   svg {
-      margin-left: 9px;
-   }
-
-   &.disabled {
-      cursor: context-menu;
-      opacity: 50%;
-      pointer-events: all;
-      @media (min-width: 992px) {
-         .btn--red-opacity-2:hover {
-            color: #fff;
-            border-radius: 8px;
-            border: none;
-            background-color: rgba(248, 23, 52, 0.72);
+   .monetization-btn {
+      &:hover {
+         .wrapp {
+            span {
+               color: #FFFFFF;
+            }
          }
+      }
 
+      .wrapp {
+         display: flex;
+         flex-direction: column;
+         gap: 4px;
+         margin-right: 7px;
+
+         span {
+            color: #155EEF;
+            font-size: 15px;
+            font-weight: 500;
+            line-height: 18px;
+
+            &:last-child {
+               font-size: 12px;
+               font-weight: 400;
+               line-height: 14px;
+            }
+         }
       }
    }
-}
+
+   .btn--red-opacity-2 {
+      svg {
+         margin-left: 9px;
+      }
+
+      &.disabled {
+         cursor: context-menu;
+         opacity: 50%;
+         pointer-events: all;
+         @media (min-width: 992px) {
+            .btn--red-opacity-2:hover {
+               color: #fff;
+               border-radius: 8px;
+               border: none;
+               background-color: rgba(248, 23, 52, 0.72);
+            }
+
+         }
+      }
+   }
+
+   .dark-mode {
+      .monetization-btn {
+         &:hover {
+            svg {
+               path {
+                  fill: #FFFFFF;
+               }
+            }
+         }
+
+         svg {
+            path {
+               fill: #155EEF;
+            }
+         }
+      }
+   }
 </style>

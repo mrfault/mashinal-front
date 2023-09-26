@@ -773,6 +773,14 @@
 }
 
 .dark-mode {
+   .btn-inline {
+      &.white {
+         span {
+            color: $grey-5-new;
+         }
+      }
+   }
+
    .form-group {
       .select-menu_label {
          background-color: $dark-new;
