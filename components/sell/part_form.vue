@@ -1,258 +1,295 @@
 <template>
    <div class="part_form">
-      <div class="divider mobile-column">
-         <form-select
-            :label="$t('category')"
-            :options="partCategories.filter((part) => ![18, 39].includes(part.id)).map((part) => ({...part, name: part.name[locale]}))"
-            :clear-placeholder="true"
-            :clear-option="false"
-            :new-label="false"
-            v-model="form.category_id"
-            :class="{full_grid: !(form.category_id && Object.values(partFilters).length)}"
-            @change="onChangeCategory"
-         />
-         <template v-if="form.category_id && Object.values(partFilters).length">
+      <div class="head_section divider mobile-column">
+         <div class="inner_left">
             <form-select
-               v-if="form.category_id && partFilters?.sub_categories.length"
-               :label="$t('sub_category')"
-               :options="partFilters?.sub_categories"
+               :label="$t('category')"
+               :options="partCategories.filter((part) => ![18, 39].includes(part.id)).map((part) => ({...part, name: part.name[locale]}))"
                :clear-placeholder="true"
                :clear-option="false"
                :new-label="false"
-               v-model="form.sub_category_id"
-               @change="onChangeSubCategory()"
+               v-model="form.category_id"
+               :class="{full_grid: !(form.category_id && Object.values(partFilters).length)}"
+               @change="onChangeCategory"
             />
-            <form-select
-               v-if="form.category_id && partFilters?.brands.length"
-               :label="$t('mark')"
-               :options="partFilters?.brands"
-               :clear-placeholder="true"
-               :clear-option="false"
-               :new-label="false"
-               v-model="form.brand_id"
-               @change="onChangeSubCategory()"
+            <template v-if="form.category_id && Object.values(partFilters).length">
+               <form-select
+                  v-if="form.category_id && partFilters?.sub_categories.length"
+                  :label="$t('sub_category')"
+                  :options="partFilters?.sub_categories"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  :new-label="false"
+                  v-model="form.sub_category_id"
+                  @change="onChangeSubCategory()"
+               />
+               <form-select
+                  v-if="form.category_id && partFilters?.brands.length"
+                  :label="$t('mark')"
+                  :options="partFilters?.brands"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  :new-label="false"
+                  v-model="form.brand_id"
+                  @change="onChangeSubCategory()"
+               />
+            </template>
+            <form-text-input
+               key="title"
+               v-model="form.title"
+               :placeholder="$t('title_max_character', {max: 25})"
+               :class="{form_error: $v.form.title.$error}"
+               :disabled="!readyAllParameters"
+               :maxlength="25"
+               :invalid="$v.form.title.$error"
             />
-         </template>
-      </div>
-      <template v-if="form.brand_id || form.sub_category_id">
-         <form-text-input
-            key="title"
-            v-model="form.title"
-            :placeholder="$t('title_max_character', {max: 25})"
-            :class="{form_error: $v.form.title.$error}"
-            @change="preview.title = $event || $t('headline')"
-            :maxlength="25"
-            :invalid="$v.form.title.$error"
-         />
-         <form-text-input
-            key="product_code"
-            v-model="form.product_code"
-            :placeholder="$t('product_code_not_required')"
-            :maxlength="32"
-         />
-         <div class="divider">
-            <form-radio
-               :id="'1'"
-               :label="$t('new')"
-               input-name="is_new"
-               v-model="form.is_new"
-               :radio-value="1"
-            />
-            <form-radio
-               :id="'2'"
-               :label="$t('part_used')"
-               input-name="is_new"
-               v-model="form.is_new"
-               :radio-value="0"
-            />
-         </div>
-         <div class="divider">
-            <form-radio
-               :id="'3'"
-               :label="$t('original')"
-               input-name="is_original"
-               v-model="form.is_original"
-               :radio-value="1"
-            />
-            <form-radio
-               :id="'4'"
-               :label="$t('duplicate')"
-               input-name="is_original"
-               v-model="form.is_original"
-               :radio-value="0"
-            />
-         </div>
-         <form-checkbox
-            v-if="hasComponent('run_flat')"
-            v-model="form.run_flat"
-            :label="$t('run_flat')"
-            input-name="run_flat"
-            transparent
-         />
-         <template v-if="form.category_id === 27">
-            <form-numeric-input
-               :placeholder="$t('starting_current')"
-               v-model="form.starting_current"
+            <form-text-input
+               key="product_code"
+               v-model="form.product_code"
+               :disabled="!readyAllParameters"
+               :placeholder="$t('product_code_not_required')"
+               :maxlength="32"
             />
             <div class="divider">
-               <form-numeric-input
-                  :placeholder="$t('length')"
-                  v-model="form.length"
+               <form-radio
+                  :id="'1'"
+                  :label="$t('new')"
+                  input-name="is_new"
+                  :disabled="!readyAllParameters"
+                  v-model="form.is_new"
+                  :radio-value="1"
                />
-               <form-numeric-input
-                  :placeholder="$t('width')"
-                  v-model="form.width"
+               <form-radio
+                  :id="'2'"
+                  :label="$t('part_used')"
+                  input-name="is_new"
+                  :disabled="!readyAllParameters"
+                  v-model="form.is_new"
+                  :radio-value="0"
                />
             </div>
             <div class="divider">
+               <form-radio
+                  :id="'3'"
+                  :label="$t('original')"
+                  input-name="is_original"
+                  :disabled="!readyAllParameters"
+                  v-model="form.is_original"
+                  :radio-value="1"
+               />
+               <form-radio
+                  :id="'4'"
+                  :label="$t('duplicate')"
+                  input-name="is_original"
+                  :disabled="!readyAllParameters"
+                  v-model="form.is_original"
+                  :radio-value="0"
+               />
+            </div>
+            <form-checkbox
+               v-if="hasComponent('run_flat')"
+               v-model="form.run_flat"
+               :label="$t('run_flat')"
+               input-name="run_flat"
+               transparent
+            />
+            <template v-if="form.category_id === 27">
                <form-numeric-input
-                  :placeholder="$t('height')"
+                  :placeholder="$t('starting_current')"
+                  v-model="form.starting_current"
+               />
+               <div class="divider">
+                  <form-numeric-input
+                     :placeholder="$t('length')"
+                     v-model="form.length"
+                  />
+                  <form-numeric-input
+                     :placeholder="$t('width')"
+                     v-model="form.width"
+                  />
+               </div>
+               <div class="divider">
+                  <form-numeric-input
+                     :placeholder="$t('height')"
+                     v-model="form.height"
+                  />
+                  <form-numeric-input
+                     :placeholder="$t('weight')"
+                     v-model="form.weight"
+                  />
+               </div>
+            </template>
+            <div class="divider"
+                 v-if="hasComponent('thorns') || (form.category_id !== 27 && hasComponent('height'))">
+               <form-select
+                  v-if="hasComponent('thorns')"
+                  :label="$t('thorns')"
+                  :options="partFilters?.filters.find((f) => f.key === 'thorns').values.map((v) => ({...v, name: $t(v.name)}))"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  :new-label="false"
+                  v-model="form.thorns"
+               />
+               <form-select
+                  v-if="form.category_id !== 27 && hasComponent('height')"
+                  :label="$t('height')"
+                  :options="partFilters?.filters.find((f) => f.key === 'height').values"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  :new-label="false"
                   v-model="form.height"
+                  :class="{form_error: $v.form.height.$error}"
+                  :invalid="$v.form.height.$error"
                />
+            </div>
+            <div class="divider"
+                 v-if="hasComponent('number_of_mounting_holes') || hasComponent('shine_width') || hasComponent('diameter')">
+               <form-select
+                  v-if="hasComponent('number_of_mounting_holes')"
+                  :class="{form_error: $v.form.number_of_mounting_holes.$error}"
+                  :label="$t('number_of_mounting_holes')"
+                  :options="partFilters?.filters.find((f) => f.key === 'number_of_mounting_holes').values"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  :new-label="false"
+                  v-model="form.number_of_mounting_holes"
+                  :invalid="$v.form.number_of_mounting_holes.$error"
+               />
+               <form-select
+                  v-if="hasComponent('shine_width')"
+                  :class="{form_error: $v.form.shine_width.$error}"
+                  :label="$t('shine_width')"
+                  :options="partFilters?.filters.find((f) => f.key === 'shine_width').values"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  :new-label="false"
+                  v-model="form.shine_width"
+                  :invalid="$v.form.shine_width.$error"
+               />
+               <form-select
+                  v-if="hasComponent('diameter')"
+                  :class="{form_error: $v.form.diameter.$error}"
+                  :label="$t('diameter')"
+                  :options="partFilters?.filters.find((f) => f.key === 'diameter').values"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  :new-label="false"
+                  v-model="form.diameter"
+                  :invalid="$v.form.diameter.$error"
+               />
+            </div>
+            <div class="divider mobile-column">
+               <form-checkbox
+                  v-model="form.have_delivery"
+                  :label="$t('have_delivery')"
+                  input-name="have_delivery"
+                  transparent
+               />
+               <form-checkbox
+                  v-model="form.have_warranty"
+                  :label="$t('have_warranty')"
+                  input-name="have_warranty"
+                  transparent
+               />
+            </div>
+            <div class="divider mobile-column" v-if="form.category_id !== 27 && form.category_id !== 19">
                <form-numeric-input
-                  :placeholder="$t('weight')"
-                  v-model="form.weight"
+                  :placeholder="$t('price')"
+                  v-model="form.price"
+                  :class="{form_error: $v.form.price.$error}"
+                  :invalid="$v.form.price.$error"
                />
+               <div class="price_types">
+                  <toggle-group :items="priceTypes" :default-value="form.currency || 1" v-slot="{ item }"
+                                @change="toggleCurrency">
+                     <div class="price_item">
+                        <p>{{ item.name[locale] }}</p>
+                     </div>
+                  </toggle-group>
+               </div>
             </div>
-         </template>
-         <div class="divider" v-if="hasComponent('thorns') || (form.category_id !== 27 && hasComponent('height'))">
-            <form-select
-               v-if="hasComponent('thorns')"
-               :label="$t('thorns')"
-               :options="partFilters?.filters.find((f) => f.key === 'thorns').values.map((v) => ({...v, name: $t(v.name)}))"
-               :clear-placeholder="true"
-               :clear-option="false"
-               :new-label="false"
-               v-model="form.thorns"
-            />
-            <form-select
-               v-if="form.category_id !== 27 && hasComponent('height')"
-               :label="$t('height')"
-               :options="partFilters?.filters.find((f) => f.key === 'height').values"
-               :clear-placeholder="true"
-               :clear-option="false"
-               :new-label="false"
-               v-model="form.height"
-               :class="{form_error: $v.form.height.$error}"
-               :invalid="$v.form.height.$error"
-            />
-         </div>
-         <div class="divider"
-              v-if="hasComponent('number_of_mounting_holes') || hasComponent('shine_width') || hasComponent('diameter')">
-            <form-select
-               v-if="hasComponent('number_of_mounting_holes')"
-               :class="{form_error: $v.form.number_of_mounting_holes.$error}"
-               :label="$t('number_of_mounting_holes')"
-               :options="partFilters?.filters.find((f) => f.key === 'number_of_mounting_holes').values"
-               :clear-placeholder="true"
-               :clear-option="false"
-               :new-label="false"
-               v-model="form.number_of_mounting_holes"
-               :invalid="$v.form.number_of_mounting_holes.$error"
-            />
-            <form-select
-               v-if="hasComponent('shine_width')"
-               :class="{form_error: $v.form.shine_width.$error}"
-               :label="$t('shine_width')"
-               :options="partFilters?.filters.find((f) => f.key === 'shine_width').values"
-               :clear-placeholder="true"
-               :clear-option="false"
-               :new-label="false"
-               v-model="form.shine_width"
-               :invalid="$v.form.shine_width.$error"
-            />
-            <form-select
-               v-if="hasComponent('diameter')"
-               :class="{form_error: $v.form.diameter.$error}"
-               :label="$t('diameter')"
-               :options="partFilters?.filters.find((f) => f.key === 'diameter').values"
-               :clear-placeholder="true"
-               :clear-option="false"
-               :new-label="false"
-               v-model="form.diameter"
-               :invalid="$v.form.diameter.$error"
-            />
-         </div>
-         <div class="divider mobile-column">
             <form-checkbox
-               v-model="form.have_delivery"
-               :label="$t('have_delivery')"
-               input-name="have_delivery"
+               v-if="form.category_id !== 27 && form.category_id !== 19 && form.category_id !== 20"
+               v-model="form.is_negotiable"
+               :label="$t('negotiable_price')"
+               input-name="is_negotiable"
                transparent
+               @change="toggleIsNegotiation"
             />
+         </div>
+         <div class="inner_right">
+            <div class="divider mobile-column" v-if="form.category_id === 27 || form.category_id === 19">
+               <form-numeric-input
+                  :placeholder="$t('price')"
+                  v-model="form.price"
+                  :class="{form_error: $v.form.price.$error}"
+                  :invalid="$v.form.price.$error"
+               />
+               <div class="price_types">
+                  <toggle-group :items="priceTypes" :default-value="form.currency || 1" v-slot="{ item }"
+                                @change="toggleCurrency">
+                     <div class="price_item">
+                        <p>{{ item.name[locale] }}</p>
+                     </div>
+                  </toggle-group>
+               </div>
+            </div>
             <form-checkbox
-               v-model="form.have_warranty"
-               :label="$t('have_warranty')"
-               input-name="have_warranty"
+               v-if="form.category_id === 27 || form.category_id === 19 || form.category_id === 20"
+               v-model="form.is_negotiable"
+               :label="$t('negotiable_price')"
+               input-name="is_negotiable"
                transparent
+               @change="toggleIsNegotiation"
             />
-         </div>
-         <div class="divider mobile-column">
-            <form-numeric-input
-               :placeholder="$t('price')"
-               v-model="form.price"
-               :class="{form_error: $v.form.price.$error}"
-               :invalid="$v.form.price.$error"
-               @change="preview.price = $event ? $event + ' ' + (form.currency.name?.[locale] || priceTypes.find((pr) => pr.id === form.currency).name?.[locale]) : 0"
-            />
-            <div class="price_types">
-               <toggle-group :items="priceTypes" :default-value="form.currency || 1" v-slot="{ item }"
-                             @change="toggleCurrency">
-                  <div class="price_item">
-                     <p>{{ item.name[locale] }}</p>
-                  </div>
-               </toggle-group>
+            <div class="part_form_with_info">
+               <form-textarea
+                  v-model="form.description"
+                  :placeholder="$t('additional_info')"
+                  :maxlength="600"
+               />
+               <div class="part_form_with_info_inner">
+                  <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
+                  <p>{{ $t("additional_info_warning") }}</p>
+               </div>
             </div>
-         </div>
-         <form-checkbox
-            v-model="form.is_negotiable"
-            :label="$t('negotiable_price')"
-            input-name="is_negotiable"
-            transparent
-            @change="toggleIsNegotiation"
-         />
-         <form-select v-if="Object.values(partFilters).length"
-                      :label="$t('region')"
-                      :options="partFilters?.regions"
-                      v-model="form.region_id"
-                      :clear-placeholder="true"
-                      :clear-option="false"
-                      :new-label="false"
-                      has-search
-                      :invalid="$v.form.region_id.$error"
-         />
-         <div class="part_form_with_info">
-            <form-textarea
-               v-model="form.description"
-               :placeholder="$t('additional_info')"
-               @change="preview.description = $event || $t('additional_info')"
-               :maxlength="600"
-            />
-            <div class="part_form_with_info_inner">
-               <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
-               <p>{{ $t("additional_info_warning") }}</p>
-            </div>
-         </div>
-         <div class="part_form_with_info">
-            <form-keywords v-model="form.keywords"/>
-            <div class="part_form_with_info_inner">
-               <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
-               <p>{{ $t("sell_parts_keywords_info") }}</p>
-            </div>
-         </div>
-         <div class="part_form_with_info" :class="{form_error: $v.form.saved_images.$error}">
-            <client-only>
-               <image-component :type="'parts'" :initial-form="form" :announcement="announcement" :deletedFiles="deletedFiles"/>
-            </client-only>
-            <div class="part_form_with_info_inner">
-               <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
-               <div class="warning_texts">
-                  <p :class="{isInvalid: $v.form.saved_images.$error}">{{ $t("part_images_info") }}</p>
-                  <p :class="{isInvalid: $v.form.saved_images.$error}">{{ $t("add_image_max_warning") }}</p>
+            <div class="part_form_with_info">
+               <form-keywords v-model="form.keywords"/>
+               <div class="part_form_with_info_inner">
+                  <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
+                  <p>{{ $t("sell_parts_keywords_info") }}</p>
                </div>
             </div>
          </div>
-      </template>
+      </div>
+      <div class="part_form_with_info" :class="{form_error: $v.form.saved_images.$error}">
+         <client-only>
+            <image-component :type="'parts'" :initial-form="form" :announcement="announcement"
+                             :deletedFiles="deletedFiles"/>
+         </client-only>
+         <div class="part_form_with_info_inner">
+            <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
+            <div class="warning_texts">
+               <p :class="{isInvalid: $v.form.saved_images.$error}">{{ $t("part_images_info") }}</p>
+               <p :class="{isInvalid: $v.form.saved_images.$error}">{{ $t("add_image_max_warning") }}</p>
+            </div>
+         </div>
+      </div>
+      <!--      <template v-if="form.brand_id || form.sub_category_id">-->
+
+
+      <!--         <form-select v-if="Object.values(partFilters).length"-->
+      <!--                      :label="$t('region')"-->
+      <!--                      :options="partFilters?.regions"-->
+      <!--                      v-model="form.region_id"-->
+      <!--                      :clear-placeholder="true"-->
+      <!--                      :clear-option="false"-->
+      <!--                      :new-label="false"-->
+      <!--                      has-search-->
+      <!--                      :invalid="$v.form.region_id.$error"-->
+      <!--         />-->
+
+      <!--      </template>-->
    </div>
 </template>
 
@@ -267,12 +304,7 @@ export default {
    components: {FormKeywords, ImageComponent, ToggleGroup},
    props: {
       announcement: {
-         type: Object,
-         required: true
-      },
-      preview: {
-         type: Object,
-         default: {}
+         type: Object
       },
       isReady: {
          type: Boolean,
@@ -284,7 +316,10 @@ export default {
       }
    },
    computed: {
-      ...mapGetters(['partCategories', 'partFilters'])
+      ...mapGetters(['partCategories', 'partFilters']),
+      readyAllParameters() {
+         return this.form.brand_id || this.form.sub_category_id
+      },
    },
    data() {
       return {
@@ -339,7 +374,6 @@ export default {
       ...mapActions(['getPartFilters']),
       async onChangeCategory() {
          this.clearFields(['brand_id', 'sub_category_id'])
-         this.$emit('changeType', this.form.category_id)
          if (this.form.category_id) {
             await this.getPartFilters(this.form.category_id);
          }
@@ -347,14 +381,10 @@ export default {
       toggleIsNegotiation(val) {
          if (val) {
             this.form.price = 0
-            this.preview.price = this.$t('is_negotiable')
-         } else {
-            this.preview.price = this.form.price ? this.form.price + ' ' + (this.form.currency.name?.[this.locale] || this.priceTypes.find((pr) => pr.id === this.form.currency).name?.[locale]) : `0 ${this.priceTypes.find((pr) => pr.id === this.form.currency).name[this.locale]}`
          }
       },
       toggleCurrency(currency) {
          this.form.currency = currency.id
-         this.preview.price = this.form.price ? this.form.price + ' ' + (currency.name?.[this.locale] || 'AZN') : 0
       },
       onChangeSubCategory() {
          this.form = {
@@ -406,21 +436,10 @@ export default {
       }
    },
    watch: {
-      'form.brand_id'() {
-         this.$emit("navigationProgress", {id: 1, status: !!this.form.brand_id})
-         this.$emit("done", !!((this.form.brand_id) && Object.values(this.partFilters).length))
-      },
-      'form.sub_category_id'() {
-         this.$emit("navigationProgress", {id: 1, status: !!this.form.sub_category_id})
-         this.$emit("done", !!((this.form.sub_category_id) && Object.values(this.partFilters).length))
-      },
       'form.price'() {
          if (this.form.price > 0) {
             this.form.is_negotiable = false
          }
-      },
-      "form.saved_images"() {
-         this.$emit("navigationProgress", {id: 3, status: this.form.saved_images.length > 0})
       },
       isReady() {
          this.$v.form.$touch()
@@ -460,12 +479,15 @@ export default {
             sub_category_id: this.form.sub_category_id
          } : {...newForm, brand_id: this.form.brand_id}
 
-         this.$emit("getForm", {form: filteredForm, deletedImages: (this.isEdit && this.deletedFiles.length) ? this.deletedFiles : []})
+         this.$emit("getForm", {
+            form: filteredForm,
+            deletedImages: (this.isEdit && this.deletedFiles.length) ? this.deletedFiles : []
+         })
       }
    },
    updated() {
       const announceDescription = ['title',
-         'price',].every((key) => this.form[key]) &&
+            'price',].every((key) => this.form[key]) &&
          (this.hasComponent('diameter') ? this.form.diameter : true) &&
          (this.form.category_id !== 27 && this.hasComponent('height') ? this.form.height : true) &&
          (this.hasComponent('shine_width') ? this.form.shine_width : true) &&
@@ -516,7 +538,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .part_form {
    display: flex;
    flex-grow: 1;
@@ -544,8 +566,27 @@ export default {
       }
    }
 
+   .head_section {
+      .inner_left, .inner_right {
+         display: flex;
+         flex-direction: column;
+         gap: 20px
+      }
+   }
+
    &_with_info {
       position: relative;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+
+      .form-group {
+         flex: 1;
+
+         .textarea, textarea, input {
+            height: 100%;
+         }
+      }
 
       &_inner {
          display: flex;

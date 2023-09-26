@@ -1,325 +1,327 @@
 <template>
    <div class="moto_form">
-      <form-select
-         v-if="!isEdit"
-         :label="$t('type_of_motos')"
-         :options="motoOptionsV2"
-         :clear-placeholder="true"
-         :clear-option="false"
-         :new-label="false"
-         :object-in-value="true"
-         has-search
-         v-model="form.type_of_moto"
-         @change="onChangeMotoType($event)"
-      />
-      <form-select
-         v-if="!isEdit && form.type_of_moto && motoBrands.length"
-         :label="$t('brand_name')"
-         :options="form.type_of_moto ? motoBrands : []"
-         :clear-placeholder="true"
-         :clear-option="false"
-         :new-label="false"
-         :object-in-value="true"
-         has-search
-         v-model="form.brand"
-         @change="onChangeMotoBrand($event)"
-      />
-      <form-select
-         v-if="!isEdit && form.brand && motoModelsV2.length "
-         :label="$t('model_name')"
-         :options="form.brand ? motoModelsV2 : []"
-         :clear-placeholder="true"
-         :clear-option="false"
-         :new-label="false"
-         :object-in-value="true"
-         has-search
-         v-model="form.model"
-         @change="onChangeMotoModel($event)"
-      />
-      <template v-if="isEdit || form.model && motoModelsV2.length">
-         <form-select
-            v-if="sellOptions.years"
-            :class="{form_error: $v.form.year.$error}"
-            :label="$t('prod_year')"
-            :options="sellOptions?.years"
-            :clear-placeholder="true"
-            :clear-option="false"
-            :new-label="false"
-            :has-search="true"
-            v-model="form.year"
-            :invalid="$v.form.year.$error"
-            @change="preview.year = ($event || '0000')"
-         />
-         <div class="divider">
-            <form-numeric-input
-               :class="{form_error: $v.form.volume.$error}"
-               :placeholder="$t('engine_volume2')"
-               v-model="form.volume"
-               @change="preview.car_catalog.capacity = ($event / 1000).toFixed(1)"
-               :invalid="$v.form.volume.$error"
-            />
-            <form-numeric-input
-               :placeholder="$t('horse_power')"
-               v-model="form.power"
-            />
-         </div>
-         <div class="divider">
+      <div class="head_section divider mobile-column">
+         <div class="inner_left">
             <form-select
-               :label="$t('fuel')"
-               :options="motoOptions?.config?.fuel_type?.values.map((f) => ({...f, name: $t(f.name)}))"
+               v-if="!isEdit"
+               :label="$t('type_of_motos')"
+               :options="motoOptionsV2"
                :clear-placeholder="true"
                :clear-option="false"
                :new-label="false"
-               v-model="form.fuel"
-            />
-            <form-select
-               v-if="motoOptions?.config?.box?.sell_values[form.type_of_moto.id]?.length"
-               :label="$t('box')"
-               :options="motoOptions?.config?.box?.sell_values[form.type_of_moto.id]?.map((f) => ({...f, id: f.key, name: $t(f.name)}))"
-               :clear-placeholder="true"
-               :clear-option="false"
-               :new-label="false"
-               v-model="form.box"
-            />
-         </div>
-         <div class="divider">
-            <form-select
-               :class="{full_grid: !motoOptions?.config?.drive?.sell_values[form.type_of_moto.id]?.length, form_error: $v.form.color.$error}"
-               :label="$t('color')"
-               :options="colors"
-               :clear-placeholder="true"
-               :clear-option="false"
-               :new-label="false"
+               :object-in-value="true"
                has-search
-               v-model="form.color"
-               :invalid="$v.form.color.$error"
+               v-model="form.type_of_moto"
+               @change="onChangeMotoType($event)"
             />
-
             <form-select
-               v-if="motoOptions?.config?.drive?.sell_values[form.type_of_moto.id]?.length"
-               :label="$t('gearing')"
-               :options="motoOptions?.config?.drive?.sell_values[form.type_of_moto.id]?.map((f) => ({...f, name: $t(f.name)}))"
+               :label="$t('brand_name')"
+               :options="form.type_of_moto ? motoBrands : []"
                :clear-placeholder="true"
                :clear-option="false"
                :new-label="false"
-               v-model="form.gearing"
+               :object-in-value="true"
+               has-search
+               v-model="form.brand"
+               :disabled="!(form.type_of_moto && motoBrands.length > 0)"
+               @change="onChangeMotoBrand($event)"
             />
-         </div>
-         <div class="divider mobile-column">
-            <form-numeric-input
-               :placeholder="$t('mileage')"
-               :class="{form_error: $v.form.mileage.$error}"
-               :max-value="form.is_new ? (form.mileage_type === 1 ? 500 : 310) : 10000000"
-               v-model="form.mileage"
-               @change="preview.mileage = $event ? $event  + ' ' + mileageTypeName : 0"
-               :invalid="$v.form.mileage.$error"
+            <form-select
+               :label="$t('model_name')"
+               :options="form.brand ? motoModelsV2 : []"
+               :clear-placeholder="true"
+               :clear-option="false"
+               :new-label="false"
+               :object-in-value="true"
+               has-search
+               v-model="form.model"
+               :disabled="!(form.brand && motoModelsV2.length > 0)"
+               @change="onChangeMotoModel($event)"
             />
-            <div class="mileage_types">
-               <form-radio
-                  :id="'1'"
-                  :label="$t('char_kilometre')"
-                  input-name="milage"
-                  v-model="form.mileage_type"
-                  :radio-value="1"
+            <form-select
+               v-if="sellOptions.years"
+               :class="{form_error: $v.form.year.$error}"
+               :label="$t('prod_year')"
+               :options="sellOptions?.years"
+               :clear-placeholder="true"
+               :clear-option="false"
+               :new-label="false"
+               :has-search="true"
+               v-model="form.year"
+               :invalid="$v.form.year.$error"
+               :disabled="!readyAllParameters"
+            />
+            <form-select
+               :label="$t('engine_power_system')"
+               :options="motoOptions?.config?.engine?.sell_values[form.type_of_moto.id]?.map((f) => ({...f, name: $t(f.name)}))"
+               :clear-placeholder="true"
+               :clear-option="false"
+               :new-label="false"
+               v-model="form.engine"
+            />
+            <div class="divider">
+               <form-numeric-input
+                  :class="{form_error: $v.form.volume.$error}"
+                  :placeholder="$t('engine_volume2')"
+                  v-model="form.volume"
+                  :disabled="!readyAllParameters"
+                  :invalid="$v.form.volume.$error"
                />
-               <form-radio
-                  :id="'2'"
-                  :label="$t('ml')"
-                  input-name="milage"
-                  v-model="form.mileage_type"
-                  :radio-value="2"
+               <form-numeric-input
+                  :placeholder="$t('horse_power')"
+                  :disabled="!readyAllParameters"
+                  v-model="form.power"
                />
             </div>
+            <div class="comment">
+               <form-textarea
+                  v-model="form.comment"
+                  :placeholder="$t('additional_info')"
+                  :maxlength="600"
+               />
+               <div class="comment_info">
+                  <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
+                  <p>{{ $t("additional_info_warning") }}</p>
+               </div>
+            </div>
          </div>
-         <div class="divider">
-            <form-radio
-               :id="'3'"
-               :type="'checkbox'"
-               :label="$t('new')"
-               input-name="is_new"
-               v-model="form.is_new"
-               :radio-value="1"
-               @change="onChangeIsNew"
-            />
-            <form-radio
-               :id="'4'"
-               :type="'checkbox'"
-               :label="$t('broken')"
-               input-name="beaten"
-               v-model="form.beaten"
-               :radio-value="1"
-            >
-               <template v-slot:suffix>
-                  <inline-svg
-                     :src="'/icons/info.svg'"
-                     class="beaten_suffix"
-                     v-tooltip="
+         <div class="inner_right">
+            <div class="divider">
+               <form-select
+                  :label="$t('fuel')"
+                  :options="motoOptions?.config?.fuel_type?.values.map((f) => ({...f, name: $t(f.name)}))"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  :new-label="false"
+                  :disabled="!readyAllParameters"
+                  v-model="form.fuel"
+               />
+               <form-select
+                  v-if="motoOptions?.config?.box?.sell_values[form.type_of_moto.id]?.length"
+                  :label="$t('box')"
+                  :options="motoOptions?.config?.box?.sell_values[form.type_of_moto.id]?.map((f) => ({...f, id: f.key, name: $t(f.name)}))"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  :new-label="false"
+                  :disabled="!readyAllParameters"
+                  v-model="form.box"
+               />
+            </div>
+            <div class="divider">
+               <form-select
+                  :class="{full_grid: !motoOptions?.config?.drive?.sell_values[form.type_of_moto.id]?.length, form_error: $v.form.color.$error}"
+                  :label="$t('color')"
+                  :options="colors"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  :new-label="false"
+                  has-search
+                  v-model="form.color"
+                  :disabled="!readyAllParameters"
+                  :invalid="$v.form.color.$error"
+               />
+
+               <form-select
+                  v-if="motoOptions?.config?.drive?.sell_values[form.type_of_moto.id]?.length"
+                  :label="$t('gearing')"
+                  :options="motoOptions?.config?.drive?.sell_values[form.type_of_moto.id]?.map((f) => ({...f, name: $t(f.name)}))"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  :new-label="false"
+                  :disabled="!readyAllParameters"
+                  v-model="form.gearing"
+               />
+            </div>
+            <div class="divider mobile-column">
+               <form-select
+                  v-if="form.type_of_moto?.id !== 2"
+                  :label="$t('number_of_cylinders')"
+                  :options="motoOptions?.config?.cylinders?.sell_values[form.type_of_moto.id]?.map((f) => ({...f, name: $t(f.name)}))"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  :new-label="false"
+                  :disabled="!readyAllParameters"
+                  v-model="form.cylinders"
+               />
+               <form-select
+                  :label="$t('number_of_vehicles')"
+                  :options="motoOptions?.config?.number_of_vehicles?.values.map((f) => ({...f, name: $t(f.name)}))"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  :new-label="false"
+                  :disabled="!readyAllParameters"
+                  v-model="form.number_of_vehicles"
+               />
+               <form-numeric-input
+                  :placeholder="$t('mileage')"
+                  :class="{form_error: $v.form.mileage.$error}"
+                  :max-value="form.is_new ? (form.mileage_type === 1 ? 500 : 310) : 10000000"
+                  v-model="form.mileage"
+                  :disabled="!readyAllParameters"
+                  :invalid="$v.form.mileage.$error"
+               />
+               <radio-group
+                  class="divider"
+                  v-model="form.mileage_type"
+                  :disabledAll="!readyAllParameters"
+                  :options="[{key:1, name: 'char_kilometre'},{key:2, name: 'ml'}]"
+               />
+            </div>
+            <div class="divider">
+               <form-radio
+                  :id="'3'"
+                  :type="'checkbox'"
+                  :label="$t('new')"
+                  input-name="is_new"
+                  v-model="form.is_new"
+                  :radio-value="1"
+                  :disabled="!readyAllParameters"
+                  @change="onChangeIsNew"
+               />
+               <form-radio
+                  :id="'4'"
+                  :type="'checkbox'"
+                  :label="$t('bitie2')"
+                  input-name="beaten"
+                  v-model="form.beaten"
+                  :disabled="!readyAllParameters"
+                  :radio-value="1"
+               >
+                  <template v-slot:suffix>
+                     <inline-svg
+                        :src="'/icons/info.svg'"
+                        class="beaten_suffix"
+                        v-tooltip="
                       $t(
                         'with_significant_damage_to_body_elements_that_do_not_move_on_their_own'
                       )
                     "
-                  />
-               </template>
-            </form-radio>
-         </div>
-         <div class="divider mobile-column">
-            <form-checkbox
-               v-model="form.customs_clearance"
-               :label="$t('not_cleared')"
-               input-name="customs_clearance"
-               transparent
-            />
-            <form-checkbox
-               v-model="form.guaranty"
-               :label="$t('guaranty')"
-               input-name="guaranty"
-               transparent
-            />
-         </div>
-         <form-select
-            v-if="!user.autosalon"
-            :class="{form_error: $v.form.region_id.$error}"
-            :label="$t('city_of_sale')"
-            :options="sellOptions.regions"
-            :clear-placeholder="true"
-            :clear-option="false"
-            :new-label="false"
-            has-search
-            v-model="form.region_id"
-            :invalid="$v.form.region_id.$error"
-         />
-         <div class="divider" v-if="!user.autosalon">
-            <form-text-input
-               key="address"
-               v-model="form.address"
-               :placeholder="$t('address')"
-            />
-            <pick-on-map-button :lat="form.lat" :lng="form.lng" :address="form.address"
-                                @change-address="updateAddress" @change-latlng="updateLatLng">
-               <form-text-input :placeholder="$t('address')" v-model="form.address"/>
-            </pick-on-map-button>
-         </div>
-         <div class="divider mobile-column">
-            <form-numeric-input
-               :placeholder="$t('price')"
-               :class="{form_error: $v.form.price.$error}"
-               v-model="form.price"
-               @change="preview.price = $event ? $event + ' ' + (form.currency.name?.[locale] || priceTypes.find((pr) => pr.id === form.currency).name?.[locale]) : 0"
-               :invalid="$v.form.price.$error"
-            />
-            <div class="price_types">
-               <toggle-group :items="priceTypes" :default-value="form.currency || 1" v-slot="{ item }"
-                             @change="toggleCurrency">
-                  <div class="price_item">
-                     <p>{{ item.name[locale] }}</p>
+                     />
+                  </template>
+               </form-radio>
+            </div>
+            <div class="divider_3" v-if="!user.external_salon">
+               <form-checkbox
+                  v-model="form.tradeable"
+                  :label="$t('tradeable')"
+                  :show-input="false"
+                  :disabled="!readyAllParameters"
+                  input-name="tradeable"
+                  transparent
+               />
+               <form-checkbox
+                  v-model="form.is_rent"
+                  :label="$t('rent')"
+                  :show-input="false"
+                  :disabled="!readyAllParameters"
+                  input-name="rent"
+                  transparent
+               />
+               <form-checkbox
+                  v-model="form.credit"
+                  :label="$t('credit_possible')"
+                  :show-input="false"
+                  :disabled="!readyAllParameters"
+                  input-name="credit"
+                  transparent
+               />
+            </div>
+            <!--            <div class="divider mobile-column">-->
+            <!--               <form-checkbox-->
+            <!--                  v-model="form.customs_clearance"-->
+            <!--                  :label="$t('not_cleared')"-->
+            <!--                  input-name="customs_clearance"-->
+            <!--                  transparent-->
+            <!--               />-->
+            <!--               <form-checkbox-->
+            <!--                  v-model="form.guaranty"-->
+            <!--                  :label="$t('guaranty')"-->
+            <!--                  input-name="guaranty"-->
+            <!--                  transparent-->
+            <!--               />-->
+            <!--            </div>-->
+            <div class="divider mobile-column">
+               <form-numeric-input
+                  :placeholder="$t('price')"
+                  :class="{form_error: $v.form.price.$error}"
+                  v-model="form.price"
+                  :invalid="$v.form.price.$error"
+               />
+               <div class="price_types">
+                  <toggle-group :items="priceTypes" :default-value="form.currency || 1" v-slot="{ item }"
+                                @change="toggleCurrency">
+                     <div class="price_item">
+                        <p>{{ item.name[locale] }}</p>
+                     </div>
+                  </toggle-group>
+               </div>
+            </div>
+            <div v-if="!user.external_salon" class="car_identification divider mobile-column">
+               <div class="car_number_form">
+                  <div class="registrationMarks">
+                     <p class="mb-1">{{ $t("license_plate_number") }}</p>
+                     <div class="registrationMarks__number">
+                        <div class="registrationMarks__number-inner">
+                           <div class="">
+                              <img src="/icons/registrationMarks_icons.svg" alt="icons">
+                           </div>
+                           <div class="">
+                              <form-text-input
+                                 v-model="form.car_number"
+                                 input-class="car-number-show-popover"
+                                 :mask="'99 - A - 999'"
+                                 placeholder="__ - __ - ___"
+                              />
+                           </div>
+                        </div>
+                        <span class="registrationMarks__number-description">MASHIN.AL</span>
+                     </div>
                   </div>
-               </toggle-group>
-            </div>
-         </div>
-         <div class="divider mobile-column">
-            <form-checkbox
-               v-model="form.tradeable"
-               :label="$t('tradeable')"
-               input-name="tradeable"
-               transparent
-               @change="preview.tradeable = $event"
-            />
-            <form-checkbox
-               v-model="form.credit"
-               :label="$t('credit_possible')"
-               input-name="credit"
-               transparent
-               @change="preview.credit = $event"
-            />
-         </div>
-         <div>
-            <p class="mb-1">{{ $t("license_plate_number") }}</p>
-            <div class="divider mobile-column">
-               <form-text-input
-                  v-model="form.car_number"
-                  input-class="car-number-show-popover"
-                  img-src="/icons/circled_flag.svg"
-                  :mask="'99 - A - 999'"
-                  placeholder="__ - _ - ___"
-                  class="with-trailing"
-               />
-               <form-checkbox
-                  v-model="form.show_car_number"
-                  :label="$t('show_on_site')"
-                  input-name="show_car_number"
-                  :disabled="!form.car_number"
-                  transparent
-               />
-            </div>
-         </div>
-         <div>
-            <p class="mb-1">{{ $t("vin_carcase_number") }}</p>
-            <div class="divider mobile-column">
-               <form-text-input
-                  v-model="form.vin"
-                  :placeholder="$t('vin_carcase_number')"
-                  :mask="$maskAlphaNumeric('*****************')"
-                  class="with-trailing"
-               />
-               <form-checkbox
-                  v-model="form.show_vin"
-                  :label="$t('show_on_site')"
-                  input-name="show_vin"
-                  @change="preview.show_vin = $event"
-                  :disabled="!form.vin"
-                  transparent
-               />
-            </div>
-         </div>
-         <form-select
-            :label="$t('engine_power_system')"
-            :options="motoOptions?.config?.engine?.sell_values[form.type_of_moto.id]?.map((f) => ({...f, name: $t(f.name)}))"
-            :clear-placeholder="true"
-            :clear-option="false"
-            :new-label="false"
-            v-model="form.engine"
-         />
-         <form-select
-            v-if="form.type_of_moto?.id !== 2"
-            :label="$t('number_of_cylinders')"
-            :options="motoOptions?.config?.cylinders?.sell_values[form.type_of_moto.id]?.map((f) => ({...f, name: $t(f.name)}))"
-            :clear-placeholder="true"
-            :clear-option="false"
-            :new-label="false"
-            v-model="form.cylinders"
-         />
-         <form-select
-            :label="$t('number_of_vehicles')"
-            :options="motoOptions?.config?.number_of_vehicles?.values.map((f) => ({...f, name: $t(f.name)}))"
-            :clear-placeholder="true"
-            :clear-option="false"
-            :new-label="false"
-            v-model="form.number_of_vehicles"
-         />
-         <div class="comment">
-            <form-textarea
-               v-model="form.comment"
-               :placeholder="$t('additional_info')"
-               :maxlength="600"
-            />
-            <div class="comment_info">
-               <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
-               <p>{{ $t("additional_info_warning") }}</p>
-            </div>
-         </div>
-         <div class="comment" :class="{form_error: $v.form.saved_images.$error}">
-            <client-only>
-               <image-component :type="'moto'" :initial-form="form" :announcement="announcement" :deletedFiles="deletedFiles" />
-            </client-only>
-            <div class="comment_info">
-               <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
-               <div class="warning_texts">
-                  <p :class="{invalid_paragraph: $v.form.saved_images.$error}">{{ $t("add_image_section_warning") }}</p>
-                  <p :class="{invalid_paragraph: $v.form.saved_images.$error}">{{ $t("add_image_max_warning") }}</p>
+                  <div>
+                     <p class="mb-1">{{ $t("vin_carcase_number") }}</p>
+                     <div class="vin">
+                        <form-text-input
+                           v-model="form.vin"
+                           :placeholder="$t('vin_carcase_number')"
+                           :mask="$maskAlphaNumeric('*****************')"
+                        />
+                        <form-checkbox
+                           v-model="form.show_vin"
+                           :label="$t('show_on_site')"
+                           input-name="show_vin"
+                           :disabled="!form.vin"
+                           transparent
+                        />
+                     </div>
+                  </div>
+               </div>
+               <div class="car_number_info divider">
+                  <p>Qeydiyyat nişanın və ya BAN (VİN) nömrəni daxil etdikdə, elanınız axtarışlarda daha ön sıralarda
+                     yer alacaqdır.</p>
+                  <strong>
+                     QEYD: Daxil etdiyiniz qeydiyyat nişanı avtomobilin həqiqiliyin təsdiq edir və saytda istifadəçilərə
+                     nümayiş etdirilməyəcək!
+                  </strong>
                </div>
             </div>
          </div>
-      </template>
+      </div>
+
+
+      <div class="image_section" :class="{form_error: $v.form.saved_images.$error}">
+         <h2>Şəkillər</h2>
+         <client-only>
+            <image-component :type="'moto'" :initial-form="form" :announcement="announcement"
+                             :deletedFiles="deletedFiles"/>
+         </client-only>
+         <div class="image_info">
+            <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
+            <div class="warning_texts">
+               <p :class="{invalid_paragraph: $v.form.saved_images.$error}">{{ $t("add_image_section_warning") }}</p>
+               <p :class="{invalid_paragraph: $v.form.saved_images.$error}">{{ $t("add_image_max_warning") }}</p>
+            </div>
+         </div>
+      </div>
    </div>
 </template>
 
@@ -331,12 +333,16 @@ import {MenusDataMixin} from "~/mixins/menus-data";
 import {ToastErrorsMixin} from "~/mixins/toast-errors";
 import ImageComponent from "~/pages/sell/image-component.vue";
 import {maxValue, minLength, required, requiredIf} from "vuelidate/lib/validators";
+import RadioGroup from "~/components/moderator/RadioGroup.vue";
 
 export default {
-   components: {ImageComponent, PickOnMapButton, ToggleGroup},
+   components: {RadioGroup, ImageComponent, PickOnMapButton, ToggleGroup},
    mixins: [MenusDataMixin, ToastErrorsMixin],
    computed: {
       ...mapGetters(['motoOptionsV2', 'motoBrands', 'motoModelsV2', 'sellOptions', 'colors', 'motoOptions', 'popularOptions']),
+      readyAllParameters() {
+         return this.form.model && this.motoModelsV2.length > 0
+      },
       mileageTypeName() {
          return this.form.mileage_type === 1 ? this.$t('char_kilometre') : this.$t('ml')
       }
@@ -344,11 +350,6 @@ export default {
    props: {
       announcement: {
          type: Object,
-         required: true
-      },
-      preview: {
-         type: Object,
-         default: {}
       },
       isReady: {
          type: Boolean,
@@ -357,12 +358,15 @@ export default {
       isEdit: {
          type: Boolean,
          default: false
+      },
+      region_id: {
+         type: Number,
+         required: true
       }
    },
    data() {
       return {
          motoTypeKey: "",
-         initialAnnouncement: {...this.announcement},
          priceTypes: [
             {
                id: 1,
@@ -395,7 +399,6 @@ export default {
             beaten: false,
             customs_clearance: false,
             guaranty: false,
-            region_id: 1,
             address: "",
             lng: 0,
             lat: 0,
@@ -417,7 +420,6 @@ export default {
    },
    watch: {
       'form.mileage_type'() {
-         this.preview.mileage = this.form.mileage ? this.form.mileage + ' ' + (this.form.mileage_type === 1 ? this.$t('char_kilometre') : this.$t('ml')) : 0
          if (this.form.is_new) {
             if (this.form.mileage_type === 1 && this.form.mileage > 500) {
                this.form.mileage = 500
@@ -432,27 +434,6 @@ export default {
       },
       'form.vin'() {
          !this.form.vin && (this.form.show_vin = false)
-      },
-      'form.mileage'() {
-         this.preview.mileage = this.form.mileage ? this.form.mileage + ' ' + (this.form.mileage_type === 1 ? this.$t('char_kilometre') : this.$t('ml')) : 0
-      },
-      'form.model'() {
-         this.$emit("navigationProgress", {id: 1, status: !!this.form.model})
-         this.$emit("done", !!(this.form.model && this.motoModelsV2.length))
-      },
-      "form.saved_images"() {
-         this.$emit("navigationProgress", {id: 3, status: this.form.saved_images.length > 2})
-      },
-      form: {
-         deep: true,
-         handler() {
-            const announceDescription = ['year',
-               'color',
-               'volume',
-               'mileage',
-               'car_number', 'price'].every((key) => this.form[key]) && (!this.user.autosalon ? this.form.region_id : true)
-            this.$emit("navigationProgress", {id: 2, status: announceDescription})
-         }
       },
       isReady() {
          this.$v.form.$touch()
@@ -471,7 +452,7 @@ export default {
             box: this.form.box,
             mileage: this.form.mileage || 0,
             mileage_measure: this.form.mileage_type,
-            region_id: this.form.region_id,
+            region_id: this.region_id,
             address: this.form.address,
             lat: this.form.lat,
             lng: this.form.lng,
@@ -499,10 +480,11 @@ export default {
             number_of_vehicles: this.form.number_of_vehicles || 0,
             category: this.form.type_of_moto.id,
             youtube: {"id": "", "thumb": ""},
-
          }
-
-         this.$emit("getForm", {form: newForm, deletedImages: (this.isEdit && this.deletedFiles.length) ? this.deletedFiles : []})
+         this.$emit("getForm", {
+            form: newForm,
+            deletedImages: (this.isEdit && this.deletedFiles.length) ? this.deletedFiles : []
+         })
       }
    },
 
@@ -519,13 +501,11 @@ export default {
       async onChangeMotoBrand(val) {
          this.clearFields(['model', 'year'])
          const value = this.form.type_of_moto.value;
-         !this.isEdit && (this.announcement.brand = this.form.brand.name || this.$t('mark'))
          if (this.form.brand.name) {
             await this.getMotoModelsV2({value, id: val.id, whereHas: 0});
          }
       },
       onChangeMotoModel() {
-         !this.isEdit && (this.announcement.model = this.form.model.name || this.$t('model'))
          this.clearFields(['year'])
       },
       onChangeIsNew(isnew) {
@@ -540,7 +520,6 @@ export default {
       },
       toggleCurrency(currency) {
          this.form.currency = currency.id
-         this.preview.price = this.form.price ? this.form.price + ' ' + (currency.name?.[this.locale] || 'AZN') : 0
       },
       updateAddress(address) {
          this.form.address = address;
@@ -553,12 +532,12 @@ export default {
       clearFields(keys) {
          keys.forEach((key) => {
             this.form[key] = "";
-            this.announcement[key] = this.initialAnnouncement[key]
          })
       }
    },
    async fetch() {
-      await this.getMotoOptions();
+      // await this.getMotoOptions();
+      await this.$store.dispatch("getMotoOptions")
       await this.$store.dispatch("getPopularOptions")
    },
    mounted() {
@@ -577,7 +556,6 @@ export default {
          this.form.is_new = this.announcement.is_new ? 1 : 0
          this.form.beaten = this.announcement.status_id ? 1 : 0
          this.form.guaranty = this.announcement.guaranty
-         this.form.region_id = this.announcement.region_id
          this.form.address = this.announcement.address
          this.form.lat = Number(this.announcement.latitude)
          this.form.lng = Number(this.announcement.longitude)
@@ -609,11 +587,6 @@ export default {
                maxValue: maxValue(this.form.is_new ? 500 : 10000000)
             },
             price: {required},
-            region_id: {
-               required: requiredIf(function () {
-                  return !this.user.autosalon && !this.user.external_salon
-               })
-            },
             country_id: {
                required: requiredIf(function () {
                   return !!this.user.external_salon
@@ -641,35 +614,24 @@ export default {
       padding-right: 42px !important;
    }
 
-   .divider {
-
-      .mileage_types {
+   .head_section {
+      .inner_left, .inner_right {
          display: flex;
-         gap: 16px;
+         flex-direction: column;
+         gap: 20px
+      }
+   }
+
+   .image_section {
+      h2 {
+         margin-bottom: 20px;
       }
 
-      .price_types {
-         .price_item {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 52px;
-            padding: 0 16px;
-         }
-      }
-
-      .car_number_suffix {
-         position: absolute;
-         top: 50%;
-         transform: translateY(-50%);
-         right: 16px;
-      }
-
-      .beaten_suffix {
-         position: relative;
-         z-index: 1;
-         margin-left: auto;
-         cursor: progress;
+      .image_info {
+         display: flex;
+         align-items: center;
+         gap: 10px;
+         margin-top: 10px;
       }
    }
 
@@ -677,6 +639,15 @@ export default {
       display: flex;
       flex-direction: column;
       gap: 16px;
+      height: 100%;
+
+      .form-group {
+         height: 100%;
+
+         * {
+            height: 100%;
+         }
+      }
 
       &_info {
          display: flex;
@@ -686,6 +657,15 @@ export default {
          .invalid_paragraph {
             color: red
          }
+      }
+   }
+
+   .price_types {
+      .price_item {
+         height: 52px;
+         display: flex;
+         justify-content: center;
+         align-items: center;
       }
    }
 }
