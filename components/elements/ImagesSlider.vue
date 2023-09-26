@@ -1,7 +1,65 @@
 <template>
    <div class="images-slider" :class="{'ma-protocol-media': isProtocolMedia}">
+      <div class="toolbar" v-if="showToolbar" @click.stop>
+         <div class="toolbar__item">
+            <h2>
+               <template v-if="type === 'cars'">
+                  {{ announcement?.car_catalog?.brand?.name }} {{ announcement?.car_catalog?.model?.name }}
+               </template>
+
+               <template v-if="type === 'moto'">
+                  {{ announcement?.brand?.name }} {{ announcement?.model?.name }}
+               </template>
+
+               <template v-if="type === 'parts'">
+                  {{ announcement?.title }}
+               </template>
+            </h2>
+
+            <h2>{{ announcement?.year }}</h2>
+
+            <h2>{{ announcement?.mileage }} {{ $t('char_kilometre') }}</h2>
+
+            <h3>{{ announcement?.price }}</h3>
+         </div>
+
+         <div class="toolbar__item">
+            <call-button-multiple
+               v-if="announcement?.is_auto_salon"
+               :phones="announcement?.user?.auto_salon?.phones"
+               :announcement-id="announcement?.id_unique"
+            />
+
+            <call-button
+               v-else
+               :phone="contact?.phone"
+               :announcement-id="announcement?.id_unique"
+               :callAtOnce="'new-green-2'"
+            />
+
+            <chat-button
+               v-if="![2, 3, 4].includes(announcement.status)"
+               :announcement="announcement"
+               has-after-login
+            />
+
+<!--            <add-favorite-->
+<!--               :template="'btn'"-->
+<!--               :announcement="announcement"-->
+<!--               v-if="![0,2,3,4].includes(announcement.status)"-->
+<!--            />-->
+
+            <add-comparison
+               v-if="comparisonExceptions"
+               :template="'btn'"
+               :id="announcement.id_unique"
+            />
+         </div>
+      </div>
+
       <div class="images-slider__container">
          <div :class="['images-slider__grid', { 'has-sidebar': hasSidebar }]" @click.stop>
+
             <div class="images-slider__grid-item">
                <button
                   v-if="slides?.length > 6"
@@ -25,7 +83,7 @@
                         :class="{'active': index === activeIndex}"
 
                      >
-<!--                        @mouseenter="imagesSwiper.slideTo(index)"-->
+                        <!--                        @mouseenter="imagesSwiper.slideTo(index)"-->
                         <div
                            class="protocolVideoThumb"
                            v-if="slides.types[index] == 'video' && isProtocolMedia"
@@ -172,65 +230,10 @@
                      </div>
                   </div>
                </div>
-            </div>
 
-<!--            <div class="images-slider__grid-item" v-if="hasSidebar" >-->
-<!--               <slot name="sidebar"/>-->
-<!--            </div>-->
-         </div>
-
-         <div class="toolbar" v-if="showToolbar" @click.stop>
-            <div class="toolbar__item">
-               <h2 v-if="type === 'cars'">
-                  {{ announcement?.car_catalog?.brand?.name }} {{ announcement?.car_catalog?.model?.name }}
-               </h2>
-
-               <h2 v-else-if="type === 'moto'">
-                  {{ announcement?.brand?.name }} {{ announcement?.model?.name }}
-               </h2>
-
-               <h2 v-else-if="type === 'parts'">
-                  {{ announcement?.title }}
-               </h2>
-
-<!--               <h2 v-else-if="type === 'catalog'">-->
-<!--                  {{ announcement?.title }}-->
-<!--               </h2>-->
-
-               <h3>{{ announcement?.price }}</h3>
-            </div>
-
-            <div class="toolbar__item">
-               <call-button-multiple
-                  v-if="announcement?.is_auto_salon"
-                  :phones="announcement?.user?.auto_salon?.phones"
-                  :announcement-id="announcement?.id_unique"
-               />
-
-               <call-button
-                  v-else
-                  :phone="contact?.phone"
-                  :announcement-id="announcement?.id_unique"
-                  :callAtOnce="'new-green-2'"
-               />
-
-               <chat-button
-                  v-if="![2, 3, 4].includes(announcement.status)"
-                  :announcement="announcement"
-                  has-after-login
-               />
-
-               <add-favorite
-                  :template="'btn'"
-                  :announcement="announcement"
-                  v-if="![0,2,3,4].includes(announcement.status)"
-               />
-
-               <add-comparison
-                  v-if="comparisonExceptions"
-                  :template="'btn'"
-                  :id="announcement.id_unique"
-               />
+               <div class="images-slider__count">
+                  {{ currentSlide + 1 }} / {{ slides.main.length }}
+               </div>
             </div>
          </div>
       </div>
@@ -296,14 +299,8 @@
                // autoScrollOffset: 5,
                freeMode: true,
                initialSlide: this.currentSlide,
-               direction: 'vertical',
-               slidesPerView: 'auto',
-               spaceBetween: 12,
-               keyboard: {
-                  enabled: true,
-                  onlyInViewport: true,
-                  pageUpDown: true,
-               },
+               slidesPerView: 12,
+               spaceBetween: 16,
                mousewheel: {
                   sensitivity: 1,
                }

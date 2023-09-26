@@ -866,6 +866,7 @@ export default {
    featured_ads_2: "Önə çək",
    featured_ads_3: "Önə çəkilmiş elan",
    featured_ads_4: "Elanı irəli çək",
+   featured_ads_5: "Önə çək",
    for_the_provision_of_electronic_customs_service:
       "Elektron gömrük xidmətinin göstərilməsinə görə",
    forgot_your_password: "Şifrəni bərpa et",
@@ -875,6 +876,7 @@ export default {
    friday: "Cümə",
    from_year: "İl, min.",
    from: "min.",
+   from_2: "{price} AZN-dan",
    from_l: "l-dən",
    from_possible_left: "Qalan",
    from_possible_used: "Istifadə olunan",
@@ -2924,6 +2926,7 @@ export default {
    turbo_package_popover_description: "Turbo paketi secməklə elanını 4 dəfə tez sata ve vizual olaraq diger elanlardan daha cəlbedici edə bilərsən. Beləliklə elaninin alicilar tərəfindən daha tez tapilacaq.",
    got_it: "Aydındır",
    rent: "İcarə",
+   is_rent: "İcarəyə verilir",
    "Aktiv elan sayı 3-dən çox ola bilməz": "Aktiv elan sayı 3-dən çox ola bilməz",
    "terms_and_rule": "Qaydalar və şərtlər",
    "this_announcement_belongs_to_another_user": "Bu elan başqa istifadəçiyə aiddir",

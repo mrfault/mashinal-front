@@ -240,7 +240,8 @@
                {
                   key: 'credit',
                   icon: '/icons/credit_2.svg',
-                  value: this.announcement.credit && this.$t('is_in_credit')},
+                  value: this.announcement.credit && this.$t('is_in_credit')
+               },
                {
                   key: 'condition',
                   value: this.condition,
@@ -266,6 +267,12 @@
                   for: ['parts']
                },
                {key: 'commercial_size', value: this.announcement.commercial_size},
+
+               {
+                  key: 'rent',
+                  icon: '/icons/clock.svg',
+                  value: this.announcement.is_rent ? this.$t('is_rent') : undefined
+               }
             ];
 
             if (this.announcement.is_external_salon) {
@@ -487,6 +494,7 @@
             font-size: 15px;
             font-weight: 400;
             line-height: 18px;
+            margin-bottom: 10px;
          }
       }
    }
@@ -575,6 +583,10 @@
             align-items: unset;
             flex-direction: column;
             gap: 20px;
+
+            h4 {
+               margin: 0;
+            }
          }
       }
    }
