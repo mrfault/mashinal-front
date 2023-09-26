@@ -1,66 +1,61 @@
 <template>
    <div class="service_packages">
-      <h2>{{ $t('promotion_title') }}</h2>
-      <p>{{ $t('promotion_description') }}</p>
-      <div class="packages">
-         <div
-            :class="['package', 'premium_package', add_monetization === 1 ? 'selected': '' ]"
-            @click="$emit('input', 1)">
-            <div class="title">
-               <img src="/img/turbo.png" alt="premium">
+      <div class="packages_wrapper">
+         <h2>{{ $t('promotion_title') }}</h2>
+         <p>{{ $t('promotion_description') }}</p>
+         <div class="packages">
+            <div
+               :class="['package', 'premium_package', add_monetization === 1 ? 'selected': '' ]"
+               @click="$emit('input', 1)">
+               <div class="title">
+                  <img src="/img/turbo.png" alt="premium">
+               </div>
+               <ul class="content">
+                  <li :class="['content_list', {active: sp.status}]" v-for="sp in data?.premium" :key="sp.id">
+                     {{ sp.text }}
+                     <inline-svg v-if="sp.status"
+                                 :src="'/icons/check_v2.svg'"/>
+                     <inline-svg v-else
+                                 :src="'/icons/close_v2.svg'"/>
+                  </li>
+               </ul>
+               <div class="badge">
+                  <p>40% {{ $t('discount') }}</p>
+               </div>
+               <div class="package_popover" v-if="!turboIsClosed && !$cookies.get('turboIsClosed')">
+                  <h3>{{ $t('turbo_package_popover_title') }}</h3>
+                  <p>{{
+                        $t('turbo_package_popover_description')
+                     }}</p>
+                  <button type="button"
+                          @click="closePopover"
+                          class="btn full-width btn--blue-new active">
+                     {{ $t('got_it') }}
+                  </button>
+               </div>
             </div>
-            <ul class="content">
-               <li :class="['content_list', {active: sp.status}]" v-for="sp in data?.premium" :key="sp.id">
-                  {{ sp.text }}
-                  <inline-svg v-if="sp.status"
-                              :src="'/icons/check_v2.svg'"/>
-                  <inline-svg v-else
-                              :src="'/icons/close_v2.svg'"/>
-               </li>
-            </ul>
-            <div class="package_price">
-               <p>{{ data.price }} AZN</p>
-               <span>10 AZN</span>
-            </div>
-            <div class="badge">
-               <p>40% {{ $t('discount') }}</p>
-            </div>
-            <div class="package_popover" v-if="!turboIsClosed && !$cookies.get('turboIsClosed')">
-               <h3>{{ $t('turbo_package_popover_title') }}</h3>
-               <p>{{
-                     $t('turbo_package_popover_description')
-                  }}</p>
-               <button type="button"
-                       @click="closePopover"
-                       class="btn full-width btn--blue-new active">
-                  {{ $t('got_it') }}
-               </button>
-            </div>
-         </div>
-         <div
-            :class="['package', 'standard_package', add_monetization === 0 ? 'selected': '' ]"
-            @click="$emit('input', 0)">
-            <div class="title">
-               <p>{{ $t('standard_announce') }}</p>
-            </div>
-            <ul class="content">
-               <li :class="['content_list', {active: sp.status}]" v-for="sp in data?.standard" :key="sp.id">
-                  {{ sp.text }}
-                  <inline-svg v-if="sp.status"
-                              :src="'/icons/check_v2.svg'"/>
-                  <inline-svg v-else
-                              :src="'/icons/close_v2.svg'"/>
-               </li>
-            </ul>
-            <div class="package_price">
-               <p>{{ $t('price_free') }}</p>
+            <div
+               :class="['package', 'standard_package', add_monetization === 0 ? 'selected': '' ]"
+               @click="$emit('input', 0)">
+               <div class="title">
+                  <p>{{ $t('standard_announce') }}</p>
+               </div>
+               <ul class="content">
+                  <li :class="['content_list', {active: sp.status}]" v-for="sp in data?.standard" :key="sp.id">
+                     {{ sp.text }}
+                     <inline-svg v-if="sp.status"
+                                 :src="'/icons/check_v2.svg'"/>
+                     <inline-svg v-else
+                                 :src="'/icons/close_v2.svg'"/>
+                  </li>
+               </ul>
             </div>
          </div>
       </div>
-
       <div class="package_statistics">
          <div class="statistics_progress">
-            <div class="progress" v-for="progress in statistics_data.find(s => s.id === add_monetization).statistics">
+            <div class="progress"
+                 v-for="progress in statistics_data.find(s => s.id === add_monetization).statistics">
                <p>{{ progress.name }}</p>
                <div class="measure">
                   <div :class="['percentage', {active: add_monetization === 1}]"
@@ -71,21 +66,28 @@
          <ul class="statistics_info">
             <li v-for="info in statistics_data.find(s => s.id === add_monetization).info">
                <p class="title">{{ info.name }}</p>
+               <template>
+
+               </template>
                <div class="dashed"></div>
                <p class="price">{{ info.price === 0 ? $t('price_free') : `${info.price} AZN` }}</p>
             </li>
-            <li class="total" v-if="statistics_data.find(s => s.id === add_monetization).info.some(s => s.price > 0)">
-               <p>{{ $t("total") }}</p>
-               <p>
-                  {{
-                     +(statistics_data.find(s => s.id === add_monetization).info.reduce((acc, obj) => {
-                        return acc + obj.price
-                     }, 0))
-                  }} AZN</p>
+            <li class="total"
+                v-if="statistics_data.find(s => s.id === add_monetization).info.some(s => s.price > 0)">
+               <p>{{ $t("total") }}:</p>
+               <div class="package_price">
+                  <p>{{ data.price }} AZN</p>
+                  <span>10 AZN</span>
+               </div>
+            </li>
+            <li class="total"
+                v-else>
+               <div class="package_price">
+                  <p>{{ $t("price_free") }}</p>
+               </div>
             </li>
          </ul>
       </div>
-
    </div>
 </template>
 
@@ -183,201 +185,187 @@ export default {
 <style lang="scss" scoped>
 .service_packages {
    width: 100%;
-   padding: 40px 24px;
    display: flex;
-   flex-direction: column;
-   gap: 24px;
-   background-color: #EEF2F6;
-   border-radius: 16px;
+   gap: 20px;
 
-   h2 {
-      font-size: 32px;
-      font-weight: 600;
-      color: #121926;
-   }
-
-   p {
-      font-size: 20px;
-      font-weight: 500;
-      color: #4B5565;
-   }
-
-   .packages {
+   .packages_wrapper {
+      width: 100%;
+      padding: 24px;
       display: flex;
-      gap: 20px;
+      flex-direction: column;
+      gap: 24px;
+      background-color: #EEF2F6;
+      border-radius: 16px;
 
-      .package {
-         position: relative;
-         flex-grow: 1;
+      h2 {
+         font-size: 32px;
+         font-weight: 600;
+         color: #121926;
+      }
+
+      p {
+         font-size: 20px;
+         font-weight: 500;
+         color: #4B5565;
+      }
+
+      .packages {
          display: flex;
-         background-color: #fff;
-         flex-direction: column;
-         gap: 16px;
-         padding: 20px 16px;
-         border: 3px solid transparent;
-         border-radius: 12px;
-         cursor: pointer;
+         gap: 20px;
 
-         .title {
+         .package {
+            position: relative;
+            flex-grow: 1;
             display: flex;
-            min-height: 54px;
-            width: 100%;
-
-            img {
-               width: 70%;
-               height: 100%;
-               object-fit: contain;
-            }
-
-            p {
-               color: #4B5565;
-               font-size: 36px;
-               font-weight: 600;
-            }
-         }
-
-
-         .content {
-            display: flex;
+            background-color: #fff;
             flex-direction: column;
             gap: 16px;
-
-            &_list {
-               display: flex;
-               align-items: center;
-               justify-content: space-between;
-               gap: 12px;
-               font-size: 18px;
-               font-weight: 500;
-               opacity: 0.4;
-               color: #1B2434;
-
-               svg {
-                  min-width: 20px;
-                  min-height: 20px;
-                  max-width: 20px;
-                  max-height: 20px;
-                  color: #1B2434;
-               }
-
-               &.active {
-                  opacity: 1;
-               }
-            }
-         }
-
-         .package_price {
-            display: flex;
-            align-items: end;
-            gap: 12px;
-            margin-top: 12px;
-
-            p {
-               color: #121926;
-               font-size: 32px;
-               font-style: normal;
-               line-height: 38px;
-               font-weight: 600;
-            }
-
-            span {
-               font-size: 18px;
-               font-weight: 500;
-               line-height: 27px;
-               text-decoration-line: line-through;
-               color: #697586;
-            }
-
-
-         }
-
-         &.premium_package {
-            position: relative;
+            padding: 20px 16px;
+            border: 3px solid transparent;
+            border-radius: 12px;
+            cursor: pointer;
 
             .title {
-               align-items: center;
+               display: flex;
+               min-height: 54px;
+               width: 100%;
 
                img {
-                  margin: auto;
+                  width: 70%;
+                  height: 100%;
+                  object-fit: contain;
                }
-            }
-
-            .badge {
-               position: absolute;
-               top: 0;
-               right: 6%;
-               transform: translateY(-50%);
-               background-color: #F81734;
-               padding: 4px 6px;
-               border-radius: 6px;
-               font-size: 13px;
-               font-weight: 600;
 
                p {
-                  font-size: 16px;
+                  color: #4B5565;
+                  font-size: 36px;
                   font-weight: 600;
-                  color: #fff;
-                  text-transform: lowercase;
                }
             }
 
-            .package_popover {
-               position: absolute;
-               top: 5%;
-               left: 0;
-               transform: translateX(calc(-100% - 22px));
+
+            .content {
                display: flex;
-               width: 248px;
-               padding: 24px;
-               border-radius: 12px;
-               background-color: #1B2434;
                flex-direction: column;
-               align-items: flex-start;
-               gap: 20px;
+               gap: 16px;
 
-               h3 {
-                  color: #fff;
-                  font-size: 20px;
-                  font-weight: 600;
-               }
-
-               p {
-                  color: #CDD5DF;
-                  font-size: 16px;
+               &_list {
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  gap: 12px;
+                  font-size: 18px;
                   font-weight: 500;
+                  opacity: 0.4;
+                  color: #1B2434;
+
+                  svg {
+                     min-width: 20px;
+                     min-height: 20px;
+                     max-width: 20px;
+                     max-height: 20px;
+                     color: #1B2434;
+                  }
+
+                  &.active {
+                     opacity: 1;
+                  }
+               }
+            }
+
+            &.premium_package {
+               position: relative;
+
+               .title {
+                  align-items: center;
+
+                  img {
+                     margin: auto;
+                  }
                }
 
-               &::after {
-                  content: "";
+               .badge {
                   position: absolute;
-                  top: 50%;
-                  right: -8px;
-                  width: 16px;
-                  height: 16px;
-                  transform: rotate(-45deg);
-                  background-color: #1B2434;
+                  top: 0;
+                  right: 6%;
+                  transform: translateY(-50%);
+                  background-color: #F81734;
+                  padding: 4px 6px;
+                  border-radius: 6px;
+                  font-size: 13px;
+                  font-weight: 600;
+
+                  p {
+                     font-size: 16px;
+                     font-weight: 600;
+                     color: #fff;
+                     text-transform: lowercase;
+                  }
                }
+
+               .package_popover {
+                  position: absolute;
+                  top: 5%;
+                  left: 0;
+                  transform: translateX(calc(-100% - 22px));
+                  display: flex;
+                  width: 248px;
+                  padding: 24px;
+                  border-radius: 12px;
+                  background-color: #1B2434;
+                  flex-direction: column;
+                  align-items: flex-start;
+                  gap: 20px;
+
+                  h3 {
+                     color: #fff;
+                     font-size: 20px;
+                     font-weight: 600;
+                  }
+
+                  p {
+                     color: #CDD5DF;
+                     font-size: 16px;
+                     font-weight: 500;
+                  }
+
+                  &::after {
+                     content: "";
+                     position: absolute;
+                     top: 50%;
+                     right: -8px;
+                     width: 16px;
+                     height: 16px;
+                     transform: rotate(-45deg);
+                     background-color: #1B2434;
+                  }
+               }
+            }
+
+            &.selected {
+               border-color: #F81734;
             }
          }
 
-         &.selected {
-            border-color: #F81734;
-         }
       }
+
 
    }
 
    .package_statistics {
+      min-width: 320px;
+      max-width: 320px;
       display: flex;
       flex-direction: column;
       gap: 30px;
-      background-color: #fff;
+      border-radius: 24px;
+      border: 1px solid #EEF2F6;
+      background-color: #EEF2F6;
       padding: 24px;
-      border-radius: 12px;
 
       .statistics_progress {
          display: flex;
-         justify-content: space-between;
+         flex-direction: column;
          gap: 24px;
 
          .progress {
@@ -395,7 +383,7 @@ export default {
             .measure {
                width: 100%;
                height: 12px;
-               background-color: #EEF2F6;
+               background-color: white;
                border-radius: 99px;
                overflow: hidden;
 
@@ -414,6 +402,7 @@ export default {
       }
 
       .statistics_info {
+         height: 100%;
          display: flex;
          flex-direction: column;
          gap: 34px;
@@ -427,6 +416,43 @@ export default {
             font-size: 17px;
             font-weight: 500;
 
+            &.total {
+               flex-direction: column;
+               align-items: start;
+               margin-top: auto;
+               gap: 8px;
+
+               p {
+                  color: #697586;
+                  font-size: 24px;
+                  font-weight: 600;
+               }
+
+               .package_price {
+                  display: flex;
+                  align-items: end;
+                  gap: 12px;
+
+                  p {
+                     color: #121926;
+                     font-size: 32px;
+                     font-style: normal;
+                     line-height: 38px;
+                     font-weight: 600;
+                  }
+
+                  span {
+                     font-size: 18px;
+                     font-weight: 500;
+                     line-height: 27px;
+                     text-decoration-line: line-through;
+                     color: #697586;
+                  }
+
+
+               }
+            }
+
             .dashed {
                flex: 1;
                border-top: 2px dashed #1B2434;
@@ -434,6 +460,7 @@ export default {
          }
       }
    }
+
 }
 
 .dark-mode {
@@ -534,6 +561,7 @@ export default {
 
 @media (max-width: 1150px) {
    .service_packages {
+      flex-direction: column;
       padding: 40px 0 0 0;
       background-color: transparent;
 
@@ -552,6 +580,8 @@ export default {
       }
 
       .package_statistics {
+         width: 100%;
+         max-width: unset;
 
          .statistics_progress {
             flex-direction: column;
@@ -573,6 +603,7 @@ export default {
 
                &.total {
                   flex-direction: row;
+                  align-items: center;
 
                   p {
                      font-size: 18px;

@@ -1,286 +1,414 @@
 <template>
    <div class="cars_form">
-      <form-select
-         v-if="!isEdit"
-         :label="$t('brand_name')"
-         :options="brands"
-         :clear-placeholder="true"
-         :clear-option="false"
-         :new-label="false"
-         object-in-value
-         has-search
-         v-model="form.brand"
-         @clear="clearFields(['model', 'year', 'body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])"
-         @change="onChangeBrand($event)"
-      />
-      <form-select
-         v-if="form.brand && models.length"
-         :label="$t('model_name')"
-         :options="models"
-         :clear-placeholder="true"
-         :clear-option="false"
-         :new-label="false"
-         object-in-value
-         has-search
-         v-model="form.model"
-         @clear="clearFields(['year', 'body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])"
-         @change="onChangeModel()"
-      />
-      <form-select
-         v-if="form.model && sellYears.years"
-         :label="$t('prod_year')"
-         :options="sellYears?.years?.map((year) => ({name: year}))"
-         :clear-placeholder="true"
-         :clear-option="false"
-         :new-label="false"
-         has-search
-         v-model="form.year"
-         @clear="clearFields(['body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])"
-         @change="onChangeYear"
-      />
-      <grid-radio
-         v-if="form.year && sellBody.length"
-         :default-value="form.body_type || ''"
-         :label="$t('body_type')"
-         :items="form.year ? sellBody : []"
-         v-slot="{ item }"
-         @change="onChangeBody($event)"
-      >
-         <div class="body_type_grid_item_inner">
-            <img class="body_imgs" :src="item.transformed_media" :alt="item.name[locale]"/>
-            <p>{{ item.name[locale] }}</p>
-         </div>
-      </grid-radio>
-      <grid-radio
-         v-if="form.body_type && sellGenerationsV2.length"
-         :default-value="form.generation || ''"
-         :label="$t('generation')"
-         :items="form.body_type ? sellGenerationsV2 : []"
-         v-slot="{ item }"
-         @change="onChangeGeneration($event)"
-      >
-         <div class="generation_grid_item">
-            <img
-               :src="item.image"
-               :alt="item.name.replace('– 0', `– ${new Date().getFullYear()}`)"
-               class="generation_img"
+      <div class="head_section divider mobile-column">
+         <div class="inner_left">
+            <form-select
+               v-if="!isEdit"
+               :label="$t('brand_name')"
+               :options="brands"
+               :clear-placeholder="true"
+               :clear-option="false"
+               :new-label="false"
+               object-in-value
+               has-search
+               v-model="form.brand"
+               @clear="clearFields(['model', 'year', 'body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])"
+               @change="onChangeBrand($event)"
             />
-            <div class="generation_grid_item_inner">
-               <p>{{ item.name.replace("– 0", `– ${new Date().getFullYear()}`) }}</p>
+            <form-select
+               :label="$t('model_name')"
+               :options="models"
+               :clear-placeholder="true"
+               :clear-option="false"
+               :new-label="false"
+               object-in-value
+               has-search
+               v-model="form.model"
+               :disabled="!(form.brand && models.length > 0)"
+               @clear="clearFields(['year', 'body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])"
+               @change="onChangeModel()"
+            />
+            <form-select
+               :label="$t('prod_year')"
+               :options="sellYears?.years?.map((year) => ({name: year}))"
+               :clear-placeholder="true"
+               :clear-option="false"
+               :new-label="false"
+               has-search
+               v-model="form.year"
+               :disabled="!(form.model && sellYears.years)"
+               @clear="clearFields(['body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])"
+               @change="onChangeYear"
+            />
+            <form-select
+               :label="$t('body_type')"
+               :options="sellBody"
+               :clear-placeholder="true"
+               :clear-option="false"
+               :new-label="false"
+               has-search
+               v-model="form.body_type"
+               :disabled="!(form.year && sellBody.length > 0)"
+               @clear="clearFields(['generation', 'fuel_type', 'transmission', 'gearing', 'modification'])"
+               @change="onChangeBody"
+            />
+            <form-select
+               :label="$t('generation')"
+               :options="sellGenerationsV2"
+               :clear-placeholder="true"
+               :clear-option="false"
+               :new-label="false"
+               has-search
+               v-model="form.generation"
+               :disabled="!(form.body_type && sellGenerationsV2.length > 0)"
+               @clear="clearFields(['generation', 'fuel_type', 'transmission', 'gearing', 'modification'])"
+               @change="onChangeGeneration"
+            />
+            <div class="divider mobile-column">
+               <form-select
+                  :label="$t('fuel_type')"
+                  :options="sellEngines.map((engine) => ({id: engine.engine, name: $t('engine_values')[engine.engine]}))"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  :new-label="false"
+                  :translate-options="false"
+                  v-model="form.fuel_type"
+                  :disabled="!(form.generation && sellEngines.length > 0)"
+                  @change="onChangeFuelType"
+               />
+               <form-checkbox
+                  v-model="form.autogas"
+                  :label="$t('gas_equipment')"
+                  input-name="autogas"
+                  :disabled="!(form.generation && sellEngines.length > 0)"
+                  transparent
+               />
             </div>
-         </div>
-      </grid-radio>
-      <form-select
-         v-if="form.generation && sellEngines.length"
-         :label="$t('fuel_type')"
-         :options="sellEngines.map((engine) => ({id: engine.engine, name: $t('engine_values')[engine.engine]}))"
-         :clear-placeholder="true"
-         :clear-option="false"
-         :new-label="false"
-         :translate-options="false"
-         v-model="form.fuel_type"
-         @change="onChangeFuelType($event)"
-      />
-      <form-checkbox
-         v-if="form.generation && sellEngines.length"
-         v-model="form.autogas"
-         :disabled="false"
-         :label="$t('gas_equipment')"
-         input-name="autogas"
-         transparent
-      />
-      <toggle-group
-         v-if="form.fuel_type && sellGearing.length"
-         :default-value="form.gearing || ''"
-         :label="$t('type_of_drive')"
-         :items="sellGearing.map((typeOfDrive) => ({id: typeOfDrive.type_of_drive, name: $t('type_of_drive_values')[typeOfDrive.type_of_drive]}))"
-         v-slot="{ item }"
-         @change="onChangeGearing($event)"
-      >
-         <div class="gearing_grid_item">
-            <inline-svg :src="gearingIcons[item.id]"/>
-            <p>{{ item.name }}</p>
-         </div>
-      </toggle-group>
-      <form-select
-         v-if="form.gearing && sellTransmissions.length"
-         :label="$t('box')"
-         :options="sellTransmissions.map((transmission) => ({id: transmission.box, name: $t('box_values')[transmission.box]}))"
-         :clear-placeholder="true"
-         :clear-option="false"
-         :new-label="false"
-         v-model="form.transmission"
-         @change="onChangeTransmission($event)"
-      />
-      <form-select
-         v-if="form.transmission && sellModificationsV2.length"
-         :label="$t('modification')"
-         :options="sellModificationsV2.map((o) => ({
+            <form-select
+               :label="$t('type_of_drive')"
+               :options="sellGearing.map((typeOfDrive) => ({id: typeOfDrive.type_of_drive, name: $t('type_of_drive_values')[typeOfDrive.type_of_drive]}))"
+               :clear-placeholder="true"
+               :clear-option="false"
+               :new-label="false"
+               :translate-options="false"
+               v-model="form.gearing"
+               :disabled="!(form.fuel_type && sellGearing.length > 0)"
+               @change="onChangeGearing"
+            />
+            <form-select
+               :label="$t('box')"
+               :options="sellTransmissions.map((transmission) => ({id: transmission.box, name: $t('box_values')[transmission.box]}))"
+               :clear-placeholder="true"
+               :clear-option="false"
+               :new-label="false"
+               v-model="form.transmission"
+               :disabled="!(form.gearing && sellTransmissions.length > 0)"
+               @change="onChangeTransmission($event)"
+            />
+            <form-select
+               :label="$t('modification')"
+               :options="sellModificationsV2.map((o) => ({
               name: o.title,
               key: o.id,
               capacity: o.capacity
             }))"
-         :clear-placeholder="true"
-         :clear-option="false"
-         :translate-options="false"
-         object-in-value
-         :new-label="false"
-         v-model="form.modification"
-         @change="preview.car_catalog.capacity = form.modification?.capacity"
-      />
-
-      <template v-if="isEdit || (form.modification && sellModificationsV2.length)">
-         <div class="divider">
-            <form-select
-               :class="{form_error: $v.form.color.$error}"
-               :label="$t('color')"
-               :options="colors"
                :clear-placeholder="true"
                :clear-option="false"
-               v-model="form.color"
-               multiple
-               has-search
-               :invalid="$v.form.color.$error"
-               :limit="2"
+               :translate-options="false"
+               object-in-value
+               :new-label="false"
+               :disabled="!(form.transmission && sellModificationsV2.length > 0)"
+               v-model="form.modification"
             />
-            <form-checkbox
-               v-model="form.is_matte"
-               :label="$t('matt')"
-               input-name="is_matte"
-               transparent
-            />
-         </div>
-         <div class="divider mobile-column">
-            <form-numeric-input
-               :class="{form_error: $v.form.mileage.$error}"
-               :placeholder="$t('mileage')"
-               :max-value="form.is_new ? (form.mileage_type === 1 ? 500 : 310) : 10000000"
-               v-model="form.mileage"
-               :invalid="$v.form.mileage.$error"
-            />
-<!--            <div class="mileage_types">-->
-<!--               <form-radio-->
-<!--                  :id="'1'"-->
-<!--                  :label="$t('char_kilometre')"-->
-<!--                  input-name="mileage"-->
-<!--                  @change="form.mileage_type = $event"-->
-<!--                  :value="form.mileage_type"-->
-<!--                  :radio-value="1"-->
-<!--               />-->
-<!--               <form-radio-->
-<!--                  :id="'52'"-->
-<!--                  :label="$t('ml')"-->
-<!--                  input-name="mileage2"-->
-<!--                  @change="form.mileage_type = $event"-->
-<!--                  :value="form.mileage_type"-->
-<!--                  :radio-value="2"-->
-<!--               />-->
-<!--         </div>-->
+            <div class="divider mobile-column">
+               <form-numeric-input
+                  :class="{form_error: $v.form.mileage.$error}"
+                  :placeholder="$t('mileage')"
+                  :max-value="form.is_new ? (form.mileage_type === 1 ? 500 : 310) : 10000000"
+                  v-model="form.mileage"
+                  :disabled="!readyAllParameters"
+                  :invalid="$v.form.mileage.$error"
+               />
                <radio-group
                   class="mileage_types"
-               v-model="form.mileage_type"
-               :options="[{key:1, name: 'char_kilometre'},{key:2, name: 'ml'}]"
+                  v-model="form.mileage_type"
+                  :disabledAll="!readyAllParameters"
+                  :options="[{key:1, name: 'char_kilometre'},{key:2, name: 'ml'}]"
                />
             </div>
-         <div class="divider">
-            <form-radio
-               :id="'3'"
-               :type="'checkbox'"
-               :label="$t('new')"
-               input-name="is_new"
-               v-model="form.is_new"
-               :radio-value="1"
-               @change="onChangeIsNew"
-            />
-            <form-radio
-               :id="'4'"
-               :type="'checkbox'"
-               :label="$t('broken')"
-               input-name="beaten"
-               v-model="form.beaten"
-               :radio-value="1"
-            >
-               <template v-slot:suffix>
-                  <inline-svg
-                     :src="'/icons/info.svg'"
-                     class="beaten_suffix"
-                     v-tooltip="
+         </div>
+         <div class="inner_right">
+            <div class="divider">
+               <form-select
+                  :class="{form_error: $v.form.color.$error}"
+                  :label="$t('color')"
+                  :options="colors"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  v-model="form.color"
+                  multiple
+                  :disabled="!readyAllParameters"
+                  has-search
+                  :invalid="$v.form.color.$error"
+                  :limit="2"
+               />
+               <form-select
+                  :label="$t('count_of_seats')"
+                  :options="[{id: 1, name: 1}, {id: 2, name: 2}, {id: 3, name: 4}]"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  :translate-options="false"
+                  object-in-value
+                  :disabled="!readyAllParameters"
+                  :new-label="false"
+                  v-model="form.seats_count"
+               />
+            </div>
+
+            <div class="divider">
+               <form-radio
+                  :id="'3'"
+                  :type="'checkbox'"
+                  :label="$t('new')"
+                  input-name="is_new"
+                  v-model="form.is_new"
+                  :radio-value="1"
+                  :disabled="!readyAllParameters"
+                  @change="onChangeIsNew"
+               />
+               <form-radio
+                  :id="'4'"
+                  :type="'checkbox'"
+                  :label="$t('bitie2')"
+                  input-name="beaten"
+                  :disabled="!readyAllParameters"
+                  v-model="form.beaten"
+                  :radio-value="1"
+               >
+                  <template v-slot:suffix>
+                     <inline-svg
+                        :src="'/icons/info.svg'"
+                        class="beaten_suffix"
+                        v-tooltip="
                       $t(
                         'with_significant_damage_to_body_elements_that_do_not_move_on_their_own'
                       )
                     "
-                  />
-               </template>
-            </form-radio>
-         </div>
-         <div class="divider mobile-column" v-if="!user.external_salon">
-            <form-checkbox
-               v-model="form.customs_clearance"
-               :label="$t('not_cleared')"
-               input-name="customs_clearance"
-               transparent
-            />
-            <form-checkbox
-               v-model="form.guaranty"
-               :label="$t('guaranty')"
-               input-name="guaranty"
-               transparent
-            />
-         </div>
-         <form-select
-            v-if="!user.autosalon && !user.external_salon"
-            :class="{form_error: $v.form.region_id.$error}"
-            :label="$t('city_of_sale')"
-            :options="sellOptions.regions"
-            :clear-placeholder="true"
-            :clear-option="false"
-            :new-label="false"
-            has-search
-            v-model="form.region_id"
-            :invalid="$v.form.region_id.$error"
-         />
-         <form-select
-            v-if="user.external_salon"
-            :class="{form_error: $v.form.country_id.$error}"
-            :label="$t('sale_region_country')"
-            :options="sellOptions.countries"
-            :clear-placeholder="true"
-            :clear-option="false"
-            :new-label="false"
-            has-search
-            v-model="form.country_id"
-            :invalid="$v.form.country_id.$error"
-         />
-         <div class="divider" v-if="!user.autosalon && !user.external_salon">
-            <form-text-input
-               :class="{form_error: $v.form.address.$error}"
-               key="address"
-               v-model="form.address"
-               :placeholder="$t('address')"
-               :invalid="$v.form.address.$error"
-            />
-            <pick-on-map-button :lat="form.lat" :lng="form.lng" :address="form.address"
-                                @change-address="updateAddress" @change-latlng="updateLatLng">
-               <form-text-input :placeholder="$t('address')" v-model="form.address"/>
-            </pick-on-map-button>
-         </div>
-         <div class="divider mobile-column">
-            <form-numeric-input
-               :class="{form_error: $v.form.price.$error}"
-               :placeholder="$t('price')"
-               v-model="form.price"
-               @change="preview.price = $event ? $event + ' ' + (form.currency.name?.[locale] || priceTypes.find((pr) => pr.id === form.currency).name?.[locale]) : 0"
-               :invalid="$v.form.price.$error"
-            />
-            <div class="price_types">
-               <toggle-group :items="priceTypes" :default-value="form.currency || 1" v-slot="{ item }"
-                             @change="toggleCurrency">
-                  <div class="price_item">
-                     <p>{{ item.name[locale] }}</p>
+                     />
+                  </template>
+               </form-radio>
+            </div>
+            <div class="divider mobile-column" v-if="!user.external_salon">
+               <form-checkbox
+                  v-model="form.customs_clearance"
+                  :label="$t('not_cleared')"
+                  input-name="customs_clearance"
+                  :disabled="!readyAllParameters"
+                  transparent
+               />
+               <form-checkbox
+                  v-model="form.guaranty"
+                  :label="$t('guaranty')"
+                  input-name="guaranty"
+                  :disabled="!readyAllParameters"
+                  transparent
+               />
+            </div>
+            <!--            <form-select-->
+            <!--               v-if="!user.autosalon && !user.external_salon"-->
+            <!--               :class="{form_error: $v.form.region_id.$error}"-->
+            <!--               :label="$t('city_of_sale')"-->
+            <!--               :options="sellOptions.regions"-->
+            <!--               :clear-placeholder="true"-->
+            <!--               :clear-option="false"-->
+            <!--               :new-label="false"-->
+            <!--               has-search-->
+            <!--               v-model="form.region_id"-->
+            <!--               :invalid="$v.form.region_id.$error"-->
+            <!--            />-->
+            <!--            <form-select-->
+            <!--               v-if="user.external_salon"-->
+            <!--               :class="{form_error: $v.form.country_id.$error}"-->
+            <!--               :label="$t('sale_region_country')"-->
+            <!--               :options="sellOptions.countries"-->
+            <!--               :clear-placeholder="true"-->
+            <!--               :clear-option="false"-->
+            <!--               :new-label="false"-->
+            <!--               has-search-->
+            <!--               v-model="form.country_id"-->
+            <!--               :invalid="$v.form.country_id.$error"-->
+            <!--            />-->
+            <!--            <div class="divider" v-if="!user.autosalon && !user.external_salon">-->
+            <!--               <form-text-input-->
+            <!--                  :class="{form_error: $v.form.address.$error}"-->
+            <!--                  key="address"-->
+            <!--                  v-model="form.address"-->
+            <!--                  :placeholder="$t('address')"-->
+            <!--                  :invalid="$v.form.address.$error"-->
+            <!--               />-->
+            <!--               <pick-on-map-button :lat="form.lat" :lng="form.lng" :address="form.address"-->
+            <!--                                   @change-address="updateAddress" @change-latlng="updateLatLng">-->
+            <!--                  <form-text-input :placeholder="$t('address')" v-model="form.address"/>-->
+            <!--               </pick-on-map-button>-->
+            <!--            </div>-->
+            <div class="divider mobile-column">
+               <form-numeric-input
+                  :class="{form_error: $v.form.price.$error}"
+                  :placeholder="$t('price')"
+                  v-model="form.price"
+                  :disabled="!readyAllParameters"
+                  :invalid="$v.form.price.$error"
+               />
+               <div class="price_types">
+                  <toggle-group :items="priceTypes" :default-value="form.currency || 1" v-slot="{ item }"
+
+                                @change="toggleCurrency">
+                     <div :class="['price_item', {price_item_disabled: !readyAllParameters}]">
+                        <p>{{ item.name[locale] }}</p>
+                     </div>
+                  </toggle-group>
+               </div>
+            </div>
+            <div class="divider_3" v-if="!user.external_salon">
+               <form-checkbox
+                  v-model="form.tradeable"
+                  :label="$t('tradeable')"
+                  :show-input="false"
+                  :disabled="!readyAllParameters"
+                  input-name="tradeable"
+                  transparent
+               />
+               <form-checkbox
+                  v-model="form.is_rent"
+                  :label="$t('rent')"
+                  :show-input="false"
+                  :disabled="!readyAllParameters"
+                  input-name="rent"
+                  transparent
+               />
+               <form-checkbox
+                  v-model="form.credit"
+                  :label="$t('credit_possible')"
+                  :show-input="false"
+                  :disabled="!readyAllParameters"
+                  input-name="credit"
+                  transparent
+               />
+            </div>
+            <div v-if="!user.external_salon" class="car_identification divider mobile-column">
+               <div class="car_number_form">
+                  <div class="registrationMarks">
+                     <p class="mb-1">{{ $t("license_plate_number") }}</p>
+                     <div class="registrationMarks__number">
+                        <div class="registrationMarks__number-inner">
+                           <div class="">
+                              <img src="/icons/registrationMarks_icons.svg" alt="icons">
+                           </div>
+                           <div class="">
+                              <form-text-input
+                                 :class="{form_error: $v.form.car_number.$error}"
+                                 v-model="form.car_number"
+                                 input-class="car-number-show-popover"
+                                 :mask="'99 - AA - 999'"
+                                 placeholder="__ - __ - ___"
+                                 :invalid="$v.form.car_number.$error"
+                              />
+                           </div>
+                        </div>
+                        <span class="registrationMarks__number-description">MASHIN.AL</span>
+                     </div>
                   </div>
-               </toggle-group>
+                  <div>
+                     <p class="mb-1">{{ $t("vin_carcase_number") }}</p>
+                     <div class="vin">
+                        <form-text-input
+                           :class="{form_error: $v.form.vin.$error}"
+                           v-model="form.vin"
+                           :placeholder="$t('vin_carcase_number')"
+                           :mask="$maskAlphaNumeric('*****************')"
+                           :invalid="$v.form.vin.$error"
+                        />
+                        <form-checkbox
+                           v-model="form.show_vin"
+                           :label="$t('show_on_site')"
+                           input-name="show_vin"
+                           :disabled="!form.vin"
+                           transparent
+                        />
+                     </div>
+                  </div>
+               </div>
+               <div class="car_number_info divider">
+                  <p>Qeydiyyat nişanın və ya BAN (VİN) nömrəni daxil etdikdə, elanınız axtarışlarda daha ön sıralarda
+                     yer alacaqdır.</p>
+                  <strong>
+                     QEYD: Daxil etdiyiniz qeydiyyat nişanı avtomobilin həqiqiliyin təsdiq edir və saytda istifadəçilərə
+                     nümayiş etdirilməyəcək!
+                  </strong>
+               </div>
             </div>
          </div>
+      </div>
+      <div class="car_description_section">
+         <h2>Avtomobilin təchizatı</h2>
+         <div class="divider mobile-column">
+
+            <div class="other_parameters_wrapper">
+               <div class="other_parameters">
+                  <div class="other_parameters__checkbox" v-for="check in otherParameters">
+                     <form-checkbox
+                        :id="check.slug"
+                        :value="other_parameters_checkboxes[check.slug]"
+                        @getIdValue="changeOtherParameters"
+                        :label="check.name"
+                        :input-name="check.slug"
+                        transparent
+                     />
+                  </div>
+               </div>
+            </div>
+            <!--         <form-select-->
+            <!--            :label="$t('other_parameters')"-->
+            <!--            v-model="form.other_parameters"-->
+            <!--            :options="otherParameters"-->
+            <!--            :clear-placeholder="true"-->
+            <!--            :clear-option="false"-->
+            <!--            object-in-value-->
+            <!--            translate-options-->
+            <!--            multiple-->
+            <!--         />-->
+            <div class="comment">
+               <form-textarea
+                  v-model="form.comment"
+                  :placeholder="$t('additional_info')"
+                  :maxlength="600"
+               />
+            </div>
+         </div>
+         <div class="comment_info">
+            <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
+            <p>{{ $t("additional_info_warning") }}</p>
+         </div>
+      </div>
+      <div class="image_section" :class="{form_error: $v.form.saved_images.$error}">
+         <h2>Şəkillər</h2>
+         <client-only>
+            <image-component :type="'cars'" :initial-form="form" :announcement="announcement"
+                             :deletedFiles="deletedFiles"/>
+         </client-only>
+         <div class="image_info">
+            <inline-svg :src="'/icons/info.svg'"/>
+            <div class="warning_texts">
+               <p :class="{invalid_paragraph: $v.form.saved_images.$error}">{{ $t("add_image_section_warning") }}</p>
+               <p :class="{invalid_paragraph: $v.form.saved_images.$error}">{{ $t("add_image_max_warning") }}</p>
+            </div>
+         </div>
+      </div>
+
+
+      <template v-if="form.modification && sellModificationsV2.length">
+
+
          <div class="divider" v-if="user.external_salon">
             <form-radio
                :id="'5'"
@@ -307,97 +435,30 @@
             :placeholder="$t('announcement_end_date')"
             input-date
          />
-         <div class="divider mobile-column" v-if="!user.external_salon">
-            <form-checkbox
-               v-model="form.tradeable"
-               :label="$t('tradeable')"
-               input-name="tradeable"
-               transparent
-               @change="preview.tradeable = $event"
-            />
-            <form-checkbox
-               v-model="form.credit"
-               :label="$t('credit_possible')"
-               input-name="credit"
-               transparent
-               @change="preview.credit = $event"
-            />
-         </div>
-         <div v-if="!user.external_salon">
-            <p class="mb-1">{{ $t("license_plate_number") }}</p>
-            <div class="divider mobile-column">
-               <form-text-input
-                  :class="{form_error: $v.form.car_number.$error}"
-                  v-model="form.car_number"
-                  input-class="car-number-show-popover"
-                  img-src="/icons/circled_flag.svg"
-                  :mask="'99 - AA - 999'"
-                  placeholder="__ - __ - ___"
-                  :invalid="$v.form.car_number.$error"
-               />
-               <form-checkbox
-                  v-model="form.show_car_number"
-                  :label="$t('show_on_site')"
-                  input-name="show_car_number"
-                  :disabled="!form.car_number"
-                  transparent
-               />
-            </div>
-         </div>
-         <div>
-            <p class="mb-1">{{ $t("vin_carcase_number") }}</p>
-            <div class="divider mobile-column">
-               <form-text-input
-                  :class="{form_error: $v.form.vin.$error}"
-                  v-model="form.vin"
-                  :placeholder="$t('vin_carcase_number')"
-                  :mask="$maskAlphaNumeric('*****************')"
-                  :invalid="$v.form.vin.$error"
-               />
-               <form-checkbox
-                  v-model="form.show_vin"
-                  :label="$t('show_on_site')"
-                  input-name="show_vin"
-                  @change="preview.show_vin = $event"
-                  :disabled="!form.vin"
-                  transparent
-               />
-            </div>
-         </div>
-         <form-select
-            :label="$t('other_parameters')"
-            v-model="form.other_parameters"
-            :options="otherParameters"
-            :clear-placeholder="true"
-            :clear-option="false"
-            object-in-value
-            translate-options
-            multiple
-         />
-         <div class="comment">
-            <form-textarea
-               v-model="form.comment"
-               :placeholder="$t('additional_info')"
-               :maxlength="600"
-            />
-            <div class="comment_info">
-               <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
-               <p>{{ $t("additional_info_warning") }}</p>
-            </div>
-         </div>
-         <div class="comment" :class="{form_error: $v.form.saved_images.$error}">
-            <client-only>
-               <image-component :type="'cars'" :initial-form="form" :announcement="announcement"
-                                :deletedFiles="deletedFiles"/>
-            </client-only>
-            <div class="comment_info">
-               <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
-               <div class="warning_texts">
-                  <p :class="{invalid_paragraph: $v.form.saved_images.$error}">{{ $t("add_image_section_warning") }}</p>
-                  <p :class="{invalid_paragraph: $v.form.saved_images.$error}">{{ $t("add_image_max_warning") }}</p>
-               </div>
-            </div>
-         </div>
+
+         <!--         <div v-if="!user.external_salon">-->
+         <!--            <p class="mb-1">{{ $t("license_plate_number") }}</p>-->
+         <!--            <div class="divider mobile-column">-->
+         <!--               <form-text-input-->
+         <!--                  :class="{form_error: $v.form.car_number.$error}"-->
+         <!--                  v-model="form.car_number"-->
+         <!--                  input-class="car-number-show-popover"-->
+         <!--                  img-src="/icons/circled_flag.svg"-->
+         <!--                  :mask="'99 - AA - 999'"-->
+         <!--                  placeholder="__ - __ - ___"-->
+         <!--                  :invalid="$v.form.car_number.$error"-->
+         <!--               />-->
+         <!--               <form-checkbox-->
+         <!--                  v-model="form.show_car_number"-->
+         <!--                  :label="$t('show_on_site')"-->
+         <!--                  input-name="show_car_number"-->
+         <!--                  :disabled="!form.car_number"-->
+         <!--                  transparent-->
+         <!--               />-->
+         <!--            </div>-->
+         <!--         </div>-->
+
+
       </template>
 
    </div>
@@ -420,18 +481,26 @@ export default {
    mixins: [MenusDataMixin, ToastErrorsMixin],
    computed: {
       ...mapGetters(['brands', 'models', 'sellYears', 'sellBody', "sellGenerationsV2", "sellEngines", "sellGearing", "sellTransmissions", "sellModificationsV2", "colors", "popularOptions", 'sellOptions']),
+      readyAllParameters() {
+         return this.form.modification && this.sellModificationsV2.length > 0
+      },
       otherParameters() {
-         return this.popularOptions.map((p) => ({...p, key: this.$t(p.label), slug: p.name, name: this.$t(p.label)}))
+         let list = this.popularOptions.map((p) => ({
+            ...p,
+            key: this.$t(p.label),
+            selected: false,
+            slug: p.name,
+            name: this.$t(p.label)
+         }))
+         list.forEach((p) => {
+            this.other_parameters_checkboxes[p.slug] = false
+         })
+         return list
       },
    },
    props: {
       announcement: {
          type: Object,
-         required: true
-      },
-      preview: {
-         type: Object,
-         default: {}
       },
       isReady: {
          type: Boolean,
@@ -441,8 +510,9 @@ export default {
          type: Boolean,
          default: false
       },
-      navigationProgress: {
-         type: Object
+      region_id: {
+         type: Number,
+         required: true
       }
    },
    data() {
@@ -462,6 +532,7 @@ export default {
                name: {az: "EUR", ru: "EUR"},
             },
          ],
+         other_parameters_checkboxes: {},
          deletedFiles: [],
          form: {
             brand: "",
@@ -475,23 +546,22 @@ export default {
             gearing: "",
             modification: "",
             color: [],
-            is_matte: false,
+            seats_count: null,
             mileage: '',
             mileage_type: 1,
             is_new: false,
             beaten: false,
             customs_clearance: false,
             guaranty: false,
-            region_id: 1,
             address: "",
             lat: 0,
             lng: 0,
             price: "",
             currency: 1,
             tradeable: false,
+            is_rent: false,
             credit: false,
             car_number: "",
-            show_car_number: false,
             vin: "",
             show_vin: false,
             other_parameters: [],
@@ -511,7 +581,6 @@ export default {
 
       async onChangeBrand({slug}) {
          this.clearFields(['model', 'year', 'body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])
-         this.preview.brand = this.form.brand.name || this.$t('mark')
          if (slug) {
             await this.getModels(slug);
          }
@@ -520,7 +589,6 @@ export default {
          this.clearFields(['year', 'body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])
          const brand = this.form.brand.slug
          const model = this.form.model.slug
-         this.preview.model = this.form.model.name || this.$t('model')
          if (brand && this.form.model.name) {
             try {
                await this.getSellYears({brand, model});
@@ -537,7 +605,6 @@ export default {
          const brand = this.form.brand.slug
          const model = this.form.model.slug
          const year = this.form.year
-         this.preview.year = this.form.year || "0000"
          if (brand && model && this.form.year) {
             try {
                await this.getSellBody({brand, model, year});
@@ -554,7 +621,6 @@ export default {
          const brand = this.form.brand.slug
          const model = this.form.model.slug
          const year = this.form.year
-         this.form.body_type = body || ""
          if (brand && model && year && body) {
             try {
                await this.getSellGenerationsV2({brand, model, year, body});
@@ -572,7 +638,6 @@ export default {
          const model = this.form.model.slug
          const year = this.form.year
          const body = this.form.body_type
-         this.form.generation = generation || "";
          if (brand && model && year && body && generation) {
             try {
                await this.getSellEngines({brand, model, year, body, generation});
@@ -638,7 +703,6 @@ export default {
             } catch (e) {
             }
             if (this.sellModificationsV2.length === 1) {
-               this.preview.car_catalog.capacity = this.sellModificationsV2[0].capacity
                this.form.modification = this.sellModificationsV2.map((o) => ({
                   name: o.title,
                   key: o.id,
@@ -646,6 +710,9 @@ export default {
                }))[0]
             }
          }
+      },
+      changeOtherParameters(val) {
+         this.other_parameters_checkboxes[val.id] = val.value
       },
       onChangeIsNew(isnew) {
          if (isnew) {
@@ -659,7 +726,6 @@ export default {
       },
       toggleCurrency(currency) {
          this.form.currency = currency.id
-         this.preview.price = this.form.price ? this.form.price + ' ' + (currency.name?.[this.locale] || 'AZN') : 0
       },
       updateAddress(address) {
          this.form.address = address;
@@ -690,7 +756,6 @@ export default {
          this.form.is_new = this.announcement.is_new ? 1 : 0
          this.form.beaten = this.announcement.broken ? 1 : 0
          this.form.guaranty = this.announcement.in_garanty
-         this.form.region_id = this.announcement.region_id
          this.form.address = this.announcement.address
          this.form.lat = Number(this.announcement.latitude)
          this.form.lng = Number(this.announcement.longitude)
@@ -699,7 +764,6 @@ export default {
          this.form.tradeable = this.announcement.exchange_possible
          this.form.credit = this.announcement.credit
          this.form.car_number = this.announcement.car_number
-         this.form.show_car_number = this.announcement.show_car_number
          this.form.vin = this.announcement.vin
          this.form.show_vin = this.announcement.show_vin
          this.form.customs_clearance = this.announcement.customs_clearance
@@ -721,7 +785,6 @@ export default {
    },
    watch: {
       'form.mileage_type'() {
-         this.preview.mileage = this.form.mileage ? this.form.mileage + ' ' + (this.form.mileage_type === 1 ? this.$t('char_kilometre') : this.$t('ml')) : 0
          if (this.form.is_new) {
             if (this.form.mileage_type === 1 && this.form.mileage > 500) {
                this.form.mileage = 500
@@ -731,21 +794,8 @@ export default {
             }
          }
       },
-      'form.car_number'() {
-         !this.form.car_number && (this.form.show_car_number = false)
-      },
       'form.vin'() {
          !this.form.vin && (this.form.show_vin = false)
-      },
-      'form.mileage'() {
-         this.preview.mileage = this.form.mileage ? this.form.mileage + ' ' + (this.form.mileage_type === 1 ? this.$t('char_kilometre') : this.$t('ml')) : 0
-      },
-      'form.modification'() {
-         this.$emit("navigationProgress", {id: 1, status: !!this.form.modification})
-         this.$emit("done", !!(this.form.modification && this.sellModificationsV2.length))
-      },
-      "form.saved_images"() {
-         this.$emit("navigationProgress", {id: 3, status: this.form.saved_images.length > 2})
       },
       isReady() {
          this.$v.form.$touch()
@@ -767,14 +817,10 @@ export default {
             year: this.form.year,
             mileage: this.form.mileage || 0,
             mileage_measure: this.form.mileage_type,
-            address: this.form.address,
-            lat: this.form.lat,
-            lng: this.form.lng,
             vin: this.form.vin,
             price: this.form.price,
             currency: this.form.currency,
             car_number: this.form.car_number,
-            show_car_number: this.form.show_car_number,
             show_vin: this.form.show_vin,
             comment: this.form.comment,
             autogas: this.form.autogas,
@@ -784,13 +830,14 @@ export default {
             tradeable: this.form.tradeable,
             credit: this.form.credit,
             guaranty: this.form.guaranty,
+            seats_count: this.form.seats_count,
+            is_rent: this.form.is_rent,
             saved_images: this.form.saved_images,
             all_options: this.form.other_parameters.reduce((acc, curr) => {
                acc[curr.slug] = curr.selected_key ? curr.selected_key : true;
                return acc;
             }, {}),
             selectedColor: this.form.color,
-            is_matte: this.form.is_matte,
             owner_type: 0,
             youtube: {"id": "0", "thumb": ""}
          }
@@ -802,20 +849,14 @@ export default {
                end_date: this.form.end_date
             }
          } else {
-            newForm = {...newForm, region_id: this.form.region_id}
+            newForm = {...newForm, region_id: this.region_id}
          }
 
-         this.$emit("getForm", {form: newForm, deletedImages: (this.isEdit && this.deletedFiles.length) ? this.deletedFiles : []})
+         this.$emit("getForm", {
+            form: newForm,
+            deletedImages: (this.isEdit && this.deletedFiles.length) ? this.deletedFiles : []
+         })
       },
-   },
-   updated() {
-      const announceDescription = ['brand',
-         'color',
-         'mileage',
-         'car_number',
-         'address',
-         'price'].every((key) => this.form[key]) && (!this.user.autosalon ? this.form.region_id : true)
-      this.$emit("navigationProgress", {id: 2, status: announceDescription})
    },
    validations() {
       return {
@@ -832,19 +873,9 @@ export default {
                   return !this.form.vin && (!this.user.external_salon && !this.user.autosalon)
                })
             },
-            region_id: {
-               required: requiredIf(function () {
-                  return !this.user.autosalon && !this.user.external_salon
-               })
-            },
             country_id: {
                required: requiredIf(function () {
                   return !!this.user.external_salon
-               })
-            },
-            address: {
-               required: requiredIf(function () {
-                  return !this.user.autosalon && !this.user.external_salon
                })
             },
             vin: {
@@ -871,6 +902,94 @@ export default {
 
    .with-trailing input {
       padding-right: 42px !important;
+   }
+
+   .head_section {
+      .inner_left, .inner_right {
+         display: flex;
+         flex-direction: column;
+         gap: 20px
+      }
+
+
+   }
+
+   .car_description_section {
+      h2 {
+         margin-bottom: 20px;
+      }
+
+      .other_parameters_wrapper {
+         display: flex;
+         flex-direction: column;
+         gap: 20px;
+
+         .other_parameters {
+            display: flex;
+            flex-wrap: wrap;
+            column-gap: 12px;
+            row-gap: 10px;
+            border-radius: 8px;
+            border: 1px solid #CDD5DF;
+            padding: 20px;
+
+            &__checkbox {
+               width: calc(50% - 8px);
+
+               .checkbox-input label {
+                  border: unset;
+                  padding: unset;
+                  font-size: 16px;
+                  font-weight: 400;
+                  height: unset;
+               }
+            }
+         }
+      }
+
+      .comment {
+         display: flex;
+         flex-direction: column;
+         gap: 16px;
+
+         * {
+            height: 100%;
+         }
+      }
+
+      .comment_info {
+         width: calc(50% - 8px);
+         display: flex;
+         margin-top: 8px;
+         margin-left: auto;
+         align-items: center;
+         gap: 10px;
+         font-size: 14px;
+
+         svg {
+            max-width: 18px;
+            max-height: 18px;
+            min-width: 18px;
+            min-height: 18px;
+         }
+
+         .invalid_paragraph {
+            color: red
+         }
+      }
+   }
+
+   .image_section {
+      h2 {
+         margin-bottom: 20px;
+      }
+
+      .image_info {
+         display: flex;
+         align-items: center;
+         gap: 10px;
+         margin-top: 10px;
+      }
    }
 
    .body_type_grid_item {
@@ -977,6 +1096,12 @@ export default {
             justify-content: center;
             height: 52px;
             padding: 0 16px;
+
+            &_disabled {
+               pointer-events: none;
+               border-color: #cdd5df;
+               opacity: 0.4;
+            }
          }
       }
 
@@ -995,22 +1120,25 @@ export default {
       }
    }
 
-   .comment {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
 
-      &_info {
-         display: flex;
-         align-items: center;
-         gap: 10px;
+}
 
-         .invalid_paragraph {
-            color: red
+@media (max-width: 1150px) {
+   .cars_form {
+      .car_description_section {
+         .comment {
+            textarea {
+               height: 250px;
+            }
+         }
+
+         .comment_info {
+            width: 100%;
          }
       }
    }
 }
+
 
 .dark-mode {
    .cars_form {
