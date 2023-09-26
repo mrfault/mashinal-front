@@ -598,7 +598,7 @@ export const actions = {
    },
 
    async fetchBrandsList({commit}) {
-      const res = await this.$axios.$get(this.$env().API_SECRET + '/brands/list-with-count');
+      const res = await this.$axios.$get(this.$env().API_SECRET + '/brands/published?withCount=true');
       commit("mutate", {property: "brandsList", value: res});
    },
 
