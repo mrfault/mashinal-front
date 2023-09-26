@@ -509,20 +509,22 @@ export default {
 </script>
 
 <style lang="scss">
-.divider {
-   display: grid;
-   grid-template-columns: repeat(2, calc(50% - 8px));
-   gap: 16px;
-}
 
-.divider_3 {
-   display: grid;
-   grid-template-columns: repeat(3, calc(33% - 8px));
-   gap: 16px;
-}
 
 .add_announce {
    padding: 40px 0 160px 0;
+
+   .divider {
+      display: grid;
+      grid-template-columns: repeat(2, calc(50% - 8px));
+      gap: 16px;
+   }
+
+   .divider_3 {
+      display: grid;
+      grid-template-columns: repeat(3, calc(33% - 8px));
+      gap: 16px;
+   }
 
    &_title {
       font-size: 28px;
