@@ -6,20 +6,11 @@
             <div class="card">
                <form class="add_announce_form">
                   <car_form isEdit :announcement="announcement" :isReady="isReady"
-                            :preview="previewForm"
                             @getForm="getCarForm($event)"/>
                   <button type="button" @click="onClick()" class="btn full-width btn--pale-green-outline active">
                      {{ $t("place_announcement") }}
                   </button>
                </form>
-               <div :class="['vehicle_card_info', {default_imgs: previewForm.image.startsWith('/img/')}]"
-                    v-if="!isMobileBreakpoint">
-                  <client-only>
-                     <grid-item :mileage="false"
-                                show-overlay
-                                :hideFavoriteBtn="false" :announcement="previewForm"/>
-                  </client-only>
-               </div>
             </div>
          </div>
       </div>
@@ -58,20 +49,6 @@ export default {
    mixins: [ToastErrorsMixin, PaymentMixin],
    data() {
       return {
-         previewForm: {
-            image: "",
-            show_vin: false,
-            has_360: false,
-            price: "0 AZN",
-            tradeable: false,
-            credit: false,
-            brand: "Marka",
-            model: "Model",
-            year: "0000",
-            mileage: 0,
-            car_catalog: {capacity: "0"},
-            created_at: ""
-         },
          isReady: false
       }
    },
@@ -153,9 +130,6 @@ export default {
    },
    methods: {
       ...mapActions(['carEdit', 'updatePaidStatus']),
-      getMainImage(img) {
-         this.previewForm.image = img || "/img/car_default.svg"
-      },
       async getCarForm({form, deletedImages}) {
          const formData = new FormData()
          formData.append('data', JSON.stringify(form))
@@ -196,23 +170,6 @@ export default {
       onClick() {
          this.isReady = !this.isReady
       },
-   },
-   mounted() {
-      this.$nuxt.$on("get-main-image", this.getMainImage)
-      this.previewForm = {
-         image: this.announcement.media[0],
-         show_vin: this.announcement.show_vin,
-         has_360: false,
-         price: this.announcement.price_int + ' ' + this.getCurrencyName(),
-         tradeable: this.announcement.exchange_possible,
-         credit: this.announcement.credit,
-         brand: this.announcement.brand.name,
-         model: this.announcement.model.name,
-         year: this.announcement.year,
-         mileage: this.announcement.mileage,
-         car_catalog: {capacity: this.announcement.car_catalog.capacity},
-         created_at: this.$formatDate(this.announcement.created_at, 'D.MM.YYYY')[this.locale]
-      }
    },
 }
 </script>

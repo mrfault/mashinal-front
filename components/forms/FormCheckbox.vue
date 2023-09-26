@@ -129,6 +129,7 @@
                   this.prevValue = value;
                }
                this.$emit('change', value);
+               this.$emit('getIdValue', {id: this.id, value});
             }
          },
       },
