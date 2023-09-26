@@ -10,11 +10,11 @@
    >
       <div :class="['d-flex align-items-center', {'disabled': disabled}]">
          <div class="wrapp">
-            <span>{{ $t('featured_ads_2') }}</span>
-            <span>2 AZN-dən</span>
+            <span>{{ $t('featured_ads_5') }}</span>
+            <span>{{ $t('from_2', {price: 2}) }}</span>
          </div>
 
-         <inline-svg src="/icons/megaphone.svg"/>
+         <inline-svg src="/icons/arrow-top-2.svg" />
 
          <modal-popup
             :modal-class="'monetization-popup'"
@@ -326,6 +326,12 @@ export default {
                color: #FFFFFF;
             }
          }
+
+         svg {
+            path {
+               stroke: #FFFFFF;
+            }
+         }
       }
 
       .wrapp {
@@ -377,12 +383,6 @@ export default {
                path {
                   fill: #FFFFFF;
                }
-            }
-         }
-
-         svg {
-            path {
-               fill: #155EEF;
             }
          }
       }
