@@ -1,8 +1,6 @@
 <template>
    <div :key="refresh" class="pages-annoucements pt-2 pt-lg-6">
-      <!--      <portal to="breadcrumbs">-->
-      <!--         <breadcrumbs :crumbs="crumbs"/>-->
-      <!--      </portal>-->
+<!--      <pre>{{announcementsStatuses}}</pre>-->
       <div :class="{'ma-announcements-autosalon-container': user.autosalon}" class="container">
          <div class="ma-announcements">
             <h2 class="ma-title--md">{{ $t('my_announces') }}</h2>
@@ -34,13 +32,13 @@
                   :class="{'ma-announcements__head-autosalon': user.autosalon}"
                   class="ma-announcements__head">
                   <button
-                     v-for="(item,index) in announceItems"
+                     v-for="item in announcementsStatuses"
                      :class="{'ma-announcements__head--item--active': item.id == activeTab}"
                      class="ma-announcements__head--item"
                      @click="changeTab(item)"
                   >
-                     <span></span>
-                     <span>{{ $t(item.title) }}</span>
+                     <span>{{ item.count }}</span>
+                     <span>{{ $t(item.label) }}</span>
                   </button>
                </div>
 
@@ -215,13 +213,13 @@
                   id: 0,
                   title: 'rejected_many',
                   link: "/",
-               },
+               }
             ],
             escapeDuplicates: false,
             isDragging: false,
             sortSwitch: false,
             sortedAnnouncements: {},
-            refresh: 0,
+            refresh: 0
          }
       },
 
@@ -249,16 +247,15 @@
       },
 
       mounted() {
-         if (this.user?.autosalon?.id) {
-            this.getStatistics();
-         }
+         if (this.user?.autosalon?.id) this.getStatistics();
 
          this.getAllData();
          this.$nuxt.$on('refresh-my-announcements', () => this.refresh++);
       },
 
-      async asyncData({store, route}) {
-         await store.dispatch('getSettingsV2')
+      async asyncData({ store }) {
+         await store.dispatch('getSettingsV2');
+         await store.dispatch('getAnnouncementsStatuses');
       },
 
       // async asyncData({store, route}) {
@@ -353,7 +350,6 @@
             let startX = event.clientX;
             let scrollLeft = container.scrollLeft;
 
-
             const scrollByDragging = (event) => {
                this.isDragging = true;
                const distance = event.clientX - startX;
@@ -404,7 +400,8 @@
             myAnnouncements: 'myAnnouncementsV2',
             allMyPlates: 'myPlatesV2',
             autosalonStatistics: 'autosalonStatistics',
-            myAnnouncementStats: 'myAnnouncementStats'
+            myAnnouncementStats: 'myAnnouncementStats',
+            announcementsStatuses: 'announcementsStatuses',
          }),
 
          crumbs() {
@@ -465,10 +462,8 @@
          },
 
          showHeadCategories() {
-            if (this.user.autosalon && this.isMobileBreakpoint) {
-               return true
-            } else
-               return true
+            if (this.user.autosalon && this.isMobileBreakpoint) return true
+            else return true
          }
       }
    }

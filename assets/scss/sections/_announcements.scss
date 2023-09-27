@@ -818,15 +818,44 @@
             color: #4B5565;
             font-weight: 500;
 
-            //&:first-child {
-            //   color: #155EEF;
-            //   font-size: 14px;
-            //   padding: 2px 6px;
-            //   line-height: 16px;
-            //   border-radius: 4px;
-            //   margin-right: 2px;
-            //   background-color: #DCE3EB;
-            //}
+            &:first-child {
+               color: #155EEF;
+               font-size: 14px;
+               padding: 2px 6px;
+               line-height: 16px;
+               border-radius: 4px;
+               margin-right: 2px;
+               background-color: #DCE3EB;
+            }
+         }
+
+         &:nth-child(2) {
+            span {
+               &:first-child {
+                  color: #32B878;
+               }
+            }
+         }
+         &:nth-child(3) {
+            span {
+               &:first-child {
+                  color: #155EEF;
+               }
+            }
+         }
+         &:nth-child(4) {
+            span {
+               &:first-child {
+                  color: #F79009;
+               }
+            }
+         }
+         &:last-child {
+            span {
+               &:first-child {
+                  color: #F81734;
+               }
+            }
          }
 
          &:hover {
