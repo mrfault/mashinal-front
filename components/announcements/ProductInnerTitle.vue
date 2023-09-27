@@ -39,4 +39,12 @@
          }
       }
    }
+
+   .dark-mode {
+      .productInnerTitle {
+         &__item {
+            color: #fff;
+         }
+      }
+   }
 </style>

@@ -122,6 +122,19 @@
 
 .dark-mode {
    .product-inner {
+      &__head {
+         .favorite-btn,
+         .compare-btn {
+            background-color: transparent;
+         }
+
+         .compare-btn {
+            .btn-compare {
+               background-image: url("/icons/compare-icon-white.svg");
+            }
+         }
+      }
+
       &__info {
          .characteristics {
             &__item {
@@ -142,6 +155,10 @@
          margin: 0;
          padding: 56px 0;
          background-color: #1B2434;
+      }
+
+      .breadcrumbs {
+         border-color: #9AA4B2;
       }
    }
 }

@@ -55,7 +55,7 @@
             </template>
          </div>
 
-         <breadcrumbs :crumbs="crumbs"/>
+<!--         <breadcrumbs :crumbs="crumbs"/>-->
 
 <!--         <grid-->
 <!--            class="mt-2"-->
@@ -439,7 +439,7 @@ export default {
    }
 
    .announcements-grid {
-      margin-top: 0;
+      margin-top: 32px;
    }
 }
 </style>

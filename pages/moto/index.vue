@@ -56,7 +56,7 @@
             </template>
          </div>
 
-         <breadcrumbs :crumbs="crumbs" />
+<!--         <breadcrumbs :crumbs="crumbs" />-->
 
          <grid
             v-if="motoAnnouncements?.data?.length"
@@ -357,7 +357,7 @@
       padding-top: 32px;
 
       .announcements-grid {
-         margin-top: 0;
+         margin-top: 32px;
       }
    }
 </style>

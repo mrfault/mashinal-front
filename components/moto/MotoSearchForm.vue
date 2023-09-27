@@ -236,12 +236,21 @@
                v-model="form.fuel_type"
             />
 
-            <form-checkbox
-               :label="$t('in_garanty')"
-               :show-input="false"
-               v-model="form.in_garanty"
-               input-name="in_garanty"
-            />
+            <div class="btns">
+               <form-checkbox
+                  :label="$t('rent')"
+                  :show-input="false"
+                  input-name="rent"
+                  v-model="form.is_rent"
+               />
+
+               <form-checkbox
+                  :label="$t('in_garanty')"
+                  :show-input="false"
+                  v-model="form.in_garanty"
+                  input-name="in_garanty"
+               />
+            </div>
 
             <form-select
                :label="$t('gearing')"
@@ -443,6 +452,7 @@
                customs: '',
                region: '',
                exchange_possible: false,
+               is_rent: false,
                credit: false,
                external_salon: false,
             }
