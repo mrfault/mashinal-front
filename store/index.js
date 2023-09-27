@@ -73,6 +73,7 @@ const getInitialState = () => ({
    partsV2Monetized: [],
    plateNumbers: [],
    brandsList: [],
+   announcementsStatuses: [],
    monetizedCars: [],
    autosalonAnnouncementsId: [],
    motoGearbox: [],
@@ -482,6 +483,7 @@ export const getters = {
    autosalonStatistics: s => s.autosalonStatistics,
 
    settingsV2: s => s.settingsV2,
+   announcementsStatuses: s => s.announcementsStatuses,
 
    loginInEditModal: s => s.loginInEditModal,
 
@@ -1873,8 +1875,12 @@ export const actions = {
    async getSettingsV2({commit,state}){
       const res = await this.$axios.$get(`${this.$env().API_SECRET}/common/settings`);
       commit("mutate", {property: "settingsV2", value: res});
-   }
+   },
 
+   async getAnnouncementsStatuses({ commit }){
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/me/announcements/statuses`);
+      commit("mutate", {property: "announcementsStatuses", value: res});
+   }
 };
 export const mutations = {
    mutate: mutate(),
