@@ -201,17 +201,17 @@
                   />
 
                   <form-checkbox
+                     :label="$t('rent')"
+                     :show-input="false"
+                     input-name="rent"
+                     v-model="form.is_rent"
+                  />
+
+                  <form-checkbox
                      :label="$t('exchange')"
                      :show-input="false"
                      input-name="credit"
                      v-model="form.exchange_possible"
-                  />
-
-                  <form-checkbox
-                     :label="$t('with_video')"
-                     :show-input="false"
-                     input-name="with_video"
-                     v-model="form.with_video"
                   />
                </div>
 
@@ -250,10 +250,10 @@
 
                   <div class="btns">
                      <form-checkbox
-                        :label="$t('in_garanty')"
+                        :label="$t('with_video')"
                         :show-input="false"
-                        v-model="form.in_garanty"
-                        input-name="in_garanty"
+                        input-name="with_video"
+                        v-model="form.with_video"
                      />
 
                      <form-checkbox
@@ -294,13 +294,22 @@
                      :clear-option="false"
                   />
 
-                  <form-select
-                     :label="$t('damage')"
-                     v-model="form.damage"
-                     :options="getDamageOptions"
-                     :clear-placeholder="true"
-                     :clear-option="false"
-                  />
+                  <div class="btns">
+                     <form-checkbox
+                        :label="$t('in_garanty')"
+                        :show-input="false"
+                        v-model="form.in_garanty"
+                        input-name="in_garanty"
+                     />
+
+                     <form-select
+                        :label="$t('damage')"
+                        v-model="form.damage"
+                        :options="getDamageOptions"
+                        :clear-placeholder="true"
+                        :clear-option="false"
+                     />
+                  </div>
 
                   <form-select
                      :label="$t('count_of_seats')"
@@ -624,6 +633,7 @@
                n_of_seats: [],
                colors: [],
                is_matte: false,
+               is_rent: false,
                in_garanty: false,
                with_video: false,
                exchange_possible: false,
@@ -1111,11 +1121,11 @@
    @media (min-width: 1150px) {
       .cars-search-form {
          &__gridMain {
-            grid-template-columns: 235px 235px 240px 275px;
+            grid-template-columns: 235px 215px 240px 295px;
          }
 
          &__gridFooter {
-            grid-template-columns: 235px 235px 240px 275px;
+            grid-template-columns: 235px 215px 240px 295px;
 
             //&.hasValue {
             //   grid-template-columns: 230px 230px 290px 225px;

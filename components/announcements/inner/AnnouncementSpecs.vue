@@ -3,10 +3,13 @@
       <div class="vehicle-specs__head">
          <h4 class="vehicle-specs__title">{{ title }}</h4>
 
-         <div class="vehicle-specs__info">
+         <div
+            :class="['vehicle-specs__info', {'approved' : approvedVehicleCondition}]"
+         >
             <inline-svg src="/icons/car-4.svg" />
 
-            <span>{{ $t('approved_vehicle') }}</span>
+            <span v-if="approvedVehicleCondition">{{ $t('approved_vehicle') }}</span>
+            <span v-else>{{ $t('unapproved_vehicle') }}</span>
          </div>
       </div>
 
@@ -56,10 +59,6 @@
 
          <h4>{{ $t('announcement_number') }}: #{{ announcement.id }}</h4>
       </div>
-
-<!--      <div v-if="isMobileBreakpoint && announcement.status != 3" class="mt-3 mt-lg-0">-->
-<!--         <floating-cta :announcement="announcement"/>-->
-<!--      </div>-->
    </div>
 </template>
 
@@ -342,6 +341,13 @@
             // console.log('this.catalog', this.catalog)
             let path = this.catalog && `/catalog/${this.catalog.brand.slug}/${this.catalog.model.slug}/${this.catalog.generation.id}/${this.catalog.car_type.id}/mod/${this.announcement?.car_catalog_id}`;
             return path && this.$localePath(path);
+         },
+
+         approvedVehicleCondition() {
+            return (this.announcement.type === 'light_vehicle' ||
+                    this.announcement.type === 'scooter' ||
+                    this.announcement.type === 'moto_atv') &&
+                   (this.announcement.vin || this.announcement.car_number);
          }
       }
    }
@@ -373,8 +379,18 @@
          gap: 7px;
          width: 160px;
          padding: 12px;
+         color: #FF7900;
          border-radius: 7px;
-         border: 1px solid #32B878;
+         border: 1px solid #FF7900;
+
+         &.approved {
+            color: #32B878;
+            border: 1px solid #32B878;
+
+            span {
+               color: #32B878;
+            }
+         }
 
          svg {
             min-width: 25px;
@@ -382,7 +398,7 @@
          }
 
          span {
-            color: #32B878;
+            color: #FF7900;
             font-size: 12px;
             font-weight: 600;
             line-height: 13px;

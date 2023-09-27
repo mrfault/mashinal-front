@@ -376,15 +376,15 @@ export default {
       }
    }
 
-   .dark-mode {
-      .monetization-btn {
-         &:hover {
-            svg {
-               path {
-                  fill: #FFFFFF;
-               }
-            }
-         }
-      }
-   }
+   //.dark-mode {
+   //   .monetization-btn {
+   //      &:hover {
+   //         svg {
+   //            path {
+   //               fill: #FFFFFF;
+   //            }
+   //         }
+   //      }
+   //   }
+   //}
 </style>

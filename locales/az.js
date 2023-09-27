@@ -1080,6 +1080,7 @@ export default {
    is_new: "Yeni",
    is_new_2: "yeni",
    approved_vehicle: "Təsdiqlənmiş nəqliyyat vasitəsi",
+   unapproved_vehicle: "Təsdiqlənməmiş nəqliyyat vasitəsi",
    is_original: "Orijinal",
    is_possible: "Mümkündür",
    is_sending: "şəkil göndərir...",

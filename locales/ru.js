@@ -1067,6 +1067,7 @@ export default {
    is_new: "Новый",
    is_new_2: "новый",
    approved_vehicle: "Одобренный автомобиль",
+   unapproved_vehicle: "Неодобренный автомобиль",
    is_original: "Оригинальный",
    is_possible: "Возможен",
    is_sending: "отправляет фото...",
