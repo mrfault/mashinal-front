@@ -16,7 +16,7 @@
          class="quick-info__item"
          :class="{'registration-marks' : type === 'plates'}"
       >
-         <h1 class="quick-info__title" v-if="getAnnouncementTitle(announcement)">{{ getAnnouncementTitle(announcement) }}</h1>
+<!--         <h1 class="quick-info__title" v-if="getAnnouncementTitle(announcement)">{{ getAnnouncementTitle(announcement) }}</h1>-->
 
          <div class="d-flex align-items-center justify-content-between">
             <QuickInfoPrice
