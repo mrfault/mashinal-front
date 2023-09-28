@@ -19,7 +19,7 @@
                                  :src="'/icons/close_v2.svg'"/>
                   </li>
                </ul>
-               <div class="badge">
+               <div class="badge" v-if="add_monetization === 1">
                   <p>40% {{ $t('discount') }}</p>
                </div>
                <div class="package_popover" v-if="!turboIsClosed && !$cookies.get('turboIsClosed')">
@@ -340,10 +340,14 @@ export default {
                      background-color: #1B2434;
                   }
                }
+
+               &.selected {
+                  border-color: #F81734;
+               }
             }
 
             &.selected {
-               border-color: #F81734;
+               border-color: #4B5565;
             }
          }
 
@@ -465,7 +469,6 @@ export default {
 
 .dark-mode {
    .service_packages {
-      background-color: #121926;
 
       h2 {
          color: #EEF2F6;
@@ -475,44 +478,49 @@ export default {
          color: #EEF2F6;
       }
 
-      .packages {
+      .packages_wrapper {
+         background-color: #121926;
 
-         .package {
-            background-color: #1B2434;
+         .packages {
 
-            .title {
+            .package {
+               background-color: #1B2434;
 
-               p {
-                  color: #EEF2F6;
-               }
-            }
+               .title {
 
-
-            .content {
-               &_list {
-                  color: #EEF2F6;
-
-                  svg {
+                  p {
                      color: #EEF2F6;
                   }
                }
-            }
 
-            .package_price {
 
-               p {
-                  color: #EEF2F6;
+               .content {
+                  &_list {
+                     color: #EEF2F6;
+
+                     svg {
+                        color: #EEF2F6;
+                     }
+                  }
                }
 
-               span {
-                  color: #697586;
+               .package_price {
+
+                  p {
+                     color: #EEF2F6;
+                  }
+
+                  span {
+                     color: #697586;
+                  }
+
+
                }
-
-
             }
+
          }
-
       }
+
 
       .package_statistics {
          background-color: #1B2434;
@@ -546,6 +554,14 @@ export default {
                .dashed {
                   flex: 1;
                   border-top: 2px dashed #CDD5DF;
+               }
+
+               &.total {
+                  .package_price {
+                     p {
+                        color: white;
+                     }
+                  }
                }
             }
          }

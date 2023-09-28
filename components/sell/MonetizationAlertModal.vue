@@ -6,17 +6,16 @@
       <div class="content">
 
          <h3>Vacib məlumat</h3>
-         <p>Nəzərinizə çatdırırıq ki, siz ödənişli elan seçimini etmisiniz və “irəli” düyməsinə basdıqda ödəniş
-            səhifəsinə
-            yönləndiriləcəksiniz</p>
+         <p v-html="content"></p>
+         <p>"ÖDƏ" düyməsini sıxdıqda ödəniş səhifəsinə yönləndiriləcəksiniz.</p>
       </div>
       <div class="buttons">
          <button type="button" class="btn full-width active" @click="$emit('close')">
-            İmtina
+            {{ $t("rejected_2") }}
          </button>
          <button
             :class="['btn', 'full-width', 'btn--blue-new', 'active', {pending}]">
-            İrəli
+            {{ $t("make_payment") }}
          </button>
       </div>
    </form>
@@ -28,12 +27,15 @@ export default {
       pending: {
          type: Boolean,
          default: false
+      },
+      content: {
+         required: true
       }
    }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .monetization_alert {
    display: flex;
    flex-direction: column;
@@ -45,8 +47,9 @@ export default {
       gap: 20px;
       margin-top: 12px;
       margin-bottom: 32px;
+      text-align: center;
 
-      h2 {
+      h3 {
          color: #121926;
          font-size: 24px;
          font-weight: 600;
@@ -56,6 +59,12 @@ export default {
          color: #364152;
          font-size: 18px;
          font-weight: 400;
+
+         span {
+            color: #155EEF;
+            font-weight: 500;
+            line-height: 24px;
+         }
       }
    }
 

@@ -225,8 +225,14 @@
                 :label="$t('credit_possible')"
                 input-name="credit"
                 transparent
-
               />
+               <form-checkbox
+                  v-if="!single_announce.is_external_salon"
+                  v-model="form.is_rent"
+                  :label="$t('rent')"
+                  input-name="is_rent"
+                  transparent
+               />
             </div>
           </div>
         </div>

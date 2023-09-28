@@ -15,6 +15,7 @@
                @change="onChangeMotoType($event)"
             />
             <form-select
+               v-if="!isEdit"
                :label="$t('brand_name')"
                :options="form.type_of_moto ? motoBrands : []"
                :clear-placeholder="true"
@@ -27,6 +28,7 @@
                @change="onChangeMotoBrand($event)"
             />
             <form-select
+               v-if="!isEdit"
                :label="$t('model_name')"
                :options="form.brand ? motoModelsV2 : []"
                :clear-placeholder="true"
@@ -49,7 +51,7 @@
                :has-search="true"
                v-model="form.year"
                :invalid="$v.form.year.$error"
-               :disabled="!readyAllParameters"
+               :disabled="!isEdit && !readyAllParameters"
             />
             <form-select
                :label="$t('engine_power_system')"
@@ -58,19 +60,40 @@
                :clear-option="false"
                :new-label="false"
                v-model="form.engine"
+               :disabled="!isEdit && !readyAllParameters"
             />
             <div class="divider">
                <form-numeric-input
                   :class="{form_error: $v.form.volume.$error}"
                   :placeholder="$t('engine_volume2')"
                   v-model="form.volume"
-                  :disabled="!readyAllParameters"
+                  :disabled="!isEdit && !readyAllParameters"
                   :invalid="$v.form.volume.$error"
                />
                <form-numeric-input
                   :placeholder="$t('horse_power')"
-                  :disabled="!readyAllParameters"
+                  :disabled="!isEdit && !readyAllParameters"
                   v-model="form.power"
+               />
+            </div>
+            <div class="divider" v-if="isEdit">
+               <form-select
+                  :label="$t('fuel')"
+                  :options="motoOptions?.config?.fuel_type?.values.map((f) => ({...f, name: $t(f.name)}))"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  :new-label="false"
+                  :disabled="!isEdit && !readyAllParameters"
+                  v-model="form.fuel"
+               />
+               <form-select
+                  :label="$t('box')"
+                  :options="motoOptions?.config?.box?.sell_values[form.type_of_moto.id]?.map((f) => ({...f, id: f.key, name: $t(f.name)}))"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  :new-label="false"
+                  :disabled="(!isEdit && !readyAllParameters) || !motoOptions?.config?.box?.sell_values[form.type_of_moto.id]?.length"
+                  v-model="form.box"
                />
             </div>
             <div class="comment">
@@ -78,6 +101,7 @@
                   v-model="form.comment"
                   :placeholder="$t('additional_info')"
                   :maxlength="600"
+                  :disabled="!isEdit && !readyAllParameters"
                />
                <div class="comment_info">
                   <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
@@ -86,30 +110,29 @@
             </div>
          </div>
          <div class="inner_right">
-            <div class="divider">
+            <div class="divider" v-if="!isEdit">
                <form-select
                   :label="$t('fuel')"
                   :options="motoOptions?.config?.fuel_type?.values.map((f) => ({...f, name: $t(f.name)}))"
                   :clear-placeholder="true"
                   :clear-option="false"
                   :new-label="false"
-                  :disabled="!readyAllParameters"
+                  :disabled="!isEdit && !readyAllParameters"
                   v-model="form.fuel"
                />
                <form-select
-                  v-if="motoOptions?.config?.box?.sell_values[form.type_of_moto.id]?.length"
                   :label="$t('box')"
                   :options="motoOptions?.config?.box?.sell_values[form.type_of_moto.id]?.map((f) => ({...f, id: f.key, name: $t(f.name)}))"
                   :clear-placeholder="true"
                   :clear-option="false"
                   :new-label="false"
-                  :disabled="!readyAllParameters"
+                  :disabled="(!isEdit && !readyAllParameters) || !motoOptions?.config?.box?.sell_values[form.type_of_moto.id]?.length"
                   v-model="form.box"
                />
             </div>
             <div class="divider">
                <form-select
-                  :class="{full_grid: !motoOptions?.config?.drive?.sell_values[form.type_of_moto.id]?.length, form_error: $v.form.color.$error}"
+                  :class="{form_error: $v.form.color.$error}"
                   :label="$t('color')"
                   :options="colors"
                   :clear-placeholder="true"
@@ -117,30 +140,28 @@
                   :new-label="false"
                   has-search
                   v-model="form.color"
-                  :disabled="!readyAllParameters"
+                  :disabled="!isEdit && !readyAllParameters"
                   :invalid="$v.form.color.$error"
                />
 
                <form-select
-                  v-if="motoOptions?.config?.drive?.sell_values[form.type_of_moto.id]?.length"
                   :label="$t('gearing')"
                   :options="motoOptions?.config?.drive?.sell_values[form.type_of_moto.id]?.map((f) => ({...f, name: $t(f.name)}))"
                   :clear-placeholder="true"
                   :clear-option="false"
                   :new-label="false"
-                  :disabled="!readyAllParameters"
+                  :disabled="(!isEdit && !readyAllParameters) || !motoOptions?.config?.drive?.sell_values[form.type_of_moto.id]?.length"
                   v-model="form.gearing"
                />
             </div>
             <div class="divider mobile-column">
                <form-select
-                  v-if="form.type_of_moto?.id !== 2"
                   :label="$t('number_of_cylinders')"
                   :options="motoOptions?.config?.cylinders?.sell_values[form.type_of_moto.id]?.map((f) => ({...f, name: $t(f.name)}))"
                   :clear-placeholder="true"
                   :clear-option="false"
                   :new-label="false"
-                  :disabled="!readyAllParameters"
+                  :disabled="(!isEdit && !readyAllParameters) || form.type_of_moto?.id === 2"
                   v-model="form.cylinders"
                />
                <form-select
@@ -149,7 +170,7 @@
                   :clear-placeholder="true"
                   :clear-option="false"
                   :new-label="false"
-                  :disabled="!readyAllParameters"
+                  :disabled="!isEdit && !readyAllParameters"
                   v-model="form.number_of_vehicles"
                />
                <form-numeric-input
@@ -157,13 +178,13 @@
                   :class="{form_error: $v.form.mileage.$error}"
                   :max-value="form.is_new ? (form.mileage_type === 1 ? 500 : 310) : 10000000"
                   v-model="form.mileage"
-                  :disabled="!readyAllParameters"
+                  :disabled="!isEdit && !readyAllParameters"
                   :invalid="$v.form.mileage.$error"
                />
                <radio-group
                   class="divider"
                   v-model="form.mileage_type"
-                  :disabledAll="!readyAllParameters"
+                  :disabledAll="!isEdit && !readyAllParameters"
                   :options="[{key:1, name: 'char_kilometre'},{key:2, name: 'ml'}]"
                />
             </div>
@@ -175,7 +196,7 @@
                   input-name="is_new"
                   v-model="form.is_new"
                   :radio-value="1"
-                  :disabled="!readyAllParameters"
+                  :disabled="!isEdit && !readyAllParameters"
                   @change="onChangeIsNew"
                />
                <form-radio
@@ -184,7 +205,7 @@
                   :label="$t('bitie2')"
                   input-name="beaten"
                   v-model="form.beaten"
-                  :disabled="!readyAllParameters"
+                  :disabled="!isEdit && !readyAllParameters"
                   :radio-value="1"
                >
                   <template v-slot:suffix>
@@ -205,7 +226,7 @@
                   v-model="form.tradeable"
                   :label="$t('tradeable')"
                   :show-input="false"
-                  :disabled="!readyAllParameters"
+                  :disabled="!isEdit && !readyAllParameters"
                   input-name="tradeable"
                   transparent
                />
@@ -213,7 +234,7 @@
                   v-model="form.is_rent"
                   :label="$t('rent')"
                   :show-input="false"
-                  :disabled="!readyAllParameters"
+                  :disabled="!isEdit && !readyAllParameters"
                   input-name="rent"
                   transparent
                />
@@ -221,7 +242,7 @@
                   v-model="form.credit"
                   :label="$t('credit_possible')"
                   :show-input="false"
-                  :disabled="!readyAllParameters"
+                  :disabled="!isEdit && !readyAllParameters"
                   input-name="credit"
                   transparent
                />
@@ -246,9 +267,11 @@
                   :class="{form_error: $v.form.price.$error}"
                   v-model="form.price"
                   :invalid="$v.form.price.$error"
+                  :disabled="!isEdit && !readyAllParameters"
                />
                <div class="price_types">
                   <toggle-group :items="priceTypes" :default-value="form.currency || 1" v-slot="{ item }"
+                                :disabled="!isEdit && !readyAllParameters"
                                 @change="toggleCurrency">
                      <div class="price_item">
                         <p>{{ item.name[locale] }}</p>

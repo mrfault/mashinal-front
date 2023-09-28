@@ -3,7 +3,7 @@
       <label v-if="label">{{ label }}</label>
       <div class="toggle_container">
          <div
-            :class="['toggle_item', { active: selected === item.id }]"
+            :class="['toggle_item', { active: selected === item.id }, { disabled: disabled }]"
             v-for="item in items"
             :key="item.id"
             @click="setSelected(item)"
@@ -23,6 +23,10 @@ export default {
       defaultValue: {
          type: [Number, String],
          default: 1
+      },
+      disabled: {
+         type: Boolean,
+         default: false
       },
       items: Array,
    },
@@ -64,6 +68,12 @@ export default {
          border-radius: 8px;
          cursor: pointer;
          border: 1px solid #cdd5df;
+
+         &.disabled {
+            pointer-events: none;
+            border-color: #cdd5df;
+            opacity: 0.4;
+         }
 
          &.active {
             border-color: #155eef;
