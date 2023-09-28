@@ -11,6 +11,81 @@
             <span v-if="approvedVehicleCondition">{{ $t('approved_vehicle') }}</span>
             <span v-else>{{ $t('unapproved_vehicle') }}</span>
          </div>
+
+         <template v-if="approvedVehicleCondition">
+            <CustomTooltip class="approved">
+               <template #head>
+                  <div class="inner">
+                     <inline-svg src="/icons/car-4.svg"  />
+
+                     <p>“Təsdiqlənmiş Nəqliyyat Vasitəsi” statusu hansı elanlara verilir:</p>
+                  </div>
+
+                  <inline-svg src="/icons/info.svg" />
+               </template>
+
+               <template #main>
+                  <ul>
+                     <li>
+                        <span>1</span>
+                        <p>Moderasiya xidmətimiz tərəfindən qeyd olunan məlumatların doğruluğu təsdiq edildikdə</p>
+                     </li>
+
+                     <li>
+                        <span>2</span>
+                        <p>Moderasiya xidmətimiz aşağıdakı məlumatların reallığı əks etdirdiyinə zəmanət verir:</p>
+                     </li>
+                  </ul>
+               </template>
+
+               <template #footer>
+                  <ul>
+                     <li>
+                        <p>Nəqliyyat vasitəsinin marka və modelinin düzgün qeyd olunduğuna</p>
+                        <inline-svg src="/icons/check3.svg" />
+                     </li>
+                     <li>
+                        <p>Nəqliyyat vasitəsinin buraxılış ilinin düzgün göstərildiyinə</p>
+                        <inline-svg src="/icons/check3.svg" />
+                     </li>
+                     <li>
+                        <p>Nəqliyyat vasitəsinin BAN növünün və rənginin düzgün təqdim edildiyinə</p>
+                        <inline-svg src="/icons/check3.svg" />
+                     </li>
+                     <li>
+                        <p>Mühərrik həcminin düzgün göstərildiyinə</p>
+                        <inline-svg src="/icons/check3.svg" />
+                     </li>
+                  </ul>
+               </template>
+            </CustomTooltip>
+         </template>
+
+         <template v-else>
+            <CustomTooltip class="unapproved">
+               <template #head>
+                  <div class="inner">
+                     <inline-svg src="/icons/car-4.svg"  />
+
+                     <p>DİQQƏT!</p>
+                  </div>
+
+                  <inline-svg src="/icons/info.svg" />
+               </template>
+
+               <template #main>
+                  <div class="content">
+                     Elanda qeyd olunan nəqliyyat vasitəsinin göstəriciləri, real həyatda olandan fərqli və ya aldadıcı ola bilər. Moderasiya xidmətimiz məlumatların doğrulugunu təsdiq etməmişdir. Alqı-satqı zamanı diqqətli və ayıq olmanızı tövsiyyə edirik.
+                  </div>
+
+                  <div class="description">
+                     <span>#xeyirliolsun</span>
+
+                     <inline-svg src="/icons/sewn.svg" />
+                  </div>
+               </template>
+            </CustomTooltip>
+         </template>
       </div>
 
       <ul class="vehicle-specs__list">
@@ -64,6 +139,7 @@
 
 <script>
    import FloatingCta from '~/components/announcements/inner/FloatingCta';
+   import CustomTooltip from "~/components/elements/CustomTooltip.vue";
    import { AnnouncementDataMixin } from '~/mixins/announcement';
    import { mapGetters } from 'vuex';
 
@@ -77,7 +153,8 @@
       },
 
       components: {
-         FloatingCta
+         FloatingCta,
+         CustomTooltip
       },
 
       mixins: [AnnouncementDataMixin],
@@ -360,10 +437,161 @@
       border: 1px solid #E3E8EF;
 
       &__head {
+         position: relative;
          display: flex;
          align-items: center;
          justify-content: space-between;
          gap: 20px;
+
+         .customTooltip {
+            width: 100%;
+            max-width: 583px;
+
+            &.approved {
+               top: -550px;
+               left: 300px;
+
+               .customTooltip__head {
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+
+                  .inner {
+                     display: flex;
+                     align-items: center;
+
+                     svg {
+                        color: #32B878;
+                     }
+
+                     p {
+                        width: 435px;
+                        color: #1B2434;
+                        font-size: 24px;
+                        font-weight: 600;
+                        line-height: 30px;
+                        margin-left: 16px;
+                     }
+                  }
+               }
+
+               .customTooltip__main {
+                  margin-top: 24px;
+
+                  ul {
+                     li {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+
+                        &:not(:first-child) {
+                           margin-top: 16px;
+                        }
+
+                        span {
+                           display: flex;
+                           align-items: center;
+                           justify-content: center;
+                           min-width: 24px;
+                           min-height: 24px;
+                           color: #FFFFFF;
+                           border-radius: 50%;
+                           background-color: #32B878;
+                        }
+
+                        p {
+                           color: #1B2434;
+                           font-size: 16px;
+                           font-weight: 400;
+                           line-height: 24px;
+                        }
+                     }
+                  }
+               }
+
+               .customTooltip__footer {
+                  margin-top: 16px;
+
+                  ul {
+                     li {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        padding: 14px 16px;
+                        border-radius: 8px;
+                        border: 1px solid #32B878;
+                        background-color: #DDFFEF;
+
+                        &:not(:first-child) {
+                           margin-top: 16px;
+                        }
+
+                        p {
+                           color: #1B2434;
+                           font-size: 14px;
+                           font-weight: 400;
+                           line-height: 24px;
+                        }
+                     }
+                  }
+               }
+            }
+
+            &.unapproved {
+               top: -280px;
+               left: 300px;
+
+               .customTooltip__head {
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+
+                  .inner {
+                     display: flex;
+                     align-items: center;
+
+                     svg {
+                        color: #FF7900;
+                     }
+
+                     p {
+                        width: 435px;
+                        color: #1B2434;
+                        font-size: 24px;
+                        font-weight: 600;
+                        line-height: 30px;
+                        margin-left: 16px;
+                     }
+                  }
+               }
+
+               .customTooltip__main {
+                  margin-top: 24px;
+                  padding: 16px;
+                  border-radius: 8px;
+                  border: 1px solid #FF7900;
+                  background: #FBEDEB;
+
+                  .content {
+                     color: #1B2434;
+                     font-size: 14px;
+                     font-weight: 400;
+                     line-height: 24px;
+                  }
+
+                  .description {
+                     display: flex;
+                     align-items: center;
+                     justify-content: space-between;
+                     margin-top: 14px;
+                     color: #1B2434;
+                     font-size: 14px;
+                     font-weight: 400;
+                     line-height: 24px;
+                  }
+               }
+            }
+         }
       }
 
       &__title {
@@ -382,6 +610,7 @@
          color: #FF7900;
          border-radius: 7px;
          border: 1px solid #FF7900;
+         cursor: pointer;
 
          &.approved {
             color: #32B878;
@@ -402,6 +631,12 @@
             font-size: 12px;
             font-weight: 600;
             line-height: 13px;
+         }
+
+         &:hover {
+            & + .customTooltip {
+               display: block;
+            }
          }
       }
 

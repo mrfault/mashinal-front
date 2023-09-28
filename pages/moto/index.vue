@@ -224,7 +224,7 @@
             await this.getGridSearch({...this.searchParams, post, page});
             await this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'moto', data: post });
             this.pending = false;
-            this.scrollTo('.breadcrumbs', [20, -120]);
+            this.scrollTo('.cap', [20, -150]);
          }
       },
 
