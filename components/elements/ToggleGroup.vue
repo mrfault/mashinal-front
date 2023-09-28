@@ -76,6 +76,7 @@ export default {
          }
 
          &.active {
+            background-color: #EFF4FF;
             border-color: #155eef;
          }
 
@@ -87,6 +88,21 @@ export default {
             height: 16px;
             color: #155eef;
             z-index: 10;
+         }
+      }
+   }
+}
+
+.dark-mode {
+   .toggle_group {
+      .toggle_container {
+         .toggle_item {
+            background-color: #121926;
+            border-color: transparent;
+
+            &.active {
+               border-color: #155eef;
+            }
          }
       }
    }

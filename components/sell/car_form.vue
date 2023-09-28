@@ -155,11 +155,12 @@
                   />
                   <form-select
                      :label="$t('count_of_seats')"
-                     :options="[{id: 1, name: 1}, {id: 2, name: 2}, {id: 3, name: 4}]"
+                     :options="allSellOptions2?.n_of_seats?.options"
                      :clear-placeholder="true"
                      :clear-option="false"
                      :translate-options="false"
                      object-in-value
+                     translate-options
                      :disabled="!isEdit && !readyAllParameters"
                      :new-label="false"
                      v-model="form.seats_count"
@@ -460,12 +461,10 @@
                            </div>
                            <div class="">
                               <form-text-input
-                                 :class="{form_error: $v.form.car_number.$error}"
                                  v-model="form.car_number"
                                  input-class="car-number-show-popover"
                                  :mask="'99 - AA - 999'"
                                  placeholder="__ - __ - ___"
-                                 :invalid="$v.form.car_number.$error"
                               />
                            </div>
                         </div>
@@ -545,7 +544,7 @@
          </div>
       </div>
       <div class="image_section" :class="{form_error: $v.form.saved_images.$error}">
-         <h2>Şəkillər</h2>
+         <h2>{{ $t("photos") }}</h2>
          <client-only>
             <image-component :type="'cars'" :initial-form="form" :announcement="announcement"
                              :deletedFiles="deletedFiles"/>
@@ -553,8 +552,10 @@
          <div class="image_info">
             <inline-svg :src="'/icons/info.svg'"/>
             <div class="warning_texts">
-               <p :class="{invalid_paragraph: $v.form.saved_images.$error}">{{ $t("add_image_section_warning") }}</p>
-               <p :class="{invalid_paragraph: $v.form.saved_images.$error}">{{ $t("add_image_max_warning") }}</p>
+               <p :class="{invalid_paragraph: $v.form.saved_images.$error}">{{ $t("add_image_minmax_warning") }}</p>
+               <p :class="{invalid_paragraph: $v.form.saved_images.$error}">{{ $t("add_image_location_warning") }}</p>
+               <p :class="{invalid_paragraph: $v.form.saved_images.$error}">{{ $t("add_image_autosalon_warning") }}</p>
+               <p :class="{invalid_paragraph: $v.form.saved_images.$error}">{{ $t("add_image_user_warning") }}</p>
             </div>
          </div>
       </div>
@@ -1038,11 +1039,6 @@ export default {
                }),
                maxValue: maxValue(this.form.is_new ? 500 : 10000000)
             },
-            car_number: {
-               required: requiredIf(function () {
-                  return !this.form.vin && (!this.user.external_salon && !this.user.autosalon)
-               })
-            },
             country_id: {
                required: requiredIf(function () {
                   return !!this.user.external_salon
@@ -1293,7 +1289,7 @@ export default {
       .car_description_section {
          .comment {
             textarea {
-               height: 250px;
+               height: 150px;
             }
          }
 
