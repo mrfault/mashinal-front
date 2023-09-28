@@ -5,9 +5,9 @@
          :bg="'/img/salon-bg.png'"
          :title="$t('auto_salons')"
       >
-         <template #content>
-            <breadcrumbs class="light-color" :crumbs="crumbs" />
-         </template>
+<!--         <template #content>-->
+<!--            <breadcrumbs class="light-color" :crumbs="crumbs" />-->
+<!--         </template>-->
       </Banner>
 
       <div class="container-fluid p-0">
@@ -20,9 +20,9 @@
                   class="d-none d-sm-block"
                   :bg="'/img/salon-bg.png'"
                   :title="$t('auto_salons')">
-                  <template #content>
-                     <breadcrumbs class="light-color" :crumbs="crumbs" />
-                  </template>
+<!--                  <template #content>-->
+<!--                     <breadcrumbs class="light-color" :crumbs="crumbs" />-->
+<!--                  </template>-->
                </Banner>
 
                <salon-filters-form

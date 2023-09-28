@@ -137,7 +137,7 @@
                   <div class="item-overlay__bottom--left">
                      <inline-svg
                         v-if="announcement.has_monetization"
-                        src="/icons/promote.svg"
+                        src="/icons/promote-2.svg"
                      />
 
 <!--                     <div-->

@@ -3,6 +3,53 @@
       padding-bottom: 32px;
    }
 
+   &__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 0;
+
+      .btns {
+         display: flex;
+         align-items: center;
+         gap: 24px;
+
+         .favorite-btn {
+            height: 25px !important;
+            border: none;
+            padding: 0 !important;
+
+            span {
+               white-space: nowrap;
+               margin: 0;
+            }
+         }
+
+         .compare-btn {
+            height: 25px !important;
+            border: none;
+
+            &:hover {
+               .btn-compare {
+                  background-image: url('/icons/compare-active.svg');
+               }
+            }
+
+            .btn-compare {
+               background-image: url('/icons/compare-icon-black.svg');
+
+               &.btn-compare-active {
+                  background-image: url('/icons/compare-active.svg');
+               }
+            }
+
+            span {
+               white-space: nowrap;
+            }
+         }
+      }
+   }
+
    &__info {
       display: grid;
       grid-template-columns: 716px 348px;
@@ -66,10 +113,28 @@
          text-align: center;
       }
    }
+
+   .breadcrumbs {
+      padding: 8px 0;
+      border-bottom: 1px solid $white-2-new;
+   }
 }
 
 .dark-mode {
    .product-inner {
+      &__head {
+         .favorite-btn,
+         .compare-btn {
+            background-color: transparent;
+         }
+
+         .compare-btn {
+            .btn-compare {
+               background-image: url("/icons/compare-icon-white.svg");
+            }
+         }
+      }
+
       &__info {
          .characteristics {
             &__item {
@@ -90,6 +155,10 @@
          margin: 0;
          padding: 56px 0;
          background-color: #1B2434;
+      }
+
+      .breadcrumbs {
+         border-color: #9AA4B2;
       }
    }
 }
@@ -114,7 +183,12 @@
          display: flex;
          flex-direction: column;
          grid-template-columns: unset;
+      }
 
+      .breadcrumbs {
+         padding: 16px 0;
+         border-bottom: unset;
+         border-top: 1px solid $white-2-new;
       }
    }
 }

@@ -1,7 +1,92 @@
 <template>
    <div class="vehicle-specs">
-      <h4 class="vehicle-specs__title">{{ title }}</h4>
-<!--      <pre>{{announcement.region}}</pre>-->
+      <div class="vehicle-specs__head">
+         <h4 class="vehicle-specs__title">{{ title }}</h4>
+
+         <div
+            :class="['vehicle-specs__info', {'approved' : approvedVehicleCondition}]"
+         >
+            <inline-svg src="/icons/car-4.svg" />
+
+            <span v-if="approvedVehicleCondition">{{ $t('approved_vehicle') }}</span>
+            <span v-else>{{ $t('unapproved_vehicle') }}</span>
+         </div>
+
+         <template v-if="approvedVehicleCondition">
+            <CustomTooltip class="approved">
+               <template #head>
+                  <div class="inner">
+                     <inline-svg src="/icons/car-4.svg"  />
+
+                     <p>“Təsdiqlənmiş Nəqliyyat Vasitəsi” statusu hansı elanlara verilir:</p>
+                  </div>
+
+                  <inline-svg src="/icons/info.svg" />
+               </template>
+
+               <template #main>
+                  <ul>
+                     <li>
+                        <span>1</span>
+                        <p>Moderasiya xidmətimiz tərəfindən qeyd olunan məlumatların doğruluğu təsdiq edildikdə</p>
+                     </li>
+
+                     <li>
+                        <span>2</span>
+                        <p>Moderasiya xidmətimiz aşağıdakı məlumatların reallığı əks etdirdiyinə zəmanət verir:</p>
+                     </li>
+                  </ul>
+               </template>
+
+               <template #footer>
+                  <ul>
+                     <li>
+                        <p>Nəqliyyat vasitəsinin marka və modelinin düzgün qeyd olunduğuna</p>
+                        <inline-svg src="/icons/check3.svg" />
+                     </li>
+                     <li>
+                        <p>Nəqliyyat vasitəsinin buraxılış ilinin düzgün göstərildiyinə</p>
+                        <inline-svg src="/icons/check3.svg" />
+                     </li>
+                     <li>
+                        <p>Nəqliyyat vasitəsinin BAN növünün və rənginin düzgün təqdim edildiyinə</p>
+                        <inline-svg src="/icons/check3.svg" />
+                     </li>
+                     <li>
+                        <p>Mühərrik həcminin düzgün göstərildiyinə</p>
+                        <inline-svg src="/icons/check3.svg" />
+                     </li>
+                  </ul>
+               </template>
+            </CustomTooltip>
+         </template>
+
+         <template v-else>
+            <CustomTooltip class="unapproved">
+               <template #head>
+                  <div class="inner">
+                     <inline-svg src="/icons/car-4.svg"  />
+
+                     <p>DİQQƏT!</p>
+                  </div>
+
+                  <inline-svg src="/icons/info.svg" />
+               </template>
+
+               <template #main>
+                  <div class="content">
+                     Elanda qeyd olunan nəqliyyat vasitəsinin göstəriciləri, real həyatda olandan fərqli və ya aldadıcı ola bilər. Moderasiya xidmətimiz məlumatların doğrulugunu təsdiq etməmişdir. Alqı-satqı zamanı diqqətli və ayıq olmanızı tövsiyyə edirik.
+                  </div>
+
+                  <div class="description">
+                     <span>#xeyirliolsun</span>
+
+                     <inline-svg src="/icons/sewn.svg" />
+                  </div>
+               </template>
+            </CustomTooltip>
+         </template>
+      </div>
 
       <ul class="vehicle-specs__list">
          <li
@@ -34,20 +119,27 @@
          </li>
       </ul>
 
-      <nuxt-link class="vehicle-specs__btn" :to="catalogLink" v-if="catalog">
-         <span>{{ $t('catalog_model_specifications') }}</span>
+      <div class="vehicle-specs__bottom">
+         <nuxt-link class="vehicle-specs__btn" :to="catalogLink" v-if="catalog">
+            <div class="wrapp">
+               <span>{{ $t('catalog_model_specifications') }}</span>
+               <span>
+                  {{ $t('show_catalog') }}
+                  <inline-svg src="/icons/car-5.svg" />
+               </span>
+            </div>
 
-         <inline-svg src="/icons/arrow-right.svg" width="20px" height="20px" />
-      </nuxt-link>
+            <inline-svg src="/icons/arrow-right.svg" width="20px" height="20px" />
+         </nuxt-link>
 
-<!--      <div v-if="isMobileBreakpoint && announcement.status != 3" class="mt-3 mt-lg-0">-->
-<!--         <floating-cta :announcement="announcement"/>-->
-<!--      </div>-->
+         <h4>{{ $t('announcement_number') }}: #{{ announcement.id }}</h4>
+      </div>
    </div>
 </template>
 
 <script>
    import FloatingCta from '~/components/announcements/inner/FloatingCta';
+   import CustomTooltip from "~/components/elements/CustomTooltip.vue";
    import { AnnouncementDataMixin } from '~/mixins/announcement';
    import { mapGetters } from 'vuex';
 
@@ -61,7 +153,8 @@
       },
 
       components: {
-         FloatingCta
+         FloatingCta,
+         CustomTooltip
       },
 
       mixins: [AnnouncementDataMixin],
@@ -223,7 +316,8 @@
                {
                   key: 'credit',
                   icon: '/icons/credit_2.svg',
-                  value: this.announcement.credit && this.$t('is_in_credit')},
+                  value: this.announcement.credit && this.$t('is_in_credit')
+               },
                {
                   key: 'condition',
                   value: this.condition,
@@ -249,6 +343,12 @@
                   for: ['parts']
                },
                {key: 'commercial_size', value: this.announcement.commercial_size},
+
+               {
+                  key: 'rent',
+                  icon: '/icons/clock.svg',
+                  value: this.announcement.is_rent ? this.$t('is_rent') : undefined
+               }
             ];
 
             if (this.announcement.is_external_salon) {
@@ -318,6 +418,13 @@
             // console.log('this.catalog', this.catalog)
             let path = this.catalog && `/catalog/${this.catalog.brand.slug}/${this.catalog.model.slug}/${this.catalog.generation.id}/${this.catalog.car_type.id}/mod/${this.announcement?.car_catalog_id}`;
             return path && this.$localePath(path);
+         },
+
+         approvedVehicleCondition() {
+            return (this.announcement.type === 'light_vehicle' ||
+                    this.announcement.type === 'scooter' ||
+                    this.announcement.type === 'moto_atv') &&
+                   (this.announcement.vin || this.announcement.car_number);
          }
       }
    }
@@ -329,11 +436,208 @@
       border-radius: 12px;
       border: 1px solid #E3E8EF;
 
+      &__head {
+         position: relative;
+         display: flex;
+         align-items: center;
+         justify-content: space-between;
+         gap: 20px;
+
+         .customTooltip {
+            width: 100%;
+            max-width: 583px;
+
+            &.approved {
+               top: -550px;
+               left: 300px;
+
+               .customTooltip__head {
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+
+                  .inner {
+                     display: flex;
+                     align-items: center;
+
+                     svg {
+                        color: #32B878;
+                     }
+
+                     p {
+                        width: 435px;
+                        color: #1B2434;
+                        font-size: 24px;
+                        font-weight: 600;
+                        line-height: 30px;
+                        margin-left: 16px;
+                     }
+                  }
+               }
+
+               .customTooltip__main {
+                  margin-top: 24px;
+
+                  ul {
+                     li {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+
+                        &:not(:first-child) {
+                           margin-top: 16px;
+                        }
+
+                        span {
+                           display: flex;
+                           align-items: center;
+                           justify-content: center;
+                           min-width: 24px;
+                           min-height: 24px;
+                           color: #FFFFFF;
+                           border-radius: 50%;
+                           background-color: #32B878;
+                        }
+
+                        p {
+                           color: #1B2434;
+                           font-size: 16px;
+                           font-weight: 400;
+                           line-height: 24px;
+                        }
+                     }
+                  }
+               }
+
+               .customTooltip__footer {
+                  margin-top: 16px;
+
+                  ul {
+                     li {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        padding: 14px 16px;
+                        border-radius: 8px;
+                        border: 1px solid #32B878;
+                        background-color: #DDFFEF;
+
+                        &:not(:first-child) {
+                           margin-top: 16px;
+                        }
+
+                        p {
+                           color: #1B2434;
+                           font-size: 14px;
+                           font-weight: 400;
+                           line-height: 24px;
+                        }
+                     }
+                  }
+               }
+            }
+
+            &.unapproved {
+               top: -280px;
+               left: 300px;
+
+               .customTooltip__head {
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+
+                  .inner {
+                     display: flex;
+                     align-items: center;
+
+                     svg {
+                        color: #FF7900;
+                     }
+
+                     p {
+                        width: 435px;
+                        color: #1B2434;
+                        font-size: 24px;
+                        font-weight: 600;
+                        line-height: 30px;
+                        margin-left: 16px;
+                     }
+                  }
+               }
+
+               .customTooltip__main {
+                  margin-top: 24px;
+                  padding: 16px;
+                  border-radius: 8px;
+                  border: 1px solid #FF7900;
+                  background: #FBEDEB;
+
+                  .content {
+                     color: #1B2434;
+                     font-size: 14px;
+                     font-weight: 400;
+                     line-height: 24px;
+                  }
+
+                  .description {
+                     display: flex;
+                     align-items: center;
+                     justify-content: space-between;
+                     margin-top: 14px;
+                     color: #1B2434;
+                     font-size: 14px;
+                     font-weight: 400;
+                     line-height: 24px;
+                  }
+               }
+            }
+         }
+      }
+
       &__title {
          font-size: 24px;
          font-weight: 600;
          line-height: 28px;
          color: #1B2434;
+      }
+
+      &__info {
+         display: flex;
+         align-items: center;
+         gap: 7px;
+         width: 160px;
+         padding: 12px;
+         color: #FF7900;
+         border-radius: 7px;
+         border: 1px solid #FF7900;
+         cursor: pointer;
+
+         &.approved {
+            color: #32B878;
+            border: 1px solid #32B878;
+
+            span {
+               color: #32B878;
+            }
+         }
+
+         svg {
+            min-width: 25px;
+            height: 25px;
+         }
+
+         span {
+            color: #FF7900;
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 13px;
+         }
+
+         &:hover {
+            & + .customTooltip {
+               display: block;
+            }
+         }
       }
 
       &__list {
@@ -390,24 +694,58 @@
       &__btn {
          display: inline-flex;
          align-items: center;
-         margin-top: 24px;
          border-radius: 8px;
-         padding: 15px 20px;
-         background-color: #FFF;
-         border: 1px solid #CDD5DF;
+         padding: 7px 20px;
+         background-color: #155EEF;
          transition: all .3s;
 
-         span {
-            font-size: 16px;
-            font-weight: 500;
-            line-height: 20px;
-            color: #1B2434;
-            white-space: nowrap;
-            margin-right: 13px;
+         .wrapp {
+            display: flex;
+            flex-direction: column;
+            margin-right: 8px;
+
+            span {
+               color: #FFF;
+               font-size: 16px;
+               font-weight: 500;
+               line-height: 20px;
+
+               &:last-child {
+                  margin-top: 3px;
+                  font-size: 12px;
+                  font-weight: 400;
+                  line-height: 14px;
+
+                  svg {
+                     margin-left: 7px;
+                  }
+               }
+            }
+         }
+
+         svg {
+            path {
+               fill: #FFFFFF;
+            }
          }
 
          &:hover {
             border-color: #84ADFF;
+         }
+      }
+
+      &__bottom {
+         margin-top: 24px;
+         display: flex;
+         align-items: flex-end;
+         justify-content: space-between;
+
+         h4 {
+            color: #1B2434;
+            font-size: 15px;
+            font-weight: 400;
+            line-height: 18px;
+            margin-bottom: 10px;
          }
       }
    }
@@ -459,6 +797,12 @@
                }
             }
          }
+
+         &__bottom {
+            h4 {
+               color: #EEF2F6;
+            }
+         }
       }
    }
 
@@ -480,6 +824,20 @@
       .vehicle-specs {
          &__list {
             grid-template-columns: repeat(1, 1fr);
+         }
+
+         &__btn {
+            max-width: 320px;
+         }
+
+         &__bottom {
+            align-items: unset;
+            flex-direction: column;
+            gap: 20px;
+
+            h4 {
+               margin: 0;
+            }
          }
       }
    }

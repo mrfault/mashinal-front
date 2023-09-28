@@ -1,7 +1,7 @@
 <template>
    <div class="pages-moto-index">
       <div class="container">
-         <div class="filters-container mb-3">
+         <div class="filters-container">
             <template v-if="isMobileBreakpoint && !advancedSearch">
                <FiltersMobile :type="2" :sorting="sorting" :additional-brands="additionalBrands" :form-moto-type="formMotoType" @showSorting="showSorting = $event"  @pending="pending = true" @openMore="openMore"  @submit="submitOnMobile" :meta="{ type: 'moto', path: '/moto', param: 'filter' }" />
             </template>
@@ -15,7 +15,7 @@
                   <button class="btn" @click="resetForm(true)">{{ $t('clear_search') }}</button>
                </div>
 
-               <div class="filters-container__head d-flex align-items-center justify-content-between flex-column mb-5">
+               <div class="filters-container__head d-flex align-items-center justify-content-between flex-column mb-3">
                   <form-buttons
                      class="announce_types"
                      :options="getMileageOptions"
@@ -56,7 +56,7 @@
             </template>
          </div>
 
-         <breadcrumbs :crumbs="crumbs" />
+<!--         <breadcrumbs :crumbs="crumbs" />-->
 
          <grid
             v-if="motoAnnouncements?.data?.length"
@@ -68,7 +68,7 @@
             escape-duplicates
          >
             <template #cap>
-               <Cap :className="'mb40'">
+               <Cap :className="'mb32'">
                   <template #left>
                      <h3 v-if="getCarDetails && getCarDetails?.brand">
                         {{ getCarDetails && getCarDetails?.brand }}
@@ -224,7 +224,7 @@
             await this.getGridSearch({...this.searchParams, post, page});
             await this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'moto', data: post });
             this.pending = false;
-            this.scrollTo('.breadcrumbs', [20, -120]);
+            this.scrollTo('.cap', [20, -150]);
          }
       },
 
@@ -357,7 +357,7 @@
       padding-top: 32px;
 
       .announcements-grid {
-         margin-top: 30px;
+         margin-top: 32px;
       }
    }
 </style>
