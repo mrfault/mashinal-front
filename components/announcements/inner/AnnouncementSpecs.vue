@@ -65,7 +65,7 @@
             <CustomTooltip class="unapproved">
                <template #head>
                   <div class="inner">
-                     <inline-svg src="/icons/car-4.svg"  />
+                     <inline-svg src="/icons/car-4.svg" />
 
                      <p>DİQQƏT!</p>
                   </div>

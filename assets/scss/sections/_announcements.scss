@@ -395,6 +395,9 @@
 
       &.isPromotion {
          border: 2px solid $red-1;
+         //border-width: 2px;
+         //border-style: solid;
+         //background: linear-gradient(90deg,#fcb530,#f25e42);
       }
 
       a.abs-link {

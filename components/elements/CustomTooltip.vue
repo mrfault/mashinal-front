@@ -27,6 +27,7 @@
       padding: 24px;
       border-radius: 12px;
       background-color: #FFF;
+      border: 1px solid #CDD5DF;
       z-index: 15;
    }
 </style>
