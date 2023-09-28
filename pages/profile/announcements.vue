@@ -472,7 +472,6 @@
 
 <style lang="scss">
 .ma-announcements {
-
    &__top-cards {
       display: flex;
       justify-content: space-between;
@@ -616,13 +615,22 @@
 }
 
 .dark-mode {
-
    .ma-announcements {
       &__head {
          &-autosalon {
             &-container {
                background: #1b2434;
                //background: transparent;
+            }
+         }
+
+         &--item {
+            &--active {
+               span {
+                  &:last-child {
+                     color: #FFFFFF;
+                  }
+               }
             }
          }
       }
@@ -783,7 +791,6 @@
                background: transparent;
                color: #697586;
                border: none;
-               //margin-bottom: -15px;
 
                &--active {
                   background: rgba(#718096, .8);
@@ -931,7 +938,5 @@
    }
 
 }
-
-
 </style>
 

@@ -1,16 +1,15 @@
 .e-service {
    display: inline-block;
    width: 100%;
-   padding: 32px;
+   padding: 20px;
    background: $white;
    border-radius: 12px;
    border: 1px solid $white;
    transition: all .3s;
-   min-height: 285px;
-
+   min-height: 232px;
 
    &__body {
-      margin-top: 24px;
+      margin-top: 20px;
    }
 
    &__title {
@@ -31,165 +30,12 @@
    &:hover {
       border-color: $blue-new;
    }
-
-   //height: 230px;
-   // display: flex;
-   // flex-direction: column;
-   // justify-content: space-between;
-   //&__header {
-   //   display: flex;
-   //   justify-content: space-between;
-   //   height: 50px;
-   //   margin-bottom: 10px;
-   //
-   //   &--title {
-   //      font-weight: 600;
-   //      font-size: 17px;
-   //      line-height: 20px;
-   //      color: $dark-new;
-   //   }
-
-   //&--icon {
-   //   font: 26px;
-   //   color: $dark-blue-2;
-   //   font-size: 25px;
-   //}
-   //}
-   //
-   //&__body {
-   //   display: flex;
-   //   flex-wrap: nowrap;
-   //   height: 62px;
-   //
-   //   &--image {
-   //      height: 45px;
-   //      margin-right: 20px;
-   //      max-width: 46px;
-   //
-   //      img {
-   //         width: 100%;
-   //         height: 100%;
-   //         object-fit: contain;
-   //      }
-   //   }
-   //
-   //   &--description {
-   //      .key {
-   //         color: $dark-blue-1;
-   //         font: 400 14px Gilroy;
-   //         line-height: 19px;
-   //         margin-bottom: 2px;
-   //      }
-   //
-   //      .value {
-   //         color: $dark-blue-2;
-   //         font: 400 16px Gilroy;
-   //      }
-   //
-   //      .description-red-7 {
-   //         color: $red-7;
-   //      }
-   //
-   //      ol {
-   //         list-style-type: none;
-   //         padding-left: 20px;
-   //         margin-top: -44px;
-   //
-   //         li {
-   //            font: 500 14px Gilroy;
-   //
-   //            &:nth-of-type(1) {
-   //               margin-bottom: 8px;
-   //            }
-   //
-   //            &:nth-of-type(2) {
-   //               color: $red-1;
-   //            }
-   //         }
-   //      }
-   //
-   //   }
-   //}
-   //
-   //&__actions {
-   //   display: flex;
-   //   flex-direction: column;
-   //   justify-content: flex-end;
-   //   height: 48px;
-   //
-   //   &--left {
-   //      width: 100%;
-   //      margin-bottom: 10px;
-   //
-   //      a {
-   //         color: $green-1;
-   //         font: 400 14px Gilroy;
-   //         text-decoration: underline;
-   //      }
-   //   }
-   //
-   //   &--right {
-   //      width: 100%;
-   //      color: $dark-blue-2;
-   //      text-align: right;
-   //      white-space: nowrap;
-   //
-   //      i {
-   //         margin-left: 8px;
-   //      }
-   //
-   //      a {
-   //         position: absolute;
-   //         width: 100%;
-   //         height: 100%;
-   //         top: 0;
-   //         left: 0;
-   //         padding: 195px 30px 0 0;
-   //      }
-   //   }
-   //
-   //   &--button {
-   //      color: $green-1;
-   //      font: 400 14px Gilroy;
-   //      text-decoration: underline;
-   //      background: transparent;
-   //      border: none;
-   //      outline: none;
-   //   }
-   //}
 }
 
 .dark-mode {
    .e-service {
       border-color: $dark-light-new;
       background-color: $dark-light-new;
-
-      &__header {
-         //&--title {
-         //   color: #fff;
-         //}
-         //
-         //&--icon {
-         //   color: $grey-1;
-         //
-         //   i {
-         //      &:before {
-         //         color: $grey-1;
-         //      }
-         //   }
-         //
-         //   //svg {
-         //   //   g {
-         //   //      opacity: .8 !important;
-         //   //   }
-         //   //
-         //   //   path {
-         //   //      fill: $grey-1;
-         //   //      stroke: $grey-1;
-         //   //   }
-         //   //}
-         //}
-      }
 
       &__title {
          color: $grey-1-new;
@@ -217,6 +63,7 @@
       align-items: center;
       padding: 16px;
       min-height: auto;
+
       &__body {
          margin-top: unset;
          margin-left: 16px;
