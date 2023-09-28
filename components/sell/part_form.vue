@@ -12,6 +12,16 @@
                :class="{full_grid: !(form.category_id && Object.values(partFilters).length)}"
                @change="onChangeCategory"
             />
+            <form-select
+               v-if="!form.category_id"
+               :label="$t('mark')"
+               :options="[]"
+               :clear-placeholder="true"
+               :clear-option="false"
+               :value="null"
+               disabled
+               :new-label="false"
+            />
             <template v-if="form.category_id && Object.values(partFilters).length">
                <form-select
                   v-if="form.category_id && partFilters?.sub_categories.length"
@@ -183,12 +193,14 @@
                   v-model="form.have_delivery"
                   :label="$t('have_delivery')"
                   input-name="have_delivery"
+                  :disabled="!isEdit && !readyAllParameters"
                   transparent
                />
                <form-checkbox
                   v-model="form.have_warranty"
                   :label="$t('have_warranty')"
                   input-name="have_warranty"
+                  :disabled="!isEdit && !readyAllParameters"
                   transparent
                />
             </div>
@@ -197,10 +209,12 @@
                   :placeholder="$t('price')"
                   v-model="form.price"
                   :class="{form_error: $v.form.price.$error}"
+                  :disabled="!isEdit && !readyAllParameters"
                   :invalid="$v.form.price.$error"
                />
                <div class="price_types">
                   <toggle-group :items="priceTypes" :default-value="form.currency || 1" v-slot="{ item }"
+                                :disabled="!isEdit && !readyAllParameters"
                                 @change="toggleCurrency">
                      <div class="price_item">
                         <p>{{ item.name[locale] }}</p>
@@ -213,6 +227,7 @@
                v-model="form.is_negotiable"
                :label="$t('negotiable_price')"
                input-name="is_negotiable"
+               :disabled="!isEdit && !readyAllParameters"
                transparent
                @change="toggleIsNegotiation"
             />
@@ -227,6 +242,7 @@
                />
                <div class="price_types">
                   <toggle-group :items="priceTypes" :default-value="form.currency || 1" v-slot="{ item }"
+                                :disabled="!isEdit && !readyAllParameters"
                                 @change="toggleCurrency">
                      <div class="price_item">
                         <p>{{ item.name[locale] }}</p>
@@ -240,12 +256,14 @@
                :label="$t('negotiable_price')"
                input-name="is_negotiable"
                transparent
+               :disabled="!isEdit && !readyAllParameters"
                @change="toggleIsNegotiation"
             />
             <div class="part_form_with_info">
                <form-textarea
                   v-model="form.description"
                   :placeholder="$t('additional_info')"
+                  :disabled="!isEdit && !readyAllParameters"
                   :maxlength="600"
                />
                <div class="part_form_with_info_inner">
@@ -254,7 +272,7 @@
                </div>
             </div>
             <div class="part_form_with_info">
-               <form-keywords v-model="form.keywords"/>
+               <form-keywords v-model="form.keywords" :disabled="!isEdit && !readyAllParameters"/>
                <div class="part_form_with_info_inner">
                   <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
                   <p>{{ $t("sell_parts_keywords_info") }}</p>
@@ -585,6 +603,10 @@ export default {
 
          .textarea, textarea, input {
             height: 100%;
+         }
+
+         textarea {
+            min-height: 200px;
          }
       }
 

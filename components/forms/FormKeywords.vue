@@ -1,5 +1,5 @@
 <template>
-  <label class="form-keywords" for="keywords">
+  <label :class="['form-keywords', {disabled: disabled}]" for="keywords">
     <div class="keywords">
       <div class="form-keywords-overlay"></div>
       <span
@@ -35,7 +35,7 @@
 export default {
   props: {
     isModerator: Boolean,
-    disabled: Boolean,
+    disabled: {type: Boolean, default: false},
     value: {
       type: Array,
       required: true
@@ -93,6 +93,12 @@ export default {
 
 <style lang="scss">
 .form-keywords{
+
+   &.disabled {
+      color: #b3bcca;
+      opacity: 0.4;
+      pointer-events: none;
+   }
 
 &-overlay{
   position: absolute;

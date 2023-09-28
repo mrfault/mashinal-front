@@ -6,6 +6,7 @@
             <div class="card">
                <form class="add_announce_form">
                   <car_form isEdit :announcement="announcement" :isReady="isReady"
+                            :region_id="announcement.region_id"
                             @getForm="getCarForm($event)"/>
                   <button type="button" @click="onClick()" class="btn full-width btn--pale-green-outline active">
                      {{ $t("place_announcement") }}
@@ -28,7 +29,7 @@ import {ToastErrorsMixin} from "~/mixins/toast-errors";
 import {PaymentMixin} from "~/mixins/payment";
 
 export default {
-   name: 'pages-moto-announcement-edit',
+   name: 'pages-cars-announcement-edit',
    middleware: 'auth_general',
    components: {
       GridItem,
@@ -408,55 +409,6 @@ export default {
                }
             }
          }
-
-         .vehicle_card_info {
-            position: sticky;
-            top: 128px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            height: min-content;
-            width: 260px;
-            min-width: 260px;
-
-            &_description {
-               background-color: #EEF2F6;
-               border-radius: 8px;
-               padding: 10px;
-               text-align: center;
-            }
-
-            &_help {
-               display: flex;
-               padding: 16px 12px;
-               flex-direction: column;
-               gap: 16px;
-               border-radius: 12px;
-               border: 1px solid #CDD5DF;
-               background-color: #F8FAFC;
-
-               &_inner {
-                  display: flex;
-                  align-items: center;
-                  gap: 10px;
-
-                  svg {
-                     min-width: 24px;
-                     min-height: 24px;
-                  }
-               }
-            }
-
-            &.default_imgs {
-
-               .item-bg {
-                  background-repeat: no-repeat;
-                  background-size: inherit;
-               }
-            }
-         }
-
-
       }
 
 
@@ -475,6 +427,25 @@ export default {
          }
       }
    }
+
+   .car_number_info {
+      display: flex;
+      flex-direction: column;
+      height: inherit;
+      padding: 14px 16px;
+      justify-content: center;
+      align-items: center;
+      gap: 24px;
+      border-radius: 8px;
+      border: 1px solid #CDD5DF;
+      font-size: 12px;
+      font-weight: 400;
+
+      strong {
+         font-weight: 500;
+         text-decoration-line: underline;
+      }
+   }
 }
 
 .dark-mode {
@@ -484,11 +455,7 @@ export default {
       }
 
       .announce_container {
-
-
          .card {
-
-
             .add_announce_form {
                .info_svg {
                   color: #4B5565 !important;
@@ -510,26 +477,8 @@ export default {
                   }
                }
             }
-
-            .vehicle_card_info {
-               &_description {
-                  background-color: #00359E;
-               }
-
-               &_help {
-                  background-color: #364152;
-               }
-            }
-
-
          }
       }
-   }
-}
-
-@media (max-width: 1150px) {
-   .form_navigation {
-      display: none;
    }
 }
 
