@@ -62,6 +62,9 @@
       props: {
          value: {},
          id: String,
+         obj: {
+           type: Object
+         },
          type: {
             type: String,
             default: 'checkbox',
@@ -129,7 +132,7 @@
                   this.prevValue = value;
                }
                this.$emit('change', value);
-               this.$emit('getIdValue', {id: this.id, value});
+               this.$emit('getObject', {obj: this.obj, value});
             }
          },
       },

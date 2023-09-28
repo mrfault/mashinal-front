@@ -21,11 +21,11 @@
                         <p v-html="$t('mobile_info', {phone: '+' + user.phone})"/>
                      </div>
                   </div>
-                  <h2 class="card_title">{{ announceTitle }}</h2>
+                  <h2 class="card_title">{{ $t("announcement_type") }}</h2>
                   <toggle-group
                      :items="searchMenus.filter((menu) => menu.id !== 3).map((menu) => ({...menu,name: $t(menu.label)}))"
                      v-slot="{ item }"
-                     :defaultValue="0"
+                     :defaultValue="1"
                      @change="handleAnnounceType"
                   >
                      <div class="announcement_item">
@@ -38,21 +38,18 @@
 
                   <div class="card_container">
                      <div class="add_announce_form">
-
                         <car_form v-if="form.announce_type.title === 'cars'"
                                   :isReady="isReady"
                                   :region_id="authForm.region_id"
-                                  @getForm="getCarForm($event)" />
+                                  @getForm="getCarForm($event)"/>
                         <moto_form v-if="form.announce_type.title === 'moto'"
                                    :region_id="authForm.region_id"
                                    :isReady="isReady"
-                                   @getForm="getMotoForm($event)" />
+                                   @getForm="getMotoForm($event)"/>
                         <part_form v-if="form.announce_type.title === 'parts'"
-                                   :isReady="isReady" @getForm="getPartForm($event)" />
+                                   :isReady="isReady" @getForm="getPartForm($event)"/>
                         <registration_mark v-if="form.announce_type.title === 'registration_marks'" :isReady="isReady"
                                            @getForm="getRegistrationMarksForm($event)"/>
-
-
                      </div>
                   </div>
                   <service-packages
@@ -72,16 +69,17 @@
                               :disabled="loggedIn"
                            />
                            <form-text-input
-                              v-if="!Object.values(user).length"
                               :class="{form_error: $v.authForm.phone.$error || authError.includes('phone')}"
                               key="phone"
                               :placeholder="$t('mobile_phone_number') + '*'"
                               v-model="authForm.phone"
+                              :disabled="cantChangePhone"
                               :mask="$maskPhone()"
                               :invalid="$v.authForm.phone.$error || authError.includes('phone')"
                            >
-                              <template #default v-if="Object.keys(user).length">
-                                 <button type="button" class="change_number btn btn--red-opacity">
+                              <template #default v-if="cantChangePhone">
+                                 <button type="button" class="change_number btn btn--red-opacity"
+                                         @click="changePhone = true">
                                     Nömrəni dəyiş
                                  </button>
                               </template>
@@ -119,7 +117,7 @@
 
                            <div class="submit_button">
                               <div class="limit_error"
-                                   v-if="(form.announce_type?.id === 1 && user.announce_left_car < 1) || (form.announce_type?.id === 4 && user.announce_left_moto < 1)">
+                                   v-if="inLimit">
                                  <p>{{ $t('announce_limit_alert', {price: settingsV2?.settings?.promotion_price}) }}</p>
                               </div>
                               <button type="button" @click="onClick()"
@@ -175,8 +173,12 @@
 
          <div v-if="modalType === 'rules'" v-html="getRulesPage.text[locale]"></div>
          <feedback-modal v-if="modalType === 'feedback'" @close="showModal = false"/>
-         <monetization-alert-modal v-if="modalType === 'monetization_alert'" @onSubmit="onSubmitMonetizationModal"
-                                   @close="showModal = false"/>
+
+         <monetization-alert-modal
+            v-if="modalType === 'monetization_alert'"
+            :content="form.add_monetization === 1 && inLimit ? $t('turbo_n_additional', {turboPrice: settingsV2?.settings?.promotion_price, additionalPrice: settingsV2?.settings?.restore_price, totalPrice: +settingsV2?.settings?.promotion_price + +settingsV2?.settings?.restore_price}) : form.add_monetization === 1 ? $t('only_turbo', {price: settingsV2?.settings?.promotion_price}) : $t('only_additional', {price: settingsV2?.settings?.restore_price})"
+            @onSubmit="onSubmitMonetizationModal"
+            @close="showModal = false"/>
       </modal-popup>
    </div>
 </template>
@@ -219,6 +221,12 @@ export default {
       getRulesPage() {
          return this.staticPages.find(page => page.id == 1);
       },
+      cantChangePhone() {
+         return Object.keys(this.user).length && !this.changePhone
+      },
+      inLimit() {
+         return (this.form.announce_type?.id === 1 && this.user.announce_left_car < 1) || (this.form.announce_type?.id === 4 && this.user.announce_left_moto < 1)
+      }
    },
    head() {
       return this.$headMeta({
@@ -234,9 +242,9 @@ export default {
          pending: false,
          showModal: false,
          modalType: "",
+         changePhone: false,
          modalTitle: "",
          isReady: false,
-         announceTitle: "",
          // announcement: {
          //    image: "",
          //    show_vin: false,
@@ -254,7 +262,10 @@ export default {
          // resetAnnouncement: {},
          // resetPartPreview: {},
          form: {
-            announce_type: "",
+            announce_type: {
+               id: 1,
+               title: "cars"
+            },
             add_monetization: 1
          },
          authForm: {
@@ -270,6 +281,8 @@ export default {
    async asyncData({store}) {
       await store.dispatch('getServicePackages')
       await store.dispatch('getSettingsV2')
+      await store.dispatch('getBrands')
+      await store.dispatch('getAllOtherOptions', '2')
    },
    methods: {
       ...mapActions(['carsPost', 'motoPost', 'partsPost', 'plateNumbersPost', 'updatePaidStatus']),
@@ -285,7 +298,7 @@ export default {
          this.modalTitle = title || ""
       },
       async getCarForm({form}) {
-         if (this.form.add_monetization === 1 && !this.alertShowed) {
+         if ((this.form.add_monetization === 1 || this.user.announce_left_car < 1) && !this.alertShowed) {
             this.modalType = 'monetization_alert'
             this.modalTitle = ""
             this.alertShowed = true
@@ -317,7 +330,7 @@ export default {
          }
       },
       async getMotoForm({form}) {
-         if (this.form.add_monetization === 1 && !this.alertShowed) {
+         if ((this.form.add_monetization === 1 || this.user.announce_left_moto < 1) && !this.alertShowed) {
             this.modalType = 'monetization_alert'
             this.modalTitle = ""
             this.alertShowed = true
@@ -481,11 +494,10 @@ export default {
       }
    },
    async mounted() {
-      this.announceTitle = this.$t('place_an_ad')
       if (Object.values(this.user).length) {
          this.authForm.name = this.user.full_name
          this.authForm.email = this.user.email
-         this.authForm.phone = this.user.phone
+         this.authForm.phone = this.user.phone.toString().slice(3)
       }
       Object.values(this.user).length ? this.authStep = "loggedIn" : this.authStep = "notLoggedIn"
       await this.$store.dispatch("getOptions")
@@ -512,7 +524,7 @@ export default {
 
 
 .add_announce {
-   padding: 40px 0 160px 0;
+   padding: 24px 0 160px 0;
 
    .divider {
       display: grid;
@@ -527,9 +539,9 @@ export default {
    }
 
    &_title {
-      font-size: 28px;
+      font-size: 22px;
       font-weight: 700;
-      margin-bottom: 32px;
+      margin-bottom: 24px;
    }
 
    .btn {
@@ -553,8 +565,9 @@ export default {
             background: #FFF;
 
             .card_title {
-               font-size: 24px;
+               font-size: 20px;
                font-weight: 600;
+               margin-top: 4px;
             }
 
             &_info {
@@ -851,6 +864,8 @@ export default {
                font-size: 25px;
                font-weight: 700;
                line-height: 40.855px;
+               padding: 6px;
+               background-color: #fff !important;
             }
          }
       }
@@ -870,7 +885,7 @@ export default {
    }
 
    .car_number_info {
-      display: flex;
+      display: flex !important;
       flex-direction: column;
       height: inherit;
       padding: 14px 16px;
@@ -896,6 +911,24 @@ export default {
       }
 
       .announce_container {
+         .announce_view {
+            .main_card {
+               background-color: #1B2434;
+
+               .toggle_item.active {
+                  .announcement_item {
+                     background-color: #121926;
+                  }
+               }
+
+               .main_card_info {
+                  .add_announce_info {
+                     background-color: #121926;
+                  }
+               }
+            }
+         }
+
          .card {
             .add_announce_info {
                background-color: #364152;
@@ -920,7 +953,7 @@ export default {
             .contacts {
 
                &_info {
-                  background-color: #364152;
+                  background-color: #121926 !important;
                }
             }
          }

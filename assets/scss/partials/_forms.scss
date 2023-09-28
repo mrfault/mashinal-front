@@ -140,8 +140,8 @@ input::-webkit-inner-spin-button {
       }
 
       &.disabled {
-         color: $grey-3;
-         -webkit-text-fill-color: $grey-3;
+         color: $dark-light-new;
+         -webkit-text-fill-color: $dark-light-new;
          opacity: 0.4;
          pointer-events: none;
 
@@ -601,6 +601,7 @@ input::-webkit-inner-spin-button {
          //transform: translateY(-50%);
          //right: 16px;
          font-size: 11px;
+         color: black;
          //margin: 2px 0 0 4px;
       }
 
@@ -1509,8 +1510,8 @@ input::-webkit-inner-spin-button {
 
 .form-keywords {
    width: 100%;
+   height: 100%;
    min-height: 200px;
-   margin-top: 20px;
    padding: 20px 15px;
    border: 1px solid $white-2-new;
    border-radius: 8px;
@@ -1623,6 +1624,11 @@ input::-webkit-inner-spin-button {
 
    .dark-mode {
       .select-menu {
+         &_label {
+            .icon-cross {
+               color: #9AA4B2;
+            }
+         }
          &_dropdown {
             &.custom-checkboxes {
                .form-merged {

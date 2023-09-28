@@ -5,18 +5,12 @@
          <div class="announce_container">
             <div class="card">
                <form class="add_announce_form">
-                  <part_form isEdit :announcement="announcement" :isReady="isReady" :preview="partPreview"
+                  <part_form isEdit :announcement="announcement" :isReady="isReady"
                              @getForm="getPartForm($event)"/>
                   <button type="button" @click="onClick()" class="btn full-width btn--pale-green-outline active">
                      {{ $t("place_announcement") }}
                   </button>
                </form>
-               <div :class="['vehicle_card_info', {default_imgs: partPreview.image.startsWith('/img/')}]"
-                    v-if="!isMobileBreakpoint">
-                  <client-only>
-                     <grid-item :announcement="partPreview"/>
-                  </client-only>
-               </div>
             </div>
          </div>
       </div>
@@ -50,13 +44,6 @@ export default {
    mixins: [ToastErrorsMixin, PaymentMixin],
    data() {
       return {
-         partPreview: {
-            title: this.$t('headline'),
-            description: this.$t('additional_info'),
-            image: "",
-            price: "0 AZN",
-            created_at: "",
-         },
          isReady: false
       }
    },
@@ -89,9 +76,6 @@ export default {
    },
    methods: {
       ...mapActions(['partEdit']),
-      getMainImage(img) {
-         this.partPreview.image = img || this.onChangePartType(this.announcement.category_id)
-      },
       async getPartForm({form, deletedImages}) {
          const formData = new FormData()
          formData.append('data', JSON.stringify(form))
@@ -116,51 +100,13 @@ export default {
       onClick() {
          this.isReady = !this.isReady
       },
-      onChangePartType(id) {
-         switch (id) {
-            case 19:
-               return this.partPreview.image = "/img/tyre.svg"
-            case 20:
-               return this.partPreview.image = "/img/disc.svg"
-            case 21:
-               return this.partPreview.image = "/img/oil.svg"
-            case 27:
-               return this.partPreview.image = "/img/battery.svg"
-            default:
-               return this.partPreview.image = "/img/parts.svg"
-         }
-      },
-      getCurrencyName() {
-         switch (this.announcement.currency_id) {
-            case 1:
-               return 'AZN';
-            case 2:
-               return 'USD';
-            case 3:
-               return 'EUR';
-            default:
-               return 'AZN'
-         }
-      },
    },
-   mounted() {
-      this.$nuxt.$on("get-main-image", this.getMainImage)
-
-      this.partPreview = {
-         title: this.announcement.title,
-         description: this.announcement.description,
-         image: this.announcement.defaultImages[0],
-         price: this.announcement.price + ' ' + this.getCurrencyName(),
-         created_at: this.$formatDate(this.announcement.created_at, 'D.MM.YYYY')[this.locale]
-      }
-
-   }
 }
 </script>
 
 <style lang="scss">
 .pages-sell {
-   padding: 40px 0 160px 0;
+   padding: 20px 0 160px 0;
 
    .announce_container {
       display: flex;
@@ -176,53 +122,6 @@ export default {
             flex-grow: 1;
             flex-direction: column;
             gap: 20px;
-         }
-      }
-   }
-
-   .vehicle_card_info {
-      position: sticky;
-      top: 128px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      height: min-content;
-      width: 260px;
-      min-width: 260px;
-
-      &_description {
-         background-color: #EEF2F6;
-         border-radius: 8px;
-         padding: 10px;
-         text-align: center;
-      }
-
-      &_help {
-         display: flex;
-         padding: 16px 12px;
-         flex-direction: column;
-         gap: 16px;
-         border-radius: 12px;
-         border: 1px solid #CDD5DF;
-         background-color: #F8FAFC;
-
-         &_inner {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-
-            svg {
-               min-width: 24px;
-               min-height: 24px;
-            }
-         }
-      }
-
-      &.default_imgs {
-
-         .item-bg {
-            background-repeat: no-repeat;
-            background-size: inherit;
          }
       }
    }
