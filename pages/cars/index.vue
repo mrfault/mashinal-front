@@ -314,7 +314,7 @@ export default {
             // await this.$store.dispatch('fetchMonetizedCarsSearch', post);
             // await this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'cars', data: post });
             this.pending = false;
-            !this.resetSubmit && this.scrollTo('.breadcrumbs', [20, -120]);
+            !this.resetSubmit && this.scrollTo('.cap', [20, -150]);
             this.resetSubmit = false
          }
       }
