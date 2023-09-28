@@ -332,7 +332,7 @@
 
 
       <div class="image_section" :class="{form_error: $v.form.saved_images.$error}">
-         <h2>Şəkillər</h2>
+         <h2>{{ $t('photos') }}</h2>
          <client-only>
             <image-component :type="'moto'" :initial-form="form" :announcement="announcement"
                              :deletedFiles="deletedFiles"/>
@@ -340,8 +340,10 @@
          <div class="image_info">
             <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
             <div class="warning_texts">
-               <p :class="{invalid_paragraph: $v.form.saved_images.$error}">{{ $t("add_image_section_warning") }}</p>
-               <p :class="{invalid_paragraph: $v.form.saved_images.$error}">{{ $t("add_image_max_warning") }}</p>
+               <p :class="{invalid_paragraph: $v.form.saved_images.$error}">{{ $t("add_image_minmax_warning") }}</p>
+               <p :class="{invalid_paragraph: $v.form.saved_images.$error}">{{ $t("add_image_location_warning") }}</p>
+               <p :class="{invalid_paragraph: $v.form.saved_images.$error}">{{ $t("add_image_autosalon_warning") }}</p>
+               <p :class="{invalid_paragraph: $v.form.saved_images.$error}">{{ $t("add_image_user_warning") }}</p>
             </div>
          </div>
       </div>

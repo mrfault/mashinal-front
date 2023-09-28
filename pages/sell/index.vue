@@ -80,7 +80,7 @@
                               <template #default v-if="cantChangePhone">
                                  <button type="button" class="change_number btn btn--red-opacity"
                                          @click="changePhone = true">
-                                    Nömrəni dəyiş
+                                    {{ $t('change_mobile_number') }}
                                  </button>
                               </template>
                            </form-text-input>
@@ -108,7 +108,20 @@
                               :maxlength="5"
                               :mask="'99999'"
                               :invalid="$v.authForm.code.$error"
+
                            />
+                           <div class="resend_section" v-if="authStep === 'handleOTP'">
+                              <p :class="{link_active: resendSmsAfterSecond === 0}" @click="resendCode">{{
+                                    $t('resend_otp')
+                                 }}</p>
+                              <timer
+                                 v-if="resendSmsAfterSecond > 0"
+                                 class="otp_timer"
+                                 :duration="resendSmsAfterSecond"
+                                 format="i:s"
+                                 @timeOver="resendSmsAfterSecond = 0"
+                              />
+                           </div>
 
                            <div class="contacts_info">
                               <inline-svg class="contacts_info_svg info_svg" :src="'/icons/info.svg'"/>
@@ -118,7 +131,7 @@
                            <div class="submit_button">
                               <div class="limit_error"
                                    v-if="inLimit">
-                                 <p>{{ $t('announce_limit_alert', {price: settingsV2?.settings?.promotion_price}) }}</p>
+                                 <p>{{ $t('announce_limit_alert', {price: settingsV2?.settings?.restore_price}) }}</p>
                               </div>
                               <button type="button" @click="onClick()"
                                       :class="['btn', 'full-width', 'btn--pale-green-outline', 'active', {pending}]">
@@ -130,18 +143,7 @@
                      </div>
 
 
-                     <div class="resend_section" v-if="authStep === 'handleOTP'">
-                        <p :class="{link_active: resendSmsAfterSecond === 0}" @click="resendCode">{{
-                              $t('resend_otp')
-                           }}</p>
-                        <timer
-                           v-if="resendSmsAfterSecond > 0"
-                           class="otp_timer"
-                           :duration="resendSmsAfterSecond"
-                           format="i:s"
-                           @timeOver="resendSmsAfterSecond = 0"
-                        />
-                     </div>
+
 
 
                      <div class="comment_info">
@@ -222,7 +224,7 @@ export default {
          return this.staticPages.find(page => page.id == 1);
       },
       cantChangePhone() {
-         return Object.keys(this.user).length && !this.changePhone
+         return !!Object.keys(this.user).length && !this.changePhone
       },
       inLimit() {
          return (this.form.announce_type?.id === 1 && this.user.announce_left_car < 1) || (this.form.announce_type?.id === 4 && this.user.announce_left_moto < 1)
@@ -526,6 +528,16 @@ export default {
 .add_announce {
    padding: 24px 0 160px 0;
 
+   input:checked ~ label {
+      background-color: #EFF4FF;
+   }
+
+   .other_parameters__checkbox, .vin {
+      input:checked ~ label {
+         background-color: inherit;
+      }
+   }
+
    .divider {
       display: grid;
       grid-template-columns: repeat(2, calc(50% - 8px));
@@ -711,7 +723,6 @@ export default {
                      top: 50%;
                      right: 9px;
                      transform: translateY(-50%);
-                     width: 115px;
                      height: 34px;
                      padding: 8px;
                      border-radius: 8px;
@@ -910,6 +921,8 @@ export default {
          height: 52px;
       }
 
+
+
       .announce_container {
          .announce_view {
             .main_card {
@@ -945,6 +958,12 @@ export default {
 
                      .checkbox {
                         background: #121926 !important;
+                     }
+                  }
+
+                  .other_parameters__checkbox, .vin {
+                     input ~ label, input:checked ~ label {
+                        background-color: transparent !important;
                      }
                   }
                }
@@ -1000,6 +1019,15 @@ export default {
       }
    }
    .main_card {
+
+      &_info {
+         flex-direction: column;
+
+         .add_announce_info, .mobile_info {
+            width: 100% !important;
+         }
+      }
+
       .toggle_container {
          display: grid !important;
          grid-template-columns: repeat(2, 1fr);

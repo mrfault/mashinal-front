@@ -66,11 +66,7 @@
          <ul class="statistics_info">
             <li v-for="info in statistics_data.find(s => s.id === add_monetization).info">
                <p class="title">{{ info.name }}</p>
-               <template>
-
-               </template>
-               <div class="dashed"></div>
-               <p class="price">{{ info.price === 0 ? $t('price_free') : `${info.price} AZN` }}</p>
+               <inline-svg class="flame" v-if="add_monetization === 1" src="/icons/flame.svg" />
             </li>
             <li class="total"
                 v-if="statistics_data.find(s => s.id === add_monetization).info.some(s => s.price > 0)">
@@ -461,6 +457,11 @@ export default {
                flex: 1;
                border-top: 2px dashed #1B2434;
             }
+
+            svg {
+               min-width: 24px;
+               min-height: 24px;
+            }
          }
       }
    }
@@ -551,11 +552,6 @@ export default {
             li {
                color: #CDD5DF;
 
-               .dashed {
-                  flex: 1;
-                  border-top: 2px dashed #CDD5DF;
-               }
-
                &.total {
                   .package_price {
                      p {
@@ -597,6 +593,7 @@ export default {
 
       .package_statistics {
          width: 100%;
+         min-width: unset;
          max-width: unset;
 
          .statistics_progress {
@@ -610,16 +607,15 @@ export default {
             gap: 34px;
 
             li {
-               flex-direction: column;
-               gap: 4px;
+               gap: 8px;
                align-items: start;
                color: #1B2434;
                font-size: 17px;
                font-weight: 500;
 
                &.total {
-                  flex-direction: row;
-                  align-items: center;
+                  //flex-direction: row;
+                  //align-items: center;
 
                   p {
                      font-size: 18px;
@@ -633,12 +629,6 @@ export default {
                   color: #697586;
                   font-size: 16px;
                   font-weight: 500;
-               }
-
-               .price {
-                  color: #1B2434;
-                  font-size: 18px;
-                  font-weight: 600;
                }
             }
          }
@@ -666,10 +656,6 @@ export default {
 
 
                   .title {
-                     color: #EEF2F6;
-                  }
-
-                  .price {
                      color: #EEF2F6;
                   }
                }
