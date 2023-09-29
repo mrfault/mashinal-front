@@ -93,14 +93,14 @@
          </template>
       </div>
 
-      <no-results
-         v-else
-         :text="$t('no_cars_found')"
-      >
-         <div class="btn btn--green mt-2 mt-lg-3" @click.stop="addModel()">
-            {{ $t('add_car_model') }}
-         </div>
-      </no-results>
+<!--      <no-results-->
+<!--         v-else-->
+<!--         :text="$t('no_cars_found')"-->
+<!--      >-->
+<!--         <div class="btn btn&#45;&#45;green mt-2 mt-lg-3" @click.stop="addModel()">-->
+<!--            {{ $t('add_car_model') }}-->
+<!--         </div>-->
+<!--      </no-results>-->
    </div>
 </template>
 

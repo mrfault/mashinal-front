@@ -1598,6 +1598,8 @@ export default {
    private_person: "Fiziki şəxs",
    privod: "Ötürücü",
    pro: "Pro",
+   min: "Minimum",
+   max: "Maksimum",
    process_payment: "Ödəniş et",
    processing: "Prosesdədir",
    prod_year: "Buraxılış ili",

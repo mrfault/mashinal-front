@@ -52,7 +52,7 @@
                   <div class="wrapp">
                      <div class="wrapp__item">
                         <form-numeric-input
-                           :placeholder="$t('price_from_2')"
+                           :placeholder="$t(`${isMobileBreakpoint ? 'min' : 'price_from_2'}`)"
                            v-model="form.price_from"
                         />
                         <span class="currency">AZN</span>
@@ -60,7 +60,7 @@
 
                      <div class="wrapp__item">
                         <form-numeric-input
-                           :placeholder="$t('price_to_2')"
+                           :placeholder="$t(`${isMobileBreakpoint ? 'max' : 'price_to_2'}`)"
                            v-model="form.price_to"
                         />
                         <span class="currency">AZN</span>

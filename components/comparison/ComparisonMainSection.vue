@@ -1,16 +1,17 @@
 <template>
-   <div>
-      <div id="comparison" class="comparison" @mousedown="startDragging" v-if="!showNotFound">
-         <comparison-announcements v-if="filter.compareType === 'announcements'"/>
-         <comparison-models v-else/>
-      </div>
+   <div
+      id="comparison"
+      class="comparison"
+      @mousedown="startDragging"
 
-      <no-results
-         v-else
-         :text="$t('no_cars_found')"
-      >
-         <nuxt-link :to="$localePath('/')" class="btn btn--green mt-2 mt-lg-3" v-html="$t('to_add_an_advert')"/>
-      </no-results>
+   >
+<!--      v-if="!showNotFound"-->
+      <comparison-announcements v-if="filter.compareType === 'announcements'" />
+      <comparison-models v-else />
+
+<!--      <no-results :text="$t('no_cars_found')">-->
+<!--         <nuxt-link :to="$localePath('/')" class="btn btn&#45;&#45;green mt-2 mt-lg-3" v-html="$t('to_add_an_advert')"/>-->
+<!--      </no-results>-->
    </div>
 </template>
 
