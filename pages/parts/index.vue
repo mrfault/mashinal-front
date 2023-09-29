@@ -44,7 +44,7 @@
             :has-container="false"
          >
             <template #cap>
-               <Cap :className="'mb40'">
+               <Cap :className="'mb24'">
                   <template #left>
                      <h3>{{ $t('featured_ads') }}</h3>
                   </template>
@@ -252,9 +252,11 @@
 </script>
 
 <style lang="scss">
-   //.pages-parts-index {
-   //   padding-bottom: 20px;
-   //}
+   .pages-parts-index {
+      .announcements-grid {
+         margin: 24px 0;
+      }
+   }
 
    .dark-mode {
       .pages-parts-index {

@@ -373,7 +373,7 @@
 <style lang="scss">
    .catalog-inner {
       .card {
-         padding: 24px 20px;
+         padding: 20px;
 
          .body-modifications {
             &:last-child {
@@ -421,7 +421,7 @@
       }
 
       .vehicle-specs {
-         padding: 32px;
+         padding: 20px 32px;
          border-radius: 12px;
          background-color: #FFFFFF;
 
@@ -430,7 +430,7 @@
             font-size: 24px;
             font-weight: 600;
             line-height: 28px;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
          }
 
          &__inner {
