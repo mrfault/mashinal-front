@@ -1582,6 +1582,8 @@ export default {
    privacy_policy: "Политика конфиденциальности",
    privod: "Привод",
    pro: "Pro",
+   min: "Минимум",
+   max: "Максимум",
    process_payment: "Обработать платеж",
    processing: "В процессе",
    prod_year: "Год выпуска",

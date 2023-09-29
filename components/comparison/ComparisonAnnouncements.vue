@@ -1,71 +1,82 @@
 <template>
-   <div>
-      <div class="comparison__items" v-if="announcements.length">
-         <div
-            class="comparison__item "
-            v-for="announcement in announcements"
-            :key="announcement.id_unique"
-         >
-            <grid-item
-               :announcement="announcement"
-               :clickable="true"
-               :showOverlay="true"
-               :isComparisonPage="true"
-               @removeItem="removeItem"
-            />
-<!--            <div class="comparison__item__image">-->
-<!--               <img :src="getAnnouncementImage(announcement)" :alt="getAnnouncementTitle(announcement)">-->
-<!--               <div class="action-button action-button&#45;&#45;close" @click="removeItem(announcement.id_unique)">-->
-<!--                  <icon name="cross"/>-->
-<!--                  &lt;!&ndash; <inline-svg src="/icons/cross.svg" /> &ndash;&gt;-->
-<!--               </div>-->
-<!--            </div>-->
-<!--            <div class="comparison__item__title">{{ getAnnouncementTitle(announcement) }}</div>-->
-<!--            <div class="comparison__item__price">{{ announcement.price }}</div>-->
-<!--            <call-button-->
-<!--               class="comparison__item__phone"-->
-<!--               :phone="getAnnouncementContact(announcement).phone"-->
-<!--               :announcementId="announcement.id_unique"-->
-<!--            />-->
+   <div class="comparison-announcements">
+      <template v-if="announcements.length">
+         <div class="comparison__items">
+            <div
+               class="comparison__item "
+               v-for="announcement in announcements"
+               :key="announcement.id_unique"
+            >
+               <grid-item
+                  :announcement="announcement"
+                  :clickable="true"
+                  :showOverlay="true"
+                  :isComparisonPage="true"
+                  @removeItem="removeItem"
+               />
+               <!--            <div class="comparison__item__image">-->
+               <!--               <img :src="getAnnouncementImage(announcement)" :alt="getAnnouncementTitle(announcement)">-->
+               <!--               <div class="action-button action-button&#45;&#45;close" @click="removeItem(announcement.id_unique)">-->
+               <!--                  <icon name="cross"/>-->
+               <!--                  &lt;!&ndash; <inline-svg src="/icons/cross.svg" /> &ndash;&gt;-->
+               <!--               </div>-->
+               <!--            </div>-->
+               <!--            <div class="comparison__item__title">{{ getAnnouncementTitle(announcement) }}</div>-->
+               <!--            <div class="comparison__item__price">{{ announcement.price }}</div>-->
+               <!--            <call-button-->
+               <!--               class="comparison__item__phone"-->
+               <!--               :phone="getAnnouncementContact(announcement).phone"-->
+               <!--               :announcementId="announcement.id_unique"-->
+               <!--            />-->
+            </div>
+
+            <nuxt-link
+               class="comparison__btn"
+               v-if="announcements.length < 5"
+               to="/cars"
+            >
+               <inline-svg src="/icons/plus1.svg" />
+               <span>{{ $t('add_new') }}</span>
+            </nuxt-link>
          </div>
 
-         <nuxt-link
-            class="comparison__btn"
-            v-if="announcements.length < 5"
-            to="/cars"
-         >
-            <inline-svg src="/icons/plus1.svg" />
-            <span>{{ $t('add_new') }}</span>
-         </nuxt-link>
-      </div>
-
-      <div class="comparison__specifications" v-if="announcements.length">
-         <template v-for="(collapse, cIndex) in collapses">
-            <collapse-content
-               :key="cIndex"
-               :first-collapsed="collapse.defaultCollapsed"
-               @click.native="$nuxt.$emit('update-comparison-scroll-events')"
-            >
-               <div
-                  class="collapse-content__element"
-                  v-for="(specification, sindex) in filteredSpecs(collapse.items)"
-                  :key="sindex"
+         <div class="comparison__specifications">
+            <template v-for="(collapse, cIndex) in collapses">
+               <collapse-content
+                  :key="cIndex"
+                  :first-collapsed="collapse.defaultCollapsed"
+                  @click.native="$nuxt.$emit('update-comparison-scroll-events')"
                >
-                  <div class="collapse-content__columns">
-                     <div
-                        class="collapse-content__column"
-                        v-for="(announcement, aIndex) in announcements"
-                        :key="announcement.id_unique"
-                     >
-                        <h2 v-if="sindex === 0">{{ collapse.title }}</h2>
-                        <h3>{{ specification.title }}</h3>
-                        <p>{{ specification.values[aIndex] }}</p>
+                  <div
+                     class="collapse-content__element"
+                     v-for="(specification, sindex) in filteredSpecs(collapse.items)"
+                     :key="sindex"
+                  >
+                     <div class="collapse-content__columns">
+                        <div
+                           class="collapse-content__column"
+                           v-for="(announcement, aIndex) in announcements"
+                           :key="announcement.id_unique"
+                        >
+                           <h2 v-if="sindex === 0">{{ collapse.title }}</h2>
+                           <h3>{{ specification.title }}</h3>
+                           <p>{{ specification.values[aIndex] }}</p>
+                        </div>
                      </div>
                   </div>
-               </div>
-            </collapse-content>
-         </template>
-      </div>
+               </collapse-content>
+            </template>
+         </div>
+      </template>
+
+      <nuxt-link
+         class="btn-more"
+         to="/cars"
+         v-else
+      >
+         <inline-svg src="/icons/plus1.svg" />
+         <span>{{ $t('add_new') }}</span>
+      </nuxt-link>
    </div>
 </template>
 
@@ -306,7 +317,8 @@
          }
       }
 
-      &__btn {
+      &__btn,
+      .btn-more {
          display: flex;
          align-items: center;
          justify-content: center;
@@ -331,6 +343,11 @@
                stroke: #12B76A;
             }
          }
+      }
+
+      .btn-more {
+         width: 256px;
+         height: 196px;
       }
    }
 </style>
