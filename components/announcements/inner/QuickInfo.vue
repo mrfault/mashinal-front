@@ -1,5 +1,11 @@
 <template>
    <div :class="['quick-info mb-lg-3', {'registration-marks' : type === 'plates'}]">
+      <ReasonForRejection
+         class="mb-3"
+         v-if="announcement?.moderator?.reject_reason?.length && announcement?.status === 0"
+         :options="announcement?.moderator?.reject_reason"
+      />
+
       <div class="registration-marks__number" v-if="type === 'plates'">
          <div class="divider">
             <img src="/icons/registrationMarks_icons.svg" alt="icons">
@@ -52,7 +58,7 @@
             </li>
          </ul>
 
-         <div :class="['quick-info__contact', ]">
+         <div class="quick-info__contact">
             <div
                :class="[
                   'quick-info__contact-img',
@@ -139,12 +145,6 @@
             </div>
          </div>
       </div>
-
-      <ReasonForRejection
-         v-if="announcement?.moderator?.reject_reason?.length && announcement?.status === 0"
-         class="mb-3"
-         :options="announcement?.moderator?.reject_reason"
-      />
 
       <div class="wrapp">
          <monetization-button

@@ -28,6 +28,15 @@
 <!--               :announcementId="announcement.id_unique"-->
 <!--            />-->
          </div>
+
+         <nuxt-link
+            class="comparison__btn"
+            v-if="announcements.length < 5"
+            to="/cars"
+         >
+            <inline-svg src="/icons/plus1.svg" />
+            <span>{{ $t('add_new') }}</span>
+         </nuxt-link>
       </div>
 
       <div class="comparison__specifications" v-if="announcements.length">
@@ -226,13 +235,7 @@
       }
 
       &__specifications {
-         margin-top: 32px;
-
-         //.title-with-line {
-         //   &:before {
-               //width: 167%;
-            //}
-         //}
+         margin-top: 20px;
 
          .collapse-content {
             &__column {
@@ -299,6 +302,33 @@
 
             &:not(:first-child) {
                margin-top: 40px;
+            }
+         }
+      }
+
+      &__btn {
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         flex-direction: column;
+         gap: 6px;
+         border-radius: 12px;
+         outline: none;
+         border: 1px solid #12B76A;
+         background-color: transparent;
+
+         span {
+            font-weight: 500;
+            line-height: 20px;
+            color: #12B76A;
+         }
+
+         svg {
+            width: 30px;
+            height: 30px;
+
+            path {
+               stroke: #12B76A;
             }
          }
       }

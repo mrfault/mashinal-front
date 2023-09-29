@@ -1,9 +1,8 @@
 <template>
    <div>
-      <div class="comparison__items row">
-         <!-- Model list -->
+      <div class="comparison__items models">
          <div
-            class="comparison__item col-auto col-8 col-md-12"
+            class="comparison__item"
             v-for="model in models"
             :key="model.id"
          >
@@ -17,9 +16,7 @@
                </div>
             </div>
             <div class="comparison__item__title">{{ getModelTitle(model) }}</div>
-            <div class="comparison__item__desc" v-for="desc in getModelDescription(model)" :key="desc">
-               {{ desc }}
-            </div>
+            <div class="comparison__item__desc" v-for="desc in getModelDescription(model)" :key="desc">{{ desc }}</div>
          </div>
 
          <div
@@ -56,6 +53,15 @@
                {{ desc }}
             </div>
          </div>
+
+         <button
+            class="comparison__btn"
+            v-if="models.length < 5"
+            @click.stop="addModel()"
+         >
+            <inline-svg src="/icons/plus1.svg" />
+            <span>{{ $t('add_car_model') }}</span>
+         </button>
       </div>
 
       <div class="comparison__specifications" v-if="models.length">

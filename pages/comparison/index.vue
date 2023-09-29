@@ -69,7 +69,7 @@
       padding-bottom: 120px;
 
       &__inner {
-         padding: 32px;
+         padding: 20px;
          border-radius: 12px;
          background-color: #FFFFFF;
          overflow: hidden;
@@ -77,15 +77,15 @@
 
       &__title {
          color: #121926;
-         font-size: 28px;
+         font-size: 24px;
          font-weight: 700;
          line-height: 32px;
-         margin-bottom: 32px;
+         margin-bottom: 20px;
       }
 
-      .comparison-filter {
-         margin-bottom: 30px;
-      }
+      //.comparison-filter {
+      //   margin-bottom: 30px;
+      //}
    }
 
    .dark-mode {

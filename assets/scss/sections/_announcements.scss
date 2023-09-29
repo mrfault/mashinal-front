@@ -354,10 +354,22 @@
                   gap: 10px;
 
                   .comparisonDelete {
+                     display: flex;
+                     align-items: center;
+                     justify-content: center;
+                     width: 36px;
+                     height: 24px;
+                     border-radius: 4px;
+                     opacity: 0.8;
+                     background-color: #364152;
                      pointer-events: all;
 
                      svg {
                         width: 25px;
+
+                        path {
+                           stroke: #FFFFFF;
+                        }
                      }
 
                      &:hover {
@@ -367,21 +379,6 @@
                            }
                         }
                      }
-
-                     //display: flex;
-                     //align-items: center;
-                     //gap: 2px;
-                     //padding: 3px 10px;
-                     //border-radius: 4px;
-                     //background-color: $white;
-                     //pointer-events: all;
-
-                     //span {
-                     //   color: #364152;
-                     //   font-size: 15px;
-                     //   font-weight: 500;
-                     //   line-height: 18px;
-                     //}
                   }
                }
             }

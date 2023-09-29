@@ -84,7 +84,7 @@
 <style lang="scss">
    .registrationMarksGrid {
       position: relative;
-      margin: 30px 0;
+      margin: 24px 0;
 
       &__items {
          display: grid;
