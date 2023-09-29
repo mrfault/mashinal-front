@@ -173,8 +173,6 @@ export const SearchMixin = {
          let searchUrl = `${this.$localePath(this.meta?.path)}?${searchQuery}`;
          let searchSame = decodeURIComponent(searchUrl) === decodeURIComponent(this.$route.fullPath);
          this.$emit('pending');
-         console.log("this.meta", searchQuery)
-         // console.log("this.meta2", searchUrl)
          // if(!Object.keys(this.getFormData()).length)   {
          //    this.$router.replace(this.$localePath(this.meta.path))
          //    this.$nuxt.refresh();
@@ -190,16 +188,14 @@ export const SearchMixin = {
 
                if (this.routeName !== prevRouteName) {
                   if (scroll) {
-                     console.log('Marat2')
                      setTimeout(() => {
-                        this.scrollTo('.breadcrumbs', [-56, -96]);
+                        this.scrollTo('.cap', [-56, -96]);
                      }, 500);
                   }
                } else {
                   if (scroll) {
                      setTimeout(() => {
-                        console.log('Marat3')
-                        this.scrollTo('.breadcrumbs', [-56, -96]);
+                        this.scrollTo('.cap', [-56, -96]);
                      }, 500);
                   }
                }
@@ -211,7 +207,6 @@ export const SearchMixin = {
                this.$emit('submit');
             });
          }
-
 
          // await this.$store.dispatch('fetchMonetizedCarsSearch', { data: this.getFormData() });
       },

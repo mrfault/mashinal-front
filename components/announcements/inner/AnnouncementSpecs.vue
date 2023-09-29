@@ -207,10 +207,10 @@
                   value: this.bodyType, for: ['cars'],
                   icon: '/icons/car-2.svg'
                },
-               {
-                  key: 'license_plate_number', value: this.announcement.car_number,
-                  icon: '/icons/registration_marks_2.svg',
-               },
+               // {
+               //    key: 'license_plate_number', value: this.announcement.car_number,
+               //    icon: '/icons/registration_marks_2.svg',
+               // },
                {
                   key: 'box',
                   value: this.box,
