@@ -154,7 +154,7 @@
                   </div>
                   <div class="col-md-12">
                      <div class="mb-lg-0 mb-n2 mt-4 mt-lg-5 row salon-card-list" v-if="nonOfficialSalons.length">
-                        <div class="col-12 col-md-6 col-lg-4 mb-4"
+                        <div class="col-12 col-md-6 col-lg-4 mb-3"
                              v-for="salon in nonOfficialSalons"
                              :key="salon.id"
                              v-if="salon.announcement_count"
