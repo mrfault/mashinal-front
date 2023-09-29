@@ -60,7 +60,8 @@ export default {
          store.dispatch('getColors'),
          store.dispatch('getAllOtherOptions'),
          store.dispatch('getPopularOptions'),
-         store.dispatch('getMyAnnouncement', route.params.id)
+         store.dispatch('getMyAnnouncement', route.params.id),
+         await store.dispatch('getAllOtherOptions', '2')
       ]);
       const announcement = store.state.myAnnouncement;
       const catalog = announcement?.car_catalog;
@@ -156,18 +157,6 @@ export default {
          } catch (e) {
          }
       },
-      getCurrencyName() {
-         switch (this.announcement.currency_id) {
-            case 1:
-               return 'AZN';
-            case 2:
-               return 'USD';
-            case 3:
-               return 'EUR';
-            default:
-               return 'AZN'
-         }
-      },
       onClick() {
          this.isReady = !this.isReady
       },
@@ -178,6 +167,18 @@ export default {
 <style lang="scss">
 .pages-announcement-edit {
    padding-bottom: 80px;
+
+   .divider {
+      display: grid;
+      grid-template-columns: repeat(2, calc(50% - 8px));
+      gap: 16px;
+   }
+
+   .divider_3 {
+      display: grid;
+      grid-template-columns: repeat(3, calc(33% - 8px));
+      gap: 16px;
+   }
 
    .btn {
       height: 52px;
@@ -466,6 +467,12 @@ export default {
 
                   .checkbox {
                      background: #121926 !important;
+                  }
+               }
+
+               .other_parameters__checkbox, .vin {
+                  input ~ label, input:checked ~ label {
+                     background-color: transparent !important;
                   }
                }
 

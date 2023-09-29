@@ -173,6 +173,16 @@ export default {
       height: 52px;
    }
 
+   input:checked ~ label {
+      background-color: #EFF4FF;
+   }
+
+   .vin {
+      input:checked ~ label {
+         background-color: inherit;
+      }
+   }
+
    .announce_container {
       display: flex;
       column-gap: 16px;
@@ -490,6 +500,12 @@ export default {
 
                   .checkbox {
                      background: #121926 !important;
+                  }
+               }
+
+               .vin {
+                  input ~ label, input:checked ~ label {
+                     background-color: transparent !important;
                   }
                }
 
