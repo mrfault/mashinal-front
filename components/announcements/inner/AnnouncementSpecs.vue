@@ -10,82 +10,80 @@
 
             <span v-if="approvedVehicleCondition">{{ $t('approved_vehicle') }}</span>
             <span v-else>{{ $t('unapproved_vehicle') }}</span>
+
+            <template v-if="approvedVehicleCondition">
+               <CustomTooltip class="approved">
+                  <template #head>
+                     <div class="inner">
+                        <inline-svg src="/icons/car-4.svg"  />
+
+                        <p>{{ $t('approvedVehicle_title') }}:</p>
+                     </div>
+
+                     <inline-svg class="info" src="/icons/info.svg" />
+                  </template>
+
+                  <template #main>
+                     <ul>
+                        <li>
+                           <span>1</span>
+                           <p>{{ $t('approvedVehicle_subtitle') }}</p>
+                        </li>
+
+                        <li>
+                           <span>2</span>
+                           <p>{{ $t('approvedVehicle_subtitle_2') }}:</p>
+                        </li>
+                     </ul>
+                  </template>
+
+                  <template #footer>
+                     <ul>
+                        <li>
+                           <p>{{ $t('approvedVehicle_description') }}</p>
+                           <inline-svg src="/icons/check3.svg" />
+                        </li>
+                        <li>
+                           <p>{{ $t('approvedVehicle_description_2') }}</p>
+                           <inline-svg src="/icons/check3.svg" />
+                        </li>
+                        <li>
+                           <p>{{ $t('approvedVehicle_description_3') }}</p>
+                           <inline-svg src="/icons/check3.svg" />
+                        </li>
+                        <li>
+                           <p>{{ $t('approvedVehicle_description_4') }}</p>
+                           <inline-svg src="/icons/check3.svg" />
+                        </li>
+                     </ul>
+                  </template>
+               </CustomTooltip>
+            </template>
+
+            <template v-else>
+               <CustomTooltip class="unapproved">
+                  <template #head>
+                     <div class="inner">
+                        <inline-svg src="/icons/car-4.svg" />
+
+                        <p>{{ $t('unapproved__title') }}!</p>
+                     </div>
+
+                     <inline-svg class="info" src="/icons/info.svg" />
+                  </template>
+
+                  <template #main>
+                     <div class="content">{{ $t('unapproved__description') }}</div>
+
+                     <div class="description">
+                        <span>#xeyirliolsun</span>
+
+                        <inline-svg src="/icons/sewn.svg" />
+                     </div>
+                  </template>
+               </CustomTooltip>
+            </template>
          </div>
-
-         <template v-if="approvedVehicleCondition">
-            <CustomTooltip class="approved">
-               <template #head>
-                  <div class="inner">
-                     <inline-svg src="/icons/car-4.svg"  />
-
-                     <p>“Təsdiqlənmiş Nəqliyyat Vasitəsi” statusu hansı elanlara verilir:</p>
-                  </div>
-
-                  <inline-svg src="/icons/info.svg" />
-               </template>
-
-               <template #main>
-                  <ul>
-                     <li>
-                        <span>1</span>
-                        <p>Moderasiya xidmətimiz tərəfindən qeyd olunan məlumatların doğruluğu təsdiq edildikdə</p>
-                     </li>
-
-                     <li>
-                        <span>2</span>
-                        <p>Moderasiya xidmətimiz aşağıdakı məlumatların reallığı əks etdirdiyinə zəmanət verir:</p>
-                     </li>
-                  </ul>
-               </template>
-
-               <template #footer>
-                  <ul>
-                     <li>
-                        <p>Nəqliyyat vasitəsinin marka və modelinin düzgün qeyd olunduğuna</p>
-                        <inline-svg src="/icons/check3.svg" />
-                     </li>
-                     <li>
-                        <p>Nəqliyyat vasitəsinin buraxılış ilinin düzgün göstərildiyinə</p>
-                        <inline-svg src="/icons/check3.svg" />
-                     </li>
-                     <li>
-                        <p>Nəqliyyat vasitəsinin BAN növünün və rənginin düzgün təqdim edildiyinə</p>
-                        <inline-svg src="/icons/check3.svg" />
-                     </li>
-                     <li>
-                        <p>Mühərrik həcminin düzgün göstərildiyinə</p>
-                        <inline-svg src="/icons/check3.svg" />
-                     </li>
-                  </ul>
-               </template>
-            </CustomTooltip>
-         </template>
-
-         <template v-else>
-            <CustomTooltip class="unapproved">
-               <template #head>
-                  <div class="inner">
-                     <inline-svg src="/icons/car-4.svg" />
-
-                     <p>DİQQƏT!</p>
-                  </div>
-
-                  <inline-svg src="/icons/info.svg" />
-               </template>
-
-               <template #main>
-                  <div class="content">
-                     Elanda qeyd olunan nəqliyyat vasitəsinin göstəriciləri, real həyatda olandan fərqli və ya aldadıcı ola bilər. Moderasiya xidmətimiz məlumatların doğrulugunu təsdiq etməmişdir. Alqı-satqı zamanı diqqətli və ayıq olmanızı tövsiyyə edirik.
-                  </div>
-
-                  <div class="description">
-                     <span>#xeyirliolsun</span>
-
-                     <inline-svg src="/icons/sewn.svg" />
-                  </div>
-               </template>
-            </CustomTooltip>
-         </template>
       </div>
 
       <ul class="vehicle-specs__list">
@@ -442,156 +440,6 @@
          align-items: center;
          justify-content: space-between;
          gap: 20px;
-
-         .customTooltip {
-            width: 100%;
-            max-width: 583px;
-
-            &.approved {
-               top: -550px;
-               left: 300px;
-
-               .customTooltip__head {
-                  display: flex;
-                  align-items: center;
-                  justify-content: space-between;
-
-                  .inner {
-                     display: flex;
-                     align-items: center;
-
-                     svg {
-                        color: #32B878;
-                     }
-
-                     p {
-                        width: 435px;
-                        color: #1B2434;
-                        font-size: 24px;
-                        font-weight: 600;
-                        line-height: 30px;
-                        margin-left: 16px;
-                     }
-                  }
-               }
-
-               .customTooltip__main {
-                  margin-top: 24px;
-
-                  ul {
-                     li {
-                        display: flex;
-                        align-items: center;
-                        gap: 8px;
-
-                        &:not(:first-child) {
-                           margin-top: 16px;
-                        }
-
-                        span {
-                           display: flex;
-                           align-items: center;
-                           justify-content: center;
-                           min-width: 24px;
-                           min-height: 24px;
-                           color: #FFFFFF;
-                           border-radius: 50%;
-                           background-color: #32B878;
-                        }
-
-                        p {
-                           color: #1B2434;
-                           font-size: 16px;
-                           font-weight: 400;
-                           line-height: 24px;
-                        }
-                     }
-                  }
-               }
-
-               .customTooltip__footer {
-                  margin-top: 16px;
-
-                  ul {
-                     li {
-                        display: flex;
-                        align-items: center;
-                        justify-content: space-between;
-                        padding: 14px 16px;
-                        border-radius: 8px;
-                        border: 1px solid #32B878;
-                        background-color: #DDFFEF;
-
-                        &:not(:first-child) {
-                           margin-top: 16px;
-                        }
-
-                        p {
-                           color: #1B2434;
-                           font-size: 14px;
-                           font-weight: 400;
-                           line-height: 24px;
-                        }
-                     }
-                  }
-               }
-            }
-
-            &.unapproved {
-               top: -280px;
-               left: 300px;
-
-               .customTooltip__head {
-                  display: flex;
-                  align-items: center;
-                  justify-content: space-between;
-
-                  .inner {
-                     display: flex;
-                     align-items: center;
-
-                     svg {
-                        color: #FF7900;
-                     }
-
-                     p {
-                        width: 435px;
-                        color: #1B2434;
-                        font-size: 24px;
-                        font-weight: 600;
-                        line-height: 30px;
-                        margin-left: 16px;
-                     }
-                  }
-               }
-
-               .customTooltip__main {
-                  margin-top: 24px;
-                  padding: 16px;
-                  border-radius: 8px;
-                  border: 1px solid #FF7900;
-                  background: #FBEDEB;
-
-                  .content {
-                     color: #1B2434;
-                     font-size: 14px;
-                     font-weight: 400;
-                     line-height: 24px;
-                  }
-
-                  .description {
-                     display: flex;
-                     align-items: center;
-                     justify-content: space-between;
-                     margin-top: 14px;
-                     color: #1B2434;
-                     font-size: 14px;
-                     font-weight: 400;
-                     line-height: 24px;
-                  }
-               }
-            }
-         }
       }
 
       &__title {
@@ -634,8 +482,153 @@
          }
 
          &:hover {
-            & + .customTooltip {
+            .customTooltip {
                display: block;
+            }
+         }
+
+         .customTooltip {
+            width: 100%;
+            max-width: 412px;
+            bottom: 70px;
+            left: 365px;
+
+            &.approved {
+               .customTooltip__head {
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+
+                  .inner {
+                     display: flex;
+                     align-items: center;
+
+                     svg {
+                        width: 33px;
+                        height: 33px;
+                        color: #32B878;
+                     }
+
+                     p {
+                        width: 306px;
+                        color: #1B2434;
+                        font-size: 16px;
+                        font-weight: 600;
+                        line-height: 21px;
+                        margin-left: 12px;
+                     }
+                  }
+               }
+
+               .customTooltip__main {
+                  margin-top: 16px;
+
+                  ul {
+                     li {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+
+                        &:not(:first-child) {
+                           margin-top: 16px;
+                        }
+
+                        span {
+                           display: flex;
+                           align-items: center;
+                           justify-content: center;
+                           min-width: 24px;
+                           min-height: 24px;
+                           color: #FFFFFF;
+                           border-radius: 50%;
+                           background-color: #32B878;
+                        }
+
+                        p {
+                           color: #1B2434;
+                           font-size: 12px;
+                           line-height: 17px;
+                        }
+                     }
+                  }
+               }
+
+               .customTooltip__footer {
+                  margin-top: 16px;
+
+                  ul {
+                     li {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        padding: 10px 11px;
+                        border-radius: 6px;
+                        border: 1px solid #32B878;
+                        background-color: #DDFFEF;
+
+                        &:not(:first-child) {
+                           margin-top: 12px;
+                        }
+
+                        p {
+                           color: #1B2434;
+                           font-size: 10px;
+                           line-height: 17px;
+                        }
+                     }
+                  }
+               }
+            }
+
+            &.unapproved {
+               .customTooltip__head {
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+
+                  .inner {
+                     display: flex;
+                     align-items: center;
+
+                     svg {
+                        color: #FF7900;
+                     }
+
+                     p {
+                        color: #1B2434;
+                        font-size: 24px;
+                        font-weight: 600;
+                        line-height: 30px;
+                        margin-left: 16px;
+                     }
+                  }
+               }
+
+               .customTooltip__main {
+                  margin-top: 24px;
+                  padding: 16px;
+                  border-radius: 8px;
+                  border: 1px solid #FF7900;
+                  background: #FBEDEB;
+
+                  .content {
+                     color: #1B2434;
+                     font-size: 14px;
+                     font-weight: 400;
+                     line-height: 24px;
+                  }
+
+                  .description {
+                     display: flex;
+                     align-items: center;
+                     justify-content: space-between;
+                     margin-top: 14px;
+                     color: #1B2434;
+                     font-size: 14px;
+                     font-weight: 400;
+                     line-height: 24px;
+                  }
+               }
             }
          }
       }
@@ -803,19 +796,73 @@
                color: #EEF2F6;
             }
          }
+
+         .customTooltip {
+            &__head {
+               .inner {
+                  p {
+                     color: #FFFFFF !important;
+                  }
+               }
+            }
+
+            &__main {
+               background-color: transparent !important;
+
+               ul {
+                  li {
+                     p {
+                        color: #EEF2F6 !important;
+                     }
+                  }
+               }
+
+               .content {
+                  color: #EEF2F6 !important;
+               }
+
+               .description {
+                  span {
+                     color: #EEF2F6 !important;
+                  }
+               }
+            }
+
+            &__footer {
+               ul {
+                  li {
+                     background-color: transparent !important;
+
+                     p {
+                        color: #EEF2F6 !important;
+                     }
+                  }
+               }
+            }
+         }
       }
    }
 
    @media (max-width: 1150px) {
       .vehicle-specs {
+         &__info {
+            .customTooltip {
+               left: 220px;
+            }
+         }
+
          &__list {
             grid-template-columns: repeat(2, 1fr);
+         }
+      }
+   }
 
-            //&:not(:first-child) {
-            //   &:before {
-            //      display: none;
-            //   }
-            //}
+   @media (max-width: 992px) {
+      .vehicle-specs {
+         &__info {
+            .customTooltip {
+               left: 90px;
+            }
          }
       }
    }
@@ -837,6 +884,26 @@
 
             h4 {
                margin: 0;
+            }
+         }
+      }
+   }
+
+   @media (max-width: 600px) {
+      .vehicle-specs {
+         &__info {
+            .customTooltip {
+               left: 50%;
+               transform: translateX(-50%);
+               z-index: 50;
+
+               &__head {
+                  .inner {
+                     p {
+                        width: unset !important;
+                     }
+                  }
+               }
             }
          }
       }

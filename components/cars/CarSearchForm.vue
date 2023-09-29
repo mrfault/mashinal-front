@@ -784,9 +784,11 @@
                ...p, key: this.$t(p.label), slug: p.name, name: this.$t(p.label)
             }));
          }
+
          this.$nuxt.$on('submit-car-search-form-mobile', () => {
             this.submitForm();
          })
+
          this.$nuxt.$on('saved-search-created', () => {
             if (this.singleSavedSearch.id) {
                this.selected.push(this.singleSavedSearch.id)
