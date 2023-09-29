@@ -6,20 +6,12 @@
             <div class="card">
                <form class="add_announce_form">
                   <car_form isEdit :announcement="announcement" :isReady="isReady"
-                            :preview="previewForm"
+                            :region_id="announcement.region_id"
                             @getForm="getCarForm($event)"/>
                   <button type="button" @click="onClick()" class="btn full-width btn--pale-green-outline active">
                      {{ $t("place_announcement") }}
                   </button>
                </form>
-               <div :class="['vehicle_card_info', {default_imgs: previewForm.image.startsWith('/img/')}]"
-                    v-if="!isMobileBreakpoint">
-                  <client-only>
-                     <grid-item :mileage="false"
-                                show-overlay
-                                :hideFavoriteBtn="false" :announcement="previewForm"/>
-                  </client-only>
-               </div>
             </div>
          </div>
       </div>
@@ -37,7 +29,7 @@ import {ToastErrorsMixin} from "~/mixins/toast-errors";
 import {PaymentMixin} from "~/mixins/payment";
 
 export default {
-   name: 'pages-moto-announcement-edit',
+   name: 'pages-cars-announcement-edit',
    middleware: 'auth_general',
    components: {
       GridItem,
@@ -58,20 +50,6 @@ export default {
    mixins: [ToastErrorsMixin, PaymentMixin],
    data() {
       return {
-         previewForm: {
-            image: "",
-            show_vin: false,
-            has_360: false,
-            price: "0 AZN",
-            tradeable: false,
-            credit: false,
-            brand: "Marka",
-            model: "Model",
-            year: "0000",
-            mileage: 0,
-            car_catalog: {capacity: "0"},
-            created_at: ""
-         },
          isReady: false
       }
    },
@@ -82,7 +60,8 @@ export default {
          store.dispatch('getColors'),
          store.dispatch('getAllOtherOptions'),
          store.dispatch('getPopularOptions'),
-         store.dispatch('getMyAnnouncement', route.params.id)
+         store.dispatch('getMyAnnouncement', route.params.id),
+         await store.dispatch('getAllOtherOptions', '2')
       ]);
       const announcement = store.state.myAnnouncement;
       const catalog = announcement?.car_catalog;
@@ -153,9 +132,6 @@ export default {
    },
    methods: {
       ...mapActions(['carEdit', 'updatePaidStatus']),
-      getMainImage(img) {
-         this.previewForm.image = img || "/img/car_default.svg"
-      },
       async getCarForm({form, deletedImages}) {
          const formData = new FormData()
          formData.append('data', JSON.stringify(form))
@@ -181,38 +157,9 @@ export default {
          } catch (e) {
          }
       },
-      getCurrencyName() {
-         switch (this.announcement.currency_id) {
-            case 1:
-               return 'AZN';
-            case 2:
-               return 'USD';
-            case 3:
-               return 'EUR';
-            default:
-               return 'AZN'
-         }
-      },
       onClick() {
          this.isReady = !this.isReady
       },
-   },
-   mounted() {
-      this.$nuxt.$on("get-main-image", this.getMainImage)
-      this.previewForm = {
-         image: this.announcement.media[0],
-         show_vin: this.announcement.show_vin,
-         has_360: false,
-         price: this.announcement.price_int + ' ' + this.getCurrencyName(),
-         tradeable: this.announcement.exchange_possible,
-         credit: this.announcement.credit,
-         brand: this.announcement.brand.name,
-         model: this.announcement.model.name,
-         year: this.announcement.year,
-         mileage: this.announcement.mileage,
-         car_catalog: {capacity: this.announcement.car_catalog.capacity},
-         created_at: this.$formatDate(this.announcement.created_at, 'D.MM.YYYY')[this.locale]
-      }
    },
 }
 </script>
@@ -220,6 +167,18 @@ export default {
 <style lang="scss">
 .pages-announcement-edit {
    padding-bottom: 80px;
+
+   .divider {
+      display: grid;
+      grid-template-columns: repeat(2, calc(50% - 8px));
+      gap: 16px;
+   }
+
+   .divider_3 {
+      display: grid;
+      grid-template-columns: repeat(3, calc(33% - 8px));
+      gap: 16px;
+   }
 
    .btn {
       height: 52px;
@@ -451,55 +410,6 @@ export default {
                }
             }
          }
-
-         .vehicle_card_info {
-            position: sticky;
-            top: 128px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            height: min-content;
-            width: 260px;
-            min-width: 260px;
-
-            &_description {
-               background-color: #EEF2F6;
-               border-radius: 8px;
-               padding: 10px;
-               text-align: center;
-            }
-
-            &_help {
-               display: flex;
-               padding: 16px 12px;
-               flex-direction: column;
-               gap: 16px;
-               border-radius: 12px;
-               border: 1px solid #CDD5DF;
-               background-color: #F8FAFC;
-
-               &_inner {
-                  display: flex;
-                  align-items: center;
-                  gap: 10px;
-
-                  svg {
-                     min-width: 24px;
-                     min-height: 24px;
-                  }
-               }
-            }
-
-            &.default_imgs {
-
-               .item-bg {
-                  background-repeat: no-repeat;
-                  background-size: inherit;
-               }
-            }
-         }
-
-
       }
 
 
@@ -518,6 +428,25 @@ export default {
          }
       }
    }
+
+   .car_number_info {
+      display: flex;
+      flex-direction: column;
+      height: inherit;
+      padding: 14px 16px;
+      justify-content: center;
+      align-items: center;
+      gap: 24px;
+      border-radius: 8px;
+      border: 1px solid #CDD5DF;
+      font-size: 12px;
+      font-weight: 400;
+
+      strong {
+         font-weight: 500;
+         text-decoration-line: underline;
+      }
+   }
 }
 
 .dark-mode {
@@ -527,11 +456,7 @@ export default {
       }
 
       .announce_container {
-
-
          .card {
-
-
             .add_announce_form {
                .info_svg {
                   color: #4B5565 !important;
@@ -545,6 +470,12 @@ export default {
                   }
                }
 
+               .other_parameters__checkbox, .vin {
+                  input ~ label, input:checked ~ label {
+                     background-color: transparent !important;
+                  }
+               }
+
 
                .contacts {
 
@@ -553,26 +484,8 @@ export default {
                   }
                }
             }
-
-            .vehicle_card_info {
-               &_description {
-                  background-color: #00359E;
-               }
-
-               &_help {
-                  background-color: #364152;
-               }
-            }
-
-
          }
       }
-   }
-}
-
-@media (max-width: 1150px) {
-   .form_navigation {
-      display: none;
    }
 }
 

@@ -949,6 +949,7 @@ export default {
           customs_clearance: data.announce?.customs_clearance || 0,
           tradeable: data.announce?.exchange_possible,
           credit: data.announce?.credit,
+          is_rent: data.announce?.is_rent,
           guaranty: data.announce?.in_garanty,
           // saved_images: data.announce?.mediaIds,
           saved_images: data.announce.mediaIds,

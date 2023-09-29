@@ -1,30 +1,12 @@
 <template>
-<!--   class="breadcrumbs d-none d-lg-flex align-items-center full-width"-->
    <nav class="breadcrumbs d-flex align-items-center full-width">
-      <ul aria-label="breadcrumb">
-         <li :key="-1">
-            <nuxt-link :to="$localePath('/')">
-               {{ $t('is_main') }}
-<!--               <icon name="home" />-->
-            </nuxt-link>
-
-            <!-- <inline-svg
-              v-if="index !== crumbs.length - 1"
-              src="/icons/chevron-right.svg"
-              :height="10"
-              class="mx-1"
-            /> -->
-
-            <icon name="chevron-right"/>
-         </li>
-
-         <template v-for="(crumb, index) in crumbs">
-            <li v-if="crumb.route" :key="index">
-               <nuxt-link :to="$localePath(crumb.route || '/')">
-                  {{ crumb.name }}
+      <div :class="{'container' : hasContainer}">
+         <ul aria-label="breadcrumb">
+            <li :key="-1" v-if="showHome">
+               <nuxt-link :to="$localePath('/')">
+                  {{ $t('is_main') }}
+                  <!--               <icon name="home" />-->
                </nuxt-link>
-
-               <icon v-if="index !== crumbs.length - 1" name="chevron-right" />
 
                <!-- <inline-svg
                  v-if="index !== crumbs.length - 1"
@@ -32,14 +14,33 @@
                  :height="10"
                  class="mx-1"
                /> -->
+
+               <icon name="chevron-right"/>
             </li>
 
-            <li v-else :key="index" aria-current="page">
-               <span>{{ crumb.name }}</span>
-            </li>
-         </template>
-      </ul>
-      <slot/>
+            <template v-for="(crumb, index) in crumbs">
+               <li v-if="crumb.route" :key="index">
+                  <nuxt-link :to="$localePath(crumb.route || '/')">
+                     {{ crumb.name }}
+                  </nuxt-link>
+
+                  <icon v-if="index !== crumbs.length - 1" name="chevron-right" />
+
+                  <!-- <inline-svg
+                    v-if="index !== crumbs.length - 1"
+                    src="/icons/chevron-right.svg"
+                    :height="10"
+                    class="mx-1"
+                  /> -->
+               </li>
+
+               <li v-else :key="index" aria-current="page">
+                  <span>{{ crumb.name }}</span>
+               </li>
+            </template>
+         </ul>
+         <slot/>
+      </div>
    </nav>
 </template>
 
@@ -47,6 +48,14 @@
    export default {
       props: {
          crumbs: Array,
+         showHome: {
+            type: Boolean,
+            default: true
+         },
+         hasContainer: {
+            type: Boolean,
+            default: false
+         }
       }
    }
 </script>

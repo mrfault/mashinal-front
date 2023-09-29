@@ -146,14 +146,14 @@ export default {
             }
             return '/';
          } else {
-            switch (n.route) {
+            switch (n?.route) {
                case '/messages_bnb' :
-                  return this.$localePath('/profile/messages?group=' + n.value)
+                  return this.$localePath('/profile/messages?group=' + n?.value)
                case '/announcement_details' :
-                  console.log("n./././",n)
-                  return this.$localePath(this.getAnnounceTypePath(n.notifiable_type) + '/' + (n.notifiable?.id || n.notifiable_id))
+                  // console.log("n./././",n)
+                  return this.$localePath(this.getAnnounceTypePath(n?.notifiable_type) + '/' + (n?.notifiable?.id || n?.notifiable_id))
                case '/garage_bnb' :
-                  return this.$localePath(`/garage?id=${n.notifiable.id}`)
+                  return this.$localePath(`/garage?id=${n?.notifiable?.id}`)
                case '/balance' :
                   return this.$localePath('/profile/balance')
                case '/business_profiles' :
@@ -164,37 +164,31 @@ export default {
 
                   var url = this.isMobileBreakpoint ? '/salons/offer/' : this.$localePath('/salons/offer?param=all&c=');
 
-                  var offerId = n.hasOwnProperty('notifiable_id') && n.notifiable_id != null ? n.notifiable_id : false
+                  var offerId = n.hasOwnProperty('notifiable_id') && n?.notifiable_id != null ? n?.notifiable_id : false
 
-                  if (offerId) {
-                     url += offerId
-                  }
+                  if (offerId) url += offerId
                   return url
 
                case '/salons/offer/new-message' :
 
                   var url = this.isMobileBreakpoint ? '/salons/offer/' : this.$localePath('/salons/offer?param=sended&c=');
 
-                  var offerId = n.hasOwnProperty('notifiable_id') && n.notifiable_id != null ? n.notifiable_id : false
+                  var offerId = n.hasOwnProperty('notifiable_id') && n?.notifiable_id != null ? n?.notifiable_id : false
 
-                  if (offerId) {
-                     url += offerId
-                  }
+                  if (offerId) url += offerId
                   return url
 
                case '/offer/offers/new-message' :
 
                   var url = this.isMobileBreakpoint ? '/offer/' : this.$localePath('/offer/offers?param=all&c=');
 
-                  var offerId = n.hasOwnProperty('notifiable_id') && n.notifiable_id != null ? n.notifiable_id : false
+                  var offerId = n.hasOwnProperty('notifiable_id') && n?.notifiable_id != null ? n?.notifiable_id : false
 
-                  if (offerId) {
-                     url += offerId
-                  }
+                  if (offerId) url += offerId
                   return url
 
                case '/offer/offers' :
-                  return this.user.autosalon ? this.$localePath('/salons/offer?param=all') : this.$localePath('/offer/offers?param=all')
+                  return this.user?.autosalon ? this.$localePath('/salons/offer?param=all') : this.$localePath('/offer/offers?param=all')
             }
             return '/';
          }

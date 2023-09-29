@@ -28,9 +28,9 @@
          :bg="'/img/salon-bg.png'"
          :title="$t('shops')"
       >
-         <template #content>
-            <breadcrumbs class="light-color" :crumbs="crumbs"/>
-         </template>
+<!--         <template #content>-->
+<!--            <breadcrumbs class="light-color" :crumbs="crumbs"/>-->
+<!--         </template>-->
       </Banner>
 
       <template v-if="!mapView">
@@ -40,9 +40,9 @@
                :bg="'/img/salon-bg.png'"
                :title="$t('shops')"
             >
-               <template #content>
-                  <breadcrumbs class="light-color" :crumbs="crumbs"/>
-               </template>
+<!--               <template #content>-->
+<!--                  <breadcrumbs class="light-color" :crumbs="crumbs"/>-->
+<!--               </template>-->
             </Banner>
 
 <!--            <template v-if="!isMobileBreakpoint">-->

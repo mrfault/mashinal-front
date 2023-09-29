@@ -45,11 +45,10 @@ export default {
       &__title {
          position: absolute;
          font-weight: 700;
-         font-size: 40px;
+         font-size: 32px;
          line-height: 48px;
          color: #FFFFFF;
-         margin: 0;
-         bottom: 48px;
+         bottom: 32px;
          z-index: 2;
       }
 

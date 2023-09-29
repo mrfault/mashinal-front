@@ -1,5 +1,5 @@
 <template>
-   <div class="cars-search-form mini form">
+   <div class="cars-search-form form">
       <div class="cars-search-form__inner">
          <template v-if="assistant">
             <div class="col-12">
@@ -201,17 +201,17 @@
                   />
 
                   <form-checkbox
+                     :label="$t('rent')"
+                     :show-input="false"
+                     input-name="rent"
+                     v-model="form.is_rent"
+                  />
+
+                  <form-checkbox
                      :label="$t('exchange')"
                      :show-input="false"
                      input-name="credit"
                      v-model="form.exchange_possible"
-                  />
-
-                  <form-checkbox
-                     :label="$t('with_video')"
-                     :show-input="false"
-                     input-name="with_video"
-                     v-model="form.with_video"
                   />
                </div>
 
@@ -250,10 +250,10 @@
 
                   <div class="btns">
                      <form-checkbox
-                        :label="$t('in_garanty')"
+                        :label="$t('with_video')"
                         :show-input="false"
-                        v-model="form.in_garanty"
-                        input-name="in_garanty"
+                        input-name="with_video"
+                        v-model="form.with_video"
                      />
 
                      <form-checkbox
@@ -294,13 +294,22 @@
                      :clear-option="false"
                   />
 
-                  <form-select
-                     :label="$t('damage')"
-                     v-model="form.damage"
-                     :options="getDamageOptions"
-                     :clear-placeholder="true"
-                     :clear-option="false"
-                  />
+                  <div class="btns">
+                     <form-checkbox
+                        :label="$t('in_garanty')"
+                        :show-input="false"
+                        v-model="form.in_garanty"
+                        input-name="in_garanty"
+                     />
+
+                     <form-select
+                        :label="$t('damage')"
+                        v-model="form.damage"
+                        :options="getDamageOptions"
+                        :clear-placeholder="true"
+                        :clear-option="false"
+                     />
+                  </div>
 
                   <form-select
                      :label="$t('count_of_seats')"
@@ -355,80 +364,57 @@
             <div :class="['cars-search-form__gridFooter', {'hasValue' : hasValue}]">
                <button
                   type="button"
-                  class="btn btn--red-opacity full-width"
+                  class="btn-inline red"
                   @click="showExcludeModal = true"
                >
-                  {{ $t('exclude') }}
+                  <span>
+                     {{ $t('exclude') }}
 
-                  <inline-svg :src="'/icons/eye-slash.svg'"/>
+                     <inline-svg :src="'/icons/eye-slash.svg'"/>
 
-                  <template v-if="getExcludeCount">({{ getExcludeCount }})</template>
+                     <template v-if="getExcludeCount">({{ getExcludeCount }})</template>
+                  </span>
                </button>
 
                <button
-                  v-if="hasValue"
                   type="button"
-                  :class="[
-                     'btn',
-                     'full-width',
-                     'btn--blue-new-light-2',
-                     { 'pointer-events-none': pending }
-                  ]"
+                  class="btn-inline blue"
                   @click="savedSearch = true; $nuxt.$emit('login-popup', 'saved-search')"
                >
-                  {{ $t('search_save') }}
+                  <span>
+                     {{ $t('search_save') }}
 
-                  <inline-svg :src="'/icons/save-search.svg'"/>
+                     <inline-svg :src="'/icons/save-search.svg'"/>
+                  </span>
                </button>
 
-               <button
-                  v-if="!hasValue && !isMobileBreakpoint"
-                  type="button"
-                  :class="[
-                     'btn',
-                     'px-2',
-                     'full-width',
-                     'btn--white',
-                     { 'pointer-events-none': pending },
-                 ]"
-                  @click="resetForm(!(advanced || assistant))"
-               >
-                  {{ $t('clear_search') }}
-
-                  <icon name="cross" />
-               </button>
-
-               <div class="btns">
+               <div class="btns justify-content-end">
                   <button
-                     v-if="hasValue && !isMobileBreakpoint"
+                     v-if="!isMobileBreakpoint"
                      type="button"
-                     :class="[
-                        'btn',
-                        'px-2',
-                        'full-width',
-                        'btn--white',
-                        { 'pointer-events-none': pending }
-                     ]"
+                     class="btn-inline white"
                      @click="resetForm(!(advanced || assistant))"
                   >
+                     <span>
+                        {{ $t('clear_search') }}
 
-                     {{ $t('clear_search') }}
-
-                     <icon name="cross"/>
+                        <icon name="cross" />
+                     </span>
                   </button>
 
-                  <button class="btn btn--grey-new-2 full-width px-2" @click="showMore = !showMore">
-                     <template v-if="!showMore">
-                        {{ hasValue ? $t('detail') : $t('advanced_search') }}
-                     </template>
+                  <button
+                     class="btn-inline white"
+                     @click="showMore = !showMore"
+                  >
+                     <span>
+                        <template v-if="!showMore">{{ $t('advanced_search3') }}</template>
 
-                     <template v-else>
-                        {{ $t('less_2') }}
-                     </template>
+                        <template v-else>{{ $t('less_2') }}</template>
 
-                     <inline-svg :src="'/icons/setting-2.svg'" v-if="!showMore"/>
+                        <inline-svg :src="'/icons/setting-2.svg'" v-if="!showMore"/>
 
-                     <icon name="chevron-up" v-else/>
+                        <icon name="chevron-up" v-else/>
+                     </span>
                   </button>
                </div>
 
@@ -647,6 +633,7 @@
                n_of_seats: [],
                colors: [],
                is_matte: false,
+               is_rent: false,
                in_garanty: false,
                with_video: false,
                exchange_possible: false,
@@ -976,25 +963,14 @@
    .cars-search-form {
       &__gridMain {
          display: grid;
-         grid-gap: 20px;
-
-         //.form-group {
-         //   min-width: 0;
-         //}
-
-         //.form-merged {
-         //   height: 52px;
-         //
-         //   .select-menu_label {
-         //      height: 100%;
-         //   }
-         //}
+         grid-column-gap: 20px;
+         grid-row-gap: 16px;
       }
 
       &__gridFooter {
          display: grid;
          grid-gap: 20px;
-         margin-top: 20px;
+         margin-top: 16px;
          width: 100%;
       }
 
@@ -1015,7 +991,7 @@
       }
 
       .btn {
-         height: 52px;
+         height: 48px;
       }
 
       .checkboxes {
@@ -1025,8 +1001,53 @@
          height: max-content;
       }
 
+      .checkboxes, .btns {
+         .checkbox-input {
+            input {
+               &:checked {
+                  & + {
+                     label {
+                        background-color: #155EEF;
+
+                        span {
+                           color: #FFFFFF;
+                        }
+                     }
+                  }
+               }
+            }
+            label {
+               height: 48px;
+
+               //&:hover {
+               //   background-color: #155EEF;
+               //
+               //   span {
+               //      color: #FFFFFF;
+               //   }
+               //}
+            }
+         }
+      }
+
       .form-group {
-         height: max-content;
+         height: 100%;
+
+         .select-menu {
+            height: 100%;
+
+            &_label {
+               height: 48px;
+            }
+
+            &_dropdown {
+               top: 55px;
+
+               .form-merged {
+                  height: unset;
+               }
+            }
+         }
 
          &.price {
             .form-merged {
@@ -1052,112 +1073,41 @@
                }
             }
          }
+
+         input {
+            height: 46px;
+         }
       }
 
-      &.mini {
-         .cars-search-form__gridMain,
-         .cars-search-form__gridFooter {
-            grid-gap: 12px;
-         }
+      .form-merged {
+         height: 48px;
 
          .form-group {
-            height: 100%;
+            &:first-child {
+               width: 56%;
+            }
 
             .select-menu {
-               height: 100%;
-
                &_label {
-                  height: 48px;
+                  height: 100%;
                }
 
                &_dropdown {
                   top: 55px;
-
-                  .form-merged {
-                     height: unset;
-                  }
-               }
-            }
-
-            input {
-               height: 46px;
-            }
-         }
-
-         .form-merged {
-            height: 48px;
-
-            .form-group {
-               &:first-child {
-                  width: 56%;
-               }
-
-               .select-menu {
-                  &_label {
-                     height: 100%;
-                  }
-
-                  &_dropdown {
-                     top: 55px;
-                  }
                }
             }
          }
+      }
 
-         .checkboxes, .btns {
-            .checkbox-input {
-               input {
-                  &:checked {
-                     & + {
-                        label {
-                           background-color: #155EEF;
-
-                           span {
-                              color: #FFFFFF;
-                           }
-                        }
-                     }
-                  }
-               }
-               label {
-                  height: 48px;
-
-                  //&:hover {
-                  //   background-color: #155EEF;
-                  //
-                  //   span {
-                  //      color: #FFFFFF;
-                  //   }
-                  //}
-               }
-            }
-         }
-
-         .btn {
-            height: 48px;
+      .btn-inline {
+         &.blue {
+            justify-content: flex-end;
          }
       }
    }
 
    @media (min-width: 992px) {
       .cars-search-form {
-         //.form-buttons {
-         //   width: unset !important;
-         //}
-
-         //&__head {
-         //   flex-direction: row !important;
-         //   gap: unset;
-         //
-         //   .announce_types {
-         //      .form-group {
-         //         .btn {
-         //            width: 120px !important;
-         //         }
-         //      }
-         //   }
-         //}
-
          &__gridMain {
             grid-template-columns: repeat(3, 1fr);
          }
@@ -1171,25 +1121,15 @@
    @media (min-width: 1150px) {
       .cars-search-form {
          &__gridMain {
-            grid-template-columns: 230px 230px 230px 285px;
+            grid-template-columns: 235px 215px 240px 295px;
          }
 
          &__gridFooter {
-            grid-template-columns: 230px 230px 230px 285px;
+            grid-template-columns: 235px 215px 240px 295px;
 
-            &.hasValue {
-               grid-template-columns: 230px 230px 290px 225px;
-            }
-         }
-
-         &.mini {
-            .cars-search-form__gridMain {
-               grid-template-columns: 235px 235px 245px 285px;
-            }
-
-            .cars-search-form__gridFooter {
-               grid-template-columns: 235px 235px 285px 245px;
-            }
+            //&.hasValue {
+            //   grid-template-columns: 230px 230px 290px 225px;
+            //}
          }
       }
    }

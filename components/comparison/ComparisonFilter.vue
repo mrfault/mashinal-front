@@ -11,13 +11,13 @@
          </div>
 
          <div class="col-12 col-lg-1-5 mt-2 mt-lg-0" v-if="models.length < 5 && (compareType === 'models' && models.length)">
-            <button
-               :class="['btn full-width btn--pale-green', { disabled: models.length >= 5 }]"
-               @click.stop="addModel()"
-            >
-               <icon name="plus-circle"/>
-               <span>{{ $t('add_car_model') }}</span>
-            </button>
+<!--            <button-->
+<!--               :class="['btn full-width btn&#45;&#45;pale-green', { disabled: models.length >= 5 }]"-->
+<!--               @click.stop="addModel()"-->
+<!--            >-->
+<!--               <icon name="plus-circle"/>-->
+<!--               <span>{{ $t('add_car_model') }}</span>-->
+<!--            </button>-->
          </div>
 
          <div class="comparison-filter__checkboxes">
@@ -132,6 +132,7 @@
                border-bottom: 1px solid transparent;
                border-radius: 0;
                background-color: transparent;
+               height: 44px;
 
                span {
                   color: #4B5565;

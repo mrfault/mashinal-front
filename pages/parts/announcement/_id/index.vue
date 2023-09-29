@@ -111,8 +111,11 @@
       },
 
       async asyncData({store, route}) {
+         let id = route.params.id;
+         if (id.length > 10) id = id.slice(0, -1);
+
          await Promise.all([
-            store.dispatch('getPartsInnerV2', route.params.id),
+            store.dispatch('getPartsInnerV2', id),
             // store.dispatch('fetchPartsAnnouncementsId', route.params.id),
             store.dispatch('getComplaintOptions'),
             store.dispatch('getOptions'),

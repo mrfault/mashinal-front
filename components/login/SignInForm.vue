@@ -108,7 +108,7 @@ export default {
             })
       },
       loginOrRegister() {
-         console.log("salam")
+         // console.log("salam")
          this.validator.$touch()
          if (this.pending || this.validator.$pending || this.validator.$error)
             return
@@ -154,7 +154,7 @@ export default {
          if (this.pending || this.$v.$error) return
          this.pending = true
          try {
-            console.log("salam")
+            // console.log("salam")
             await this.checkSellTokens(this.form.phone.replace(/[^0-9]+/g, ''))
             this.mutate({property: 'sellPhoneEntered', value: this.form.phone})
             this.pending = false

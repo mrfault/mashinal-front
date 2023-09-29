@@ -5,9 +5,9 @@
          :bg="'/img/part_bg.png'"
          :title="$t('parts')"
       >
-         <template #content>
-            <breadcrumbs :crumbs="crumbs" />
-         </template>
+<!--         <template #content>-->
+<!--            <breadcrumbs :crumbs="crumbs" />-->
+<!--         </template>-->
       </Banner>
 
       <part-search-form
@@ -24,9 +24,9 @@
             :bg="'/img/part_bg.png'"
             :title="$t('parts')"
          >
-            <template #content>
-               <breadcrumbs :crumbs="crumbs" />
-            </template>
+<!--            <template #content>-->
+<!--               <breadcrumbs :crumbs="crumbs" />-->
+<!--            </template>-->
          </Banner>
 
          <part-search-form

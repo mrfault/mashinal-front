@@ -1,100 +1,110 @@
 <template>
    <div class="registration_mark_form">
-      <div class="divider mobile-column">
-         <form-select
-            :label="$t('region_2')"
-            :class="{form_error: $v.form.car_number.region_id.$error}"
-            :options="getRegionNumbers.map((rn) => ({...rn, id: rn.serial_number}))"
-            :clear-placeholder="true"
-            :clear-option="false"
-            :new-label="false"
-            has-search
-            v-model="form.car_number.region_id"
-            :invalid="$v.form.car_number.region_id.$error"
-            :disabled="isEdit"
-         />
-         <div class="car_number">
-            <form-select
-               :label="'A'"
-               :class="{form_error: $v.form.car_number.first.$error}"
-               :options="numbers"
-               :clear-placeholder="true"
-               :clear-option="false"
-               :new-label="false"
-               has-search
-               v-model="form.car_number.first"
-               :invalid="$v.form.car_number.first.$error"
-               :disabled="isEdit"
-            />
-            <form-select
-               :label="'A'"
-               :options="numbers"
-               :clear-placeholder="true"
-               :clear-option="false"
-               :new-label="false"
-               has-search
-               v-model="form.car_number.second"
-               :disabled="isEdit"
-            />
-            <form-numeric-input
-               placeholder="000"
-               :class="{form_error: $v.form.car_number.number.$error}"
-               v-model="form.car_number.number"
-               :maxlength="3"
-               :float="true"
-               :ignored-symbols="['.']"
-               :invalid="$v.form.car_number.number.$error"
-               :disabled="isEdit"
-            />
-         </div>
-      </div>
-      <div class="divider mobile-column">
-         <form-numeric-input
-            :placeholder="$t('price')"
-            :class="{form_error: $v.form.price.$error}"
-            v-model="form.price"
-            :invalid="$v.form.price.$error"
-            @change="form.is_negotiable = false"
-         />
-         <!--            @change="announcement.price = $event ? $event + (form.currency.name?.[locale] || 'AZN') : 0"-->
-         <div class="price_types">
-            <toggle-group :items="priceTypes" v-slot="{ item }" :defaultValue="form.currency_id"
-                          @change="form.currency_id = $event.id">
-               <div class="price_item">
-                  <p>{{ item.name[locale] }}</p>
+      <div class="head_section divider mobile-column">
+         <div class="inner_left">
+            <div class="car_number">
+               <form-select
+                  :label="$t('region_2')"
+                  :class="{form_error: $v.form.car_number.region_id.$error}"
+                  :options="getRegionNumbers.map((rn) => ({...rn, id: rn.serial_number}))"
+                  :clear-placeholder="true"
+                  :clear-option="false"
+                  :new-label="false"
+                  has-search
+                  v-model="form.car_number.region_id"
+                  :invalid="$v.form.car_number.region_id.$error"
+                  :disabled="isEdit"
+               />
+               <div class="divider_3">
+
+                  <form-select
+                     :label="'A'"
+                     :class="{form_error: $v.form.car_number.first.$error}"
+                     :options="numbers"
+                     :clear-placeholder="true"
+                     :clear-option="false"
+                     :new-label="false"
+                     has-search
+                     v-model="form.car_number.first"
+                     :invalid="$v.form.car_number.first.$error"
+                     :disabled="isEdit"
+                  />
+                  <form-select
+                     :label="'A'"
+                     :options="numbers"
+                     :clear-placeholder="true"
+                     :clear-option="false"
+                     :new-label="false"
+                     has-search
+                     v-model="form.car_number.second"
+                     :disabled="isEdit"
+                  />
+                  <form-numeric-input
+                     placeholder="000"
+                     :class="{form_error: $v.form.car_number.number.$error}"
+                     v-model="form.car_number.number"
+                     :maxlength="3"
+                     :float="true"
+                     :ignored-symbols="['.']"
+                     :invalid="$v.form.car_number.number.$error"
+                     :disabled="isEdit"
+                  />
                </div>
-            </toggle-group>
+            </div>
+            <div class="divider mobile-column">
+               <form-numeric-input
+                  :placeholder="$t('price')"
+                  :class="{form_error: $v.form.price.$error}"
+                  v-model="form.price"
+                  :invalid="$v.form.price.$error"
+                  @change="form.is_negotiable = false"
+               />
+               <!--            @change="announcement.price = $event ? $event + (form.currency.name?.[locale] || 'AZN') : 0"-->
+               <div class="price_types">
+                  <toggle-group :items="priceTypes" v-slot="{ item }" :defaultValue="form.currency_id"
+                                @change="form.currency_id = $event.id">
+                     <div class="price_item">
+                        <p>{{ item.name[locale] }}</p>
+                     </div>
+                  </toggle-group>
+               </div>
+            </div>
+            <form-checkbox
+               v-model="form.is_negotiable"
+               :label="$t('negotiable_price')"
+               input-name="is_negotiable"
+               transparent
+               @change="$event && (form.price = '')"
+            />
          </div>
-      </div>
-      <form-checkbox
-         v-model="form.is_negotiable"
-         :label="$t('negotiable_price')"
-         input-name="is_negotiable"
-         transparent
-         @change="$event && (form.price = '')"
-      />
-      <form-select
-         :label="$t('region')"
-         :class="{form_error: $v.form.region_id.$error}"
-         :options="sellOptions.regions"
-         v-model="form.region_id"
-         :clear-placeholder="true"
-         :clear-option="false"
-         :new-label="false"
-         has-search
-         :invalid="$v.form.region_id.$error"
-      />
-      <div class="registration_mark_form_with_info">
-         <form-textarea
-            v-model="form.comment"
-            :placeholder="$t('additional_info')"
-            :maxlength="500"
-         />
-         <div class="registration_mark_form_with_info_inner">
-            <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
-            <p>{{ $t("additional_info_warning") }}</p>
+         <div class="inner_right">
+            <div class="registration_mark_form_with_info">
+               <form-textarea
+                  v-model="form.comment"
+                  :placeholder="$t('additional_info')"
+                  :maxlength="500"
+               />
+               <div class="registration_mark_form_with_info_inner">
+                  <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
+                  <p>{{ $t("additional_info_warning") }}</p>
+               </div>
+            </div>
          </div>
+
       </div>
+
+      <!--      <form-select-->
+      <!--         :label="$t('region')"-->
+      <!--         :class="{form_error: $v.form.region_id.$error}"-->
+      <!--         :options="sellOptions.regions"-->
+      <!--         v-model="form.region_id"-->
+      <!--         :clear-placeholder="true"-->
+      <!--         :clear-option="false"-->
+      <!--         :new-label="false"-->
+      <!--         has-search-->
+      <!--         :invalid="$v.form.region_id.$error"-->
+      <!--      />-->
+
    </div>
 </template>
 
@@ -249,7 +259,50 @@ export default {
    flex-direction: column;
    gap: 20px;
 
+   .head_section {
+      .inner_left, .inner_right {
+         display: flex;
+         flex-direction: column;
+         gap: 20px
+      }
 
+         &:first-child {
+            .form_error {
+               i {
+                  display: none;
+               }
+            }
+         }
+
+         .car_number {
+            display: flex;
+            gap: 16px;
+
+         .select-menu_label {
+            padding: 0 12px !important;
+         }
+
+         .text-input {
+            input {
+               padding: 0 12px !important;
+            }
+         }
+
+         & > * {
+            width: 100%;
+            min-width: 0;
+         }
+      }
+   }
+
+   .price_types {
+      .price_item {
+         height: 52px;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+      }
+   }
 
    &_with_info {
       &_inner {
@@ -265,31 +318,6 @@ export default {
       }
    }
 
-   .divider {
-      display: grid;
-      grid-template-columns: repeat(2, calc(50% - 8px));
-      gap: 20px;
-
-      .car_number {
-         display: flex;
-         gap: 16px;
-
-         .select-menu_label {
-            padding: 0 12px !important;
-         }
-
-         .text-input {
-            input {
-               padding:  0 12px !important;
-            }
-         }
-
-         & > * {
-            width: 100%;
-            min-width: 0;
-         }
-      }
-   }
 }
 
 @media (max-width: 485px) {

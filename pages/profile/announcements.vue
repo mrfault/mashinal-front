@@ -1,8 +1,6 @@
-<template   >
+<template>
    <div :key="refresh" class="pages-annoucements pt-2 pt-lg-6">
-      <portal to="breadcrumbs">
-         <breadcrumbs :crumbs="crumbs"/>
-      </portal>
+<!--      <pre>{{announcementsStatuses}}</pre>-->
       <div :class="{'ma-announcements-autosalon-container': user.autosalon}" class="container">
          <div class="ma-announcements">
             <h2 class="ma-title--md">{{ $t('my_announces') }}</h2>
@@ -16,7 +14,6 @@
                      <div class="ma-announcements__top-card--title">{{ $t(item.name) }}</div>
                      <div class="ma-announcements__top-card--count">{{ $t(item.value) || 0 }}</div>
                   </div>
-
                </div>
             </div>
 
@@ -35,23 +32,24 @@
                   :class="{'ma-announcements__head-autosalon': user.autosalon}"
                   class="ma-announcements__head">
                   <button
-                     v-for="(item,index) in announceItems"
+                     v-for="item in announcementsStatuses"
                      :class="{'ma-announcements__head--item--active': item.id == activeTab}"
                      class="ma-announcements__head--item"
                      @click="changeTab(item)"
                   >
-                     {{ $t(item.title) }}
+                     <span>{{ item.count }}</span>
+                     <span>{{ $t(item.label) }}</span>
                   </button>
                </div>
+
                <div v-if="user.autosalon && !isMobileBreakpoint" class="ma-announcements-sort-switch">
                   <p>{{ $t('sorting_view') }}</p>
                   <custom-switch :value="sortSwitch" @input="sortAnnounces"/>
                   <p>{{ $t('sorting_call') }}</p>
                </div>
             </div>
-
-
          </div>
+
          <div :class="{'ma-announcements__body-autosalon': user.autosalon}" class="ma-announcements__body">
             <h4 v-if="!loading && !user.autosalon" class="ma-subtitle--lg">{{ $t('my_vehicle_announcements') }}</h4>
 
@@ -63,25 +61,24 @@
                </div>
                <div v-else-if="!loading && myAnnouncements && myAnnouncements.length"
                     class="ma-announcements__body--row__inner">
-                  <template v-if="true">
-                     <template v-for="(announcement,index) in myAnnouncements">
-                        <div class="ma-announcements__body--row__inner--item-plate">
-                           <grid-item
-                              :key="announcement.id_unique +  '_' + index"
-                              :activeTab="activeTab"
-                              :announcement="announcement"
-                              :clickable="!isDragging"
-                              :isLastChild="index === myAnnouncements.length - 1"
-                              isProfilePage
-                              show-monetization-actions
-                              show-overlay
-                              show-phone-count
-                              show-status
-                              track-views
-                           />
-                        </div>
-                     </template>
-                  </template>
+                  <div
+                     class="ma-announcements__body--row__inner--item-plate"
+                     v-for="(announcement, index) in myAnnouncements"
+                  >
+                     <grid-item
+                        :key="announcement.id_unique +  '_' + index"
+                        :activeTab="activeTab"
+                        :announcement="announcement"
+                        :clickable="!isDragging"
+                        :isLastChild="index === myAnnouncements.length - 1"
+                        isProfilePage
+                        show-monetization-actions
+                        show-overlay
+                        show-phone-count
+                        show-status
+                        track-views
+                     />
+                  </div>
 
                   <!--                  <template v-if="user.autosalon">-->
                   <!--                     <template v-for="(announcement,index) in myAnnouncementStats.most_viewed_announces">-->
@@ -165,312 +162,316 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex';
+   import Grid from '~/components/announcements/Grid';
+   import NoResults from '~/components/elements/NoResults';
+   import ControlsPanel from '~/components/announcements/ControlsPanel';
+   import PlatesGrid from "~/components/announcements/PlatesGrid.vue";
+   import GridItem from "~/components/announcements/GridItem";
+   import AnnouncementCard from "~/components/cards/AnnouncementCard";
+   import PlatesGridItem from "~/components/announcements/PlatesGridItem";
+   import CustomSwitch from "~/components/elements/CustomSwitch";
+   import { mapGetters, mapActions } from 'vuex';
 
-import Grid from '~/components/announcements/Grid';
-import NoResults from '~/components/elements/NoResults';
-import ControlsPanel from '~/components/announcements/ControlsPanel';
-import PlatesGrid from "~/components/announcements/PlatesGrid.vue";
-import GridItem from "~/components/announcements/GridItem";
-import AnnouncementCard from "~/components/cards/AnnouncementCard";
-import PlatesGridItem from "~/components/announcements/PlatesGridItem";
-import CustomSwitch from "~/components/elements/CustomSwitch";
-// import tr from "vue2-datepicker/locale/es/tr";
+   export default {
+      name: 'pages-profile-announcements',
 
-export default {
-   name: 'pages-profile-announcements',
-   middleware: 'auth_general',
-   layout: 'garageLayout',
-   data() {
-      return {
-         activeTab: "null",
-         loading: false,
-         announceItems: [
-            {
-               id: "null",
-               title: "all2",
-               link: "/",
-            },
-            {
-               id: 1,
-               title: 'active',
-               link: "/",
-            },
-            {
-               id: 2,
-               title: 'under_consideration_2',
-               link: "/",
-            },
-            {
-               id: 3,
-               title: 'sold',
-               link: "/",
-            },
-            {
-               id: 4,
-               title: 'timed_out',
-               link: "/",
-            },
-            {
-               id: 0,
-               title: 'rejected_many',
-               link: "/",
-            },
-         ],
-         escapeDuplicates: false,
-         isDragging: false,
-         sortSwitch: false,
-         sortedAnnouncements: {},
-         refresh: 0,
-      }
-   },
-   components: {
-      GridItem,
-      Grid,
-      NoResults,
-      ControlsPanel,
-      PlatesGrid,
-      AnnouncementCard,
-      PlatesGridItem,
-      CustomSwitch,
-   },
-   nuxtI18n: {
-      paths: {
-         az: '/profil/elanlarim'
-      }
-   },
-   head() {
-      return this.$headMeta({
-         title: this.$t('my_announces')
-      });
-   },
-   mounted() {
-      if (this.user?.autosalon?.id) {
-         this.getStatistics();
-      }
+      middleware: 'auth_general',
 
-      this.getAllData();
-      this.$nuxt.$on('refresh-my-announcements', () => this.refresh++);
-   },
-   async asyncData({store, route}) {
-      await store.dispatch('getSettingsV2')
-   },
-   // async asyncData({store, route}) {
-   //    let status = ['0', '1', '2', '3'].includes(route.query.status) ? parseInt(route.query.status) : '';
-   //    let shop = ['1', '2'].includes(route.query.type) ? (route.query.type == 2 ? 'part' : 'salon') : false;
-   //
-   // await Promise.all([
-   //    store.dispatch('getMyAllAnnouncementsV2', {status, shop}),
-   //    store.dispatch('fetchPlatesV2', {status}),
-   // ]);
-   //
-   // return {
-   //    pending: false,
-   //    statusReady: status,
-   //    form: {status},
-   //    refresh: 0,
-   // }
-   // },
-   methods: {
-      ...mapActions({
-         getMyAllAnnouncements: 'getMyAllAnnouncementsV2',
-         getMyPlates: 'fetchPlatesV2',
-         getSettingsV2: 'getSettingsV2'
-      }),
+      layout: 'garageLayout',
 
-      async getAllData() {
-         this.loading = true;
-         this.pending = true;
-         let store = this.$store;
-         let route = this.$route;
-
-         let status = ['0', '1', '2', '3'].includes(route.query.status) ? parseInt(route.query.status) : '';
-         let shop = ['1', '2'].includes(route.query.type) ? (route.query.type == 2 ? 'part' : 'salon') : false;
-
-         if (!this.user.autosalon) {
-            await Promise.all([
-               store.dispatch('getMyAllAnnouncementsV2', {status, shop}),
-               store.dispatch('fetchPlatesV2', {status}),
-            ]);
-         } else {
-            await this.getMyAllAnnouncements({
-               status: this.activeTab,
-               sorting: 1
-            });
+      data() {
+         return {
+            activeTab: "null",
+            loading: false,
+            announceItems: [
+               {
+                  id: "null",
+                  title: "all2",
+                  link: "/",
+               },
+               {
+                  id: 1,
+                  title: 'active',
+                  link: "/",
+               },
+               {
+                  id: 2,
+                  title: 'under_consideration_2',
+                  link: "/",
+               },
+               {
+                  id: 3,
+                  title: 'sold',
+                  link: "/",
+               },
+               {
+                  id: 4,
+                  title: 'timed_out',
+                  link: "/",
+               },
+               {
+                  id: 0,
+                  title: 'rejected_many',
+                  link: "/",
+               }
+            ],
+            escapeDuplicates: false,
+            isDragging: false,
+            sortSwitch: false,
+            sortedAnnouncements: {},
+            refresh: 0
          }
-
-
-         // return {
-         this.pending = false;
-         this.loading = false;
-         // this.statusReady = this.form.status;
-         // form: {status},
-         // refresh: 0,
-         // }
       },
 
-      changePageMarks(page) {
-         this.$store.dispatch('fetchPlatesV2', `?page=${page}`);
-         this.scrollTo('.pages-annoucements', [-15, -20]);
+      components: {
+         GridItem,
+         Grid,
+         NoResults,
+         ControlsPanel,
+         PlatesGrid,
+         AnnouncementCard,
+         PlatesGridItem,
+         CustomSwitch,
       },
 
-      async changeTab(item) {
-         this.$store.commit('closeDropdown');
-         this.loading = true;
-         this.activeTab = item.id;
-         await this.getMyAllAnnouncements({status: item.id});
-         await this.getMyPlates({status: item.id});
-         this.loading = false;
-      },
-
-      async changePage(page = 1) {
-         this.$store.commit('closeDropdown');
-         this.loading = true;
-         this.pending = true;
-         await this.getMyAllAnnouncements({status: this.activeTab});
-         // this.statusReady = this.form.status;
-         this.pending = false;
-         this.scrollTo('.announcements-grid.paginated', [-15, -20]);
-         this.loading = false;
-
-      },
-
-      isValid(status) {
-         return [0, 1, 2, 3].includes(status);
-      },
-
-      startDragging(event) {
-         event.preventDefault(); // Disable content selection while dragging
-         event.stopPropagation();
-         const container = event.currentTarget;
-         let startX = event.clientX;
-         let scrollLeft = container.scrollLeft;
-
-
-         const scrollByDragging = (event) => {
-            this.isDragging = true;
-            const distance = event.clientX - startX;
-            container.scrollLeft = scrollLeft - distance;
-         };
-
-         const stopDragging = () => {
-            document.removeEventListener('mousemove', scrollByDragging);
-            document.removeEventListener('mouseup', stopDragging);
-            container.style.userSelect = ''; // Restore default content selection behavior
-         };
-
-         document.addEventListener('mousemove', scrollByDragging);
-         document.addEventListener('mouseup', stopDragging);
-         container.style.userSelect = 'none'; // Disable content selection during dragging
-      },
-
-      mouseUp() {
-         this.isDragging = false;
-      },
-      getStatistics() {
-         this.$store.dispatch('getAutosalonStatistics', this.user.autosalon.id)
-      },
-
-      async sortAnnounces() {
-         this.sortSwitch = !this.sortSwitch;
-         this.loading = true;
-         this.pending = true;
-         if (this.sortSwitch == true) {
-            await this.getMyAllAnnouncements({
-               status: this.activeTab,
-               sorting: 2
-            });
-         } else {
-            await this.getMyAllAnnouncements({
-               status: this.activeTab,
-               sorting: 1
-            });
+      nuxtI18n: {
+         paths: {
+            az: '/profil/elanlarim'
          }
-         this.loading = false;
-         this.pending = false;
       },
 
-   },
-   computed: {
-      ...mapGetters({
-         myAnnouncements: 'myAnnouncementsV2',
-         allMyPlates: 'myPlatesV2',
-         autosalonStatistics: 'autosalonStatistics',
-         myAnnouncementStats: 'myAnnouncementStats'
-      }),
-
-      crumbs() {
-         return [
-            {name: this.$t('my_announces')}
-         ]
+      head() {
+         return this.$headMeta({
+            title: this.$t('my_announces')
+         });
       },
 
-      topCards() {
-         return [
-            {
-               name: 'announcements',
-               value: this.autosalonStatistics.announce_count || 0,
-               image: 'doc'
-            },
-            {
-               name: 'views_count',
-               value: this.autosalonStatistics.announce_view_count || 0,
-               image: 'eye'
-            },
-            {
-               name: 'favorites',
-               value: this.autosalonStatistics.total_favorites || 0,
-               image: 'favorite'
-            },
-            {
-               name: 'messages',
-               value: this.autosalonStatistics.message_count || 0,
-               image: 'message-text'
-            },
-            {
-               name: 'total_calls',
-               value: this.autosalonStatistics.call_count || 0,
-               image: 'call'
-            },
+      mounted() {
+         if (this.user?.autosalon?.id) this.getStatistics();
 
-         ]
+         this.getAllData();
+         this.$nuxt.$on('refresh-my-announcements', () => this.refresh++);
       },
 
-      getStatusOptions() {
-         return [
-            {key: 1, name: this.$t('active')},
-            {key: 2, name: this.$t('under_consideration')},
-            {key: 0, name: this.$t('rejected_many')},
-            {key: 3, name: this.$t('inactive')}
-         ]
+      async asyncData({ store }) {
+         await store.dispatch('getSettingsV2');
+         await store.dispatch('getAnnouncementsStatuses');
       },
 
-      tabs() {
-         return [
-            {id: 1, name: this.$t('my_vehicles')},
-            {id: 2, name: this.$t('registration_badges')}
-         ]
+      // async asyncData({store, route}) {
+      //    let status = ['0', '1', '2', '3'].includes(route.query.status) ? parseInt(route.query.status) : '';
+      //    let shop = ['1', '2'].includes(route.query.type) ? (route.query.type == 2 ? 'part' : 'salon') : false;
+      //
+      // await Promise.all([
+      //    store.dispatch('getMyAllAnnouncementsV2', {status, shop}),
+      //    store.dispatch('fetchPlatesV2', {status}),
+      // ]);
+      //
+      // return {
+      //    pending: false,
+      //    statusReady: status,
+      //    form: {status},
+      //    refresh: 0,
+      // }
+      // },
+
+      methods: {
+         ...mapActions({
+            getMyAllAnnouncements: 'getMyAllAnnouncementsV2',
+            getMyPlates: 'fetchPlatesV2',
+            getSettingsV2: 'getSettingsV2'
+         }),
+
+         async getAllData() {
+            this.loading = true;
+            this.pending = true;
+            let store = this.$store;
+            let route = this.$route;
+
+            let status = ['0', '1', '2', '3'].includes(route.query.status) ? parseInt(route.query.status) : '';
+            let shop = ['1', '2'].includes(route.query.type) ? (route.query.type == 2 ? 'part' : 'salon') : false;
+
+            if (!this.user.autosalon) {
+               await Promise.all([
+                  store.dispatch('getMyAllAnnouncementsV2', {status, shop}),
+                  store.dispatch('fetchPlatesV2', {status}),
+               ]);
+            } else {
+               await this.getMyAllAnnouncements({
+                  status: this.activeTab,
+                  sorting: 1
+               });
+            }
+
+
+            // return {
+            this.pending = false;
+            this.loading = false;
+            // this.statusReady = this.form.status;
+            // form: {status},
+            // refresh: 0,
+            // }
+         },
+
+         changePageMarks(page) {
+            this.$store.dispatch('fetchPlatesV2', `?page=${page}`);
+            this.scrollTo('.pages-annoucements', [-15, -20]);
+         },
+
+         async changeTab(item) {
+            this.$store.commit('closeDropdown');
+            this.loading = true;
+            this.activeTab = item.id;
+            await this.getMyAllAnnouncements({status: item.id});
+            await this.getMyPlates({status: item.id});
+            this.loading = false;
+         },
+
+         async changePage(page = 1) {
+            this.$store.commit('closeDropdown');
+            this.loading = true;
+            this.pending = true;
+            await this.getMyAllAnnouncements({status: this.activeTab});
+            // this.statusReady = this.form.status;
+            this.pending = false;
+            this.scrollTo('.announcements-grid.paginated', [-15, -20]);
+            this.loading = false;
+
+         },
+
+         isValid(status) {
+            return [0, 1, 2, 3].includes(status);
+         },
+
+         startDragging(event) {
+            event.preventDefault(); // Disable content selection while dragging
+            event.stopPropagation();
+            const container = event.currentTarget;
+            let startX = event.clientX;
+            let scrollLeft = container.scrollLeft;
+
+            const scrollByDragging = (event) => {
+               this.isDragging = true;
+               const distance = event.clientX - startX;
+               container.scrollLeft = scrollLeft - distance;
+            };
+
+            const stopDragging = () => {
+               document.removeEventListener('mousemove', scrollByDragging);
+               document.removeEventListener('mouseup', stopDragging);
+               container.style.userSelect = ''; // Restore default content selection behavior
+            };
+
+            document.addEventListener('mousemove', scrollByDragging);
+            document.addEventListener('mouseup', stopDragging);
+            container.style.userSelect = 'none'; // Disable content selection during dragging
+         },
+
+         mouseUp() {
+            this.isDragging = false;
+         },
+
+         getStatistics() {
+            this.$store.dispatch('getAutosalonStatistics', this.user.autosalon.id)
+         },
+
+         async sortAnnounces() {
+            this.sortSwitch = !this.sortSwitch;
+            this.loading = true;
+            this.pending = true;
+            if (this.sortSwitch == true) {
+               await this.getMyAllAnnouncements({
+                  status: this.activeTab,
+                  sorting: 2
+               });
+            } else {
+               await this.getMyAllAnnouncements({
+                  status: this.activeTab,
+                  sorting: 1
+               });
+            }
+            this.loading = false;
+            this.pending = false;
+         }
       },
 
-      showTopCards() {
-         return !this.isMobileBreakpoint && (this.$route.query.type == 1)
-      },
+      computed: {
+         ...mapGetters({
+            myAnnouncements: 'myAnnouncementsV2',
+            allMyPlates: 'myPlatesV2',
+            autosalonStatistics: 'autosalonStatistics',
+            myAnnouncementStats: 'myAnnouncementStats',
+            announcementsStatuses: 'announcementsStatuses',
+         }),
 
-      showHeadCategories() {
-         if (this.user.autosalon && this.isMobileBreakpoint) {
-            return true
-         } else
-            return true
+         crumbs() {
+            return [
+               {name: this.$t('my_announces')}
+            ]
+         },
+
+         topCards() {
+            return [
+               {
+                  name: 'announcements',
+                  value: this.autosalonStatistics.announce_count || 0,
+                  image: 'doc'
+               },
+               {
+                  name: 'views_count',
+                  value: this.autosalonStatistics.announce_view_count || 0,
+                  image: 'eye'
+               },
+               {
+                  name: 'favorites',
+                  value: this.autosalonStatistics.total_favorites || 0,
+                  image: 'favorite'
+               },
+               {
+                  name: 'messages',
+                  value: this.autosalonStatistics.message_count || 0,
+                  image: 'message-text'
+               },
+               {
+                  name: 'total_calls',
+                  value: this.autosalonStatistics.call_count || 0,
+                  image: 'call'
+               },
+
+            ]
+         },
+
+         getStatusOptions() {
+            return [
+               {key: 1, name: this.$t('active')},
+               {key: 2, name: this.$t('under_consideration')},
+               {key: 0, name: this.$t('rejected_many')},
+               {key: 3, name: this.$t('inactive')}
+            ]
+         },
+
+         tabs() {
+            return [
+               {id: 1, name: this.$t('my_vehicles')},
+               {id: 2, name: this.$t('registration_badges')}
+            ]
+         },
+
+         showTopCards() {
+            return !this.isMobileBreakpoint && (this.$route.query.type == 1)
+         },
+
+         showHeadCategories() {
+            if (this.user.autosalon && this.isMobileBreakpoint) return true
+            else return true
+         }
       }
-   },
-
-}
+   }
 </script>
 
 
 <style lang="scss">
 .ma-announcements {
-
    &__top-cards {
       display: flex;
       justify-content: space-between;
@@ -524,9 +525,7 @@ export default {
 
 
    &__head {
-
       overflow-y: hidden !important;
-
       &-autosalon {
          border-radius: 8px 8px 0 0;
          margin-bottom: 0;
@@ -616,13 +615,22 @@ export default {
 }
 
 .dark-mode {
-
    .ma-announcements {
       &__head {
          &-autosalon {
             &-container {
                background: #1b2434;
                //background: transparent;
+            }
+         }
+
+         &--item {
+            &--active {
+               span {
+                  &:last-child {
+                     color: #FFFFFF;
+                  }
+               }
             }
          }
       }
@@ -783,7 +791,6 @@ export default {
                background: transparent;
                color: #697586;
                border: none;
-               //margin-bottom: -15px;
 
                &--active {
                   background: rgba(#718096, .8);
@@ -833,7 +840,7 @@ export default {
       }
    }
 
-   .dark-mode{
+   .dark-mode {
       .ma-announcements__head-autosalon-container {
          background: #121926 !important;
       }
@@ -931,10 +938,5 @@ export default {
    }
 
 }
-
-
-
-
-
 </style>
 

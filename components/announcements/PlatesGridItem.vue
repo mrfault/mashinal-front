@@ -1,6 +1,9 @@
 <template>
-   <div :class="{'position-relative': isProfilePage}" class="registrationMarksGridItem"
-        @click="goToRegistrationMark(item?.id_unique, $event)">
+   <div
+      class="registrationMarksGridItem"
+      :class="{'position-relative': isProfilePage}"
+      @click="goToRegistrationMark(item?.id_unique, $event)"
+   >
       <div class="registrationMarksGridItem__head">
          <div class="divider">
             <inline-svg src="/icons/registrationMarks_icons.svg"/>
@@ -170,7 +173,6 @@ export default {
             event.preventDefault();
             this.$router.push(this.localePath(`/plates/${id}`));
          }
-
       },
 
       modifiedDate(date) {

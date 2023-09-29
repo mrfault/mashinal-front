@@ -135,11 +135,11 @@ Vue.use({
             },
 
             checkCarNumber(item) {
-               return (item.number1 && item.letter1 && item.letter1 && item.number2);
+               return (item.number1 && item.letter2 && item.letter2 && item.number2);
             },
 
             getCarNumber(item) {
-               return item.number1 +'-'+item.letter1+item.letter1+'-'+item.number2
+               return item.number1 +'-'+item.letter1+item.letter2+'-'+item.number2
             },
 
             getAnnouncementContact(item) {
@@ -176,7 +176,7 @@ Vue.use({
                   address: item?.address,
                   img: (item?.is_auto_salon || item?.is_part_salon || item?.is_external_salon)
                      ? (!img || img?.includes('/images/') ? `/img/salon-logo-${this.colorMode}.jpg` : this.$withBaseUrl(img))
-                     : (this.$withBaseUrl(img, '/storage/') || '/img/user.jpg'),
+                     : (this.$withBaseUrl(img, '/storage/') || '/img/user_new.png'),
                   lat: item.latitude ? parseFloat(item.latitude) : 0,
                   lng: item.longitude ? parseFloat(item.longitude) : 0
                };

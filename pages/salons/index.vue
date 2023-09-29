@@ -5,9 +5,9 @@
          :bg="'/img/salon-bg.png'"
          :title="$t('auto_salons')"
       >
-         <template #content>
-            <breadcrumbs class="light-color" :crumbs="crumbs" />
-         </template>
+<!--         <template #content>-->
+<!--            <breadcrumbs class="light-color" :crumbs="crumbs" />-->
+<!--         </template>-->
       </Banner>
 
       <div class="container-fluid p-0">
@@ -20,9 +20,9 @@
                   class="d-none d-sm-block"
                   :bg="'/img/salon-bg.png'"
                   :title="$t('auto_salons')">
-                  <template #content>
-                     <breadcrumbs class="light-color" :crumbs="crumbs" />
-                  </template>
+<!--                  <template #content>-->
+<!--                     <breadcrumbs class="light-color" :crumbs="crumbs" />-->
+<!--                  </template>-->
                </Banner>
 
                <salon-filters-form
@@ -55,7 +55,7 @@
                   </div>
 
                   <div class="col-md-12">
-                     <div class="mb-lg-5 mt-4 mt-lg-5 row salon-card-list" v-if="officialSalons.length">
+                     <div class="mb-lg-3 mt-4 row salon-card-list" v-if="officialSalons.length">
                         <div class="col-12 col-md-6 col-lg-4 mb-2 mb-lg-3" v-for="salon in officialSalons"
                              :key="salon.id"
                              v-if="salon.announcement_count">
@@ -333,7 +333,7 @@ export default {
          &.list-view {
             .container {
                &:last-child {
-                  padding-top: 56px;
+                  padding-top: 24px;
                }
             }
          }

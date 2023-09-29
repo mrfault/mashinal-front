@@ -1,5 +1,11 @@
 <template>
    <div :class="['quick-info mb-lg-3', {'registration-marks' : type === 'plates'}]">
+      <ReasonForRejection
+         class="mb-3"
+         v-if="announcement?.moderator?.reject_reason?.length && announcement?.status === 0"
+         :options="announcement?.moderator?.reject_reason"
+      />
+
       <div class="registration-marks__number" v-if="type === 'plates'">
          <div class="divider">
             <img src="/icons/registrationMarks_icons.svg" alt="icons">
@@ -16,7 +22,7 @@
          class="quick-info__item"
          :class="{'registration-marks' : type === 'plates'}"
       >
-         <h1 class="quick-info__title" v-if="getAnnouncementTitle(announcement)">{{ getAnnouncementTitle(announcement) }}</h1>
+<!--         <h1 class="quick-info__title" v-if="getAnnouncementTitle(announcement)">{{ getAnnouncementTitle(announcement) }}</h1>-->
 
          <div class="d-flex align-items-center justify-content-between">
             <QuickInfoPrice
@@ -52,7 +58,7 @@
             </li>
          </ul>
 
-         <div :class="['quick-info__contact', ]">
+         <div class="quick-info__contact">
             <div
                :class="[
                   'quick-info__contact-img',
@@ -140,12 +146,6 @@
          </div>
       </div>
 
-      <ReasonForRejection
-         v-if="announcement?.moderator?.reject_reason?.length && announcement?.status === 0"
-         class="mb-3"
-         :options="announcement?.moderator?.reject_reason"
-      />
-
       <div class="wrapp">
          <monetization-button
             v-if="type !== 'plates' && announcement.status === 1"
@@ -156,7 +156,7 @@
 
          <div class="btns">
             <add-favorite
-               class="h-52"
+               class="h-52 d-md-none"
                :template="'btn'"
                :text="$t('add_favorite')"
                :announcement="announcement"
@@ -165,7 +165,7 @@
 
             <add-comparison
                v-if="comparisonExceptions"
-               class="h-52"
+               class="h-52 d-md-none"
                :template="'btn'"
                :text="$t('compare')"
                :id="announcement.id_unique"
@@ -180,6 +180,7 @@
             />
          </div>
 
+<!--         <pre>{{announcement}}</pre>-->
          <deactivate-button
             class="mt-3"
             :announcement="announcement"
@@ -189,11 +190,10 @@
          <restore-button
             :className="'white h-52'"
             :announcement="announcement"
-            v-if="restoreCondition"
+            v-if="announcement.type !== 'plate_number' && restoreCondition"
             @refreshData="$nuxt.refresh()"
             :free="true"
          />
-<!--         v-if="userIsOwner(announcement) && announcement.status === 3 && !announcement.is_external_salon"-->
       </div>
 
       <VinCode
