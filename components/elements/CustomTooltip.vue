@@ -20,14 +20,34 @@
    }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
    .customTooltip {
       position: absolute;
       display: none;
-      padding: 24px;
+      padding: 16px;
       border-radius: 12px;
       background-color: #FFF;
       border: 1px solid #CDD5DF;
+      overflow: hidden;
       z-index: 15;
+   }
+
+   .dark-mode {
+      .customTooltip {
+         border-color: #1B2434;
+         background-color: #1B2434;
+
+         &__head {
+            svg.info {
+               path {
+                  fill: #CDD5DF;
+               }
+
+               rect {
+                  fill: transparent;
+               }
+            }
+         }
+      }
    }
 </style>

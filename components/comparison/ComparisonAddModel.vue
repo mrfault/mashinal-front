@@ -103,9 +103,11 @@
             default: false
          }
       },
+
       async fetch() {
          await this.$store.dispatch('comparison/getBrands')
       },
+
       data() {
          return {
             form: {
@@ -118,6 +120,7 @@
             image: null
          }
       },
+
       computed: {
          ...mapGetters({
             brands: 'comparison/brands',
@@ -159,6 +162,7 @@
             })
          }
       },
+
       methods: {
          async brandSelected(id) {
             this.form = {

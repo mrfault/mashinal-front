@@ -1598,6 +1598,8 @@ export default {
    private_person: "Fiziki şəxs",
    privod: "Ötürücü",
    pro: "Pro",
+   min: "Minimum",
+   max: "Maksimum",
    process_payment: "Ödəniş et",
    processing: "Prosesdədir",
    prod_year: "Buraxılış ili",
@@ -2457,6 +2459,18 @@ export default {
    newly_added: "Yeni əlavə olunanlar",
    exist_in_garage: "Qarajda olanlar",
    is_loading: "Yüklənir",
+
+   approvedVehicle_title: "“Təsdiqlənmiş Nəqliyyat Vasitəsi statusu hansı elanlara verilir",
+   approvedVehicle_subtitle: "Moderasiya xidmətimiz tərəfindən qeyd olunan məlumatların doğruluğu təsdiq edildikdə",
+   approvedVehicle_subtitle_2: "Moderasiya xidmətimiz aşağıdakı məlumatların reallığı əks etdirdiyinə zəmanət verir:",
+   approvedVehicle_description: "Nəqliyyat vasitəsinin marka və modelinin düzgün qeyd olunduğuna",
+   approvedVehicle_description_2: "Nəqliyyat vasitəsinin buraxılış ilinin düzgün göstərildiyinə",
+   approvedVehicle_description_3: "Nəqliyyat vasitəsinin BAN növünün və rənginin düzgün təqdim edildiyinə",
+   approvedVehicle_description_4: "Mühərrik həcminin düzgün göstərildiyinə",
+
+   unapproved__title: "DİQQƏT",
+   unapproved__description: "Elanda qeyd olunan nəqliyyat vasitəsinin göstəriciləri, real həyatda olandan fərqli və ya aldadıcı ola bilər. Moderasiya xidmətimiz məlumatların doğrulugunu təsdiq etməmişdir. Alqı-satqı zamanı diqqətli və ayıq olmanızı tövsiyyə edirik.",
+
    create_salon: "Salonlara keç",
    interior: "İnteryer",
    exterior: "Eksteryer",

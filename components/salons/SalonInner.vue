@@ -426,7 +426,7 @@
       }
 
       .cap {
-         margin: 56px 0 40px 0;
+         margin: 24px 0;
       }
 
       .cover-with-avatar {
@@ -441,7 +441,6 @@
             }
          }
       }
-
    }
 
    .border-padding-none {

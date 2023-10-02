@@ -1,7 +1,7 @@
 <template>
    <div class="pages-comparison-index">
       <div class="container">
-         <breadcrumbs :crumbs="crumbs" />
+<!--         <breadcrumbs :crumbs="crumbs" />-->
 
          <div class="pages-comparison-index__inner">
             <h2 class="pages-comparison-index__title">{{ $t('comparisons') }}</h2>
@@ -66,6 +66,7 @@
 
 <style lang="scss">
    .pages-comparison-index {
+      margin-top: 24px;
       padding-bottom: 120px;
 
       &__inner {

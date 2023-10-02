@@ -78,3 +78,11 @@
       // },
    }
 </script>
+
+<style lang="scss">
+   .pages-salons-id {
+      .announcements-grid {
+         margin: 0;
+      }
+   }
+</style>
