@@ -41,7 +41,8 @@
                         <car_form v-if="form.announce_type.title === 'cars'"
                                   :isReady="isReady"
                                   :region_id="authForm.region_id"
-                                  @getForm="getCarForm($event)"/>
+                                  @getForm="getCarForm($event)"
+                        />
                         <moto_form v-if="form.announce_type.title === 'moto'"
                                    :region_id="authForm.region_id"
                                    :isReady="isReady"

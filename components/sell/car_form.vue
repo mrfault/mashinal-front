@@ -15,6 +15,8 @@
                   v-model="form.brand"
                   @clear="clearFields(['model', 'year', 'body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])"
                   @change="onChangeBrand($event)"
+                  :class="{form_error: $v.form.brand.$error}"
+                  :invalid="$v.form.brand.$error"
                />
                <form-select
                   :label="$t('model_name')"
@@ -543,7 +545,7 @@
             <p>{{ $t("additional_info_warning") }}</p>
          </div>
       </div>
-      <div class="image_section" :class="{form_error: $v.form.saved_images.$error}">
+      <div class="image_section" :class="{form_error: $v.form.saved_images.$error || form_errored}">
          <h2>{{ $t("photos") }}</h2>
          <client-only>
             <image-component :type="'cars'" :initial-form="form" :announcement="announcement"
@@ -668,7 +670,8 @@ export default {
       region_id: {
          type: Number,
          required: true
-      }
+      },
+      form_errored: Boolean,
    },
    data() {
       return {
@@ -1032,6 +1035,7 @@ export default {
    validations() {
       return {
          form: {
+            brand: {required},
             color: {required},
             mileage: {
                required: requiredIf(function () {
