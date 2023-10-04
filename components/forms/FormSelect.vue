@@ -14,6 +14,8 @@
          >
 <!--            <span class="title" v-if="getLabelText">{{ label }}</span>-->
 
+
+
             <span :class="['text-truncate', { 'full-width': hasSearch }]">
                <template v-if="hasCards && getSelectedOptions[0]">
                   <span v-if="getSelectedOptions[0]" class="d-flex align-items-center">
@@ -53,7 +55,11 @@
                      <span
                         v-if="multiple && selectValue.length > 1 && !shortNamesLabel"
                         class="counter"
-                     >{{ $t('selected') }}: {{ selectValue.length }}</span>
+                     >{{ $t('selected') }}:
+                        <template v-if="colorInput">{{ getColorNames(selectValue) }}</template>
+                        <template v-else>{{ selectValue.length }}</template>
+
+                     </span>
 
                      <span
                         v-else
@@ -381,6 +387,8 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
+
 export default {
    props: {
       value: {},
@@ -484,6 +492,7 @@ export default {
       hasCards: Boolean,
       limit: Number,
       showMenuUp: Boolean,
+      colorInput: Boolean,
    },
    data() {
       return {
@@ -590,9 +599,20 @@ export default {
          } else if (this.inputSearchType === 'number') {
             this.search = this.search.replace(/\D/g, '');
          }
+      },
+      getColorNames(selectedValues) {
+
+
+         const selectedColors = this.colors
+            .filter(color => selectedValues.includes(color.id))
+            .map(color => color.name[this.locale]);
+
+         return selectedColors.join(', ');
       }
+
    },
    computed: {
+      ...mapGetters(['colors']),
       selectValue: {
          get() {
             return this.value
@@ -768,7 +788,8 @@ export default {
                maxHeight: this.isMobileBreakpoint ? undefined : 260,
             },
          }
-      }
+      },
+
    },
    watch: {
       breakpoint() {

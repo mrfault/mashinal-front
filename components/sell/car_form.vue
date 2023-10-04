@@ -5,229 +5,230 @@
             <template v-if="!isEdit">
 
                <form-select
-                  :label="$t('brand_name')"
-                  :options="brands"
-                  :clear-placeholder="true"
-                  :clear-option="false"
-                  :new-label="false"
-                  object-in-value
-                  has-search
                   v-model="form.brand"
-                  @clear="clearFields(['model', 'year', 'body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])"
-                  @change="onChangeBrand($event)"
                   :class="{form_error: $v.form.brand.$error}"
+                  :clear-option="false"
+                  :clear-placeholder="true"
                   :invalid="$v.form.brand.$error"
-               />
-               <form-select
-                  :label="$t('model_name')"
-                  :options="models"
-                  :clear-placeholder="true"
-                  :clear-option="false"
+                  :label="$t('brand_name')"
                   :new-label="false"
+                  :options="brands"
+                  has-search
                   object-in-value
-                  has-search
+                  @change="onChangeBrand($event)"
+                  @clear="clearFields(['model', 'year', 'body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])"
+               />
+               <form-select
                   v-model="form.model"
+                  :clear-option="false"
+                  :clear-placeholder="true"
                   :disabled="!(form.brand && models.length > 0)"
-                  @clear="clearFields(['year', 'body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])"
+                  :label="$t('model_name')"
+                  :new-label="false"
+                  :options="models"
+                  has-search
+                  object-in-value
                   @change="onChangeModel()"
+                  @clear="clearFields(['year', 'body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])"
                />
                <form-select
-                  :label="$t('prod_year')"
-                  :options="sellYears?.years?.map((year) => ({name: year}))"
-                  :clear-placeholder="true"
-                  :clear-option="false"
-                  :new-label="false"
-                  has-search
                   v-model="form.year"
+                  :clear-option="false"
+                  :clear-placeholder="true"
                   :disabled="!(form.model && sellYears.years)"
-                  @clear="clearFields(['body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])"
+                  :label="$t('prod_year')"
+                  :new-label="false"
+                  :options="sellYears?.years?.map((year) => ({name: year}))"
+                  has-search
                   @change="onChangeYear"
+                  @clear="clearFields(['body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])"
                />
                <form-select
-                  :label="$t('body_type')"
-                  :options="sellBody"
-                  :clear-placeholder="true"
-                  :clear-option="false"
-                  :new-label="false"
-                  has-search
                   v-model="form.body_type"
+                  :clear-option="false"
+                  :clear-placeholder="true"
                   :disabled="!(form.year && sellBody.length > 0)"
-                  @clear="clearFields(['generation', 'fuel_type', 'transmission', 'gearing', 'modification'])"
+                  :label="$t('body_type')"
+                  :new-label="false"
+                  :options="sellBody"
+                  has-search
                   @change="onChangeBody"
+                  @clear="clearFields(['generation', 'fuel_type', 'transmission', 'gearing', 'modification'])"
                />
                <form-select
-                  :label="$t('generation')"
-                  :options="sellGenerationsV2"
-                  :clear-placeholder="true"
-                  :clear-option="false"
-                  :new-label="false"
-                  has-search
                   v-model="form.generation"
+                  :clear-option="false"
+                  :clear-placeholder="true"
                   :disabled="!(form.body_type && sellGenerationsV2.length > 0)"
-                  @clear="clearFields(['generation', 'fuel_type', 'transmission', 'gearing', 'modification'])"
+                  :label="$t('generation')"
+                  :new-label="false"
+                  :options="sellGenerationsV2"
+                  has-search
                   @change="onChangeGeneration"
+                  @clear="clearFields(['generation', 'fuel_type', 'transmission', 'gearing', 'modification'])"
                />
                <div class="divider mobile-column">
                   <form-select
-                     :label="$t('fuel_type')"
-                     :options="sellEngines.map((engine) => ({id: engine.engine, name: $t('engine_values')[engine.engine]}))"
-                     :clear-placeholder="true"
-                     :clear-option="false"
-                     :new-label="false"
-                     :translate-options="false"
                      v-model="form.fuel_type"
+                     :clear-option="false"
+                     :clear-placeholder="true"
                      :disabled="!(form.generation && sellEngines.length > 0)"
+                     :label="$t('fuel_type')"
+                     :new-label="false"
+                     :options="sellEngines.map((engine) => ({id: engine.engine, name: $t('engine_values')[engine.engine]}))"
+                     :translate-options="false"
                      @change="onChangeFuelType"
                   />
                   <form-checkbox
                      v-model="form.autogas"
+                     :disabled="!(form.generation && sellEngines.length > 0)"
                      :label="$t('gas_equipment')"
                      input-name="autogas"
-                     :disabled="!(form.generation && sellEngines.length > 0)"
                      transparent
                   />
                </div>
                <form-select
-                  :label="$t('type_of_drive')"
-                  :options="sellGearing.map((typeOfDrive) => ({id: typeOfDrive.type_of_drive, name: $t('type_of_drive_values')[typeOfDrive.type_of_drive]}))"
-                  :clear-placeholder="true"
-                  :clear-option="false"
-                  :new-label="false"
-                  :translate-options="false"
                   v-model="form.gearing"
+                  :clear-option="false"
+                  :clear-placeholder="true"
                   :disabled="!(form.fuel_type && sellGearing.length > 0)"
+                  :label="$t('type_of_drive')"
+                  :new-label="false"
+                  :options="sellGearing.map((typeOfDrive) => ({id: typeOfDrive.type_of_drive, name: $t('type_of_drive_values')[typeOfDrive.type_of_drive]}))"
+                  :translate-options="false"
                   @change="onChangeGearing"
                />
                <form-select
-                  :label="$t('box')"
-                  :options="sellTransmissions.map((transmission) => ({id: transmission.box, name: $t('box_values')[transmission.box]}))"
-                  :clear-placeholder="true"
-                  :clear-option="false"
-                  :new-label="false"
                   v-model="form.transmission"
+                  :clear-option="false"
+                  :clear-placeholder="true"
                   :disabled="!(form.gearing && sellTransmissions.length > 0)"
+                  :label="$t('box')"
+                  :new-label="false"
+                  :options="sellTransmissions.map((transmission) => ({id: transmission.box, name: $t('box_values')[transmission.box]}))"
                   @change="onChangeTransmission($event)"
                />
                <form-select
+                  v-model="form.modification"
+                  :clear-option="false"
+                  :clear-placeholder="true"
+                  :disabled="!(form.transmission && sellModificationsV2.length > 0)"
                   :label="$t('modification')"
+                  :new-label="false"
                   :options="sellModificationsV2.map((o) => ({
               name: o.title,
               key: o.id,
               capacity: o.capacity
             }))"
-                  :clear-placeholder="true"
-                  :clear-option="false"
                   :translate-options="false"
                   object-in-value
-                  :new-label="false"
-                  :disabled="!(form.transmission && sellModificationsV2.length > 0)"
-                  v-model="form.modification"
                />
             </template>
             <div class="divider mobile-column">
                <form-numeric-input
-                  :class="{form_error: $v.form.mileage.$error}"
-                  :placeholder="$t('mileage')"
-                  :max-value="form.is_new ? (form.mileage_type === 1 ? 500 : 310) : 10000000"
                   v-model="form.mileage"
+                  :class="{form_error: $v.form.mileage.$error}"
                   :disabled="!isEdit && !readyAllParameters"
                   :invalid="$v.form.mileage.$error"
+                  :max-value="form.is_new ? (form.mileage_type === 1 ? 500 : 310) : 10000000"
+                  :placeholder="$t('mileage')"
                />
                <radio-group
-                  class="mileage_types"
                   v-model="form.mileage_type"
                   :disabledAll="!isEdit && !readyAllParameters"
                   :options="[{key:1, name: 'char_kilometre'},{key:2, name: 'ml'}]"
+                  class="mileage_types"
                />
             </div>
             <template v-if="isEdit">
                <div class="divider">
                   <form-select
-                     :class="{form_error: $v.form.color.$error}"
-                     :label="$t('color')"
-                     :options="colors"
-                     :clear-placeholder="true"
-                     :clear-option="false"
                      v-model="form.color"
-                     multiple
+                     :class="{form_error: $v.form.color.$error}"
+                     :clear-option="false"
+                     :clear-placeholder="true"
                      :disabled="!isEdit && !readyAllParameters"
-                     has-search
                      :invalid="$v.form.color.$error"
+                     :label="$t('color')"
                      :limit="2"
+                     :options="colors"
+                     has-search
+                     multiple
+                     colorInput
                   />
                   <form-select
-                     :label="$t('count_of_seats')"
-                     :options="allSellOptions2?.n_of_seats?.options"
-                     :clear-placeholder="true"
+                     v-model="form.seats_count"
                      :clear-option="false"
+                     :clear-placeholder="true"
+                     :disabled="!isEdit && !readyAllParameters"
+                     :label="$t('count_of_seats')"
+                     :new-label="false"
+                     :options="allSellOptions2?.n_of_seats?.options"
                      :translate-options="false"
                      object-in-value
                      translate-options
-                     :disabled="!isEdit && !readyAllParameters"
-                     :new-label="false"
-                     v-model="form.seats_count"
                   />
                </div>
 
                <div class="divider">
                   <form-radio
                      :id="'3'"
-                     :type="'checkbox'"
-                     :label="$t('new')"
-                     input-name="is_new"
                      v-model="form.is_new"
-                     :radio-value="1"
                      :disabled="!isEdit && !readyAllParameters"
+                     :label="$t('new')"
+                     :radio-value="1"
+                     :type="'checkbox'"
+                     input-name="is_new"
                      @change="onChangeIsNew"
                   />
                   <form-radio
                      :id="'4'"
-                     :type="'checkbox'"
-                     :label="$t('bitie2')"
-                     input-name="beaten"
-                     :disabled="!isEdit && !readyAllParameters"
                      v-model="form.beaten"
+                     :disabled="!isEdit && !readyAllParameters"
+                     :label="$t('bitie2')"
                      :radio-value="1"
+                     :type="'checkbox'"
+                     input-name="beaten"
                   >
                      <template v-slot:suffix>
                         <inline-svg
-                           :src="'/icons/info.svg'"
-                           class="beaten_suffix"
                            v-tooltip="
                       $t(
                         'with_significant_damage_to_body_elements_that_do_not_move_on_their_own'
                       )
                     "
+                           :src="'/icons/info.svg'"
+                           class="beaten_suffix"
                         />
                      </template>
                   </form-radio>
                </div>
-               <div class="divider mobile-column" v-if="!user.external_salon">
+               <div v-if="!user.external_salon" class="divider mobile-column">
                   <form-checkbox
                      v-model="form.customs_clearance"
+                     :disabled="!isEdit && !readyAllParameters"
                      :label="$t('not_cleared')"
                      input-name="customs_clearance"
-                     :disabled="!isEdit && !readyAllParameters"
                      transparent
                   />
                   <form-checkbox
                      v-model="form.guaranty"
+                     :disabled="!isEdit && !readyAllParameters"
                      :label="$t('guaranty')"
                      input-name="guaranty"
-                     :disabled="!isEdit && !readyAllParameters"
                      transparent
                   />
                </div>
                <div class="divider mobile-column">
                   <form-numeric-input
-                     :class="{form_error: $v.form.price.$error}"
-                     :placeholder="$t('price')"
                      v-model="form.price"
+                     :class="{form_error: $v.form.price.$error}"
                      :disabled="!isEdit && !readyAllParameters"
                      :invalid="$v.form.price.$error"
+                     :placeholder="$t('price')"
                   />
                   <div class="price_types">
-                     <toggle-group :items="priceTypes" :default-value="form.currency || 1" v-slot="{ item }"
+                     <toggle-group v-slot="{ item }" :default-value="form.currency || 1" :items="priceTypes"
 
                                    @change="toggleCurrency">
                         <div :class="['price_item', {price_item_disabled: !isEdit && !readyAllParameters}]">
@@ -236,28 +237,28 @@
                      </toggle-group>
                   </div>
                </div>
-               <div class="divider_3" v-if="!user.external_salon">
+               <div v-if="!user.external_salon" class="divider_3">
                   <form-checkbox
                      v-model="form.tradeable"
+                     :disabled="!isEdit && !readyAllParameters"
                      :label="$t('barter')"
                      :show-input="false"
-                     :disabled="!isEdit && !readyAllParameters"
                      input-name="tradeable"
                      transparent
                   />
                   <form-checkbox
                      v-model="form.is_rent"
+                     :disabled="!isEdit && !readyAllParameters"
                      :label="$t('rent')"
                      :show-input="false"
-                     :disabled="!isEdit && !readyAllParameters"
                      input-name="rent"
                      transparent
                   />
                   <form-checkbox
                      v-model="form.credit"
+                     :disabled="!isEdit && !readyAllParameters"
                      :label="$t('credit_possible')"
                      :show-input="false"
-                     :disabled="!isEdit && !readyAllParameters"
                      input-name="credit"
                      transparent
                   />
@@ -268,92 +269,93 @@
             <template v-if="!isEdit">
                <div class="divider">
                   <form-select
-                     :class="{form_error: $v.form.color.$error}"
-                     :label="$t('color')"
-                     :options="colors"
-                     :clear-placeholder="true"
-                     :clear-option="false"
                      v-model="form.color"
-                     multiple
+                     :class="{form_error: $v.form.color.$error}"
+                     :clear-option="false"
+                     :clear-placeholder="true"
                      :disabled="!readyAllParameters"
-                     has-search
                      :invalid="$v.form.color.$error"
+                     :label="$t('color')"
                      :limit="2"
+                     :options="colors"
+                     has-search
+                     multiple
+                     color-input
                   />
                   <form-select
-                     :label="$t('count_of_seats')"
-                     :options="allSellOptions2?.n_of_seats?.options"
-                     :clear-placeholder="true"
-                     :clear-option="false"
-                     :translate-options="false"
-                     translate-options
-                     object-in-value
-                     :disabled="!readyAllParameters"
-                     :new-label="false"
                      v-model="form.seats_count"
+                     :clear-option="false"
+                     :clear-placeholder="true"
+                     :disabled="!readyAllParameters"
+                     :label="$t('count_of_seats')"
+                     :new-label="false"
+                     :options="allSellOptions2?.n_of_seats?.options"
+                     :translate-options="false"
+                     object-in-value
+                     translate-options
                   />
                </div>
 
                <div class="divider">
                   <form-radio
                      :id="'3'"
-                     :type="'checkbox'"
-                     :label="$t('new')"
-                     input-name="is_new"
                      v-model="form.is_new"
-                     :radio-value="1"
                      :disabled="!readyAllParameters"
+                     :label="$t('new')"
+                     :radio-value="1"
+                     :type="'checkbox'"
+                     input-name="is_new"
                      @change="onChangeIsNew"
                   />
                   <form-radio
                      :id="'4'"
-                     :type="'checkbox'"
-                     :label="$t('bitie2')"
-                     input-name="beaten"
-                     :disabled="!readyAllParameters"
                      v-model="form.beaten"
+                     :disabled="!readyAllParameters"
+                     :label="$t('bitie2')"
                      :radio-value="1"
+                     :type="'checkbox'"
+                     input-name="beaten"
                   >
                      <template v-slot:suffix>
                         <inline-svg
-                           :src="'/icons/info.svg'"
-                           class="beaten_suffix"
                            v-tooltip="
                       $t(
                         'with_significant_damage_to_body_elements_that_do_not_move_on_their_own'
                       )
                     "
+                           :src="'/icons/info.svg'"
+                           class="beaten_suffix"
                         />
                      </template>
                   </form-radio>
                </div>
-               <div class="divider mobile-column" v-if="!user.external_salon">
+               <div v-if="!user.external_salon" class="divider mobile-column">
                   <form-checkbox
                      v-model="form.customs_clearance"
+                     :disabled="!readyAllParameters"
                      :label="$t('not_cleared')"
                      input-name="customs_clearance"
-                     :disabled="!readyAllParameters"
                      transparent
                   />
                   <form-checkbox
                      v-model="form.guaranty"
+                     :disabled="!readyAllParameters"
                      :label="$t('guaranty')"
                      input-name="guaranty"
-                     :disabled="!readyAllParameters"
                      transparent
                   />
                </div>
                <div class="divider mobile-column">
                   <form-numeric-input
-                     :class="{form_error: $v.form.price.$error}"
-                     :placeholder="$t('price')"
                      v-model="form.price"
+                     :class="{form_error: $v.form.price.$error}"
                      :disabled="!readyAllParameters"
                      :invalid="$v.form.price.$error"
+                     :placeholder="$t('price')"
                   />
                   <div class="price_types">
-                     <toggle-group :items="priceTypes" :default-value="form.currency || 1" v-slot="{ item }"
-                                   :disabled="!readyAllParameters"
+                     <toggle-group v-slot="{ item }" :default-value="form.currency || 1" :disabled="!readyAllParameters"
+                                   :items="priceTypes"
                                    @change="toggleCurrency">
                         <div class="price_item">
                            <p>{{ item.name[locale] }}</p>
@@ -361,28 +363,28 @@
                      </toggle-group>
                   </div>
                </div>
-               <div class="divider_3" v-if="!user.external_salon">
+               <div v-if="!user.external_salon" class="divider_3">
                   <form-checkbox
                      v-model="form.tradeable"
+                     :disabled="!readyAllParameters"
                      :label="$t('barter')"
                      :show-input="false"
-                     :disabled="!readyAllParameters"
                      input-name="tradeable"
                      transparent
                   />
                   <form-checkbox
                      v-model="form.is_rent"
+                     :disabled="!readyAllParameters"
                      :label="$t('rent')"
                      :show-input="false"
-                     :disabled="!readyAllParameters"
                      input-name="rent"
                      transparent
                   />
                   <form-checkbox
                      v-model="form.credit"
+                     :disabled="!readyAllParameters"
                      :label="$t('credit_possible')"
                      :show-input="false"
-                     :disabled="!readyAllParameters"
                      input-name="credit"
                      transparent
                   />
@@ -426,46 +428,46 @@
             <!--               </pick-on-map-button>-->
             <!--            </div>-->
 
-            <div class="divider" v-if="user.external_salon">
+            <div v-if="user.external_salon" class="divider">
                <form-radio
                   :id="'5'"
-                  :label="$t('auction')"
-                  input-name="auction"
                   v-model="form.auction"
+                  :label="$t('auction')"
                   :radio-value="1"
+                  input-name="auction"
                />
                <form-radio
                   :id="'6'"
-                  :label="$t('sell')"
-                  input-name="auction"
                   v-model="form.auction"
+                  :label="$t('sell')"
                   :radio-value="0"
+                  input-name="auction"
                />
             </div>
             <form-text-input
                v-if="user.external_salon && form.auction === 1"
-               @change="removeError('end_date')"
-               date-type="datetime"
-               value-type="datetime"
-               date-format="DD.MM.YYYY HH:00"
                v-model="form.end_date"
                :placeholder="$t('announcement_end_date')"
+               date-format="DD.MM.YYYY HH:00"
+               date-type="datetime"
                input-date
+               value-type="datetime"
+               @change="removeError('end_date')"
             />
             <div class="car_identification divider mobile-column">
                <div class="car_number_form">
-                  <div class="registrationMarks" v-if="!user.external_salon">
+                  <div v-if="!user.external_salon" class="registrationMarks">
                      <p class="mb-1">{{ $t("license_plate_number") }}</p>
                      <div class="registrationMarks__number">
                         <div class="registrationMarks__number-inner">
                            <div class="">
-                              <img src="/icons/registrationMarks_icons.svg" alt="icons">
+                              <img alt="icons" src="/icons/registrationMarks_icons.svg">
                            </div>
                            <div class="">
                               <form-text-input
                                  v-model="form.car_number"
-                                 input-class="car-number-show-popover"
                                  :mask="'99 - AA - 999'"
+                                 input-class="car-number-show-popover"
                                  placeholder="__ - __ - ___"
                               />
                            </div>
@@ -477,28 +479,26 @@
                      <p class="mb-1">{{ $t("vin_carcase_number") }}</p>
                      <div class="vin">
                         <form-text-input
-                           :class="{form_error: $v.form.vin.$error}"
                            v-model="form.vin"
-                           :placeholder="$t('vin_carcase_number')"
-                           :mask="$maskAlphaNumeric('*****************')"
+                           :class="{form_error: $v.form.vin.$error}"
                            :invalid="$v.form.vin.$error"
+                           :mask="$maskAlphaNumeric('*****************')"
+                           :placeholder="$t('vin_carcase_number')"
                         />
                         <form-checkbox
                            v-model="form.show_vin"
+                           :disabled="!form.vin"
                            :label="$t('show_on_site')"
                            input-name="show_vin"
-                           :disabled="!form.vin"
                            transparent
                         />
                      </div>
                   </div>
                </div>
                <div class="car_number_info divider">
-                  <p>Qeydiyyat nişanın və ya BAN (VİN) nömrəni daxil etdikdə, elanınız axtarışlarda daha ön sıralarda
-                     yer alacaqdır.</p>
+                  <p>{{ $t('vin_search_1') }}</p>
                   <strong>
-                     QEYD: Daxil etdiyiniz qeydiyyat nişanı avtomobilin həqiqiliyin təsdiq edir və saytda istifadəçilərə
-                     nümayiş etdirilməyəcək!
+                     {{ $t('registration_number_note') }}
                   </strong>
                </div>
             </div>
@@ -509,15 +509,15 @@
          <div class="divider mobile-column">
             <div class="other_parameters_wrapper">
                <div class="other_parameters">
-                  <div class="other_parameters__checkbox" v-for="check in otherParameters">
+                  <div v-for="check in otherParameters" class="other_parameters__checkbox">
                      <form-checkbox
                         :id="check.slug"
-                        :obj="check"
                         v-model="other_parameters_checkboxes[check.slug]"
-                        @getObject="changeOtherParameters"
-                        :label="check.name"
                         :input-name="check.slug"
+                        :label="check.name"
+                        :obj="check"
                         transparent
+                        @getObject="changeOtherParameters"
                      />
                   </div>
                </div>
@@ -535,21 +535,21 @@
             <div class="comment">
                <form-textarea
                   v-model="form.comment"
-                  :placeholder="$t('additional_info')"
                   :maxlength="600"
+                  :placeholder="$t('additional_info')"
                />
             </div>
          </div>
          <div class="comment_info">
-            <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>
+            <inline-svg :src="'/icons/info.svg'" class="comment_svg"/>
             <p>{{ $t("additional_info_warning") }}</p>
          </div>
       </div>
-      <div class="image_section" :class="{form_error: $v.form.saved_images.$error || form_errored}">
+      <div :class="{form_error: $v.form.saved_images.$error || form_errored}" class="image_section">
          <h2>{{ $t("photos") }}</h2>
          <client-only>
-            <image-component :type="'cars'" :initial-form="form" :announcement="announcement"
-                             :deletedFiles="deletedFiles"/>
+            <image-component :announcement="announcement" :deletedFiles="deletedFiles" :initial-form="form"
+                             :type="'cars'"/>
          </client-only>
          <div class="image_info">
             <inline-svg :src="'/icons/info.svg'"/>
@@ -566,31 +566,31 @@
       <template v-if="form.modification && sellModificationsV2.length">
 
 
-         <div class="divider" v-if="user.external_salon">
+         <div v-if="user.external_salon" class="divider">
             <form-radio
                :id="'5'"
-               :label="$t('auction')"
-               input-name="auction"
                v-model="form.auction"
+               :label="$t('auction')"
                :radio-value="1"
+               input-name="auction"
             />
             <form-radio
                :id="'6'"
-               :label="$t('sell')"
-               input-name="auction"
                v-model="form.auction"
+               :label="$t('sell')"
                :radio-value="0"
+               input-name="auction"
             />
          </div>
          <form-text-input
             v-if="user.external_salon && form.auction === 1"
-            @change="removeError('end_date')"
-            date-type="datetime"
-            value-type="datetime"
-            date-format="DD.MM.YYYY HH:00"
             v-model="form.end_date"
             :placeholder="$t('announcement_end_date')"
+            date-format="DD.MM.YYYY HH:00"
+            date-type="datetime"
             input-date
+            value-type="datetime"
+            @change="removeError('end_date')"
          />
 
          <!--         <div v-if="!user.external_salon">-->
@@ -1299,6 +1299,36 @@ export default {
 
          .comment_info {
             width: 100%;
+         }
+      }
+   }
+}
+
+
+@media(max-width: 991px) and (min-width: 486px) {
+   .cars_form {
+      .head_section {
+         display: flex !important;
+         flex-wrap: wrap;
+
+         .inner_left, .inner_right {
+            width: 100%;
+         }
+      }
+
+      .car_description_section {
+         .divider {
+            display: flex !important;
+            flex-wrap: wrap;
+
+            .other_parameters_wrapper {
+               width: 100%;
+            }
+
+            .comment {
+               width: 100%;
+            }
+
          }
       }
    }

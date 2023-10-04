@@ -2963,6 +2963,10 @@ export default {
    "terms_and_rule": "Qaydalar və şərtlər",
    "this_announcement_belongs_to_another_user": "Bu elan başqa istifadəçiyə aiddir",
    "kod": "Kod yanlışdır",
-   "profile_notification_desc": "Bildirişlərə burdan bax!"
+   "profile_notification_desc": "Bildirişlərə burdan bax!",
+   "vin_search_1": "Qeydiyyat nişanın və ya BAN (VİN) nömrəni daxil etdikdə, elanınız axtarışlarda daha ön sıralarda yer alacaqdır.",
+   "registration_number_note": "QEYD: Daxil etdiyiniz qeydiyyat nişanı avtomobilin həqiqiliyin təsdiq edir və saytda istifadəçilərə nümayiş etdirilməyəcək!",
+   "important_info": "Vacib məlumat",
+
 };
 
