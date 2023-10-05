@@ -226,13 +226,15 @@ export default {
           type: 'error',
         })
         this.$emit('handleLoading', false)
-      } else if ((this.type == 'cars') && (!this.form.car_number && !this.form.vin) && !this.single_announce.is_autosalon) {
-
-        this.$toasted.show(this.$t('Avtomobilin nömrəsi və ya VİN nömrə" boş ola bilməz.'), {
-          type: 'error',
-        })
-        this.$emit('handleLoading', false)
-      } else if ((this.type == 'cars') && (this.form.car_number != '') && !(/^[0-9]{2} - {1}[a-zA-Z]{2} - {1}[0-9]{3}$/.test(this.form.car_number))) {
+      }
+      // else if ((this.type == 'cars') && (!this.form.car_number && !this.form.vin) && !this.single_announce.is_autosalon) {
+      //
+      //   this.$toasted.show(this.$t('Avtomobilin nömrəsi və ya VİN nömrə" boş ola bilməz.'), {
+      //     type: 'error',
+      //   })
+      //   this.$emit('handleLoading', false)
+      // }
+      else if ((this.type == 'cars') && (this.form.car_number != '') && !(/^[0-9]{2} - {1}[a-zA-Z]{2} - {1}[0-9]{3}$/.test(this.form.car_number))) {
         this.$toasted.show(this.$t('Qeydiyyat nişanının formatı standarta uyğun deyil'), {
           type: 'error',
         })

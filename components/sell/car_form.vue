@@ -152,7 +152,6 @@
                      :label="$t('color')"
                      :limit="2"
                      :options="colors"
-                     has-search
                      multiple
                      colorInput
                   />
@@ -1346,6 +1345,12 @@ export default {
             }
          }
       }
+   }
+}
+
+@media(max-width: 991px){
+   .pages-announcement-edit .car_number_info{
+      height: min-content !important;
    }
 }
 </style>
