@@ -47,8 +47,11 @@
                                    :isReady="isReady"
                                    :region_id="authForm.region_id"
                                    @getForm="getMotoForm($event)"/>
-                        <part_form v-if="form.announce_type.title === 'parts'"
-                                   :isReady="isReady" @getForm="getPartForm($event)"/>
+                        <part_form
+                           v-if="form.announce_type.title === 'parts'"
+                           :isReady="isReady"
+                           @getForm="getPartForm($event)"
+                        />
                         <registration_mark v-if="form.announce_type.title === 'registration_marks'" :isReady="isReady"
                                            @getForm="getRegistrationMarksForm($event)"/>
                      </div>
@@ -134,7 +137,8 @@
                                    class="limit_error">
                                  <p>{{ $t('announce_limit_alert', {price: settingsV2?.settings?.restore_price}) }}</p>
                               </div>
-                              <button :class="['btn', 'full-width', 'btn--pale-green-outline', 'active', {pending}]" type="button"
+                              <button :class="['btn', 'full-width', 'btn--pale-green-outline', 'active', {pending}]"
+                                      type="button"
                                       @click="onClick()">
                                  {{ authStep === "notLoggedIn" ? $t("enter_sms_code") : $t("place_announcement") }}
                               </button>
@@ -313,7 +317,7 @@ export default {
             const res = await this.carsPost({form: formData, isMobile: this.isMobileBreakpoint});
             this.alertShowed = false
             if (res?.data?.redirect_url) {
-               this.handlePayment(res, false, this.$t('car_added'), 'v2')
+               this.handlePayment(res, false, this.$t('car_added'), 'v2', true)
                !this.isMobileBreakpoint && this.$router.push(this.$localePath('/profile/announcements'))
             } else {
                this.$router.push(this.$localePath('/profile/announcements'), () => {
@@ -370,7 +374,7 @@ export default {
             if (res?.redirect_url) {
                const response = {data: {...res}}
                console.log("response", response)
-               this.handlePayment(response, false, this.$t('plate_added'), 'v2',"/profile/announcements");
+               this.handlePayment(response, false, this.$t('plate_added'), 'v2', "/profile/announcements");
                // if (response) {
                //    !this.isMobileBreakpoint && this.$router.push(this.$localePath('/profile/announcements'));
                // }
@@ -982,8 +986,8 @@ export default {
 
    .baloon {
       svg {
-         path:last-of-type{
-         fill: #000;
+         path:last-of-type {
+            fill: #000;
 
          }
       }

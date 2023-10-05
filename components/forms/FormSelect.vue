@@ -12,10 +12,6 @@
            ]"
             @click="displayMenuOptions"
          >
-<!--            <span class="title" v-if="getLabelText">{{ label }}</span>-->
-
-
-
             <span :class="['text-truncate', { 'full-width': hasSearch }]">
                <template v-if="hasCards && getSelectedOptions[0]">
                   <span v-if="getSelectedOptions[0]" class="d-flex align-items-center">
@@ -34,7 +30,6 @@
 
                <template v-else-if="hasSearch && showOptions && !isMobileBreakpoint">
                   <span class="search-input">
-<!--                     <span class="placeholder">{{ label }}</span>-->
                      <input
                         ref="searchInput"
                         v-model="search"
@@ -47,6 +42,7 @@
                      />
                   </span>
                </template>
+
 
                <template v-else>
                   <template v-if="newLabel">
@@ -72,34 +68,15 @@
                   </template>
                </template>
             </span>
-
-            <!--           <span-->
-            <!--              class="counter"-->
-            <!--              v-if="multiple && selectValue.length > 1 && !shortNamesLabel"-->
-            <!--           >-->
-            <!--             {{ $t('selected') }}: {{ selectValue.length }}-->
-            <!--           </span>-->
-            <!--           <span class="counter" v-else-if="custom && values.count">-->
-            <!--             {{ values.count }}-->
-            <!--           </span>-->
-
            <icon
               v-if="allowClear && !hasNoValue"
               class="cursor-pointer"
               name="cross"
               @click.native.stop="clearSelect"
            />
-            <!--             <inline-svg src="/icons/cross.svg" height="14" v-if="allowClear && !hasNoValue" @click.native.stop="clearSelect" class="cursor-pointer" />-->
            <icon v-if="hasNoValue || !allowClear" :name="iconName"/>
          </span>
-         <!--         <icon-->
-         <!--            :class="[-->
-         <!--             'select-menu_triangle',-->
-         <!--             `anchor-${anchor} anchor-${placeOptionsAbove ? 'top' : 'bottom'}`,-->
-         <!--           ]"-->
-         <!--            name="triangle"-->
-         <!--            v-if="showOptions"-->
-         <!--         />-->
+         <!--         dropdown mobile-->
          <portal v-if="isMobileBreakpoint" to="mobile-dropdown">
             <action-bar
                v-if="showOptions && isMobileBreakpoint && !inSelectMenu"
@@ -127,8 +104,8 @@
                         <form-text-input
                            v-model="search"
                            :placeholder="$t('search')"
-                           icon-name="search"
                            block-class="placeholder-lighter"
+                           icon-name="search"
                         />
 
                      </div>
@@ -180,11 +157,11 @@
                            class="mt-2"
                         >
                            <form-buttons
-                              class="generation"
                               v-model="selectGeneration"
                               :btn-class="'primary-outline select-generation'"
                               :group-by="2"
                               :options="getFilteredOptions"
+                              class="generation"
                            >
                               <template #custom="{ button }">
                                  <div
@@ -245,8 +222,8 @@
             </div>
          </portal>
 
+         <!--         dropdown desktop-->
          <template v-else>
-            <!--            `anchor-${anchor} anchor-${placeOptionsAbove ? 'top' : 'bottom'}`,-->
             <div ref="dropdownOptions"
                  :class="['select-menu_dropdown',
                {
@@ -272,6 +249,8 @@
                      @handle-scroll-complete="handleScroll"
                      @handle-scroll="handleScroll"
                   >
+
+
                      <div v-if="popularOptions && !search" class="row pt-3">
                         <div
                            v-for="option in $sortBy(
@@ -294,16 +273,6 @@
                         </div>
                      </div>
 
-                     <!--                     <div class="select-menu_dropdown-option clear-search" @click="selectGeneration = ''">-->
-                     <!--                        <div class="text-truncate" v-if="!clearOptionMin">-->
-                     <!--                           <inline-svg :src="'/icons/close.svg'" :width="'10px'" :height="'10px'"/>-->
-                     <!--                           <span>{{ $t('clear_search') }}</span>-->
-                     <!--                        </div>-->
-                     <!--                        <div class="text-truncate" v-else>-->
-                     <!--                           <span>{{ $t('delete') }}</span>-->
-                     <!--                        </div>-->
-                     <!--                     </div>-->
-
                      <template v-for="(option, index) in getFilteredOptions">
                         <template v-if="hasCards && index !== 0">
                            <div
@@ -322,6 +291,7 @@
                                   selected: isSelected(option),
                                   anchor: isAnchor(index),
                                   'card-option': hasCards && option.brand,
+                                  'multiselect-menu-item': multiple
                                 },
                               ]"
                            @click.stop="selectValue = option"
@@ -367,6 +337,10 @@
                               </div>
                            </template>
                            <icon v-if="isSelected(option)" name="check"/>
+                           <span v-if="multiple" class="multiselect-menu-item--checkbox">
+                              <inline-svg src="icons/checkbox/checkbox-active.svg" v-if="isSelected(option)"/>
+                              <inline-svg src="icons/checkbox/checkbox-null.svg" v-else/>
+                           </span>
                         </div>
                      </template>
 
@@ -862,4 +836,17 @@ export default {
 }
 </script>
 
+
+<style lang="scss">
+.multiselect-menu-item {
+   position: relative;
+
+   &--checkbox {
+      position: absolute;
+      top: 50%;
+      right: 8px;
+      transform: translateY(-50%);
+   }
+}
+</style>
 

@@ -1,6 +1,6 @@
 <template>
    <div class="registration_mark_form">
-      <div class="head_section divider mobile-column">
+      <div class="head_section divider mobile-column mb-1">
          <div class="inner_left">
             <div class="car_number">
                <form-select
@@ -14,8 +14,9 @@
                   v-model="form.car_number.region_id"
                   :invalid="$v.form.car_number.region_id.$error"
                   :disabled="isEdit"
+                     class="mb-1"
                />
-               <div class="divider_3">
+               <div class="divider_3 " :class="{'d-flex': !isMobileBreakpoint}">
 
                   <form-select
                      :label="'A'"
@@ -28,6 +29,7 @@
                      v-model="form.car_number.first"
                      :invalid="$v.form.car_number.first.$error"
                      :disabled="isEdit"
+                     class="mb-1 mx-1"
                   />
                   <form-select
                      :label="'A'"
@@ -38,6 +40,7 @@
                      has-search
                      v-model="form.car_number.second"
                      :disabled="isEdit"
+                     class="mb-1 mx-1"
                   />
                   <form-numeric-input
                      placeholder="000"
@@ -48,16 +51,18 @@
                      :ignored-symbols="['.']"
                      :invalid="$v.form.car_number.number.$error"
                      :disabled="isEdit"
+                     class="mb-1 mx-1"
                   />
                </div>
             </div>
-            <div class="divider mobile-column">
+            <div class="divider mobile-column mb-1">
                <form-numeric-input
                   :placeholder="$t('price')"
                   :class="{form_error: $v.form.price.$error}"
                   v-model="form.price"
                   :invalid="$v.form.price.$error"
                   @change="form.is_negotiable = false"
+                  class="mb-1"
                />
                <!--            @change="announcement.price = $event ? $event + (form.currency.name?.[locale] || 'AZN') : 0"-->
                <div class="price_types">
@@ -75,6 +80,7 @@
                input-name="is_negotiable"
                transparent
                @change="$event && (form.price = '')"
+               class="mb-1"
             />
          </div>
          <div class="inner_right">
