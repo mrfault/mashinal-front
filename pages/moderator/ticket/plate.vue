@@ -63,9 +63,9 @@
                         <div class="col-6 col-xl-5">
                            <form-numeric-input
                               v-model="form.price"
-                              :invalid="$v.form.price.$error"
                               :placeholder="$t('price')"
                            />
+<!--                              :invalid="$v.form.price.$error"-->
                         </div>
 
                         <div class="col-3 col-xl-2">
@@ -322,7 +322,7 @@ export default {
       // region_letter2: { required },
       region_number: {required, minLength: minLength(3)},
       form: {
-         price: {required},
+         price: {minLength: minLength(2)},
          currency_id: {required},
          region_id: {required}
       }
