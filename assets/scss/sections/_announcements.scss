@@ -354,22 +354,10 @@
                   gap: 10px;
 
                   .comparisonDelete {
-                     display: flex;
-                     align-items: center;
-                     justify-content: center;
-                     width: 36px;
-                     height: 24px;
-                     border-radius: 4px;
-                     opacity: 0.8;
-                     background-color: #364152;
                      pointer-events: all;
 
                      svg {
                         width: 25px;
-
-                        path {
-                           stroke: #FFFFFF;
-                        }
                      }
 
                      &:hover {
@@ -379,6 +367,21 @@
                            }
                         }
                      }
+
+                     //display: flex;
+                     //align-items: center;
+                     //gap: 2px;
+                     //padding: 3px 10px;
+                     //border-radius: 4px;
+                     //background-color: $white;
+                     //pointer-events: all;
+
+                     //span {
+                     //   color: #364152;
+                     //   font-size: 15px;
+                     //   font-weight: 500;
+                     //   line-height: 18px;
+                     //}
                   }
                }
             }
@@ -392,9 +395,6 @@
 
       &.isPromotion {
          border: 2px solid $red-1;
-         //border-width: 2px;
-         //border-style: solid;
-         //background: linear-gradient(90deg,#fcb530,#f25e42);
       }
 
       a.abs-link {
@@ -806,7 +806,7 @@
       align-items: center;
       border-radius: 12px;
       background: $grey-1-new;
-      padding: 0 24px;
+      padding: 0 12px;
       margin-bottom: 32px;
 
       &--item {
@@ -818,44 +818,15 @@
             color: #4B5565;
             font-weight: 500;
 
-            &:first-child {
-               color: #155EEF;
-               font-size: 14px;
-               padding: 2px 6px;
-               line-height: 16px;
-               border-radius: 4px;
-               margin-right: 2px;
-               background-color: #DCE3EB;
-            }
-         }
-
-         &:nth-child(2) {
-            span {
-               &:first-child {
-                  color: #32B878;
-               }
-            }
-         }
-         &:nth-child(3) {
-            span {
-               &:first-child {
-                  color: #155EEF;
-               }
-            }
-         }
-         &:nth-child(4) {
-            span {
-               &:first-child {
-                  color: #F79009;
-               }
-            }
-         }
-         &:last-child {
-            span {
-               &:first-child {
-                  color: #F81734;
-               }
-            }
+            //&:first-child {
+            //   color: #155EEF;
+            //   font-size: 14px;
+            //   padding: 2px 6px;
+            //   line-height: 16px;
+            //   border-radius: 4px;
+            //   margin-right: 2px;
+            //   background-color: #DCE3EB;
+            //}
          }
 
          &:hover {
