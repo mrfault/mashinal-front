@@ -1,7 +1,7 @@
 <template>
    <div class="registrationMarks moderator">
       <div class="container p-0">
-         <breadcrumbs :crumbs="crumbs" />
+         <breadcrumbs :crumbs="crumbs"/>
 
          <div class="registrationMarks__create">
             <h4 class="registrationMarks__create-title">
@@ -11,50 +11,50 @@
 
             <div class="registrationMarks__create-inner">
                <form
-                  @submit.prevent
-                  class="registrationMarks__create-form"
                   ref="form"
+                  class="registrationMarks__create-form"
+                  @submit.prevent
                >
                   <div class="col-12 col-xl-6">
                      <div class="row">
                         <div class="col-6 col-xl-5">
                            <form-select
+                              v-model="region_id"
+                              :clearPlaceholder="true"
+                              :disabled="true"
+                              :invalid="$v.region_id.$error"
                               :label="region_name"
                               :options="getRegionNumbers"
-                              :invalid="$v.region_id.$error"
-                              :clearPlaceholder="true"
-                              :disabled="true"
-                              v-model="region_id"
                            />
                         </div>
 
                         <div class="col-2 col-xl-2">
                            <form-select
-                              :label="'A'"
-                              :options="numbers"
-                              :invalid="$v.region_letter1.$error"
-                              :clearPlaceholder="true"
-                              :disabled="true"
                               v-model="region_letter1"
+                              :clearPlaceholder="true"
+                              :disabled="true"
+                              :invalid="$v.region_letter1.$error"
+                              :label="'A'"
+                              :options="numbers"
                            />
                         </div>
 
                         <div class="col-2 col-xl-2">
                            <form-select
-                              :label="'A'"
-                              :options="numbers"
+                              v-model="region_letter2"
                               :clearPlaceholder="true"
                               :disabled="true"
-                              v-model="region_letter2"
+                              :label="'A'"
+                              :options="numbers"
                            />
                         </div>
 
                         <div class="col-2 col-xl-2">
                            <form-numeric-input
-                              :max-value="999"
-                              :invalid="$v.region_number.$error"
-                              :disabled="true"
                               v-model="region_number"
+                              :disabled="true"
+                              :invalid="$v.region_number.$error"
+                              :max-value="999"
                            />
                         </div>
                      </div>
@@ -62,29 +62,29 @@
                      <div class="row mt-5">
                         <div class="col-6 col-xl-5">
                            <form-numeric-input
-                              :placeholder="$t('price')"
-                              :invalid="$v.form.price.$error"
                               v-model="form.price"
+                              :placeholder="$t('price')"
                            />
+<!--                              :invalid="$v.form.price.$error"-->
                         </div>
 
                         <div class="col-3 col-xl-2">
                            <form-select
-                              :label="'AZN'"
-                              :options="currencyList"
+                              v-model="form.currency_id"
                               :clearPlaceholder="true"
                               :invalid="$v.form.currency_id.$error"
-                              v-model="form.currency_id"
+                              :label="'AZN'"
+                              :options="currencyList"
                            />
                         </div>
 
                         <div class="col-3 col-xl-4">
                            <form-select
-                              :label="city_name"
-                              :clearPlaceholder="true"
-                              :options="cities.regions"
-                              :invalid="$v.form.region_id.$error"
                               v-model="form.region_id"
+                              :clearPlaceholder="true"
+                              :invalid="$v.form.region_id.$error"
+                              :label="city_name"
+                              :options="cities.regions"
                            />
                         </div>
                      </div>
@@ -92,9 +92,9 @@
                      <div class="row mt-5">
                         <div class="col-12 col-xl-11">
                            <form-textarea
-                              :placeholder="$t('description2')"
-                              :maxlength="3000"
                               v-model="form.comment"
+                              :maxlength="3000"
+                              :placeholder="$t('description2')"
                            />
                         </div>
                      </div>
@@ -145,205 +145,212 @@
 </template>
 
 <script>
-   import { mapGetters } from 'vuex'
-   import { minLength, required } from "vuelidate/lib/validators";
+import {mapGetters} from 'vuex'
+import {minLength, required} from "vuelidate/lib/validators";
 
-   export default {
-      name: 'moderatorPlate',
+export default {
+   name: 'moderatorPlate',
 
-      head() {
-         return this.$headMeta({
-            title: `${this.$t('moderation')}`,
-         });
-      },
+   head() {
+      return this.$headMeta({
+         title: `${this.$t('moderation')}`,
+      });
+   },
 
-      data() {
-         return {
-            plates: [],
-            type: 'plates',
-            pending: false,
+   data() {
+      return {
+         plates: [],
+         type: 'plates',
+         pending: false,
 
-            announce_id: '',
+         announce_id: '',
+         region_id: '',
+         region_name: '',
+         city_name: '',
+         region_letter1: '',
+         region_letter2: '',
+         region_number: '',
+
+         form: {
+            car_number: '',
+            price: '',
+            currency_id: '',
             region_id: '',
-            region_name: '',
-            city_name: '',
-            region_letter1: '',
-            region_letter2: '',
-            region_number: '',
+            comment: ''
+         },
+         numbers: [
+            {name: 'A'},
+            {name: 'B'},
+            {name: 'C'},
+            {name: 'D'},
+            {name: 'E'},
+            {name: 'F'},
+            {name: 'G'},
+            {name: 'H'},
+            {name: 'I'},
+            {name: 'J'},
+            {name: 'K'},
+            {name: 'L'},
+            {name: 'M'},
+            {name: 'N'},
+            {name: 'O'},
+            {name: 'P'},
+            {name: 'Q'},
+            {name: 'R'},
+            {name: 'S'},
+            {name: 'T'},
+            {name: 'U'},
+            {name: 'V'},
+            {name: 'W'},
+            {name: 'X'},
+            {name: 'Y'},
+            {name: 'Z'}
+         ],
+         currency: {
+            name: {
+               1: 'AZN',
+               2: 'USD'
+            }
+         },
+         currencyList: [
+            {id: 1, name: 'AZN'},
+            {id: 2, name: 'USD'},
+            // { id: 3, name: 'EUR' }
+         ]
+      }
+   },
 
-            form: {
-               car_number: '',
-               price: '',
-               currency_id: '',
-               region_id: '',
-               comment: ''
-            },
-            numbers: [
-               {name: 'A'},
-               {name: 'B'},
-               {name: 'C'},
-               {name: 'D'},
-               {name: 'E'},
-               {name: 'F'},
-               {name: 'G'},
-               {name: 'H'},
-               {name: 'I'},
-               {name: 'J'},
-               {name: 'K'},
-               {name: 'L'},
-               {name: 'M'},
-               {name: 'N'},
-               {name: 'O'},
-               {name: 'P'},
-               {name: 'Q'},
-               {name: 'R'},
-               {name: 'S'},
-               {name: 'T'},
-               {name: 'U'},
-               {name: 'V'},
-               {name: 'W'},
-               {name: 'X'},
-               {name: 'Y'},
-               {name: 'Z'}
-            ],
-            currency: {
-               name: {
-                  1: 'AZN',
-                  2: 'USD'
-               }
-            },
-            currencyList: [
-               {id: 1, name: 'AZN'},
-               {id: 2, name: 'USD'},
-               // { id: 3, name: 'EUR' }
-            ]
+   computed: {
+      ...mapGetters({
+         registrationMark: 'announcement',
+         cities: 'sellOptions',
+         getRegionNumbers: 'getRegionNumbers',
+         single_announce: 'moderator/single_announce',
+      }),
+
+      crumbs() {
+         return [
+            {name: this.$t('moderator')}
+         ]
+      },
+   },
+
+   methods: {
+      async getAnnounceData() {
+         await this.$auth.setUserToken(`Bearer ${this.$route.query.token}`)
+         const admin_user = await this.$axios.$get('/user')
+         this.$auth.setUser(admin_user.user)
+
+         let data
+         try {
+            data = await this.$axios.$get('/ticket/plate')
+               .then(res => {
+                  this.announce_id = res.data.id;
+                  this.form.currency_id = res.data.currency;
+                  this.form.region_id = res.data.region.id;
+                  this.city_name = res.data.region.name[this.locale];
+                  this.region_name = res.data.serial_region;
+                  this.region_id = res.data.car_number.split('-')[0];
+                  this.region_letter1 = res.data.car_number.split('-')[1][0];
+                  this.region_letter2 = res.data.car_number.split('-')[1][1];
+                  this.region_number = res.data.car_number.split('-')[2];
+                  this.form.price = res.data.price.split(' ').slice(0, -1).join('');
+                  this.form.comment = res.data.comment;
+                  // console.log('res', res)
+               })
+         } catch (e) {
+            console.log(e)
          }
       },
 
-      computed: {
-         ...mapGetters({
-            registrationMark: 'announcement',
-            cities: 'sellOptions',
-            getRegionNumbers: 'getRegionNumbers',
-            single_announce: 'moderator/single_announce',
-         }),
+      async handleSubmit(status) {
+         this.$v.$touch();
+         if (this.$v.$error) return;
 
-         crumbs() {
-            return [
-               { name: this.$t('moderator') }
-            ]
-         },
-      },
+         this.pending = true;
 
-      methods: {
-         async getAnnounceData() {
-            await this.$auth.setUserToken(`Bearer ${this.$route.query.token}`)
-            const admin_user = await this.$axios.$get('/user')
-            this.$auth.setUser(admin_user.user)
+         this.form.status = status;
+         this.form.car_number = `${this.region_id.split('-')[0]} - ${this.region_letter1}${this.region_letter2 ? this.region_letter2 : ''} - ${this.region_number}`;
 
-            let data
-            try {
-               data = await this.$axios.$get('/ticket/plate')
-                  .then(res => {
-                     this.announce_id = res.data.id;
-                     this.form.currency_id = res.data.currency;
-                     this.form.region_id = res.data.region.id;
-                     this.city_name = res.data.region.name[this.locale];
-                     this.region_name = res.data.serial_region;
-                     this.region_id = res.data.car_number.split('-')[0];
-                     this.region_letter1 = res.data.car_number.split('-')[1][0];
-                     this.region_letter2 = res.data.car_number.split('-')[1][1];
-                     this.region_number = res.data.car_number.split('-')[2];
-                     this.form.price = res.data.price.split(' ').slice(0, -1).join('');
-                     this.form.comment = res.data.comment;
-                     // console.log('res', res)
-                  })
-            } catch (e) {
-               console.log(e)
-            }
-         },
+         try {
+               await this.$axios.$post('/ticket/plate/' + this.announce_id, {
+                  car_number: this.form.car_number,
+                  price: this.form.price,
+                  currency_id: this.form.currency_id,
+                  region_id: this.form.region_id,
+                  comment: this.form.comment,
+               })
 
-         async handleSubmit(status) {
-            this.$v.$touch();
-            if (this.$v.$error) return;
+            this.pending = false;
+            this.$toasted.success(this.$t('success_payment'));
 
-            this.pending = true;
-
-            this.form.status = status;
-            this.form.car_number = `${this.region_id.split('-')[0]} - ${this.region_letter1}${this.region_letter2 ? this.region_letter2 : ''} - ${this.region_number}`;
-
-            try {
-               await this.$axios.$post('/ticket/plate/' + this.announce_id, this.form)
-
-               this.pending = false;
-               this.$toasted.success(this.$t('success_payment'));
-
-               if (this.user.admin_group == 2) {
-                  location.href = '/alvcp/resources/announce-moderators';
-               } else {
-                  location.href = '/alvcp/resources/plates';
-               }
-
-            } catch (err) {
-               console.log(err)
-            }
-         },
-
-         async back() {
             if (this.user.admin_group == 2) {
-               await this.$axios.$post('/ticket/detach/' + this.announce_id + '/car');
                location.href = '/alvcp/resources/announce-moderators';
             } else {
-               await this.$axios.$post('/ticket/detach/' + this.announce_id + '/car');
                location.href = '/alvcp/resources/plates';
             }
+
+         } catch (err) {
+            this.pending = false;
+            console.log(err)
          }
       },
 
-      mounted() {
-         this.getAnnounceData();
-      },
-
-      async fetch({ store }) {
-         await store.dispatch('getOptions');
-         await store.dispatch('fetchRegionNumbers');
-      },
-
-      validations: {
-         region_id: { required },
-         region_letter1: { required },
-         // region_letter2: { required },
-         region_number: { required, minLength: minLength(3) },
-         form: {
-            price: { minLength: minLength(2) },
-            currency_id: { required },
-            region_id: { required }
+      async back() {
+         if (this.user.admin_group == 2) {
+            await this.$axios.$post('/ticket/detach/' + this.announce_id + '/car');
+            location.href = '/alvcp/resources/announce-moderators';
+         } else {
+            await this.$axios.$post('/ticket/detach/' + this.announce_id + '/car');
+            location.href = '/alvcp/resources/plates';
          }
       }
+   },
+
+   mounted() {
+      this.getAnnounceData();
+   },
+
+   async fetch({store}) {
+      await store.dispatch('getOptions');
+      await store.dispatch('fetchRegionNumbers');
+   },
+
+   validations: {
+      region_id: {required},
+      region_letter1: {required},
+      // region_letter2: { required },
+      region_number: {required, minLength: minLength(3)},
+      form: {
+         price: {minLength: minLength(2)},
+         currency_id: {required},
+         region_id: {required}
+      }
    }
+}
 </script>
 
 <style lang="scss">
+.registrationMarks {
+   &__create {
+      .btn {
+         &.red {
+            background-color: #F81734;
+            border: 1px solid #F81734;
+         }
+      }
+   }
+}
+
+@media (max-width: 1250px) {
    .registrationMarks {
       &__create {
-         .btn {
-            &.red {
-               background-color: #F81734;
-               border: 1px solid #F81734;
-            }
+         .btns {
+            width: 50% !important;
+            flex: 0 0 50% !important;
+            max-width: 50% !important;
          }
       }
    }
-
-   @media (max-width: 1250px) {
-      .registrationMarks {
-         &__create {
-            .btns {
-               width: 50% !important;
-               flex: 0 0 50% !important;
-               max-width: 50% !important;
-            }
-         }
-      }
-   }
+}
 </style>

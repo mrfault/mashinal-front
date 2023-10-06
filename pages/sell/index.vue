@@ -13,7 +13,7 @@
                         />
                         <p v-html="$t('add_announce_info')"/>
                      </div>
-                     <div class="mobile_info" v-if="Object.values(user).length">
+                     <div v-if="Object.values(user).length" class="mobile_info">
                         <inline-svg
                            :src="'/icons/mobile_2.svg'"
                            class="mobile_info_svg info_svg"
@@ -23,9 +23,9 @@
                   </div>
                   <h2 class="card_title">{{ $t("announcement_type") }}</h2>
                   <toggle-group
-                     :items="searchMenus.filter((menu) => menu.id !== 3).map((menu) => ({...menu,name: $t(menu.label)}))"
                      v-slot="{ item }"
                      :defaultValue="1"
+                     :items="searchMenus.filter((menu) => menu.id !== 3).map((menu) => ({...menu,name: $t(menu.label)}))"
                      @change="handleAnnounceType"
                   >
                      <div class="announcement_item">
@@ -34,20 +34,24 @@
                      </div>
                   </toggle-group>
                </div>
-               <div class="card" v-if="form.announce_type !== ''">
+               <div v-if="form.announce_type !== ''" class="card">
 
                   <div class="card_container">
                      <div class="add_announce_form">
                         <car_form v-if="form.announce_type.title === 'cars'"
                                   :isReady="isReady"
                                   :region_id="authForm.region_id"
-                                  @getForm="getCarForm($event)"/>
+                                  @getForm="getCarForm($event)"
+                        />
                         <moto_form v-if="form.announce_type.title === 'moto'"
-                                   :region_id="authForm.region_id"
                                    :isReady="isReady"
+                                   :region_id="authForm.region_id"
                                    @getForm="getMotoForm($event)"/>
-                        <part_form v-if="form.announce_type.title === 'parts'"
-                                   :isReady="isReady" @getForm="getPartForm($event)"/>
+                        <part_form
+                           v-if="form.announce_type.title === 'parts'"
+                           :isReady="isReady"
+                           @getForm="getPartForm($event)"
+                        />
                         <registration_mark v-if="form.announce_type.title === 'registration_marks'" :isReady="isReady"
                                            @getForm="getRegistrationMarksForm($event)"/>
                      </div>
@@ -62,23 +66,23 @@
 
                         <div class="auth_column">
                            <form-text-input
-                              :class="{form_error: $v.authForm.name.$error || authError.includes('name')}"
                               v-model="authForm.name"
-                              :placeholder="$t('your_name') + '*'"
-                              :invalid="$v.authForm.name.$error || authError.includes('name')"
+                              :class="{form_error: $v.authForm.name.$error || authError.includes('name')}"
                               :disabled="loggedIn"
+                              :invalid="$v.authForm.name.$error || authError.includes('name')"
+                              :placeholder="$t('your_name') + '*'"
                            />
                            <form-text-input
-                              :class="{form_error: $v.authForm.phone.$error || authError.includes('phone')}"
                               key="phone"
-                              :placeholder="$t('mobile_phone_number') + '*'"
                               v-model="authForm.phone"
+                              :class="{form_error: $v.authForm.phone.$error || authError.includes('phone')}"
                               :disabled="cantChangePhone"
-                              :mask="$maskPhone()"
                               :invalid="$v.authForm.phone.$error || authError.includes('phone')"
+                              :mask="$maskPhone()"
+                              :placeholder="$t('mobile_phone_number') + '*'"
                            >
-                              <template #default v-if="cantChangePhone">
-                                 <button type="button" class="change_number btn btn--red-opacity"
+                              <template v-if="cantChangePhone" #default>
+                                 <button class="change_number btn btn--red-opacity" type="button"
                                          @click="changePhone = true">
                                     {{ $t('change_mobile_number') }}
                                  </button>
@@ -86,55 +90,56 @@
                            </form-text-input>
 
                            <form-text-input
-                              :class="{form_error: $v.authForm.email.$error}"
                               v-model="authForm.email"
-                              :placeholder="$t('email') + '*'"
-                              :mask="$maskEmail()"
+                              :class="{form_error: $v.authForm.email.$error}"
                               :invalid="$v.authForm.email.$error || authError.includes('email')"
+                              :mask="$maskEmail()"
+                              :placeholder="$t('email') + '*'"
                            />
                            <form-select
-                              :label="$t('city_of_sale')"
-                              :options="sellOptions.regions"
-                              :clear-placeholder="true"
-                              :clear-option="false" :new-label="false"
-                              has-search
                               v-model="authForm.region_id"
+                              :clear-option="false"
+                              :clear-placeholder="true"
+                              :label="$t('city_of_sale')" :new-label="false"
+                              :options="sellOptions.regions"
+                              has-search
                            />
                            <form-text-input
                               v-if="authStep === 'handleOTP'"
-                              :class="['otp', {form_error: $v.authForm.code.$error}]"
-                              :placeholder="$t('OTP') + '*'"
                               v-model="authForm.code"
-                              :maxlength="5"
-                              :mask="'99999'"
+                              :class="['otp', {form_error: $v.authForm.code.$error}]"
                               :invalid="$v.authForm.code.$error"
+                              :mask="'99999'"
+                              :maxlength="5"
+                              :placeholder="$t('OTP') + '*'"
 
                            />
-                           <div class="resend_section" v-if="authStep === 'handleOTP'">
+                           <div v-if="authStep === 'handleOTP'" class="resend_section">
                               <p :class="{link_active: resendSmsAfterSecond === 0}" @click="resendCode">{{
                                     $t('resend_otp')
                                  }}</p>
                               <timer
                                  v-if="resendSmsAfterSecond > 0"
-                                 class="otp_timer"
                                  :duration="resendSmsAfterSecond"
+                                 class="otp_timer"
                                  format="i:s"
                                  @timeOver="resendSmsAfterSecond = 0"
                               />
                            </div>
 
                            <div class="contacts_info">
-                              <inline-svg class="contacts_info_svg info_svg" :src="'/icons/info.svg'"/>
+                              <inline-svg :src="'/icons/info.svg'" class="contacts_info_svg info_svg"/>
                               <p>{{ $t("contacts_registration_info") }}</p>
                            </div>
 
                            <div class="submit_button">
-                              <div class="limit_error"
-                                   v-if="inLimit">
+                              <div v-if="inLimit"
+                                   class="limit_error">
                                  <p>{{ $t('announce_limit_alert', {price: settingsV2?.settings?.restore_price}) }}</p>
                               </div>
-                              <button type="button" @click="onClick()"
-                                      :class="['btn', 'full-width', 'btn--pale-green-outline', 'active', {pending}]">
+                              <button :class="['btn', 'full-width', 'btn--pale-green-outline', 'active', {pending}]"
+                                      type="button"
+                                      @click="onClick()">
                                  {{ authStep === "notLoggedIn" ? $t("enter_sms_code") : $t("place_announcement") }}
                               </button>
                            </div>
@@ -146,8 +151,8 @@
 
                         <p>{{ $t("by_posting_an_ad_you_confirm_your_agreement_with_the_rules") }}:
                            <nuxt-link :to="`/page/${getRulesPage.slug[locale]}`"
-                                      @click.native.prevent="onShowModal('rules', getRulesPage.title[locale])"
-                                      event="">
+                                      event=""
+                                      @click.native.prevent="onShowModal('rules', getRulesPage.title[locale])">
                               <strong style="text-decoration: underline">{{ $t('general_rules') }}</strong>
                            </nuxt-link>
                         </p>
@@ -162,8 +167,8 @@
       </div>
       <modal-popup
          :modal-class="modalType === 'monetization_alert' ? 'medium' : 'wider'"
-         :toggle="showModal"
          :title="modalTitle"
+         :toggle="showModal"
          @close="showModal = false"
       >
 
@@ -173,8 +178,8 @@
          <monetization-alert-modal
             v-if="modalType === 'monetization_alert'"
             :content="form.add_monetization === 1 && inLimit ? $t('turbo_n_additional', {turboPrice: settingsV2?.settings?.promotion_price, additionalPrice: settingsV2?.settings?.restore_price, totalPrice: +settingsV2?.settings?.promotion_price + +settingsV2?.settings?.restore_price}) : form.add_monetization === 1 ? $t('only_turbo', {price: settingsV2?.settings?.promotion_price}) : $t('only_additional', {price: settingsV2?.settings?.restore_price})"
-            @onSubmit="onSubmitMonetizationModal"
-            @close="showModal = false"/>
+            @close="showModal = false"
+            @onSubmit="onSubmitMonetizationModal"/>
       </modal-popup>
    </div>
 </template>
@@ -309,7 +314,7 @@ export default {
             const res = await this.carsPost({form: formData, isMobile: this.isMobileBreakpoint});
             this.alertShowed = false
             if (res?.data?.redirect_url) {
-               this.handlePayment(res, false, this.$t('car_added'), 'v2')
+               this.handlePayment(res, false, this.$t('car_added'), 'v2', true)
                !this.isMobileBreakpoint && this.$router.push(this.$localePath('/profile/announcements'))
             } else {
                this.$router.push(this.$localePath('/profile/announcements'), () => {
@@ -365,8 +370,11 @@ export default {
             const res = await this.plateNumbersPost({form, isMobile: this.isMobileBreakpoint});
             if (res?.redirect_url) {
                const response = {data: {...res}}
-               this.handlePayment(response, false, this.$t('plate_added'), 'v2');
-               !this.isMobileBreakpoint && this.$router.push(this.$localePath('/profile/announcements'));
+               console.log("response", response)
+               this.handlePayment(response, false, this.$t('plate_added'), 'v2', "/profile/announcements");
+               // if (response) {
+               //    !this.isMobileBreakpoint && this.$router.push(this.$localePath('/profile/announcements'));
+               // }
             } else {
                this.$router.push(this.$localePath('/profile/announcements'), () => {
                   this.updatePaidStatus({
@@ -916,7 +924,6 @@ export default {
       }
 
 
-
       .announce_container {
          .announce_view {
             .main_card {
@@ -969,6 +976,16 @@ export default {
                   background-color: #121926 !important;
                }
             }
+         }
+      }
+
+   }
+
+   .baloon {
+      svg {
+         path:last-of-type {
+            fill: #000;
+
          }
       }
    }

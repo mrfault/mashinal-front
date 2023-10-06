@@ -5,7 +5,7 @@
       </div>
       <div class="content">
 
-         <h3>Vacib məlumat</h3>
+         <h3 class="important_info">{{ $t('important_info')}}</h3>
          <p v-html="content"></p>
          <p>"ÖDƏ" düyməsini sıxdıqda ödəniş səhifəsinə yönləndiriləcəksiniz.</p>
       </div>
@@ -82,6 +82,9 @@ export default {
             color: #fff;
          }
       }
+   }
+   .important_info{
+      color: #fff !important;
    }
 }
 </style>

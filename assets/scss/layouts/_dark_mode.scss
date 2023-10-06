@@ -26,6 +26,14 @@
       //}
    }
 
+   .form-group{
+      textarea{
+            color: #9AA4B2 !important;
+         &::placeholder{
+         }
+      }
+   }
+
    .checkbox-input {
       input {
          &:checked ~ label {
@@ -58,6 +66,7 @@
          }
       }
    }
+
 
    .map-sidebar {
       background: $dark-2 !important;
