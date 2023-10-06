@@ -2751,6 +2751,7 @@ export default {
    time_is_up: "Vaxtı bitib",
    under_consideration_2: "Yoxlamada",
    pending_status: "Yoxlamada",
+   uncompleted_status: "Tamamlanmamış",
    search_number: "Nömrəni axtar",
    my_vehicle_info: "NV məlumatlarım",
    pay_for_selected: "Seçilmişləri ödə",
