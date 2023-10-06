@@ -16,11 +16,11 @@
                   :disabled="isEdit"
                      class="mb-1"
                />
-               <div class="divider_3 " :class="{'d-flex': !isMobileBreakpoint}">
+               <div class="divider_3 " :class="{'d-flex': !isMobileBreakpoint, 'd-flex flex-wrap': (isMobileBreakpoint && !isEdit)}">
 
                   <form-select
                      :label="'A'"
-                     :class="{form_error: $v.form.car_number.first.$error}"
+                     :class="{form_error: $v.form.car_number.first.$error, 'mx-1': isEdit, 'mb-1': isMobileBreakpoint && isEdit}"
                      :options="numbers"
                      :clear-placeholder="true"
                      :clear-option="false"
@@ -29,7 +29,6 @@
                      v-model="form.car_number.first"
                      :invalid="$v.form.car_number.first.$error"
                      :disabled="isEdit"
-                     class="mb-1 mx-1"
                   />
                   <form-select
                      :label="'A'"
@@ -40,18 +39,18 @@
                      has-search
                      v-model="form.car_number.second"
                      :disabled="isEdit"
-                     class="mb-1 mx-1"
+                     :class="{'mx-1': isEdit, 'mb-1': isEdit && isMobileBreakpoint}"
                   />
                   <form-numeric-input
                      placeholder="000"
-                     :class="{form_error: $v.form.car_number.number.$error}"
+                     :class="{form_error: $v.form.car_number.number.$error, 'mx-1': isEdit }"
                      v-model="form.car_number.number"
                      :maxlength="3"
                      :float="true"
                      :ignored-symbols="['.']"
                      :invalid="$v.form.car_number.number.$error"
                      :disabled="isEdit"
-                     class="mb-1 mx-1"
+                     class="mb-1"
                   />
                </div>
             </div>
@@ -98,18 +97,6 @@
          </div>
 
       </div>
-
-      <!--      <form-select-->
-      <!--         :label="$t('region')"-->
-      <!--         :class="{form_error: $v.form.region_id.$error}"-->
-      <!--         :options="sellOptions.regions"-->
-      <!--         v-model="form.region_id"-->
-      <!--         :clear-placeholder="true"-->
-      <!--         :clear-option="false"-->
-      <!--         :new-label="false"-->
-      <!--         has-search-->
-      <!--         :invalid="$v.form.region_id.$error"-->
-      <!--      />-->
 
    </div>
 </template>
