@@ -432,8 +432,6 @@ export default {
          this.form.saved_images = [];
          this.savedFiles = [];
          this.imageComponentKey ++;
-         // this.$emit("removeFormImages",true)
-         // this.$nuxt.refresh();
       }
    },
    mounted() {
