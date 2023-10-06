@@ -135,7 +135,7 @@
                />
             </div>
             <div v-if="form.category_id" class="col-12 mt-3">
-               <div class="row">
+               <div class="row ma-switch-with-label">
                   <!-- Condition -->
                   <div class="col-lg-4 mb-3">
                      <form-buttons
@@ -149,8 +149,6 @@
                         @change="removeError('is_new')"
                      />
                   </div>
-               </div>
-               <div class="row">
                   <!-- Originality -->
                   <div class="col-lg-4 mb-3">
                      <form-buttons
@@ -1252,3 +1250,23 @@ export default {
 }
 </script>
 
+
+<style lang="scss">
+.ma-switch-with-label {
+   .col-12{
+      padding: 0;
+      h4{
+         margin-bottom: 0;
+      }
+   }
+   .form-buttons{
+      display: flex;
+      flex-wrap: wrap;
+      .form-buttons__item{
+         width: calc(50% - 8px) !important;
+      }
+   }
+
+   //background-color: red;
+}
+</style>
