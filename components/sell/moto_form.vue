@@ -439,7 +439,8 @@ export default {
             cylinders: "",
             number_of_vehicles: "",
             comment: "",
-            saved_images: []
+            saved_images: [],
+            is_rent: false,
          }
       }
    },
@@ -505,6 +506,7 @@ export default {
             number_of_vehicles: this.form.number_of_vehicles || 0,
             category: this.form.type_of_moto.id,
             youtube: {"id": "", "thumb": ""},
+            is_rent: this.form.is_rent
          }
          this.$emit("getForm", {
             form: newForm,
