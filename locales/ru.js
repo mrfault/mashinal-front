@@ -2730,6 +2730,7 @@ export default {
    "my_car_number_announcements": "Мои регистрационные номера",
    "under_consideration_2": "На рассмотрении",
    "pending_status": "На рассмотрении",
+   "uncompleted_status": "Незавершённые",
    "timed_out": "Истëкшие",
    "expired_status": "Истëкшие",
    "time_is_up": "Время истекло",

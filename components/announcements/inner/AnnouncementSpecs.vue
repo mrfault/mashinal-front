@@ -3,9 +3,7 @@
       <div class="vehicle-specs__head">
          <h4 class="vehicle-specs__title">{{ title }}</h4>
 
-         <div
-            :class="['vehicle-specs__info', {'approved' : approvedVehicleCondition}]"
-         >
+         <div :class="['vehicle-specs__info', {'approved' : approvedVehicleCondition}]">
             <inline-svg src="/icons/car-4.svg" />
 
             <span v-if="approvedVehicleCondition">{{ $t('approved_vehicle') }}</span>
@@ -304,8 +302,11 @@
                   icon: '/icons/star_2.svg',
                   for: ['parts']
                },
-
-               {key: 'license_plate', value: this.announcement.show_car_number && this.announcement.car_number},
+               {
+                  key: 'license_plate',
+                  value: this.announcement.show_car_number && this.announcement.car_number,
+                  icon: '/icons/registration_marks_2.svg'
+               },
                {
                   key: 'exchange',
                   value: (this.announcement.exchange_possible || this.announcement.tradeable) && this.$t('is_possible'),

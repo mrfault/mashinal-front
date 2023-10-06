@@ -144,14 +144,11 @@
                               </button>
                            </div>
                         </div>
-
                      </div>
 
-
                      <div class="comment_info">
-                        <inline-svg
-                           :src="'/icons/info.svg'"
-                        />
+                        <inline-svg :src="'/icons/info.svg'" />
+
                         <p>{{ $t("by_posting_an_ad_you_confirm_your_agreement_with_the_rules") }}:
                            <nuxt-link :to="`/page/${getRulesPage.slug[locale]}`"
                                       event=""

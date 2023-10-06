@@ -2,8 +2,8 @@
    <nuxt-link class="ma-garage-card" :to="$localePath(item.url)" v-if="!item.disabled">
       <div class="ma-garage-card__body" v-if="true">
          <div class="ma-garage-card--image">
-            <img :src="`${item.image}`" v-if="item.auth === true" alt="">
-            <img :src="`/menu/${item.image}`"  v-else alt="">
+            <img v-if="item.auth === true" :src="`${item.image ? item.image : '/img/user_new.png'}`" alt="user_icon">
+            <img v-else :src="`/menu/${item.image}`" alt="user_icon">
          </div>
          <h5 class="ma-garage-card__title" v-if="item.auth === true">{{ item.title }}</h5>
          <h5 class="ma-garage-card__title" v-else>{{ $t(item.title) }}</h5>
