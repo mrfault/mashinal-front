@@ -804,6 +804,8 @@ export default {
          default_data["drive"] = singleAnnounce.gear_id; //+
          default_data["capacity"] = singleAnnounce.capacity;
          default_data["fuel_type"] = singleAnnounce.fuel_type;
+         default_data["credit"] = singleAnnounce.credit;
+         default_data["is_rent"] = singleAnnounce.is_rent;
          if (singleAnnounce.moto_brand !== undefined) {
             default_data["category"] = "1";
             await store.dispatch("getMotoModels", {
@@ -1055,6 +1057,8 @@ export default {
          this.form.category = this.default_data.category;
          this.form.mileage_measure = announce?.mileage_measure || "0";
          this.category = this.default_data.category;
+         this.form.credit = this.default_data.credit;
+         this.form.is_rent = this.default_data.is_rent;
          /*   this.form = this.default_data;
             this.form.youtube =  { id:'', thumb:'' };*/
          this.saved_images = announce.mediaIds;
