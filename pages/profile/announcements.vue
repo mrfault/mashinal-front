@@ -181,40 +181,8 @@
 
       data() {
          return {
-            activeTab: "null",
+            activeTab: null,
             loading: false,
-            announceItems: [
-               {
-                  id: "null",
-                  title: "all2",
-                  link: "/",
-               },
-               {
-                  id: 1,
-                  title: 'active',
-                  link: "/",
-               },
-               {
-                  id: 2,
-                  title: 'under_consideration_2',
-                  link: "/",
-               },
-               {
-                  id: 3,
-                  title: 'sold',
-                  link: "/",
-               },
-               {
-                  id: 4,
-                  title: 'timed_out',
-                  link: "/",
-               },
-               {
-                  id: 0,
-                  title: 'rejected_many',
-                  link: "/",
-               }
-            ],
             escapeDuplicates: false,
             isDragging: false,
             sortSwitch: false,
@@ -724,7 +692,7 @@
             color: #697586;
             font: 500 14px/16px 'TTHoves';
             padding: 12px 16px;
-            margin-right: 20px;
+            margin-right: 12px;
             white-space: nowrap;
 
             &:hover {
