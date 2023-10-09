@@ -67,7 +67,7 @@
                   >
                      <grid-item
                         :key="announcement.id_unique +  '_' + index"
-                        :activeTab="activeTab"
+                        :activeTab="activeTab || index + 456"
                         :announcement="announcement"
                         :clickable="!isDragging"
                         :isLastChild="index === myAnnouncements.length - 1"
