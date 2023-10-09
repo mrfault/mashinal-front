@@ -370,13 +370,11 @@ export default {
             const res = await this.plateNumbersPost({form, isMobile: this.isMobileBreakpoint});
             if (res?.redirect_url) {
                const response = {data: {...res}}
-
-               this.handlePayment(response, false, this.$t('plate_added'), 'v2', true);
-               if (response) {
-                  !this.isMobileBreakpoint && this.$router.push(this.$localePath('/profile/announcements'));
-               }
+               console.log('response', response)
+               this.handlePayment(response, false, this.$t('plate_added'), 'v2');
+               // !this.isMobileBreakpoint && this.$router.push(this.$localePath('/profile/announcements'));
             } else {
-
+               console.log('222')
                this.$router.push(this.$localePath('/profile/announcements'), () => {
                   this.updatePaidStatus({
                      type: 'success',
