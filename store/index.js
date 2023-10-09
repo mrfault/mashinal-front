@@ -1365,6 +1365,12 @@ export const actions = {
       commit("mutate", {property: "myAnnouncementsV2", value: res});
    },
 
+   // async payAnnouncement({ commit }, payload) {
+   //    const res = await this.$axios.$post(`${this.$env().API_SECRET}/announcements/${payload.id}/${payload.type}`);
+   //    // if (res.)
+   //    console.log(res.redirect_url)
+   //    // commit("mutate", {property: "myAnnouncementsV2", value: res});
+   // },
 
    async getAnnouncementInner({commit}, id) {
       const res = await this.$axios.$get(`/announce/${id}`);
