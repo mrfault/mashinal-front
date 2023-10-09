@@ -3,7 +3,10 @@
       <div class="vehicle-specs__head">
          <h4 class="vehicle-specs__title">{{ title }}</h4>
 
-         <div :class="['vehicle-specs__info', {'approved' : approvedVehicleCondition}]">
+         <div
+            :class="['vehicle-specs__info', {'approved' : approvedVehicleCondition}]"
+            v-if="!showInfo"
+         >
             <inline-svg src="/icons/car-4.svg" />
 
             <span v-if="approvedVehicleCondition">{{ $t('approved_vehicle') }}</span>
@@ -414,13 +417,18 @@
          },
 
          catalogLink() {
-            // console.log('this.catalog', this.catalog)
             let path = this.catalog && `/catalog/${this.catalog.brand.slug}/${this.catalog.model.slug}/${this.catalog.generation.id}/${this.catalog.car_type.id}/mod/${this.announcement?.car_catalog_id}`;
             return path && this.$localePath(path);
          },
 
+         showInfo() {
+            return this.announcement.type === 'part' || this.announcement.is_auto_salon || this.announcement.is_external_salon;
+            // return !this.announcement.is_auto_salon;
+         },
+
          approvedVehicleCondition() {
             return (this.announcement.type === 'light_vehicle' ||
+                    this.announcement.type === 'motorcycle' ||
                     this.announcement.type === 'scooter' ||
                     this.announcement.type === 'moto_atv') &&
                    (this.announcement.vin || this.announcement.car_number);
