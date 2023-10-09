@@ -1,10 +1,9 @@
 <template>
    <div class="pages-garage-index ma-penalties">
       <div class="container p-0">
-
-         <portal to="breadcrumbs">
-            <breadcrumbs :crumbs="crumbs"/>
-         </portal>
+<!--         <portal to="breadcrumbs">-->
+<!--            <breadcrumbs :crumbs="crumbs"/>-->
+<!--         </portal>-->
          <div :class="{'flex-wrap': isMobileBreakpoint}" class="d-flex  justify-content-between">
             <h2 :class="{'w-100 text-center': isMobileBreakpoint}" class="ma-title--md" style="margin-bottom: 32px">
                {{ $t('penalties') }}</h2>

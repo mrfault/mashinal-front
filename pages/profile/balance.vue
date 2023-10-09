@@ -1,10 +1,9 @@
 <template>
    <div class="pages-profile-balance">
-      <div class="">
-
-         <portal to="breadcrumbs">
-            <breadcrumbs :crumbs="crumbs"/>
-         </portal>
+      <div>
+<!--         <portal to="breadcrumbs">-->
+<!--            <breadcrumbs :crumbs="crumbs"/>-->
+<!--         </portal>-->
 
          <component
             :is="isMobileBreakpoint ? 'mobile-screen' : 'div'"
