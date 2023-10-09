@@ -45,13 +45,14 @@
                'overflow-visible isProfilePage': isProfilePage,
                'isComparisonPage': isComparisonPage,
                'isPromotion': announcement.is_promotion,
+               'uncompletedStatus': announcement.status === 7
             }
          ]"
          class="announcements-grid__item"
          @click="goToAnnouncement"
       >
          <profile-grid-actions
-            v-if="isProfilePage && announcement.status !==2"
+            v-if="isProfilePage && announcement.status !== 2 && announcement.status !== 7"
             :announcement="announcement"
             :class="{'right-aligned-dropdown': isLastChild}"
             :dropdown-id="announcement.id_unique"
@@ -91,26 +92,20 @@
                         <div
                            v-if="isProfilePage"
                            :class="{
-                           'activeStatus': announcement.status == 1,
-                           'deactiveStatus': announcement.status == 3,
-                           'consideration': announcement.status == 2,
-                           'rejectedStatus': announcement.status == 0,
-                        }"
+                              'activeStatus': announcement.status == 1,
+                              'deactiveStatus': announcement.status == 3,
+                              'consideration': announcement.status == 2,
+                              'rejectedStatus': announcement.status == 0,
+                              'uncompletedStatus': announcement.status == 7
+                           }"
                            class="item-overlay__top--left_item"
                         >
-                           <template v-if="isProfilePage && announcement.status == 0">
-                              {{ $t('rejected_many') }}
-                           </template>
+                           <template v-if="isProfilePage && announcement.status == 0">{{ $t('rejected_many') }}</template>
                            <template v-else-if="isProfilePage && announcement.status == 1">{{ $t('active') }}</template>
-                           <template v-else-if="isProfilePage && announcement.status == 2">
-                              {{ $t('under_consideration') }}
-                           </template>
-                           <template v-else-if="isProfilePage && announcement.status == 3">
-                              {{ $t('sold') }}
-                           </template>
-                           <template v-else-if="isProfilePage && announcement.status == 4">
-                              {{ $t('timed_out') }}
-                           </template>
+                           <template v-else-if="isProfilePage && announcement.status == 2">{{ $t('under_consideration') }}</template>
+                           <template v-else-if="isProfilePage && announcement.status == 3">{{ $t('sold') }}</template>
+                           <template v-else-if="isProfilePage && announcement.status == 4">{{ $t('timed_out') }}</template>
+                           <template v-else-if="isProfilePage && announcement.status == 7">{{ $t('uncompleted_status') }}</template>
                         </div>
                      </template>
                   </div>
@@ -167,6 +162,11 @@
                   <!--                     v-if="getType === 'Car'"-->
                   <!--                  />-->
                </div>
+            </div>
+
+            <div class="payHover" v-if="announcement.status === 7">
+               <button @click="payAnnouncement(announcement.id, 'free')">{{ $t('post_for_free') }}</button>
+               <button @click="payAnnouncement(announcement.id, 'paid')">{{ $t('pay') }}</button>
             </div>
          </div>
 
@@ -225,20 +225,17 @@
 
             <div v-if="isProfilePage" class="item-details__item d-flex justify-csb">
                <span class="ma-announcement-card__stats">
-                                 <inline-svg src="/new-icons/grid/cards/phone.svg"/>
+                  <inline-svg src="/new-icons/grid/cards/phone.svg"/>
                   <p>{{ announcement.show_phone_number_count || 0 }}</p>
-
                </span>
                <span class="ma-announcement-card__stats">
-                            <inline-svg src="/new-icons/grid/cards/eye.svg"/>
+                  <inline-svg src="/new-icons/grid/cards/eye.svg"/>
                   <p>{{ announcement.view_count || 0 }}</p>
-
                </span>
                <span class="ma-announcement-card__stats">
                    <inline-svg src="/new-icons/grid/cards/calendar.svg"/>
                   <p v-if="!isMobileBreakpoint"> {{ announcement.created_at }}</p>
                   <p v-else> {{ shortenMonthName(announcement.created_at) }}</p>
-
                </span>
             </div>
 
@@ -260,237 +257,245 @@
 </template>
 
 <script>
-import AddFavorite from '~/components/announcements/AddFavorite'
-import AddComparison from '~/components/announcements/AddComparison'
-import MonetizationButton from '~/components/announcements/MonetizationButton'
-import MonetizationStatsButton from '~/components/announcements/MonetizationStatsButton'
-import ProfileGridActions from "~/components/profile/ProfileGridActions";
-import CallButton from "~/components/announcements/CallButton.vue";
+   import AddFavorite from '~/components/announcements/AddFavorite'
+   import AddComparison from '~/components/announcements/AddComparison'
+   import MonetizationButton from '~/components/announcements/MonetizationButton'
+   import MonetizationStatsButton from '~/components/announcements/MonetizationStatsButton'
+   import ProfileGridActions from "~/components/profile/ProfileGridActions";
+   import CallButton from "~/components/announcements/CallButton.vue";
+   import {PaymentMixin} from "~/mixins/payment";
 
-export default {
-   props: {
-      announcement: {},
-      showStatus: Boolean,
-      showMonetizationActions: {
-         type: Boolean,
-         default: true,
-      },
-      showCheckbox: Boolean,
-      showPhoneCount: Boolean,
-      showGallery: Boolean,
-      showOverlay: Boolean,
-      clickable: Boolean,
-      trackViews: Boolean,
-      colClass: String,
-      isProfilePage: {
-         type: Boolean,
-         default: false,
-      },
-      isComparisonPage: {
-         type: Boolean,
-         default: false,
-      },
-      hideFavoriteBtn: {
-         type: Boolean,
-         default: true,
-      },
-      isLastChild: Boolean,
-      mileage: {
-         type: Boolean,
-         default: true
-      },
-      activeTab: Number,
-   },
-
-   components: {
-      MonetizationStatsButton,
-      MonetizationButton,
-      AddFavorite,
-      AddComparison,
-      ProfileGridActions,
-      CallButton
-   },
-
-   data() {
-      return {
-         selected: false
-      }
-   },
-
-   computed: {
-      getType() {
-         let item = this.announcement
-
-         if (item.type === "motorcycle") return 'Motorcycle'
-         else if (item.type === "scooter") return 'Scooter'
-         else if (item.type === "moto_atv") return 'Atv'
-         else if (item.commercial_brand) return 'Commercial'
-         else if (item.type === "light_vehicle") return 'Car'
-         else if (item.type === "part" || item.title) return 'Part'
-         return ''
+   export default {
+      props: {
+         announcement: {},
+         showStatus: Boolean,
+         showMonetizationActions: {
+            type: Boolean,
+            default: true,
+         },
+         showCheckbox: Boolean,
+         showPhoneCount: Boolean,
+         showGallery: Boolean,
+         showOverlay: Boolean,
+         clickable: Boolean,
+         trackViews: Boolean,
+         colClass: String,
+         isProfilePage: {
+            type: Boolean,
+            default: false,
+         },
+         isComparisonPage: {
+            type: Boolean,
+            default: false,
+         },
+         hideFavoriteBtn: {
+            type: Boolean,
+            default: true,
+         },
+         isLastChild: Boolean,
+         mileage: {
+            type: Boolean,
+            default: true
+         },
+         activeTab: Number,
       },
 
-      getLink() {
-         let type = 'cars';
+      mixins: [PaymentMixin],
 
-         if (['Motorcycle', 'Scooter', 'Atv'].includes(this.getType)) type = 'moto'
-         else if (['Commercial'].includes(this.getType)) type = 'commercial'
-         else if (['Part'].includes(this.getType)) type = 'parts'
-         let path = `/${type}/announcement/${type === 'moto' ? this.announcement.id_unique : this.announcement.id}`
-         return this.$localePath(path);
+      components: {
+         MonetizationStatsButton,
+         MonetizationButton,
+         AddFavorite,
+         AddComparison,
+         ProfileGridActions,
+         CallButton
       },
 
-      getTextLine() {
-         if (['Part'].includes(this.getType)) return this.announcement.description
-         let text = `${this.announcement.year} ${this.$t('plural_forms_year')[0]}`
-         if (
-            // this.getCapacity &&
-            this.showOverlay
-         )
-            if (this.getCapacity) {
-               text +=
-                  // `, ${this.getCapacity}`text +=
-                  // `, ${this.announcement.humanize_mileage} ${this.$t('char_kilometre')}`
-                  `, ${this.getCapacity}`
-            }
-         return text
+      data() {
+         return {
+            selected: false
+         }
       },
 
-      getImage() {
-         let item = this.announcement;
+      computed: {
+         getType() {
+            let item = this.announcement
 
-         return this.$withBaseUrl(item.image);
+            if (item.type === "motorcycle") return 'Motorcycle'
+            else if (item.type === "scooter") return 'Scooter'
+            else if (item.type === "moto_atv") return 'Atv'
+            else if (item.commercial_brand) return 'Commercial'
+            else if (item.type === "light_vehicle") return 'Car'
+            else if (item.type === "part" || item.title) return 'Part'
+            return ''
+         },
 
-         // if (item.has_360 == false || !item.has_360) {
-         //   if (item.media && item.media.thumb && item.media.thumb.length)
-         //     return this.$withBaseUrl(item.image)
-         //   else if (item.media && item.media.length)
-         //     return this.$withBaseUrl(item.media[0].thumb || item.media[0])
-         //   return false
-         // } else {
-         //   return this.$withBaseUrl(item.has_360)
-         // }
-      },
+         getLink() {
+            let type = 'cars';
 
-      getCapacity() {
-         let item = this.announcement,
-            type = this.getType
-         let capacity = item.car_catalog?.capacity || item.capacity
-         let showLitres = ['Car', 'Commercial'].includes(type)
-         if (!capacity || capacity == '0') return ''
-         if (showLitres && capacity > 50) capacity = (capacity / 1000).toFixed(1)
-         return `${capacity} ${this.$t(
-            showLitres ? 'char_litre' : 'char_sm_cube',
-         )}`
-      },
+            if (['Motorcycle', 'Scooter', 'Atv'].includes(this.getType)) type = 'moto'
+            else if (['Commercial'].includes(this.getType)) type = 'commercial'
+            else if (['Part'].includes(this.getType)) type = 'parts'
+            let path = `/${type}/announcement/${type === 'moto' ? this.announcement.id_unique : this.announcement.id}`
+            return this.$localePath(path);
+         },
 
-      getOdometer() {
-         if (this.showOverlay) {
-            return `${this.announcement.humanize_mileage} ${this.$t(
-               'char_kilometre',
+         getTextLine() {
+            if (['Part'].includes(this.getType)) return this.announcement.description
+            let text = `${this.announcement.year} ${this.$t('plural_forms_year')[0]}`
+            if (
+               // this.getCapacity &&
+               this.showOverlay
+            )
+               if (this.getCapacity) {
+                  text +=
+                     // `, ${this.getCapacity}`text +=
+                     // `, ${this.announcement.humanize_mileage} ${this.$t('char_kilometre')}`
+                     `, ${this.getCapacity}`
+               }
+            return text
+         },
+
+         getImage() {
+            let item = this.announcement;
+
+            return this.$withBaseUrl(item.image || '/');
+
+            // if (item.has_360 == false || !item.has_360) {
+            //   if (item.media && item.media.thumb && item.media.thumb.length)
+            //     return this.$withBaseUrl(item.image)
+            //   else if (item.media && item.media.length)
+            //     return this.$withBaseUrl(item.media[0].thumb || item.media[0])
+            //   return false
+            // } else {
+            //   return this.$withBaseUrl(item.has_360)
+            // }
+         },
+
+         getCapacity() {
+            let item = this.announcement,
+               type = this.getType
+            let capacity = item.car_catalog?.capacity || item.capacity
+            let showLitres = ['Car', 'Commercial'].includes(type)
+            if (!capacity || capacity == '0') return ''
+            if (showLitres && capacity > 50) capacity = (capacity / 1000).toFixed(1)
+            return `${capacity} ${this.$t(
+               showLitres ? 'char_litre' : 'char_sm_cube',
             )}`
-         }
-      }
-   },
+         },
 
-   methods: {
-      getShineSize(filters) {
-         return filters.shine_width.name + '/' + filters.height.name + 'R' + filters.diameter.name
-      },
-
-      goToAnnouncement(event) {
-         this.$store.commit('closeDropdown');
-
-         if (!this.clickable) return;
-
-         if (this.trackViews) {
-            this.fbTrack('ViewContent', {
-               content_type: 'product',
-               content_category: this.getType,
-               content_ids: [this.announcement.id],
-               content_name: this.getAnnouncementTitle(this.announcement) + ', ' + this.announcement.year
-            })
-         }
-
-         if (!this.isMobileBreakpoint && !this.$env.DEV) return;
-
-         if (!this.isMobileBreakpoint) {
-            this.$router.push(this.getLink);
-         } else if (this.isMobileBreakpoint) {
-            event.stopPropagation();
-            event.preventDefault();
-            this.$router.push(this.getLink);
+         getOdometer() {
+            if (this.showOverlay) {
+               return `${this.announcement.humanize_mileage} ${this.$t(
+                  'char_kilometre',
+               )}`
+            }
          }
       },
 
-      handleChange(value) {
-         this.selected = value;
-         this.$nuxt.$emit('select-announcement', this.announcement.id, value, true);
-      },
+      methods: {
+         getShineSize(filters) {
+            return filters.shine_width.name + '/' + filters.height.name + 'R' + filters.diameter.name
+         },
 
-      selectAnnouncement(id, value, controls = false) {
-         if (controls || id != this.announcement.id) return
-         this.handleChange(value)
-      },
+         goToAnnouncement(event) {
+            this.$store.commit('closeDropdown');
 
-      checkPendingBadge(announcement) {
-         if (
-            (announcement.status == 2 ||
-               announcement.status == 5 ||
-               announcement.status == 3) &&
-            (announcement.is_auto_salon == true ||
-               announcement.is_part_salon == true)
-         ) {
-            return true
-         } else {
-            return false
-         }
-      },
+            if (!this.clickable) return;
 
-      getActiveTabAnnouncements() {
-         this.$store.dispatch('getMyAllAnnouncementsV2', {status: this.activeTab});
-      },
+            if (this.trackViews) {
+               this.fbTrack('ViewContent', {
+                  content_type: 'product',
+                  content_category: this.getType,
+                  content_ids: [this.announcement.id],
+                  content_name: this.getAnnouncementTitle(this.announcement) + ', ' + this.announcement.year
+               })
+            }
 
-      shortenMonthName(dateString) {
-         console.log("dateString", dateString)
-         const monthNames_az = ["yanvar", "fevral", "mart", "aprel", "may", "iyun", "iyul", "avqust", "sentyabr", "oktyabr", "noyabr", "dekabr"];
-         const monthNames_ru = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
-         if (dateString) {
+            if (!this.isMobileBreakpoint && !this.$env.DEV) return;
 
-            const lowerCaseDateString = dateString.toLowerCase();
-            console.log("lowerCaseDateString", lowerCaseDateString)
+            if (!this.isMobileBreakpoint) {
+               this.$router.push(this.getLink);
+            } else if (this.isMobileBreakpoint) {
+               event.stopPropagation();
+               event.preventDefault();
+               this.$router.push(this.getLink);
+            }
+         },
 
-            for (let i = 0; i < monthNames_az.length; i++) {
-               if (lowerCaseDateString.includes(monthNames_az[i]) || lowerCaseDateString.includes(monthNames_ru[i])) {
-                  const day = parseInt(dateString);
-                  const month = (i + 1).toString().padStart(2, '0'); // Month as two digits
-                  if (day.toString().length == 1) {
-                     return `0${day}.${month}`;
-                  } else {
-                     return `${day}.${month}`;
+         handleChange(value) {
+            this.selected = value;
+            this.$nuxt.$emit('select-announcement', this.announcement.id, value, true);
+         },
 
+         selectAnnouncement(id, value, controls = false) {
+            if (controls || id != this.announcement.id) return
+            this.handleChange(value)
+         },
+
+         checkPendingBadge(announcement) {
+            if (
+               (announcement.status == 2 ||
+                  announcement.status == 5 ||
+                  announcement.status == 3) &&
+               (announcement.is_auto_salon == true ||
+                  announcement.is_part_salon == true)
+            ) {
+               return true
+            } else {
+               return false
+            }
+         },
+
+         getActiveTabAnnouncements() {
+            this.$store.dispatch('getMyAllAnnouncementsV2', {status: this.activeTab});
+         },
+
+         shortenMonthName(dateString) {
+            const monthNames_az = ["yanvar", "fevral", "mart", "aprel", "may", "iyun", "iyul", "avqust", "sentyabr", "oktyabr", "noyabr", "dekabr"];
+            const monthNames_ru = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
+            if (dateString) {
+
+               const lowerCaseDateString = dateString.toLowerCase();
+
+               for (let i = 0; i < monthNames_az.length; i++) {
+                  if (lowerCaseDateString.includes(monthNames_az[i]) || lowerCaseDateString.includes(monthNames_ru[i])) {
+                     const day = parseInt(dateString);
+                     const month = (i + 1).toString().padStart(2, '0'); // Month as two digits
+                     if (day.toString().length == 1) {
+                        return `0${day}.${month}`;
+                     } else {
+                        return `${day}.${month}`;
+
+                     }
                   }
                }
+
+               // If no matching month name is found, return the original string or handle the case as needed
+               return dateString;
+            } else {
+               return ''
             }
+         },
 
-            // If no matching month name is found, return the original string or handle the case as needed
-            return dateString;
-         } else {
-            return ''
+         async payAnnouncement(id, type) {
+            const res = await this.$axios.$post(`${this.$env().API_SECRET}/announcements/${id}/${type}`);
+            console.log('res', res)
+            if (res?.redirect_url) {
+               // await this.handlePayment(res, this.$localePath('/profile/announcements'), this.$t('announcement_paid'));
+            }
          }
+      },
+
+      mounted() {
+         // console.log('this.announcement', this.announcement)
+         this.$nuxt.$on('select-announcement', this.selectAnnouncement)
+      },
+
+      beforeDestroy() {
+         this.$nuxt.$off('select-announcement', this.selectAnnouncement)
       }
-   },
-
-   mounted() {
-      // console.log('this.announcement', this.announcement)
-      this.$nuxt.$on('select-announcement', this.selectAnnouncement)
    }
-   ,
-
-   beforeDestroy() {
-      this.$nuxt.$off('select-announcement', this.selectAnnouncement)
-   }
-}
 </script>
 
 <style lang="scss">
@@ -526,6 +531,10 @@ export default {
 
    &.rejectedStatus {
       background: #F97066;
+   }
+
+   &.uncompletedStatus {
+      background: #697586;
    }
 }
 

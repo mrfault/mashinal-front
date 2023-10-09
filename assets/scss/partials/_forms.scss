@@ -1624,11 +1624,6 @@ input::-webkit-inner-spin-button {
 
    .dark-mode {
       .select-menu {
-         &_label {
-            .icon-cross {
-               color: #9AA4B2;
-            }
-         }
          &_dropdown {
             &.custom-checkboxes {
                .form-merged {
@@ -1659,6 +1654,16 @@ input::-webkit-inner-spin-button {
       &_dropdown {
          &.show {
             border: none;
+         }
+      }
+   }
+}
+
+.dark-mode {
+   .select-menu {
+      &_label {
+         .icon-cross {
+            color: #9AA4B2;
          }
       }
    }
