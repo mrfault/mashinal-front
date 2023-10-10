@@ -4,20 +4,23 @@
          <div class="inner_left">
             <div class="car_number">
                <form-select
+                  class="mb-1"
                   :label="$t('region_2')"
                   :class="{form_error: $v.form.car_number.region_id.$error}"
-                  :options="getRegionNumbers.map((rn) => ({...rn, id: rn.id}))"
+                  :options="getRegionNumbers"
                   :clear-placeholder="true"
                   :clear-option="false"
                   :new-label="false"
-                  has-search
-                  v-model="form.car_number.region_id"
                   :invalid="$v.form.car_number.region_id.$error"
                   :disabled="isEdit"
-                     class="mb-1"
+                  has-search
+                  v-model="form.car_number.region_id"
                />
-               <div class="divider_3 " :class="{'d-flex': !isMobileBreakpoint, 'd-flex flex-wrap': (isMobileBreakpoint && !isEdit)}">
 
+               <div
+                  class="divider_3"
+                  :class="{'d-flex': !isMobileBreakpoint, 'd-flex flex-wrap': (isMobileBreakpoint && !isEdit)}"
+               >
                   <form-select
                      :label="'A'"
                      :class="{form_error: $v.form.car_number.first.$error, 'mx-1': isEdit, 'mb-1': isMobileBreakpoint && isEdit}"
@@ -30,6 +33,7 @@
                      :invalid="$v.form.car_number.first.$error"
                      :disabled="isEdit"
                   />
+
                   <form-select
                      :label="'A'"
                      :options="numbers"
@@ -41,7 +45,9 @@
                      :disabled="isEdit"
                      :class="{'mx-1': isEdit, 'mb-1': isEdit && isMobileBreakpoint}"
                   />
+
                   <form-numeric-input
+                     class="mb-1"
                      placeholder="000"
                      :class="{form_error: $v.form.car_number.number.$error, 'mx-1': isEdit }"
                      v-model="form.car_number.number"
@@ -50,10 +56,10 @@
                      :ignored-symbols="['.']"
                      :invalid="$v.form.car_number.number.$error"
                      :disabled="isEdit"
-                     class="mb-1"
                   />
                </div>
             </div>
+
             <div class="divider mobile-column mb-1">
                <form-numeric-input
                   :placeholder="$t('price')"
@@ -63,6 +69,7 @@
                   @change="form.is_negotiable = false"
                   class="mb-1"
                />
+
                <!--            @change="announcement.price = $event ? $event + (form.currency.name?.[locale] || 'AZN') : 0"-->
                <div class="price_types">
                   <toggle-group :items="priceTypes" v-slot="{ item }" :defaultValue="form.currency_id"
@@ -73,6 +80,7 @@
                   </toggle-group>
                </div>
             </div>
+
             <form-checkbox
                v-model="form.is_negotiable"
                :label="$t('negotiable_price')"
@@ -82,6 +90,7 @@
                class="mb-1"
             />
          </div>
+
          <div class="inner_right">
             <div class="registration_mark_form_with_info">
                <form-textarea
@@ -95,241 +104,244 @@
                </div>
             </div>
          </div>
-
       </div>
-
    </div>
 </template>
 
 <script>
-import {mapGetters} from "vuex";
-import ToggleGroup from "~/components/elements/ToggleGroup.vue";
-import {required, requiredIf} from "vuelidate/lib/validators";
+   import ToggleGroup from "~/components/elements/ToggleGroup.vue";
+   import { required, requiredIf } from "vuelidate/lib/validators";
+   import { mapGetters } from "vuex";
 
-export default {
-   components: {ToggleGroup},
-   props: {
-      announcement: {
-         type: Object,
-      },
-      isReady: {
-         type: Boolean,
-         default: false
-      },
-      isEdit: {
-         type: Boolean,
-         default: false
-      }
-   },
-   computed: {
-      ...mapGetters(['getRegionNumbers', "sellOptions"]),
-   },
-   data() {
-      return {
-         form: {
-            car_number: {
-               region_id: "",
-               first: "",
-               second: "",
-               number: ""
-            },
-            price: "",
-            currency_id: 1,
-            is_negotiable: false,
-            region_id: 1,
-            comment: ""
+   export default {
+      components: {ToggleGroup},
 
+      props: {
+         announcement: {
+            type: Object,
          },
-         numbers: [
-            {name: 'A'},
-            {name: 'B'},
-            {name: 'C'},
-            {name: 'D'},
-            {name: 'E'},
-            {name: 'F'},
-            {name: 'G'},
-            {name: 'H'},
-            {name: 'I'},
-            {name: 'J'},
-            {name: 'K'},
-            {name: 'L'},
-            {name: 'M'},
-            {name: 'N'},
-            {name: 'O'},
-            {name: 'P'},
-            {name: 'Q'},
-            {name: 'R'},
-            {name: 'S'},
-            {name: 'T'},
-            {name: 'U'},
-            {name: 'V'},
-            {name: 'W'},
-            {name: 'X'},
-            {name: 'Y'},
-            {name: 'Z'}
-         ],
-         priceTypes: [
-            {
-               id: 1,
-               name: {az: "AZN", ru: "AZN"},
-            },
-            {
-               id: 2,
-               name: {az: "USD", ru: "USD"},
-            },
-            {
-               id: 3,
-               name: {az: "EUR", ru: "EUR"},
-            },
-         ],
-      }
-   },
-   methods: {},
-   mounted() {
-      this.$store.dispatch('fetchRegionNumbers');
-      if (this.isEdit) {
-         this.form.car_number.region_id = this.announcement.car_number.split("-")[0]
-         this.form.car_number.first = this.announcement.car_number.split("-")[1].charAt(0)
-         this.form.car_number.second = this.announcement.car_number.split("-")[1].charAt(1) || ""
-         this.form.car_number.number = this.announcement.car_number.split("-")[2]
-         this.form.price = this.announcement.price_int
-         this.form.currency_id = this.announcement.currency
-         this.form.is_negotiable = this.announcement.is_negotiable
-         this.form.region_id = this.announcement.region.id
-         this.form.comment = this.announcement.comment || ""
-      }
-   },
-   watch: {
-      form: {
-         deep: true,
-         handler() {
-            const carNumber = ['region_id',
-               'first',
-               'second',
-               'number'].every((key) => this.form.car_number[key])
-            this.$emit("navigationProgress", {id: 1, status: carNumber})
-            this.$emit("navigationProgress", {id: 2, status: this.form.price})
+         isReady: {
+            type: Boolean,
+            default: false
+         },
+         isEdit: {
+            type: Boolean,
+            default: false
          }
       },
-      isReady() {
-         this.$v.form.$touch()
-         setTimeout(() => {
-            this.scrollTo('.form_error', -190)
-         });
-         if (this.$v.form.$error) {
-            this.$toasted.error(this.$t('required_fields'));
-            return;
+
+      computed: {
+         ...mapGetters(['getRegionNumbers', "sellOptions"]),
+      },
+
+      data() {
+         return {
+            form: {
+               car_number: {
+                  region_id: "",
+                  first: "",
+                  second: "",
+                  number: ""
+               },
+               price: "",
+               currency_id: 1,
+               is_negotiable: false,
+               region_id: 1,
+               comment: ""
+
+            },
+            numbers: [
+               {name: 'A'},
+               {name: 'B'},
+               {name: 'C'},
+               {name: 'D'},
+               {name: 'E'},
+               {name: 'F'},
+               {name: 'G'},
+               {name: 'H'},
+               {name: 'I'},
+               {name: 'J'},
+               {name: 'K'},
+               {name: 'L'},
+               {name: 'M'},
+               {name: 'N'},
+               {name: 'O'},
+               {name: 'P'},
+               {name: 'Q'},
+               {name: 'R'},
+               {name: 'S'},
+               {name: 'T'},
+               {name: 'U'},
+               {name: 'V'},
+               {name: 'W'},
+               {name: 'X'},
+               {name: 'Y'},
+               {name: 'Z'}
+            ],
+            priceTypes: [
+               {
+                  id: 1,
+                  name: {az: "AZN", ru: "AZN"},
+               },
+               {
+                  id: 2,
+                  name: {az: "USD", ru: "USD"},
+               },
+               {
+                  id: 3,
+                  name: {az: "EUR", ru: "EUR"},
+               },
+            ],
          }
-         const {region_id, first, second, number} = this.form.car_number;
-         const car_number = `${region_id.split(" -")[0]} -  ${first + second} - ${number}`
-         const body = {...this.form, price: this.form.is_negotiable ? 0 : this.form.price, car_number}
-         this.$emit("getForm", body)
-      }
-   },
-   validations() {
-      return {
+      },
+
+      mounted() {
+         if (this.isEdit) {
+            this.form.car_number.region_id = this.announcement.car_number.split("-")[0];
+            this.form.car_number.first = this.announcement.car_number.split("-")[1].charAt(0);
+            this.form.car_number.second = this.announcement.car_number.split("-")[1].charAt(1) || "";
+            this.form.car_number.number = this.announcement.car_number.split("-")[2];
+            this.form.price = this.announcement.price_int;
+            this.form.currency_id = this.announcement.currency;
+            this.form.is_negotiable = this.announcement.is_negotiable;
+            this.form.region_id = this.announcement.region.id;
+            this.form.comment = this.announcement.comment || "";
+         }
+      },
+
+      watch: {
          form: {
-            car_number: {
+            deep: true,
+            handler() {
+               const carNumber = ['region_id',
+                  'first',
+                  'second',
+                  'number'].every((key) => this.form.car_number[key])
+               this.$emit("navigationProgress", {id: 1, status: carNumber})
+               this.$emit("navigationProgress", {id: 2, status: this.form.price})
+            }
+         },
+
+         isReady() {
+            this.$v.form.$touch()
+            setTimeout(() => {
+               this.scrollTo('.form_error', -190)
+            });
+            if (this.$v.form.$error) {
+               this.$toasted.error(this.$t('required_fields'));
+               return;
+            }
+            const {region_id, first, second, number} = this.form.car_number;
+            const car_number = `${region_id.split(" -")[0]} -  ${first + second} - ${number}`
+            const body = {...this.form, price: this.form.is_negotiable ? 0 : this.form.price, car_number}
+            this.$emit("getForm", body)
+         }
+      },
+
+      validations() {
+         return {
+            form: {
+               car_number: {
+                  region_id: {required},
+                  first: {required},
+                  number: {required}
+               },
+               price: {
+                  required: requiredIf(function () {
+                     return !this.form.is_negotiable
+                  })
+               },
                region_id: {required},
-               first: {required},
-               number: {required}
-            },
-            price: {
-               required: requiredIf(function () {
-                  return !this.form.is_negotiable
-               })
-            },
-            region_id: {required},
+            }
          }
       }
-   },
-}
+   }
 </script>
 
 <style lang="scss">
-.registration_mark_form {
-   display: flex;
-   flex-grow: 1;
-   flex-direction: column;
-   gap: 20px;
+   .registration_mark_form {
+      display: flex;
+      flex-grow: 1;
+      flex-direction: column;
+      gap: 20px;
 
-   .head_section {
-      .inner_left, .inner_right {
-         display: flex;
-         flex-direction: column;
-         gap: 20px
+      .head_section {
+         .inner_left, .inner_right {
+            display: flex;
+            flex-direction: column;
+            gap: 20px
+         }
+
+            &:first-child {
+               .form_error {
+                  i {
+                     display: none;
+                  }
+               }
+            }
+
+            .car_number {
+               display: flex;
+               gap: 16px;
+
+            .select-menu_label {
+               padding: 0 12px !important;
+            }
+
+            .text-input {
+               input {
+                  padding: 0 12px !important;
+               }
+            }
+
+            & > * {
+               width: 100%;
+               min-width: 0;
+            }
+         }
       }
 
-         &:first-child {
-            .form_error {
-               i {
-                  display: none;
+      .price_types {
+         .price_item {
+            height: 52px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+         }
+      }
+
+      &_with_info {
+         &_inner {
+            display: flex;
+            margin-top: 12px;
+            align-items: center;
+            gap: 10px;
+
+            svg {
+               min-width: 24px;
+               min-height: 24px;
+            }
+         }
+      }
+
+   }
+
+   @media (max-width: 485px) {
+      .registration_mark_form {
+         .divider {
+
+            .price_types {
+               .toggle_container {
+                  gap: 8px !important;
+               }
+
+               .price_item {
+                  padding: 0 8px;
                }
             }
          }
 
-         .car_number {
-            display: flex;
-            gap: 16px;
 
-         .select-menu_label {
-            padding: 0 12px !important;
-         }
-
-         .text-input {
-            input {
-               padding: 0 12px !important;
-            }
-         }
-
-         & > * {
-            width: 100%;
-            min-width: 0;
-         }
       }
    }
-
-   .price_types {
-      .price_item {
-         height: 52px;
-         display: flex;
-         justify-content: center;
-         align-items: center;
-      }
-   }
-
-   &_with_info {
-      &_inner {
-         display: flex;
-         margin-top: 12px;
-         align-items: center;
-         gap: 10px;
-
-         svg {
-            min-width: 24px;
-            min-height: 24px;
-         }
-      }
-   }
-
-}
-
-@media (max-width: 485px) {
-   .registration_mark_form {
-      .divider {
-
-         .price_types {
-            .toggle_container {
-               gap: 8px !important;
-            }
-
-            .price_item {
-               padding: 0 8px;
-            }
-         }
-      }
-
-
-   }
-}
 </style>
