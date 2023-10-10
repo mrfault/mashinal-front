@@ -45,10 +45,10 @@ export const PaymentMixin = {
             console.log('Update Payment Status', r);
          });
       },
-      handlePayment(res, route = false, text = '', version = 'v1', isCreateRegistrationMark) {
+      handlePayment(res, route = false, text = '', version = 'v1') {
          if (!this.isMobileBreakpoint) {
             let size = ({v1: 'width=494,height=718', v2: 'width=1042,height=725'})[version];
-            window.open((res?.data.redirect_url || res), 'purchaseservice', 'toolbar=yes,scrollbars=yes,resizable=yes,top=50,left=100,' + size);
+            window.open((res?.data?.redirect_url || res), 'purchaseservice', 'toolbar=yes,scrollbars=yes,resizable=yes,top=50,left=100,' + size);
             let payment_id = res?.data?.payment_id;
             if (payment_id) {
                this.connectEcho(`purchase.${payment_id}`, false).listen('PurchaseInitiated', async (data) => {

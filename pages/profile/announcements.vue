@@ -219,6 +219,11 @@
 
          this.getAllData();
          this.$nuxt.$on('refresh-my-announcements', () => this.refresh++);
+         this.$nuxt.$on('changeTab', () => this.activeTab = null);
+      },
+
+      beforeDestroy() {
+         this.$nuxt.$off('changeTab', () => this.activeTab = null);
       },
 
       async asyncData({ store }) {
@@ -259,6 +264,8 @@
             let status = ['0', '1', '2', '3'].includes(route.query.status) ? parseInt(route.query.status) : '';
             let shop = ['1', '2'].includes(route.query.type) ? (route.query.type == 2 ? 'part' : 'salon') : false;
 
+            console.log('status', status)
+            console.log('shop', shop)
             if (!this.user.autosalon) {
                await Promise.all([
                   store.dispatch('getMyAllAnnouncementsV2', {status, shop}),

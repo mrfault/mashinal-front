@@ -165,8 +165,14 @@
             </div>
 
             <div class="payHover" v-if="announcement.status === 7">
-               <button @click="payAnnouncement(announcement.id, 'free')">{{ $t('post_for_free') }}</button>
-               <button @click="payAnnouncement(announcement.id, 'paid')">{{ $t('pay') }}</button>
+               <button
+                  v-if="announcement?.can_place_free_announce"
+                  @click="payAnnouncement(announcement.id, 'free')"
+               >{{ $t('post_for_free') }}</button>
+
+               <button
+                  @click="payAnnouncement(announcement.id, 'paid')"
+               >{{ $t('pay') }}</button>
             </div>
          </div>
 
@@ -480,9 +486,16 @@
 
          async payAnnouncement(id, type) {
             const res = await this.$axios.$post(`${this.$env().API_SECRET}/announcements/${id}/${type}`);
-            console.log('res', res)
-            if (res?.redirect_url) {
-               // await this.handlePayment(res, this.$localePath('/profile/announcements'), this.$t('announcement_paid'));
+
+            if (res?.data?.redirect_url) {
+               await this.handlePayment(res, this.$localePath('/profile/announcements'), this.$t('announcement_paid'));
+            }
+
+            if (type === 'free') {
+               await this.$store.dispatch('getMyAllAnnouncementsV2', { status: null });
+               await this.$store.dispatch('getAnnouncementsStatuses');
+               await this.$store.dispatch('getMyAllAnnouncementsV2', {status: '', shop: false});
+               this.$nuxt.$emit('changeTab');
             }
          }
       },
