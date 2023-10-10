@@ -81,6 +81,8 @@
 
 <style lang="scss">
    .pages-salons-id {
+      padding-bottom: 40px;
+
       .announcements-grid {
          margin: 0;
       }

@@ -115,9 +115,10 @@
 
                            />
                            <div v-if="authStep === 'handleOTP'" class="resend_section">
-                              <p :class="{link_active: resendSmsAfterSecond === 0}" @click="resendCode">{{
-                                    $t('resend_otp')
-                                 }}</p>
+                              <p :class="{link_active: resendSmsAfterSecond === 0}" @click="resendCode">
+                                 {{ $t('resend_otp') }}
+                              </p>
+
                               <timer
                                  v-if="resendSmsAfterSecond > 0"
                                  :duration="resendSmsAfterSecond"
@@ -165,16 +166,15 @@
             </div>
          </div>
       </div>
+
       <modal-popup
          :modal-class="modalType === 'monetization_alert' ? 'medium' : 'wider'"
          :title="modalTitle"
          :toggle="showModal"
          @close="showModal = false"
       >
-
          <div v-if="modalType === 'rules'" v-html="getRulesPage.text[locale]"></div>
          <feedback-modal v-if="modalType === 'feedback'" @close="showModal = false"/>
-
          <monetization-alert-modal
             v-if="modalType === 'monetization_alert'"
             :content="form.add_monetization === 1 && inLimit ? $t('turbo_n_additional', {turboPrice: settingsV2?.settings?.promotion_price, additionalPrice: settingsV2?.settings?.restore_price, totalPrice: +settingsV2?.settings?.promotion_price + +settingsV2?.settings?.restore_price}) : form.add_monetization === 1 ? $t('only_turbo', {price: settingsV2?.settings?.promotion_price}) : $t('only_additional', {price: settingsV2?.settings?.restore_price})"
@@ -370,13 +370,11 @@ export default {
             const res = await this.plateNumbersPost({form, isMobile: this.isMobileBreakpoint});
             if (res?.redirect_url) {
                const response = {data: {...res}}
-
-               this.handlePayment(response, false, this.$t('plate_added'), 'v2', true);
-               if (response) {
-                  !this.isMobileBreakpoint && this.$router.push(this.$localePath('/profile/announcements'));
-               }
+               console.log('response', response)
+               this.handlePayment(response, false, this.$t('plate_added'), 'v2');
+               // !this.isMobileBreakpoint && this.$router.push(this.$localePath('/profile/announcements'));
             } else {
-
+               console.log('222')
                this.$router.push(this.$localePath('/profile/announcements'), () => {
                   this.updatePaidStatus({
                      type: 'success',
@@ -432,22 +430,31 @@ export default {
          this.showModal = false
          this.isReady = !this.isReady
       },
-      onClick() {
-         this.$v.authForm.$touch()
+      async onClick() {
+         this.$v.authForm.$touch();
          setTimeout(() => {
             this.scrollTo('.form_error', -190)
          });
+
          if (this.$v.authForm.$error) {
             this.$toasted.error(this.$t('required_fields'));
             return;
          }
 
          if (this.authStep === "loggedIn") {
-            this.isReady = !this.isReady
+            let phone = this.authForm.phone.replace(/[^0-9]+/g, '');
+            if (phone.length < 10) phone = `994${phone}`;
+
+            const res = await this.$axios.$post(this.$env().API_SECRET + '/auth/update/before-publish',
+               { phone: phone, email: this.authForm.email } );
+
+            if (res.message === 'success') this.isReady = !this.isReady;
          } else if (this.authStep === "notLoggedIn") {
-            this.onPhoneVerification()
+            console.log('222')
+            await this.onPhoneVerification();
          } else {
-            this.onOTPVerification()
+            console.log('333')
+            await this.onOTPVerification();
          }
       },
       async onPhoneVerification() {
@@ -500,6 +507,7 @@ export default {
    },
    async mounted() {
       if (Object.values(this.user).length) {
+         console.log('this.user.phone', this.user.phone)
          this.authForm.name = this.user.full_name
          this.authForm.email = this.user.email
          this.authForm.phone = this.user.phone.toString().slice(3)
