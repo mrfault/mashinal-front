@@ -1479,7 +1479,7 @@ export default {
 
          this.form.saved_images = this.saved_images;
          delete this.form.btl_cookie;
-         delete this.form.credit;
+         // delete this.form.credit;
          delete this.form.fuel_type;
          delete this.form.is_autosalon;
          delete this.form.mileage_measure;
