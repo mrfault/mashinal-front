@@ -1,18 +1,24 @@
 <template>
    <div class="pages-sell">
       <div class="container">
-         <breadcrumbs :crumbs="crumbs"/>
+         <breadcrumbs :crumbs="crumbs" />
+
          <div class="announce_container">
             <div class="card">
                <form class="add_announce_form">
-                  <registration_mark isEdit :announcement="announcement" :isReady="isReady"
-                                     @getForm="getPlateForm($event)"/>
+                  <registration_mark
+                     isEdit
+                     :announcement="announcement"
+                     :isReady="isReady"
+                     @getForm="getPlateForm($event)"
+                  />
+
                   <button type="button" @click="onClick()" class="btn full-width btn--pale-green-outline active">
                      {{ $t("place_announcement") }}
                   </button>
                </form>
-               <div class="vehicle_card_info" v-if="!isMobileBreakpoint">
-               </div>
+
+               <div class="vehicle_card_info" v-if="!isMobileBreakpoint"></div>
             </div>
          </div>
       </div>
@@ -111,6 +117,7 @@ export default {
 
    async fetch({store, route}) {
       await store.dispatch('fetchRegistrationMark', route.params.id.slice(0, route.params.id.length - 1));
+      await store.dispatch('fetchRegionNumbers');
       await store.dispatch('getOptions');
    },
 

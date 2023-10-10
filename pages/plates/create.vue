@@ -263,7 +263,7 @@
          }
       },
 
-      async fetch({store}) {
+      async fetch({ store }) {
          await store.dispatch('fetchRegionNumbers');
          await store.dispatch('getOptions');
       },
