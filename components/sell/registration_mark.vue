@@ -6,7 +6,7 @@
                <form-select
                   :label="$t('region_2')"
                   :class="{form_error: $v.form.car_number.region_id.$error}"
-                  :options="getRegionNumbers.map((rn) => ({...rn, id: rn.serial_number}))"
+                  :options="getRegionNumbers.map((rn) => ({...rn, id: rn.id}))"
                   :clear-placeholder="true"
                   :clear-option="false"
                   :new-label="false"
@@ -186,6 +186,7 @@ export default {
    },
    methods: {},
    mounted() {
+      this.$store.dispatch('fetchRegionNumbers');
       if (this.isEdit) {
          this.form.car_number.region_id = this.announcement.car_number.split("-")[0]
          this.form.car_number.first = this.announcement.car_number.split("-")[1].charAt(0)
@@ -241,7 +242,7 @@ export default {
             region_id: {required},
          }
       }
-   }
+   },
 }
 </script>
 
