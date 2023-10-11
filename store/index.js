@@ -72,6 +72,7 @@ const getInitialState = () => ({
    partsV2: [],
    partsV2Monetized: [],
    plateNumbers: [],
+   approvedCondition: [],
    brandsList: [],
    announcementsStatuses: [],
    monetizedCars: [],
@@ -354,6 +355,7 @@ export const getters = {
    partsV2: s => s.partsV2,
    partsV2Monetized: s => s.partsV2Monetized,
    brandsList: s => s.brandsList,
+   approvedCondition: s => s.approvedCondition,
    mainPartsAnnouncements: s => s.mainPartsAnnouncements,
    myAnnouncements: s => s.myAnnouncements,
    myAnnouncementsV2: s => s.myAnnouncementsV2,
@@ -597,6 +599,11 @@ export const actions = {
       }
       commit("mutate", {property: "partsV2", value: res});
       // commit("mutate", {property: "partAnnouncements", value: res});
+   },
+
+   async fetchApprovedCondition({ commit }, payload) {
+      const res = await this.$axios.$post(this.$env().API_SECRET + `${payload}/confirmed`);
+      commit("mutate", {property: "approvedCondition", value: res});
    },
 
    async fetchBrandsList({commit}) {
