@@ -114,7 +114,8 @@ export default {
             tradeable: announcement?.tradeable,
             credit: announcement?.credit,
             guaranty: announcement?.guaranty,
-            saved_images: announcement?.media
+            saved_images: announcement?.media,
+            is_rent: announcement?.is_rent
          }
       }
    },

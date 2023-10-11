@@ -478,7 +478,7 @@ export default {
             box: this.form.box,
             mileage: this.form.mileage || 0,
             mileage_measure: this.form.mileage_type,
-            region_id: this.region_id,
+            region_id: this.form.region_id,
             address: this.form.address,
             lat: this.form.lat,
             lng: this.form.lng,
@@ -506,7 +506,7 @@ export default {
             number_of_vehicles: this.form.number_of_vehicles || 0,
             category: this.form.type_of_moto.id,
             youtube: {"id": "", "thumb": ""},
-            is_rent: this.form.is_rent
+            is_rent: this.form.is_rent,
          }
          this.$emit("getForm", {
             form: newForm,
@@ -599,6 +599,8 @@ export default {
          this.form.cylinders = this.announcement.cylinders
          this.form.number_of_vehicles = this.announcement.tact
          this.form.comment = this.announcement.comment
+         this.form.is_rent = this.announcement.is_rent
+         this.form.region_id = this.announcement.region_id
       }
    },
    validations() {
