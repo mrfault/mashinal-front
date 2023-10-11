@@ -124,9 +124,9 @@
          }
       },
 
-      async fetch() {
+      // async fetch() {
          // await this.$store.dispatch('comparison/getInitialRecommendation')
-      },
+      // },
 
       methods: {
          removeItem(id) {

@@ -4,15 +4,15 @@
          <h4 class="vehicle-specs__title">{{ title }}</h4>
 
          <div
-            :class="['vehicle-specs__info', {'approved' : approvedVehicleCondition}]"
+            :class="['vehicle-specs__info', {'approved' : approvedCondition}]"
             v-if="!showInfo"
          >
             <inline-svg src="/icons/car-4.svg" />
 
-            <span v-if="approvedVehicleCondition">{{ $t('approved_vehicle') }}</span>
+            <span v-if="approvedCondition">{{ $t('approved_vehicle') }}</span>
             <span v-else>{{ $t('unapproved_vehicle') }}</span>
 
-            <template v-if="approvedVehicleCondition">
+            <template v-if="approvedCondition">
                <CustomTooltip class="approved">
                   <template #head>
                      <div class="inner">
@@ -158,8 +158,18 @@
 
       mixins: [AnnouncementDataMixin],
 
+      async fetch() {
+         let url = `/car/${this.announcement.id}`;
+
+         if (this.announcement.type === 'motorcycle') url = `/moto/motorcycle/${this.announcement.id}`;
+         else if (this.announcement.type === 'scooter') url = `/moto/scooter/${this.announcement.id}`;
+         else if (this.announcement.type === 'moto_atv') url = `/moto/atv/${this.announcement.id}`;
+
+         if (!this.showInfo) await this.$store.dispatch('fetchApprovedCondition', url);
+      },
+
       computed: {
-         ...mapGetters(['announcement', 'catalog', 'sellOptions', 'motoOptions']),
+         ...mapGetters(['announcement', 'catalog', 'sellOptions', 'motoOptions', 'approvedCondition']),
 
          announcementSpecs() {
             let gearIcon;
@@ -423,15 +433,6 @@
 
          showInfo() {
             return this.announcement.type === 'part' || this.announcement.is_auto_salon || this.announcement.is_external_salon;
-            // return !this.announcement.is_auto_salon;
-         },
-
-         approvedVehicleCondition() {
-            return (this.announcement.type === 'light_vehicle' ||
-                    this.announcement.type === 'motorcycle' ||
-                    this.announcement.type === 'scooter' ||
-                    this.announcement.type === 'moto_atv') &&
-                   (this.announcement.vin || this.announcement.car_number);
          }
       }
    }
