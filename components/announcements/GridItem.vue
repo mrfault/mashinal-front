@@ -495,6 +495,7 @@
                await this.$store.dispatch('getMyAllAnnouncementsV2', { status: null });
                await this.$store.dispatch('getAnnouncementsStatuses');
                await this.$store.dispatch('getMyAllAnnouncementsV2', {status: '', shop: false});
+               // await this.$nuxt.refresh();
                this.$nuxt.$emit('changeTab');
             }
          }

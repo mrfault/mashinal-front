@@ -1,5 +1,5 @@
 <template>
-   <div class="pages-dashboard pt-2 pt-lg-5 mb-5 pb-5">
+   <div class="pages-dashboard mb-5 pb-5">
       <div class="container">
          <breadcrumbs :crumbs="crumbs"/>
          <div class="ma-garage-services__container">
@@ -372,6 +372,12 @@ export default {
    &__item {
       //width: calc(50% - 8px);
       width: 100%;
+   }
+}
+
+.pages-dashboard {
+   .breadcrumbs {
+      padding-top: 0 !important;
    }
 }
 </style>

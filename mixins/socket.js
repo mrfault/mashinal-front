@@ -23,6 +23,11 @@ export const SocketMixin = {
     connectEcho(channel = false, isPrivate = true) {
       if(!window.Echo) this.configSocket();
       return window.Echo[isPrivate ? 'private' : 'channel'](channel || ('user.'+ this.$auth.user.id));
-    }
+    },
+     getPusher(){
+        return new Pusher('c4c2102447c08b6c126a', {
+           cluster: 'eu'
+        });
+     }
   }
 }

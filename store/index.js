@@ -1878,7 +1878,7 @@ export const actions = {
 
    },
 
-   async getSettingsV2({commit,state}){
+   async getSettingsV2({ commit }){
       const res = await this.$axios.$get(`${this.$env().API_SECRET}/common/settings`);
       commit("mutate", {property: "settingsV2", value: res});
    },

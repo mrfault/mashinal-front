@@ -199,7 +199,7 @@ export default {
         this.pending = false;
         if (this.isPopup) {
           window.open(res.data.redirect_url, 'purchaseservice', 'toolbar=yes,scrollbars=yes,resizable=yes,top=50,left=100,width=494,height=718');
-          this.connectEcho(`purchase.${res.data.payment_id}`, false).listen('PurchaseInitiated', async (data) => {
+          this.connectEcho(`purchase.${res.data.payment_id}`, false).listen('purchase.initiated', async (data) => {
             const paid = data.payment.status === 1;
             if(paid) {
               if(data.payment.operation_key === 'attorney_pay') {

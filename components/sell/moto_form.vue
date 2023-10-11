@@ -389,10 +389,10 @@
             type: Boolean,
             default: false
          },
-         // region_id: {
-         //    type: Number,
-         //    required: true
-         // }
+         region_id: {
+            type: Number,
+            required: true
+         }
       },
 
       data() {
@@ -485,7 +485,7 @@
                box: this.form.box,
                mileage: this.form.mileage || 0,
                mileage_measure: this.form.mileage_type,
-               // region_id: this.region_id,
+               region_id: this.region_id,
                address: this.form.address,
                lat: this.form.lat,
                lng: this.form.lng,
@@ -675,6 +675,10 @@
             align-items: center;
             gap: 10px;
             margin-top: 10px;
+
+            svg {
+               min-width: 24px;
+            }
          }
       }
 
