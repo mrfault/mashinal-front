@@ -3,18 +3,20 @@
       <div class="image">
          <img src="/img/comment.png" alt="info">
       </div>
-      <div class="content">
 
+      <div class="content">
          <h3 class="important_info">{{ $t('important_info')}}</h3>
          <p v-html="content"></p>
-         <p>"ÖDƏ" düyməsini sıxdıqda ödəniş səhifəsinə yönləndiriləcəksiniz.</p>
+         <p>{{ $t('turbo_n_description') }}</p>
       </div>
+
       <div class="buttons">
          <button type="button" class="btn full-width active" @click="$emit('close')">
-            {{ $t("rejected_2") }}
+            {{ $t("reject") }}
          </button>
+
          <button
-            :class="['btn', 'full-width', 'btn--blue-new', 'active', {pending}]">
+            :class="['btn', 'full-width', 'btn--blue-new', 'active', { pending }]">
             {{ $t("make_payment") }}
          </button>
       </div>
@@ -22,69 +24,70 @@
 </template>
 
 <script>
-export default {
-   props: {
-      pending: {
-         type: Boolean,
-         default: false
-      },
-      content: {
-         required: true
+   export default {
+      props: {
+         pending: {
+            type: Boolean,
+            default: false
+         },
+
+         content: {
+            required: true
+         }
       }
    }
-}
 </script>
 
 <style lang="scss">
-.monetization_alert {
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-
-   .content {
+   .monetization_alert {
       display: flex;
       flex-direction: column;
-      gap: 20px;
-      margin-top: 12px;
-      margin-bottom: 32px;
-      text-align: center;
+      align-items: center;
 
-      h3 {
-         color: #121926;
-         font-size: 24px;
-         font-weight: 600;
-      }
-
-      p {
-         color: #364152;
-         font-size: 18px;
-         font-weight: 400;
-
-         span {
-            color: #155EEF;
-            font-weight: 500;
-            line-height: 24px;
-         }
-      }
-   }
-
-   .buttons {
-      display: flex;
-      width: 100%;
-      gap: 12px;
-   }
-}
-
-.dark-mode {
-   .monetization_alert {
       .content {
+         display: flex;
+         flex-direction: column;
+         gap: 20px;
+         margin-top: 12px;
+         margin-bottom: 32px;
+         text-align: center;
+
+         h3 {
+            color: #121926;
+            font-size: 24px;
+            font-weight: 600;
+         }
+
          p {
-            color: #fff;
+            color: #364152;
+            font-size: 18px;
+            font-weight: 400;
+
+            span {
+               color: #155EEF;
+               font-weight: 500;
+               line-height: 24px;
+            }
          }
       }
+
+      .buttons {
+         display: flex;
+         width: 100%;
+         gap: 12px;
+      }
    }
-   .important_info{
-      color: #fff !important;
+
+   .dark-mode {
+      .monetization_alert {
+         .content {
+            p {
+               color: #fff;
+            }
+         }
+      }
+      .important_info{
+         color: #fff !important;
+      }
    }
-}
 </style>

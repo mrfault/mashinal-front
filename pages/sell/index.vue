@@ -134,10 +134,10 @@
                            </div>
 
                            <div class="submit_button">
-                              <div v-if="inLimit"
-                                   class="limit_error">
-                                 <p>{{ $t('announce_limit_alert', {price: settingsV2?.settings?.restore_price}) }}</p>
-                              </div>
+<!--                              <div v-if="inLimit"-->
+<!--                                   class="limit_error">-->
+<!--                                 <p>{{ $t('announce_limit_alert', {price: settingsV2?.settings?.restore_price}) }}</p>-->
+<!--                              </div>-->
                               <button :class="['btn', 'full-width', 'btn--pale-green-outline', 'active', {pending}]"
                                       type="button"
                                       @click="onClick()">
@@ -174,900 +174,914 @@
          @close="showModal = false"
       >
          <div v-if="modalType === 'rules'" v-html="getRulesPage.text[locale]"></div>
-         <feedback-modal v-if="modalType === 'feedback'" @close="showModal = false"/>
+
+         <feedback-modal v-if="modalType === 'feedback'" @close="showModal = false" />
+
          <monetization-alert-modal
             v-if="modalType === 'monetization_alert'"
-            :content="form.add_monetization === 1 && inLimit ? $t('turbo_n_additional', {turboPrice: settingsV2?.settings?.promotion_price, additionalPrice: settingsV2?.settings?.restore_price, totalPrice: +settingsV2?.settings?.promotion_price + +settingsV2?.settings?.restore_price}) : form.add_monetization === 1 ? $t('only_turbo', {price: settingsV2?.settings?.promotion_price}) : $t('only_additional', {price: settingsV2?.settings?.restore_price})"
+            :content="
+               form.add_monetization === 1 && inLimit ? $t('turbo_n_additional', {
+                  turboPrice: settingsV2?.settings?.promotion_price,
+                  additionalPrice: settingsV2?.settings?.restore_price,
+                  totalPrice: +settingsV2?.settings?.promotion_price + +settingsV2?.settings?.restore_price
+               }) : form.add_monetization === 1 ? $t('only_turbo', {
+                  price: settingsV2?.settings?.promotion_price
+               }) : $t('only_additional', {
+                  price: settingsV2?.settings?.restore_price
+               })"
             @close="showModal = false"
-            @onSubmit="onSubmitMonetizationModal"/>
+            @onSubmit="onSubmitMonetizationModal"
+         />
       </modal-popup>
    </div>
 </template>
 
 <script>
-import GridRadio from "~/components/elements/GridRadio.vue";
-import ToggleGroup from "~/components/elements/ToggleGroup.vue";
-import FormNumericInput from "~/components/forms/FormNumericInput.vue";
-import FormRadio from "~/components/forms/FormRadio.vue";
-import {MenusDataMixin} from "~/mixins/menus-data";
-import ImageComponent from "~/pages/sell/image-component.vue";
-import {mapActions, mapGetters} from "vuex";
-import PickOnMapButton from "~/components/elements/PickOnMapButton.vue";
-import {ToastErrorsMixin} from '~/mixins/toast-errors';
-import GridItem from "~/components/announcements/GridItem.vue";
-import Car_form from "~/components/sell/car_form.vue";
-import Part_form from "~/components/sell/part_form.vue";
-import Registration_mark from "~/components/sell/registration_mark.vue";
-import Moto_form from "~/components/sell/moto_form.vue";
-import {required, email, requiredIf} from "vuelidate/lib/validators";
-import {PaymentMixin} from "~/mixins/payment";
-import FeedbackModal from "~/components/sell/FeedbackModal.vue";
-import ServicePackages from "~/components/sell/ServicePackages.vue";
-import MonetizationAlertModal from "~/components/sell/MonetizationAlertModal.vue";
+   import GridRadio from "~/components/elements/GridRadio.vue";
+   import ToggleGroup from "~/components/elements/ToggleGroup.vue";
+   import FormNumericInput from "~/components/forms/FormNumericInput.vue";
+   import FormRadio from "~/components/forms/FormRadio.vue";
+   import {MenusDataMixin} from "~/mixins/menus-data";
+   import ImageComponent from "~/pages/sell/image-component.vue";
+   import {mapActions, mapGetters} from "vuex";
+   import PickOnMapButton from "~/components/elements/PickOnMapButton.vue";
+   import {ToastErrorsMixin} from '~/mixins/toast-errors';
+   import GridItem from "~/components/announcements/GridItem.vue";
+   import Car_form from "~/components/sell/car_form.vue";
+   import Part_form from "~/components/sell/part_form.vue";
+   import Registration_mark from "~/components/sell/registration_mark.vue";
+   import Moto_form from "~/components/sell/moto_form.vue";
+   import {required, email, requiredIf} from "vuelidate/lib/validators";
+   import {PaymentMixin} from "~/mixins/payment";
+   import FeedbackModal from "~/components/sell/FeedbackModal.vue";
+   import ServicePackages from "~/components/sell/ServicePackages.vue";
+   import MonetizationAlertModal from "~/components/sell/MonetizationAlertModal.vue";
 
-export default {
-   name: "add-announce",
-   mixins: [MenusDataMixin, ToastErrorsMixin, PaymentMixin],
-   components: {
-      MonetizationAlertModal,
-      ServicePackages,
-      FeedbackModal,
-      Moto_form,
-      Registration_mark,
-      Part_form,
-      Car_form, GridItem, PickOnMapButton, ImageComponent, GridRadio, ToggleGroup, FormNumericInput, FormRadio
-   },
-   computed: {
-      ...mapGetters(['staticPages', 'servicePackages', 'settingsV2', 'sellOptions']),
-      getRulesPage() {
-         return this.staticPages.find(page => page.id == 1);
+   export default {
+      name: "add-announce",
+
+      mixins: [MenusDataMixin, ToastErrorsMixin, PaymentMixin],
+
+      components: {
+         MonetizationAlertModal,
+         ServicePackages,
+         FeedbackModal,
+         Moto_form,
+         Registration_mark,
+         Part_form,
+         Car_form, GridItem, PickOnMapButton, ImageComponent, GridRadio, ToggleGroup, FormNumericInput, FormRadio
       },
-      cantChangePhone() {
-         return !!Object.keys(this.user).length && !this.changePhone
+
+      head() {
+         return this.$headMeta({
+            title: this.$t('meta-title_main-page'),
+            description: this.$t('meta-descr_main-page'),
+         })
       },
-      inLimit() {
-         return (this.form.announce_type?.id === 1 && this.user.announce_left_car < 1) || (this.form.announce_type?.id === 4 && this.user.announce_left_moto < 1)
-      }
-   },
-   head() {
-      return this.$headMeta({
-         title: this.$t('meta-title_main-page'),
-         description: this.$t('meta-descr_main-page'),
-      })
-   },
-   data() {
-      return {
-         authError: [],
-         alertShowed: false,
-         resendSmsAfterSecond: 0,
-         pending: false,
-         showModal: false,
-         modalType: "",
-         changePhone: false,
-         modalTitle: "",
-         isReady: false,
-         // announcement: {
-         //    image: "",
-         //    show_vin: false,
-         //    has_360: false,
-         //    price: "0 AZN",
-         //    tradeable: false,
-         //    credit: false,
-         //    brand: "Marka",
-         //    model: "Model",
-         //    year: "0000",
-         //    mileage: 0,
-         //    car_catalog: {capacity: "0"},
-         //    created_at: this.$moment(new Date()).format('DD.MM.YYYY')
-         // },
-         // resetAnnouncement: {},
-         // resetPartPreview: {},
-         form: {
-            announce_type: {
-               id: 1,
-               title: "cars"
+
+      data() {
+         return {
+            authError: [],
+            alertShowed: false,
+            resendSmsAfterSecond: 0,
+            pending: false,
+            showModal: false,
+            modalType: "",
+            changePhone: false,
+            modalTitle: "",
+            isReady: false,
+            // announcement: {
+            //    image: "",
+            //    show_vin: false,
+            //    has_360: false,
+            //    price: "0 AZN",
+            //    tradeable: false,
+            //    credit: false,
+            //    brand: "Marka",
+            //    model: "Model",
+            //    year: "0000",
+            //    mileage: 0,
+            //    car_catalog: {capacity: "0"},
+            //    created_at: this.$moment(new Date()).format('DD.MM.YYYY')
+            // },
+            // resetAnnouncement: {},
+            // resetPartPreview: {},
+            form: {
+               announce_type: {
+                  id: 1,
+                  title: "cars"
+               },
+               add_monetization: 1
             },
-            add_monetization: 1
+            authForm: {
+               name: "",
+               email: "",
+               phone: "",
+               region_id: 1,
+               code: ""
+            },
+            authStep: "",
+         };
+      },
+
+      methods: {
+         ...mapActions(['carsPost', 'motoPost', 'partsPost', 'plateNumbersPost', 'updatePaidStatus']),
+
+         async handleAnnounceType(payload) {
+            this.form.announce_type = payload
+            if (payload) {
+               await this.$store.dispatch(payload.api_key)
+            }
          },
-         authForm: {
-            name: "",
-            email: "",
-            phone: "",
-            region_id: 1,
-            code: ""
+         onShowModal(type, title) {
+            this.showModal = true
+            this.modalType = type
+            this.modalTitle = title || ""
          },
-         authStep: "",
-      };
-   },
-   async asyncData({store}) {
-      await store.dispatch('getServicePackages')
-      await store.dispatch('getSettingsV2')
-      await store.dispatch('getBrands')
-      await store.dispatch('getAllOtherOptions', '2')
-   },
-   methods: {
-      ...mapActions(['carsPost', 'motoPost', 'partsPost', 'plateNumbersPost', 'updatePaidStatus']),
-      async handleAnnounceType(payload) {
-         this.form.announce_type = payload
-         if (payload) {
-            await this.$store.dispatch(payload.api_key)
-         }
-      },
-      onShowModal(type, title) {
-         this.showModal = true
-         this.modalType = type
-         this.modalTitle = title || ""
-      },
-      async getCarForm({form}) {
-         if ((this.form.add_monetization === 1 || this.user.announce_left_car < 1) && !this.alertShowed) {
-            this.modalType = 'monetization_alert'
-            this.modalTitle = ""
-            this.alertShowed = true
-            this.showModal = true
-            return
-         }
-         this.pending = true;
-         try {
-            const formData = new FormData()
-            formData.append('data', JSON.stringify(form))
-            formData.append('add_monetization', this.form.add_monetization)
-            const res = await this.carsPost({form: formData, isMobile: this.isMobileBreakpoint});
-            this.alertShowed = false
-            if (res?.data?.redirect_url) {
-               this.handlePayment(res, false, this.$t('car_added'), 'v2', true)
-               !this.isMobileBreakpoint && this.$router.push(this.$localePath('/profile/announcements'))
-            } else {
-               this.$router.push(this.$localePath('/profile/announcements'), () => {
-                  this.updatePaidStatus({
-                     type: 'success',
-                     text: this.$t('announcement_paid'),
-                     title: this.$t('success_payment')
-                  });
-               });
+         async getCarForm({form}) {
+            if ((this.form.add_monetization === 1 || this.user.announce_left_car < 1) && !this.alertShowed) {
+               this.modalType = 'monetization_alert'
+               this.modalTitle = ""
+               this.alertShowed = true
+               this.showModal = true
+               return
             }
-         } catch (e) {
-         } finally {
-            this.pending = false;
-         }
-      },
-      async getMotoForm({form}) {
-         if ((this.form.add_monetization === 1 || this.user.announce_left_moto < 1) && !this.alertShowed) {
-            this.modalType = 'monetization_alert'
-            this.modalTitle = ""
-            this.alertShowed = true
-            this.showModal = true
-            return
-         }
-         this.pending = true;
-         try {
-            const formData = new FormData()
-            formData.append('data', JSON.stringify(form))
-            formData.append('add_monetization', this.form.add_monetization)
-            const res = await this.motoPost({form: formData, isMobile: this.isMobileBreakpoint});
-            this.alertShowed = false
-            if (res?.data?.redirect_url) {
-               this.handlePayment(res, false, this.$t('car_added'), 'v2')
-               !this.isMobileBreakpoint && this.$router.push(this.$localePath('/profile/announcements'))
-            } else {
-               this.$router.push(this.$localePath('/profile/announcements'), () => {
-                  this.updatePaidStatus({
-                     type: 'success',
-                     text: this.$t('announcement_paid'),
-                     title: this.$t('success_payment')
+            this.pending = true;
+            try {
+               const formData = new FormData()
+               formData.append('data', JSON.stringify(form))
+               formData.append('add_monetization', this.form.add_monetization)
+               const res = await this.carsPost({form: formData, isMobile: this.isMobileBreakpoint});
+               this.alertShowed = false
+               if (res?.data?.redirect_url) {
+                  this.handlePayment(res, false, this.$t('car_added'), 'v2', true)
+                  !this.isMobileBreakpoint && this.$router.push(this.$localePath('/profile/announcements'))
+               } else {
+                  this.$router.push(this.$localePath('/profile/announcements'), () => {
+                     this.updatePaidStatus({
+                        type: 'success',
+                        text: this.$t('announcement_paid'),
+                        title: this.$t('success_payment')
+                     });
                   });
-
-               });
+               }
+            } catch (e) {
+            } finally {
+               this.pending = false;
             }
+         },
+         async getMotoForm({form}) {
+            if ((this.form.add_monetization === 1 || this.user.announce_left_moto < 1) && !this.alertShowed) {
+               this.modalType = 'monetization_alert'
+               this.modalTitle = ""
+               this.alertShowed = true
+               this.showModal = true
+               return
+            }
+            this.pending = true;
+            try {
+               const formData = new FormData()
+               formData.append('data', JSON.stringify(form))
+               formData.append('add_monetization', this.form.add_monetization)
+               const res = await this.motoPost({form: formData, isMobile: this.isMobileBreakpoint});
+               this.alertShowed = false
+               if (res?.data?.redirect_url) {
+                  this.handlePayment(res, false, this.$t('car_added'), 'v2')
+                  !this.isMobileBreakpoint && this.$router.push(this.$localePath('/profile/announcements'))
+               } else {
+                  this.$router.push(this.$localePath('/profile/announcements'), () => {
+                     this.updatePaidStatus({
+                        type: 'success',
+                        text: this.$t('announcement_paid'),
+                        title: this.$t('success_payment')
+                     });
 
-         } catch (e) {
-         } finally {
-            this.pending = false;
-         }
-      },
-      async getRegistrationMarksForm(form) {
-         this.pending = true;
-         try {
-            const res = await this.plateNumbersPost({form, isMobile: this.isMobileBreakpoint});
-            if (res?.redirect_url) {
-               const response = {data: {...res}}
-               console.log('response', response)
-               this.handlePayment(response, false, this.$t('plate_added'), 'v2');
-               // !this.isMobileBreakpoint && this.$router.push(this.$localePath('/profile/announcements'));
-            } else {
-               console.log('222')
-               this.$router.push(this.$localePath('/profile/announcements'), () => {
-                  this.updatePaidStatus({
-                     type: 'success',
-                     text: this.$t('announcement_paid'),
-                     title: this.$t('success_payment')
                   });
-               });
+               }
+
+            } catch (e) {
+            } finally {
+               this.pending = false;
             }
-         } catch (e) {
-            this.$toasted.error(e.response?.data?.message);
-         } finally {
-            this.pending = false;
-         }
-      },
-      async getPartForm({form}) {
-         this.pending = true;
-         try {
-            const formData = new FormData()
-            formData.append('data', JSON.stringify(form))
-            const res = await this.partsPost(formData);
-            if (res?.data?.redirect_url) {
-               this.handlePayment(res, false, this.$t('car_added'), 'v2')
-               !this.isMobileBreakpoint && this.$router.push(this.$localePath('/profile/announcements'))
-            } else {
-               this.$router.push(this.$localePath('/profile/announcements'), () => {
-                  this.updatePaidStatus({
-                     type: 'success',
-                     text: this.$t('announcement_paid'),
-                     title: this.$t('success_payment')
+         },
+         async getRegistrationMarksForm(form) {
+            this.pending = true;
+            try {
+               const res = await this.plateNumbersPost({form, isMobile: this.isMobileBreakpoint});
+               if (res?.redirect_url) {
+                  const response = {data: {...res}}
+                  console.log('response', response)
+                  this.handlePayment(response, false, this.$t('plate_added'), 'v2');
+                  // !this.isMobileBreakpoint && this.$router.push(this.$localePath('/profile/announcements'));
+               } else {
+                  console.log('222')
+                  this.$router.push(this.$localePath('/profile/announcements'), () => {
+                     this.updatePaidStatus({
+                        type: 'success',
+                        text: this.$t('announcement_paid'),
+                        title: this.$t('success_payment')
+                     });
                   });
-
-               });
+               }
+            } catch (e) {
+               this.$toasted.error(e.response?.data?.message);
+            } finally {
+               this.pending = false;
             }
-            this.$router.push(this.$localePath('/profile/announcements'))
-         } catch (e) {
-         } finally {
-            this.pending = false;
-         }
-      },
-      async resendCode() {
-         try {
-            await this.$axios
-               .$post('/resend/code', {
-                  phone: this.authForm.phone.replace(/[^0-9]+/g, ''),
-               })
+         },
+         async getPartForm({form}) {
+            this.pending = true;
+            try {
+               const formData = new FormData()
+               formData.append('data', JSON.stringify(form))
+               const res = await this.partsPost(formData);
+               if (res?.data?.redirect_url) {
+                  this.handlePayment(res, false, this.$t('car_added'), 'v2')
+                  !this.isMobileBreakpoint && this.$router.push(this.$localePath('/profile/announcements'))
+               } else {
+                  this.$router.push(this.$localePath('/profile/announcements'), () => {
+                     this.updatePaidStatus({
+                        type: 'success',
+                        text: this.$t('announcement_paid'),
+                        title: this.$t('success_payment')
+                     });
 
-            this.resendSmsAfterSecond = 30;
-         } catch (e) {
+                  });
+               }
+               this.$router.push(this.$localePath('/profile/announcements'))
+            } catch (e) {
+            } finally {
+               this.pending = false;
+            }
+         },
+         async resendCode() {
+            try {
+               await this.$axios
+                  .$post('/resend/code', {
+                     phone: this.authForm.phone.replace(/[^0-9]+/g, ''),
+                  })
 
-         }
-      },
-      onSubmitMonetizationModal() {
-         this.showModal = false
-         this.isReady = !this.isReady
-      },
-      async onClick() {
-         this.$v.authForm.$touch();
-         setTimeout(() => {
-            this.scrollTo('.form_error', -190)
-         });
+               this.resendSmsAfterSecond = 30;
+            } catch (e) {
 
-         if (this.$v.authForm.$error) {
-            this.$toasted.error(this.$t('required_fields'));
-            return;
-         }
-
-         if (this.authStep === "loggedIn") {
-            let phone = this.authForm.phone.replace(/[^0-9]+/g, '');
-            if (phone.length < 10) phone = `994${phone}`;
-
-            const res = await this.$axios.$post(this.$env().API_SECRET + '/auth/update/before-publish',
-               { phone: phone, email: this.authForm.email } );
-
-            if (res.message === 'success') this.isReady = !this.isReady;
-         } else if (this.authStep === "notLoggedIn") {
-            console.log('222')
-            await this.onPhoneVerification();
-         } else {
-            console.log('333')
-            await this.onOTPVerification();
-         }
-      },
-      async onPhoneVerification() {
-         this.pending = true;
-         try {
-            const res = await this.$axios
-               .$post(this.$env().API_SECRET + '/auth/login-or-register', {phone: this.authForm.phone.replace(/[^0-9]+/g, ''),})
-
-            this.authStep = 'handleOTP'
-            this.$nextTick(() => {
-               this.scrollTo('.otp', [-50, -190])
-            })
-            this.resendSmsAfterSecond = 30
-            this.$v.authForm.$reset()
-         } catch (e) {
-
-         } finally {
-            this.pending = false;
-         }
-      },
-      async onOTPVerification() {
-         this.pending = true;
-         this.authError = []
-         try {
-            const data = await this.$axios
-               .$post(this.$env().API_SECRET + '/auth/confirm-otp', {
-                  ...this.authForm,
-                  phone: this.authForm.phone.replace(/[^0-9]+/g, '')
-               })
-            this.fbTrack('Complete Registration Api')
-            this.gtagTrack('AW-600951956/-O6CCJGB2fIBEJSZx54C')
-            this.$auth.setUser(data.user.original)
-            await this.$auth.setUserToken(data.meta.token)
-            this.authStep = 'loggedIn'
+            }
+         },
+         onSubmitMonetizationModal() {
+            this.showModal = false
             this.isReady = !this.isReady
-            this.$v.authForm.$reset()
-         } catch (e) {
-            const errors = []
-            for (const key in e.response.data?.data) {
-               errors.push(key)
-            }
-            this.authError = errors
-            this.$nextTick(() => {
-               this.scrollTo('.form_error', [-50, -190])
-            })
-         } finally {
-            this.pending = false;
-         }
-      }
-   },
-   async mounted() {
-      if (Object.values(this.user).length) {
-         console.log('this.user.phone', this.user.phone)
-         this.authForm.name = this.user.full_name
-         this.authForm.email = this.user.email
-         this.authForm.phone = this.user.phone.toString().slice(3)
-      }
-      Object.values(this.user).length ? this.authStep = "loggedIn" : this.authStep = "notLoggedIn"
-      await this.$store.dispatch("getOptions")
-      await this.$store.dispatch("getColors")
-   },
-   validations: {
-      authForm: {
-         name: {required},
-         email: {
-            email, required
          },
-         phone: {required},
-         code: {
-            required: requiredIf(function () {
-               return !(this.authStep === "loggedIn" || this.authStep === "notLoggedIn")
-            })
+         async onClick() {
+            this.$v.authForm.$touch();
+            setTimeout(() => {
+               this.scrollTo('.form_error', -190)
+            });
+
+            if (this.$v.authForm.$error) {
+               this.$toasted.error(this.$t('required_fields'));
+               return;
+            }
+
+            if (this.authStep === "loggedIn") {
+               let phone = this.authForm.phone.replace(/[^0-9]+/g, '');
+               if (phone.length < 10) phone = `994${phone}`;
+
+               const res = await this.$axios.$post(this.$env().API_SECRET + '/auth/update/before-publish',
+                  { phone: phone, email: this.authForm.email } );
+
+               if (res.message === 'success') this.isReady = !this.isReady;
+            } else if (this.authStep === "notLoggedIn") {
+               console.log('222')
+               await this.onPhoneVerification();
+            } else {
+               console.log('333')
+               await this.onOTPVerification();
+            }
+         },
+         async onPhoneVerification() {
+            this.pending = true;
+            try {
+               const res = await this.$axios
+                  .$post(this.$env().API_SECRET + '/auth/login-or-register', {phone: this.authForm.phone.replace(/[^0-9]+/g, ''),})
+
+               this.authStep = 'handleOTP'
+               this.$nextTick(() => {
+                  this.scrollTo('.otp', [-50, -190])
+               })
+               this.resendSmsAfterSecond = 30
+               this.$v.authForm.$reset()
+            } catch (e) {
+
+            } finally {
+               this.pending = false;
+            }
+         },
+         async onOTPVerification() {
+            this.pending = true;
+            this.authError = []
+            try {
+               const data = await this.$axios
+                  .$post(this.$env().API_SECRET + '/auth/confirm-otp', {
+                     ...this.authForm,
+                     phone: this.authForm.phone.replace(/[^0-9]+/g, '')
+                  })
+               this.fbTrack('Complete Registration Api')
+               this.gtagTrack('AW-600951956/-O6CCJGB2fIBEJSZx54C')
+               this.$auth.setUser(data.user.original)
+               await this.$auth.setUserToken(data.meta.token)
+               this.authStep = 'loggedIn'
+               this.isReady = !this.isReady
+               this.$v.authForm.$reset()
+            } catch (e) {
+               const errors = []
+               for (const key in e.response.data?.data) {
+                  errors.push(key)
+               }
+               this.authError = errors
+               this.$nextTick(() => {
+                  this.scrollTo('.form_error', [-50, -190])
+               })
+            } finally {
+               this.pending = false;
+            }
+         }
+      },
+
+      computed: {
+         ...mapGetters(['staticPages', 'servicePackages', 'settingsV2', 'sellOptions']),
+
+         getRulesPage() {
+            return this.staticPages.find(page => page.id == 1);
+         },
+         cantChangePhone() {
+            return !!Object.keys(this.user).length && !this.changePhone
+         },
+         inLimit() {
+            return (this.form.announce_type?.id === 1 && this.user.announce_left_car < 1) || (this.form.announce_type?.id === 4 && this.user.announce_left_moto < 1)
+         }
+      },
+
+      async asyncData({ store }) {
+         await Promise.all([
+            store.dispatch('getServicePackages'),
+            store.dispatch('getSettingsV2'),
+            store.dispatch('getBrands'),
+            store.dispatch('getAllOtherOptions', '2')
+         ]);
+      },
+
+      async mounted() {
+         if (Object.values(this.user).length) {
+            console.log('this.user.phone', this.user.phone)
+            this.authForm.name = this.user.full_name
+            this.authForm.email = this.user.email
+            this.authForm.phone = this.user.phone.toString().slice(3)
+         }
+         Object.values(this.user).length ? this.authStep = "loggedIn" : this.authStep = "notLoggedIn"
+         await this.$store.dispatch("getOptions")
+         await this.$store.dispatch("getColors")
+      },
+
+      validations: {
+         authForm: {
+            name: {required},
+            email: {
+               email, required
+            },
+            phone: {required},
+            code: {
+               required: requiredIf(function () {
+                  return !(this.authStep === "loggedIn" || this.authStep === "notLoggedIn")
+               })
+            }
          }
       }
-   }
-};
+   };
 </script>
 
 <style lang="scss">
-
-
-.add_announce {
-   padding: 24px 0 160px 0;
-
-   input:checked ~ label {
-      background-color: #EFF4FF;
-   }
-
-   .other_parameters__checkbox, .vin {
-      input:checked ~ label {
-         background-color: inherit;
-      }
-   }
-
-   .divider {
-      display: grid;
-      grid-template-columns: repeat(2, calc(50% - 8px));
-      gap: 16px;
-   }
-
-   .divider_3 {
-      display: grid;
-      grid-template-columns: repeat(3, calc(33% - 8px));
-      gap: 16px;
-   }
-
-   &_title {
-      font-size: 22px;
-      font-weight: 700;
-      margin-bottom: 24px;
-   }
-
-   .btn {
-      height: 52px;
-   }
-
-   .announce_container {
-      position: relative;
-
-      .announce_view {
-         display: flex;
-         flex-direction: column;
-         gap: 24px;
-
-         .main_card {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            padding: 24px;
-            border-radius: 16px;
-            background: #FFF;
-
-            .card_title {
-               font-size: 20px;
-               font-weight: 600;
-               margin-top: 4px;
-            }
-
-            &_info {
-               display: flex;
-               gap: 20px;
-
-               .add_announce_info {
-                  width: 50%;
-                  display: flex;
-                  align-items: center;
-                  padding: 16px;
-                  gap: 12px;
-                  background-color: #EEF2F6;
-                  border-radius: 12px;
-                  font-size: 14px;
-                  font-style: normal;
-                  font-weight: 400;
-
-                  &.full {
-                     width: 100%;
-                  }
-
-
-                  &_svg {
-                     min-width: 32px;
-                     min-height: 32px;
-                     color: #155EEF;
-                  }
-               }
-
-               .mobile_info {
-                  width: 50%;
-                  display: flex;
-                  align-items: center;
-                  padding: 16px;
-                  gap: 12px;
-                  background-color: #ECFDF3;
-                  border-radius: 12px;
-                  font-size: 15px;
-                  font-style: normal;
-                  font-weight: 500;
-
-                  &_svg {
-                     min-width: 32px;
-                     min-height: 32px;
-                     color: #12B76A;
-                  }
-
-                  p {
-                     color: #12B76A;
-
-                     strong {
-                        color: #081A3E;
-                     }
-                  }
-               }
-            }
-
-            .toggle_item {
-               overflow: hidden;
-
-               .announcement_item {
-                  display: flex;
-                  align-items: center;
-                  gap: 8px;
-                  height: 52px;
-                  padding: 4px 16px;
-               }
-
-               &.active {
-                  .announcement_item {
-                     background-color: #EFF4FF;
-
-                     svg {
-                        color: #155eef;
-                     }
-                  }
-               }
-            }
-         }
-
-         .card {
-            width: 100%;
-            flex-grow: 3;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-
-
-            &_container {
-               display: flex;
-               gap: 36px;
-
-               .add_announce_form {
-                  display: flex;
-                  flex-grow: 1;
-                  flex-direction: column;
-                  gap: 20px;
-                  width: 100%;
-
-                  .comment_info {
-                     display: flex;
-                     align-items: center;
-                     gap: 10px;
-
-                     svg {
-                        min-width: 24px;
-                        min-height: 24px;
-                     }
-                  }
-
-               }
-            }
-
-            .contacts {
-               display: flex;
-               flex-direction: column;
-               gap: 16px;
-               margin-top: 24px;
-
-               svg {
-                  min-width: 24px;
-                  min-height: 24px;
-               }
-
-               h2 {
-                  margin-bottom: 4px;
-               }
-
-               .auth_column {
-                  display: flex;
-                  flex-wrap: wrap;
-                  gap: 16px;
-
-                  & > * {
-                     width: calc(50% - 8px);
-                  }
-
-                  .change_number {
-                     position: absolute;
-                     top: 50%;
-                     right: 9px;
-                     transform: translateY(-50%);
-                     height: 34px;
-                     padding: 8px;
-                     border-radius: 8px;
-                     background: #F81734;
-                     font-size: 15px;
-                     font-weight: 500;
-                     color: white;
-                  }
-
-                  .contacts_info {
-                     display: flex;
-                     align-items: center;
-                     gap: 10px;
-                     padding: 10px 16px;
-                     height: 52px;
-                     background-color: #EEF2F6;
-                     border-radius: 8px;
-                     font-size: 14px;
-                     font-weight: 400;
-                     line-height: 16px;
-                  }
-               }
-
-
-               .resend_section {
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  gap: 4px;
-
-                  .otp_timer {
-                     color: #2970FF;
-                  }
-
-                  p {
-                     color: #9AA4B2;
-                     font-size: 16px;
-                     font-weight: 500;
-
-                     &.link_active {
-                        color: #2970FF;
-                        font-size: 16px;
-                        font-weight: 500;
-                        text-decoration-line: underline;
-                        cursor: pointer;
-                     }
-                  }
-               }
-
-               .submit_button {
-                  display: flex;
-                  flex-direction: column;
-                  gap: 16px;
-
-                  .limit_error {
-                     display: flex;
-                     align-items: center;
-                     padding: 16px;
-                     gap: 12px;
-                     border: 1px solid #F81734;
-                     background-color: #FEF3F2;
-                     color: #F81734;
-                     border-radius: 12px;
-                     font-size: 13px;
-                     font-weight: 500;
-                  }
-               }
-            }
-         }
-
-         .beaten_suffix {
-            position: relative;
-            z-index: 1;
-            margin-left: auto;
-            cursor: progress;
-         }
-
-         .comment {
-            &_info {
-               display: flex;
-               align-items: center;
-               gap: 10px;
-            }
-         }
-      }
-
-      .baloon {
-         height: 100%;
-         position: sticky;
-         width: min-content;
-         margin-left: auto;
-         bottom: 0;
-         transform: translate(55px, -70px);
-
-         svg {
-            cursor: pointer;
-         }
-      }
-   }
-}
-
-.car_identification {
-   padding: 14px 16px;
-   align-items: center;
-   gap: 8px;
-   border-radius: 8px;
-   border: 1px solid #155EEF;
-   height: -webkit-fill-available;
-   height: -moz-available;
-   height: fill-available;
-
-   .car_number_form {
-      .registrationMarks {
-         margin-bottom: 20px;
-
-         p {
-            font-size: 16px;
-            font-weight: 500;
-         }
-
-         &__number {
-            position: relative;
-            border: 7px solid #121926;
-            background-color: #121926;
-            border-bottom-width: 14px;
-            border-radius: 8px 8px 0 0;
-
-            &-inner {
-               border-radius: 5px;
-               padding: 0 6px;
-               background-color: #FFFFFF;
-               display: flex;
-               align-items: center;
-            }
-
-            &-description {
-               position: absolute;
-               left: 50%;
-               bottom: -12px;
-               transform: translateX(-50%);
-               font-family: 'DinMittelschriftgepraegt', sans-serif;
-               font-size: 8px;
-               line-height: 9px;
-               color: #FFFFFF;
-            }
-
-            input {
-               text-align: center;
-               border: unset;
-               font-size: 25px;
-               font-weight: 700;
-               line-height: 40.855px;
-               padding: 6px;
-               background-color: #fff !important;
-            }
-         }
-      }
-
-      .vin {
-         p {
-            font-size: 16px;
-            font-weight: 500;
-         }
-
-         .checkbox-input label {
-            border: unset;
-            padding: unset;
-         }
-      }
-
-   }
-
-   .car_number_info {
-      display: flex !important;
-      flex-direction: column;
-      height: inherit;
-      padding: 14px 16px;
-      justify-content: center;
-      align-items: center;
-      gap: 24px;
-      border-radius: 8px;
-      border: 1px solid #CDD5DF;
-      font-size: 12px;
-      font-weight: 400;
-
-      strong {
-         font-weight: 500;
-         text-decoration-line: underline;
-      }
-   }
-}
-
-.dark-mode {
    .add_announce {
+      padding: 24px 0 160px 0;
+
+      input:checked ~ label {
+         background-color: #EFF4FF;
+      }
+
+      .other_parameters__checkbox, .vin {
+         input:checked ~ label {
+            background-color: inherit;
+         }
+      }
+
+      .divider {
+         display: grid;
+         grid-template-columns: repeat(2, calc(50% - 8px));
+         gap: 16px;
+      }
+
+      .divider_3 {
+         display: grid;
+         grid-template-columns: repeat(3, calc(33% - 8px));
+         gap: 16px;
+      }
+
+      &_title {
+         font-size: 22px;
+         font-weight: 700;
+         margin-bottom: 24px;
+      }
+
       .btn {
          height: 52px;
       }
 
-
       .announce_container {
+         position: relative;
+
          .announce_view {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+
             .main_card {
-               background-color: #1B2434;
-
-               .toggle_item.active {
-                  .announcement_item {
-                     background-color: #121926;
-                  }
-               }
-
-               .main_card_info {
-                  .add_announce_info {
-                     background-color: #121926;
-                  }
-               }
-            }
-         }
-
-         .card {
-            .add_announce_info {
-               background-color: #364152;
-            }
-
-            &_container {
-               .add_announce_form {
-                  .info_svg {
-                     color: #4B5565 !important;
-                  }
-
-                  .checkbox-input input:checked ~ label {
-                     background-color: #121926 !important;
-
-                     .checkbox {
-                        background: #121926 !important;
-                     }
-                  }
-
-                  .other_parameters__checkbox, .vin {
-                     input ~ label, input:checked ~ label {
-                        background-color: transparent !important;
-                     }
-                  }
-               }
-            }
-
-            .contacts {
-
-               &_info {
-                  background-color: #121926 !important;
-               }
-            }
-         }
-      }
-
-   }
-
-   .baloon {
-      svg {
-         path:last-of-type {
-            fill: #000;
-
-         }
-      }
-   }
-}
-
-
-//@media (max-width: 1150px) {
-//   .form_navigation {
-//      display: none;
-//   }
-//}
-
-@media (max-width: 1150px) {
-   .mobile-column {
-      display: flex;
-      flex-direction: column;
-   }
-   .add_announce {
-      padding: 24px 0 32px 0;
-
-      &_title {
-         font-size: 24px;
-         font-weight: 700;
-         margin-bottom: 16px;
-      }
-
-      .announce_container {
-         .divider {
-
-            &.mobile-column {
                display: flex;
                flex-direction: column;
+               gap: 20px;
+               padding: 24px;
+               border-radius: 16px;
+               background: #FFF;
+
+               .card_title {
+                  font-size: 20px;
+                  font-weight: 600;
+                  margin-top: 4px;
+               }
+
+               &_info {
+                  display: flex;
+                  gap: 20px;
+
+                  .add_announce_info {
+                     width: 50%;
+                     display: flex;
+                     align-items: center;
+                     padding: 16px;
+                     gap: 12px;
+                     background-color: #EEF2F6;
+                     border-radius: 12px;
+                     font-size: 14px;
+                     font-style: normal;
+                     font-weight: 400;
+
+                     &.full {
+                        width: 100%;
+                     }
+
+
+                     &_svg {
+                        min-width: 32px;
+                        min-height: 32px;
+                        color: #155EEF;
+                     }
+                  }
+
+                  .mobile_info {
+                     width: 50%;
+                     display: flex;
+                     align-items: center;
+                     padding: 16px;
+                     gap: 12px;
+                     background-color: #ECFDF3;
+                     border-radius: 12px;
+                     font-size: 15px;
+                     font-style: normal;
+                     font-weight: 500;
+
+                     &_svg {
+                        min-width: 32px;
+                        min-height: 32px;
+                        color: #12B76A;
+                     }
+
+                     p {
+                        color: #12B76A;
+
+                        strong {
+                           color: #081A3E;
+                        }
+                     }
+                  }
+               }
+
+               .toggle_item {
+                  overflow: hidden;
+
+                  .announcement_item {
+                     display: flex;
+                     align-items: center;
+                     gap: 8px;
+                     height: 52px;
+                     padding: 4px 16px;
+                  }
+
+                  &.active {
+                     .announcement_item {
+                        background-color: #EFF4FF;
+
+                        svg {
+                           color: #155eef;
+                        }
+                     }
+                  }
+               }
+            }
+
+            .card {
+               width: 100%;
+               flex-grow: 3;
+               display: flex;
+               flex-direction: column;
+               gap: 20px;
+
+
+               &_container {
+                  display: flex;
+                  gap: 36px;
+
+                  .add_announce_form {
+                     display: flex;
+                     flex-grow: 1;
+                     flex-direction: column;
+                     gap: 20px;
+                     width: 100%;
+
+                     .comment_info {
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+
+                        svg {
+                           min-width: 24px;
+                           min-height: 24px;
+                        }
+                     }
+
+                  }
+               }
+
+               .contacts {
+                  display: flex;
+                  flex-direction: column;
+                  gap: 16px;
+                  margin-top: 24px;
+
+                  svg {
+                     min-width: 24px;
+                     min-height: 24px;
+                  }
+
+                  h2 {
+                     margin-bottom: 4px;
+                  }
+
+                  .auth_column {
+                     display: flex;
+                     flex-wrap: wrap;
+                     gap: 16px;
+
+                     & > * {
+                        width: calc(50% - 8px);
+                     }
+
+                     .change_number {
+                        position: absolute;
+                        top: 50%;
+                        right: 9px;
+                        transform: translateY(-50%);
+                        height: 34px;
+                        padding: 8px;
+                        border-radius: 8px;
+                        background: #F81734;
+                        font-size: 15px;
+                        font-weight: 500;
+                        color: white;
+                     }
+
+                     .contacts_info {
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        padding: 10px 16px;
+                        height: 52px;
+                        background-color: #EEF2F6;
+                        border-radius: 8px;
+                        font-size: 14px;
+                        font-weight: 400;
+                        line-height: 16px;
+                     }
+                  }
+
+
+                  .resend_section {
+                     display: flex;
+                     align-items: center;
+                     justify-content: center;
+                     gap: 4px;
+
+                     .otp_timer {
+                        color: #2970FF;
+                     }
+
+                     p {
+                        color: #9AA4B2;
+                        font-size: 16px;
+                        font-weight: 500;
+
+                        &.link_active {
+                           color: #2970FF;
+                           font-size: 16px;
+                           font-weight: 500;
+                           text-decoration-line: underline;
+                           cursor: pointer;
+                        }
+                     }
+                  }
+
+                  .submit_button {
+                     display: flex;
+                     flex-direction: column;
+                     gap: 16px;
+
+                     //.limit_error {
+                     //   display: flex;
+                     //   align-items: center;
+                     //   padding: 16px;
+                     //   gap: 12px;
+                     //   border: 1px solid #F81734;
+                     //   background-color: #FEF3F2;
+                     //   color: #F81734;
+                     //   border-radius: 12px;
+                     //   font-size: 13px;
+                     //   font-weight: 500;
+                     //}
+                  }
+               }
+            }
+
+            .beaten_suffix {
+               position: relative;
+               z-index: 1;
+               margin-left: auto;
+               cursor: progress;
+            }
+
+            .comment {
+               &_info {
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+               }
             }
          }
 
-         .card {
+         .baloon {
+            height: 100%;
+            position: sticky;
+            width: min-content;
+            margin-left: auto;
+            bottom: 0;
+            transform: translate(55px, -70px);
 
-            &_title {
-               font-size: 20px;
+            svg {
+               cursor: pointer;
             }
          }
       }
    }
-   .main_card {
 
-      &_info {
-         flex-direction: column;
+   .car_identification {
+      padding: 14px 16px;
+      align-items: center;
+      gap: 8px;
+      border-radius: 8px;
+      border: 1px solid #155EEF;
+      height: -webkit-fill-available;
+      height: -moz-available;
+      height: fill-available;
 
-         .add_announce_info, .mobile_info {
-            width: 100% !important;
+      .car_number_form {
+         .registrationMarks {
+            margin-bottom: 20px;
+
+            p {
+               font-size: 16px;
+               font-weight: 500;
+            }
+
+            &__number {
+               position: relative;
+               border: 7px solid #121926;
+               background-color: #121926;
+               border-bottom-width: 14px;
+               border-radius: 8px 8px 0 0;
+
+               &-inner {
+                  border-radius: 5px;
+                  padding: 0 6px;
+                  background-color: #FFFFFF;
+                  display: flex;
+                  align-items: center;
+               }
+
+               &-description {
+                  position: absolute;
+                  left: 50%;
+                  bottom: -12px;
+                  transform: translateX(-50%);
+                  font-family: 'DinMittelschriftgepraegt', sans-serif;
+                  font-size: 8px;
+                  line-height: 9px;
+                  color: #FFFFFF;
+               }
+
+               input {
+                  text-align: center;
+                  border: unset;
+                  font-size: 25px;
+                  font-weight: 700;
+                  line-height: 40.855px;
+                  padding: 6px;
+                  background-color: #fff !important;
+               }
+            }
          }
+
+         .vin {
+            p {
+               font-size: 16px;
+               font-weight: 500;
+            }
+
+            .checkbox-input label {
+               border: unset;
+               padding: unset;
+            }
+         }
+
       }
 
-      .toggle_container {
-         display: grid !important;
-         grid-template-columns: repeat(2, 1fr);
+      .car_number_info {
+         display: flex !important;
+         flex-direction: column;
+         height: inherit;
+         padding: 14px 16px;
+         justify-content: center;
+         align-items: center;
+         gap: 24px;
+         border-radius: 8px;
+         border: 1px solid #CDD5DF;
+         font-size: 12px;
+         font-weight: 400;
 
+         strong {
+            font-weight: 500;
+            text-decoration-line: underline;
+         }
       }
    }
-   .contacts {
-      .auth_column {
-         flex-wrap: nowrap;
-         flex-direction: column;
 
-         & > * {
-            width: 100% !important;
+   .dark-mode {
+      .add_announce {
+         .btn {
+            height: 52px;
          }
 
-         button {
-            order: 2;
+
+         .announce_container {
+            .announce_view {
+               .main_card {
+                  background-color: #1B2434;
+
+                  .toggle_item.active {
+                     .announcement_item {
+                        background-color: #121926;
+                     }
+                  }
+
+                  .main_card_info {
+                     .add_announce_info {
+                        background-color: #121926;
+                     }
+                  }
+               }
+            }
+
+            .card {
+               .add_announce_info {
+                  background-color: #364152;
+               }
+
+               &_container {
+                  .add_announce_form {
+                     .info_svg {
+                        color: #4B5565 !important;
+                     }
+
+                     .checkbox-input input:checked ~ label {
+                        background-color: #121926 !important;
+
+                        .checkbox {
+                           background: #121926 !important;
+                        }
+                     }
+
+                     .other_parameters__checkbox, .vin {
+                        input ~ label, input:checked ~ label {
+                           background-color: transparent !important;
+                        }
+                     }
+                  }
+               }
+
+               .contacts {
+
+                  &_info {
+                     background-color: #121926 !important;
+                  }
+               }
+            }
+         }
+
+      }
+
+      .baloon {
+         svg {
+            path:last-of-type {
+               fill: #000;
+
+            }
          }
       }
    }
 
-}
+   @media (max-width: 1150px) {
+      .mobile-column {
+         display: flex;
+         flex-direction: column;
+      }
+      .add_announce {
+         padding: 24px 0 32px 0;
+
+         &_title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 16px;
+         }
+
+         .announce_container {
+            .divider {
+
+               &.mobile-column {
+                  display: flex;
+                  flex-direction: column;
+               }
+            }
+
+            .card {
+
+               &_title {
+                  font-size: 20px;
+               }
+            }
+         }
+      }
+      .main_card {
+         &_info {
+            flex-direction: column;
+
+            .add_announce_info, .mobile_info {
+               width: 100% !important;
+            }
+         }
+
+         .toggle_container {
+            display: grid !important;
+            grid-template-columns: repeat(2, 1fr);
+
+         }
+      }
+      .contacts {
+         .auth_column {
+            flex-wrap: nowrap;
+            flex-direction: column;
+
+            & > * {
+               width: 100% !important;
+            }
+
+            button {
+               order: 2;
+            }
+         }
+      }
+   }
 </style>

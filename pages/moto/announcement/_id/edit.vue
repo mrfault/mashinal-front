@@ -1,12 +1,18 @@
 <template>
    <div class="pages-announcement-edit">
       <div class="container">
-         <breadcrumbs :crumbs="crumbs"/>
+         <breadcrumbs :crumbs="crumbs" />
+
          <div class="announce_container">
             <div class="card">
                <form class="add_announce_form">
-                  <moto_form isEdit :announcement="announcement" :isReady="isReady"
-                             @getForm="getMotoForm($event)"/>
+                  <moto_form
+                     isEdit
+                     :announcement="announcement"
+                     :isReady="isReady"
+                     @getForm="getMotoForm($event)"
+                  />
+
                   <button type="button" @click="onClick()" class="btn full-width btn--pale-green-outline active">
                      {{ $t("place_announcement") }}
                   </button>
@@ -19,13 +25,11 @@
 
 <script>
 import {mapGetters, mapActions} from 'vuex';
-
 import SellLastStep from '~/components/sell/SellLastStep';
 import SellPreview from '~/components/sell/SellPreview';
 import Part_form from "~/components/sell/part_form.vue";
 import Moto_form from "~/components/sell/moto_form.vue";
 import GridItem from "~/components/announcements/GridItem.vue";
-import Car_form from "~/components/sell/car_form.vue";
 import Registration_mark from "~/components/sell/registration_mark.vue";
 import {ToastErrorsMixin} from "~/mixins/toast-errors";
 import {PaymentMixin} from "~/mixins/payment";
@@ -34,7 +38,7 @@ export default {
    name: 'pages-cars-announcement-edit',
    middleware: 'auth_general',
    components: {
-      Registration_mark, Car_form, GridItem, Moto_form, Part_form,
+      Registration_mark, GridItem, Moto_form, Part_form,
       SellLastStep,
       SellPreview
    },

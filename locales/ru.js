@@ -2906,9 +2906,13 @@ export default {
    got_it: "Понятно",
    rent: "Аренда",
    is_rent: "Сдаётся в аренду",
-   only_turbo: "Nəzərinizə çatdırırıq ki, siz <span>\"Turbo\" reklam paketi ({price} AZN)</span> seçimini etdiyinizə görə ödəniş edəcəksiniz. <span>Cəmi: {price} AZN</span>",
-   only_additional: "Nəzərinizə çatdırırıq ki, siz pulsuz elan limitini aşdığınıza görə <span>əlavə elan üçün ({price} AZN)</span> ödəniş edəcəksiniz. <span>Cəmi: {price} AZN</span>",
-   turbo_n_additional: "Nəzərinizə çatdırırıq ki, siz <span>\"Turbo\" reklam paketi ({turboPrice} AZN)</span> seçimini etmisiniz. Həmçinin pulsuz elan limitini aşdığınıza görə <span>əlavə elan üçün ({additionalPrice} AZN)</span> ödəniş edəcəksiniz. <span>Cəmi: {totalPrice} AZN</span>",
+   only_turbo: "Сообщаем Вам, что Вы выбрали рекламный пакет <span>\"Турбо\" ({price} AZN)</span> С вас будет взиматься дополнительная плата за выбранную услугу. <span>Итого: {price} AZN</span>",
+
+   only_additional: "Сообщаем Вам, что Вы превысили лимит размещения бесплатных объявлений. <span>С вас будет взиматься дополнительная плата ({price} AZN)</span> <span>Итого: {price} AZN</span>",
+
+   turbo_n_additional: "Сообщаем Вам, что Вы выбрали рекламный пакет <span>\"Турбо\" ({turboPrice} AZN)</span>. Также  с вас будет взиматься плата <span>({additionalPrice} AZN)</span> за превышение лимита бесплатного объявления. <span>Итого: {totalPrice} AZN</span>",
+
+   turbo_n_description: 'При нажатии кнопки "ОПЛАТИТЬ" вы будете перенаправлены на страницу оплаты.',
    "Aktiv elan sayı 3-dən çox ola bilməz": "Aktiv elan sayı 3-dən çox ola bilməz ru",
    "terms_and_rule": "Условия и положения",
    "this_announcement_belongs_to_another_user": "Это объявление принадлежит другому пользователю",
