@@ -182,12 +182,12 @@
             :content="
                form.add_monetization === 1 && inLimit ? $t('turbo_n_additional', {
                   turboPrice: settingsV2?.settings?.promotion_price,
-                  additionalPrice: settingsV2?.settings?.restore_price,
-                  totalPrice: +settingsV2?.settings?.promotion_price + +settingsV2?.settings?.restore_price
+                  additionalPrice: settingsV2?.settings?.additional_price,
+                  totalPrice: +settingsV2?.settings?.promotion_price + +settingsV2?.settings?.additional_price
                }) : form.add_monetization === 1 ? $t('only_turbo', {
                   price: settingsV2?.settings?.promotion_price
                }) : $t('only_additional', {
-                  price: settingsV2?.settings?.restore_price
+                  price: settingsV2?.settings?.additional_price
                })"
             @close="showModal = false"
             @onSubmit="onSubmitMonetizationModal"

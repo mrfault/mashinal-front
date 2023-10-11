@@ -606,11 +606,16 @@ input::-webkit-inner-spin-button {
       }
 
       .counter {
+         display: block;
          position: relative;
          top: 10px;
          height: 20px;
          font-size: 12px;
          border-radius: 4px;
+
+         text-overflow: ellipsis;
+         overflow: hidden;
+         white-space: nowrap;
       }
 
       .text-truncate {
@@ -1654,6 +1659,16 @@ input::-webkit-inner-spin-button {
       &_dropdown {
          &.show {
             border: none;
+         }
+      }
+   }
+}
+
+@media (max-width: 576px) {
+   .select-menu {
+      &_label {
+         .text-truncate {
+            width: 90% !important;
          }
       }
    }

@@ -1159,6 +1159,10 @@ export default {
          align-items: center;
          gap: 10px;
          margin-top: 10px;
+
+         svg {
+            min-width: 24px;
+         }
       }
    }
 

@@ -137,7 +137,7 @@ export default {
             let payment_id = res?.data?.payment_id;
 
             if (payment_id) {
-               this.connectEcho(`purchase.${payment_id}`, false).listen('PurchaseInitiated', async (data) => {
+               this.connectEcho(`purchase.${payment_id}`, false).listen('purchase.initiated', async (data) => {
                   this.closePaymentModal();
                   let {is_paid, status} = data.payment;
                   let paid = is_paid || status === 1;
@@ -161,7 +161,7 @@ export default {
                   }
 
                   const stopListening = () => {
-                     this.connectEcho(`purchase.${payment_id}`, false).stopListening('PurchaseInitiated');
+                     this.connectEcho(`purchase.${payment_id}`, false).stopListening('purchase.initiated');
                   }
 
                   if (route) {
