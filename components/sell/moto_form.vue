@@ -599,6 +599,7 @@ export default {
          this.form.cylinders = this.announcement.cylinders
          this.form.number_of_vehicles = this.announcement.tact
          this.form.comment = this.announcement.comment
+         this.form.is_rent = this.announcement.is_rent
       }
    },
    validations() {
