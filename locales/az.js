@@ -2960,6 +2960,7 @@ export default {
    only_turbo: "Nəzərinizə çatdırırıq ki, siz <span>\"Turbo\" reklam paketi ({price} AZN)</span> seçimini etdiyinizə görə ödəniş edəcəksiniz. <span>Cəmi: {price} AZN</span>",
    only_additional: "Nəzərinizə çatdırırıq ki, siz pulsuz elan limitini aşdığınıza görə <span>əlavə elan üçün ({price} AZN)</span> ödəniş edəcəksiniz. <span>Cəmi: {price} AZN</span>",
    turbo_n_additional: "Nəzərinizə çatdırırıq ki, siz <span>\"Turbo\" reklam paketi ({turboPrice} AZN)</span> seçimini etmisiniz. Həmçinin pulsuz elan limitini aşdığınıza görə <span>əlavə elan üçün ({additionalPrice} AZN)</span> ödəniş edəcəksiniz. <span>Cəmi: {totalPrice} AZN</span>",
+   turbo_n_description: '"ÖDƏ" düyməsini sıxdıqda ödəniş səhifəsinə yönləndiriləcəksiniz.',
    "Aktiv elan sayı 3-dən çox ola bilməz": "Aktiv elan sayı 3-dən çox ola bilməz",
    "terms_and_rule": "Qaydalar və şərtlər",
    "this_announcement_belongs_to_another_user": "Bu elan başqa istifadəçiyə aiddir",

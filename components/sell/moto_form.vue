@@ -351,370 +351,381 @@
 </template>
 
 <script>
-import {mapActions, mapGetters} from "vuex";
-import ToggleGroup from "~/components/elements/ToggleGroup.vue";
-import PickOnMapButton from "~/components/elements/PickOnMapButton.vue";
-import {MenusDataMixin} from "~/mixins/menus-data";
-import {ToastErrorsMixin} from "~/mixins/toast-errors";
-import ImageComponent from "~/pages/sell/image-component.vue";
-import {maxValue, minLength, required, requiredIf} from "vuelidate/lib/validators";
-import RadioGroup from "~/components/moderator/RadioGroup.vue";
+   import {mapActions, mapGetters} from "vuex";
+   import ToggleGroup from "~/components/elements/ToggleGroup.vue";
+   import PickOnMapButton from "~/components/elements/PickOnMapButton.vue";
+   import {MenusDataMixin} from "~/mixins/menus-data";
+   import {ToastErrorsMixin} from "~/mixins/toast-errors";
+   import ImageComponent from "~/pages/sell/image-component.vue";
+   import {maxValue, minLength, required, requiredIf} from "vuelidate/lib/validators";
+   import RadioGroup from "~/components/moderator/RadioGroup.vue";
 
-export default {
-   components: {RadioGroup, ImageComponent, PickOnMapButton, ToggleGroup},
-   mixins: [MenusDataMixin, ToastErrorsMixin],
-   computed: {
-      ...mapGetters(['motoOptionsV2', 'motoBrands', 'motoModelsV2', 'sellOptions', 'colors', 'motoOptions', 'popularOptions']),
-      readyAllParameters() {
-         return this.form.model && this.motoModelsV2.length > 0
-      },
-      mileageTypeName() {
-         return this.form.mileage_type === 1 ? this.$t('char_kilometre') : this.$t('ml')
-      }
-   },
-   props: {
-      announcement: {
-         type: Object,
-      },
-      isReady: {
-         type: Boolean,
-         default: false
-      },
-      isEdit: {
-         type: Boolean,
-         default: false
-      },
-      region_id: {
-         type: Number,
-         required: true
-      }
-   },
-   data() {
-      return {
-         motoTypeKey: "",
-         priceTypes: [
-            {
-               id: 1,
-               name: {az: "AZN", ru: "AZN"},
-            },
-            {
-               id: 2,
-               name: {az: "USD", ru: "USD"},
-            },
-            {
-               id: 3,
-               name: {az: "EUR", ru: "EUR"},
-            },
-         ],
-         deletedFiles: [],
-         form: {
-            type_of_moto: "",
-            brand: "",
-            model: "",
-            year: "",
-            volume: "",
-            power: 0,
-            fuel: "",
-            box: "",
-            color: "",
-            gearing: "",
-            mileage: "",
-            mileage_type: 1,
-            is_new: false,
-            beaten: false,
-            customs_clearance: false,
-            guaranty: false,
-            address: "",
-            lng: 0,
-            lat: 0,
-            price: "",
-            currency: 1,
-            tradeable: false,
-            credit: false,
-            car_number: "",
-            show_car_number: false,
-            vin: "",
-            show_vin: false,
-            engine: "",
-            cylinders: "",
-            number_of_vehicles: "",
-            comment: "",
-            saved_images: [],
-            is_rent: false,
-         }
-      }
-   },
-   watch: {
-      'form.mileage_type'() {
-         if (this.form.is_new) {
-            if (this.form.mileage_type === 1 && this.form.mileage > 500) {
-               this.form.mileage = 500
-            }
-            if (this.form.mileage_type === 2 && this.form.mileage > 310) {
-               this.form.mileage = 310
-            }
-         }
-      },
-      'form.car_number'() {
-         !this.form.car_number && (this.form.show_car_number = false)
-      },
-      'form.vin'() {
-         !this.form.vin && (this.form.show_vin = false)
-      },
-      isReady() {
-         this.$v.form.$touch()
-         setTimeout(() => {
-            this.scrollTo('.form_error', -190)
-         });
-         if (this.$v.form.$error) {
-            this.$toasted.error(this.$t('required_fields'));
-            return;
-         }
-         const newForm = {
-            selectedBrand: this.form.brand.id,
-            selectedModel: this.form.model.id,
-            selectedYear: this.form.year,
-            selectedColor: this.form.color,
-            box: this.form.box,
-            mileage: this.form.mileage || 0,
-            mileage_measure: this.form.mileage_type,
-            region_id: this.form.region_id,
-            address: this.form.address,
-            lat: this.form.lat,
-            lng: this.form.lng,
-            vin: this.form.vin,
-            price: this.form.price,
-            currency: this.form.currency,
-            car_number: this.form.car_number,
-            show_car_number: this.form.show_car_number,
-            show_vin: this.form.show_vin,
-            comment: this.form.comment,
-            is_new: this.form.is_new === 1,
-            beaten: this.form.beaten,
-            customs_clearance: this.form.customs_clearance,
-            tradeable: this.form.tradeable,
-            credit: this.form.credit,
-            guaranty: this.form.guaranty,
-            saved_images: this.form.saved_images,
-            drive: this.form.gearing || 0,
-            fuel_type: this.form.fuel || 0,
-            owner_type: 0,
-            volume: this.form.volume,
-            power: this.form.power,
-            engine: this.form.engine || 0,
-            cylinders: this.form.cylinders || 0,
-            number_of_vehicles: this.form.number_of_vehicles || 0,
-            category: this.form.type_of_moto.id,
-            youtube: {"id": "", "thumb": ""},
-            is_rent: this.form.is_rent,
-         }
-         this.$emit("getForm", {
-            form: newForm,
-            deletedImages: (this.isEdit && this.deletedFiles.length) ? this.deletedFiles : []
-         })
-      }
-   },
+   export default {
+      components: {RadioGroup, ImageComponent, PickOnMapButton, ToggleGroup},
 
-   methods: {
-      ...mapActions(['getMotoBrandsV2', 'getMotoModelsV2', 'getMotoOptions']),
-      async onChangeMotoType({value}) {
-         this.form.brand = "";
-         this.form.model = "";
-         this.clearFields(['brand', 'model', 'year'])
-         if (value) {
-            await this.getMotoBrandsV2({value, whereHas: 0});
+      mixins: [MenusDataMixin, ToastErrorsMixin],
+
+      computed: {
+         ...mapGetters(['motoOptionsV2', 'motoBrands', 'motoModelsV2', 'sellOptions', 'colors', 'motoOptions', 'popularOptions']),
+
+         readyAllParameters() {
+            return this.form.model && this.motoModelsV2.length > 0
+         },
+
+         mileageTypeName() {
+            return this.form.mileage_type === 1 ? this.$t('char_kilometre') : this.$t('ml')
          }
       },
-      async onChangeMotoBrand(val) {
-         this.clearFields(['model', 'year'])
-         const value = this.form.type_of_moto.value;
-         if (this.form.brand.name) {
-            await this.getMotoModelsV2({value, id: val.id, whereHas: 0});
-         }
+
+      props: {
+         announcement: {
+            type: Object,
+         },
+         isReady: {
+            type: Boolean,
+            default: false
+         },
+         isEdit: {
+            type: Boolean,
+            default: false
+         },
+         // region_id: {
+         //    type: Number,
+         //    required: true
+         // }
       },
-      onChangeMotoModel() {
-         this.clearFields(['year'])
-      },
-      onChangeIsNew(isnew) {
-         if (isnew) {
-            if (this.form.mileage_type === 1 && this.form.mileage > 500) {
-               this.form.mileage = 500
+
+      data() {
+         return {
+            motoTypeKey: "",
+            priceTypes: [
+               {
+                  id: 1,
+                  name: {az: "AZN", ru: "AZN"},
+               },
+               {
+                  id: 2,
+                  name: {az: "USD", ru: "USD"},
+               },
+               {
+                  id: 3,
+                  name: {az: "EUR", ru: "EUR"},
+               },
+            ],
+            deletedFiles: [],
+            form: {
+               type_of_moto: "",
+               brand: "",
+               model: "",
+               year: "",
+               volume: "",
+               power: 0,
+               fuel: "",
+               box: "",
+               color: "",
+               gearing: "",
+               mileage: "",
+               mileage_type: 1,
+               is_new: false,
+               beaten: false,
+               customs_clearance: false,
+               guaranty: false,
+               address: "",
+               lng: 0,
+               lat: 0,
+               price: "",
+               currency: 1,
+               tradeable: false,
+               credit: false,
+               car_number: "",
+               show_car_number: false,
+               vin: "",
+               show_vin: false,
+               engine: "",
+               cylinders: "",
+               number_of_vehicles: "",
+               comment: "",
+               saved_images: [],
+               is_rent: false,
             }
-            if (this.form.mileage_type === 2 && this.form.mileage > 310) {
-               this.form.mileage = 310
-            }
          }
       },
-      toggleCurrency(currency) {
-         this.form.currency = currency.id
+
+      watch: {
+         'form.mileage_type'() {
+            if (this.form.is_new) {
+               if (this.form.mileage_type === 1 && this.form.mileage > 500) {
+                  this.form.mileage = 500
+               }
+               if (this.form.mileage_type === 2 && this.form.mileage > 310) {
+                  this.form.mileage = 310
+               }
+            }
+         },
+         'form.car_number'() {
+            !this.form.car_number && (this.form.show_car_number = false)
+         },
+         'form.vin'() {
+            !this.form.vin && (this.form.show_vin = false)
+         },
+         isReady() {
+            this.$v.form.$touch()
+            setTimeout(() => {
+               this.scrollTo('.form_error', -190)
+            });
+            if (this.$v.form.$error) {
+               this.$toasted.error(this.$t('required_fields'));
+               return;
+            }
+            const newForm = {
+               selectedBrand: this.form.brand.id,
+               selectedModel: this.form.model.id,
+               selectedYear: this.form.year,
+               selectedColor: this.form.color,
+               box: this.form.box,
+               mileage: this.form.mileage || 0,
+               mileage_measure: this.form.mileage_type,
+               // region_id: this.region_id,
+               address: this.form.address,
+               lat: this.form.lat,
+               lng: this.form.lng,
+               vin: this.form.vin,
+               price: this.form.price,
+               currency: this.form.currency,
+               car_number: this.form.car_number,
+               show_car_number: this.form.show_car_number,
+               show_vin: this.form.show_vin,
+               comment: this.form.comment,
+               is_new: this.form.is_new === 1,
+               beaten: this.form.beaten,
+               customs_clearance: this.form.customs_clearance,
+               tradeable: this.form.tradeable,
+               credit: this.form.credit,
+               guaranty: this.form.guaranty,
+               saved_images: this.form.saved_images,
+               drive: this.form.gearing || 0,
+               fuel_type: this.form.fuel || 0,
+               owner_type: 0,
+               volume: this.form.volume,
+               power: this.form.power,
+               engine: this.form.engine || 0,
+               cylinders: this.form.cylinders || 0,
+               number_of_vehicles: this.form.number_of_vehicles || 0,
+               category: this.form.type_of_moto.id,
+               youtube: {"id": "", "thumb": ""},
+               is_rent: this.form.is_rent
+            }
+            this.$emit("getForm", {
+               form: newForm,
+               deletedImages: (this.isEdit && this.deletedFiles.length) ? this.deletedFiles : []
+            })
+         }
       },
-      updateAddress(address) {
-         this.form.address = address;
-         this.removeError('address');
+
+      methods: {
+         ...mapActions(['getMotoBrandsV2', 'getMotoModelsV2', 'getMotoOptions']),
+
+         async onChangeMotoType({value}) {
+            this.form.brand = "";
+            this.form.model = "";
+            this.clearFields(['brand', 'model', 'year'])
+            if (value) {
+               await this.getMotoBrandsV2({value, whereHas: 0});
+            }
+         },
+         async onChangeMotoBrand(val) {
+            this.clearFields(['model', 'year'])
+            const value = this.form.type_of_moto.value;
+            if (this.form.brand.name) {
+               await this.getMotoModelsV2({value, id: val.id, whereHas: 0});
+            }
+         },
+         onChangeMotoModel() {
+            this.clearFields(['year'])
+         },
+         onChangeIsNew(isnew) {
+            if (isnew) {
+               if (this.form.mileage_type === 1 && this.form.mileage > 500) {
+                  this.form.mileage = 500
+               }
+               if (this.form.mileage_type === 2 && this.form.mileage > 310) {
+                  this.form.mileage = 310
+               }
+            }
+         },
+         toggleCurrency(currency) {
+            this.form.currency = currency.id
+         },
+         updateAddress(address) {
+            this.form.address = address;
+            this.removeError('address');
+         },
+         updateLatLng({lat, lng}) {
+            this.form.lat = lat;
+            this.form.lng = lng;
+         },
+         clearFields(keys) {
+            keys.forEach((key) => {
+               this.form[key] = "";
+            })
+         }
       },
-      updateLatLng({lat, lng}) {
-         this.form.lat = lat;
-         this.form.lng = lng;
+
+      async fetch() {
+         // await this.getMotoOptions();
+         await this.$store.dispatch("getMotoOptions")
+         await this.$store.dispatch("getPopularOptions")
       },
-      clearFields(keys) {
-         keys.forEach((key) => {
-            this.form[key] = "";
-         })
-      }
-   },
-   async fetch() {
-      // await this.getMotoOptions();
-      await this.$store.dispatch("getMotoOptions")
-      await this.$store.dispatch("getPopularOptions")
-   },
-   mounted() {
-      if (this.isEdit) {
-         this.form.type_of_moto = {id: this.announcement.type_of_moto}
-         this.form.year = this.announcement.year
-         this.form.volume = this.announcement.capacity
-         this.form.power = this.announcement.power
-         this.form.fuel = this.announcement.engine_type_id
-         this.form.box = this.announcement.box_id
-         this.form.saved_images = this.announcement.mediaIds
-         this.form.color = this.announcement.color.id
-         this.form.gearing = this.announcement.gear_id
-         this.form.mileage = this.announcement.mileage
-         this.form.mileage_type = this.announcement.mileage_measure
-         this.form.is_new = this.announcement.is_new ? 1 : 0
-         this.form.beaten = this.announcement.status_id ? 1 : 0
-         this.form.guaranty = this.announcement.guaranty
-         this.form.address = this.announcement.address
-         this.form.lat = Number(this.announcement.latitude)
-         this.form.lng = Number(this.announcement.longitude)
-         this.form.price = this.announcement.price_int
-         this.form.currency = this.announcement.currency_id
-         this.form.tradeable = this.announcement.tradeable
-         this.form.credit = this.announcement.credit
-         this.form.car_number = this.announcement.car_number
-         this.form.show_car_number = this.announcement.show_car_number
-         this.form.vin = this.announcement.vin
-         this.form.show_vin = this.announcement.show_vin
-         this.form.customs_clearance = this.announcement.customed_id
-         this.form.engine = this.announcement.engine_type_id
-         this.form.cylinders = this.announcement.cylinders
-         this.form.number_of_vehicles = this.announcement.tact
-         this.form.comment = this.announcement.comment
-         this.form.is_rent = this.announcement.is_rent
-         this.form.region_id = this.announcement.region_id
-      }
-   },
-   validations() {
-      return {
-         form: {
-            year: {required},
-            color: {required},
-            volume: {required},
-            mileage: {
-               required: requiredIf(function () {
-                  return !this.form.is_new
-               }),
-               maxValue: maxValue(this.form.is_new ? 500 : 10000000)
-            },
-            price: {required},
-            country_id: {
-               required: requiredIf(function () {
-                  return !!this.user.external_salon
-               })
-            },
-            saved_images: {required, minLength: minLength(3)}
+
+      mounted() {
+         if (this.isEdit) {
+            this.form.type_of_moto = {id: this.announcement.type_of_moto}
+            this.form.year = this.announcement.year
+            this.form.volume = this.announcement.capacity
+            this.form.power = this.announcement.power
+            this.form.fuel = this.announcement.engine_type_id
+            this.form.box = this.announcement.box_id
+            this.form.saved_images = this.announcement.mediaIds
+            this.form.color = this.announcement.color.id
+            this.form.gearing = this.announcement.gear_id
+            this.form.mileage = this.announcement.mileage
+            this.form.mileage_type = this.announcement.mileage_measure
+            this.form.is_new = this.announcement.is_new ? 1 : 0
+            this.form.beaten = this.announcement.status_id ? 1 : 0
+            this.form.guaranty = this.announcement.guaranty
+            this.form.address = this.announcement.address
+            this.form.lat = Number(this.announcement.latitude)
+            this.form.lng = Number(this.announcement.longitude)
+            this.form.price = this.announcement.price_int
+            this.form.currency = this.announcement.currency_id
+            this.form.tradeable = this.announcement.tradeable
+            this.form.credit = this.announcement.credit
+            this.form.car_number = this.announcement.car_number
+            this.form.show_car_number = this.announcement.show_car_number
+            this.form.vin = this.announcement.vin
+            this.form.show_vin = this.announcement.show_vin
+            this.form.customs_clearance = this.announcement.customed_id
+            this.form.engine = this.announcement.engine_type_id
+            this.form.cylinders = this.announcement.cylinders
+            this.form.number_of_vehicles = this.announcement.tact
+            this.form.comment = this.announcement.comment
+         }
+      },
+
+      validations() {
+         return {
+            form: {
+               year: {required},
+               color: {required},
+               volume: {required},
+               mileage: {
+                  required: requiredIf(function () {
+                     return !this.form.is_new
+                  }),
+                  maxValue: maxValue(this.form.is_new ? 500 : 10000000)
+               },
+               price: {required},
+               country_id: {
+                  required: requiredIf(function () {
+                     return !!this.user.external_salon
+                  })
+               },
+               saved_images: {required, minLength: minLength(3)}
+            }
          }
       }
    }
-}
 </script>
 
 <style lang="scss">
-.moto_form {
-   display: flex;
-   flex-grow: 1;
-   flex-direction: column;
-   gap: 20px;
+   .moto_form {
+      display: flex;
+      flex-grow: 1;
+      flex-direction: column;
+      gap: 20px;
 
-   .full_grid {
-      grid-column: 1/3;
-   }
+      .divider_3 {
+         display: flex;
+         gap: 16px;
+      }
 
-   .with-trailing input {
-      padding-right: 42px !important;
-   }
+      .full_grid {
+         grid-column: 1/3;
+      }
 
-   .head_section {
-      .inner_left, .inner_right {
+      .with-trailing input {
+         padding-right: 42px !important;
+      }
+
+      .head_section {
+         .inner_left, .inner_right {
+            display: flex;
+            flex-direction: column;
+            gap: 20px
+         }
+      }
+
+      .image_section {
+         h2 {
+            margin-bottom: 20px;
+         }
+
+         .image_info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+         }
+      }
+
+      .comment {
          display: flex;
          flex-direction: column;
-         gap: 20px
-      }
-   }
-
-   .image_section {
-      h2 {
-         margin-bottom: 20px;
-      }
-
-      .image_info {
-         display: flex;
-         align-items: center;
-         gap: 10px;
-         margin-top: 10px;
-      }
-   }
-
-   .comment {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      height: 100%;
-
-      .form-group {
+         gap: 16px;
          height: 100%;
 
-         * {
+         .form-group {
             height: 100%;
-         }
-      }
 
-      &_info {
-         display: flex;
-         align-items: center;
-         gap: 10px;
-
-         .invalid_paragraph {
-            color: red
-         }
-      }
-   }
-
-   .price_types {
-      .price_item {
-         height: 52px;
-         display: flex;
-         justify-content: center;
-         align-items: center;
-      }
-   }
-}
-
-@media (max-width: 485px) {
-   .moto_form {
-      .divider {
-
-         .price_types {
-            .toggle_container {
-               gap: 8px !important;
+            * {
+               height: 100%;
             }
+         }
 
-            .price_item {
-               padding: 0 8px;
+         &_info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            .invalid_paragraph {
+               color: red
             }
          }
       }
 
-
+      .price_types {
+         .price_item {
+            height: 52px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+         }
+      }
    }
-}
+
+   @media (max-width: 485px) {
+      .moto_form {
+         .divider {
+            .price_types {
+               .toggle_container {
+                  gap: 8px !important;
+               }
+
+               .price_item {
+                  padding: 0 8px;
+               }
+            }
+         }
+      }
+   }
 </style>

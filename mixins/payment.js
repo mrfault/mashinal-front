@@ -51,8 +51,9 @@ export const PaymentMixin = {
             window.open((res?.data?.redirect_url || res), 'purchaseservice', 'toolbar=yes,scrollbars=yes,resizable=yes,top=50,left=100,' + size);
             let payment_id = res?.data?.payment_id;
             if (payment_id) {
-               this.connectEcho(`purchase.${payment_id}`, false).listen('PurchaseInitiated', async (data) => {
-
+               console.log('payment_id', payment_id)
+               this.connectEcho(`purchase.${payment_id}`, false).listen('purchase.initiated', async (data) => {
+                  console.log('connectEcho', data)
                   this.showPaymentModal = false;
                   let {is_paid, status} = data.payment;
                   let paid = is_paid || status === 1;
@@ -76,7 +77,7 @@ export const PaymentMixin = {
                   }
 
                   const stopListening = () => {
-                     this.connectEcho(`purchase.${payment_id}`, false).stopListening('PurchaseInitiated');
+                     this.connectEcho(`purchase.${payment_id}`, false).stopListening('purchase.initiated');
                   }
 
                   if (route) {
