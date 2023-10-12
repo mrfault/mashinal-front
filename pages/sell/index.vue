@@ -34,32 +34,43 @@
                      </div>
                   </toggle-group>
                </div>
-               <div v-if="form.announce_type !== ''" class="card">
 
+               <div v-if="form.announce_type !== ''" class="card">
                   <div class="card_container">
                      <div class="add_announce_form">
-                        <car_form v-if="form.announce_type.title === 'cars'"
-                                  :isReady="isReady"
-                                  :region_id="authForm.region_id"
-                                  @getForm="getCarForm($event)"
+                        <car_form
+                           v-if="form.announce_type.title === 'cars'"
+                           :isReady="isReady"
+                           :region_id="authForm.region_id"
+                           @getForm="getCarForm($event)"
                         />
-                        <moto_form v-if="form.announce_type.title === 'moto'"
-                                   :isReady="isReady"
-                                   :region_id="authForm.region_id"
-                                   @getForm="getMotoForm($event)"/>
+
+                        <moto_form
+                           v-if="form.announce_type.title === 'moto'"
+                           :isReady="isReady"
+                           :region_id="authForm.region_id"
+                           @getForm="getMotoForm($event)"
+                        />
+
                         <part_form
                            v-if="form.announce_type.title === 'parts'"
                            :isReady="isReady"
                            @getForm="getPartForm($event)"
                         />
-                        <registration_mark v-if="form.announce_type.title === 'registration_marks'" :isReady="isReady"
-                                           @getForm="getRegistrationMarksForm($event)"/>
+
+                        <registration_mark
+                           v-if="form.announce_type.title === 'registration_marks'"
+                           :isReady="isReady"
+                           @getForm="getRegistrationMarksForm($event)"
+                        />
                      </div>
                   </div>
+
                   <service-packages
                      v-if="form.announce_type.title === 'cars' || form.announce_type.title === 'moto'"
                      v-model="form.add_monetization" :add_monetization="form.add_monetization"
                      :data="servicePackages"/>
+
                   <template v-if="form.announce_type !== ''">
                      <div class="contacts">
                         <h2>{{ $t("contact_information") }}</h2>
@@ -161,6 +172,7 @@
                   </template>
                </div>
             </div>
+
             <div class="baloon">
                <inline-svg src="icons/baloon.svg" @click="onShowModal('feedback', $t('request'))"/>
             </div>
@@ -371,7 +383,7 @@
                if (res?.redirect_url) {
                   const response = {data: {...res}}
                   console.log('response', response)
-                  this.handlePayment(response, false, this.$t('plate_added'), 'v2');
+                  this.handlePayment(response, this.$localePath('/profile/announcements'), this.$t('plate_added'), 'v2');
                   // !this.isMobileBreakpoint && this.$router.push(this.$localePath('/profile/announcements'));
                } else {
                   console.log('222')
