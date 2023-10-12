@@ -55,9 +55,8 @@ export const PaymentMixin = {
 
                let channel = this.getPusher().subscribe(`purchase.${payment_id}`);
 
-               // Bind to an event within the channel
-               channel.bind('purchase.initiated', async (data) => {
-                  console.log('connectEcho', data)
+               channel.bind('App\\Events\\PurchaseInitiated', async (data) => {
+                  console.log('connectEcho', data.payment)
                   this.showPaymentModal = false;
                   let {is_paid, status} = data.payment;
                   let paid = is_paid || status === 1;
@@ -89,7 +88,7 @@ export const PaymentMixin = {
                   }
 
                   const stopListening = () => {
-                     this.connectEcho(`purchase.${payment_id}`, false).stopListening('purchase.initiated');
+                     this.connectEcho(`purchase.${payment_id}`, false).stopListening('App\\Events\\PurchaseInitiated');
                   }
 
                   if (route) {
@@ -114,7 +113,7 @@ export const PaymentMixin = {
                   }
                });
 
-               // this.connectEcho(`purchase.${payment_id}`, false).bind('purchase.initiated', async (data) => {
+               // this.connectEcho(`purchase.${payment_id}`, false).bind('App\Events\PurchaseInitiated', async (data) => {
                //    console.log('connectEcho', data)
                //    this.showPaymentModal = false;
                //    let {is_paid, status} = data.payment;
@@ -139,7 +138,7 @@ export const PaymentMixin = {
                //    }
                //
                //    const stopListening = () => {
-               //       this.connectEcho(`purchase.${payment_id}`, false).stopListening('purchase.initiated');
+               //       this.connectEcho(`purchase.${payment_id}`, false).stopListening('App\Events\PurchaseInitiated');
                //    }
                //
                //    if (route) {

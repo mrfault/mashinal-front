@@ -338,6 +338,7 @@
                   });
                }
             } catch (e) {
+
             } finally {
                this.pending = false;
             }
@@ -543,7 +544,7 @@
 
       async mounted() {
          if (Object.values(this.user).length) {
-            console.log('this.user.phone', this.user.phone)
+            // console.log('this.user.phone', this.user.phone)
             this.authForm.name = this.user.full_name
             this.authForm.email = this.user.email
             this.authForm.phone = this.user.phone.toString().slice(3)
