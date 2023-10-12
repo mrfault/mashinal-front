@@ -219,11 +219,11 @@
 
          this.getAllData();
          this.$nuxt.$on('refresh-my-announcements', () => this.refresh++);
-         this.$nuxt.$on('changeTab', () => this.activeTab = null);
+         this.$nuxt.$on('changeTab', () => this.activeTab = 2);
       },
 
       beforeDestroy() {
-         this.$nuxt.$off('changeTab', () => this.activeTab = null);
+         this.$nuxt.$off('changeTab', () => this.activeTab = 2);
       },
 
       async asyncData({ store }) {
@@ -294,7 +294,7 @@
          },
 
          async changeTab(item) {
-            this.$store.commit('closeDropdown');
+            await this.$store.commit('closeDropdown');
             this.loading = true;
             this.activeTab = item.id;
             await this.getMyAllAnnouncements({status: item.id});

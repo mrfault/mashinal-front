@@ -270,6 +270,7 @@
    import ProfileGridActions from "~/components/profile/ProfileGridActions";
    import CallButton from "~/components/announcements/CallButton.vue";
    import {PaymentMixin} from "~/mixins/payment";
+   import {mapActions} from "vuex";
 
    export default {
       props: {
@@ -400,6 +401,8 @@
       },
 
       methods: {
+         ...mapActions(['updatePaidStatus']),
+
          getShineSize(filters) {
             return filters.shine_width.name + '/' + filters.height.name + 'R' + filters.diameter.name
          },
@@ -492,11 +495,22 @@
             }
 
             if (type === 'free') {
-               await this.$store.dispatch('getMyAllAnnouncementsV2', { status: null });
-               await this.$store.dispatch('getAnnouncementsStatuses');
-               await this.$store.dispatch('getMyAllAnnouncementsV2', {status: '', shop: false});
-               // await this.$nuxt.refresh();
-               this.$nuxt.$emit('changeTab');
+               try {
+                  await this.$store.dispatch('getMyAllAnnouncementsV2', { status: null });
+                  await this.$store.dispatch('getAnnouncementsStatuses');
+                  await this.$store.dispatch('getMyAllAnnouncementsV2', {status: '', shop: false});
+                  await this.updatePaidStatus({
+                     type: 'success',
+                     text: this.$t('announcement_paid'),
+                     title: this.$t(`success_payment`)
+                  });
+
+                  await this.$nuxt.$emit('changeTab');
+
+                  this.$nuxt.refresh();
+               } catch (e) {
+                  console.error(e)
+               }
             }
          }
       },

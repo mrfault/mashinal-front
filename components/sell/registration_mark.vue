@@ -1,10 +1,9 @@
 <template>
    <div class="registration_mark_form">
-      <div class="head_section divider mobile-column mb-1">
+      <div class="head_section divider mobile-column">
          <div class="inner_left">
             <div class="car_number">
                <form-select
-                  class="mb-1"
                   :label="$t('region_2')"
                   :class="{form_error: $v.form.car_number.region_id.$error}"
                   :options="getRegionNumbers"
@@ -47,7 +46,6 @@
                   />
 
                   <form-numeric-input
-                     class="mb-1"
                      placeholder="000"
                      :class="{form_error: $v.form.car_number.number.$error, 'mx-1': isEdit }"
                      v-model="form.car_number.number"
@@ -60,14 +58,13 @@
                </div>
             </div>
 
-            <div class="divider mobile-column mb-1">
+            <div class="divider mobile-column">
                <form-numeric-input
                   :placeholder="$t('price')"
                   :class="{form_error: $v.form.price.$error}"
                   v-model="form.price"
                   :invalid="$v.form.price.$error"
                   @change="form.is_negotiable = false"
-                  class="mb-1"
                />
 
                <!--            @change="announcement.price = $event ? $event + (form.currency.name?.[locale] || 'AZN') : 0"-->
@@ -87,7 +84,6 @@
                input-name="is_negotiable"
                transparent
                @change="$event && (form.price = '')"
-               class="mb-1"
             />
          </div>
 
