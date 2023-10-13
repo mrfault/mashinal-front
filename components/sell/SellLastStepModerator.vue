@@ -2,17 +2,14 @@
   <div v-if="single_announce">
     <div
       v-if="showAllOptions"
-      :class="{
-          'disabled-content': type === 'cars' && !form.car_catalog_id && !edit,
-        }"
+      :class="{'disabled-content': type === 'cars' && !form.car_catalog_id && !edit}"
     >
-
       <slot name="form-inputs"/>
 
       <section name="media">
         <slot name="image"></slot>
-        <template v-if="!no360">
 
+        <template v-if="!no360">
           <title-with-line-and-reject-reason
             :no-approval="!single_announce?.images_360?.length"
             title="360_exterior"
@@ -28,9 +25,7 @@
           />
 
           <section class="mb-4">
-            <div
-              class="section-sell-last-step_360_exterior__container"
-            >
+            <div class="section-sell-last-step_360_exterior__container">
               <div class="row justify-content-between align-items-center">
 
                 <div class="col-auto">
@@ -56,7 +51,6 @@
             v-if="single_announce.interior_360 && !no360 && !interior360removed"
             :url="single_announce.interior_360"
             class="mb-4"
-
           />
         </template>
       </section>
@@ -90,7 +84,6 @@
           </div>
         </div>
       </section>
-
 
       <!--      mileage-->
       <section id="mileage-section-1">
@@ -134,6 +127,7 @@
 
               />
               <form-checkbox
+                  class="ml-md-1"
                 v-model="form.beaten"
                 :label="$t('bitie')"
                 has-popover
@@ -151,6 +145,7 @@
                 />
               </form-checkbox>
               <form-checkbox
+                  class="ml-md-1"
                 v-if="!single_announce.is_external_salon"
                 v-model="form.customs_clearance"
                 :label="$t('not_cleared')"
@@ -164,6 +159,7 @@
                 "
               />
               <form-checkbox
+                  class="ml-md-1"
                 v-if="!single_announce.is_external_salon"
                 v-model="form.guaranty"
                 :label="$t('in_garanty')"
@@ -186,6 +182,7 @@
           required
           title="price"
         />
+
         <div class="row">
           <div class="col-lg-auto mb-2 mb-lg-0">
             <div class="row flex-nowrap">
@@ -196,15 +193,14 @@
                   :placeholder="$t('price')"
                   input-class="w-133"
                   @change="removeError('price'), updatePreview('price')"
-
                 />
               </div>
+
               <div class="col-auto">
                 <form-switch
                   v-model="form.currency"
                   :options="getCurrencyOptions"
                   @change="updatePreview('currency')"
-
                 />
               </div>
             </div>
@@ -217,16 +213,19 @@
                 :label="$t('tradeable')"
                 input-name="tradeable"
                 transparent
-
               />
+
               <form-checkbox
+                class="ml-md-1"
                 v-if="!single_announce.is_external_salon"
                 v-model="form.credit"
                 :label="$t('credit_possible')"
                 input-name="credit"
                 transparent
               />
+
                <form-checkbox
+                  class="ml-md-1"
                   v-if="!single_announce.is_external_salon"
                   v-model="form.is_rent"
                   :label="$t('rent')"
@@ -236,6 +235,7 @@
             </div>
           </div>
         </div>
+
         <div v-if="single_announce.is_external_salon">
           <title-with-line-and-reject-reason
             :id="'anchor-price'"
@@ -306,11 +306,6 @@
         </div>
       </section>
 
-      <!---------------------------------------------------------------------------------------------------------------------------------------------->
-      <!---------------------------------------------------------------------------------------------------------------------------------------------->
-      <!---------------------------------------------------------------------------------------------------------------------------------------------->
-      <!---------------------------------------------------------------------------------------------------------------------------------------------->
-      <!---------------------------------------------------------------------------------------------------------------------------------------------->
       <!--      region-->
       <section id="region-section-1" ref="region_section_1">
         <div v-if="!isAutosalon && !user.external_salon">
@@ -378,8 +373,6 @@
           </div>
         </div>
       </section>
-      <!---------------------------------------------------------------------------------------------------------------------------------------------->
-      <!---------------------------------------------------------------------------------------------------------------------------------------------->
 
       <!--      number plate-->
       <section v-if="!form.customs_clearance && !user.external_salon" id="number-section-1">
@@ -441,6 +434,7 @@
           </div>
         </div>
       </section>
+
       <!--      vin-->
       <section id="vin-section-1">
         <div v-if="type === 'cars' || (type !== 'parts' && user.external_salon)">
@@ -483,7 +477,6 @@
             class="mt-2 mt-lg-3"
             input-name="show_vin"
             transparent
-
           />
         </div>
       </section>
@@ -498,11 +491,6 @@
           {{ $t('recheck_sms_radar') }}
         </button>
       </section>
-      <!---------------------------------------------------------------------------------------------------------------------------------------------->
-      <!---------------------------------------------------------------------------------------------------------------------------------------------->
-      <!---------------------------------------------------------------------------------------------------------------------------------------------->
-      <!---------------------------------------------------------------------------------------------------------------------------------------------->
-      <!---------------------------------------------------------------------------------------------------------------------------------------------->
 
       <!--      popular,comment-->
       <section name="popular">
@@ -550,8 +538,8 @@
         </p>
       </section>
 
-
       <hr/>
+
       <modal-popup
         :modal-class="'wider'"
         :title="getRulesPage.title[locale]"
@@ -611,499 +599,499 @@
 </template>
 
 <script>
-import {mapGetters, mapActions, mapState} from 'vuex'
+  import {mapGetters, mapActions, mapState} from 'vuex'
+  import {ToastErrorsMixin} from '~/mixins/toast-errors'
+  import {ImageResizeMixin} from '~/mixins/img-resize'
+  import {PaymentMixin} from '~/mixins/payment'
+  import UploadImage from '~/components/elements/UploadImage'
+  import ColorOptions from '~/components/options/ColorOptions'
+  import DamageOptions from '~/components/options/DamageOptions'
+  import AddVideo from '~/components/elements/AddVideo'
+  import PickOnMapButton from '~/components/elements/PickOnMapButton'
+  import SellFilters from '~/components/sell/SellFilters'
+  import CarFilters from '~/components/cars/CarFilters'
+  import TitleWithLineAndRejectReason from '~/components/moderator/titleWithLineAndRejectReason'
+  import Interior360Viewer from '~/components/Interior360Viewer'
 
-import {ToastErrorsMixin} from '~/mixins/toast-errors'
-import {ImageResizeMixin} from '~/mixins/img-resize'
-import {PaymentMixin} from '~/mixins/payment'
+  export default {
+    components: {
+      TitleWithLineAndRejectReason,
+      UploadImage,
+      ColorOptions,
+      DamageOptions,
+      AddVideo,
+      PickOnMapButton,
+      SellFilters,
+      CarFilters,
+      Interior360Viewer,
+    },
 
-import UploadImage from '~/components/elements/UploadImage'
-import ColorOptions from '~/components/options/ColorOptions'
-import DamageOptions from '~/components/options/DamageOptions'
-import AddVideo from '~/components/elements/AddVideo'
-import PickOnMapButton from '~/components/elements/PickOnMapButton'
-import SellFilters from '~/components/sell/SellFilters'
-import CarFilters from '~/components/cars/CarFilters'
-import TitleWithLineAndRejectReason from '~/components/moderator/titleWithLineAndRejectReason'
+    props: {
+      edit: Boolean,
+      restore: Boolean,
+      title: String,
+      type: String,
+      announcement: {},
+      colors: Array,
+      generations: Array,
+      sell_bodies: Array,
+      smsRadarData: Object,
+      single_announce: Object,
+      showPhotoReject: Boolean,
+      no360: Boolean,
+      isCommercial: Boolean,
+    },
 
-import Interior360Viewer from '~/components/Interior360Viewer'
+    mixins: [ToastErrorsMixin, ImageResizeMixin, PaymentMixin],
 
+    data() {
+      return {
+        button_loading: false,
+        interior360removed: false,
+        now: new Date().toLocaleDateString('en-US'),
+        collapsed: false,
+        form: this.$clone(this.announcement),
+        date: Math.floor(Date.now() / 1000),
+        files: (this.announcement?.media || []).map((media, i) => ({
+          media,
+          key: this.announcement.media[i],
+        })),
+        minFiles: this.type === 'moto' ? 2 : 3,
+        maxFiles: 20,
+        savedFiles: (this.announcement.saved_images?.length) ? [...this.announcement.saved_images] : [],
+        deletedFiles: [],
+        uploading: 0,
+        publishing: false,
+        showAllOptions: this.type !== 'cars' || this.edit,
+        readCarNumberDisclaimer: false,
+        showRules: false,
+        showBanners: false,
+        isAlreadySold: false,
+        showLoginPopup: false,
+        pending: false,
+        comment: 'test',
+        rejectObj: {
+          show360Reject: false,
+          showPhotoReject: false,
+          rejectArray: [],
+          reject360: [],
+        },
 
-export default {
-  components: {
+      }
+    },
 
-    TitleWithLineAndRejectReason,
-    UploadImage,
-    ColorOptions,
-    DamageOptions,
-    AddVideo,
-    PickOnMapButton,
-    SellFilters,
-    CarFilters,
-    Interior360Viewer,
-  },
-  props: {
-    edit: Boolean,
-    restore: Boolean,
-    title: String,
-    type: String,
-    announcement: {},
-    colors: Array,
-    generations: Array,
-    sell_bodies: Array,
-    smsRadarData: Object,
-    single_announce: Object,
-    showPhotoReject: Boolean,
-    no360: Boolean,
-    isCommercial: Boolean,
-  },
-  mixins: [ToastErrorsMixin, ImageResizeMixin, PaymentMixin],
-  data() {
-    return {
-      button_loading: false,
-      interior360removed: false,
-      now: new Date().toLocaleDateString('en-US'),
-      collapsed: false,
-      form: this.$clone(this.announcement),
-      date: Math.floor(Date.now() / 1000),
-      files: (this.announcement?.media || []).map((media, i) => ({
-        media,
-        key: this.announcement.media[i],
-      })),
-      minFiles: this.type === 'moto' ? 2 : 3,
-      maxFiles: 20,
-      savedFiles: (this.announcement.saved_images?.length) ? [...this.announcement.saved_images] : [],
-      deletedFiles: [],
-      uploading: 0,
-      publishing: false,
-      showAllOptions: this.type !== 'cars' || this.edit,
-      readCarNumberDisclaimer: false,
-      showRules: false,
-      showBanners: false,
-      isAlreadySold: false,
-      showLoginPopup: false,
-      pending: false,
-      comment: 'test',
-      rejectObj: {
-        show360Reject: false,
-        showPhotoReject: false,
-        rejectArray: [],
-        reject360: [],
+    computed: {
+      ...mapState(['sellPhoneEntered']),
+      ...mapGetters(['sellOptions', 'sellSalonRights', 'staticPages', 'popularOptions',]),
+      isModerator() {
+        return this.user.admin_group && (this.user.admin_group == 2);
+      },
+      helperImages() {
+        let imgs =
+          this.type === 'cars'
+            ? [1, 2, 3, 4, 5]
+            : this.type === 'commercial'
+              ? [1, 2, 3, 4]
+              : [1, 2, 3]
+        return imgs.map((n) => `/img/sell-helpers/${this.type}_${n}.png`)
+      },
+      isAutosalon() {
+        return !!(
+          (this.loggedIn &&
+            this.user.autosalon &&
+            this.user.autosalon.status === 1) ||
+          this.sellSalonRights
+        )
+      },
+      getRulesPage() {
+        return this.staticPages.find((page) => page.id == 1)
+      },
+      getCurrencyOptions() {
+        return [
+          {key: 1, name: 'AZN', sign: '₼'},
+          {key: 2, name: 'USD', sign: '$'},
+          {key: 3, name: 'EUR', sign: '€'},
+        ]
+      },
+      getMileageOptions() {
+        return [
+          {key: 1, name: this.$t('char_kilometre')},
+          {key: 2, name: this.$t('char_mile')},
+        ]
+      },
+      getOwnerOptions() {
+        return [
+          {key: "0", name: 'first',},
+          {key: "1", name: 'second_and_more',},
+        ]
+      },
+      images() {
+        const arr = []
+        this.announcement.media.forEach((elem) => arr.push({name: elem}))
+        return arr
+      },
+      modification() {
+        return {
+          year: this.announcement.year,
+          brand: this.announcement.brand.slug,
+          model: this.announcement.model.slug,
+        }
       },
 
-    }
-  },
-  computed: {
-    ...mapState(['sellPhoneEntered']),
-    ...mapGetters(['sellOptions', 'sellSalonRights', 'staticPages', 'popularOptions',]),
-    isModerator() {
-      return this.user.admin_group && (this.user.admin_group == 2);
-    },
-    helperImages() {
-      let imgs =
-        this.type === 'cars'
-          ? [1, 2, 3, 4, 5]
-          : this.type === 'commercial'
-            ? [1, 2, 3, 4]
-            : [1, 2, 3]
-      return imgs.map((n) => `/img/sell-helpers/${this.type}_${n}.png`)
-    },
-    isAutosalon() {
-      return !!(
-        (this.loggedIn &&
-          this.user.autosalon &&
-          this.user.autosalon.status === 1) ||
-        this.sellSalonRights
-      )
-    },
-    getRulesPage() {
-      return this.staticPages.find((page) => page.id == 1)
-    },
-    getCurrencyOptions() {
-      return [
-        {key: 1, name: 'AZN', sign: '₼'},
-        {key: 2, name: 'USD', sign: '$'},
-        {key: 3, name: 'EUR', sign: '€'},
-      ]
-    },
-    getMileageOptions() {
-      return [
-        {key: 1, name: this.$t('char_kilometre')},
-        {key: 2, name: this.$t('char_mile')},
-      ]
-    },
-    getOwnerOptions() {
-      return [
-        {key: "0", name: 'first',},
-        {key: "1", name: 'second_and_more',},
-      ]
-    },
-    images() {
-      const arr = []
-      this.announcement.media.forEach((elem) => arr.push({name: elem}))
-      return arr
-    },
-    modification() {
-      return {
-        year: this.announcement.year,
-        brand: this.announcement.brand.slug,
-        model: this.announcement.model.slug,
-      }
     },
 
-  },
-  methods: {
-    ...mapActions([
-      'setSellPreviewData',
-      'resetSellTokens',
-      'getMyAllAnnouncements',
-    ]),
-    checkWithDin() {
-      let vin = this.form.vin;
-      let car_number = this.form.car_number.replace(/[^0-9a-zA-Z]+/g, '');
+    methods: {
+      ...mapActions([
+        'setSellPreviewData',
+        'resetSellTokens',
+        'getMyAllAnnouncements',
+      ]),
+      checkWithDin() {
+        let vin = this.form.vin;
+        let car_number = this.form.car_number.replace(/[^0-9a-zA-Z]+/g, '');
 
-      let sendData = {
-        announce_id: this.single_announce.id
-      };
-      let send = false;
-      if (vin.length === 17) {
-        sendData.vin = vin;
-        send = true;
-      }
-      if (car_number.length === 7) {
-        sendData.car_number = car_number;
-        send = true;
-      }
+        let sendData = {
+          announce_id: this.single_announce.id
+        };
+        let send = false;
+        if (vin.length === 17) {
+          sendData.vin = vin;
+          send = true;
+        }
+        if (car_number.length === 7) {
+          sendData.car_number = car_number;
+          send = true;
+        }
 
-      if (!send) return false;
+        if (!send) return false;
 
-      this.button_loading = true;
-      this.$axios.$post('/ticket/checkSmsRadar', sendData)
-        .then((data) => {
-          data = data.data;
+        this.button_loading = true;
+        this.$axios.$post('/ticket/checkSmsRadar', sendData)
+          .then((data) => {
+            data = data.data;
 
-          if (data) {
-            //data.carNumber = data.carNumber.slice(0, 2) + '-' + data.carNumber.slice(2, 4) + '-' + data.carNumber.slice(4, 7);
+            if (data) {
+              //data.carNumber = data.carNumber.slice(0, 2) + '-' + data.carNumber.slice(2, 4) + '-' + data.carNumber.slice(4, 7);
+              this.smsRadarData = data;
 
-            this.smsRadarData = data;
+              //if (data.bodyNumber && data.bodyNumber.toString().length === 17) this.getChange(data.bodyNumber, 'vin');
+            } else {
+              this.$toasted.error(this.$t('SMS Radarda məlumat tapılmadı'))
+            }
 
+            this.button_loading = false
+          });
 
-            //if (data.bodyNumber && data.bodyNumber.toString().length === 17) this.getChange(data.bodyNumber, 'vin');
+      },
+      showCarNumberDisclaimer() {
+        if (this.readCarNumberDisclaimer) {
+          this.$nuxt.$emit('close-popover', 'car-number')
+        } else {
+          this.$nuxt.$emit('show-popover', 'car-number')
+          this.readCarNumberDisclaimer = true
+        }
+      },
+      updatePreview(key) {
+        if (!key || key === 'region')
+          this.setSellPreviewData({
+            value: this.announcement.region_id,
+            key: 'region',
+          })
+        if (!key || key === 'price')
+          this.setSellPreviewData({value: this.form.price, key: 'price'})
+        if (!key || key === 'currency')
+          this.setSellPreviewData({
+            value: this.getCurrencyOptions.find(
+              (o) => o.key === this.form.currency,
+            )?.sign,
+            key: 'currency',
+          })
+        if (!key || key === 'mileage')
+          this.setSellPreviewData({value: this.form.mileage, key: 'mileage'})
+        if (!key || key === 'mileage_measure')
+          this.setSellPreviewData({
+            value: this.getMileageOptions.find(
+              (o) => o.key === this.form.mileage_measure,
+            )?.name,
+            key: 'mileage_measure',
+          })
+        return
+      },
+
+      updateMileage(is_new) {
+        if (!is_new) {
+          this.isInvalid('mileage') && this.removeError('mileage')
+        } else {
+          let mileage = this.form.mileage
+          this.form.mileage =
+            mileage > (this.form.mileage_measure === 2 ? 310.686 : 500) ||
+            !mileage
+              ? 0
+              : mileage
+        }
+        this.updatePreview('mileage')
+      },
+      updateAddress(address) {
+        this.form.address = address
+        this.removeError('address')
+      },
+      updateLatLng({lat, lng}) {
+        this.form.lat = lat
+        this.form.lng = lng
+      },
+      updateCarDamage(part) {
+        this.form.part = part
+      },
+      updateCarFilter(key, value) {
+        if (
+          value === false ||
+          value === '' ||
+          (typeof value === 'object' && !Object.keys(value).length)
+        )
+          this.$delete(this.form.all_options, key)
+        else this.$set(this.form.all_options, key, value)
+        this.$nuxt.$emit('change-car-filters')
+      },
+      updateSellFilter(key, value) {
+        if (value === '') this.$delete(this.form, key)
+        else this.$set(this.form, key, value)
+      },
+      // post announcement
+      async publishPost() {
+        if (this.pending) return
+        // wait till all images uploaded
+        if (this.uploading) {
+          this.$toasted.error(this.$t('please_wait_for_all_image_loading'))
+          return
+        }
+        this.form.saved_images = this.savedFiles
+        this.form.is_autosalon = this.isAutosalon
+        if (this.isAlreadySold) this.form.can_pay = true
+        // generate post data
+        let formData = new FormData()
+        formData.append('data', JSON.stringify(this.form))
+        formData.append('phone', this.sellPhoneEntered.replace(/[^0-9]+/g, ''))
+        if (this.deletedFiles.length)
+          formData.append('deletedImages', JSON.stringify(this.deletedFiles))
+        // generate post link
+        let postUrl = '/sell/'
+        postUrl += this.type !== 'cars' ? this.type + '/' : ''
+        postUrl += this.type !== 'commercial' || !this.edit ? 'post/' : ''
+        postUrl += this.edit
+          ? 'edit/' + this.$route.params.id.slice(0, -1)
+          : 'publish'
+        postUrl += `?is_mobile=${this.isMobileBreakpoint}`
+        // post
+        this.pending = true
+        try {
+          // publish or update post
+          const res = await this.$axios.$post(postUrl, formData)
+          if (this.loggedIn) await this.$auth.fetchUser()
+          // track event
+          if (!this.edit) {
+            this.fbTrack('Lead Api')
+            this.gtagTrack('AW-600951956/ccUSCJT25_IBEJSZx54C')
+          }
+          // redirect to payment if action was to restore
+          if (res?.data?.redirect_url) {
+            this.handlePayment(res, this.$localePath('/profile/announcements'))
           } else {
-            this.$toasted.error(this.$t('SMS Radarda məlumat tapılmadı'))
+            this.$router.push(this.$localePath('/profile/announcements'), () => {
+              if (this.restore) {
+                this.updatePaidStatus({
+                  type: 'success',
+                  text: this.$t('announcement_restored'),
+                  title: this.$t('success_payment'),
+                })
+              } else if (this.isAlreadySold) {
+                this.updatePaidStatus({
+                  type: 'success',
+                  text: this.$t('announcement_paid'),
+                  title: this.$t('success_payment'),
+                })
+              } else {
+                this.$toasted.success(this.$t('saved_changes'))
+              }
+            })
+          }
+        } catch ({
+          response: {
+            status,
+            data: {data, message},
+          },
+        }) {
+          this.clearErrors()
+          this.pending = false
+
+          if (status === 420) {
+            this.$toasted.error(this.$t(message))
+            if (data.need_pay) {
+              this.isAlreadySold = true
+              this.scrollTo('.publish-post')
+            }
+          } else {
+            // find errors
+            let dataLength = data && Object.keys(data).length
+            if (dataLength) {
+              let count = 0
+              for (let key in data) {
+                // key = Object.keys(data)[dataLength - Object.keys(data).indexOf(key) - 1];
+                let errorKey = key
+                if (errorKey === 'car_or_vin')
+                  errorKey = this.form.customs_clearance ? 'vin' : 'car_number'
+                this.errors.push(errorKey)
+                let errorIndex = this.errors.indexOf(errorKey)
+                let errorText = `(${dataLength - errorIndex}/${dataLength}) ${
+                  data[key][0]
+                }`
+                // show error
+                this.showError(
+                  errorKey,
+                  errorText,
+                  {fieldView: key, offset: this.isMobileBreakpoint ? 30 : -20},
+                  count === 0,
+                )
+                count++
+              }
+            } else if (message && status !== 499) {
+              this.$toasted.error(this.$t(message))
+            }
           }
 
-          this.button_loading = false
-        });
-
-    },
-    showCarNumberDisclaimer() {
-      if (this.readCarNumberDisclaimer) {
-        this.$nuxt.$emit('close-popover', 'car-number')
-      } else {
-        this.$nuxt.$emit('show-popover', 'car-number')
-        this.readCarNumberDisclaimer = true
-      }
-    },
-    updatePreview(key) {
-      if (!key || key === 'region')
-        this.setSellPreviewData({
-          value: this.announcement.region_id,
-          key: 'region',
-        })
-      if (!key || key === 'price')
-        this.setSellPreviewData({value: this.form.price, key: 'price'})
-      if (!key || key === 'currency')
-        this.setSellPreviewData({
-          value: this.getCurrencyOptions.find(
-            (o) => o.key === this.form.currency,
-          )?.sign,
-          key: 'currency',
-        })
-      if (!key || key === 'mileage')
-        this.setSellPreviewData({value: this.form.mileage, key: 'mileage'})
-      if (!key || key === 'mileage_measure')
-        this.setSellPreviewData({
-          value: this.getMileageOptions.find(
-            (o) => o.key === this.form.mileage_measure,
-          )?.name,
-          key: 'mileage_measure',
-        })
-      return
-    },
-
-    updateMileage(is_new) {
-      if (!is_new) {
-        this.isInvalid('mileage') && this.removeError('mileage')
-      } else {
-        let mileage = this.form.mileage
-        this.form.mileage =
-          mileage > (this.form.mileage_measure === 2 ? 310.686 : 500) ||
-          !mileage
-            ? 0
-            : mileage
-      }
-      this.updatePreview('mileage')
-    },
-    updateAddress(address) {
-      this.form.address = address
-      this.removeError('address')
-    },
-    updateLatLng({lat, lng}) {
-      this.form.lat = lat
-      this.form.lng = lng
-    },
-    updateCarDamage(part) {
-      this.form.part = part
-    },
-    updateCarFilter(key, value) {
-      if (
-        value === false ||
-        value === '' ||
-        (typeof value === 'object' && !Object.keys(value).length)
-      )
-        this.$delete(this.form.all_options, key)
-      else this.$set(this.form.all_options, key, value)
-      this.$nuxt.$emit('change-car-filters')
-    },
-    updateSellFilter(key, value) {
-      if (value === '') this.$delete(this.form, key)
-      else this.$set(this.form, key, value)
-    },
-    // post announcement
-    async publishPost() {
-      if (this.pending) return
-      // wait till all images uploaded
-      if (this.uploading) {
-        this.$toasted.error(this.$t('please_wait_for_all_image_loading'))
-        return
-      }
-      this.form.saved_images = this.savedFiles
-      this.form.is_autosalon = this.isAutosalon
-      if (this.isAlreadySold) this.form.can_pay = true
-      // generate post data
-      let formData = new FormData()
-      formData.append('data', JSON.stringify(this.form))
-      formData.append('phone', this.sellPhoneEntered.replace(/[^0-9]+/g, ''))
-      if (this.deletedFiles.length)
-        formData.append('deletedImages', JSON.stringify(this.deletedFiles))
-      // generate post link
-      let postUrl = '/sell/'
-      postUrl += this.type !== 'cars' ? this.type + '/' : ''
-      postUrl += this.type !== 'commercial' || !this.edit ? 'post/' : ''
-      postUrl += this.edit
-        ? 'edit/' + this.$route.params.id.slice(0, -1)
-        : 'publish'
-      postUrl += `?is_mobile=${this.isMobileBreakpoint}`
-      // post
-      this.pending = true
-      try {
-        // publish or update post
-        const res = await this.$axios.$post(postUrl, formData)
-        if (this.loggedIn) await this.$auth.fetchUser()
-        // track event
-        if (!this.edit) {
-          this.fbTrack('Lead Api')
-          this.gtagTrack('AW-600951956/ccUSCJT25_IBEJSZx54C')
+          // check if user logged in
+          if (!this.showLoginPopup && status === 499) this.showLoginPopup = true
         }
-        // redirect to payment if action was to restore
-        if (res?.data?.redirect_url) {
-          this.handlePayment(res, this.$localePath('/profile/announcements'))
+      },
+      handleAfterLogin() {
+        this.resetSellTokens()
+        this.showLoginPopup = false
+        this.publishPost()
+      },
+      changeReason(rejectKey) {
+        this.$emit('getRejectObj', rejectKey)
+        if (rejectKey === '360') {
+          this.rejectObj.show360Reject = true
         } else {
-          this.$router.push(this.$localePath('/profile/announcements'), () => {
-            if (this.restore) {
-              this.updatePaidStatus({
-                type: 'success',
-                text: this.$t('announcement_restored'),
-                title: this.$t('success_payment'),
-              })
-            } else if (this.isAlreadySold) {
-              this.updatePaidStatus({
-                type: 'success',
-                text: this.$t('announcement_paid'),
-                title: this.$t('success_payment'),
-              })
-            } else {
-              this.$toasted.success(this.$t('saved_changes'))
+          if (this.rejectObj.rejectArray.includes(rejectKey)) {
+            this.rejectObj.rejectArray.splice(this.rejectObj.rejectArray.indexOf(rejectKey), 1)
+          } else {
+            this.rejectObj.rejectArray.push(rejectKey)
+          }
+        }
+      },
+
+      removeDuplicates() {
+        var arr = this.rejectObj.rejectArray
+        this.rejectObj.rejectArray = [...new Set(arr)]
+      },
+
+
+      //  ----------
+      add360Interior(val) {
+        var formData = new FormData()
+        formData.append('image', val.target.files[0])
+
+        this.$axios
+          .post('/upload_temporary_interior_image', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          })
+          .then((res) => {
+            if (res.status == 200) {
+              this.$toast.success(this.$t('interior_360_successfully_upload'))
+              this.form['interior_360_id'] = res.data.data.id
+              this.form['interior_360_url'] = res.data.data.url
+              this.$emit("interior_360_id_changed", res.data.data.id)
             }
           })
+      },
+      async handleRemoveInterior() {
+        try {
+          this.button_loading = true
+          await this.$axios.$post('/announce/remove_360_interior', {
+            announcement_id: this.single_announce.id,
+          })
+          this.$emit('remove360', 'success')
+          let data = await this.$axios.$get('/ticket/car')
+          this.$store.commit('mutate', {
+            with: data.announce,
+            property: 'single_announce',
+          })
+          this.$toasted.success('Silindi')
+          this.interior360removed = true;
+        } catch (e) {
+          this.$toasted.error('Silinmede problem yarandi')
         }
-      } catch ({
-        response: {
-          status,
-          data: {data, message},
-        },
-      }) {
-        this.clearErrors()
-        this.pending = false
+        this.button_loading = false
+      },
+      async remove360(param) {
+        if (param == 'success') {
+          let data = await this.$axios.$get('/ticket/car')
 
-        if (status === 420) {
-          this.$toasted.error(this.$t(message))
-          if (data.need_pay) {
-            this.isAlreadySold = true
-            this.scrollTo('.publish-post')
-          }
-        } else {
-          // find errors
-          let dataLength = data && Object.keys(data).length
-          if (dataLength) {
-            let count = 0
-            for (let key in data) {
-              // key = Object.keys(data)[dataLength - Object.keys(data).indexOf(key) - 1];
-              let errorKey = key
-              if (errorKey === 'car_or_vin')
-                errorKey = this.form.customs_clearance ? 'vin' : 'car_number'
-              this.errors.push(errorKey)
-              let errorIndex = this.errors.indexOf(errorKey)
-              let errorText = `(${dataLength - errorIndex}/${dataLength}) ${
-                data[key][0]
-              }`
-              // show error
-              this.showError(
-                errorKey,
-                errorText,
-                {fieldView: key, offset: this.isMobileBreakpoint ? 30 : -20},
-                count === 0,
-              )
-              count++
-            }
-          } else if (message && status !== 499) {
-            this.$toasted.error(this.$t(message))
-          }
+          let video360section = document.getElementById('video360section')
+          video360section.remove()
+
+          this.$store.commit('mutate', {
+            with: data.announce,
+            property: 'single_announce',
+          })
         }
-
-        // check if user logged in
-        if (!this.showLoginPopup && status === 499) this.showLoginPopup = true
-      }
-    },
-    handleAfterLogin() {
-      this.resetSellTokens()
-      this.showLoginPopup = false
-      this.publishPost()
-    },
-    changeReason(rejectKey) {
-      this.$emit('getRejectObj', rejectKey)
-      if (rejectKey === '360') {
-        this.rejectObj.show360Reject = true
-      } else {
-        if (this.rejectObj.rejectArray.includes(rejectKey)) {
-          this.rejectObj.rejectArray.splice(this.rejectObj.rejectArray.indexOf(rejectKey), 1)
-        } else {
-          this.rejectObj.rejectArray.push(rejectKey)
-        }
-      }
-    },
-
-    removeDuplicates() {
-      var arr = this.rejectObj.rejectArray
-      this.rejectObj.rejectArray = [...new Set(arr)]
-    },
-
-
-    //  ----------
-    add360Interior(val) {
-      var formData = new FormData()
-      formData.append('image', val.target.files[0])
-
-      this.$axios
-        .post('/upload_temporary_interior_image', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        })
-        .then((res) => {
-          if (res.status == 200) {
-            this.$toast.success(this.$t('interior_360_successfully_upload'))
-            this.form['interior_360_id'] = res.data.data.id
-            this.form['interior_360_url'] = res.data.data.url
-            this.$emit("interior_360_id_changed", res.data.data.id)
-          }
-        })
-    },
-    async handleRemoveInterior() {
-      try {
-        this.button_loading = true
-        await this.$axios.$post('/announce/remove_360_interior', {
-          announcement_id: this.single_announce.id,
-        })
-        this.$emit('remove360', 'success')
-        let data = await this.$axios.$get('/ticket/car')
-        this.$store.commit('mutate', {
-          with: data.announce,
-          property: 'single_announce',
-        })
-        this.$toasted.success('Silindi')
-        this.interior360removed = true;
-      } catch (e) {
-        this.$toasted.error('Silinmede problem yarandi')
-      }
-      this.button_loading = false
-    },
-    async remove360(param) {
-      if (param == 'success') {
-        let data = await this.$axios.$get('/ticket/car')
-
-        let video360section = document.getElementById('video360section')
-        video360section.remove()
-
-        this.$store.commit('mutate', {
-          with: data.announce,
-          property: 'single_announce',
-        })
-      }
-    },
-
-  },
-  watch: {
-    // rejectObj: {
-    //   deep: true,
-    //   handler() {
-    //     this.$emit('getRejectObj', this.rejectObj)
-    //   }
-    // },
-    smsRadarData: {
-      deep: true,
-      handler() {
-        this.$emit('smsRadarDataChanged', this.smsRadarData)
-      }
-    },
-    form: {
-      deep: true,
-      handler() {
-        this.$emit("formChanged", this.form)
       },
 
     },
-    'form.mileage': {
-      deep: true,
-      handler() {
-        if (this.form.mileage == null) {
-          this.form.mileage = 0
+
+    watch: {
+      // rejectObj: {
+      //   deep: true,
+      //   handler() {
+      //     this.$emit('getRejectObj', this.rejectObj)
+      //   }
+      // },
+      smsRadarData: {
+        deep: true,
+        handler() {
+          this.$emit('smsRadarDataChanged', this.smsRadarData)
         }
-      }
+      },
+      form: {
+        deep: true,
+        handler() {
+          this.$emit("formChanged", this.form)
+        },
+
+      },
+      'form.mileage': {
+        deep: true,
+        handler() {
+          if (this.form.mileage == null) {
+            this.form.mileage = 0
+          }
+        }
+      },
     },
-  },
-  created() {
-    // this.$nuxt.$on('login', this.handleAfterLogin)
-    if (this.user.external_salon) {
-      this.form.customs_clearance = true
+
+    created() {
+      // this.$nuxt.$on('login', this.handleAfterLogin)
+      if (this.user.external_salon) {
+        this.form.customs_clearance = true
+      }
+      this.updatePreview()
+      this.$store.dispatch('getOptions')
+    },
+
+    beforeDestroy() {
+      this.$nuxt.$off('login', this.handleAfterLogin);
+    },
+
+    mounted() {
+      this.$store.dispatch('getPopularOptions');
     }
-    this.updatePreview()
-    this.$store.dispatch('getOptions')
-  },
-  beforeDestroy() {
-    this.$nuxt.$off('login', this.handleAfterLogin);
-  },
-  mounted() {
-    this.$store.dispatch('getPopularOptions');
-
-  },
-
-}
+  }
 </script>
 
 <style lang="scss">
-.white-space-pre-wrap-span span {
-  white-space: pre-wrap !important;
-}
+  .white-space-pre-wrap-span span {
+    white-space: pre-wrap !important;
+  }
 </style>
