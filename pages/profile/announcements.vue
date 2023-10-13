@@ -707,10 +707,8 @@
             }
 
             &--active {
-               position: relative;
                background: #155EEF;
                color: #fff;
-
 
                &:before {
                   position: relative;
@@ -721,7 +719,6 @@
                   content: '';
                   background: #155EEF;
                   border-radius: 3px 3px 0 0;
-
                }
             }
          }
@@ -751,8 +748,6 @@
          }
 
       }
-
-
    }
 
    .dark-mode {

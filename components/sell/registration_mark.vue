@@ -1,5 +1,5 @@
 <template>
-   <div class="registration_mark_form">
+   <div :class="['registration_mark_form', {'isEdit' : isEdit}]">
       <div class="head_section divider mobile-column">
          <div class="inner_left">
             <div class="car_number">
@@ -18,11 +18,11 @@
 
                <div
                   class="divider_3"
-                  :class="{'d-flex': !isMobileBreakpoint, 'd-flex flex-wrap': (isMobileBreakpoint && !isEdit)}"
+                  :class="{'d-flex': !isMobileBreakpoint}"
                >
                   <form-select
                      :label="'A'"
-                     :class="{form_error: $v.form.car_number.first.$error, 'mx-1': isEdit, 'mb-1': isMobileBreakpoint && isEdit}"
+                     :class="{form_error: $v.form.car_number.first.$error, 'mb-1': isMobileBreakpoint && isEdit}"
                      :options="numbers"
                      :clear-placeholder="true"
                      :clear-option="false"
@@ -42,12 +42,12 @@
                      has-search
                      v-model="form.car_number.second"
                      :disabled="isEdit"
-                     :class="{'mx-1': isEdit, 'mb-1': isEdit && isMobileBreakpoint}"
+                     :class="{'ml-1': isEdit, 'mb-1': isEdit && isMobileBreakpoint}"
                   />
 
                   <form-numeric-input
                      placeholder="000"
-                     :class="{form_error: $v.form.car_number.number.$error, 'mx-1': isEdit }"
+                     :class="{form_error: $v.form.car_number.number.$error, 'ml-1': isEdit }"
                      v-model="form.car_number.number"
                      :maxlength="3"
                      :float="true"
@@ -68,7 +68,7 @@
                />
 
                <!--            @change="announcement.price = $event ? $event + (form.currency.name?.[locale] || 'AZN') : 0"-->
-               <div class="price_types">
+               <div :class="['price_types', {'mt-3' :isEdit }]">
                   <toggle-group :items="priceTypes" v-slot="{ item }" :defaultValue="form.currency_id"
                                 @change="form.currency_id = $event.id">
                      <div class="price_item">
@@ -87,7 +87,7 @@
             />
          </div>
 
-         <div class="inner_right">
+         <div :class="['inner_right', {'mt-3' : isEdit}]">
             <div class="registration_mark_form_with_info">
                <form-textarea
                   v-model="form.comment"
@@ -320,6 +320,28 @@
          }
       }
 
+   }
+
+   @media (max-width: 992px) {
+      .registration_mark_form {
+        //&.isEdit {
+          .head_section {
+            .car_number {
+              flex-direction: column;
+
+              .divider_3 {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+
+                .form-group {
+                  margin: 0 !important;
+                }
+              }
+            }
+          }
+        //}
+      }
    }
 
    @media (max-width: 485px) {

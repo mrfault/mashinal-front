@@ -8,7 +8,7 @@
     "start": "nuxt start",
     "generate": "nuxt generate",
     "dev:host": "nuxt --hostname '10.20.120.130' --port 8000",
-     "unit": "jest"
+    "unit": "jest"
   },
   "dependencies": {
     "360-image-viewer": "^1.0.1",
