@@ -368,11 +368,10 @@
                         text: this.$t('announcement_paid'),
                         title: this.$t('success_payment')
                      });
-
                   });
                }
-
             } catch (e) {
+
             } finally {
                this.pending = false;
             }

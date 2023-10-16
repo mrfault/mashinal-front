@@ -199,6 +199,7 @@
                   :disabled="!isEdit && !readyAllParameters"
                   @change="onChangeIsNew"
                />
+
                <form-radio
                   :id="'4'"
                   :type="'checkbox'"
@@ -496,7 +497,7 @@
                show_car_number: this.form.show_car_number,
                show_vin: this.form.show_vin,
                comment: this.form.comment,
-               is_new: this.form.is_new === 1,
+               is_new: this.form.is_new,
                beaten: this.form.beaten,
                customs_clearance: this.form.customs_clearance,
                tradeable: this.form.tradeable,
