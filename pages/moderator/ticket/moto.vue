@@ -589,6 +589,7 @@
                               </div>
                               <div v-else class="col-12 pl-0">
                                  <component
+                                    class="wrappCheckbox"
                                     :is="getComponent(item.component)"
                                     v-model="form[index]"
                                     :form="single_announce"
@@ -597,12 +598,10 @@
                                     :keyValue="index"
                                     :max="5"
                                     :options="
-                          item.sell_values
-                            ? item.sell_values[
-                                parseInt(default_data['category'])
-                              ]
-                            : item.values
-                        "
+                                      item.sell_values
+                                        ? item.sell_values[parseInt(default_data['category'])]
+                                        : item.values
+                                    "
                                     :placeholder="$t(item.placeholder)"
                                     inputType="number"
                                  />

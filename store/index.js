@@ -1621,6 +1621,7 @@ export const actions = {
       commit("mutate", {property: "promotion", key, value});
    },
    async updatePaidStatus({commit}, value) {
+      console.log('updatePaidStatus', value)
       commit("mutate", {property: "paidStatusData", value});
    },
    // Salons

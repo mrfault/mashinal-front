@@ -275,11 +275,11 @@
                   for: ['moto']
                },
 
-               // {
-               //    key: 'condition_2',
-               //    value: this.announcement.is_new ? this.$t('new_2') : this.$t('with_mileage'),
-               //    icon: '/icons/search_2.svg'
-               // },
+               {
+                  key: 'condition_2',
+                  value: this.announcement.is_new ? this.$t('new_2') : this.$t('with_mileage'),
+                  icon: '/icons/search_2.svg'
+               },
                {key: 'type_of_brakes', value: this.brakeType, for: ['commercial']},
                {key: 'wheel_formula', value: this.wheelFormula, for: ['commercial']},
                {key: 'loading', value: this.loadingKg, for: ['commercial']},

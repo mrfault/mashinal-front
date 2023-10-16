@@ -33,26 +33,27 @@ export const PaymentMixin = {
    },
    methods: {
       ...mapActions(['updatePaidStatus']),
+
       selectDefaultCard() {
          let item = this.bankingCards.find(item => item.default)
          if (item)
             this.bankingCard = item.id
       },
+
       callUpdatePaidStatus(paid, text) {
+         console.log('Otkaz paid', paid)
          let type = paid ? 'success' : 'error';
          if (!paid) text = this.$t('try_again');
-         this.updatePaidStatus({type, text, title: this.$t(`${type}_payment`)}).then(r => {
-            console.log('Update Payment Status', r);
-         });
+
+         this.updatePaidStatus({type, text, title: this.$t(`${type}_payment`)});
       },
+
       handlePayment(res, route = false, text = '', version = 'v1') {
          if (!this.isMobileBreakpoint) {
             let size = ({v1: 'width=494,height=718', v2: 'width=1042,height=725'})[version];
             window.open((res?.data?.redirect_url || res), 'purchaseservice', 'toolbar=yes,scrollbars=yes,resizable=yes,top=50,left=100,' + size);
             let payment_id = res?.data?.payment_id;
             if (payment_id) {
-               console.log('payment_id', payment_id)
-
                let channel = this.getPusher().subscribe(`purchase.${payment_id}`);
 
                channel.bind('App\\Events\\PurchaseInitiated', async (data) => {
@@ -84,6 +85,7 @@ export const PaymentMixin = {
                      }
                      localStorage.removeItem('selectedPackage');
                   } else {
+                     console.log('Otkaz')
                      this.callUpdatePaidStatus(paid);
                   }
 
