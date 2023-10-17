@@ -102,7 +102,7 @@
                         >
                            <template v-if="isProfilePage && announcement.status == 0">{{ $t('rejected_many') }}</template>
                            <template v-else-if="isProfilePage && announcement.status == 1">{{ $t('active') }}</template>
-                           <template v-else-if="isProfilePage && announcement.status == 2">{{ $t('under_consideration') }}</template>
+                           <template v-else-if="isProfilePage && announcement.status == 2">{{ $t('pending_status') }}</template>
                            <template v-else-if="isProfilePage && announcement.status == 3">{{ $t('sold') }}</template>
                            <template v-else-if="isProfilePage && announcement.status == 4">{{ $t('timed_out') }}</template>
                            <template v-else-if="isProfilePage && announcement.status == 7">{{ $t('uncompleted_status') }}</template>
@@ -164,7 +164,7 @@
                </div>
             </div>
 
-            <div class="payHover" v-if="announcement.status === 7">
+            <div class="payHover" v-if="announcement.status === 7" @click.stop>
                <button
                   v-if="announcement?.can_place_free_announce"
                   @click="payAnnouncement(announcement.id, 'free')"
@@ -498,7 +498,7 @@
                try {
                   await this.$store.dispatch('getMyAllAnnouncementsV2', { status: null });
                   await this.$store.dispatch('getAnnouncementsStatuses');
-                  await this.$store.dispatch('getMyAllAnnouncementsV2', {status: '', shop: false});
+                  await this.$store.dispatch('getMyAllAnnouncementsV2', { status: '', shop: false });
                   await this.updatePaidStatus({
                      type: 'success',
                      text: this.$t('announcement_paid'),
