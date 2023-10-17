@@ -1,10 +1,9 @@
 <template>
    <div :key="refresh" class="pages-annoucements pt-2 pt-lg-6">
-<!--      <pre>{{announcementsStatuses}}</pre>-->
-      <div :class="{'ma-announcements-autosalon-container': user.autosalon}" class="container">
+      <div :class="{'ma-announcements-autosalon-container': user.autosalon}">
          <div class="ma-announcements">
             <h2 class="ma-title--md">{{ $t('my_announces') }}</h2>
-            <!--            statistics-->
+
             <div v-if="user.autosalon" class="ma-announcements__top-cards">
                <div v-for="(item,index) in topCards" :key="index + 8923764" class="ma-announcements__top-card">
                   <div class="ma-announcements__top-card--image">
@@ -18,7 +17,6 @@
             </div>
 
             <div :class="{'ma-announcements__head-autosalon-container': user.autosalon}">
-               <!--            sort switch-->
                <h2 v-if="isMobileBreakpoint && user.autosalon" class="ma-announcements-autosalon-title">
                   {{ $t('most_viewed_announcements') }}</h2>
                <div v-if="isMobileBreakpoint && user.autosalon" :class="{'pl-0': isMobileBreakpoint}"
@@ -30,7 +28,9 @@
 
                <div
                   :class="{'ma-announcements__head-autosalon': user.autosalon}"
-                  class="ma-announcements__head">
+                  class="ma-announcements__head"
+                  ref="tabsWrapper"
+               >
                   <button
                      v-for="item in announcementsStatuses"
                      :class="{'ma-announcements__head--item--active': item.id == activeTab}"
@@ -55,7 +55,6 @@
 
             <div id="announcementsContainer" :class="{'overflow-x-hidden': !myAnnouncements.length}"
                  class="ma-announcements__body--row" @mousedown.prevent="startDragging" @mouseup.prevent="mouseUp">
-               <!--                                loading-->
                <div v-if="loading">
                   <loader class="profile-announcements-loader"/>
                </div>
@@ -121,15 +120,13 @@
                  @mousedown.prevent="startDragging"
                  @mouseup.prevent="mouseUp"
             >
-               <div v-if="loading" style="height: 420px !important;width:100%; display: flex;justify-content: center;">
+               <div v-if="loading" style="height: 420px !important; width:100%; display: flex; justify-content: center;">
                   <loader class="profile-announcements-loader"/>
                </div>
+
                <div v-else-if="allMyPlates.length" class="ma-announcements__body--row__inner">
                   <template v-for="(item,index) in allMyPlates">
-                     <div
-                        class="ma-announcements__body--row__inner--item-plate"
-
-                     >
+                     <div class="ma-announcements__body--row__inner--item-plate">
                         <plates-grid-item
                            :key="index + 6565"
                            :activeTab="activeTab"
@@ -141,19 +138,17 @@
                         />
                      </div>
                   </template>
-
                </div>
+
                <div v-else>
                   <no-results
-                     v-if="
-                     allMyPlates.length === 0 ||
-                     (activeTab !== null && !allMyPlates.some(item => activeTab === item.status))"
+                     v-if="allMyPlates.length === 0 || (activeTab !== null && !allMyPlates.some(item => activeTab === item.status))"
                      :template="'new-img'"
                      :text="$t('empty_plates')"
                      :url="'/img/empty_plates.png'"
                      :urlDarkMode="'/img/empty_plates_dark-mode.png'"
                      darker
-                  ></no-results>
+                  />
                </div>
             </div>
          </div>
@@ -219,11 +214,11 @@
 
          this.getAllData();
          this.$nuxt.$on('refresh-my-announcements', () => this.refresh++);
-         this.$nuxt.$on('changeTab', () => this.activeTab = 2);
+         this.$nuxt.$on('changeTabPayment', this.changeTabPay);
       },
 
       beforeDestroy() {
-         this.$nuxt.$off('changeTab', () => this.activeTab = 2);
+         this.$nuxt.$off('changeTabPayment', this.changeTabPay);
       },
 
       async asyncData({ store }) {
@@ -231,29 +226,17 @@
          await store.dispatch('getAnnouncementsStatuses');
       },
 
-      // async asyncData({store, route}) {
-      //    let status = ['0', '1', '2', '3'].includes(route.query.status) ? parseInt(route.query.status) : '';
-      //    let shop = ['1', '2'].includes(route.query.type) ? (route.query.type == 2 ? 'part' : 'salon') : false;
-      //
-      // await Promise.all([
-      //    store.dispatch('getMyAllAnnouncementsV2', {status, shop}),
-      //    store.dispatch('fetchPlatesV2', {status}),
-      // ]);
-      //
-      // return {
-      //    pending: false,
-      //    statusReady: status,
-      //    form: {status},
-      //    refresh: 0,
-      // }
-      // },
-
       methods: {
          ...mapActions({
             getMyAllAnnouncements: 'getMyAllAnnouncementsV2',
             getMyPlates: 'fetchPlatesV2',
             getSettingsV2: 'getSettingsV2'
          }),
+
+        changeTabPay() {
+          this.$refs.tabsWrapper.scrollLeft = 0;
+          this.activeTab = 2;
+        },
 
          async getAllData() {
             this.loading = true;
@@ -264,8 +247,6 @@
             let status = ['0', '1', '2', '3'].includes(route.query.status) ? parseInt(route.query.status) : '';
             let shop = ['1', '2'].includes(route.query.type) ? (route.query.type == 2 ? 'part' : 'salon') : false;
 
-            console.log('status', status)
-            console.log('shop', shop)
             if (!this.user.autosalon) {
                await Promise.all([
                   store.dispatch('getMyAllAnnouncementsV2', {status, shop}),
@@ -277,7 +258,6 @@
                   sorting: 1
                });
             }
-
 
             // return {
             this.pending = false;
@@ -311,7 +291,6 @@
             this.pending = false;
             this.scrollTo('.announcements-grid.paginated', [-15, -20]);
             this.loading = false;
-
          },
 
          isValid(status) {
@@ -514,12 +493,8 @@
             justify-content: space-between;
             flex-wrap: wrap;
             background: #EEF2F6;
-
             border-radius: 8px 8px 0 0;
-
-
          }
-
 
          .ma-announcements__head--item {
             white-space: nowrap;

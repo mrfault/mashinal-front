@@ -65,6 +65,7 @@
             z-index: 5;
 
             button {
+               position: relative;
                width: 70%;
                font-size: 14px;
                font-weight: 500;
@@ -75,6 +76,7 @@
                border-radius: 8px;
                background-color: transparent;
                z-index: 10;
+               pointer-events: all;
 
                &:first-child {
                   color: #364152;

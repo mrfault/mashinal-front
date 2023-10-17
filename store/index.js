@@ -602,8 +602,8 @@ export const actions = {
    },
 
    async fetchApprovedCondition({ commit }, payload) {
-      const res = await this.$axios.$post(this.$env().API_SECRET + `${payload}/confirmed`);
-      commit("mutate", {property: "approvedCondition", value: res});
+      const res = await this.$axios.$get(this.$env().API_SECRET + `${payload}/confirmed`);
+      commit("mutate", {property: "approvedCondition", value: res.confirmed});
    },
 
    async fetchBrandsList({commit}) {

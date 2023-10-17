@@ -7,7 +7,7 @@
             :class="['vehicle-specs__info', {'approved' : approvedCondition}]"
             v-if="!showInfo"
          >
-            <inline-svg src="/icons/car-4.svg" />
+            <inline-svg :src="`/icons/${approvedCondition ? 'car-4' : 'car-6'}.svg`" />
 
             <span v-if="approvedCondition">{{ $t('approved_vehicle') }}</span>
             <span v-else>{{ $t('unapproved_vehicle') }}</span>
@@ -65,7 +65,7 @@
                <CustomTooltip class="unapproved">
                   <template #head>
                      <div class="inner">
-                        <inline-svg src="/icons/car-4.svg" />
+                        <inline-svg src="/icons/car-6.svg" />
 
                         <p>{{ $t('unapproved__title') }}!</p>
                      </div>
@@ -432,7 +432,12 @@
          },
 
          showInfo() {
-            return this.announcement.type === 'part' || this.announcement.is_auto_salon || this.announcement.is_external_salon;
+            return this.announcement.type === 'motorcycle' ||
+                   this.announcement.type === 'scooter' ||
+                   this.announcement.type === 'moto_atv' ||
+                   this.announcement.type === 'part' ||
+                   this.announcement.is_auto_salon ||
+                   this.announcement.is_external_salon;
          }
       }
    }

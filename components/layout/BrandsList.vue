@@ -64,7 +64,7 @@
             if (post?.brandsList) {
                this.$store.dispatch('getGridSearch', { url: '/car', prefix: 'cars', post, page });
                this.$store.dispatch('fetchMonetizedCarsSearch', post);
-               this.scrollTo('.breadcrumbs', [20, -120]);
+               this.scrollTo('.cap', [0, -145]);
             }
         }
       },

@@ -41,7 +41,6 @@ export const PaymentMixin = {
       },
 
       callUpdatePaidStatus(paid, text) {
-         console.log('Otkaz paid', paid)
          let type = paid ? 'success' : 'error';
          if (!paid) text = this.$t('try_again');
 
@@ -49,7 +48,7 @@ export const PaymentMixin = {
       },
 
       handlePayment(res, route = false, text = '', version = 'v1') {
-         if (!this.isMobileBreakpoint) {
+         // if (!this.isMobileBreakpoint) {
             let size = ({v1: 'width=494,height=718', v2: 'width=1042,height=725'})[version];
             window.open((res?.data?.redirect_url || res), 'purchaseservice', 'toolbar=yes,scrollbars=yes,resizable=yes,top=50,left=100,' + size);
             let payment_id = res?.data?.payment_id;
@@ -57,9 +56,8 @@ export const PaymentMixin = {
                let channel = this.getPusher().subscribe(`purchase.${payment_id}`);
 
                channel.bind('App\\Events\\PurchaseInitiated', async (data) => {
-                  console.log('connectEcho', data.payment)
                   this.showPaymentModal = false;
-                  let {is_paid, status} = data.payment;
+                  let { is_paid, status } = data.payment;
                   let paid = is_paid || status === 1;
 
                   route = (route instanceof Array) ? (route[paid ? 0 : 1]) : route;
@@ -74,7 +72,7 @@ export const PaymentMixin = {
                         await this.$store.dispatch('getMyAllAnnouncementsV2', {status: '', shop: false});
                         await this.$nuxt.refresh();
                         await this.callUpdatePaidStatus(paid, text);
-                        this.$nuxt.$emit('changeTab');
+                        this.$nuxt.$emit('changeTabPayment');
                      }
 
                      if (this.loggedIn) await this.$auth.fetchUser();
@@ -85,7 +83,6 @@ export const PaymentMixin = {
                      }
                      localStorage.removeItem('selectedPackage');
                   } else {
-                     console.log('Otkaz')
                      this.callUpdatePaidStatus(paid);
                   }
 
@@ -108,10 +105,9 @@ export const PaymentMixin = {
                   } else {
                      stopListening();
                   }
+
                   if (data.payment.operation_key === 'offer_payment_key' && paid) {
-                     setTimeout(() => {
-                        this.$router.push('/offer');
-                     }, 2000)
+                     setTimeout(() => this.$router.push('/offer'), 2000);
                   }
                });
 
@@ -165,13 +161,13 @@ export const PaymentMixin = {
                //    }
                // });
             }
-         } else {
+         // } else {
             // redirect to kapital bank page
-            this.$nuxt.$loading.start();
+            // this.$nuxt.$loading.start();
 
-            setTimeout(() => this.$nuxt.$loading.finish(), 500);
-            window.location = res?.data?.redirect_url || res;
-         }
+            // setTimeout(() => this.$nuxt.$loading.finish(), 500);
+            // window.location = res?.data?.redirect_url || res;
+         // }
       }
    },
    watch: {

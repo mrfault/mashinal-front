@@ -2729,7 +2729,7 @@ export default {
    "my_vehicle_announcements": "Мои объявления",
    "my_car_number_announcements": "Мои регистрационные номера",
    "under_consideration_2": "На рассмотрении",
-   "pending_status": "На рассмотрении",
+   "pending_status": "На проверке",
    "uncompleted_status": "Незавершённые",
    "timed_out": "Истëкшие",
    "expired_status": "Истëкшие",
