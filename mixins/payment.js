@@ -48,126 +48,68 @@ export const PaymentMixin = {
       },
 
       handlePayment(res, route = false, text = '', version = 'v1') {
-         // if (!this.isMobileBreakpoint) {
-            let size = ({v1: 'width=494,height=718', v2: 'width=1042,height=725'})[version];
-            window.open((res?.data?.redirect_url || res), 'purchaseservice', 'toolbar=yes,scrollbars=yes,resizable=yes,top=50,left=100,' + size);
-            let payment_id = res?.data?.payment_id;
-            if (payment_id) {
-               let channel = this.getPusher().subscribe(`purchase.${payment_id}`);
+         let size = ({v1: 'width=494,height=718', v2: 'width=1042,height=725'})[version];
+         window.open((res?.data?.redirect_url || res), 'purchaseservice', 'toolbar=yes,scrollbars=yes,resizable=yes,top=50,left=100,' + size);
+         let payment_id = res?.data?.payment_id;
+         if (payment_id) {
+            let channel = this.getPusher().subscribe(`purchase.${payment_id}`);
 
-               channel.bind('App\\Events\\PurchaseInitiated', async (data) => {
-                  this.showPaymentModal = false;
-                  let { is_paid, status } = data.payment;
-                  let paid = is_paid || status === 1;
+            channel.bind('App\\Events\\PurchaseInitiated', async (data) => {
+               this.showPaymentModal = false;
+               let { is_paid, status } = data.payment;
+               let paid = is_paid || status === 1;
 
-                  route = (route instanceof Array) ? (route[paid ? 0 : 1]) : route;
+               route = (route instanceof Array) ? (route[paid ? 0 : 1]) : route;
 
+               if (paid) {
+                  if (data.payment.operation_key === 'attorney_pay') {
+                     return this.$router.push({path: this.$localePath('/garage'), query: {tab: 'attorney-list'}})
+                  }
+
+                  if (data.payment.operation_key === "uncompleted_announce") {
+                     await this.$store.dispatch('getAnnouncementsStatuses');
+                     await this.$store.dispatch('getMyAllAnnouncementsV2', {status: '', shop: false});
+                     await this.$nuxt.refresh();
+                     await this.callUpdatePaidStatus(paid, text);
+                     this.$nuxt.$emit('changeTabPayment');
+                  }
+
+                  if (this.loggedIn) await this.$auth.fetchUser();
+
+                  if (!route) {
+                     await this.$nuxt.refresh();
+                     this.callUpdatePaidStatus(paid, text);
+                  }
+                  localStorage.removeItem('selectedPackage');
+               } else {
+                  this.callUpdatePaidStatus(paid);
+               }
+
+               const stopListening = () => {
+                  this.connectEcho(`purchase.${payment_id}`, false).stopListening('App\\Events\\PurchaseInitiated');
+               }
+
+               if (route) {
                   if (paid) {
-                     if (data.payment.operation_key === 'attorney_pay') {
-                        return this.$router.push({path: this.$localePath('/garage'), query: {tab: 'attorney-list'}})
-                     }
-
-                     if (data.payment.operation_key === "uncompleted_announce") {
-                        await this.$store.dispatch('getAnnouncementsStatuses');
-                        await this.$store.dispatch('getMyAllAnnouncementsV2', {status: '', shop: false});
-                        await this.$nuxt.refresh();
-                        await this.callUpdatePaidStatus(paid, text);
-                        this.$nuxt.$emit('changeTabPayment');
-                     }
-
-                     if (this.loggedIn) await this.$auth.fetchUser();
-
-                     if (!route) {
-                        await this.$nuxt.refresh();
+                     this.$router.push(route, () => {
                         this.callUpdatePaidStatus(paid, text);
-                     }
-                     localStorage.removeItem('selectedPackage');
-                  } else {
-                     this.callUpdatePaidStatus(paid);
-                  }
 
-                  const stopListening = () => {
-                     this.connectEcho(`purchase.${payment_id}`, false).stopListening('App\\Events\\PurchaseInitiated');
-                  }
-
-                  if (route) {
-                     if (paid) {
-                        this.$router.push(route, () => {
-                           this.callUpdatePaidStatus(paid, text);
-
-                           stopListening();
-                        });
-                     } else {
-                        await this.$store.dispatch('fetchResetForm', false);
-                        this.callUpdatePaidStatus(paid, text);
                         stopListening();
-                     }
+                     });
                   } else {
+                     await this.$store.dispatch('fetchResetForm', false);
+                     this.callUpdatePaidStatus(paid, text);
                      stopListening();
                   }
+               } else {
+                  stopListening();
+               }
 
-                  if (data.payment.operation_key === 'offer_payment_key' && paid) {
-                     setTimeout(() => this.$router.push('/offer'), 2000);
-                  }
-               });
-
-               // this.connectEcho(`purchase.${payment_id}`, false).bind('App\Events\PurchaseInitiated', async (data) => {
-               //    console.log('connectEcho', data)
-               //    this.showPaymentModal = false;
-               //    let {is_paid, status} = data.payment;
-               //    let paid = is_paid || status === 1;
-               //
-               //    route = (route instanceof Array) ? (route[paid ? 0 : 1]) : route;
-               //
-               //    if (paid) {
-               //       if (data.payment.operation_key === 'attorney_pay') {
-               //          return this.$router.push({path: this.$localePath('/garage'), query: {tab: 'attorney-list'}})
-               //       }
-               //
-               //       if (this.loggedIn) await this.$auth.fetchUser();
-               //
-               //       if (!route) {
-               //          await this.$nuxt.refresh();
-               //          this.callUpdatePaidStatus(paid, text);
-               //       }
-               //       localStorage.removeItem('selectedPackage');
-               //    } else {
-               //       this.callUpdatePaidStatus(paid);
-               //    }
-               //
-               //    const stopListening = () => {
-               //       this.connectEcho(`purchase.${payment_id}`, false).stopListening('App\Events\PurchaseInitiated');
-               //    }
-               //
-               //    if (route) {
-               //       if (paid) {
-               //          this.$router.push(route, () => {
-               //             this.callUpdatePaidStatus(paid, text);
-               //
-               //             stopListening();
-               //          });
-               //       } else {
-               //          await this.$store.dispatch('fetchResetForm', false);
-               //          this.callUpdatePaidStatus(paid, text);
-               //          stopListening();
-               //       }
-               //    } else {
-               //       stopListening();
-               //    }
-               //    if (data.payment.operation_key === 'offer_payment_key' && paid) {
-               //       setTimeout(() => {
-               //          this.$router.push('/offer');
-               //       }, 2000)
-               //    }
-               // });
-            }
-         // } else {
-            // redirect to kapital bank page
-            // this.$nuxt.$loading.start();
-
-            // setTimeout(() => this.$nuxt.$loading.finish(), 500);
-            // window.location = res?.data?.redirect_url || res;
-         // }
+               if (data.payment.operation_key === 'offer_payment_key' && paid) {
+                  setTimeout(() => this.$router.push('/offer'), 2000);
+               }
+            });
+         }
       }
    },
    watch: {

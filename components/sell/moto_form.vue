@@ -14,6 +14,7 @@
                v-model="form.type_of_moto"
                @change="onChangeMotoType($event)"
             />
+
             <form-select
                v-if="!isEdit"
                :label="$t('brand_name')"
@@ -27,6 +28,7 @@
                :disabled="!(form.type_of_moto && motoBrands.length > 0)"
                @change="onChangeMotoBrand($event)"
             />
+
             <form-select
                v-if="!isEdit"
                :label="$t('model_name')"
@@ -40,6 +42,7 @@
                :disabled="!(form.brand && motoModelsV2.length > 0)"
                @change="onChangeMotoModel($event)"
             />
+
             <form-select
                v-if="sellOptions.years"
                :class="{form_error: $v.form.year.$error}"
@@ -53,6 +56,7 @@
                :invalid="$v.form.year.$error"
                :disabled="!isEdit && !readyAllParameters"
             />
+
             <form-select
                :label="$t('engine_power_system')"
                :options="motoOptions?.config?.engine?.sell_values[form.type_of_moto.id]?.map((f) => ({...f, name: $t(f.name)}))"
@@ -62,6 +66,7 @@
                v-model="form.engine"
                :disabled="!isEdit && !readyAllParameters"
             />
+
             <div class="divider">
                <form-numeric-input
                   :class="{form_error: $v.form.volume.$error}"
@@ -76,6 +81,7 @@
                   v-model="form.power"
                />
             </div>
+
             <div class="divider" v-if="isEdit">
                <form-select
                   :label="$t('fuel')"
@@ -96,6 +102,7 @@
                   v-model="form.box"
                />
             </div>
+
             <div class="comment">
                <form-textarea
                   v-model="form.comment"
@@ -109,6 +116,7 @@
                </div>
             </div>
          </div>
+
          <div class="inner_right">
             <div class="divider" v-if="!isEdit">
                <form-select
@@ -392,7 +400,7 @@
          },
          region_id: {
             type: Number,
-            required: true
+            required: false
          }
       },
 
@@ -580,6 +588,7 @@
 
       mounted() {
          if (this.isEdit) {
+           console.log('this.announcement', this.announcement)
             this.form.type_of_moto = {id: this.announcement.type_of_moto}
             this.form.year = this.announcement.year
             this.form.volume = this.announcement.capacity
@@ -601,6 +610,7 @@
             this.form.currency = this.announcement.currency_id
             this.form.tradeable = this.announcement.tradeable
             this.form.credit = this.announcement.credit
+            this.form.is_rent = this.announcement.is_rent
             this.form.car_number = this.announcement.car_number
             this.form.show_car_number = this.announcement.show_car_number
             this.form.vin = this.announcement.vin

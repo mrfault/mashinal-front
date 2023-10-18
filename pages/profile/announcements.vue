@@ -234,6 +234,7 @@
          }),
 
         changeTabPay() {
+          console.log('changeTabPay')
           this.$refs.tabsWrapper.scrollLeft = 0;
           this.activeTab = 2;
         },
@@ -274,11 +275,14 @@
          },
 
          async changeTab(item) {
+            let id = item.id;
+            if (item.id === null) id = 'null';
+
             await this.$store.commit('closeDropdown');
             this.loading = true;
-            this.activeTab = item.id;
-            await this.getMyAllAnnouncements({status: item.id});
-            await this.getMyPlates({status: item.id});
+            this.activeTab = id;
+            await this.getMyAllAnnouncements({status: id});
+            await this.getMyPlates({status: id});
             this.loading = false;
          },
 
