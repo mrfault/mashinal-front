@@ -252,11 +252,11 @@
                               @change="changeReason"
                            />
                         </div>
+
                         <div class="col-auto">
                            <form-price-input
                               id="anchor-price"
                               v-model="form.price"
-
                               :invalid="isInvalid('price')"
                               :maxlength="5"
                               :placeholder="$t('price')"
@@ -264,14 +264,15 @@
                               @change="removeError('price')"
                            />
                         </div>
+
                         <div class="col-auto">
                            <form-switch
                               v-model="form.currency_id"
-
                               :options="getCurrencyOptions"
                               @change="updatePreview('currency')"
                            />
                         </div>
+
                         <div class="col-auto">
                            <form-checkbox
                               id="anchor-is_negotiable"
@@ -688,7 +689,6 @@ export default {
                property: 'moderator',
             })
 
-
             const partCategories = await this.$axios.$get('/part/categories');
 
             this.$store.commit('mutate', {
@@ -722,6 +722,7 @@ export default {
             this.form.price = announce.price_int;
             this.form.product_code = announce.product_code;
             this.form.title = announce.title;
+            this.form.currency_id = announce.currency_id;
             this.form.description = announce.description;
             this.form.media = announce.mediaIds;
             this.form.saved_images = announce.mediaIds;
@@ -1239,34 +1240,30 @@ export default {
       if (this.single_announce.category_id) {
          this.getFilters(this.single_announce.category_id)
       }
-
    },
 
    async fetch() {
-      await this.$store.dispatch('parts/getCategories')
-   },
-
-
+      await this.$store.dispatch('parts/getCategories');
+   }
 }
 </script>
 
 
 <style lang="scss">
-.ma-switch-with-label {
-   .col-12{
-      padding: 0;
-      h4{
-         margin-bottom: 0;
-      }
-   }
-   .form-buttons{
-      display: flex;
-      flex-wrap: wrap;
-      .form-buttons__item{
-         width: calc(50% - 8px) !important;
-      }
-   }
+  .ma-switch-with-label {
+     .col-12{
+        padding: 0;
+        h4{
+           margin-bottom: 0;
+        }
+     }
 
-   //background-color: red;
-}
+     .form-buttons{
+        display: flex;
+        flex-wrap: wrap;
+        .form-buttons__item{
+           width: calc(50% - 8px) !important;
+        }
+     }
+  }
 </style>

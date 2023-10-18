@@ -505,8 +505,7 @@
                      title: this.$t(`success_payment`)
                   });
 
-                  await this.$nuxt.$emit('changeTab');
-
+                  await this.$nuxt.$emit('changeTabPayment');
                   this.$nuxt.refresh();
                } catch (e) {
                   console.error(e)
