@@ -152,8 +152,8 @@
                      :label="$t('color')"
                      :limit="2"
                      :options="colors"
-                     multiple
                      colorInput
+                     multiple
                   />
                   <form-select
                      v-model="form.seats_count"
@@ -163,8 +163,6 @@
                      :label="$t('count_of_seats')"
                      :new-label="false"
                      :options="allSellOptions2?.n_of_seats?.options"
-                     :translate-options="false"
-                     object-in-value
                      translate-options
                   />
                </div>
@@ -277,9 +275,9 @@
                      :label="$t('color')"
                      :limit="2"
                      :options="colors"
+                     color-input
                      has-search
                      multiple
-                     color-input
                   />
                   <form-select
                      v-model="form.seats_count"
@@ -290,7 +288,6 @@
                      :new-label="false"
                      :options="allSellOptions2?.n_of_seats?.options"
                      :translate-options="false"
-                     object-in-value
                      translate-options
                   />
                </div>
@@ -933,6 +930,7 @@ export default {
          this.form.customs_clearance = this.announcement.customs_clearance
          this.form.number_of_vehicles = this.announcement.tact
          this.form.comment = this.announcement.comment
+         this.form.seats_count = this.announcement.seats_count
          this.form.other_parameters = this.popularOptions.filter((option) => Object.keys(this.announcement.options).includes(option.name)).map((p) => ({
             ...p,
             key: this.$t(p.label),
@@ -1352,8 +1350,8 @@ export default {
    }
 }
 
-@media(max-width: 991px){
-   .pages-announcement-edit .car_number_info{
+@media(max-width: 991px) {
+   .pages-announcement-edit .car_number_info {
       height: min-content !important;
    }
 }
