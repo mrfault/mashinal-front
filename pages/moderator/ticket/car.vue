@@ -1526,19 +1526,19 @@
         })
 
         if (this.user.admin_group == 2) {
-          location.href = '/alvcp/resources/announce-moderators';
+          location.href = `${this.$env().ADMIN_URL}/announce-moderators`;
         } else {
-          location.href = '/alvcp/resources/announcements'
+          location.href = `${this.$env().ADMIN_URL}/announcements`;
         }
       },
+
       async sendData(status = 2) {
         if (this.saved_images.length !== this.imagesBase64.length) {
           this.$toasted.show(this.$t('please_wait_for_all_image_loading'), {
-            type: 'error',
+            type: 'error'
           })
           return false
         }
-
 
         this.form.status = status
         this.form.id = this.single_announce.id;
@@ -1548,9 +1548,8 @@
         this.form.rejectArray = this.rejectObj.rejectArray;
         this.form.saved_images = this.saved_images;
         this.form.end_date = null;
-
-
         this.form.owner_type = 1;
+        this.form.generation = this.form.generation_id;
         // this.form.youtube_link  = ""
         // this.form.angle         = null;
         // this.form.owner_type    = 1;
@@ -1566,45 +1565,36 @@
         // this.form.is_free    = "is_free";
         // this.form.youtube_id = "youtube_id";
 
-        this.form.generation = this.form.generation_id;
-
         delete this.form.model_slug;
         delete this.form.brand_slug;
         delete this.form.user;
-        delete this.form.brandObj
-        delete this.form.brand_id
+        delete this.form.brandObj;
+        delete this.form.brand_id;
 
         let newForm = this.form;
-        newForm.car_body_type = this.single_announce.car_catalog.car_type.id;
+            newForm.car_body_type = this.single_announce.car_catalog.car_type.id;
         let formData = new FormData()
 
         formData.append('data', JSON.stringify(newForm))
         formData.append('deletedImages', JSON.stringify(this.deleteArr))
 
         this.loading = true;
-        this.button_loading = true
+        this.button_loading = true;
 
         try {
-
           await this.$axios.$post('/ticket/car/' + this.single_announce.id, formData)
 
           if (this.user.admin_group == 2) {
-            location.href = '/alvcp/resources/announce-moderators';
+            location.href = `${this.$env().ADMIN_URL}/announce-moderators`;
           } else {
-            location.href = '/alvcp/resources/announcements';
+            location.href = `${this.$env().ADMIN_URL}/announcements`;
           }
 
           if (status == 0) {
-            this.$toasted.show(this.$t('your_announce_rejected'), {
-              type: 'success',
-            })
+            this.$toasted.show(this.$t('your_announce_rejected'), { type: 'success' });
           }
-
-
         } catch ({
-          response: {
-            data: {data},
-          },
+          response: { data: {data} }
         }) {
           this.loading = false;
           this.button_loading = false
@@ -1616,20 +1606,16 @@
               this.errors.push(key)
               this.$toasted.show(data[key][0], {
                 type: 'error',
-                duration: 0,
-
+                duration: 0
               })
             })
-
         }
-
       },
+
       addComment(e) {
         if (form.comment === null) form.comment = ''
         form.comment = form.comment + e + ' '
       },
-
-
     },
 
     mounted() {

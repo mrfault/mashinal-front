@@ -709,1266 +709,1244 @@
    </div>
 </template>
 
-
 <script>
-import {mapActions, mapGetters} from "vuex";
-import {ToastErrorsMixin} from "~/mixins/toast-errors";
-import MultiselectComponent from "~/components/moderator/multiselectComponent.vue";
-import RejectReason from "~/components/moderator/rejectReason";
-import PhotoRejectReason from "~/pages/moderator/photoReject/PhotoRejectReason";
-import UploadImageModerator from "~/components/moderator/UploadImageModerator";
-import PopularComments from "~/components/moderator/popularComments";
-import ColorOptions from "~/components/options/ColorOptions";
-import PickOnMapButton from "~/components/elements/PickOnMapButton";
-import moment from "moment";
-import TitleWithLineAndRejectReason from "~/components/moderator/titleWithLineAndRejectReason";
-import SellFilters from "~/components/sell/SellFilters";
-import TitleWithLine from "~/components/global/titleWithLine";
-import FormRadioGroup from "~/components/forms/FormRadioGroup";
-import ModeratorActions from "~/components/moderator/actions.vue";
-import RadioGroup from "~/components/moderator/RadioGroup";
-import ModerationHeader from "~/components/moderator/moderationHeader";
+  import {mapActions, mapGetters} from "vuex";
+  import {ToastErrorsMixin} from "~/mixins/toast-errors";
+  import MultiselectComponent from "~/components/moderator/multiselectComponent.vue";
+  import RejectReason from "~/components/moderator/rejectReason";
+  import PhotoRejectReason from "~/pages/moderator/photoReject/PhotoRejectReason";
+  import UploadImageModerator from "~/components/moderator/UploadImageModerator";
+  import PopularComments from "~/components/moderator/popularComments";
+  import ColorOptions from "~/components/options/ColorOptions";
+  import PickOnMapButton from "~/components/elements/PickOnMapButton";
+  import moment from "moment";
+  import TitleWithLineAndRejectReason from "~/components/moderator/titleWithLineAndRejectReason";
+  import SellFilters from "~/components/sell/SellFilters";
+  import TitleWithLine from "~/components/global/titleWithLine";
+  import FormRadioGroup from "~/components/forms/FormRadioGroup";
+  import ModeratorActions from "~/components/moderator/actions.vue";
+  import RadioGroup from "~/components/moderator/RadioGroup";
+  import ModerationHeader from "~/components/moderator/moderationHeader";
 
-export default {
-   name: "ModerationMoto",
+  export default {
+     name: "ModerationMoto",
 
-   layout: "moderator",
+     layout: "moderator",
 
-   components: {
-      RadioGroup,
-      TitleWithLine,
-      TitleWithLineAndRejectReason,
-      MultiselectComponent,
-      RejectReason,
-      PhotoRejectReason,
-      UploadImageModerator,
-      ColorOptions,
-      PickOnMapButton,
-      SellFilters,
-      PopularComments,
-      FormRadioGroup,
-      ModeratorActions,
-      ModerationHeader,
-   },
+     components: {
+        RadioGroup,
+        TitleWithLine,
+        TitleWithLineAndRejectReason,
+        MultiselectComponent,
+        RejectReason,
+        PhotoRejectReason,
+        UploadImageModerator,
+        ColorOptions,
+        PickOnMapButton,
+        SellFilters,
+        PopularComments,
+        FormRadioGroup,
+        ModeratorActions,
+        ModerationHeader,
+     },
 
-   mixins: [ToastErrorsMixin],
+     mixins: [ToastErrorsMixin],
 
-   async fetch({store}) {
-      await store.dispatch("getOptions");
-      await store.dispatch("getScooterOptions");
-      await store.dispatch("getAllOtherOptions");
-      await store.dispatch("getColors");
-      await store.dispatch("getBadges");
-   },
+     async fetch({store}) {
+        await store.dispatch("getOptions");
+        await store.dispatch("getScooterOptions");
+        await store.dispatch("getAllOtherOptions");
+        await store.dispatch("getColors");
+        await store.dispatch("getBadges");
+     },
 
-   //------------------------------------------------------------asyncData------------------------------------------------------------------------------------------------------------
-   //------------------------------------------------------------asyncData------------------------------------------------------------------------------------------------------------
-   //------------------------------------------------------------asyncData------------------------------------------------------------------------------------------------------------
-   //------------------------------------------------------------asyncData------------------------------------------------------------------------------------------------------------
-   //------------------------------------------------------------asyncData------------------------------------------------------------------------------------------------------------
-   async asyncData({route, store, $auth, $axios}) {
-      await $auth.setUserToken(`Bearer ${route.query.token}`);
-      const admin_user = await $axios.$get("/user");
+     //------------------------------------------------------------asyncData------------------------------------------------------------------------------------------------------------
+     //------------------------------------------------------------asyncData------------------------------------------------------------------------------------------------------------
+     //------------------------------------------------------------asyncData------------------------------------------------------------------------------------------------------------
+     //------------------------------------------------------------asyncData------------------------------------------------------------------------------------------------------------
+     //------------------------------------------------------------asyncData------------------------------------------------------------------------------------------------------------
+     async asyncData({route, store, $auth, $axios}) {
+        await $auth.setUserToken(`Bearer ${route.query.token}`);
+        const admin_user = await $axios.$get("/user");
 
-      if (!admin_user.user.is_admin) {
-         return false;
-      }
+        if (!admin_user.user.is_admin) {
+           return false;
+        }
 
-      await store.dispatch("getMotoOptions");
+        await store.dispatch("getMotoOptions");
 
-      let data;
-      try {
-         data = await $axios.$get(`/ticket/moto?type=${route.query.type}`);
-         store.commit("mutate", {
-            property: "single_announce",
-            value: data.announce,
-         });
-         store.commit("moderator/moderatorMutator", {
-            with: data.moderator,
-            property: "moderator",
-         });
+        let data;
+        try {
+           data = await $axios.$get(`/ticket/moto?type=${route.query.type}`);
+           store.commit("mutate", {
+              property: "single_announce",
+              value: data.announce,
+           });
+           store.commit("moderator/moderatorMutator", {
+              with: data.moderator,
+              property: "moderator",
+           });
 
-         let default_data = {};
-         let singleAnnounce = store.state.single_announce;
-         let brand;
-         let model;
-         let type;
-         default_data["engine"] = singleAnnounce.engine_type_id; //+
-         default_data["volume"] = singleAnnounce.capacity; //+
-         default_data["power"] = singleAnnounce.power; //+
-         default_data["cylinders"] = singleAnnounce.cylinders; //+
-         default_data["box"] = singleAnnounce.box_id; //+
-         default_data["cylinder_placement"] = singleAnnounce.cylinder_type_id;
-         default_data["number_of_vehicles"] = singleAnnounce.tact; //+
-         default_data["drive"] = singleAnnounce.gear_id; //+
-         default_data["capacity"] = singleAnnounce.capacity;
-         default_data["fuel_type"] = singleAnnounce.fuel_type;
-         default_data["credit"] = singleAnnounce.credit;
-         default_data["is_rent"] = singleAnnounce.is_rent;
-         if (singleAnnounce.moto_brand !== undefined) {
-            default_data["category"] = "1";
-            await store.dispatch("getMotoModels", {
-               id: singleAnnounce.moto_brand.id,
-               category: default_data.category,
-               index: 0,
-            });
-            brand = singleAnnounce.moto_brand;
-            model = singleAnnounce.moto_model;
-            /*  type  = singleAnnounce.moto_type_id;*/
-         }
-         if (singleAnnounce.scooter_brand !== undefined) {
-            default_data["category"] = "2";
-            await store.dispatch("getScooterModels", {
-               id: singleAnnounce.scooter_brand.id,
-               index: 0,
-            });
-            brand = singleAnnounce.scooter_brand;
-            model = singleAnnounce.scooter_model;
-         }
-         if (singleAnnounce.moto_atv_brand !== undefined) {
-            default_data["category"] = "3";
-            await store.dispatch("getAtvModels", {
-               id: singleAnnounce.moto_atv_brand.id,
-               index: 0,
-            });
-            brand = singleAnnounce.moto_atv_brand;
-            model = singleAnnounce.moto_atv_model;
-            /*  type  = singleAnnounce.moto_atv_type_id;*/
-         }
-         return {
-            admin_user: admin_user.user,
-            default_data: default_data,
-            old_brand: brand && brand.name ? brand.name : null,
-            old_model: model.name,
-            old_type: type,
-            brand: brand.id,
-            model: model.id,
-            year: singleAnnounce.year,
-            moderator: data ? data.moderator : {},
-         };
-      } catch (e) {
-         store.commit("moderator/moderatorMutator", {
-            with: {},
-            property: "single_announce",
-         });
-      }
-      return {
-         admin_user: admin_user.user,
-         moderator: data ? data.moderator : {},
-      };
-      // await store.dispatch('editMoto',{ id:route.params.edit, type:route.query.type });
-   },
-   //-----------------------------------------------------------------asyncData^------------------------------------------------------------------------------------------------------
-   //-----------------------------------------------------------------asyncData^------------------------------------------------------------------------------------------------------
-   //-----------------------------------------------------------------asyncData^------------------------------------------------------------------------------------------------------
-   //-----------------------------------------------------------------asyncData^------------------------------------------------------------------------------------------------------
-   //-----------------------------------------------------------------asyncData^------------------------------------------------------------------------------------------------------
-   data() {
-      return {
-         configOptions: {},
-         imageModal: {
-            isOpen: false,
-            options: [
-               "front_error",
-               "back_error",
-               "left_error",
-               "right_error",
-               "interior_error",
-               "not_this_car_error",
-               "logo_on_the_picture",
-            ],
-            initialOptions: [
-               "front_error",
-               "back_error",
-               "left_error",
-               "right_error",
-               "interior_error",
-               "not_this_car_error",
-               "logo_on_the_picture",
-            ],
-            rejectArray: ["front_error", "back_error", "left_error"],
-            modalToggled: false,
-         },
-         loading: true,
-         button_loading: false,
-         openLog: false,
-         transferModal: false,
-         transferComment: "",
-         announceId: false,
-         getTimer: {
-            data: "",
-            unix: 0,
-         },
-         rejectArray: [],
-         refresh: 1,
-         date: Math.floor(Date.now() / 1000),
-         saved_images: [],
-         popup: false,
-         deleteArr: [],
-         errors: [],
-         progress_width: 0,
-         progress_index: 0,
-         color_selected: 0,
-         price_selected: 0,
-         status_selected: 0,
-         complect_selected: 0,
-         desc_selected: 0,
-         images_selected: 0,
+           let default_data = {};
+           let singleAnnounce = store.state.single_announce;
+           let brand;
+           let model;
+           let type;
+           default_data["engine"] = singleAnnounce.engine_type_id; //+
+           default_data["volume"] = singleAnnounce.capacity; //+
+           default_data["power"] = singleAnnounce.power; //+
+           default_data["cylinders"] = singleAnnounce.cylinders; //+
+           default_data["box"] = singleAnnounce.box_id; //+
+           default_data["cylinder_placement"] = singleAnnounce.cylinder_type_id;
+           default_data["number_of_vehicles"] = singleAnnounce.tact; //+
+           default_data["drive"] = singleAnnounce.gear_id; //+
+           default_data["capacity"] = singleAnnounce.capacity;
+           default_data["fuel_type"] = singleAnnounce.fuel_type;
+           default_data["credit"] = singleAnnounce.credit;
+           default_data["is_rent"] = singleAnnounce.is_rent;
+           if (singleAnnounce.moto_brand !== undefined) {
+              default_data["category"] = "1";
+              await store.dispatch("getMotoModels", {
+                 id: singleAnnounce.moto_brand.id,
+                 category: default_data.category,
+                 index: 0,
+              });
+              brand = singleAnnounce.moto_brand;
+              model = singleAnnounce.moto_model;
+              /*  type  = singleAnnounce.moto_type_id;*/
+           }
+           if (singleAnnounce.scooter_brand !== undefined) {
+              default_data["category"] = "2";
+              await store.dispatch("getScooterModels", {
+                 id: singleAnnounce.scooter_brand.id,
+                 index: 0,
+              });
+              brand = singleAnnounce.scooter_brand;
+              model = singleAnnounce.scooter_model;
+           }
+           if (singleAnnounce.moto_atv_brand !== undefined) {
+              default_data["category"] = "3";
+              await store.dispatch("getAtvModels", {
+                 id: singleAnnounce.moto_atv_brand.id,
+                 index: 0,
+              });
+              brand = singleAnnounce.moto_atv_brand;
+              model = singleAnnounce.moto_atv_model;
+              /*  type  = singleAnnounce.moto_atv_type_id;*/
+           }
+           return {
+              admin_user: admin_user.user,
+              default_data: default_data,
+              old_brand: brand && brand.name ? brand.name : null,
+              old_model: model.name,
+              old_type: type,
+              brand: brand.id,
+              model: model.id,
+              year: singleAnnounce.year,
+              moderator: data ? data.moderator : {},
+           };
+        } catch (e) {
+           store.commit("moderator/moderatorMutator", {
+              with: {},
+              property: "single_announce",
+           });
+        }
+        return {
+           admin_user: admin_user.user,
+           moderator: data ? data.moderator : {},
+        };
+        // await store.dispatch('editMoto',{ id:route.params.edit, type:route.query.type });
+     },
 
-         progress: [
-            this.$t("make_and_model"),
-            this.$t("photo_and_video"),
-            this.$t("color_and_mileage"),
-            this.$t("price_and_contacts"),
-            this.$t("condition"),
-            this.$t("equipment"),
-            this.$t("description"),
-         ],
-         mmm: "",
-         cookie_keys: ["engine", "generation", "year"],
-         breadcrumbs: [],
-         show: {},
-         category: "1",
-         address: "",
-         selectedIndex: {},
-         option_toggle: 1,
-         cars_parts: [
-            {
-               name: this.$t("front_bamp"),
-               classes: "state__front",
-            },
-            {
-               name: this.$t("front_left_door"),
-               classes: "state__FrontLeftDoor",
-            },
-            {
-               name: this.$t("back_right_door"),
-               classes: "state__FrontRearRight",
-            },
-            {
-               name: this.$t("front_right_door"),
-               classes: "state__FrontRightDoor",
-            },
-            {
-               name: this.$t("back_left_door"),
-               classes: "state__FrontRearLeft",
-            },
-            {
-               name: this.$t("roof"),
-               classes: "state__roof",
-            },
-            {
-               name: this.$t("back_bamp"),
-               classes: "state__rear",
-            },
-         ],
-         titles: [
-            this.$t("overview"),
-            this.$t("exterior_elements"),
-            this.$t("theif_protection"),
-            this.$t("multimedia"),
-            this.$t("salon"),
-            this.$t("comfort"),
-            this.$t("safety"),
-            this.$t("other"),
-         ],
-         selectedBadges: [],
-         modalIsActive: false,
-         files: {},
-         imagesBase64: [],
-         form: {
-            model: null,
-            auction: "",
-            end_date: "",
-            country_id: "",
-            delay_comment: "",
-            brand: null,
-            address: "",
-            lat: "",
-            comment: "",
-            lng: "",
-            tradeable: 0,
-            beaten: 0,
-            guaranty: 0,
-            category: "1",
-            volume: "",
-            power: "",
-            car_number: "",
-            show_car_number: false,
-            show_vin: false,
-            selectedColor: "",
-            all_options: {},
-            badges: {},
-            region_id: "",
-            year: "",
-            month: "",
-            mileage: "",
-            is_new: 0,
-            customs_clearance: 0,
-            passport: 0,
-            vin: "",
-            number_of_vehicles: -1,
-            cylinders: -1,
-            cylinder_placement: -1,
-            drive: -1,
-            engine: -1,
-            used_ones: -1,
-            customed_ones: -1,
-            box: -1,
-            tact: -1,
-            price: "",
-            new_badges: [],
-            owner_type: 0,
-            currency: 0,
-            youtube: {
-               id: "",
-               thumb: "",
-            },
-            saved_images: [],
-            fuel_type: null,
-            is_autosalon: false,
-            mileage_measure: "0",
-            selectedYear: null,
-            btl_cookie: "",
-            credit: false,
-            owners: 0,
-            is_rent: false,
-         },
-         showPhotoReject: false,
-         minFiles: this.$route.query.type === "moto" ? 2 : 3,
-         maxFiles: 20,
-         readCarNumberDisclaimer: false,
-         collapsed: true,
-         imageIsUploading: false,
-      };
-   },
+     data() {
+        return {
+           configOptions: {},
+           imageModal: {
+              isOpen: false,
+              options: [
+                 "front_error",
+                 "back_error",
+                 "left_error",
+                 "right_error",
+                 "interior_error",
+                 "not_this_car_error",
+                 "logo_on_the_picture",
+              ],
+              initialOptions: [
+                 "front_error",
+                 "back_error",
+                 "left_error",
+                 "right_error",
+                 "interior_error",
+                 "not_this_car_error",
+                 "logo_on_the_picture",
+              ],
+              rejectArray: ["front_error", "back_error", "left_error"],
+              modalToggled: false,
+           },
+           loading: true,
+           button_loading: false,
+           openLog: false,
+           transferModal: false,
+           transferComment: "",
+           announceId: false,
+           getTimer: {
+              data: "",
+              unix: 0,
+           },
+           rejectArray: [],
+           refresh: 1,
+           date: Math.floor(Date.now() / 1000),
+           saved_images: [],
+           popup: false,
+           deleteArr: [],
+           errors: [],
+           progress_width: 0,
+           progress_index: 0,
+           color_selected: 0,
+           price_selected: 0,
+           status_selected: 0,
+           complect_selected: 0,
+           desc_selected: 0,
+           images_selected: 0,
 
-   async created() {
-      if (this.single_announce && this.single_announce.id) {
-         let announce = JSON.parse(JSON.stringify(this.single_announce));
+           progress: [
+              this.$t("make_and_model"),
+              this.$t("photo_and_video"),
+              this.$t("color_and_mileage"),
+              this.$t("price_and_contacts"),
+              this.$t("condition"),
+              this.$t("equipment"),
+              this.$t("description"),
+           ],
+           mmm: "",
+           cookie_keys: ["engine", "generation", "year"],
+           breadcrumbs: [],
+           show: {},
+           category: "1",
+           address: "",
+           selectedIndex: {},
+           option_toggle: 1,
+           cars_parts: [
+              {
+                 name: this.$t("front_bamp"),
+                 classes: "state__front",
+              },
+              {
+                 name: this.$t("front_left_door"),
+                 classes: "state__FrontLeftDoor",
+              },
+              {
+                 name: this.$t("back_right_door"),
+                 classes: "state__FrontRearRight",
+              },
+              {
+                 name: this.$t("front_right_door"),
+                 classes: "state__FrontRightDoor",
+              },
+              {
+                 name: this.$t("back_left_door"),
+                 classes: "state__FrontRearLeft",
+              },
+              {
+                 name: this.$t("roof"),
+                 classes: "state__roof",
+              },
+              {
+                 name: this.$t("back_bamp"),
+                 classes: "state__rear",
+              },
+           ],
+           titles: [
+              this.$t("overview"),
+              this.$t("exterior_elements"),
+              this.$t("theif_protection"),
+              this.$t("multimedia"),
+              this.$t("salon"),
+              this.$t("comfort"),
+              this.$t("safety"),
+              this.$t("other"),
+           ],
+           selectedBadges: [],
+           modalIsActive: false,
+           files: {},
+           imagesBase64: [],
+           form: {
+              model: null,
+              auction: "",
+              end_date: "",
+              country_id: "",
+              delay_comment: "",
+              brand: null,
+              address: "",
+              lat: "",
+              comment: "",
+              lng: "",
+              tradeable: 0,
+              beaten: 0,
+              guaranty: 0,
+              category: "1",
+              volume: "",
+              power: "",
+              car_number: "",
+              show_car_number: false,
+              show_vin: false,
+              selectedColor: "",
+              all_options: {},
+              badges: {},
+              region_id: "",
+              year: "",
+              month: "",
+              mileage: "",
+              is_new: 0,
+              customs_clearance: 0,
+              passport: 0,
+              vin: "",
+              number_of_vehicles: -1,
+              cylinders: -1,
+              cylinder_placement: -1,
+              drive: -1,
+              engine: -1,
+              used_ones: -1,
+              customed_ones: -1,
+              box: -1,
+              tact: -1,
+              price: "",
+              new_badges: [],
+              owner_type: 0,
+              currency: 0,
+              youtube: {
+                 id: "",
+                 thumb: "",
+              },
+              saved_images: [],
+              fuel_type: null,
+              is_autosalon: false,
+              mileage_measure: "0",
+              selectedYear: null,
+              btl_cookie: "",
+              credit: false,
+              owners: 0,
+              is_rent: false,
+           },
+           showPhotoReject: false,
+           minFiles: this.$route.query.type === "moto" ? 2 : 3,
+           maxFiles: 20,
+           readCarNumberDisclaimer: false,
+           collapsed: true,
+           imageIsUploading: false,
+        };
+     },
 
-         this.form.end_date = announce.end_date;
-         this.form.auction = announce.auction;
-         this.form.country_id = announce.country_id;
-         this.announceId = announce.id;
-         this.form.id = announce.id;
-         this.form.id_unique = announce.id_unique;
-         this.form.category = this.default_data.category;
-         this.form.mileage_measure = announce?.mileage_measure || "0";
-         this.category = this.default_data.category;
-         this.form.credit = this.default_data.credit;
-         this.form.is_rent = this.default_data.is_rent;
-         /*   this.form = this.default_data;
-            this.form.youtube =  { id:'', thumb:'' };*/
-         this.saved_images = announce.mediaIds;
-         this.form.selectedColor = announce.color_id;
-         this.form.mileage = announce.mileage;
-         this.form.address = announce.address;
-         this.form.beaten = announce.status_id;
-         this.form.fuel_type = announce.fuel_type;
-         this.form.is_new = announce.is_new;
-         this.form.customs_clearance = announce.customed_id;
-         this.form.region_id = announce.region_id;
-         this.form.lat = parseFloat(announce.latitude);
-         this.form.lng = parseFloat(announce.longitude);
-         this.form.price = this.numericPrice();
-         this.form.currency = announce.currency_id;
-         this.form.tradeable = announce.tradeable;
+     async created() {
+        if (this.single_announce && this.single_announce.id) {
+           let announce = JSON.parse(JSON.stringify(this.single_announce));
 
-         this.form.owner_type = announce.owners;
-         this.form.owners = announce.owners;
-         this.form.year = announce.year;
-         this.form.tact = announce.tact;
-         this.form.guaranty = announce.guaranty;
-         this.form.car_number = announce.car_number;
-         this.form.show_car_number = announce.show_car_number;
-         this.form.show_vin = announce.show_vin;
-         this.form.vin = announce.vin;
+           this.form.end_date = announce.end_date;
+           this.form.auction = announce.auction;
+           this.form.country_id = announce.country_id;
+           this.announceId = announce.id;
+           this.form.id = announce.id;
+           this.form.id_unique = announce.id_unique;
+           this.form.category = this.default_data.category;
+           this.form.mileage_measure = announce?.mileage_measure || "0";
+           this.category = this.default_data.category;
+           this.form.credit = this.default_data.credit;
+           this.form.is_rent = this.default_data.is_rent;
+           /*   this.form = this.default_data;
+              this.form.youtube =  { id:'', thumb:'' };*/
+           this.saved_images = announce.mediaIds;
+           this.form.selectedColor = announce.color_id;
+           this.form.mileage = announce.mileage;
+           this.form.address = announce.address;
+           this.form.beaten = announce.status_id;
+           this.form.fuel_type = announce.fuel_type;
+           this.form.is_new = announce.is_new;
+           this.form.customs_clearance = announce.customed_id;
+           this.form.region_id = announce.region_id;
+           this.form.lat = parseFloat(announce.latitude);
+           this.form.lng = parseFloat(announce.longitude);
+           this.form.price = this.numericPrice();
+           this.form.currency = announce.currency_id;
+           this.form.tradeable = announce.tradeable;
 
-         if (
-            announce.moto_brand !== undefined ||
-            announce.scooter_brand !== undefined ||
-            announce.moto_atv_model !== undefined
-         ) {
-            this.form.brand =
-               announce.moto_brand?.id ||
-               announce.scooter_brand?.id ||
-               announce.moto_atv_brand?.id ||
-               null;
-            this.form.model =
-               announce.moto_model?.id ||
-               announce.scooter_model?.id ||
-               announce.moto_atv_model?.id ||
-               null;
-            this.form.selectedBrand =
-               announce.moto_brand?.slug ||
-               announce.scooter_brand?.slug ||
-               announce.moto_atv_brand?.slug ||
-               null;
-            this.form.selectedModel =
-               announce.moto_model?.slug ||
-               announce.scooter_brand?.slug ||
-               announce.moto_atv_model?.slug ||
-               null;
-         }
-         this.form.engine = announce.engine_type_id;
-         this.form.power = announce.power;
-         this.form.comment = announce.comment;
+           this.form.owner_type = announce.owners;
+           this.form.owners = announce.owners;
+           this.form.year = announce.year;
+           this.form.tact = announce.tact;
+           this.form.guaranty = announce.guaranty;
+           this.form.car_number = announce.car_number;
+           this.form.show_car_number = announce.show_car_number;
+           this.form.show_vin = announce.show_vin;
+           this.form.vin = announce.vin;
 
-         this.form.engine = this.default_data["engine"];
-         this.form.volume = this.default_data["volume"];
-         this.form.power = this.default_data["power"];
-         this.form.cylinders = this.default_data["cylinders"];
-         this.form.box = this.default_data["box"];
-         this.form.cylinder_placement = this.default_data["cylinder_placement"];
-         this.form.number_of_vehicles = this.default_data["number_of_vehicles"];
-         this.form.drive = this.default_data["drive"];
-         this.form.capacity = this.default_data["capacity"];
+           if (
+              announce.moto_brand !== undefined ||
+              announce.scooter_brand !== undefined ||
+              announce.moto_atv_model !== undefined
+           ) {
+              this.form.brand =
+                 announce.moto_brand?.id ||
+                 announce.scooter_brand?.id ||
+                 announce.moto_atv_brand?.id ||
+                 null;
+              this.form.model =
+                 announce.moto_model?.id ||
+                 announce.scooter_model?.id ||
+                 announce.moto_atv_model?.id ||
+                 null;
+              this.form.selectedBrand =
+                 announce.moto_brand?.slug ||
+                 announce.scooter_brand?.slug ||
+                 announce.moto_atv_brand?.slug ||
+                 null;
+              this.form.selectedModel =
+                 announce.moto_model?.slug ||
+                 announce.scooter_brand?.slug ||
+                 announce.moto_atv_model?.slug ||
+                 null;
+           }
+           this.form.engine = announce.engine_type_id;
+           this.form.power = announce.power;
+           this.form.comment = announce.comment;
 
-         if (announce.youtube_id) this.getYoutube(announce.youtube_id);
-      }
-   },
+           this.form.engine = this.default_data["engine"];
+           this.form.volume = this.default_data["volume"];
+           this.form.power = this.default_data["power"];
+           this.form.cylinders = this.default_data["cylinders"];
+           this.form.box = this.default_data["box"];
+           this.form.cylinder_placement = this.default_data["cylinder_placement"];
+           this.form.number_of_vehicles = this.default_data["number_of_vehicles"];
+           this.form.drive = this.default_data["drive"];
+           this.form.capacity = this.default_data["capacity"];
 
-   async mounted() {
-      await this.$auth.setUserToken(`Bearer ${this.$route.query.token}`);
+           if (announce.youtube_id) this.getYoutube(announce.youtube_id);
+        }
+     },
 
-      this.admin_user = await this.$axios.$get("/user");
-      this.$nuxt.$on("custom_modal_open", (val) => {
-         if (val) {
-            this.popup = true;
-            document.querySelector("body").classList.add("popup_open");
-         } else {
-            this.popup = false;
-            document.querySelector("body").classList.remove("popup_open");
-         }
-      });
-      document.body.addEventListener("click", () => {
-         this.show = {};
-      });
-      setTimeout(() => {
-         this.loading = false;
-      }, 2000);
-   },
+     async mounted() {
+        await this.$auth.setUserToken(`Bearer ${this.$route.query.token}`);
 
-   beforeDestroy() {
-      this.$nuxt.$off("publish_post");
-      this.$toasted.clear();
-   },
+        this.admin_user = await this.$axios.$get("/user");
+        this.$nuxt.$on("custom_modal_open", (val) => {
+           if (val) {
+              this.popup = true;
+              document.querySelector("body").classList.add("popup_open");
+           } else {
+              this.popup = false;
+              document.querySelector("body").classList.remove("popup_open");
+           }
+        });
+        document.body.addEventListener("click", () => {
+           this.show = {};
+        });
+        setTimeout(() => {
+           this.loading = false;
+        }, 2000);
+     },
 
-   methods: {
-      getComponent(component) {
-         switch (component) {
-            case "select-checkbox":
-               return "radio-group";
-            case "animated-input":
-               return "form-numeric-input";
-         }
-      },
-      ...mapActions(["setSellPreviewData"]),
-      handleLoading(e) {
-         this.loading = e;
-      },
-      handleBackList() {
-         if (this.admin_user.admin_group == 2) {
-            location.href = "/alvcp/resources/announcements";
-         } else {
-            location.href = "/alvcp/resources/announcements";
-         }
-      },
-      async handleBackToList() {
-         await this.$axios.$post(
-            "/ticket/detach/" + this.announceId + "/" + this.getRedirectUrl
-         );
-         location.href = "/alvcp/resources/" + this.getRedirectUrl;
-      },
+     beforeDestroy() {
+        this.$nuxt.$off("publish_post");
+        this.$toasted.clear();
+     },
 
-      ifPopularCommentsEmpty() {
-         if (this.getPopularComments.length) {
-            return this.getPopularComments;
-         } else {
-            return {};
-         }
-      },
-      getValue(key, value) {
-         if (key === "status") {
-            let status = [
-               this.$t("rejected"),
-               this.$t("active"),
-               this.$t("pending"),
-            ];
-            return status[value];
-         } else {
-            return value;
-         }
-      },
-      addComment(e) {
-         if (this.form.comment === null) this.form.comment = "";
-         this.form.comment = this.form.comment + e + " ";
-      },
-      async deleteByIndex(index) {
-         if (this.saved_images[index]) {
-            this.deleteArr.push(this.saved_images[index]);
-         } else {
-            await this.$axios.$post(
-               "/remove_temporary_image/" + this.saved_images[index]
-            );
-         }
-         this.saved_images.splice(index, 1);
-      },
-      changeReason(rejectKey) {
-         if (rejectKey === "image") {
-            this.imageModal.isOpen = true;
-         } else {
-            if (this.rejectArray.includes(rejectKey)) {
-               this.rejectArray.splice(this.rejectArray.indexOf(rejectKey), 1);
-            } else {
-               this.rejectArray.push(rejectKey);
-            }
-         }
-      },
-      async addFiles(v) {
-         this.imageIsUploading = true;
-         await Promise.all(
-            v.map(async (image) => {
-               let formData = new FormData();
-               formData.append("temp_id", this.date);
-               formData.append("images[]", image);
-               try {
-                  const data = await this.$axios.$post(
-                     "/upload_temporary_images",
-                     formData,
-                     {
-                        headers: {
-                           "Content-Type": "multipart/form-data",
-                        },
-                     }
-                  );
-                  this.imageIsUploading = false;
-                  this.saved_images = this.saved_images.concat(data.ids);
-                  this.$store.commit("setSavedImageUrls", data.images);
-                  this.$nuxt.$emit(
-                     "remove_image_loading_by_index",
-                     this.saved_images.length
-                  );
-               } catch ({
-                  response: {
-                     data: {data},
-                  },
-               }) {
-                  this.imageIsUploading = false;
+     methods: {
+        getComponent(component) {
+           switch (component) {
+              case "select-checkbox":
+                 return "radio-group";
+              case "animated-input":
+                 return "form-numeric-input";
+           }
+        },
+        ...mapActions(["setSellPreviewData"]),
+        handleLoading(e) {
+           this.loading = e;
+        },
+        handleBackList() {
+           if (this.admin_user.admin_group == 2) {
+              location.href = `${this.$env().ADMIN_URL}/announcements`;
+           } else {
+              location.href = `${this.$env().ADMIN_URL}/announcements`;
+           }
+        },
+        async handleBackToList() {
+           await this.$axios.$post("/ticket/detach/" + this.announceId + "/" + this.getRedirectUrl);
+           location.href = `${this.$env().ADMIN_URL}/` + this.getRedirectUrl;
+        },
 
-                  this.$nuxt.$emit("remove_image_by_index", this.saved_images.length);
-                  this.$nuxt.$emit("remove_image_on_catch");
-                  this.errors = [];
-                  this.$toasted.clear();
-                  Object.keys(data).map((key) => {
-                     this.$toasted.show(data[key], {type: "error"});
-                  });
-               }
-            })
-         );
-      },
-      deleteArrHandler(v) {
-         this.deleteArr = v;
-      },
-      progressing(i) {
-         if (i === 0) this.progress_width = 0;
-         else this.progress_width = (100 / 10) * i;
-      },
+        ifPopularCommentsEmpty() {
+           if (this.getPopularComments.length) {
+              return this.getPopularComments;
+           } else {
+              return {};
+           }
+        },
+        getValue(key, value) {
+           if (key === "status") {
+              let status = [
+                 this.$t("rejected"),
+                 this.$t("active"),
+                 this.$t("pending"),
+              ];
+              return status[value];
+           } else {
+              return value;
+           }
+        },
+        addComment(e) {
+           if (this.form.comment === null) this.form.comment = "";
+           this.form.comment = this.form.comment + e + " ";
+        },
+        async deleteByIndex(index) {
+           if (this.saved_images[index]) {
+              this.deleteArr.push(this.saved_images[index]);
+           } else {
+              await this.$axios.$post(
+                 "/remove_temporary_image/" + this.saved_images[index]
+              );
+           }
+           this.saved_images.splice(index, 1);
+        },
+        changeReason(rejectKey) {
+           if (rejectKey === "image") {
+              this.imageModal.isOpen = true;
+           } else {
+              if (this.rejectArray.includes(rejectKey)) {
+                 this.rejectArray.splice(this.rejectArray.indexOf(rejectKey), 1);
+              } else {
+                 this.rejectArray.push(rejectKey);
+              }
+           }
+        },
+        async addFiles(v) {
+           this.imageIsUploading = true;
+           await Promise.all(
+              v.map(async (image) => {
+                 let formData = new FormData();
+                 formData.append("temp_id", this.date);
+                 formData.append("images[]", image);
+                 try {
+                    const data = await this.$axios.$post(
+                       "/upload_temporary_images",
+                       formData,
+                       {
+                          headers: {
+                             "Content-Type": "multipart/form-data",
+                          },
+                       }
+                    );
+                    this.imageIsUploading = false;
+                    this.saved_images = this.saved_images.concat(data.ids);
+                    this.$store.commit("setSavedImageUrls", data.images);
+                    this.$nuxt.$emit(
+                       "remove_image_loading_by_index",
+                       this.saved_images.length
+                    );
+                 } catch ({
+                    response: {
+                       data: {data},
+                    },
+                 }) {
+                    this.imageIsUploading = false;
 
-      getOldYears(first, second) {
-         let dates = [];
-         for (let i = new Date().getFullYear(); i >= 1900; i--) {
-            dates.push(i);
-         }
-         return dates.slice(first, second);
-         if (first === 11) {
-            return dates.slice(first, dates.length);
-         }
-      },
-      savePhotoIssues(v) {
-         var validCheckbox = true;
-         Object.keys(v.data).map((key) => {
-            if (this.rejectArray.includes(key)) {
-               this.rejectArray.splice(this.rejectArray.indexOf(key), 1);
-            }
+                    this.$nuxt.$emit("remove_image_by_index", this.saved_images.length);
+                    this.$nuxt.$emit("remove_image_on_catch");
+                    this.errors = [];
+                    this.$toasted.clear();
+                    Object.keys(data).map((key) => {
+                       this.$toasted.show(data[key], {type: "error"});
+                    });
+                 }
+              })
+           );
+        },
+        deleteArrHandler(v) {
+           this.deleteArr = v;
+        },
+        progressing(i) {
+           if (i === 0) this.progress_width = 0;
+           else this.progress_width = (100 / 10) * i;
+        },
 
-            if (v.data[key]) {
-               validCheckbox = false;
-               this.rejectArray.push(key);
-            }
-         });
+        getOldYears(first, second) {
+           let dates = [];
+           for (let i = new Date().getFullYear(); i >= 1900; i--) {
+              dates.push(i);
+           }
+           return dates.slice(first, second);
+           if (first === 11) {
+              return dates.slice(first, dates.length);
+           }
+        },
+        savePhotoIssues(v) {
+           var validCheckbox = true;
+           Object.keys(v.data).map((key) => {
+              if (this.rejectArray.includes(key)) {
+                 this.rejectArray.splice(this.rejectArray.indexOf(key), 1);
+              }
 
-         this.$nuxt.$emit("image-checkbox-change", validCheckbox);
-      },
-      changeCategory(v) {
-         this.form.category = v;
-         this.breadcrumbs = [];
-         this.form.selectedBrand = "";
-         this.form.selectedModel = "";
-         this.form.selectedType = "";
-      },
-      async componentValueChange(id, item) {
-         this.form[item] = id;
-      },
-      async handleChange(v) {
-         switch (v.key) {
-            case "brand":
-               this.brand = 0;
-               this.form.model = null;
-               if (this.default_data.category == "1")
-                  await this.$store.dispatch("getMotoModels", {
-                     id: v.value,
-                     index: 0,
-                     category: this.default_data.category,
-                  });
-               else if (this.default_data.category === "2")
-                  await this.$store.dispatch("getScooterModels", {
-                     id: v.value,
-                     index: 0,
-                     category: this.default_data.category,
-                  });
-               else
-                  await this.$store.dispatch("getAtvModels", {
-                     id: v.value,
-                     index: 0,
-                     category: this.default_data.category,
-                  });
-            case "model":
-               this.model = 0;
-            case "type":
-            // this.$route.query.type = 0;
-            case "year":
-               this.year = 0;
-         }
-         if (v.value && v.value.key) {
-            this[v.key] = v.value.key;
-         }
-         this.refresh += 15;
-      },
-      Sections(col, items) {
-         return items.slice(
-            col * Math.ceil(items.length / 4),
-            (col + 1) * Math.ceil(items.length / 4)
-         );
-      },
-      passBase64Images(val) {
-         this.imagesBase64 = val;
-      },
+              if (v.data[key]) {
+                 validCheckbox = false;
+                 this.rejectArray.push(key);
+              }
+           });
 
-      getColor() {
-         return this.colors.find((item) => item.id === this.form.selectedColor);
-      },
-      getLatLng(latLng) {
-         this.form.lat = latLng.lat;
-         this.form.lng = latLng.lng;
-         this.lat = latLng.lat;
-         this.lng = latLng.lng;
-      },
-      getAddress(address) {
-         this.removeFromError("address");
-         this.form.address = address;
-         this.address = address;
-      },
-      closeModal() {
-         this.modalIsActive = false;
-      },
-      openModal() {
-         this.modalIsActive = true;
-      },
-      closePopup() {
-         this.showPhotoReject = false;
-         this.show = {};
-      },
+           this.$nuxt.$emit("image-checkbox-change", validCheckbox);
+        },
+        changeCategory(v) {
+           this.form.category = v;
+           this.breadcrumbs = [];
+           this.form.selectedBrand = "";
+           this.form.selectedModel = "";
+           this.form.selectedType = "";
+        },
+        async componentValueChange(id, item) {
+           this.form[item] = id;
+        },
+        async handleChange(v) {
+           switch (v.key) {
+              case "brand":
+                 this.brand = 0;
+                 this.form.model = null;
+                 if (this.default_data.category == "1")
+                    await this.$store.dispatch("getMotoModels", {
+                       id: v.value,
+                       index: 0,
+                       category: this.default_data.category,
+                    });
+                 else if (this.default_data.category === "2")
+                    await this.$store.dispatch("getScooterModels", {
+                       id: v.value,
+                       index: 0,
+                       category: this.default_data.category,
+                    });
+                 else
+                    await this.$store.dispatch("getAtvModels", {
+                       id: v.value,
+                       index: 0,
+                       category: this.default_data.category,
+                    });
+              case "model":
+                 this.model = 0;
+              case "type":
+              // this.$route.query.type = 0;
+              case "year":
+                 this.year = 0;
+           }
+           if (v.value && v.value.key) {
+              this[v.key] = v.value.key;
+           }
+           this.refresh += 15;
+        },
+        Sections(col, items) {
+           return items.slice(
+              col * Math.ceil(items.length / 4),
+              (col + 1) * Math.ceil(items.length / 4)
+           );
+        },
+        passBase64Images(val) {
+           this.imagesBase64 = val;
+        },
 
-      handleMultiselect(v) {
-         this.removeFromError(v.key);
-         this.form[v.key] = v.value.key;
-      },
+        getColor() {
+           return this.colors.find((item) => item.id === this.form.selectedColor);
+        },
+        getLatLng(latLng) {
+           this.form.lat = latLng.lat;
+           this.form.lng = latLng.lng;
+           this.lat = latLng.lat;
+           this.lng = latLng.lng;
+        },
+        getAddress(address) {
+           this.removeFromError("address");
+           this.form.address = address;
+           this.address = address;
+        },
+        closeModal() {
+           this.modalIsActive = false;
+        },
+        openModal() {
+           this.modalIsActive = true;
+        },
+        closePopup() {
+           this.showPhotoReject = false;
+           this.show = {};
+        },
 
-      saveToData(v) {
-         this.selectedIndex[v.index] = v.index;
-         this.form.part[v.index] = v.data;
-         this.changeProgressSingle("part");
-      },
+        handleMultiselect(v) {
+           this.removeFromError(v.key);
+           this.form[v.key] = v.value.key;
+        },
 
-      removeFromData(v) {
-         delete this.selectedIndex[v.index];
-         delete this.form.part[v.index];
-         this.changeProgressSingle("part");
-      },
+        saveToData(v) {
+           this.selectedIndex[v.index] = v.index;
+           this.form.part[v.index] = v.data;
+           this.changeProgressSingle("part");
+        },
 
-      saveImageRejects() {
-         this.rejectArray = this.rejectArray.concat(this.imageModal.rejectArray);
-         this.removeDuplicates();
-         this.closeImageRejectModal();
-         this.imageModal.rejectArray = [];
-      },
+        removeFromData(v) {
+           delete this.selectedIndex[v.index];
+           delete this.form.part[v.index];
+           this.changeProgressSingle("part");
+        },
 
-      handleAllOptions(v) {
-         let key = Object.keys(v)[0];
-         if (v[key] || (v.value && v.value.key)) {
-            if (v.key) this.form.all_options[v.key] = v.value.key;
-            else this.form.all_options[key] = v[key];
-         } else {
-            if (v.key) delete this.form.all_options[v.key];
-            else delete this.form.all_options[key];
-         }
+        saveImageRejects() {
+           this.rejectArray = this.rejectArray.concat(this.imageModal.rejectArray);
+           this.removeDuplicates();
+           this.closeImageRejectModal();
+           this.imageModal.rejectArray = [];
+        },
 
-         this.changeProgressSingle("all_options");
-      },
+        handleAllOptions(v) {
+           let key = Object.keys(v)[0];
+           if (v[key] || (v.value && v.value.key)) {
+              if (v.key) this.form.all_options[v.key] = v.value.key;
+              else this.form.all_options[key] = v[key];
+           } else {
+              if (v.key) delete this.form.all_options[v.key];
+              else delete this.form.all_options[key];
+           }
 
-      showSellModal(sellIndex) {
-         this.show = {};
-         this.show[sellIndex] = sellIndex;
-      },
+           this.changeProgressSingle("all_options");
+        },
 
-      _can_upload_file(key) {
-         let file = this.files[key];
+        showSellModal(sellIndex) {
+           this.show = {};
+           this.show[sellIndex] = sellIndex;
+        },
 
-         if (file.attempted || file.bad_size) {
-            return false;
-         }
-         return true;
-      },
+        _can_upload_file(key) {
+           let file = this.files[key];
 
-      async transferToSupervisor(withRejectReason = false) {
-         this.button_loading = true;
+           if (file.attempted || file.bad_size) {
+              return false;
+           }
+           return true;
+        },
 
-         if (withRejectReason) {
-            this.transferComment = this.rejectArray;
-         }
+        async transferToSupervisor(withRejectReason = false) {
+           this.button_loading = true;
 
-         await this.$axios.$post(
-            "/ticket/transfer/moto/" +
-            this.announceId +
-            "/" +
-            this.$route.query.type,
-            {comment: this.transferComment}
-         );
+           if (withRejectReason) {
+              this.transferComment = this.rejectArray;
+           }
 
-         let moto = {
-            moto: "motorcycles",
-            scooters: "scooters",
-            moto_atv: "moto-atvs",
-         };
+           await this.$axios.$post(
+              "/ticket/transfer/moto/" +
+              this.announceId +
+              "/" +
+              this.$route.query.type,
+              {comment: this.transferComment}
+           );
 
-         if (this.user.admin_group == 2) {
-            location.href = "/alvcp/resources/announce-moderators";
-         } else {
-            location.href = "/alvcp/resources/" + moto[this.$route.query.type];
-         }
-      },
+           let moto = {
+              moto: "motorcycles",
+              scooters: "scooters",
+              moto_atv: "moto-atvs",
+           };
 
-      async sendData(status = 2) {
-         this.loading = true;
-         if (this.saved_images.length !== this.imagesBase64.length) {
-            this.$toasted.show(this.$t("please_wait_for_all_image_loading"), {
-               type: "error",
-            });
-            return false;
-         }
-         let formData = new FormData();
-         this.form.status = status;
-         // this.form.model = this.model;
-         // this.form.year = this.year;
-         this.form.type = this.type;
-         this.form.rejectArray = this.rejectArray;
-         this.form.selectedYear = this.form.year;
+           if (this.user.admin_group == 2) {
+             location.href = `${this.$env().ADMIN_URL}/announce-moderators`;
+           } else {
+             location.href = `${this.$env().ADMIN_URL}/` + moto[this.$route.query.type];
+           }
+        },
 
-         this.form.saved_images = this.saved_images;
-         delete this.form.btl_cookie;
-         // delete this.form.credit;
-         delete this.form.fuel_type;
-         delete this.form.is_autosalon;
-         delete this.form.mileage_measure;
-         delete this.form.owners;
-         delete this.form.selectedBrand;
-         delete this.form.selectedModel;
-         delete this.form.selectedYear;
-         delete this.form.type;
+        async sendData(status = 2) {
+           this.loading = true;
+           if (this.saved_images.length !== this.imagesBase64.length) {
+              this.$toasted.show(this.$t("please_wait_for_all_image_loading"), {
+                 type: "error",
+              });
+              return false;
+           }
+           let formData = new FormData();
+           this.form.status = status;
+           // this.form.model = this.model;
+           // this.form.year = this.year;
+           this.form.type = this.type;
+           this.form.rejectArray = this.rejectArray;
+           this.form.selectedYear = this.form.year;
 
-         formData.append("data", JSON.stringify(this.form));
-         formData.append("deletedImages", JSON.stringify(this.deleteArr));
+           this.form.saved_images = this.saved_images;
+           delete this.form.btl_cookie;
+           // delete this.form.credit;
+           delete this.form.fuel_type;
+           delete this.form.is_autosalon;
+           delete this.form.mileage_measure;
+           delete this.form.owners;
+           delete this.form.selectedBrand;
+           delete this.form.selectedModel;
+           delete this.form.selectedYear;
+           delete this.form.type;
 
-         this.$nuxt.$emit("loading_status", true);
-         this.button_loading = true;
-         try {
-            await this.$axios.$post(
-               "/ticket/moto/" + this.announceId + "/" + this.type,
-               formData
-            );
-            let moto = {
-               moto: "motorcycles",
-               scooters: "scooters",
-               moto_atv: "moto-atvs",
-            };
+           formData.append("data", JSON.stringify(this.form));
+           formData.append("deletedImages", JSON.stringify(this.deleteArr));
 
-            if (this.admin_user.admin_group == 2) {
-               location.href = "/alvcp/resources/announce-moderators";
-            } else {
-               location.href = "/alvcp/resources/" + moto[this.$route.query.type];
-            }
-            this.loading = false;
-         } catch ({
-            response: {
-               data: {data},
-            },
-         }) {
-            this.$nuxt.$emit("loading_status", false);
-            this.button_loading = false;
-            this.errors = [];
-            this.$toasted.clear();
-            this.loading = false;
-            Object.keys(data)
-               .reverse()
-               .map((key) => {
-                  this.errors.push(key);
-                  this.$toasted.show(data[key][0], {
-                     type: "error",
-                     duration: 0,
-                     action: {
-                        text: "Go to fix",
-                        onClick: (e, toastObject) => {
-                           if (document.querySelector("#" + key))
-                              document
-                                 .querySelector("#" + key)
-                                 .scrollIntoView({behavior: "smooth", block: "center"});
-                           toastObject.goAway(0);
-                        },
-                     },
-                  });
-               });
-         }
-      },
+           this.$nuxt.$emit("loading_status", true);
+           this.button_loading = true;
+           try {
+              await this.$axios.$post("/ticket/moto/" + this.announceId + "/" + this.type, formData);
+              let moto = {
+                 moto: "motorcycles",
+                 scooters: "scooters",
+                 moto_atv: "moto-atvs",
+              };
 
-      addImages(v) {
-         this.files = v;
+              if (this.admin_user.admin_group == 2) {
+                location.href = `${this.$env().ADMIN_URL}/announce-moderators`;
+              } else {
+                location.href = `${this.$env().ADMIN_URL}/` + moto[this.$route.query.type];
+              }
 
-         this.$nuxt.$emit("progress_change", {
-            type: "images",
-            count: Object.keys(this.files).length,
-         });
-      },
-      move(input, from, to) {
-         let numberOfDeletedElm = 1;
-         const elm = input.splice(from, numberOfDeletedElm)[0];
-         numberOfDeletedElm = 0;
-         input.splice(to, numberOfDeletedElm, elm);
-      },
-      replaceImage(object) {
-         if (this.saved_images.length !== this.imagesBase64.length) return;
-         this.imagesBase64 = object.images;
-         this.move(this.saved_images, object.v.oldIndex, object.v.newIndex);
-      },
-      removeImage(v) {
-         this.files = v;
-      },
-      getChangeOption(v) {
-         if (v) this.option_toggle = 0;
-         else this.option_toggle = 1;
-      },
-      checkboxChanged(v) {
-         let key = Object.keys(v)[0];
-         this.form[key] = v[key];
-         if (key === "customs_clearance") this.form.car_number = "";
-      },
-      getCurrency(v) {
-         this.form.currency = v.key;
-      },
-      addNewBadge(v) {
-         this.selectedBadges.push(...v);
-         this.form.new_badges = v;
-      },
-      changeBadge(v) {
-         this.selectedBadges.push(...v);
-         this.form.badges = v;
-      },
-      removeFromError(type) {
-         var errorIndex = this.errors.indexOf(type);
-         if (errorIndex !== -1) this.errors.splice(errorIndex, 1);
-      },
-      getChange(v, type) {
-         this.removeFromError(type);
-         this.form[type] = v;
-         if (type === "mileage" || type === "selectedColor")
-            this.changeProgress("mileage", "selectedColor");
-         if (type === "price" || type === "name")
-            this.changeProgress("price", "name");
-      },
-      changeProgressSingle(key) {
-         let status = 0;
-         if (Object.keys(this.form[key]).length) {
-            status = 2;
-         }
-         this.$nuxt.$emit("progress_change", {type: key, count: status});
-      },
-      changeProgress(key1, key2) {
-         let status = 0;
+              this.loading = false;
+           } catch ({
+              response: {
+                 data: {data},
+              },
+           }) {
+              this.$nuxt.$emit("loading_status", false);
+              this.button_loading = false;
+              this.errors = [];
+              this.$toasted.clear();
+              this.loading = false;
+              Object.keys(data)
+                 .reverse()
+                 .map((key) => {
+                    this.errors.push(key);
+                    this.$toasted.show(data[key][0], {
+                       type: "error",
+                       duration: 0,
+                       action: {
+                          text: "Go to fix",
+                          onClick: (e, toastObject) => {
+                             if (document.querySelector("#" + key))
+                                document
+                                   .querySelector("#" + key)
+                                   .scrollIntoView({behavior: "smooth", block: "center"});
+                             toastObject.goAway(0);
+                          },
+                       },
+                    });
+                 });
+           }
+        },
 
-         if (this.form[key1]) {
-            status = 1;
-         }
-         if (this.form[key2]) {
-            status = 1;
-         }
-         if (this.form[key1] && this.form[key2]) {
-            status = 2;
-         }
-         this.$nuxt.$emit("progress_change", {
-            type: key1 + "_" + key2,
-            count: status,
-         });
-      },
+        addImages(v) {
+           this.files = v;
 
-      getYoutube(val) {
-         this.form.youtube.id = val;
-         this.form.youtube.thumb = `https://img.youtube.com/vi/${val}/hqdefault.jpg`;
-      },
+           this.$nuxt.$emit("progress_change", {
+              type: "images",
+              count: Object.keys(this.files).length,
+           });
+          
+        },
+        move(input, from, to) {
+           let numberOfDeletedElm = 1;
+           const elm = input.splice(from, numberOfDeletedElm)[0];
+           numberOfDeletedElm = 0;
+           input.splice(to, numberOfDeletedElm, elm);
+        },
+        replaceImage(object) {
+           if (this.saved_images.length !== this.imagesBase64.length) return;
+           this.imagesBase64 = object.images;
+           this.move(this.saved_images, object.v.oldIndex, object.v.newIndex);
+        },
+        removeImage(v) {
+           this.files = v;
+        },
+        getChangeOption(v) {
+           if (v) this.option_toggle = 0;
+           else this.option_toggle = 1;
+        },
+        checkboxChanged(v) {
+           let key = Object.keys(v)[0];
+           this.form[key] = v[key];
+           if (key === "customs_clearance") this.form.car_number = "";
+        },
+        getCurrency(v) {
+           this.form.currency = v.key;
+        },
+        addNewBadge(v) {
+           this.selectedBadges.push(...v);
+           this.form.new_badges = v;
+        },
+        changeBadge(v) {
+           this.selectedBadges.push(...v);
+           this.form.badges = v;
+        },
+        removeFromError(type) {
+           var errorIndex = this.errors.indexOf(type);
+           if (errorIndex !== -1) this.errors.splice(errorIndex, 1);
+        },
+        getChange(v, type) {
+           this.removeFromError(type);
+           this.form[type] = v;
+           if (type === "mileage" || type === "selectedColor")
+              this.changeProgress("mileage", "selectedColor");
+           if (type === "price" || type === "name")
+              this.changeProgress("price", "name");
+        },
+        changeProgressSingle(key) {
+           let status = 0;
+           if (Object.keys(this.form[key]).length) {
+              status = 2;
+           }
+           this.$nuxt.$emit("progress_change", {type: key, count: status});
+        },
+        changeProgress(key1, key2) {
+           let status = 0;
 
-      numericPrice() {
-         return this.single_announce.price.replace(/\D/g, "");
-      },
+           if (this.form[key1]) {
+              status = 1;
+           }
+           if (this.form[key2]) {
+              status = 1;
+           }
+           if (this.form[key1] && this.form[key2]) {
+              status = 2;
+           }
+           this.$nuxt.$emit("progress_change", {
+              type: key1 + "_" + key2,
+              count: status,
+           });
+        },
 
-      //  ------------
-      formatDate(dte) {
-         return moment(dte).format("DD.MM.YYYY HH:mm");
-      },
-      getBrandName(id, arr) {
-         return arr.find((element) => element.key == id);
-      },
-      updatePreview(key) {
-         if (!key || key === "region")
-            this.setSellPreviewData({
-               value: this.form.region_id,
-               key: "region",
-            });
-         if (!key || key === "price")
-            this.setSellPreviewData({value: this.form.price, key: "price"});
-         if (!key || key === "currency")
-            this.setSellPreviewData({
-               value: this.getCurrencyOptions.find(
-                  (o) => o.key === this.form.currency
-               )?.sign,
-               key: "currency",
-            });
-         if (!key || key === "mileage")
-            this.setSellPreviewData({value: this.form.mileage, key: "mileage"});
-         if (!key || key === "mileage_measure")
-            this.setSellPreviewData({
-               value: this.getMileageOptions.find(
-                  (o) => o.key === this.form.mileage_measure
-               )?.name,
-               key: "mileage_measure",
-            });
-         return;
-      },
-      updateMileage(is_new) {
-         if (!is_new) {
-            this.isInvalid("mileage") && this.removeError("mileage");
-         } else {
-            let mileage = this.form.mileage;
-            this.form.mileage =
-               mileage > (this.form.mileage_measure === 2 ? 310.686 : 500) ||
-               !mileage
-                  ? 0
-                  : mileage;
-         }
-         this.updatePreview("mileage");
-      },
-      isInvalid(field) {
-         return this.errors.includes(field);
-      },
-      updateAddress(address) {
-         this.form.address = address;
-         this.removeError("address");
-      },
-      updateLatLng({lat, lng}) {
-         this.form.lat = lat;
-         this.form.lng = lng;
-      },
-      showCarNumberDisclaimer() {
-         if (this.readCarNumberDisclaimer) {
-            this.$nuxt.$emit("close-popover", "car-number");
-         } else {
-            this.$nuxt.$emit("show-popover", "car-number");
-            this.readCarNumberDisclaimer = true;
-         }
-      },
-      updateSellFilter(key, value) {
-         if (value === "") this.$delete(this.form, key);
-         else this.$set(this.form, key, value);
-      },
+        getYoutube(val) {
+           this.form.youtube.id = val;
+           this.form.youtube.thumb = `https://img.youtube.com/vi/${val}/hqdefault.jpg`;
+        },
 
-      //  sell filters
-      selectOption(key, value) {
-         this.$emit("update-sell-filter", key, value);
-         this.$emit("remove-error", key);
-      },
-      getKey(item) {
-         return item.search_key || item.field;
-      },
-      getValues(item) {
-         let options = this.options && this.options[item.type_key];
-         let sell_values =
-            item.sell_values && item.sell_values[parseInt(this.selected.category)];
-         let values = options || sell_values || item.values; //this.$sortBy(options || sell_values || item.values, a => a.name[this.locale] || this.$t(a.name));
-         return this.type === "commercial" &&
-         this.getType(item) === "input-radio" &&
-         !item.required
-            ? [...values, {key: 0, name: this.$t("not_set")}]
-            : values;
-      },
-      getPlaceholder(item) {
-         return (
-            this.$t(item.placeholder) ||
-            this.$t(item.type_key.replace("engine", "fuel"))
-         );
-      },
-      hasError(item) {
-         let field = this.getKey(item);
-         return this.errors.includes(field);
-      },
-      getSuffix(field, sep = "") {
-         switch (field) {
-            case "volume":
-               return sep + this.$t("char_sm_cube");
-            case "power":
-               return sep + this.$t("char_h_power");
-            case "capacity":
-               return sep + this.$t("char_sm_cube");
-            case "mileage":
-               return sep + this.$t("char_kilometre");
-            case "weight":
-               return sep + this.$t("char_kilogramm");
-            default:
-               return "";
-         }
-      },
-      getType(item) {
-         switch (item.component_add || item.component) {
-            case "select-checkbox":
-            case "any-type-selector":
-            case "truck-types":
-               return "input-radio";
-            case "animated-input":
-            case "input-component":
-               return "input-numeric";
-         }
-      },
-   },
+        numericPrice() {
+           return this.single_announce.price.replace(/\D/g, "");
+        },
 
-   computed: {
-      getMileageOptions() {
-         return [
-            {key: 1, name: this.$t("char_kilometre")},
-            {key: 2, name: this.$t("char_mile")},
-         ];
-      },
-      getBrands() {
-         let types = {
-            moto: "",
-            moto_atv: "atv_",
-         };
-         let dates = [];
-         var brands;
-         if (this.$route.query.type == "scooters") {
-            brands = this.moto_options.scooter_brands || [];
-         } else {
-            brands =
-               this.moto_options[types[this.$route.query.type] + "brands"] || [];
-         }
-         for (const key in brands) {
-            dates.push({
-               key: brands[key].id,
-               name: brands[key].name,
-            });
-         }
-         return dates;
-      },
-      type() {
-         return this.$route.query.type;
-      },
-      getBtlUserName() {
-         return this.single_announce.btl_announces.length
-            ? this.single_announce.btl_announces.find(
-               (item) => item.announce_id === this.single_announce.id
-            ).get_user.full_name
-            : "";
-      },
+        //  ------------
+        formatDate(dte) {
+           return moment(dte).format("DD.MM.YYYY HH:mm");
+        },
+        getBrandName(id, arr) {
+           return arr.find((element) => element.key == id);
+        },
+        updatePreview(key) {
+           if (!key || key === "region")
+              this.setSellPreviewData({
+                 value: this.form.region_id,
+                 key: "region",
+              });
+           if (!key || key === "price")
+              this.setSellPreviewData({value: this.form.price, key: "price"});
+           if (!key || key === "currency")
+              this.setSellPreviewData({
+                 value: this.getCurrencyOptions.find(
+                    (o) => o.key === this.form.currency
+                 )?.sign,
+                 key: "currency",
+              });
+           if (!key || key === "mileage")
+              this.setSellPreviewData({value: this.form.mileage, key: "mileage"});
+           if (!key || key === "mileage_measure")
+              this.setSellPreviewData({
+                 value: this.getMileageOptions.find(
+                    (o) => o.key === this.form.mileage_measure
+                 )?.name,
+                 key: "mileage_measure",
+              });
+           return;
+        },
+        updateMileage(is_new) {
+           if (!is_new) {
+              this.isInvalid("mileage") && this.removeError("mileage");
+           } else {
+              let mileage = this.form.mileage;
+              this.form.mileage =
+                 mileage > (this.form.mileage_measure === 2 ? 310.686 : 500) ||
+                 !mileage
+                    ? 0
+                    : mileage;
+           }
+           this.updatePreview("mileage");
+        },
+        isInvalid(field) {
+           return this.errors.includes(field);
+        },
+        updateAddress(address) {
+           this.form.address = address;
+           this.removeError("address");
+        },
+        updateLatLng({lat, lng}) {
+           this.form.lat = lat;
+           this.form.lng = lng;
+        },
+        showCarNumberDisclaimer() {
+           if (this.readCarNumberDisclaimer) {
+              this.$nuxt.$emit("close-popover", "car-number");
+           } else {
+              this.$nuxt.$emit("show-popover", "car-number");
+              this.readCarNumberDisclaimer = true;
+           }
+        },
+        updateSellFilter(key, value) {
+           if (value === "") this.$delete(this.form, key);
+           else this.$set(this.form, key, value);
+        },
 
-      getModels() {
-         let types = {
-            moto: "moto_",
-            scooters: "scooter_",
-            moto_atv: "moto_atv_",
-         };
-         let dates = [];
-         let models = this[types[this.$route.query.type] + "models"][0];
-         for (const key in models) {
-            dates.push({
-               key: models[key].id,
-               name: models[key].name,
-            });
-         }
-         return dates;
-      },
-      getOldType() {
-         return this.getTypes.find((item) => item.key === this.old_type);
-      },
-      getYears() {
-         let dates = [];
-         for (let i = new Date().getFullYear(); i >= 1900; i--) {
-            dates.push({
-               key: i,
-               name: i,
-            });
-         }
-         return dates;
-      },
-      getTypes() {
-         let types = {
-            moto: "",
-            moto_atv: "atv_",
-         };
-         let dates = [];
-         let moto_types =
-            this.moto_options[types[this.$route.query.type] + "types"];
-         for (const key in moto_types) {
-            dates.push({
-               key: moto_types[key].id,
-               name: moto_types[key].name[this.locale],
-            });
-         }
-         return dates;
-      },
-      item() {
-         return {
-            ...this.form,
-            color: this.getColor(),
-            car_catalog: {
-               brand:
-                  this.single_announce.moto_brand ||
-                  this.single_announce.scooter_brand ||
-                  this.single_announce.moto_atv_brand,
-               model:
-                  this.single_announce.moto_model ||
-                  this.single_announce.scooter_model ||
-                  this.single_announce.moto_atv_model,
-               moto_options: this.moto_options.config,
-            },
-         };
-      },
-      getTitle() {
-         if (this.single_announce.moto_brand)
-            return (
-               this.single_announce.moto_brand.name +
-               " " +
-               this.single_announce.moto_model.name
-            );
-         if (this.single_announce.scooter_brand)
-            return (
-               this.single_announce.scooter_brand.name +
-               " " +
-               this.single_announce.scooter_model.name
-            );
-      },
-      semiActiveModel() {
-         return this.form.selectedBrand && !this.form.selectedModel;
-      },
-      exactlyActiveModel() {
-         return this.form.selectedBrand && this.form.selectedModel;
-      },
-      getRedirectUrl() {
-         let moto = {
-            moto: "motorcycles",
-            scooters: "scooters",
-            moto_atv: "moto-atvs",
-         };
+        //  sell filters
+        selectOption(key, value) {
+           this.$emit("update-sell-filter", key, value);
+           this.$emit("remove-error", key);
+        },
+        getKey(item) {
+           return item.search_key || item.field;
+        },
+        getValues(item) {
+           let options = this.options && this.options[item.type_key];
+           let sell_values =
+              item.sell_values && item.sell_values[parseInt(this.selected.category)];
+           let values = options || sell_values || item.values; //this.$sortBy(options || sell_values || item.values, a => a.name[this.locale] || this.$t(a.name));
+           return this.type === "commercial" &&
+           this.getType(item) === "input-radio" &&
+           !item.required
+              ? [...values, {key: 0, name: this.$t("not_set")}]
+              : values;
+        },
+        getPlaceholder(item) {
+           return (
+              this.$t(item.placeholder) ||
+              this.$t(item.type_key.replace("engine", "fuel"))
+           );
+        },
+        hasError(item) {
+           let field = this.getKey(item);
+           return this.errors.includes(field);
+        },
+        getSuffix(field, sep = "") {
+           switch (field) {
+              case "volume":
+                 return sep + this.$t("char_sm_cube");
+              case "power":
+                 return sep + this.$t("char_h_power");
+              case "capacity":
+                 return sep + this.$t("char_sm_cube");
+              case "mileage":
+                 return sep + this.$t("char_kilometre");
+              case "weight":
+                 return sep + this.$t("char_kilogramm");
+              default:
+                 return "";
+           }
+        },
+        getType(item) {
+           switch (item.component_add || item.component) {
+              case "select-checkbox":
+              case "any-type-selector":
+              case "truck-types":
+                 return "input-radio";
+              case "animated-input":
+              case "input-component":
+                 return "input-numeric";
+           }
+        },
+     },
 
-         return moto[this.$route.query.type];
-      },
-      ...mapGetters({
-         colors: "colors",
-         sell_options: "sellOptions",
-         all_sell_options: "allSellOptions",
-         badges: "badges",
-         moto_options: "motoOptions",
-         scooter_options: "scooterOptions",
-         single_announce: "single_announce",
-         moto_models: "motorcycleModels",
-         scooter_models: "scooterModels",
-         moto_atv_models: "atvModels",
-         getPopularComments: "getPopularComments",
-      }),
+     computed: {
+        getMileageOptions() {
+           return [
+              {key: 1, name: this.$t("char_kilometre")},
+              {key: 2, name: this.$t("char_mile")},
+           ];
+        },
+        getBrands() {
+           let types = {
+              moto: "",
+              moto_atv: "atv_",
+           };
+           let dates = [];
+           var brands;
+           if (this.$route.query.type == "scooters") {
+              brands = this.moto_options.scooter_brands || [];
+           } else {
+              brands =
+                 this.moto_options[types[this.$route.query.type] + "brands"] || [];
+           }
+           for (const key in brands) {
+              dates.push({
+                 key: brands[key].id,
+                 name: brands[key].name,
+              });
+           }
+           return dates;
+        },
+        type() {
+           return this.$route.query.type;
+        },
+        getBtlUserName() {
+           return this.single_announce.btl_announces.length
+              ? this.single_announce.btl_announces.find(
+                 (item) => item.announce_id === this.single_announce.id
+              ).get_user.full_name
+              : "";
+        },
 
-      color() {
-         return this.getColor();
-      },
-      crumbs() {
-         return [
-            // { name: this.$t('my_announces'), route: `/profile/announcements` },
-            // { name: `#${this.myAnnouncement.id_unique}`, route: `/cars/announcement/16642054490` },
-            {name: this.$t("moderator")},
-         ];
-      },
-      isModerator() {
-         return this.user.admin_group && this.user.admin_group == 2;
-      },
-      getCurrencyOptions() {
-         return [
-            {key: 1, name: "AZN", sign: "₼"},
-            {key: 2, name: "USD", sign: "$"},
-            {key: 3, name: "EUR", sign: "€"},
-         ];
-      },
-      getOwnerOptions() {
-         return [
-            {key: "0", name: "first"},
-            {key: "1", name: "second_and_more"},
-         ];
-      },
-      announceType() {
-         const lastDigit = String(this.announceId).slice(-1);
-         if (lastDigit == 2) {
-            return "scooter";
-         } else if (lastDigit == 3) {
-            return "motoatv";
-         } else if (lastDigit == 4) {
-            return "commercial";
-         } else if (lastDigit == 5) {
-            return "part";
-         } else return "moto";
-      },
-      notValid() {
-         return this.form.brand == null || this.form.model == null;
-      },
-      // single_announce:{
-      //   get() {
-      //     return this.value;
-      //   },
-      //   set(value) {
-      //     this.$emit('input', (this.disabled || (this.value.length > 1000)) ? this.value : value);
-      //   }
-      // }
-   },
+        getModels() {
+           let types = {
+              moto: "moto_",
+              scooters: "scooter_",
+              moto_atv: "moto_atv_",
+           };
+           let dates = [];
+           let models = this[types[this.$route.query.type] + "models"][0];
+           for (const key in models) {
+              dates.push({
+                 key: models[key].id,
+                 name: models[key].name,
+              });
+           }
+           return dates;
+        },
+        getOldType() {
+           return this.getTypes.find((item) => item.key === this.old_type);
+        },
+        getYears() {
+           let dates = [];
+           for (let i = new Date().getFullYear(); i >= 1900; i--) {
+              dates.push({
+                 key: i,
+                 name: i,
+              });
+           }
+           return dates;
+        },
+        getTypes() {
+           let types = {
+              moto: "",
+              moto_atv: "atv_",
+           };
+           let dates = [];
+           let moto_types =
+              this.moto_options[types[this.$route.query.type] + "types"];
+           for (const key in moto_types) {
+              dates.push({
+                 key: moto_types[key].id,
+                 name: moto_types[key].name[this.locale],
+              });
+           }
+           return dates;
+        },
+        item() {
+           return {
+              ...this.form,
+              color: this.getColor(),
+              car_catalog: {
+                 brand:
+                    this.single_announce.moto_brand ||
+                    this.single_announce.scooter_brand ||
+                    this.single_announce.moto_atv_brand,
+                 model:
+                    this.single_announce.moto_model ||
+                    this.single_announce.scooter_model ||
+                    this.single_announce.moto_atv_model,
+                 moto_options: this.moto_options.config,
+              },
+           };
+        },
+        getTitle() {
+           if (this.single_announce.moto_brand)
+              return (
+                 this.single_announce.moto_brand.name +
+                 " " +
+                 this.single_announce.moto_model.name
+              );
+           if (this.single_announce.scooter_brand)
+              return (
+                 this.single_announce.scooter_brand.name +
+                 " " +
+                 this.single_announce.scooter_model.name
+              );
+        },
+        semiActiveModel() {
+           return this.form.selectedBrand && !this.form.selectedModel;
+        },
+        exactlyActiveModel() {
+           return this.form.selectedBrand && this.form.selectedModel;
+        },
+        getRedirectUrl() {
+           let moto = {
+              moto: "motorcycles",
+              scooters: "scooters",
+              moto_atv: "moto-atvs",
+           };
 
-   watch: {
-      "form.is_new": {
-         deep: true,
-         handler() {
-            if (this.form.is_new == true) {
-               this.form.mileage = 0;
-            }
-         },
-      },
-   },
-};
+           return moto[this.$route.query.type];
+        },
+        ...mapGetters({
+           colors: "colors",
+           sell_options: "sellOptions",
+           all_sell_options: "allSellOptions",
+           badges: "badges",
+           moto_options: "motoOptions",
+           scooter_options: "scooterOptions",
+           single_announce: "single_announce",
+           moto_models: "motorcycleModels",
+           scooter_models: "scooterModels",
+           moto_atv_models: "atvModels",
+           getPopularComments: "getPopularComments",
+        }),
+
+        color() {
+           return this.getColor();
+        },
+        crumbs() {
+           return [
+              // { name: this.$t('my_announces'), route: `/profile/announcements` },
+              // { name: `#${this.myAnnouncement.id_unique}`, route: `/cars/announcement/16642054490` },
+              {name: this.$t("moderator")},
+           ];
+        },
+        isModerator() {
+           return this.user.admin_group && this.user.admin_group == 2;
+        },
+        getCurrencyOptions() {
+           return [
+              {key: 1, name: "AZN", sign: "₼"},
+              {key: 2, name: "USD", sign: "$"},
+              {key: 3, name: "EUR", sign: "€"},
+           ];
+        },
+        getOwnerOptions() {
+           return [
+              {key: "0", name: "first"},
+              {key: "1", name: "second_and_more"},
+           ];
+        },
+        announceType() {
+           const lastDigit = String(this.announceId).slice(-1);
+           if (lastDigit == 2) {
+              return "scooter";
+           } else if (lastDigit == 3) {
+              return "motoatv";
+           } else if (lastDigit == 4) {
+              return "commercial";
+           } else if (lastDigit == 5) {
+              return "part";
+           } else return "moto";
+        },
+
+        notValid() {
+           return this.form.brand == null || this.form.model == null;
+        }
+     },
+
+     watch: {
+        "form.is_new": {
+           deep: true,
+           handler() {
+              if (this.form.is_new == true) {
+                 this.form.mileage = 0;
+              }
+           }
+        }
+     }
+  }
 </script>
-
-
-<!--moto 1-->
-<!--motoatv 3-->
-<!--scooter 2-->
-<!--commer 4-->
-<!--commer 5 part-->

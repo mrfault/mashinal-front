@@ -3,7 +3,6 @@
       <section v-if="user.admin_group === 1" class="container px-1"> <!--supervisor-->
          <div class="row px-1">
             <div class="col-auto px-0">
-
                <button v-if="rejectArray && rejectArray.length === 0"
                        :class="{'pending':button_loading, 'disabled': notValid}"
                        :disabled="notValid"
@@ -279,6 +278,7 @@ export default {
                type: 'error',
             })
          } else {
+           console.log('Success')
             this.$emit('sendData', status)
          }
       },

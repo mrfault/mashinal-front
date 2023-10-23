@@ -443,37 +443,40 @@
             this.isReady = !this.isReady
          },
          async onClick() {
-            this.$v.authForm.$touch();
-            setTimeout(() => {
-               this.scrollTo('.form_error', -190)
-            });
+            try {
+              this.$v.authForm.$touch();
+              setTimeout(() => {
+                this.scrollTo('.form_error', -190)
+              });
 
-            if (this.$v.authForm.$error) {
-               this.$toasted.error(this.$t('required_fields'));
-               return;
-            }
+              if (this.$v.authForm.$error) {
+                this.$toasted.error(this.$t('required_fields'));
+                return;
+              }
 
-            if (this.authStep === "loggedIn") {
-               let phone = this.authForm.phone.replace(/[^0-9]+/g, '');
-               if (phone.length < 10) phone = `994${phone}`;
+              if (this.authStep === "loggedIn") {
+                let phone = this.authForm.phone.replace(/[^0-9]+/g, '');
+                if (phone.length < 10) phone = `994${phone}`;
 
-               const res = await this.$axios.$post(this.$env().API_SECRET + '/auth/update/before-publish',
-                  { phone: phone, email: this.authForm.email } );
+                const res = await this.$axios.$post(this.$env().API_SECRET + '/auth/update/before-publish',
+                    { phone: phone, email: this.authForm.email } );
 
-               if (res.message === 'success') this.isReady = !this.isReady;
-            } else if (this.authStep === "notLoggedIn") {
-               console.log('222')
-               await this.onPhoneVerification();
-            } else {
-               console.log('333')
-               await this.onOTPVerification();
+                if (res.message === 'success') this.isReady = !this.isReady;
+              } else if (this.authStep === "notLoggedIn") {
+                await this.onPhoneVerification();
+              } else {
+                await this.onOTPVerification();
+              }
+            } catch (e) {
+              console.log(e)
             }
          },
          async onPhoneVerification() {
             this.pending = true;
             try {
-               const res = await this.$axios
-                  .$post(this.$env().API_SECRET + '/auth/login-or-register', {phone: this.authForm.phone.replace(/[^0-9]+/g, ''),})
+               await this.$axios.$post(this.$env().API_SECRET + '/auth/login-or-register', {
+                 phone: this.authForm.phone.replace(/[^0-9]+/g, '')
+               });
 
                this.authStep = 'handleOTP'
                this.$nextTick(() => {

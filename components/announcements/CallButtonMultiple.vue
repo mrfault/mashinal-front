@@ -32,10 +32,14 @@
    export default {
       props: {
          phones: {},
-         announcementId: {
-            type: [String, Number],
-            required: false
-         }
+         announcement: {
+            type: Object,
+            default() { return {} }
+         },
+         // announcementId: {
+         //    type: [String, Number],
+         //    required: false
+         // }
       },
 
       data() {
@@ -53,7 +57,7 @@
          },
 
          id() {
-            return this.$route.params.id || this.announcementId
+            return this.$route.params.id || this.announcement.id_unique
          }
       },
 
@@ -72,20 +76,25 @@
                this.trackCall(1);
                this.pending = true;
 
-               window.getManualClassifiedNumber(ringostat_announce,
-                  (number) => {
-                     this.ringostat_number = number.numberWithoutMask;
-                     this.ringostat_number_mask = number.numberWithoutMask;
-                     this.pending = false
-                  }, 0, this.phones.map(item => `${item}`).join(',')
-               );
+               if (this.announcement.is_official) {
+                  window.getManualClassifiedNumber(ringostat_announce,
+                     (number) => {
+                        this.ringostat_number = number.numberWithoutMask;
+                        this.ringostat_number_mask = number.numberWithoutMask;
+                        this.pending = false
+                     }, 0, this.phones.map(item => `${item}`).join(',')
+                  );
+               } else {
+                  this.pending = false;
+                  this.ringostat_number = this.phones[0];
+               }
             }
          },
 
          trackCall(n) {
             this.fbTrack('Call ' + n);
             this.gtagTrack('AW-600951956/' + (n === 1 ? 'rgWNCOTA8IMCEJSZx54C' : 'VunMCPr51oMCEJSZx54C'));
-            this.$axios.$get(`/announce/${this.announcementId}/show/phone`);
+            this.$axios.$get(`/announce/${this.announcement.id_unique}/show/phone`);
          }
       }
    }
