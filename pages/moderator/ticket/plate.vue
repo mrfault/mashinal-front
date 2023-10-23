@@ -285,9 +285,9 @@ export default {
             this.$toasted.success(this.$t('success_payment'));
 
             if (this.user.admin_group == 2) {
-               location.href = '/alvcp/resources/announce-moderators';
+               location.href = `${this.$env().ADMIN_URL}/announce-moderators`;
             } else {
-               location.href = '/alvcp/resources/plates';
+               location.href = `${this.$env().ADMIN_URL}/plates`;
             }
 
          } catch (err) {
@@ -299,10 +299,10 @@ export default {
       async back() {
          if (this.user.admin_group == 2) {
             await this.$axios.$post('/ticket/detach/' + this.announce_id + '/car');
-            location.href = '/alvcp/resources/announce-moderators';
+            location.href = `${this.$env().ADMIN_URL}/announce-moderators`;
          } else {
             await this.$axios.$post('/ticket/detach/' + this.announce_id + '/car');
-            location.href = '/alvcp/resources/plates';
+            location.href = `${this.$env().ADMIN_URL}/plates`;
          }
       }
    },

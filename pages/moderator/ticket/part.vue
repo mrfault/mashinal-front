@@ -776,13 +776,13 @@ export default {
 
       async handleBackToList() {
          await this.$axios.$post('/ticket/detach/' + this.announceId + '/parts')
-         location.href = '/alvcp/resources/parts';
+         location.href = `${this.$env().ADMIN_URL}/parts`;
       },
       handleBackList() {
          if (this.user.admin_group == 2) {
-            location.href = '/alvcp/resources/announce-moderators';
+            location.href = `${this.$env().ADMIN_URL}/announce-moderators`;
          } else {
-            location.href = '/alvcp/resources/announcements';
+            location.href = `${this.$env().ADMIN_URL}/announcements`;
          }
       },
       getValue(key, value) {
@@ -959,9 +959,9 @@ export default {
          await this.$axios.$post('/ticket/transfer/part/' + this.announceId, {comment: this.transferComment});
 
          if (this.user.admin_group == 2) {
-            location.href = '/alvcp/resources/announce-moderators';
+            location.href = `${this.$env().ADMIN_URL}/announce-moderators`;
          } else {
-            location.href = '/alvcp/resources/parts';
+            location.href = `${this.$env().ADMIN_URL}/parts`;
          }
       },
       async sendData(status = 2) {
@@ -993,9 +993,9 @@ export default {
                formData
             );
             if (this.user.admin_group == 2) {
-               location.href = '/alvcp/resources/announce-moderators';
+               location.href = `${this.$env().ADMIN_URL}/announce-moderators`;
             } else {
-               location.href = '/alvcp/resources/parts';
+               location.href = `${this.$env().ADMIN_URL}/parts`;
             }
          } catch ({response: {data: {data}}}) {
             this.$nuxt.$emit('loading_status', false);
