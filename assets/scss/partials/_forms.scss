@@ -62,6 +62,18 @@ input::-webkit-inner-spin-button {
          border-left: 1px solid $greyish-blue-6;
       }
    }
+
+   &.content-max-width {
+      .select-menu {
+         &_dropdown {
+            width: max-content;
+
+            & > div {
+               padding-right: 10px !important;
+            }
+         }
+      }
+   }
 }
 
 .form-info {

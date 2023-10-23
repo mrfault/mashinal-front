@@ -39,6 +39,7 @@
                />
 
                <form-select
+                  class-name="content-max-width"
                   :label="$t('generation')"
                   :options="carGenerations[0]"
                   :clear-placeholder="true"
