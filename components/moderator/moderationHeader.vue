@@ -1,35 +1,40 @@
 <template>
   <div>
+    <div class="row">
+      <div class="col-12 col-md-6 col-lg-8">
+        <user-details
+          :brand="single_announce.brand"
+          :createdAt="single_announce.created_at"
+          :is-autosalon="single_announce.is_autosalon"
+          :is-external-salon="single_announce.is_external_salon"
+          :smsRadarData="smsRadarData"
+          :userData="single_announce.user"
+        />
+      </div>
 
+      <div class="col-12 col-md-6 col-lg-4 d-flex justify-content-end mt-2 mt-lg-0">
+        <show-comment
+          v-if="user.admin_group === 1 && single_announce.transferred"
+          :single_announce="single_announce"
+        />
 
-  <div class="row">
-    <div class="col-12 col-md-6 col-lg-8">
-      <user-details
-        :brand="single_announce.brand"
-        :createdAt="single_announce.created_at"
-        :is-autosalon="single_announce.is_autosalon"
-        :is-external-salon="single_announce.is_external_salon"
-        :smsRadarData="smsRadarData"
-        :userData="single_announce.user"
-      />
+        <button
+          :class="{ pending: button_loading }"
+          class="btn btn--green w-50"
+          style="padding: 5px 20px;"
+          @click.prevent="openLog = true"
+        >{{ $t('show_logs') }}</button>
+      </div>
     </div>
-    <div class="col-12 col-md-6 col-lg-4 d-flex justify-content-end mt-2 mt-lg-0">
-      <show-comment
-        v-if="user.admin_group === 1 && single_announce.transferred"
-        :single_announce="single_announce"
-      />
-      <button
-        :class="{ pending: button_loading }"
-        class="btn btn--green w-50"
-        style="padding: 5px 20px;"
-        @click.prevent="openLog = true"
-      >
-        {{ $t('show_logs') }}
-      </button>
 
-    </div>
-  </div>
-    <!--    logs-->
+    <ul
+        class="announcementStatus"
+        v-if="single_announce.monetization || single_announce.is_paid_announce"
+    >
+      <li class="announcementStatus__item" v-if="single_announce.monetization">Elan reklamlıdır</li>
+      <li class="announcementStatus__item" v-if="single_announce.is_paid_announce">Elan ödənişlidir</li>
+    </ul>
+
     <modal-popup
       :modal-class="''"
       :title="`${$t('logs')}`"
@@ -48,29 +53,39 @@
 </template>
 
 <script>
-import UserDetails from '~/components/moderator/brand.vue'
-import showComment from '~/components/moderator/showComment'
-import ChangeLog from "~/components/moderator/changeLog";
+  import UserDetails from '~/components/moderator/brand.vue'
+  import showComment from '~/components/moderator/showComment'
+  import ChangeLog from "~/components/moderator/changeLog";
 
+  export default {
+    components:{
+      UserDetails,
+      showComment,
+      ChangeLog,
+    },
 
-export default {
-  components:{
-    UserDetails,
-    showComment,
-    ChangeLog,
+    props:{
+      single_announce: Object,
+      form: Object,
+      smsRadarData: Object,
+      button_loading:Boolean,
+    },
 
-  },
-  props:{
-    single_announce: Object,
-    form: Object,
-    smsRadarData: Object,
-    button_loading:Boolean,
-  },
-  data(){
-    return {
-      openLog: false,
+    data(){
+      return {
+        openLog: false
+      }
     }
-  },
-
-}
+  }
 </script>
+
+<style lang="scss" scoped>
+  .announcementStatus {
+    &__item {
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      color: red;
+    }
+  }
+</style>

@@ -27,7 +27,7 @@
             <call-button-multiple
                v-if="announcement?.is_auto_salon"
                :phones="announcement?.user?.auto_salon?.phones"
-               :announcement-id="announcement?.id_unique"
+               :announcement="announcement"
             />
 
             <call-button
