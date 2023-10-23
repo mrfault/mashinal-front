@@ -76,7 +76,7 @@
                this.trackCall(1);
                this.pending = true;
 
-               if (this.announcement.is_official) {
+               if (this.announcement.is_official_auto_salon) {
                   window.getManualClassifiedNumber(ringostat_announce,
                      (number) => {
                         this.ringostat_number = number.numberWithoutMask;
