@@ -66,7 +66,7 @@ export const PaymentMixin = {
                      return this.$router.push({path: this.$localePath('/garage'), query: {tab: 'attorney-list'}})
                   }
 
-                  if (data.payment.operation_key === "uncompleted_announce") {
+                  if (data.payment.operation_key === "uncompleted_announce" || data.payment.operation_key === "ad_started") {
                      await this.$store.dispatch('getAnnouncementsStatuses');
                      await this.$store.dispatch('getMyAllAnnouncementsV2', {status: '', shop: false});
                      await this.$nuxt.refresh();
