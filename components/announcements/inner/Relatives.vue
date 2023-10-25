@@ -9,7 +9,7 @@
             @change-page="searchAnnouncements"
          >
             <template #cap>
-               <Cap :className="'mb40'">
+               <Cap :className="'mb20'">
                   <template #left>
                      <h3>{{ title }}</h3>
                   </template>
@@ -25,7 +25,7 @@
             :announcements="relativeAnnouncements"
          >
             <template #cap>
-               <Cap :className="'mb40'">
+               <Cap :className="'mb20'">
                   <template #left>
                      <h3>{{ title }}</h3>
                   </template>

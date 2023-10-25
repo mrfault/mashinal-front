@@ -973,8 +973,12 @@
       &__gridFooter {
          display: grid;
          grid-gap: 20px;
-         margin-top: 16px;
+         margin-top: 24px;
          width: 100%;
+
+         .btns {
+            height: unset !important;
+         }
       }
 
       .form-buttons {
@@ -1103,7 +1107,7 @@
       }
 
       .btn-inline {
-         &.blue {
+         &.blue, &.red {
             justify-content: flex-end;
          }
       }
@@ -1116,7 +1120,14 @@
          }
 
          &__gridFooter {
+            margin-top: 16px;
             grid-template-columns: repeat(2, 1fr);
+         }
+
+         .btn-inline {
+            &.red {
+               justify-content: unset;
+            }
          }
       }
    }
