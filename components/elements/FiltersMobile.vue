@@ -176,7 +176,6 @@ export default {
             } else {
                await this.getModelsArray({value: slug, index: 0});
             }
-
          } catch (e) {
             console.log(e)
          }

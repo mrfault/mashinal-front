@@ -372,7 +372,7 @@ export default {
     },
     newThumb(newThumb) {
       this.isOpenCroppa = false;
-      console.log("new thumb ", newThumb)
+      // console.log("new thumb ", newThumb)
       this.$store.commit('setSavedImageUrlWithKey', {
         key: this.croppaSelectedKey,
         value: newThumb
@@ -414,8 +414,6 @@ export default {
       this.croppaSelectedKey = key;
     },
     openFancyBox(i) {
-
-      console.log('openFancyBox')
       this.LighBoxStart = i;
       this.active_box = true;
       this.lbIndex++;
@@ -503,7 +501,6 @@ export default {
       }
     },
     fileRead: function (key) {
-      console.log("fileRead")
       let reader = new FileReader();
 
       reader.addEventListener("load", (e) => {

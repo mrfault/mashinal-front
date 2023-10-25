@@ -41,7 +41,7 @@ export default {
          set(index) {
             let value = {};
             if (Object.keys(this.value).length < 2 || !!this.value[index]) {
-               console.log("worked")
+               // console.log("worked")
                for (let key in this.value)
                   if (key != index) value[key] = [...this.shortcuts[key].keys];
                if (!this.value[index]) value[index] = [...this.shortcuts[index].keys];

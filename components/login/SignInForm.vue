@@ -160,7 +160,7 @@ export default {
             this.pending = false
          } catch (error) {
             this.pending = false;
-            console.log("sagol",err)
+            // console.log("sagol",err)
             this.$toasted.error(error.response.data.message || error.response.data.data.message )
          }
       },

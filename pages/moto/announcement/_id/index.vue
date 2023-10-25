@@ -15,28 +15,39 @@
 
                      <thumbs-gallery />
 
-                     <ul class="characteristics" v-if="isMobileBreakpoint">
-                        <li class="characteristics__item" v-if="announcement.tradeable">
-                           <inline-svg src="/icons/barter.svg" />
-                           <span>{{ $t('barter') }}</span>
-                        </li>
+                     <template v-if="isMobileBreakpoint">
+                        <ul class="characteristics">
+                           <li class="characteristics__item" v-if="announcement.tradeable">
+                              <inline-svg src="/icons/barter.svg" />
+                              <span>{{ $t('barter') }}</span>
+                           </li>
 
-                        <li class="characteristics__item" v-if="announcement.credit">
-                           <inline-svg src="/icons/credit.svg" />
-                           <span>{{ $t('credit') }}</span>
-                        </li>
+                           <li class="characteristics__item" v-if="announcement.credit">
+                              <inline-svg src="/icons/credit.svg" />
+                              <span>{{ $t('credit') }}</span>
+                           </li>
 
-                        <li class="characteristics__item" v-if="announcement.has_360">
-                           <inline-svg src="/icons/360_deg_2.svg" />
-                           <span>360</span>
-                        </li>
+                           <li class="characteristics__item" v-if="announcement.has_360">
+                              <inline-svg src="/icons/360_deg_2.svg" />
+                              <span>360</span>
+                           </li>
 
-                        <li class="characteristics__item" v-if="announcement.show_vin">
-                           <inline-svg src="/icons/vin_2.svg" />
-                           <span>VIN kod</span>
-                           <span class="badgeMin">{{ $t('is_new') }}</span>
-                        </li>
-                     </ul>
+                           <li class="characteristics__item" v-if="announcement.show_vin">
+                              <inline-svg src="/icons/vin_2.svg" />
+                              <span>VIN kod</span>
+                              <span class="badgeMin">{{ $t('is_new') }}</span>
+                           </li>
+                        </ul>
+
+                        <QuickInfoDetails
+                            :announcement="announcement"
+                            :contact="contact"
+                        >
+                           <template #head>
+                              <AnnouncementTitle :announcement="announcement" />
+                           </template>
+                        </QuickInfoDetails>
+                     </template>
 
                      <announcement-specs type="moto" :title="$t('announcement_info')" brief/>
 
@@ -60,22 +71,6 @@
 
       <relatives />
 
-<!--      <grid-->
-<!--         class="dark-bg"-->
-<!--         v-if="motoRelatives?.length"-->
-<!--         :announcements="motoRelatives"-->
-<!--         escape-duplicates-->
-<!--         :needAutoScroll="true"-->
-<!--      >-->
-<!--         <template #cap>-->
-<!--            <Cap :className="'mb40'">-->
-<!--               <template #left>-->
-<!--                  <h3>{{ $t('relative_announcements') }}</h3>-->
-<!--               </template>-->
-<!--            </Cap>-->
-<!--         </template>-->
-<!--      </grid>-->
-
       <HandleIds :single="true" :items="{ type: $route.query?.type, id: announcement.id }" />
    </div>
 </template>
@@ -92,11 +87,14 @@
    import SiteBanner from "~/components/banners/SiteBanner";
    import HandleIds from "~/components/announcements/HandleIds.vue";
    import { mapGetters } from 'vuex';
+   import QuickInfoDetails from "~/components/announcements/inner/QuickInfoDetails.vue";
+   import AnnouncementTitle from "~/components/announcements/inner/AnnouncementTitle.vue";
 
    export default {
       name: 'pages-moto-id',
 
       components: {
+         AnnouncementTitle, QuickInfoDetails,
          Grid,
          Cap,
          SiteBanner,
@@ -145,6 +143,9 @@
                type = parseInt(route?.params?.id?.slice(-1)),
                id = route?.params?.id?.slice(0, route?.params?.id?.length - 1);
 
+            console.log('route?.params?.id', route?.params?.id)
+            console.log('id', id)
+
             await store.dispatch('getMotoInnerV2', { id: id, type: types[type] });
             // await store.dispatch('motoRelativesV2', { id: id, type: types[type] });
          }
@@ -191,6 +192,10 @@
       computed: {
          ...mapGetters(['announcement', 'motoRelatives']),
 
+         contact() {
+            return this.getAnnouncementContact(this.announcement)
+         },
+
          motoBrand() {
             return this.announcement?.brand;
          },
@@ -212,14 +217,10 @@
 </script>
 
 <style lang="scss">
-   .dark-mode {
-      .pages-moto-id {
-         //background-color: #1B2434;
-         //&.product-inner {
-         //   .bg-white {
-         //      background-color: #121926 !important;
-         //   }
-         //}
+   .pages-moto-id {
+      .breadcrumbs {
+         border: none;
+         padding: 20px 0;
       }
    }
 </style>

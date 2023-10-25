@@ -278,7 +278,6 @@ export default {
                type: 'error',
             })
          } else {
-           console.log('Success')
             this.$emit('sendData', status)
          }
       },

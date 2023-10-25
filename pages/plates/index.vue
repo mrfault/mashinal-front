@@ -223,7 +223,7 @@
             this.$route.query?.filters?.slice(1).split('&').forEach(query => {
                if (query.split('=')[0] === 'page') {
                   this.page = +query.split('=')[1];
-                  console.log('222222222', +query.split('=')[1])
+                  // console.log('222222222', +query.split('=')[1])
                }
 
                for (const item in this.form) {

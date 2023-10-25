@@ -1,5 +1,6 @@
 <template>
-   <div class="mobile-nav-new d-lg-none">
+   <div class="mobile-nav-new d-lg-none" >
+<!--      v-if="!announcementInner"-->
       <ul>
          <li v-for="menu in bottomMenus.filter(item => !item.hide)" :key="menu.title">
             <nuxt-link
@@ -23,22 +24,34 @@
          </li>
       </ul>
    </div>
+
+<!--   <div v-else>-->
+<!--      <AnnouncementBar />-->
+<!--   </div>-->
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import { MenusDataMixin } from '~/mixins/menus-data';
+   import AnnouncementBar from "~/components/announcements/inner/AnnouncementBar.vue";
+   import { mapGetters } from 'vuex';
+   import { MenusDataMixin } from '~/mixins/menus-data';
 
-export default {
-   mixins: [MenusDataMixin],
+   export default {
+      components: {AnnouncementBar},
 
-   computed: {
-      ...mapGetters(['countNewMessages', 'notViewedFavorites'])
-   },
-   methods: {
-      toggleSidebarMenu() {
-         this.$root?.$refs?.MobileMenuNew?.toggleSidebarMenu(false);
+      mixins: [MenusDataMixin],
+
+      computed: {
+         ...mapGetters(['countNewMessages', 'notViewedFavorites']),
+
+         announcementInner() {
+            return this.$route?.params?.id;
+         }
+      },
+
+      methods: {
+         toggleSidebarMenu() {
+            this.$root?.$refs?.MobileMenuNew?.toggleSidebarMenu(false);
+         }
       }
    }
-}
 </script>

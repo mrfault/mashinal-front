@@ -14,6 +14,17 @@
 
                   <thumbs-gallery />
 
+                  <template v-if="isMobileBreakpoint">
+                     <QuickInfoDetails
+                         :announcement="announcement"
+                         :contact="contact"
+                     >
+                        <template #head>
+                           <AnnouncementTitle :announcement="announcement" />
+                        </template>
+                     </QuickInfoDetails>
+                  </template>
+
                   <announcement-specs type="parts" :title="$t('announcement_info')" />
 
                   <comment :comment="announcement.comment" v-if="announcement.comment">
@@ -77,11 +88,14 @@
    import SiteBanner from "~/components/banners/SiteBanner";
    import HandleIds from "~/components/announcements/HandleIds.vue";
    import { mapGetters } from 'vuex';
+   import QuickInfoDetails from "~/components/announcements/inner/QuickInfoDetails.vue";
+   import AnnouncementTitle from "~/components/announcements/inner/AnnouncementTitle.vue";
 
    export default {
       name: 'pages-parts-id',
 
       components: {
+         AnnouncementTitle, QuickInfoDetails,
          SiteBanner,
          Gallery,
          Comment,
@@ -132,6 +146,10 @@
       computed: {
          ...mapGetters(['announcement', 'autosalonAnnouncementsId']),
 
+         contact() {
+            return this.getAnnouncementContact(this.announcement)
+         },
+
          crumbs() {
             const items = [
                {
@@ -160,3 +178,16 @@
       },
    }
 </script>
+
+<style lang="scss" scoped>
+   .pages-parts-id {
+      .breadcrumbs {
+         border: none;
+         padding: 20px 0;
+      }
+
+      .quickInfoDetails {
+         margin-top: 20px;
+      }
+   }
+</style>
