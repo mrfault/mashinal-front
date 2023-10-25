@@ -39,7 +39,7 @@
                :template="'btn'"
                :text="$t('add_favorite')"
                :announcement="announcement"
-               v-if="![0,2,3,4].includes(announcement.status)"
+               v-if="![0,2,3,4].includes(announcement.status) && !isMobileBreakpoint"
             />
 
             <add-comparison

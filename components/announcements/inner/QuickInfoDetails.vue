@@ -99,19 +99,16 @@
          <div
              class="mt-2 mt-lg-3"
              :class="contact?.lat && contact?.lng ? 'col-6' : 'col-5'"
-             v-if="canSendMessage(announcement) "
-
+             v-if="canSendMessage(announcement) && !isMobileBreakpoint"
          >
-<!--            && !isMobileBreakpoint-->
             <chat-button :announcement="announcement" has-after-login />
          </div>
 
          <div
              class="mt-2 mt-lg-3"
              :class="(contact?.lat && contact?.lng) ? 'col-12' : 'col-7'"
+             v-if="!isMobileBreakpoint"
          >
-<!--            v-if="!isMobileBreakpoint"-->
-
             <call-button-multiple
                 v-if="announcement?.is_auto_salon"
                 :phones="announcement?.user?.auto_salon?.phones"

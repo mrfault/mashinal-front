@@ -71,7 +71,7 @@
             <comparison-badge :window-width="windowWidth" />
 <!--            <mobile-nav/>-->
 
-            <mobile-nav-new />
+            <mobile-nav-new v-if="!announcementInner" />
 
             <BrandsList v-if="brandsList.length" :options="brandsList" />
 
@@ -141,6 +141,7 @@
          MapSwitch,
          BrandsList
       },
+
       data() {
          return {
             newYearConditionalCss: 'background-image: url(' + (this.$env.NEW_YEAR_SOON ? ('/img/logo-white-newyear.svg') : ('/img/logo-white-2.svg')) + ')',
@@ -188,6 +189,11 @@
          ...mapGetters({
             brandsList: 'brandsList'
          }),
+
+         announcementInner() {
+            return this.$route?.params?.id;
+         },
+
          cookiesHasNotificationOn() {
             var cookie = this.$cookies.get('smartbanner_exited');
             if (cookie) {

@@ -143,7 +143,6 @@ Vue.use({
             },
 
             getAnnouncementContact(item) {
-               // console.log('item', item)
                let img = item?.user?.avatar,
                    name = item?.user?.full_name,
                    link = false;

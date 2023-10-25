@@ -71,6 +71,11 @@
       <relatives />
 
       <HandleIds :single="true" :items="{ type: 'parts', id: announcement.id }" />
+
+      <AnnouncementBar
+          v-if="isMobileBreakpoint"
+          :announcement="announcement"
+      />
    </div>
 </template>
 
@@ -90,11 +95,13 @@
    import { mapGetters } from 'vuex';
    import QuickInfoDetails from "~/components/announcements/inner/QuickInfoDetails.vue";
    import AnnouncementTitle from "~/components/announcements/inner/AnnouncementTitle.vue";
+   import AnnouncementBar from "~/components/announcements/inner/AnnouncementBar.vue";
 
    export default {
       name: 'pages-parts-id',
 
       components: {
+         AnnouncementBar,
          AnnouncementTitle, QuickInfoDetails,
          SiteBanner,
          Gallery,
@@ -117,10 +124,10 @@
       },
 
       head() {
-         let announcementTitle = this.getAnnouncementTitle(this.announcement);
-         let title = `${this.$t(`meta-title_announcement-${this.announcement.is_new ? 'new' : 'used'}`, {announce: `${announcementTitle}`})}`;
-         let description = `${announcementTitle}, ${this.$t('meta-descr_announcement', {announce: `${this.announcement.price}`})}`;
-         let image = this.getAnnouncementImage(this.announcement);
+         let announcementTitle = this.getAnnouncementTitle(this.announcement),
+             title = `${this.$t(`meta-title_announcement-${this.announcement.is_new ? 'new' : 'used'}`, {announce: `${announcementTitle}`})}`,
+             description = `${announcementTitle}, ${this.$t('meta-descr_announcement', {announce: `${this.announcement.price}`})}`,
+             image = this.getAnnouncementImage(this.announcement);
          return this.$headMeta({title, description, image});
       },
 

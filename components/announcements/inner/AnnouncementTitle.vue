@@ -65,4 +65,12 @@
          }
       }
    }
+
+   .dark-mode {
+      .announcementTitle {
+         p {
+            color: #EEF2F6;
+         }
+      }
+   }
 </style>
