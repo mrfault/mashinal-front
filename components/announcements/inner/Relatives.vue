@@ -75,7 +75,11 @@
       },
 
       methods: {
-         ...mapActions(['getShopOtherAnnouncements', 'getAutoSalonOtherAnnouncements', 'getRelativeAnnouncements']),
+         ...mapActions([
+             'getShopOtherAnnouncements',
+            'getAutoSalonOtherAnnouncements',
+            'getRelativeAnnouncements'
+         ]),
 
          async searchAnnouncements(page = 1) {
             page = this.$route.query.page || 1;

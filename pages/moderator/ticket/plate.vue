@@ -292,7 +292,7 @@ export default {
 
          } catch (err) {
             this.pending = false;
-            console.log(err)
+            // console.log(err)
          }
       },
 

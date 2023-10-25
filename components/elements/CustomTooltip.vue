@@ -24,6 +24,7 @@
    .customTooltip {
       position: absolute;
       display: none;
+      height: max-content;
       padding: 16px;
       border-radius: 12px;
       background-color: #FFF;
@@ -48,6 +49,14 @@
                }
             }
          }
+      }
+   }
+
+   @media (max-width: 600px) {
+      .customTooltip {
+         position: fixed;
+         top: 50%;
+         transform: translate(-50%, -50%) !important;
       }
    }
 </style>

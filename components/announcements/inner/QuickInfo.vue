@@ -18,133 +18,12 @@
          <span class="registration-marks__number-description">MASHIN.AL</span>
       </div>
 
-      <div
-         class="quick-info__item"
-         :class="{'registration-marks' : type === 'plates'}"
-      >
-<!--         <h1 class="quick-info__title" v-if="getAnnouncementTitle(announcement)">{{ getAnnouncementTitle(announcement) }}</h1>-->
-
-         <div class="d-flex align-items-center justify-content-between">
-            <QuickInfoPrice
-               :announcement="announcement"
-               :type="type"
-            />
-
-<!--            <div class="customsDuty">-->
-<!--               <p>Təqribi gömrük rüs.</p>-->
-<!--               <h4>+4500 AZN</h4>-->
-<!--            </div>-->
-         </div>
-
-         <ul class="quick-info__details">
-            <li>
-               <inline-svg src="/icons/calendar-2.svg" />
-               {{ announcement.created_at }}
-            </li>
-
-            <li>
-               <inline-svg src="/icons/eye-2.svg" />
-               {{ announcement.view_count }}
-            </li>
-
-            <li>
-               <inline-svg src="/icons/favorite_2.svg" />
-               {{ announcement.favorites_count }}
-            </li>
-
-            <li>
-               <inline-svg src="/icons/cursor.svg" />
-               {{ announcement.open_count }}
-            </li>
-         </ul>
-
-         <div class="quick-info__contact">
-            <div
-               :class="[
-                  'quick-info__contact-img',
-                  { 'pointer-events-none': contact?.user?.active_announcements_count < 2 },
-                  { 'cursor-pointer': contact?.user?.active_announcements_count > 1 },
-                  { 'is-online': contact?.user?.is_online }
-               ]"
-               @click.stop="handleContactClick"
-            >
-               <img :src="contact.img" alt="user_logo" />
-            </div>
-
-            <div class="quick-info__contact-info" @click.stop="handleContactClick">
-               <h2
-                  class="cursor-pointer"
-                  :class="{ 'pointer-events-none': contact?.user?.active_announcements_count < 2 }"
-               >{{ contact.name }}</h2>
-
-               <address v-if="announcement.status !== 3 && getAddress">{{ getAddress }}</address>
-               <p class="text-red" v-else-if="announcement.status === 3">{{ $t('sold') }}</p>
-               <p class="text-red" v-if="announcement.status === 4">{{ $t('time_is_up') }}</p>
-
-               <nuxt-link
-                  :to="contact?.link"
-                  v-if="
-                     contact?.user?.active_announcements_count > 1 ||
-                     announcement?.is_part_salon ||
-                     announcement?.is_auto_salon ||
-                     announcement?.is_external_salon
-                  "
-               >
-                  <span v-if="announcement?.is_part_salon">{{ $t('go_to_shop') }}</span>
-
-                  <span v-else-if="announcement?.is_auto_salon || announcement?.is_external_salon">
-                     {{ $t('go_to_salon') }}
-                  </span>
-
-                  <span v-else>{{ $t('other_announcements_of_user') }}</span>
-
-
-<!--                  <icon name="chevron-right" />-->
-                  <!-- <inline-svg src="/icons/chevron-right.svg" :height="14" /> -->
-               </nuxt-link>
-            </div>
-         </div>
-
-         <div class="row" v-if="announcement?.status != 3">
-            <div
-               class="col mt-2 mt-lg-3"
-               v-if="contact?.lat && contact?.lng"
-            >
-               <show-map-button :lat="contact?.lat" :lng="contact?.lng" />
-            </div>
-
-            <div
-               class="mt-2 mt-lg-3"
-               :class="contact?.lat && contact?.lng ? 'col-6' : 'col-5'"
-               v-if="canSendMessage(announcement)"
-            >
-               <chat-button :announcement="announcement" has-after-login />
-            </div>
-
-            <div
-               class="mt-2 mt-lg-3"
-               :class="(contact?.lat && contact?.lng) ? 'col-12' : 'col-7'"
-            >
-<!--               <pre>{{announcement?.is_auto_salon}}</pre>-->
-<!--               <pre>{{announcement?.user?.auto_salon?.phones}}</pre>-->
-               <call-button-multiple
-                  v-if="announcement?.is_auto_salon"
-                  :phones="announcement?.user?.auto_salon?.phones"
-                  :announcement="announcement"
-               />
-
-               <call-button
-                  v-else
-                  :phone="contact?.phone"
-                  :announcement-id="announcement?.id_unique"
-               />
-            </div>
-
-            <div class="col-12 mt-2 mt-lg-3" v-if="announcement?.status === 2">
-               <div class="status">{{ $t('announcement_pending') }}</div>
-            </div>
-         </div>
-      </div>
+      <QuickInfoDetails
+          v-if="!isMobileBreakpoint || type === 'plates'"
+          :announcement="announcement"
+          :contact="contact"
+          :type="type"
+      />
 
       <div class="wrapp">
          <monetization-button
@@ -180,7 +59,6 @@
             />
          </div>
 
-<!--         <pre>{{announcement}}</pre>-->
          <deactivate-button
             class="mt-3"
             :announcement="announcement"
@@ -212,6 +90,7 @@
 </template>
 
 <script>
+   import QuickInfoDetails from "~/components/announcements/inner/QuickInfoDetails.vue";
    import ReasonForRejection from "~/components/announcements/ReasonForRejection.vue";
    import RestoreButton from '~/components/announcements/RestoreButton'
    import DeactivateButton from '~/components/announcements/DeactivateButton'
@@ -232,6 +111,7 @@
 
    export default {
       components: {
+         QuickInfoDetails,
          ReasonForRejection,
          CallButtonMultiple,
          RestoreButton,
@@ -258,10 +138,6 @@
 
       computed: {
          ...mapGetters(['announcement','loginInEditModal']),
-
-         getAddress() {
-            return this.announcement?.is_auto_salon ? this.announcement?.user?.auto_salon?.address : this.announcement?.is_part_salon ? this.announcement?.user?.part_salon?.address : this.announcement?.address
-         },
 
          contact() {
             return this.getAnnouncementContact(this.announcement)
@@ -346,22 +222,8 @@
       position: sticky;
       top: 150px;
 
-      &__item {
-         padding: 24px 20px;
-         border-radius: 12px;
-         border: 1px solid #CDD5DF;
+      .quickInfoDetails {
          margin-bottom: 20px;
-         overflow: hidden;
-
-         &.registration-marks {
-            margin-top: -1px;
-            border-radius: 0 0 12px 12px;
-         }
-
-         &.btns {
-            padding: 0;
-            border: none;
-         }
       }
 
       &__title {
@@ -451,12 +313,6 @@
          gap: 12px;
       }
 
-      //.wrapp {
-      //   display: grid;
-      //   grid-template-columns: repeat(2, 1fr);
-      //   gap: 12px;
-      //}
-
       &.registration-marks {
          .registration-marks__number {
             position: relative;
@@ -518,15 +374,6 @@
 
    .dark-mode {
       .quick-info {
-         &__item {
-            border-color: #1B2434;
-            background-color: #1B2434;
-
-            //.favorite-btn {
-            //   background-color: #121926 !important;
-            //}
-         }
-
          &__contact {
             &-info {
                h2 {
@@ -549,7 +396,7 @@
 
    @media (max-width: 500px) {
       .quick-info {
-         &__item {
+         .quickInfoDetails {
             padding: 16px;
          }
 

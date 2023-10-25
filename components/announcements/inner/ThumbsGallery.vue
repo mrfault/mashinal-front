@@ -55,10 +55,9 @@
       methods: {
          getMediaByKey(media, key) {
             // console.log('media', media)
-            console.log('key', key)
 
             key = media[key] ? key : Object.keys(media)[0];
-            console.log('aaaa', media[key] instanceof Array ? media[key].map(item => this.$withBaseUrl(item)) : [])
+            // console.log('aaaa', media[key] instanceof Array ? media[key].map(item => this.$withBaseUrl(item)) : [])
 
             return media[key] instanceof Array ? media[key].map(item => this.$withBaseUrl(item)) : [];
          }

@@ -249,11 +249,11 @@
                   for: ['cars', 'commercial', 'moto']
                },
 
-               {
-                  key: 'condition',
-                  value: (this.announcement.broken || this.announcement.status_id || this.announcement.beaten) && this.$t('bitie'),
-                  icon: '/icons/search_2.svg'
-               },
+               // {
+               //    key: 'condition',
+               //    value: (this.announcement.broken || this.announcement.status_id || this.announcement.beaten) && this.$t('bitie'),
+               //    icon: '/icons/search_2.svg'
+               // },
                {
                   key: 'guaranty',
                   value: (this.announcement.in_garanty || this.announcement.guaranty) && this.$t('in_garanty'),
@@ -274,10 +274,11 @@
                   icon: '/icons/fuelType.svg',
                   for: ['moto']
                },
-
                {
                   key: 'condition_2',
-                  value: this.announcement.is_new ? this.$t('new_2') : this.$t('with_mileage'),
+                  value: this.announcement.is_new ?
+                      this.$t('new_2') :
+                      (this.type === 'parts' ? this.$t('with_mileage') : this.$t('with_mileage_2')),
                   icon: '/icons/search_2.svg'
                },
                {key: 'type_of_brakes', value: this.brakeType, for: ['commercial']},
@@ -330,12 +331,12 @@
                   icon: '/icons/credit_2.svg',
                   value: this.announcement.credit && this.$t('is_in_credit')
                },
-               {
-                  key: 'condition',
-                  value: this.condition,
-                  icon: '/icons/condition.svg',
-                  for: ['parts']
-               },
+               // {
+               //    key: 'condition',
+               //    value: this.condition,
+               //    icon: '/icons/condition.svg',
+               //    for: ['parts']
+               // },
                {
                   key: 'is_original',
                   value: this.announcement.is_original ? this.$t('yes') : this.$t('no'),
@@ -380,7 +381,6 @@
             if (this.type === 'parts') {
                Object.keys(this.announcement?.filters)?.forEach(filter => {
                   let value = this.announcement?.filters[filter]
-                  console.log('value', value)
 
                   if (value) {
                      if (typeof value === 'boolean') {

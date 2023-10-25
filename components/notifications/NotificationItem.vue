@@ -40,13 +40,11 @@ export default {
          if (match && match[2]) {
             const href = match[2];
             // window.open(href, '_blank');
-            console.log("href", href)
             this.$router.push(href)
          } else {
             // Handle case when no valid link is found
             const routePath = this.link;
             // window.open(routePath, '_blank');
-            console.log("href else", routePath)
             this.$router.push(routePath)
             this.$store.dispatch('getNotifications', this.page);
             this.$nuxt.refresh();

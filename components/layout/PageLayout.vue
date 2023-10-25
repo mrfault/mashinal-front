@@ -71,7 +71,7 @@
             <comparison-badge :window-width="windowWidth" />
 <!--            <mobile-nav/>-->
 
-            <mobile-nav-new/>
+            <mobile-nav-new />
 
             <BrandsList v-if="brandsList.length" :options="brandsList" />
 

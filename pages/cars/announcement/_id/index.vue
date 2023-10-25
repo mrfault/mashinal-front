@@ -40,34 +40,45 @@
 
                   <thumbs-gallery />
 
-                  <ul class="characteristics" v-if="isMobileBreakpoint">
-                     <li class="characteristics__item" v-if="announcement.tradeable">
-                        <inline-svg src="/icons/barter.svg" />
-                        <span>{{ $t('barter') }}</span>
-                     </li>
+                  <template v-if="isMobileBreakpoint">
+                     <ul class="characteristics">
+                        <li class="characteristics__item" v-if="announcement.tradeable">
+                           <inline-svg src="/icons/barter.svg" />
+                           <span>{{ $t('barter') }}</span>
+                        </li>
 
-                     <li class="characteristics__item" v-if="announcement.credit">
-                        <inline-svg src="/icons/credit.svg" />
-                        <span>{{ $t('credit') }}</span>
-                     </li>
+                        <li class="characteristics__item" v-if="announcement.credit">
+                           <inline-svg src="/icons/credit.svg" />
+                           <span>{{ $t('credit') }}</span>
+                        </li>
 
-                     <li class="characteristics__item" v-if="announcement.has_360">
-                        <inline-svg src="/icons/360_deg_2.svg" />
-                        <span>360</span>
-                     </li>
+                        <li class="characteristics__item" v-if="announcement.has_360">
+                           <inline-svg src="/icons/360_deg_2.svg" />
+                           <span>360</span>
+                        </li>
 
-                     <li class="characteristics__item" v-if="announcement.show_vin">
-                        <inline-svg src="/icons/vin_2.svg" />
-                        <span>VIN kod</span>
-                        <span class="badgeMin">{{ $t('is_new') }}</span>
-                     </li>
-                  </ul>
+                        <li class="characteristics__item" v-if="announcement.show_vin">
+                           <inline-svg src="/icons/vin_2.svg" />
+                           <span>VIN kod</span>
+                           <span class="badgeMin">{{ $t('is_new') }}</span>
+                        </li>
+                     </ul>
+
+                     <QuickInfoDetails
+                         :announcement="announcement"
+                         :contact="contact"
+                     >
+                        <template #head>
+                           <AnnouncementTitle :announcement="announcement" />
+                        </template>
+                     </QuickInfoDetails>
+                  </template>
 
                   <announcement-specs type="cars" :title="$t('announcement_info')" brief />
 
                   <comment v-if="announcement.comment" :comment="announcement.comment" />
 
-                  <car-complects :options="getComplectOptions" v-if="hasComplects"/>
+                  <car-complects :options="getComplectOptions" v-if="hasComplects" />
 
                   <template v-if="getCarHealth">
                      <damage-options
@@ -119,12 +130,15 @@
    import ProductInnerTitle from "~/components/announcements/ProductInnerTitle.vue";
    import AddFavorite from "~/components/announcements/AddFavorite.vue";
    import AddComparison from "~/components/announcements/AddComparison.vue";
+   import AnnouncementTitle from "~/components/announcements/inner/AnnouncementTitle.vue";
    import { mapGetters } from 'vuex';
+   import QuickInfoDetails from "~/components/announcements/inner/QuickInfoDetails.vue";
 
    export default {
       name: 'pages-cars-id',
 
       components: {
+         QuickInfoDetails,
          SiteBanner,
          QuickInfo,
          AnnouncementSpecs,
@@ -137,8 +151,11 @@
          HandleIds,
          ProductInnerTitle,
          AddFavorite,
-         AddComparison
+         AddComparison,
+         AnnouncementTitle
       },
+
+      // layout: 'announcementInner',
 
       nuxtI18n: {
          paths: {
@@ -210,6 +227,10 @@
       computed: {
          ...mapGetters(['announcement', 'catalog']),
 
+         contact() {
+            return this.getAnnouncementContact(this.announcement)
+         },
+
          getComplectOptions() {
             return typeof this.announcement.options === 'string'
                ? JSON.parse(this.announcement.options)
@@ -259,3 +280,9 @@
       }
    }
 </script>
+
+<style lang="scss">
+   .mobile-nav-new {
+      //display: none !important;
+   }
+</style>

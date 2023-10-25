@@ -46,9 +46,9 @@ export default {
    computed: {
       ...mapGetters(['settingsV2'])
    },
-   mounted() {
-      console.log("type", this.announcement.type)
-   },
+   // mounted() {
+   //    console.log("type", this.announcement.type)
+   // },
    methods: {
       onClick() {
          (this.user.autosalon || this.user.external_salon || this.announcement.type === "part") ? this.restore() : (this.showModal = true)

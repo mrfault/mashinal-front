@@ -60,10 +60,6 @@
             </template>
          </PlatesGrid>
 
-<!--         <div v-if="isMobileBreakpoint && registrationMark.status != 3" class="mt-3 mt-lg-0">-->
-<!--            <floating-cta :announcement="registrationMark"/>-->
-<!--         </div>-->
-
          <HandleIds :single="true" :items="{ type: 'plate', id: registrationMark.id }" />
       </div>
    </div>
