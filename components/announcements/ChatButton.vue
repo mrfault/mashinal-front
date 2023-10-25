@@ -1,6 +1,6 @@
 <template>
    <button :class="['chat-button btn full-width', `btn--${className}`]" @click.stop="handleClick">
-      {{ $t('write') }}
+      <span>{{ $t('write') }}</span>
       <icon name="chat" />
    </button>
 </template>

@@ -113,6 +113,11 @@
       <relatives />
 
       <HandleIds :single="true" :items="{ type: 'car', id: announcement.id }" />
+
+      <AnnouncementBar
+          v-if="isMobileBreakpoint"
+          :announcement="announcement"
+      />
    </div>
 </template>
 
@@ -133,11 +138,13 @@
    import AnnouncementTitle from "~/components/announcements/inner/AnnouncementTitle.vue";
    import { mapGetters } from 'vuex';
    import QuickInfoDetails from "~/components/announcements/inner/QuickInfoDetails.vue";
+   import AnnouncementBar from "~/components/announcements/inner/AnnouncementBar.vue";
 
    export default {
       name: 'pages-cars-id',
 
       components: {
+         AnnouncementBar,
          QuickInfoDetails,
          SiteBanner,
          QuickInfo,
@@ -154,8 +161,6 @@
          AddComparison,
          AnnouncementTitle
       },
-
-      // layout: 'announcementInner',
 
       nuxtI18n: {
          paths: {

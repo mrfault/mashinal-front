@@ -72,6 +72,11 @@
       <relatives />
 
       <HandleIds :single="true" :items="{ type: $route.query?.type, id: announcement.id }" />
+
+      <AnnouncementBar
+          v-if="isMobileBreakpoint"
+          :announcement="announcement"
+      />
    </div>
 </template>
 
@@ -89,11 +94,13 @@
    import { mapGetters } from 'vuex';
    import QuickInfoDetails from "~/components/announcements/inner/QuickInfoDetails.vue";
    import AnnouncementTitle from "~/components/announcements/inner/AnnouncementTitle.vue";
+   import AnnouncementBar from "~/components/announcements/inner/AnnouncementBar.vue";
 
    export default {
       name: 'pages-moto-id',
 
       components: {
+         AnnouncementBar,
          AnnouncementTitle, QuickInfoDetails,
          Grid,
          Cap,
@@ -143,11 +150,7 @@
                type = parseInt(route?.params?.id?.slice(-1)),
                id = route?.params?.id?.slice(0, route?.params?.id?.length - 1);
 
-            console.log('route?.params?.id', route?.params?.id)
-            console.log('id', id)
-
             await store.dispatch('getMotoInnerV2', { id: id, type: types[type] });
-            // await store.dispatch('motoRelativesV2', { id: id, type: types[type] });
          }
 
          await Promise.all([
