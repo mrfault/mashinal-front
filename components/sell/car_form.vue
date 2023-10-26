@@ -1036,6 +1036,7 @@ export default {
             color: {required},
             mileage: {
                required: requiredIf(function () {
+                  console.log('validations')
                   return !this.form.is_new
                }),
                maxValue: maxValue(this.form.is_new ? 500 : 10000000)
