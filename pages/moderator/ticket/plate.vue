@@ -274,6 +274,7 @@ export default {
 
          try {
                await this.$axios.$post('/ticket/plate/' + this.announce_id, {
+                  status: this.form.status,
                   car_number: this.form.car_number,
                   price: this.form.price,
                   currency_id: this.form.currency_id,
@@ -302,7 +303,7 @@ export default {
             location.href = `${this.$env().ADMIN_URL}/announce-moderators`;
          } else {
             await this.$axios.$post('/ticket/detach/' + this.announce_id + '/car');
-            location.href = `${this.$env().ADMIN_URL}/plates`;
+            location.href = `${this.$env().ADMIN_URL}/plate-numbers`;
          }
       }
    },
