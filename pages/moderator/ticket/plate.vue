@@ -301,7 +301,7 @@ export default {
             location.href = `${this.$env().ADMIN_URL}/announce-moderators`;
          } else {
             await this.$axios.$post('/ticket/detach/' + this.announce_id + '/car');
-            location.href = `${this.$env().ADMIN_URL}/plates`;
+            location.href = `${this.$env().ADMIN_URL}/plate-numbers`;
          }
       }
    },
