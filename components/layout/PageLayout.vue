@@ -61,21 +61,19 @@
 
             <paid-status v-else-if="paidStatusData"/>
 
-            <!-- portal targets -->
             <portal-target name="modals" multiple/>
             <portal-target name="mobile-dropdown" multiple/>
             <portal-target name="mobile-screen"/>
             <portal-target name="backdrop"/>
 
-            <!-- /portal targets -->
             <comparison-badge :window-width="windowWidth" />
 <!--            <mobile-nav/>-->
 
-            <mobile-nav-new v-if="!announcementInner" />
+            <mobile-nav-new v-if="!announcementInner || isActiveBar" />
 
             <BrandsList v-if="brandsList.length" :options="brandsList" />
 
-            <page-footer v-if="!hideFooter"/>
+            <page-footer v-if="!hideFooter" />
 <!--            <template v-if="isMobileBreakpoint && showPopupBanner">
                <modal-popup
                   backdrop-class="smartb-background"
@@ -147,6 +145,7 @@
             newYearConditionalCss: 'background-image: url(' + (this.$env.NEW_YEAR_SOON ? ('/img/logo-white-newyear.svg') : ('/img/logo-white-2.svg')) + ')',
             showPopupBanner: true,
             checkEmitting: 0,
+            isActiveBar: false
          }
       },
 
@@ -163,9 +162,15 @@
             this.$store.dispatch("getStaticPages"),
             this.$store.dispatch("getCommercialTypes")
          ]);
+
+         this.$nuxt.$on('changeNavbar', this.handleNavBar);
       },
 
       methods: {
+         handleNavBar(val) {
+            console.log('ttttt', val)
+            this.isActiveBar = val;
+         },
          detectDevice() {
             const userAgent = window.navigator.userAgent;
             const isIphone = userAgent.includes('iPhone');
@@ -212,6 +217,10 @@
 
       async fetch() {
          await this.$store.dispatch("fetchBrandsList");
+      },
+
+      beforeDestroy() {
+         this.$nuxt.$off('changeNavbar', this.handleNavBar);
       }
    }
 </script>
