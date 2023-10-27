@@ -28,11 +28,20 @@
             {{announcement?.mileage}} {{ $t('char_kilometre') }}
          </p>
       </template>
+
+      <QuickInfoPrice
+          :announcement="announcement"
+          :type="type"
+      />
    </div>
 </template>
 
 <script>
+   import QuickInfoPrice from "~/components/announcements/inner/QuickInfoPrice.vue";
+
    export default {
+      components: {QuickInfoPrice},
+
       computed: {
          isMoto() {
             return this.announcement.type === 'motorcycle' ||
@@ -45,12 +54,17 @@
          announcement: {
             type: Object,
             default() { return {} }
+         },
+
+         type: {
+            type: String,
+            default: 'cars'
          }
       }
    }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
    .announcementTitle {
       margin-bottom: 10px;
 
@@ -62,6 +76,21 @@
 
          &:last-child {
             margin-bottom: 4px;
+         }
+      }
+
+      .quickInfoPriceWrapper {
+         margin-bottom: 50px;
+
+         .quickInfoPrice {
+            padding-top: 0;
+
+            &__head {
+               span {
+                  font-size: 20px;
+                  line-height: 28px;
+               }
+            }
          }
       }
    }
