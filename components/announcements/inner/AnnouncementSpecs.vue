@@ -9,8 +9,10 @@
          >
             <inline-svg :src="`/icons/${approvedCondition ? 'car-4' : 'car-6'}.svg`" />
 
-            <span v-if="approvedCondition">{{ $t('approved_vehicle') }}</span>
-            <span v-else>{{ $t('unapproved_vehicle') }}</span>
+            <template v-if="!isMobileBreakpoint">
+               <span v-if="approvedCondition">{{ $t('approved_vehicle') }}</span>
+               <span v-else>{{ $t('unapproved_vehicle') }}</span>
+            </template>
 
             <template v-if="approvedCondition">
                <CustomTooltip class="approved">
@@ -249,11 +251,11 @@
                   for: ['cars', 'commercial', 'moto']
                },
 
-               // {
-               //    key: 'condition',
-               //    value: (this.announcement.broken || this.announcement.status_id || this.announcement.beaten) && this.$t('bitie'),
-               //    icon: '/icons/search_2.svg'
-               // },
+               {
+                  key: 'condition',
+                  value: (this.announcement.broken || this.announcement.status_id || this.announcement.beaten) && this.$t('bitie'),
+                  icon: '/icons/search_2.svg'
+               },
                {
                   key: 'guaranty',
                   value: (this.announcement.in_garanty || this.announcement.guaranty) && this.$t('in_garanty'),
@@ -276,10 +278,9 @@
                },
                {
                   key: 'condition_2',
-                  value: this.announcement.is_new ?
-                      this.$t('new_2') :
-                      (this.type === 'parts' ? this.$t('with_mileage') : this.$t('with_mileage_2')),
-                  icon: '/icons/search_2.svg'
+                  value: this.announcement.is_new ? this.$t('new_2') : this.$t('with_mileage'),
+                  icon: '/icons/condition.svg',
+                  for: ['parts']
                },
                {key: 'type_of_brakes', value: this.brakeType, for: ['commercial']},
                {key: 'wheel_formula', value: this.wheelFormula, for: ['commercial']},
@@ -875,6 +876,12 @@
    @media (max-width: 992px) {
       .vehicle-specs {
          &__info {
+            position: absolute;
+            top: -100px;
+            right: 0;
+            width: unset;
+            padding: 4px 2px;
+
             .customTooltip {
                left: 90px;
             }

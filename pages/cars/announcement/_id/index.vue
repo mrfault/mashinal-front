@@ -64,14 +64,7 @@
                         </li>
                      </ul>
 
-                     <QuickInfoDetails
-                         :announcement="announcement"
-                         :contact="contact"
-                     >
-                        <template #head>
-                           <AnnouncementTitle :announcement="announcement" />
-                        </template>
-                     </QuickInfoDetails>
+                     <AnnouncementTitle :announcement="announcement" />
                   </template>
 
                   <announcement-specs type="cars" :title="$t('announcement_info')" brief />
@@ -303,9 +296,3 @@
       }
    }
 </script>
-
-<style lang="scss">
-   .mobile-nav-new {
-      //display: none !important;
-   }
-</style>
