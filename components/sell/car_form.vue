@@ -3,7 +3,6 @@
       <div class="head_section divider mobile-column">
          <div class="inner_left">
             <template v-if="!isEdit">
-
                <form-select
                   v-model="form.brand"
                   :class="{form_error: $v.form.brand.$error}"
@@ -18,6 +17,7 @@
                   @change="onChangeBrand($event)"
                   @clear="clearFields(['model', 'year', 'body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])"
                />
+
                <form-select
                   v-model="form.model"
                   :clear-option="false"
@@ -115,11 +115,7 @@
                   :disabled="!(form.transmission && sellModificationsV2.length > 0)"
                   :label="$t('modification')"
                   :new-label="false"
-                  :options="sellModificationsV2.map((o) => ({
-              name: o.title,
-              key: o.id,
-              capacity: o.capacity
-            }))"
+                  :options="sellModificationsV2.map((o) => ({name: o.title, key: o.id, capacity: o.capacity}))"
                   :translate-options="false"
                   object-in-value
                />
@@ -127,19 +123,30 @@
             <div class="divider mobile-column">
                <form-numeric-input
                   v-model="form.mileage"
-                  :class="{form_error: $v.form.mileage.$error}"
+                  :class="{form_error: $v.form.mileage.$error || mileage_is_new}"
                   :disabled="!isEdit && !readyAllParameters"
                   :invalid="$v.form.mileage.$error"
-                  :max-value="form.is_new ? (form.mileage_type === 1 ? 500 : 310) : 10000000"
+
                   :placeholder="$t('mileage')"
                />
+<!--               :max-value="form.is_new ? (form.mileage_type === 1 ? 500 : 310) : 10000000"-->
+
                <radio-group
                   v-model="form.mileage_type"
                   :disabledAll="!isEdit && !readyAllParameters"
-                  :options="[{key:1, name: 'char_kilometre'},{key:2, name: 'ml'}]"
+                  :options="[{key:1, name: 'char_kilometre'}, {key:2, name: 'ml'}]"
                   class="mileage_types"
                />
             </div>
+
+            <span
+                class="mileage_is_new"
+                v-if="mileage_is_new && form.mileage"
+            >{{ $t('mileage_is_new') }}</span>
+
+<!--            {{$v.form.mileage.$error}} - $v.form.mileage.$error <br>-->
+<!--            {{form.mileage}} - form.mileage.length-->
+
             <template v-if="isEdit">
                <div class="divider">
                   <form-select
@@ -176,8 +183,10 @@
                      :radio-value="1"
                      :type="'checkbox'"
                      input-name="is_new"
-                     @change="onChangeIsNew"
+
                   />
+<!--                  @change="onChangeIsNew"-->
+
                   <form-radio
                      :id="'4'"
                      v-model="form.beaten"
@@ -262,6 +271,7 @@
                </div>
             </template>
          </div>
+
          <div class="inner_right">
             <template v-if="!isEdit">
                <div class="divider">
@@ -558,10 +568,7 @@
          </div>
       </div>
 
-
       <template v-if="form.modification && sellModificationsV2.length">
-
-
          <div v-if="user.external_salon" class="divider">
             <form-radio
                :id="'5'"
@@ -613,7 +620,6 @@
 
 
       </template>
-
    </div>
 </template>
 
@@ -688,6 +694,7 @@ export default {
          ],
          other_parameters_checkboxes: {},
          deletedFiles: [],
+         mileage_is_new: false,
          form: {
             brand: "",
             model: "",
@@ -875,16 +882,18 @@ export default {
          }
          this.form.other_parameters = allValues
       },
-      onChangeIsNew(isnew) {
-         if (isnew) {
-            if (this.form.mileage_type === 1 && this.form.mileage > 500) {
-               this.form.mileage = 500
-            }
-            if (this.form.mileage_type === 2 && this.form.mileage > 310) {
-               this.form.mileage = 310
-            }
-         }
-      },
+      // onChangeIsNew(isnew) {
+      //    if (isnew) {
+      //       this.mileage_is_new = true;
+      //
+      //       // if (this.form.mileage_type === 1 && this.form.mileage > 500) {
+      //       //    this.form.mileage = 500
+      //       // }
+      //       // if (this.form.mileage_type === 2 && this.form.mileage > 310) {
+      //       //    this.form.mileage = 310
+      //       // }
+      //    }
+      // },
       toggleCurrency(currency) {
          this.form.currency = currency.id
       },
@@ -949,31 +958,40 @@ export default {
 
    },
    watch: {
-      'form.mileage_type'() {
-         if (this.form.is_new) {
-            if (this.form.mileage_type === 1 && this.form.mileage > 500) {
-               this.form.mileage = 500
-            }
-            if (this.form.mileage_type === 2 && this.form.mileage > 310) {
-               this.form.mileage = 310
-            }
-         }
-      },
+      // 'form.mileage_type'() {
+      //    if (this.form.is_new) {
+      //       if (this.form.mileage_type === 1 && this.form.mileage > 500) {
+      //          this.form.mileage = 500
+      //       }
+      //       if (this.form.mileage_type === 2 && this.form.mileage > 310) {
+      //          this.form.mileage = 310
+      //       }
+      //    }
+      // },
+
       // 'other_parameters_checkboxes': {
       //    deep: true,
       //    handler() {
       //       console.log("this.other_parameters_checkboxes", this.other_parameters_checkboxes)
       //    }
       // },
+
+      'form.is_new'(val) {
+         this.mileage_is_new = !!val;
+      },
+
       'form.vin'() {
          !this.form.vin && (this.form.show_vin = false)
       },
+
       isReady() {
-         this.$v.form.$touch()
+         this.$v.form.$touch();
+
          setTimeout(() => {
             this.scrollTo('.form_error', -190)
          });
-         if (this.$v.form.$error) {
+
+         if (this.$v.form.$error || (this.mileage_is_new && this.form.mileage)) {
             this.$toasted.error(this.$t('required_fields'));
             return;
          }
@@ -1039,7 +1057,7 @@ export default {
                   console.log('validations')
                   return !this.form.is_new
                }),
-               maxValue: maxValue(this.form.is_new ? 500 : 10000000)
+               // maxValue: maxValue(this.form.is_new ? 500 : 10000000)
             },
             country_id: {
                required: requiredIf(function () {
@@ -1057,7 +1075,6 @@ export default {
          }
       }
    }
-
 }
 </script>
 
@@ -1076,10 +1093,14 @@ export default {
       .inner_left, .inner_right {
          display: flex;
          flex-direction: column;
-         gap: 20px
+         gap: 20px;
+
+         .mileage_is_new {
+            margin-top: -15px;
+            font-size: 14px;
+            color: red;
+         }
       }
-
-
    }
 
    .car_description_section {

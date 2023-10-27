@@ -1274,6 +1274,7 @@ export default {
    mileage: "Yürüş",
    mileage_from: "Yürüş min.",
    mileage_from_km: "Yürüş min., km",
+   mileage_is_new: "Yeni seçildikdə yürüş 0 dan çox ola bilməz",
    min_image_count: "Minimal - {count} şəkil",
    min_image_size: "Minimal ölçü - {w}x{h} px",
    miniven: "Miniven",
