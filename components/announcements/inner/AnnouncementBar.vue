@@ -12,7 +12,10 @@
           :announcement-id="announcement?.id_unique"
       />
 
-      <chat-button :announcement="announcement" has-after-login />
+      <chat-button
+          :announcement="announcement"
+          has-after-login
+      />
 
       <add-favorite
           :template="'btn'"
@@ -26,7 +29,6 @@
 <script>
    import CallButton from "~/components/announcements/CallButton.vue";
    import CallButtonMultiple from "~/components/announcements/CallButtonMultiple.vue";
-   import {mapGetters} from "vuex";
    import ChatButton from "~/components/announcements/ChatButton.vue";
    import AddFavorite from "~/components/announcements/AddFavorite.vue";
 

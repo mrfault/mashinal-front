@@ -115,7 +115,7 @@
       <HandleIds :single="true" :items="{ type: 'car', id: announcement.id }" />
 
       <AnnouncementBar
-          v-if="isMobileBreakpoint"
+          v-if="isMobileBreakpoint && isActiveBar"
           :announcement="announcement"
       />
    </div>
@@ -189,6 +189,12 @@
          });
       },
 
+      data() {
+        return {
+           isActiveBar: true
+        }
+      },
+
       async fetch({store, route}) {
          let id = route.params.id;
          if (id.length > 10) id = id.slice(0, -1);
@@ -204,6 +210,10 @@
       },
 
       methods: {
+         handleNavBar(val) {
+            this.isActiveBar = !val;
+         },
+
          getFilterLink(type) {
             let form = {
                sorting: 'created_at_desc',
@@ -282,6 +292,14 @@
                { id: 5, name: `${this.announcement.mileage} ${this.$t('char_kilometre')}` }
             ]
          }
+      },
+
+      mounted() {
+         this.$nuxt.$on('changeNavbar', this.handleNavBar);
+      },
+
+      beforeDestroy() {
+         this.$nuxt.$off('changeNavbar', this.handleNavBar);
       }
    }
 </script>

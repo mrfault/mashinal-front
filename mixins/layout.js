@@ -36,6 +36,11 @@ export const LayoutMixin = {
             value: new Date().getTime()
          })
          this.handleHideMenu();
+      },
+
+      showLoginPopup(val) {
+         console.log('val', val)
+         this.$nuxt.$emit('changeNavbar', val);
       }
    },
 
