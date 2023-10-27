@@ -273,13 +273,14 @@ export default {
          this.form.car_number = `${this.region_id.split('-')[0]} - ${this.region_letter1}${this.region_letter2 ? this.region_letter2 : ''} - ${this.region_number}`;
 
          try {
-               await this.$axios.$post('/ticket/plate/' + this.announce_id, {
-                  car_number: this.form.car_number,
-                  price: this.form.price,
-                  currency_id: this.form.currency_id,
-                  region_id: this.form.region_id,
-                  comment: this.form.comment,
-               })
+            await this.$axios.$post('/ticket/plate/' + this.announce_id, {
+               status: this.form.status,
+               car_number: this.form.car_number,
+               price: this.form.price,
+               currency_id: this.form.currency_id,
+               region_id: this.form.region_id,
+               comment: this.form.comment,
+            })
 
             this.pending = false;
             this.$toasted.success(this.$t('success_payment'));
@@ -289,10 +290,8 @@ export default {
             } else {
                location.href = `${this.$env().ADMIN_URL}/plates`;
             }
-
          } catch (err) {
             this.pending = false;
-            // console.log(err)
          }
       },
 
@@ -302,7 +301,7 @@ export default {
             location.href = `${this.$env().ADMIN_URL}/announce-moderators`;
          } else {
             await this.$axios.$post('/ticket/detach/' + this.announce_id + '/car');
-            location.href = `${this.$env().ADMIN_URL}/plates`;
+            location.href = `${this.$env().ADMIN_URL}/plate-numbers`;
          }
       }
    },

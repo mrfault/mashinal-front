@@ -1265,6 +1265,7 @@ export default {
    mileage: "Пробег",
    mileage_from: "Пробег от.",
    mileage_from_km: "Пробег от, км",
+   mileage_is_new: "Пробег не может быть больше 0, если выбран новый",
    min_image_count: "Минимум - {count} фото",
    min_image_size: "Минимальный размер - {w}x{h} px",
    miniven: "Минивэн",
