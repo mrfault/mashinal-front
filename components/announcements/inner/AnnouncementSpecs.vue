@@ -6,6 +6,7 @@
          <div
             :class="['vehicle-specs__info', {'approved' : approvedCondition}]"
             v-if="!showInfo"
+            @click="openApprovedCondition"
          >
             <inline-svg :src="`/icons/${approvedCondition ? 'car-4' : 'car-6'}.svg`" />
 
@@ -23,7 +24,17 @@
                         <p>{{ $t('approvedVehicle_title') }}:</p>
                      </div>
 
-                     <inline-svg class="info" src="/icons/info.svg" />
+                     <inline-svg
+                         class="info"
+                         src="/icons/info.svg"
+                         v-if="!isMobileBreakpoint"
+                     />
+
+                     <inline-svg
+                         class="close-btn"
+                         src="/icons/close.svg"
+                         v-else
+                     />
                   </template>
 
                   <template #main>
@@ -72,7 +83,17 @@
                         <p>{{ $t('unapproved__title') }}!</p>
                      </div>
 
-                     <inline-svg class="info" src="/icons/info.svg" />
+                     <inline-svg
+                         class="info"
+                         src="/icons/info.svg"
+                         v-if="!isMobileBreakpoint"
+                     />
+
+                     <inline-svg
+                         class="close-btn"
+                         src="/icons/close.svg"
+                         v-else
+                     />
                   </template>
 
                   <template #main>
@@ -159,6 +180,13 @@
       },
 
       mixins: [AnnouncementDataMixin],
+
+      methods: {
+         openApprovedCondition(e) {
+            const tooltip = e.currentTarget.querySelector('.customTooltip');
+            if (this.isMobileBreakpoint) tooltip.classList.toggle('active');
+         }
+      },
 
       async fetch() {
          let url = `/car/${this.announcement.id}`;
@@ -497,12 +525,6 @@
             line-height: 13px;
          }
 
-         &:hover {
-            .customTooltip {
-               display: block;
-            }
-         }
-
          .customTooltip {
             width: 100%;
             max-width: 412px;
@@ -531,7 +553,7 @@
                         font-size: 16px;
                         font-weight: 600;
                         line-height: 21px;
-                        margin-left: 12px;
+                        margin: 0 12px;
                      }
                   }
                }
@@ -577,6 +599,7 @@
                         display: flex;
                         align-items: center;
                         justify-content: space-between;
+                        gap: 10px;
                         padding: 10px 11px;
                         border-radius: 6px;
                         border: 1px solid #32B878;
@@ -615,7 +638,7 @@
                         font-size: 24px;
                         font-weight: 600;
                         line-height: 30px;
-                        margin-left: 16px;
+                        margin: 0 16px;
                      }
                   }
                }
@@ -940,6 +963,18 @@
 
             span {
                font-size: 14px;
+            }
+         }
+      }
+   }
+
+   @media (min-width: 992px) {
+      .vehicle-specs {
+         &__info {
+            &:hover {
+               .customTooltip {
+                  display: block;
+               }
             }
          }
       }

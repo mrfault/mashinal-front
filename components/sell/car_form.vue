@@ -121,15 +121,22 @@
                />
             </template>
             <div class="divider mobile-column">
-               <form-numeric-input
-                  v-model="form.mileage"
-                  :class="{form_error: $v.form.mileage.$error || mileage_is_new}"
-                  :disabled="!isEdit && !readyAllParameters"
-                  :invalid="$v.form.mileage.$error"
+               <div>
+                  <form-numeric-input
+                      v-model="form.mileage"
+                      :class="{form_error: $v.form.mileage.$error || mileage_is_new}"
+                      :disabled="!isEdit && !readyAllParameters"
+                      :invalid="$v.form.mileage.$error"
 
-                  :placeholder="$t('mileage')"
-               />
-<!--               :max-value="form.is_new ? (form.mileage_type === 1 ? 500 : 310) : 10000000"-->
+                      :placeholder="$t('mileage')"
+                  />
+                  <!--               :max-value="form.is_new ? (form.mileage_type === 1 ? 500 : 310) : 10000000"-->
+
+                  <span
+                      class="mileage_is_new"
+                      v-if="mileage_is_new && form.mileage"
+                  >{{ $t('mileage_is_new') }}</span>
+               </div>
 
                <radio-group
                   v-model="form.mileage_type"
@@ -138,11 +145,6 @@
                   class="mileage_types"
                />
             </div>
-
-            <span
-                class="mileage_is_new"
-                v-if="mileage_is_new && form.mileage"
-            >{{ $t('mileage_is_new') }}</span>
 
 <!--            {{$v.form.mileage.$error}} - $v.form.mileage.$error <br>-->
 <!--            {{form.mileage}} - form.mileage.length-->
@@ -617,8 +619,6 @@
          <!--               />-->
          <!--            </div>-->
          <!--         </div>-->
-
-
       </template>
    </div>
 </template>
