@@ -1,33 +1,11 @@
 <template>
-   <div class="car-complects">
+   <div class="car-complects" v-if="tagSellOptions.length">
       <h2 class="car-complects__title">{{ $t('other_parameters') }}</h2>
 
-      <template v-if="tagSellOptions.length">
-<!--         <collapse-content-->
-<!--            :title="$t('popular_options')"-->
-<!--            :first-collapsed="false"-->
-<!--            key="popular"-->
-<!--         >-->
-
-<!--         </collapse-content>-->
-         <keywords
-            :keywords="tagSellOptions"
-            label="label"
-         />
-      </template>
-
-      <!--    <template v-if="getOptions(group).length" v-for="(group, index) in filteredSellOptions">-->
-      <!--      <collapse-content-->
-      <!--        :title="getTitle(group, index)"-->
-      <!--        :first-collapsed="!!tagSellOptions.length || index !== 0"-->
-      <!--        :key="index"-->
-      <!--      >-->
-      <!--        <p v-for="(option, index) in getOptions(group)" :key="index">-->
-      <!--          {{ getOptionValue(option, options[option.name]) }}-->
-      <!--        </p>-->
-      <!--      </collapse-content>-->
-      <!--      <hr v-if="index !== filteredSellOptions.length - 1" :key="'hr-'+index" />-->
-      <!--    </template>-->
+      <keywords
+         :keywords="tagSellOptions"
+         label="label"
+      />
    </div>
 </template>
 

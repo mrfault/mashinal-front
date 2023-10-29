@@ -31,6 +31,14 @@
       border: 1px solid #CDD5DF;
       overflow: hidden;
       z-index: 15;
+
+      .close-btn {
+         min-width: 20px;
+      }
+
+      &.active {
+         display: block;
+      }
    }
 
    .dark-mode {
@@ -39,13 +47,21 @@
          background-color: #1B2434;
 
          &__head {
-            svg.info {
-               path {
-                  fill: #CDD5DF;
+            svg {
+               &.info {
+                  path {
+                     fill: #CDD5DF;
+                  }
+
+                  rect {
+                     fill: transparent;
+                  }
                }
 
-               rect {
-                  fill: transparent;
+               &.close-btn {
+                  path {
+                     stroke: #CDD5DF;
+                  }
                }
             }
          }
@@ -57,6 +73,17 @@
          position: fixed;
          top: 50%;
          transform: translate(-50%, -50%) !important;
+         width: 90% !important;
+
+         &__footer {
+            ul {
+               li {
+                  p {
+                     font-size: 12px !important;
+                  }
+               }
+            }
+         }
       }
    }
 </style>
