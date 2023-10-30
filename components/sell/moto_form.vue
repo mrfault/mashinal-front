@@ -182,15 +182,22 @@
                   :disabled="!isEdit && !readyAllParameters"
                   v-model="form.number_of_vehicles"
                />
-               <form-numeric-input
-                  :placeholder="$t('mileage')"
-                  :class="{form_error: $v.form.mileage.$error || mileage_is_new}"
+               <div>
+                  <form-numeric-input
+                      :placeholder="$t('mileage')"
+                      :class="{form_error: $v.form.mileage.$error || mileage_is_new}"
 
-                  v-model="form.mileage"
-                  :disabled="!isEdit && !readyAllParameters"
-                  :invalid="$v.form.mileage.$error"
-               />
-<!--               :max-value="form.is_new ? (form.mileage_type === 1 ? 500 : 310) : 10000000"-->
+                      v-model="form.mileage"
+                      :disabled="!isEdit && !readyAllParameters"
+                      :invalid="$v.form.mileage.$error"
+                  />
+                  <!--               :max-value="form.is_new ? (form.mileage_type === 1 ? 500 : 310) : 10000000"-->
+
+                  <span
+                      class="mileage_is_new"
+                      v-if="mileage_is_new && form.mileage"
+                  >{{ $t('mileage_is_new') }}</span>
+               </div>
 
                <radio-group
                   class="divider"
@@ -199,12 +206,6 @@
                   :options="[{key:1, name: 'char_kilometre'},{key:2, name: 'ml'}]"
                />
             </div>
-
-            <span
-                class="mileage_is_new"
-                v-if="mileage_is_new && form.mileage"
-            >{{ $t('mileage_is_new') }}</span>
-
 
             <div class="divider">
                <form-radio
@@ -694,7 +695,6 @@
             gap: 20px;
 
             .mileage_is_new {
-               margin-top: -15px;
                font-size: 14px;
                color: red;
             }

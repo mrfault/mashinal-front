@@ -1096,7 +1096,6 @@ export default {
          gap: 20px;
 
          .mileage_is_new {
-            margin-top: -15px;
             font-size: 14px;
             color: red;
          }
