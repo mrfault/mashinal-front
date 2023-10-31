@@ -7,7 +7,7 @@
 
       <slot name="head" />
 
-      <div class="d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center justify-content-between" v-if="!isMobileBreakpoint">
          <QuickInfoPrice
              :announcement="announcement"
              :type="type"
@@ -19,7 +19,7 @@
 <!--         </div>-->
       </div>
 
-      <ul class="quick-info__details">
+      <ul class="quick-info__details" v-if="!isMobileBreakpoint">
          <li>
             <inline-svg src="/icons/calendar-2.svg" />
             {{ announcement.created_at }}

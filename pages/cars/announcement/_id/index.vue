@@ -86,18 +86,7 @@
                <div class="product-inner__info-right">
                   <quick-info type="cars"/>
 
-                  <site-banner v-if="!isMobileBreakpoint" class="mb-3" type="in-announcement"/>
-
-<!--                  <comment :comment="announcement.comment" v-if="isMobileBreakpoint">-->
-<!--                     <template #after v-if="hasComplects || getCarHealth">-->
-<!--                        <hr v-if="announcement.comment"/>-->
-<!--                        <template v-if="getCarHealth">-->
-<!--                           <damage-options :selected="getCarHealth" read-only v-if="false"/>-->
-<!--                           <hr v-if="hasComplects"/>-->
-<!--                        </template>-->
-<!--                        <car-complects :options="getComplectOptions" v-if="hasComplects"/>-->
-<!--                     </template>-->
-<!--                  </comment>-->
+                  <site-banner v-if="!isMobileBreakpoint" class="mb-3" type="in-announcement" />
                </div>
             </div>
          </div>
