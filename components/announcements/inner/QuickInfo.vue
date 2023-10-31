@@ -18,8 +18,9 @@
          <span class="registration-marks__number-description">MASHIN.AL</span>
       </div>
 
+<!--      v-if="!isMobileBreakpoint || type === 'plates'"-->
       <QuickInfoDetails
-          v-if="!isMobileBreakpoint || type === 'plates'"
+
           :announcement="announcement"
           :contact="contact"
           :type="type"
@@ -261,6 +262,7 @@
          align-items: center;
          padding: 12px 0 20px 0;
          border-bottom: 1px solid #E3E8EF;
+         margin-bottom: 20px;
 
          li {
             display: flex;
@@ -276,7 +278,6 @@
       &__contact {
          display: flex;
          align-items: center;
-         margin-top: 20px;
 
          &-img {
             margin-right: 12px;
@@ -397,7 +398,7 @@
    @media (max-width: 500px) {
       .quick-info {
          .quickInfoDetails {
-            padding: 16px;
+            padding: 12px;
          }
 
          &__details {
