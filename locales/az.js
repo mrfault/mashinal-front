@@ -2857,6 +2857,7 @@ export default {
    "vehicle_is_processing": "Nəqliyyat vasitəsi prosesdədir",
 
    "no_payment_history": "Ödəniş tarixçəsi yoxdur",
+   "empty_message": "Burada sizin mesajlarınız görsənəcək",
    "no_message": "Mesaj yoxdur",
    "no_message_text": "Sizə mesaj gəlsə vəya kiməsə mesaj yazsanız burada görünəcək",
    "change_cover": "Örtük şəklini dəyiş",
