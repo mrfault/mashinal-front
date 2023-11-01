@@ -134,6 +134,8 @@ export default {
    additional_features_6_title: "0 ₼ aylıq ödəniş",
    additive_engine: "Növ",
    address: "Ünvan",
+   beforeBuyCar: 'Avtomobil almazdan əvvəl VIN kodunu yoxlamaq tövsiyyə olunur',
+   checkVinCode: 'VIN kodu yoxla',
    "Adjustable foot pedal switch": "Tənzimlənən pedallar",
    advanced_search: "Ətraflı axtarış",
    advanced_search2: "Ətraflı axtarış",

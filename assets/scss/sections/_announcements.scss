@@ -816,6 +816,8 @@
 @media (max-width: 992px) {
    .ma-announcements {
       &__head {
+         justify-content: unset !important;
+
          &--item {
             flex-direction: unset !important;
             gap: 8px !important;
@@ -1055,6 +1057,5 @@
    .stratch-child-block {
       width: 256px;
    }
-
 }
 
