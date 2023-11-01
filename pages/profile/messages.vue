@@ -68,7 +68,7 @@
                                           <inline-svg src="/icons/no-message.svg"/>
                                        </div>
                                        <div class="col-md-12 no-messages-content">
-                                          <h3>{{$t('no_message')}}</h3>
+                                          <h3>{{$t('empty_message')}}</h3>
                                           <p>{{$t('no_message_text')}}</p>
                                        </div>
                                     </div>
@@ -102,7 +102,7 @@
                                  <inline-svg src="/icons/no-message-dark.svg" v-if="isDarkMode"/>
                               </div>
                               <div class="col-md-12 no-messages-content">
-                                 <h3>{{$t('no_message')}}</h3>
+                                 <h3>{{$t('empty_message')}}</h3>
                                  <p>{{$t('no_message_text')}}</p>
                               </div>
                            </div>

@@ -1579,6 +1579,7 @@ export default {
    price_change: "Изменение цены",
    price_from: "Цена от",
    price_from_2: "Цена минимум",
+   price_to: "Цена до",
    price_to_2: "Цена максимум",
    price_from_azn: "Цена от, AZN",
    pricing: "Оценивание",
@@ -2787,7 +2788,7 @@ export default {
 
 
    "remove_message": "Удалить",
-
+   "empty_message": "Здесь отобразятся ваши чаты",
    "no_message": "Нет сообщений",
    "no_message_text": "Если вы получили сообщение или сообщение кому-то, оно появится здесь",
    "change_cover": "Изменить обложку",

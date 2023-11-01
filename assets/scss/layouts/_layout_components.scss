@@ -332,7 +332,7 @@
 /** Backdrop */
 
 .backdrop {
-   @include abs-zero(fixed, 50);
+   @include abs-zero(fixed, 55);
    @include backdrop-filter;
 }
 
