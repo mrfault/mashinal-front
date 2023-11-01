@@ -133,6 +133,8 @@ export default {
    additional_features_6_title: "0 ₼ ежемесячной оплаты",
    additive_engine: "Тип",
    address: "Адрес",
+   beforeBuyCar: 'Перед покупкой автомобиля рекомендуется проверить VIN-код',
+   checkVinCode: 'Проверить VIN-код',
    "Adjustable foot pedal switch": "Регулируемый педальный узел",
    advanced_search: "Расширенный поиск",
    advanced_search2: "Расш. поиск",
