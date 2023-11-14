@@ -207,7 +207,7 @@
                />
             </div>
 
-            <div class="divider">
+            <div class="divider_3">
                <form-radio
                   :id="'3'"
                   :type="'checkbox'"
@@ -241,6 +241,14 @@
                      />
                   </template>
                </form-radio>
+
+               <form-checkbox
+                   v-model="form.guaranty"
+                   :label="$t('in_garanty')"
+                   input-name="guaranty"
+                   transparent
+                   :disabled="!isEdit && !readyAllParameters"
+               />
             </div>
             <div class="divider_3" v-if="!user.external_salon">
                <form-checkbox
@@ -765,6 +773,10 @@
                   padding: 0 8px;
                }
             }
+         }
+
+         .divider_3 {
+            flex-direction: column;
          }
       }
    }

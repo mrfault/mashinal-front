@@ -432,7 +432,7 @@ export default {
    .car_number_info {
       display: flex;
       flex-direction: column;
-      height: inherit;
+      height: max-content;
       padding: 14px 16px;
       justify-content: center;
       align-items: center;
