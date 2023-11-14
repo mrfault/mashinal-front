@@ -348,7 +348,7 @@
                   <form-checkbox
                      v-model="form.guaranty"
                      :disabled="!readyAllParameters"
-                     :label="$t('guaranty')"
+                     :label="$t('in_garanty')"
                      input-name="guaranty"
                      transparent
                   />

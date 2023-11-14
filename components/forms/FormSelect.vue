@@ -43,7 +43,6 @@
                   </span>
                </template>
 
-
                <template v-else>
                   <template v-if="newLabel">
                      <span v-if="label !== getLabelText" class="label">{{ label }}</span>
@@ -51,10 +50,10 @@
                      <span
                         v-if="multiple && selectValue.length > 1 && !shortNamesLabel"
                         class="counter"
-                     >{{ $t('selected') }}:
+                     >
+                        {{ $t('selected') }}:
                         <template v-if="colorInput">{{ getColorNames(selectValue) }}</template>
                         <template v-else>{{ selectValue.length }}</template>
-
                      </span>
 
                      <span
@@ -68,6 +67,8 @@
                   </template>
                </template>
             </span>
+
+<!--            {{!hasNoValue}}-->
            <icon
               v-if="allowClear && !hasNoValue"
               class="cursor-pointer"
@@ -733,7 +734,8 @@ export default {
          if (this.custom)
             return this.values?.count
                ? false
-               : this.label === this.getLabelText.replace(`, ${this.suffix}`, '')
+               : this.label === this.getLabelText.replace(`, ${this.suffix}`, '');
+
          if (this.selectValue instanceof Array) {
             for (let i in this.selectValue)
                if (

@@ -7,7 +7,7 @@
                   @click="$nuxt.$emit('show-lightbox', index)"
                   @mouseenter="$nuxt.$emit('show-gallery-slide', index)"
                   :class="['swiper-slide-bg']"
-                  :style="{backgroundImage: `url('${slide}&width=96')` }"
+                  :style="{backgroundImage: `url('${slide}?width=96')` }"
                   role="img"
                   aria-label=""
                >
