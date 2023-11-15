@@ -94,7 +94,7 @@
 
       <relatives />
 
-      <HandleIds :single="true" :items="{ type: 'car', id: announcement.id }" />
+<!--      <HandleIds :single="true" :items="{ type: 'car', id: announcement.id }" />-->
 
       <AnnouncementBar
           v-if="isMobileBreakpoint && isActiveBar"

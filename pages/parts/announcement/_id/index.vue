@@ -70,7 +70,7 @@
 
       <relatives />
 
-      <HandleIds :single="true" :items="{ type: 'parts', id: announcement.id }" />
+<!--      <HandleIds :single="true" :items="{ type: 'parts', id: announcement.id }" />-->
 
       <AnnouncementBar
           v-if="isMobileBreakpoint"

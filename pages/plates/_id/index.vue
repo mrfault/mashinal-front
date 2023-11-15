@@ -60,7 +60,7 @@
             </template>
          </PlatesGrid>
 
-         <HandleIds :single="true" :items="{ type: 'plate', id: registrationMark.id }" />
+<!--         <HandleIds :single="true" :items="{ type: 'plate', id: registrationMark.id }" />-->
       </div>
    </div>
 </template>

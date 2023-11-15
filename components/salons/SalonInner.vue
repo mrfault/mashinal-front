@@ -63,7 +63,7 @@
 
             <div class="salon-inner__details-right">
                <div class="d-md-none">
-                  <thumbs-gallery where="salon" :media="salonSingle.gallery_thumbs"/>
+                  <thumbs-gallery where="salon" :media="salonSingle.gallery_thumbs" :show-in-mobile="true" />
                </div>
 
                <div class="salon-inner__details-time">
