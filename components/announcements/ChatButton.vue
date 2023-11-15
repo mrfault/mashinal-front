@@ -1,6 +1,9 @@
 <template>
-   <button :class="['chat-button btn full-width', `btn--${className}`]" @click.stop="handleClick">
-      {{ $t('write') }}
+   <button
+       :class="['chat-button btn full-width', `btn--${className}`]"
+       @click.stop="handleClick(); handleNavBar()"
+   >
+      <span>{{ $t('write') }}</span>
       <icon name="chat" />
    </button>
 </template>
@@ -16,6 +19,10 @@
       },
 
       methods: {
+         handleNavBar() {
+            // this.$nuxt.$emit('changeNavbar', true);
+         },
+
          handleClick() {
             if (!this.canSendMessage(this.announcement)) return;
 

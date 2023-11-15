@@ -879,11 +879,13 @@
       gap: 8px;
       border-radius: 8px;
       border: 1px solid #155EEF;
-      height: -webkit-fill-available;
-      height: -moz-available;
-      height: fill-available;
+      //height: -webkit-fill-available;
+      //height: -moz-available;
+      //height: fill-available;
 
       .car_number_form {
+         width: 100%;
+
          .registrationMarks {
             margin-bottom: 20px;
 
@@ -947,7 +949,7 @@
       .car_number_info {
          display: flex !important;
          flex-direction: column;
-         height: inherit;
+         height: max-content;
          padding: 14px 16px;
          justify-content: center;
          align-items: center;

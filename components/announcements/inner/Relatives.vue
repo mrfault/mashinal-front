@@ -9,7 +9,7 @@
             @change-page="searchAnnouncements"
          >
             <template #cap>
-               <Cap :className="'mb40'">
+               <Cap :className="'mb20'">
                   <template #left>
                      <h3>{{ title }}</h3>
                   </template>
@@ -25,7 +25,7 @@
             :announcements="relativeAnnouncements"
          >
             <template #cap>
-               <Cap :className="'mb40'">
+               <Cap :className="'mb20'">
                   <template #left>
                      <h3>{{ title }}</h3>
                   </template>
@@ -75,7 +75,11 @@
       },
 
       methods: {
-         ...mapActions(['getShopOtherAnnouncements', 'getAutoSalonOtherAnnouncements', 'getRelativeAnnouncements']),
+         ...mapActions([
+             'getShopOtherAnnouncements',
+            'getAutoSalonOtherAnnouncements',
+            'getRelativeAnnouncements'
+         ]),
 
          async searchAnnouncements(page = 1) {
             page = this.$route.query.page || 1;
@@ -90,8 +94,8 @@
       },
 
       created() {
-         if (this.announcement?.is_part_salon) this.getShopOtherAnnouncements(this.announcement.id);
-         else if (this.isShop) this.getAutoSalonOtherAnnouncements({
+         // if (this.announcement?.is_part_salon) this.getShopOtherAnnouncements(this.announcement.id);
+         if (this.isShop) this.getAutoSalonOtherAnnouncements({
             id: this.announcement?.user?.auto_salon?.id || this.announcement?.user?.external_salon?.id,
             excluded_id: this.announcement.id,
             page: this.$route.query.page || 1

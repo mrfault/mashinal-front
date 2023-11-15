@@ -1,5 +1,8 @@
 <template>
-   <div class="inner-thumbs-gallery d-none d-sm-block">
+   <div
+       class="inner-thumbs-gallery d-sm-block"
+       :class="{'d-none' : !showInMobile}"
+   >
       <div class="swiper-container" v-swiper:thumbsSwiper="swiperOps">
          <div class="swiper-wrapper">
             <div class="swiper-slide" :key="index" v-for="(slide, index) in thumbs">
@@ -7,7 +10,7 @@
                   @click="$nuxt.$emit('show-lightbox', index)"
                   @mouseenter="$nuxt.$emit('show-gallery-slide', index)"
                   :class="['swiper-slide-bg']"
-                  :style="{backgroundImage: `url('${slide}&width=96')` }"
+                  :style="{ backgroundImage: `url('${slide}?width=96')` }"
                   role="img"
                   aria-label=""
                >
@@ -34,16 +37,23 @@
             type: String,
             default: 'announcement'
          },
+         showInMobile: {
+            type: Boolean,
+            default: false
+         },
          media: {}
       },
 
       data() {
          return {
             swiperOps: {
-               slidesPerView: 4.5,
+               slidesPerView: 3.5,
                spaceBetween: 16,
                init: false,
                breakpoints: {
+                  500: {
+                     slidesPerView: 4.5
+                  },
                   1024: {
                      slidesPerView: 6.5
                   }
@@ -54,12 +64,7 @@
 
       methods: {
          getMediaByKey(media, key) {
-            // console.log('media', media)
-            console.log('key', key)
-
             key = media[key] ? key : Object.keys(media)[0];
-            console.log('aaaa', media[key] instanceof Array ? media[key].map(item => this.$withBaseUrl(item)) : [])
-
             return media[key] instanceof Array ? media[key].map(item => this.$withBaseUrl(item)) : [];
          }
       },

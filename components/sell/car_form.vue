@@ -3,7 +3,6 @@
       <div class="head_section divider mobile-column">
          <div class="inner_left">
             <template v-if="!isEdit">
-
                <form-select
                   v-model="form.brand"
                   :class="{form_error: $v.form.brand.$error}"
@@ -18,6 +17,7 @@
                   @change="onChangeBrand($event)"
                   @clear="clearFields(['model', 'year', 'body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])"
                />
+
                <form-select
                   v-model="form.model"
                   :clear-option="false"
@@ -115,31 +115,41 @@
                   :disabled="!(form.transmission && sellModificationsV2.length > 0)"
                   :label="$t('modification')"
                   :new-label="false"
-                  :options="sellModificationsV2.map((o) => ({
-              name: o.title,
-              key: o.id,
-              capacity: o.capacity
-            }))"
+                  :options="sellModificationsV2.map((o) => ({name: o.title, key: o.id, capacity: o.capacity}))"
                   :translate-options="false"
                   object-in-value
                />
             </template>
             <div class="divider mobile-column">
-               <form-numeric-input
-                  v-model="form.mileage"
-                  :class="{form_error: $v.form.mileage.$error}"
-                  :disabled="!isEdit && !readyAllParameters"
-                  :invalid="$v.form.mileage.$error"
-                  :max-value="form.is_new ? (form.mileage_type === 1 ? 500 : 310) : 10000000"
-                  :placeholder="$t('mileage')"
-               />
+<!--               {{$v.form.mileage.$error}}-->
+               <div>
+                  <form-numeric-input
+                      v-model="form.mileage"
+                      :class="{form_error: $v.form.mileage.$error || (mileage_is_new && form.mileage)}"
+                      :disabled="!isEdit && !readyAllParameters"
+                      :invalid="$v.form.mileage.$error"
+
+                      :placeholder="$t('mileage')"
+                  />
+                  <!--               :max-value="form.is_new ? (form.mileage_type === 1 ? 500 : 310) : 10000000"-->
+
+                  <span
+                      class="mileage_is_new"
+                      v-if="mileage_is_new && form.mileage"
+                  >{{ $t('mileage_is_new') }}</span>
+               </div>
+
                <radio-group
                   v-model="form.mileage_type"
                   :disabledAll="!isEdit && !readyAllParameters"
-                  :options="[{key:1, name: 'char_kilometre'},{key:2, name: 'ml'}]"
+                  :options="[{key:1, name: 'char_kilometre'}, {key:2, name: 'ml'}]"
                   class="mileage_types"
                />
             </div>
+
+<!--            {{$v.form.mileage.$error}} - $v.form.mileage.$error <br>-->
+<!--            {{form.mileage}} - form.mileage.length-->
+
             <template v-if="isEdit">
                <div class="divider">
                   <form-select
@@ -176,8 +186,10 @@
                      :radio-value="1"
                      :type="'checkbox'"
                      input-name="is_new"
-                     @change="onChangeIsNew"
+
                   />
+<!--                  @change="onChangeIsNew"-->
+
                   <form-radio
                      :id="'4'"
                      v-model="form.beaten"
@@ -262,6 +274,7 @@
                </div>
             </template>
          </div>
+
          <div class="inner_right">
             <template v-if="!isEdit">
                <div class="divider">
@@ -336,7 +349,7 @@
                   <form-checkbox
                      v-model="form.guaranty"
                      :disabled="!readyAllParameters"
-                     :label="$t('guaranty')"
+                     :label="$t('in_garanty')"
                      input-name="guaranty"
                      transparent
                   />
@@ -558,10 +571,7 @@
          </div>
       </div>
 
-
       <template v-if="form.modification && sellModificationsV2.length">
-
-
          <div v-if="user.external_salon" class="divider">
             <form-radio
                :id="'5'"
@@ -610,749 +620,764 @@
          <!--               />-->
          <!--            </div>-->
          <!--         </div>-->
-
-
       </template>
-
    </div>
 </template>
 
 <script>
-import GridRadio from "~/components/elements/GridRadio.vue";
-import ImageComponent from "~/pages/sell/image-component.vue";
-import ToggleGroup from "~/components/elements/ToggleGroup.vue";
-import PickOnMapButton from "~/components/elements/PickOnMapButton.vue";
-import {MenusDataMixin} from "~/mixins/menus-data";
-import {ToastErrorsMixin} from "~/mixins/toast-errors";
-import {mapActions, mapGetters} from "vuex";
-import {maxLength, maxValue, minLength, required, requiredIf} from "vuelidate/lib/validators";
-import MaxLength from "vuelidate/lib/validators/maxLength";
-import RadioGroup from "~/components/moderator/RadioGroup.vue";
+   import GridRadio from "~/components/elements/GridRadio.vue";
+   import ImageComponent from "~/pages/sell/image-component.vue";
+   import ToggleGroup from "~/components/elements/ToggleGroup.vue";
+   import PickOnMapButton from "~/components/elements/PickOnMapButton.vue";
+   import {MenusDataMixin} from "~/mixins/menus-data";
+   import {ToastErrorsMixin} from "~/mixins/toast-errors";
+   import {mapActions, mapGetters} from "vuex";
+   import {maxLength, maxValue, minLength, required, requiredIf} from "vuelidate/lib/validators";
+   import MaxLength from "vuelidate/lib/validators/maxLength";
+   import RadioGroup from "~/components/moderator/RadioGroup.vue";
 
-export default {
-   components: {RadioGroup, PickOnMapButton, ToggleGroup, ImageComponent, GridRadio},
-   mixins: [MenusDataMixin, ToastErrorsMixin],
-   computed: {
-      ...mapGetters(['brands', 'models', 'sellYears', 'sellBody', "sellGenerationsV2", "sellEngines", "sellGearing", "sellTransmissions", "sellModificationsV2", "colors", "popularOptions", 'sellOptions', "allSellOptions2"]),
-      readyAllParameters() {
-         return this.form.modification && this.sellModificationsV2.length > 0
-      },
-      otherParameters() {
-         let list = this.popularOptions.map((p) => ({
-            ...p,
-            key: this.$t(p.label),
-            selected: false,
-            slug: p.name,
-            name: this.$t(p.label)
-         }))
-         list.forEach((p) => {
-            this.other_parameters_checkboxes[p.slug] = false
-         })
-         return list
-      },
-   },
-   props: {
-      announcement: {
-         type: Object,
-      },
-      isReady: {
-         type: Boolean,
-         default: false
-      },
-      isEdit: {
-         type: Boolean,
-         default: false
-      },
-      region_id: {
-         type: Number,
-         required: true
-      },
-      form_errored: Boolean,
-   },
-   data() {
-      return {
-         gearingIcons: ["-", "/icons/rear-transmission.svg", "/icons/front-transmission.svg", "/icons/full-transmission.svg"],
-         priceTypes: [
-            {
-               id: 1,
-               name: {az: "AZN", ru: "AZN"},
-            },
-            {
-               id: 2,
-               name: {az: "USD", ru: "USD"},
-            },
-            {
-               id: 3,
-               name: {az: "EUR", ru: "EUR"},
-            },
-         ],
-         other_parameters_checkboxes: {},
-         deletedFiles: [],
-         form: {
-            brand: "",
-            model: "",
-            year: "",
-            body_type: "",
-            generation: "",
-            fuel_type: "",
-            autogas: false,
-            transmission: "",
-            gearing: "",
-            modification: "",
-            color: [],
-            seats_count: null,
-            mileage: '',
-            mileage_type: 1,
-            is_new: false,
-            beaten: false,
-            customs_clearance: false,
-            guaranty: false,
-            address: "",
-            lat: 0,
-            lng: 0,
-            price: "",
-            currency: 1,
-            tradeable: false,
-            is_rent: false,
-            credit: false,
-            car_number: "",
-            vin: "",
-            show_vin: false,
-            other_parameters: [],
-            comment: "",
-            saved_images: [],
-            name: "",
-            email: "",
-            phone: "",
-            country_id: "",
-            auction: 1,
-            end_date: "",
+   export default {
+      components: {RadioGroup, PickOnMapButton, ToggleGroup, ImageComponent, GridRadio},
+
+      mixins: [MenusDataMixin, ToastErrorsMixin],
+
+      computed: {
+         ...mapGetters(['brands', 'models', 'sellYears', 'sellBody', "sellGenerationsV2", "sellEngines", "sellGearing", "sellTransmissions", "sellModificationsV2", "colors", "popularOptions", 'sellOptions', "allSellOptions2"]),
+         readyAllParameters() {
+            return this.form.modification && this.sellModificationsV2.length > 0
          },
-      }
-   },
-   methods: {
-      ...mapActions(['getModels', 'getSellYears', 'getSellBody', 'getSellGenerationsV2', 'getSellEngines', 'getSellGearing', 'getSellTransmissions', 'getSellModificationsV2']),
+         otherParameters() {
+            let list = this.popularOptions.map((p) => ({
+               ...p,
+               key: this.$t(p.label),
+               selected: false,
+               slug: p.name,
+               name: this.$t(p.label)
+            }))
+            list.forEach((p) => {
+               this.other_parameters_checkboxes[p.slug] = false
+            })
+            return list
+         },
+      },
 
-      async onChangeBrand({slug}) {
-         this.clearFields(['model', 'year', 'body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])
-         if (slug) {
-            await this.getModels(slug);
-         }
+      props: {
+         announcement: {
+            type: Object,
+         },
+         isReady: {
+            type: Boolean,
+            default: false
+         },
+         isEdit: {
+            type: Boolean,
+            default: false
+         },
+         region_id: {
+            type: Number,
+            required: true
+         },
+         form_errored: Boolean,
       },
-      async onChangeModel() {
-         this.clearFields(['year', 'body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])
-         const brand = this.form.brand.slug
-         const model = this.form.model.slug
-         if (brand && this.form.model.name) {
-            try {
-               await this.getSellYears({brand, model});
-            } catch (e) {
-            }
-            if (this.sellYears.years.length === 1) {
-               this.form.year = this.sellYears.years[0]
-               await this.onChangeYear()
-            }
-         }
-      },
-      async onChangeYear() {
-         this.clearFields(['body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])
-         const brand = this.form.brand.slug
-         const model = this.form.model.slug
-         const year = this.form.year
-         if (brand && model && this.form.year) {
-            try {
-               await this.getSellBody({brand, model, year});
-            } catch (e) {
-            }
-            if (this.sellBody.length === 1) {
-               this.form.body_type = this.sellBody[0].id
-               await this.onChangeBody(this.sellBody[0].id)
-            }
-         }
-      },
-      async onChangeBody(body) {
-         this.clearFields(['generation', 'fuel_type', 'transmission', 'gearing', 'modification'])
-         const brand = this.form.brand.slug
-         const model = this.form.model.slug
-         const year = this.form.year
-         if (brand && model && year && body) {
-            try {
-               await this.getSellGenerationsV2({brand, model, year, body});
-            } catch (e) {
-            }
-            if (this.sellGenerationsV2.length === 1) {
-               this.form.generation = this.sellGenerationsV2[0].id
-               await this.onChangeGeneration(this.sellGenerationsV2[0].id)
-            }
-         }
-      },
-      async onChangeGeneration(generation) {
-         this.clearFields(['fuel_type', 'transmission', 'gearing', 'modification'])
-         const brand = this.form.brand.slug
-         const model = this.form.model.slug
-         const year = this.form.year
-         const body = this.form.body_type
-         if (brand && model && year && body && generation) {
-            try {
-               await this.getSellEngines({brand, model, year, body, generation});
-            } catch (e) {
-            }
-            if (this.sellEngines.length === 1) {
-               this.form.fuel_type = this.sellEngines[0].engine
-               await this.onChangeFuelType(this.sellEngines[0].engine)
-            }
-         }
-      },
-      async onChangeFuelType(engine) {
-         this.clearFields(['transmission', 'gearing', 'modification'])
-         const brand = this.form.brand.slug
-         const model = this.form.model.slug
-         const year = this.form.year
-         const body = this.form.body_type
-         const generation = this.form.generation
-         this.form.fuel_type = engine || "";
-         if (brand && model && year && body && generation && engine) {
-            try {
-               await this.getSellGearing({brand, model, year, body, generation, engine});
-            } catch (e) {
-            }
-            if (this.sellGearing.length === 1) {
-               this.form.gearing = this.sellGearing[0].type_of_drive
-               await this.onChangeGearing(this.sellGearing[0].type_of_drive)
-            }
-         }
-      },
-      async onChangeGearing(gearing) {
-         this.clearFields(['gearing', 'modification'])
-         const brand = this.form.brand.slug
-         const model = this.form.model.slug
-         const year = this.form.year
-         const body = this.form.body_type
-         const engine = this.form.fuel_type
-         const generation = this.form.generation
-         this.form.gearing = gearing || ""
-         if (brand && model && year && body && generation && engine && gearing) {
-            try {
-               await this.getSellTransmissions({brand, model, year, body, generation, engine, gearing});
-            } catch (e) {
-            }
-            if (this.sellTransmissions.length === 1) {
-               this.form.transmission = this.sellTransmissions[0].box
-               await this.onChangeTransmission(this.sellTransmissions[0].box)
-            }
-         }
-      },
-      async onChangeTransmission(transmission) {
-         this.clearFields(['modification'])
-         const brand = this.form.brand.slug
-         const model = this.form.model.slug
-         const year = this.form.year
-         const body = this.form.body_type
-         const engine = this.form.fuel_type
-         const generation = this.form.generation
-         const gearing = this.form.gearing
-         if (brand && model && year && body && generation && engine && gearing && transmission) {
-            try {
-               await this.getSellModificationsV2({brand, model, year, body, generation, engine, gearing, transmission});
-            } catch (e) {
-            }
-            if (this.sellModificationsV2.length === 1) {
-               this.form.modification = this.sellModificationsV2.map((o) => ({
-                  name: o.title,
-                  key: o.id,
-                  capacity: o.capacity
-               }))[0]
-            }
-         }
-      },
-      changeOtherParameters(val) {
-         this.other_parameters_checkboxes[val.obj.slug] = val.value
-         const allValues = []
-         for (const key in this.other_parameters_checkboxes) {
-            if (this.other_parameters_checkboxes[key]) {
-               allValues.push(this.otherParameters.find((p) => p.slug === key))
-            }
-         }
-         this.form.other_parameters = allValues
-      },
-      onChangeIsNew(isnew) {
-         if (isnew) {
-            if (this.form.mileage_type === 1 && this.form.mileage > 500) {
-               this.form.mileage = 500
-            }
-            if (this.form.mileage_type === 2 && this.form.mileage > 310) {
-               this.form.mileage = 310
-            }
-         }
-      },
-      toggleCurrency(currency) {
-         this.form.currency = currency.id
-      },
-      updateAddress(address) {
-         this.form.address = address;
-         this.removeError('address');
-      },
-      updateLatLng({lat, lng}) {
-         this.form.lat = lat;
-         this.form.lng = lng;
-      },
-      clearFields(keys) {
-         keys.forEach((key) => {
-            this.form[key] = ""
-         })
-      },
-   },
-   mounted() {
-      if (this.isEdit) {
-         this.form.brand = this.announcement.brand
-         this.form.model = this.announcement.model
-         this.form.generation = this.announcement.generation.id
-         this.form.year = this.announcement.year
-         this.form.saved_images = this.announcement.mediaIds
-         this.form.color = this.announcement.colors
-         this.form.is_rent = this.announcement.is_rent
-         this.form.gearing = this.announcement.gear_id
-         this.form.mileage = this.announcement.mileage
-         this.form.mileage_type = this.announcement.mileage_measure
-         this.form.is_new = this.announcement.is_new ? 1 : 0
-         this.form.beaten = this.announcement.broken ? 1 : 0
-         this.form.guaranty = this.announcement.in_garanty
-         this.form.address = this.announcement.address
-         this.form.lat = Number(this.announcement.latitude)
-         this.form.lng = Number(this.announcement.longitude)
-         this.form.price = this.announcement.price_int
-         this.form.currency = this.announcement.currency_id
-         this.form.tradeable = this.announcement.exchange_possible
-         this.form.credit = this.announcement.credit
-         this.form.car_number = this.announcement.car_number
-         this.form.vin = this.announcement.vin
-         this.form.show_vin = this.announcement.show_vin
-         this.form.customs_clearance = this.announcement.customs_clearance
-         this.form.number_of_vehicles = this.announcement.tact
-         this.form.comment = this.announcement.comment
-         this.form.seats_count = this.announcement.seats_count
-         this.form.other_parameters = this.popularOptions.filter((option) => Object.keys(this.announcement.options).includes(option.name)).map((p) => ({
-            ...p,
-            key: this.$t(p.label),
-            slug: p.name,
-            name: this.$t(p.label)
-         }))
-         this.form.other_parameters.forEach((p) => {
-            this.other_parameters_checkboxes[p.slug] = true
-         })
-      }
-   },
-   async fetch() {
-      await Promise.all([
-         this.$store.dispatch("getPopularOptions")
-      ]);
 
-   },
-   watch: {
-      'form.mileage_type'() {
-         if (this.form.is_new) {
-            if (this.form.mileage_type === 1 && this.form.mileage > 500) {
-               this.form.mileage = 500
-            }
-            if (this.form.mileage_type === 2 && this.form.mileage > 310) {
-               this.form.mileage = 310
-            }
-         }
-      },
-      // 'other_parameters_checkboxes': {
-      //    deep: true,
-      //    handler() {
-      //       console.log("this.other_parameters_checkboxes", this.other_parameters_checkboxes)
-      //    }
-      // },
-      'form.vin'() {
-         !this.form.vin && (this.form.show_vin = false)
-      },
-      isReady() {
-         this.$v.form.$touch()
-         setTimeout(() => {
-            this.scrollTo('.form_error', -190)
-         });
-         if (this.$v.form.$error) {
-            this.$toasted.error(this.$t('required_fields'));
-            return;
-         }
-         let newForm = {
-            brand: this.form.brand.slug,
-            model: this.form.model.slug,
-            generation_id: this.form.generation,
-            car_body_type: this.form.body_type,
-            gearing: this.form.gearing,
-            car_catalog_id: this.form.modification.key,
-            transmission: this.form.transmission,
-            year: this.form.year,
-            mileage: this.form.mileage || 0,
-            mileage_measure: this.form.mileage_type,
-            vin: this.form.vin,
-            price: this.form.price,
-            currency: this.form.currency,
-            car_number: this.form.car_number,
-            show_vin: this.form.show_vin,
-            comment: this.form.comment,
-            autogas: this.form.autogas,
-            is_new: this.form.is_new ? 1 : 0,
-            beaten: this.form.beaten,
-            customs_clearance: this.form.customs_clearance,
-            tradeable: this.form.tradeable,
-            credit: this.form.credit,
-            guaranty: this.form.guaranty,
-            seats_count: this.form.seats_count,
-            is_rent: this.form.is_rent,
-            saved_images: this.form.saved_images,
-            all_options: this.form.other_parameters.reduce((acc, curr) => {
-               acc[curr.slug] = curr.selected_key ? curr.selected_key : true;
-               return acc;
-            }, {}),
-            selectedColor: this.form.color,
-            owner_type: 0,
-            youtube: {"id": "0", "thumb": ""}
-         }
-
-         if (this.user.external_salon) {
-            newForm = {
-               ...newForm, country_id: this.form.country_id,
-               auction: this.form.auction,
-               end_date: this.form.end_date
-            }
-         } else {
-            newForm = {...newForm, region_id: this.region_id}
-         }
-
-         this.$emit("getForm", {
-            form: newForm,
-            deletedImages: (this.isEdit && this.deletedFiles.length) ? this.deletedFiles : []
-         })
-      },
-   },
-   validations() {
-      return {
-         form: {
-            brand: {required},
-            color: {required},
-            mileage: {
-               required: requiredIf(function () {
-                  return !this.form.is_new
-               }),
-               maxValue: maxValue(this.form.is_new ? 500 : 10000000)
+      data() {
+         return {
+            gearingIcons: ["-", "/icons/rear-transmission.svg", "/icons/front-transmission.svg", "/icons/full-transmission.svg"],
+            priceTypes: [
+               {
+                  id: 1,
+                  name: {az: "AZN", ru: "AZN"},
+               },
+               {
+                  id: 2,
+                  name: {az: "USD", ru: "USD"},
+               },
+               {
+                  id: 3,
+                  name: {az: "EUR", ru: "EUR"},
+               },
+            ],
+            other_parameters_checkboxes: {},
+            deletedFiles: [],
+            mileage_is_new: false,
+            form: {
+               brand: "",
+               model: "",
+               year: "",
+               body_type: "",
+               generation: "",
+               fuel_type: "",
+               autogas: false,
+               transmission: "",
+               gearing: "",
+               modification: "",
+               color: [],
+               seats_count: null,
+               mileage: '',
+               mileage_type: 1,
+               is_new: false,
+               beaten: false,
+               customs_clearance: false,
+               guaranty: false,
+               address: "",
+               lat: 0,
+               lng: 0,
+               price: "",
+               currency: 1,
+               tradeable: false,
+               is_rent: false,
+               credit: false,
+               car_number: "",
+               vin: "",
+               show_vin: false,
+               other_parameters: [],
+               comment: "",
+               saved_images: [],
+               name: "",
+               email: "",
+               phone: "",
+               country_id: "",
+               auction: 1,
+               end_date: "",
             },
-            country_id: {
-               required: requiredIf(function () {
-                  return !!this.user.external_salon
-               })
-            },
-            vin: {
-               required: requiredIf(function () {
-                  return (!this.user.external_salon && !this.user.autosalon) && this.form.customs_clearance
-               })
+         }
+      },
 
-            },
-            price: {required},
-            saved_images: {required, minLength: minLength(3)}
+      methods: {
+         ...mapActions(['getModels', 'getSellYears', 'getSellBody', 'getSellGenerationsV2', 'getSellEngines', 'getSellGearing', 'getSellTransmissions', 'getSellModificationsV2']),
+
+         async onChangeBrand({slug}) {
+            this.clearFields(['model', 'year', 'body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])
+            if (slug) {
+               await this.getModels(slug);
+            }
+         },
+         async onChangeModel() {
+            this.clearFields(['year', 'body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])
+            const brand = this.form.brand.slug
+            const model = this.form.model.slug
+            if (brand && this.form.model.name) {
+               try {
+                  await this.getSellYears({brand, model});
+               } catch (e) {
+               }
+               if (this.sellYears.years.length === 1) {
+                  this.form.year = this.sellYears.years[0]
+                  await this.onChangeYear()
+               }
+            }
+         },
+         async onChangeYear() {
+            this.clearFields(['body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])
+            const brand = this.form.brand.slug
+            const model = this.form.model.slug
+            const year = this.form.year
+            if (brand && model && this.form.year) {
+               try {
+                  await this.getSellBody({brand, model, year});
+               } catch (e) {
+               }
+               if (this.sellBody.length === 1) {
+                  this.form.body_type = this.sellBody[0].id
+                  await this.onChangeBody(this.sellBody[0].id)
+               }
+            }
+         },
+         async onChangeBody(body) {
+            this.clearFields(['generation', 'fuel_type', 'transmission', 'gearing', 'modification'])
+            const brand = this.form.brand.slug
+            const model = this.form.model.slug
+            const year = this.form.year
+            if (brand && model && year && body) {
+               try {
+                  await this.getSellGenerationsV2({brand, model, year, body});
+               } catch (e) {
+               }
+               if (this.sellGenerationsV2.length === 1) {
+                  this.form.generation = this.sellGenerationsV2[0].id
+                  await this.onChangeGeneration(this.sellGenerationsV2[0].id)
+               }
+            }
+         },
+         async onChangeGeneration(generation) {
+            this.clearFields(['fuel_type', 'transmission', 'gearing', 'modification'])
+            const brand = this.form.brand.slug
+            const model = this.form.model.slug
+            const year = this.form.year
+            const body = this.form.body_type
+            if (brand && model && year && body && generation) {
+               try {
+                  await this.getSellEngines({brand, model, year, body, generation});
+               } catch (e) {
+               }
+               if (this.sellEngines.length === 1) {
+                  this.form.fuel_type = this.sellEngines[0].engine
+                  await this.onChangeFuelType(this.sellEngines[0].engine)
+               }
+            }
+         },
+         async onChangeFuelType(engine) {
+            this.clearFields(['transmission', 'gearing', 'modification'])
+            const brand = this.form.brand.slug
+            const model = this.form.model.slug
+            const year = this.form.year
+            const body = this.form.body_type
+            const generation = this.form.generation
+            this.form.fuel_type = engine || "";
+            if (brand && model && year && body && generation && engine) {
+               try {
+                  await this.getSellGearing({brand, model, year, body, generation, engine});
+               } catch (e) {
+               }
+               if (this.sellGearing.length === 1) {
+                  this.form.gearing = this.sellGearing[0].type_of_drive
+                  await this.onChangeGearing(this.sellGearing[0].type_of_drive)
+               }
+            }
+         },
+         async onChangeGearing(gearing) {
+            this.clearFields(['gearing', 'modification'])
+            const brand = this.form.brand.slug
+            const model = this.form.model.slug
+            const year = this.form.year
+            const body = this.form.body_type
+            const engine = this.form.fuel_type
+            const generation = this.form.generation
+            this.form.gearing = gearing || ""
+            if (brand && model && year && body && generation && engine && gearing) {
+               try {
+                  await this.getSellTransmissions({brand, model, year, body, generation, engine, gearing});
+               } catch (e) {
+               }
+               if (this.sellTransmissions.length === 1) {
+                  this.form.transmission = this.sellTransmissions[0].box
+                  await this.onChangeTransmission(this.sellTransmissions[0].box)
+               }
+            }
+         },
+         async onChangeTransmission(transmission) {
+            this.clearFields(['modification'])
+            const brand = this.form.brand.slug
+            const model = this.form.model.slug
+            const year = this.form.year
+            const body = this.form.body_type
+            const engine = this.form.fuel_type
+            const generation = this.form.generation
+            const gearing = this.form.gearing
+            if (brand && model && year && body && generation && engine && gearing && transmission) {
+               try {
+                  await this.getSellModificationsV2({brand, model, year, body, generation, engine, gearing, transmission});
+               } catch (e) {
+               }
+               if (this.sellModificationsV2.length === 1) {
+                  this.form.modification = this.sellModificationsV2.map((o) => ({
+                     name: o.title,
+                     key: o.id,
+                     capacity: o.capacity
+                  }))[0]
+               }
+            }
+         },
+         changeOtherParameters(val) {
+            this.other_parameters_checkboxes[val.obj.slug] = val.value
+            const allValues = []
+            for (const key in this.other_parameters_checkboxes) {
+               if (this.other_parameters_checkboxes[key]) {
+                  allValues.push(this.otherParameters.find((p) => p.slug === key))
+               }
+            }
+            this.form.other_parameters = allValues
+         },
+         // onChangeIsNew(isnew) {
+         //    if (isnew) {
+         //       this.mileage_is_new = true;
+         //
+         //       // if (this.form.mileage_type === 1 && this.form.mileage > 500) {
+         //       //    this.form.mileage = 500
+         //       // }
+         //       // if (this.form.mileage_type === 2 && this.form.mileage > 310) {
+         //       //    this.form.mileage = 310
+         //       // }
+         //    }
+         // },
+         toggleCurrency(currency) {
+            this.form.currency = currency.id
+         },
+         updateAddress(address) {
+            this.form.address = address;
+            this.removeError('address');
+         },
+         updateLatLng({lat, lng}) {
+            this.form.lat = lat;
+            this.form.lng = lng;
+         },
+         clearFields(keys) {
+            keys.forEach((key) => {
+               this.form[key] = ""
+            })
+         },
+      },
+
+      mounted() {
+         if (this.isEdit) {
+            this.form.brand = this.announcement.brand
+            this.form.model = this.announcement.model
+            this.form.generation = this.announcement.generation.id
+            this.form.year = this.announcement.year
+            this.form.saved_images = this.announcement.mediaIds
+            this.form.color = this.announcement.colors
+            this.form.is_rent = this.announcement.is_rent
+            this.form.gearing = this.announcement.gear_id
+            this.form.mileage = this.announcement.mileage
+            this.form.mileage_type = this.announcement.mileage_measure
+            this.form.is_new = this.announcement.is_new ? 1 : 0
+            this.form.beaten = this.announcement.broken ? 1 : 0
+            this.form.guaranty = this.announcement.in_garanty
+            this.form.address = this.announcement.address
+            this.form.lat = Number(this.announcement.latitude)
+            this.form.lng = Number(this.announcement.longitude)
+            this.form.price = this.announcement.price_int
+            this.form.currency = this.announcement.currency_id
+            this.form.tradeable = this.announcement.exchange_possible
+            this.form.credit = this.announcement.credit
+            this.form.car_number = this.announcement.car_number
+            this.form.vin = this.announcement.vin
+            this.form.show_vin = this.announcement.show_vin
+            this.form.customs_clearance = this.announcement.customs_clearance
+            this.form.number_of_vehicles = this.announcement.tact
+            this.form.comment = this.announcement.comment
+            this.form.seats_count = this.announcement.seats_count
+            this.form.other_parameters = this.popularOptions.filter((option) => Object.keys(this.announcement.options).includes(option.name)).map((p) => ({
+               ...p,
+               key: this.$t(p.label),
+               slug: p.name,
+               name: this.$t(p.label)
+            }))
+            this.form.other_parameters.forEach((p) => {
+               this.other_parameters_checkboxes[p.slug] = true
+            })
+         }
+      },
+
+      async fetch() {
+         await Promise.all([
+            this.$store.dispatch("getPopularOptions")
+         ]);
+      },
+
+      watch: {
+         // 'form.mileage_type'() {
+         //    if (this.form.is_new) {
+         //       if (this.form.mileage_type === 1 && this.form.mileage > 500) {
+         //          this.form.mileage = 500
+         //       }
+         //       if (this.form.mileage_type === 2 && this.form.mileage > 310) {
+         //          this.form.mileage = 310
+         //       }
+         //    }
+         // },
+
+         // 'other_parameters_checkboxes': {
+         //    deep: true,
+         //    handler() {
+         //       console.log("this.other_parameters_checkboxes", this.other_parameters_checkboxes)
+         //    }
+         // },
+
+         'form.is_new'(val) {
+            this.mileage_is_new = !!val;
+         },
+
+         'form.vin'() {
+            !this.form.vin && (this.form.show_vin = false)
+         },
+
+         isReady() {
+            this.$v.form.$touch();
+
+            setTimeout(() => {
+               this.scrollTo('.form_error', -190)
+            });
+
+            if (this.$v.form.$error || (this.mileage_is_new && this.form.mileage)) {
+               this.$toasted.error(this.$t('required_fields'));
+               return;
+            }
+
+            let newForm = {
+               brand: this.form.brand.slug,
+               model: this.form.model.slug,
+               generation_id: this.form.generation,
+               car_body_type: this.form.body_type,
+               gearing: this.form.gearing,
+               car_catalog_id: this.form.modification.key,
+               transmission: this.form.transmission,
+               year: this.form.year,
+               mileage: this.form.mileage || 0,
+               mileage_measure: this.form.mileage_type,
+               vin: this.form.vin,
+               price: this.form.price,
+               currency: this.form.currency,
+               car_number: this.form.car_number,
+               show_vin: this.form.show_vin,
+               comment: this.form.comment,
+               autogas: this.form.autogas,
+               is_new: this.form.is_new ? 1 : 0,
+               beaten: this.form.beaten,
+               customs_clearance: this.form.customs_clearance,
+               tradeable: this.form.tradeable,
+               credit: this.form.credit,
+               guaranty: this.form.guaranty,
+               seats_count: this.form.seats_count,
+               is_rent: this.form.is_rent,
+               saved_images: this.form.saved_images,
+               all_options: this.form.other_parameters.reduce((acc, curr) => {
+                  acc[curr.slug] = curr.selected_key ? curr.selected_key : true;
+                  return acc;
+               }, {}),
+               selectedColor: this.form.color,
+               owner_type: 0,
+               youtube: {"id": "0", "thumb": ""}
+            }
+
+            if (this.user.external_salon) {
+               newForm = {
+                  ...newForm, country_id: this.form.country_id,
+                  auction: this.form.auction,
+                  end_date: this.form.end_date
+               }
+            } else {
+               newForm = {...newForm, region_id: this.region_id}
+            }
+
+            this.$emit("getForm", {
+               form: newForm,
+               deletedImages: (this.isEdit && this.deletedFiles.length) ? this.deletedFiles : []
+            })
+         },
+      },
+
+      validations() {
+         return {
+            form: {
+               brand: {required},
+               color: {required},
+               mileage: {
+                  required: requiredIf(function () {
+                     return !this.form.is_new
+                  }),
+                  // maxValue: maxValue(this.form.is_new ? 500 : 10000000)
+               },
+               country_id: {
+                  required: requiredIf(function () {
+                     return !!this.user.external_salon
+                  })
+               },
+               vin: {
+                  required: requiredIf(function () {
+                     return (!this.user.external_salon && !this.user.autosalon) && this.form.customs_clearance
+                  })
+
+               },
+               price: {required},
+               saved_images: {required, minLength: minLength(3)}
+            }
          }
       }
    }
-
-}
 </script>
 
 <style lang="scss">
-.cars_form {
-   display: flex;
-   flex-grow: 1;
-   flex-direction: column;
-   gap: 20px;
+   .cars_form {
+      display: flex;
+      flex-grow: 1;
+      flex-direction: column;
+      gap: 20px;
 
-   .with-trailing input {
-      padding-right: 42px !important;
-   }
-
-   .head_section {
-      .inner_left, .inner_right {
-         display: flex;
-         flex-direction: column;
-         gap: 20px
+      .with-trailing input {
+         padding-right: 42px !important;
       }
 
-
-   }
-
-   .car_description_section {
-      h2 {
-         margin-bottom: 20px;
-         font-size: 20px;
-      }
-
-      .other_parameters_wrapper {
-         display: flex;
-         flex-direction: column;
-         gap: 20px;
-
-         .other_parameters {
+      .head_section {
+         .inner_left, .inner_right {
             display: flex;
-            flex-wrap: wrap;
-            column-gap: 12px;
-            row-gap: 10px;
-            border-radius: 8px;
-            border: 1px solid #CDD5DF;
-            padding: 20px;
+            flex-direction: column;
+            gap: 20px;
 
-            &__checkbox {
-               width: calc(50% - 8px);
-
-               .checkbox-input label {
-                  border: unset;
-                  padding: unset;
-                  font-size: 16px;
-                  font-weight: 400;
-                  height: unset;
-               }
+            .mileage_is_new {
+               font-size: 14px;
+               color: red;
             }
          }
       }
 
-      .comment {
-         display: flex;
-         flex-direction: column;
-         gap: 16px;
-
-         * {
-            height: 100%;
-         }
-      }
-
-      .comment_info {
-         width: calc(50% - 8px);
-         display: flex;
-         margin-top: 8px;
-         margin-left: auto;
-         align-items: center;
-         gap: 10px;
-         font-size: 14px;
-
-         svg {
-            max-width: 18px;
-            max-height: 18px;
-            min-width: 18px;
-            min-height: 18px;
-         }
-
-         .invalid_paragraph {
-            color: red
-         }
-      }
-   }
-
-   .image_section {
-      h2 {
-         margin-bottom: 20px;
-      }
-
-      .image_info {
-         display: flex;
-         align-items: center;
-         gap: 10px;
-         margin-top: 10px;
-
-         svg {
-            min-width: 24px;
-         }
-      }
-   }
-
-   .body_type_grid_item {
-      position: relative;
-      background-color: #eff4ff;
-      border-radius: 8px;
-      padding: 12px 12px 16px 12px;
-      cursor: pointer;
-
-      &_inner {
-         display: flex;
-         flex-direction: column;
-         justify-content: center;
-         align-items: center;
-         gap: 8px;
-
-         .body_imgs {
-            width: 100%;
-         }
-
-         .check_icon {
-            position: absolute;
-            left: 16px;
-            top: 16px;
-            width: 16px;
-            height: 16px;
-            color: #155eef;
-         }
-      }
-   }
-
-   .body_type_grid_item_inner {
-      padding: 12px 12px 16px 12px;
-   }
-
-   .generation_grid_item {
-      position: relative;
-      display: flex;
-      align-items: flex-end;
-      aspect-ratio: 1.48;
-      border-radius: 8px;
-      padding: 12px 12px 16px 12px;
-      cursor: pointer;
-      overflow: hidden;
-
-      &::after {
-         content: "";
-         position: absolute;
-         bottom: 0;
-         left: 0;
-         width: 100%;
-         height: 50%;
-         background: linear-gradient(
-               180deg,
-               rgba(0, 0, 0, 0) 0%,
-               #081a3e 100%
-         );
-      }
-
-      .generation_img {
-         position: absolute;
-         inset: 0;
-         width: 100%;
-         height: 100%;
-         object-fit: cover;
-      }
-
-      &_inner {
-         position: relative;
-         display: flex;
-         align-items: center;
-         gap: 8px;
-         z-index: 1;
-
-         p {
-            color: white;
-         }
-      }
-   }
-
-   .gearing_grid_item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      height: 52px;
-      padding: 0 16px;
-   }
-
-   .full_grid {
-      grid-column: 1/3;
-   }
-
-   .divider {
-
-      .mileage_types {
-         display: flex;
-         gap: 16px;
-      }
-
-      .price_types {
-         .price_item {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 52px;
-            padding: 0 16px;
-         }
-      }
-
-      .car_number_suffix {
-         position: absolute;
-         top: 50%;
-         transform: translateY(-50%);
-         right: 16px;
-      }
-
-      .beaten_suffix {
-         position: relative;
-         z-index: 1;
-         margin-left: auto;
-         cursor: progress;
-      }
-   }
-
-
-}
-
-@media (max-width: 1150px) {
-   .cars_form {
       .car_description_section {
+         h2 {
+            margin-bottom: 20px;
+            font-size: 20px;
+         }
+
+         .other_parameters_wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+
+            .other_parameters {
+               display: flex;
+               flex-wrap: wrap;
+               column-gap: 12px;
+               row-gap: 10px;
+               border-radius: 8px;
+               border: 1px solid #CDD5DF;
+               padding: 20px;
+
+               &__checkbox {
+                  width: calc(50% - 8px);
+
+                  .checkbox-input label {
+                     border: unset;
+                     padding: unset;
+                     font-size: 16px;
+                     font-weight: 400;
+                     height: unset;
+                  }
+               }
+            }
+         }
+
          .comment {
-            textarea {
-               height: 150px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+
+            * {
+               height: 100%;
             }
          }
 
          .comment_info {
+            width: calc(50% - 8px);
+            display: flex;
+            margin-top: 8px;
+            margin-left: auto;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+
+            svg {
+               max-width: 18px;
+               max-height: 18px;
+               min-width: 18px;
+               min-height: 18px;
+            }
+
+            .invalid_paragraph {
+               color: red
+            }
+         }
+      }
+
+      .image_section {
+         h2 {
+            margin-bottom: 20px;
+         }
+
+         .image_info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+
+            svg {
+               min-width: 24px;
+            }
+         }
+      }
+
+      .body_type_grid_item {
+         position: relative;
+         background-color: #eff4ff;
+         border-radius: 8px;
+         padding: 12px 12px 16px 12px;
+         cursor: pointer;
+
+         &_inner {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+
+            .body_imgs {
+               width: 100%;
+            }
+
+            .check_icon {
+               position: absolute;
+               left: 16px;
+               top: 16px;
+               width: 16px;
+               height: 16px;
+               color: #155eef;
+            }
+         }
+      }
+
+      .body_type_grid_item_inner {
+         padding: 12px 12px 16px 12px;
+      }
+
+      .generation_grid_item {
+         position: relative;
+         display: flex;
+         align-items: flex-end;
+         aspect-ratio: 1.48;
+         border-radius: 8px;
+         padding: 12px 12px 16px 12px;
+         cursor: pointer;
+         overflow: hidden;
+
+         &::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
             width: 100%;
+            height: 50%;
+            background: linear-gradient(
+                  180deg,
+                  rgba(0, 0, 0, 0) 0%,
+                  #081a3e 100%
+            );
+         }
+
+         .generation_img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+         }
+
+         &_inner {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1;
+
+            p {
+               color: white;
+            }
+         }
+      }
+
+      .gearing_grid_item {
+         display: flex;
+         align-items: center;
+         gap: 8px;
+         height: 52px;
+         padding: 0 16px;
+      }
+
+      .full_grid {
+         grid-column: 1/3;
+      }
+
+      .divider {
+         .mileage_types {
+            display: flex;
+            gap: 16px;
+         }
+
+         .price_types {
+            .price_item {
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               height: 52px;
+               padding: 0 16px;
+            }
+         }
+
+         .car_number_suffix {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 16px;
+         }
+
+         .beaten_suffix {
+            position: relative;
+            z-index: 1;
+            margin-left: auto;
+            cursor: progress;
          }
       }
    }
-}
 
+   .dark-mode {
+      .cars_form {
+         .body_type_grid_item {
 
-@media(max-width: 991px) and (min-width: 486px) {
-   .cars_form {
-      .head_section {
-         display: flex !important;
-         flex-wrap: wrap;
+            &_inner {
 
-         .inner_left, .inner_right {
-            width: 100%;
+               .body_imgs {
+                  filter: invert(48%) sepia(15%) saturate(490%) hue-rotate(176deg) brightness(90%) contrast(83%);
+               }
+            }
          }
       }
+   }
 
-      .car_description_section {
-         .divider {
+   @media (max-width: 1150px) {
+      .cars_form {
+         .car_description_section {
+            .comment {
+               textarea {
+                  height: 150px;
+               }
+            }
+
+            .comment_info {
+               width: 100%;
+            }
+         }
+      }
+   }
+
+   @media(max-width: 991px) and (min-width: 486px) {
+      .cars_form {
+         .head_section {
             display: flex !important;
             flex-wrap: wrap;
 
-            .other_parameters_wrapper {
+            .inner_left, .inner_right {
                width: 100%;
             }
-
-            .comment {
-               width: 100%;
-            }
-
          }
-      }
-   }
-}
 
+         .car_description_section {
+            .divider {
+               display: flex !important;
+               flex-wrap: wrap;
 
-.dark-mode {
-   .cars_form {
-      .body_type_grid_item {
+               .other_parameters_wrapper {
+                  width: 100%;
+               }
 
-         &_inner {
+               .comment {
+                  width: 100%;
+               }
 
-            .body_imgs {
-               filter: invert(48%) sepia(15%) saturate(490%) hue-rotate(176deg) brightness(90%) contrast(83%);
             }
          }
       }
    }
-}
 
-@media(max-width: 991px) {
-   .pages-announcement-edit .car_number_info {
-      height: min-content !important;
+   @media(max-width: 991px) {
+      .pages-announcement-edit .car_number_info {
+         height: min-content !important;
+      }
    }
-}
 </style>

@@ -378,8 +378,6 @@
                      else if (scroll) this.scrollTo('.catalog-grid', [-15, -20]);
                   });
                }
-
-               console.log('form', form)
             }, force ? 100 : 1000);
          },
          resetForm(submit = false) {

@@ -325,9 +325,9 @@
 
                   <form-select
                      :label="$t('color')"
+                     :options="colors"
                      v-model="form.colors"
                      translate-options
-                     :options="colors"
                      :clear-placeholder="true"
                      :clear-option="false"
                      multiple
@@ -336,12 +336,12 @@
                   <form-select
                      :label="$t('parameters')"
                      :options="parameters"
+                     v-model="form.all_options"
+                     translate-options
                      :clear-placeholder="true"
                      :clear-option="false"
                      object-in-value
-                     translate-options
                      multiple
-                     v-model="form.all_options"
                   />
 
                   <button
@@ -405,7 +405,7 @@
 
                   <button
                      class="btn-inline white"
-                     @click="showMore = !showMore"
+                     @click="handleShowMore"
                   >
                      <span>
                         <template v-if="!showMore">{{ $t('advanced_search3') }}</template>
@@ -807,6 +807,14 @@
             'updateSavedSearchNotificationsInterval',
          ]),
 
+         handleShowMore() {
+            this.showMore = !this.showMore;
+
+            if (this.isMobileBreakpoint && !this.showMore) {
+               this.scrollTo('.filters-container', [-100, -20]);
+            }
+         },
+
          saveSearch() {
             if (this.searchAppliedCustom) {
                this.submitForm()
@@ -973,8 +981,12 @@
       &__gridFooter {
          display: grid;
          grid-gap: 20px;
-         margin-top: 16px;
+         margin-top: 24px;
          width: 100%;
+
+         .btns {
+            height: unset !important;
+         }
       }
 
       .form-buttons {
@@ -1103,7 +1115,7 @@
       }
 
       .btn-inline {
-         &.blue {
+         &.blue, &.red {
             justify-content: flex-end;
          }
       }
@@ -1116,7 +1128,14 @@
          }
 
          &__gridFooter {
+            margin-top: 16px;
             grid-template-columns: repeat(2, 1fr);
+         }
+
+         .btn-inline {
+            &.red {
+               justify-content: unset;
+            }
          }
       }
    }
@@ -1137,3 +1156,4 @@
       }
    }
 </style>
+

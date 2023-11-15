@@ -14,6 +14,17 @@
 
                   <thumbs-gallery />
 
+                  <template v-if="isMobileBreakpoint">
+                     <QuickInfoDetails
+                         :announcement="announcement"
+                         :contact="contact"
+                     >
+                        <template #head>
+                           <AnnouncementTitle :announcement="announcement" />
+                        </template>
+                     </QuickInfoDetails>
+                  </template>
+
                   <announcement-specs type="parts" :title="$t('announcement_info')" />
 
                   <comment :comment="announcement.comment" v-if="announcement.comment">
@@ -59,7 +70,12 @@
 
       <relatives />
 
-      <HandleIds :single="true" :items="{ type: 'parts', id: announcement.id }" />
+<!--      <HandleIds :single="true" :items="{ type: 'parts', id: announcement.id }" />-->
+
+      <AnnouncementBar
+          v-if="isMobileBreakpoint"
+          :announcement="announcement"
+      />
    </div>
 </template>
 
@@ -77,11 +93,16 @@
    import SiteBanner from "~/components/banners/SiteBanner";
    import HandleIds from "~/components/announcements/HandleIds.vue";
    import { mapGetters } from 'vuex';
+   import QuickInfoDetails from "~/components/announcements/inner/QuickInfoDetails.vue";
+   import AnnouncementTitle from "~/components/announcements/inner/AnnouncementTitle.vue";
+   import AnnouncementBar from "~/components/announcements/inner/AnnouncementBar.vue";
 
    export default {
       name: 'pages-parts-id',
 
       components: {
+         AnnouncementBar,
+         AnnouncementTitle, QuickInfoDetails,
          SiteBanner,
          Gallery,
          Comment,
@@ -103,10 +124,10 @@
       },
 
       head() {
-         let announcementTitle = this.getAnnouncementTitle(this.announcement);
-         let title = `${this.$t(`meta-title_announcement-${this.announcement.is_new ? 'new' : 'used'}`, {announce: `${announcementTitle}`})}`;
-         let description = `${announcementTitle}, ${this.$t('meta-descr_announcement', {announce: `${this.announcement.price}`})}`;
-         let image = this.getAnnouncementImage(this.announcement);
+         let announcementTitle = this.getAnnouncementTitle(this.announcement),
+             title = `${this.$t(`meta-title_announcement-${this.announcement.is_new ? 'new' : 'used'}`, {announce: `${announcementTitle}`})}`,
+             description = `${announcementTitle}, ${this.$t('meta-descr_announcement', {announce: `${this.announcement.price}`})}`,
+             image = this.getAnnouncementImage(this.announcement);
          return this.$headMeta({title, description, image});
       },
 
@@ -131,6 +152,10 @@
 
       computed: {
          ...mapGetters(['announcement', 'autosalonAnnouncementsId']),
+
+         contact() {
+            return this.getAnnouncementContact(this.announcement)
+         },
 
          crumbs() {
             const items = [
@@ -160,3 +185,16 @@
       },
    }
 </script>
+
+<style lang="scss" scoped>
+   .pages-parts-id {
+      .breadcrumbs {
+         border: none;
+         padding: 20px 0;
+      }
+
+      .quickInfoDetails {
+         margin-top: 20px;
+      }
+   }
+</style>

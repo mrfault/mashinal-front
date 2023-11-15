@@ -40,7 +40,7 @@
 
             <relatives/>
 
-            <HandleIds :single="true" :items="{ type: 'commercials', id: announcement.id }"/>
+<!--            <HandleIds :single="true" :items="{ type: 'commercials', id: announcement.id }"/>-->
          </div>
       </div>
    </div>

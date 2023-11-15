@@ -538,9 +538,9 @@
    .pages-index {
       padding-top: 24px;
 
-      .announcements-grid {
-         margin: 32px 0;
-      }
+      //.announcements-grid {
+      //   margin: 32px 0;
+      //}
    }
 
    .filters-container {

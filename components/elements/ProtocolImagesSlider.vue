@@ -32,13 +32,13 @@
                         <div
                            @click="changeSlide(index)"
                            :class="[
-                    'swiper-thumb-bg',
-                    {
-                      [`${slides.types && slides.types[index] ? (slides.types[index]+'-play'):''}`]:
-                        slides.types &&
-                        ['youtube', 'video'].includes(slides.types[index]),
-                    },
-                  ]"
+                             'swiper-thumb-bg',
+                             {
+                               [`${slides.types && slides.types[index] ? (slides.types[index]+'-play'):''}`]:
+                                 slides.types &&
+                                 ['youtube', 'video'].includes(slides.types[index]),
+                             },
+                           ]"
                            :style="slide ? { backgroundImage: `url('${slide}')` } : {}"
                         ></div>
                      </div>

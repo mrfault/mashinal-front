@@ -6,11 +6,14 @@
          <div
             :class="['vehicle-specs__info', {'approved' : approvedCondition}]"
             v-if="!showInfo"
+            @click="openApprovedCondition"
          >
             <inline-svg :src="`/icons/${approvedCondition ? 'car-4' : 'car-6'}.svg`" />
 
-            <span v-if="approvedCondition">{{ $t('approved_vehicle') }}</span>
-            <span v-else>{{ $t('unapproved_vehicle') }}</span>
+            <template v-if="!isMobileBreakpoint">
+               <span v-if="approvedCondition">{{ $t('approved_vehicle') }}</span>
+               <span v-else>{{ $t('unapproved_vehicle') }}</span>
+            </template>
 
             <template v-if="approvedCondition">
                <CustomTooltip class="approved">
@@ -21,7 +24,17 @@
                         <p>{{ $t('approvedVehicle_title') }}:</p>
                      </div>
 
-                     <inline-svg class="info" src="/icons/info.svg" />
+                     <inline-svg
+                         class="info"
+                         src="/icons/info.svg"
+                         v-if="!isMobileBreakpoint"
+                     />
+
+                     <inline-svg
+                         class="close-btn"
+                         src="/icons/close.svg"
+                         v-else
+                     />
                   </template>
 
                   <template #main>
@@ -70,7 +83,17 @@
                         <p>{{ $t('unapproved__title') }}!</p>
                      </div>
 
-                     <inline-svg class="info" src="/icons/info.svg" />
+                     <inline-svg
+                         class="info"
+                         src="/icons/info.svg"
+                         v-if="!isMobileBreakpoint"
+                     />
+
+                     <inline-svg
+                         class="close-btn"
+                         src="/icons/close.svg"
+                         v-else
+                     />
                   </template>
 
                   <template #main>
@@ -157,6 +180,13 @@
       },
 
       mixins: [AnnouncementDataMixin],
+
+      methods: {
+         openApprovedCondition(e) {
+            const tooltip = e.currentTarget.querySelector('.customTooltip');
+            if (this.isMobileBreakpoint) tooltip.classList.toggle('active');
+         }
+      },
 
       async fetch() {
          let url = `/car/${this.announcement.id}`;
@@ -274,11 +304,11 @@
                   icon: '/icons/fuelType.svg',
                   for: ['moto']
                },
-
                {
                   key: 'condition_2',
                   value: this.announcement.is_new ? this.$t('new_2') : this.$t('with_mileage'),
-                  icon: '/icons/search_2.svg'
+                  icon: '/icons/condition.svg',
+                  for: ['parts']
                },
                {key: 'type_of_brakes', value: this.brakeType, for: ['commercial']},
                {key: 'wheel_formula', value: this.wheelFormula, for: ['commercial']},
@@ -330,12 +360,12 @@
                   icon: '/icons/credit_2.svg',
                   value: this.announcement.credit && this.$t('is_in_credit')
                },
-               {
-                  key: 'condition',
-                  value: this.condition,
-                  icon: '/icons/condition.svg',
-                  for: ['parts']
-               },
+               // {
+               //    key: 'condition',
+               //    value: this.condition,
+               //    icon: '/icons/condition.svg',
+               //    for: ['parts']
+               // },
                {
                   key: 'is_original',
                   value: this.announcement.is_original ? this.$t('yes') : this.$t('no'),
@@ -380,7 +410,6 @@
             if (this.type === 'parts') {
                Object.keys(this.announcement?.filters)?.forEach(filter => {
                   let value = this.announcement?.filters[filter]
-                  console.log('value', value)
 
                   if (value) {
                      if (typeof value === 'boolean') {
@@ -496,12 +525,6 @@
             line-height: 13px;
          }
 
-         &:hover {
-            .customTooltip {
-               display: block;
-            }
-         }
-
          .customTooltip {
             width: 100%;
             max-width: 412px;
@@ -530,7 +553,7 @@
                         font-size: 16px;
                         font-weight: 600;
                         line-height: 21px;
-                        margin-left: 12px;
+                        margin: 0 12px;
                      }
                   }
                }
@@ -576,6 +599,7 @@
                         display: flex;
                         align-items: center;
                         justify-content: space-between;
+                        gap: 10px;
                         padding: 10px 11px;
                         border-radius: 6px;
                         border: 1px solid #32B878;
@@ -614,7 +638,7 @@
                         font-size: 24px;
                         font-weight: 600;
                         line-height: 30px;
-                        margin-left: 16px;
+                        margin: 0 16px;
                      }
                   }
                }
@@ -875,6 +899,12 @@
    @media (max-width: 992px) {
       .vehicle-specs {
          &__info {
+            position: absolute;
+            top: -100px;
+            right: 0;
+            width: unset;
+            padding: 4px 2px;
+
             .customTooltip {
                left: 90px;
             }
@@ -933,6 +963,18 @@
 
             span {
                font-size: 14px;
+            }
+         }
+      }
+   }
+
+   @media (min-width: 992px) {
+      .vehicle-specs {
+         &__info {
+            &:hover {
+               .customTooltip {
+                  display: block;
+               }
             }
          }
       }

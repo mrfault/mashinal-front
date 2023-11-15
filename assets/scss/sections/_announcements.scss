@@ -1,6 +1,6 @@
 .announcements-grid {
    position: relative;
-   margin: 56px 0;
+   margin: 32px 0;
 
    &.loading-content {
       opacity: 0.4;
@@ -816,6 +816,8 @@
 @media (max-width: 992px) {
    .ma-announcements {
       &__head {
+         justify-content: unset !important;
+
          &--item {
             flex-direction: unset !important;
             gap: 8px !important;
@@ -871,6 +873,7 @@
       width: 100%;
       display: flex;
       align-items: center;
+      justify-content: center;
       border-radius: 12px;
       background: $grey-1-new;
       padding: 0 12px;
@@ -1054,6 +1057,5 @@
    .stratch-child-block {
       width: 256px;
    }
-
 }
 
