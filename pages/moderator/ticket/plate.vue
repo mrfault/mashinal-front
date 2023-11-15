@@ -288,7 +288,7 @@ export default {
             if (this.user.admin_group == 2) {
                location.href = `${this.$env().ADMIN_URL}/announce-moderators`;
             } else {
-               location.href = `${this.$env().ADMIN_URL}/plates`;
+               location.href = `${this.$env().ADMIN_URL}/plate-numbers`;
             }
          } catch (err) {
             this.pending = false;
