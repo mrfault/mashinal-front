@@ -71,7 +71,7 @@
 
       <relatives />
 
-      <HandleIds :single="true" :items="{ type: $route.query?.type, id: announcement.id }" />
+<!--      <HandleIds :single="true" :items="{ type: $route.query?.type, id: announcement.id }" />-->
 
       <AnnouncementBar
           v-if="isMobileBreakpoint"
