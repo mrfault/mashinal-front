@@ -9,7 +9,8 @@
             :is="isMobileBreakpoint ? 'mobile-screen' : 'div'"
             :bar-title="$t('my_balance')"
             @back="$router.push(pageRef || $localePath('/garage-services'))"
-            height-auto>
+            height-auto
+         >
             <div class="row" v-if="!isMobileBreakpoint">
                <div class="col-md-12 mb-0 mb-lg-4">
                   <h1>{{ $t('my_balance') }}</h1>
@@ -257,7 +258,7 @@ export default {
          bonusBalance: false,
          swiperOps: {
             init: false,
-            slidesPerView: 1.3,
+            slidesPerView: 1,
             spaceBetween: 20,
             speed: 500,
             loop: false,

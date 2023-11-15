@@ -26,19 +26,20 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import { MenusDataMixin } from '~/mixins/menus-data';
+   import { mapGetters } from 'vuex';
+   import { MenusDataMixin } from '~/mixins/menus-data';
 
-export default {
-   mixins: [MenusDataMixin],
+   export default {
+      mixins: [MenusDataMixin],
 
-   computed: {
-      ...mapGetters(['countNewMessages', 'notViewedFavorites'])
-   },
-   methods: {
-      toggleSidebarMenu() {
-         this.$root?.$refs?.MobileMenuNew?.toggleSidebarMenu(false);
+      computed: {
+         ...mapGetters(['countNewMessages', 'notViewedFavorites'])
+      },
+
+      methods: {
+         toggleSidebarMenu() {
+            this.$root?.$refs?.MobileMenuNew?.toggleSidebarMenu(false);
+         }
       }
    }
-}
 </script>

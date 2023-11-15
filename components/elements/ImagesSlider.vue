@@ -92,7 +92,7 @@
 
                         <div
                            v-else
-                           :style="{ backgroundImage: `url('${slide}&width=104')` }"
+                           :style="{ backgroundImage: `url('${slide}?width=104')` }"
                            :class="{'protocolImageThumb': isProtocolMedia}"
                            @click="changeSlide(index)"
                         />

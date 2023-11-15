@@ -278,7 +278,6 @@ export default {
                type: 'error',
             })
          } else {
-           console.log('Success')
             this.$emit('sendData', status)
          }
       },
@@ -287,69 +286,69 @@ export default {
          if (this.user.admin_group == 1) {
             if (this.type == 'cars') {
                await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/car')
-               location.href = '/alvcp/resources/announcements';
+               location.href = `${this.$env().ADMIN_URL}/announcements`;
             }
             if (this.type == 'moto') {
                await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/motorcycles')
-               location.href = '/alvcp/resources/motorcycles';
+               location.href = `${this.$env().ADMIN_URL}/motorcycles`;
             }
             if (this.type == 'commercial') {
                await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/commercials')
-               location.href = '/alvcp/resources/commercials';
+               location.href = `${this.$env().ADMIN_URL}/commercials`;
             }
             if (this.type == 'moto_atv') {
                await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/moto-atvs')
-               location.href = '/alvcp/resources/moto-atvs';
+               location.href = `${this.$env().ADMIN_URL}/moto-atvs`;
             }
             if (this.type == 'part') {
                await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/parts')
-               location.href = '/alvcp/resources/parts';
+               location.href = `${this.$env().ADMIN_URL}/parts`;
             }
             if (this.type == 'scooters') {
                await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/scooters')
-               location.href = '/alvcp/resources/scooters';
+               location.href = `${this.$env().ADMIN_URL}/scooters`;
             }
 
          } else {
             if (this.type == 'cars') {
                await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/car')
                if (!this.single_announce.transferred) {
-                  location.href = '/alvcp/resources/announce-moderators';
+                  location.href = `${this.$env().ADMIN_URL}/announce-moderators`;
                }
             }
             if (this.type == 'moto') {
                await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/motorcycles')
                if (!this.single_announce.transferred) {
-                  location.href = '/alvcp/resources/announce-moderators';
+                  location.href = `${this.$env().ADMIN_URL}/announce-moderators`;
                }
             }
             if (this.type == 'commercial') {
                await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/commercials')
                if (!this.single_announce.transferred) {
-                  location.href = '/alvcp/resources/announce-moderators';
+                  location.href = `${this.$env().ADMIN_URL}/announce-moderators`;
                }
             }
             if (this.type == 'moto_atv') {
                await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/moto-atvs')
                if (!this.single_announce.transferred) {
-                  location.href = '/alvcp/resources/announce-moderators';
+                  location.href = `${this.$env().ADMIN_URL}/announce-moderators`;
                }
             }
             if (this.type == 'part') {
                await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/parts')
                if (!this.single_announce.transferred) {
-                  location.href = '/alvcp/resources/announce-moderators';
+                  location.href = `${this.$env().ADMIN_URL}/announce-moderators`;
                }
             }
             if (this.type == 'scooters') {
                await this.$axios.$post('/ticket/detach/' + this.single_announce.id + '/scooters')
                if (!this.single_announce.transferred) {
-                  location.href = '/alvcp/resources/announce-moderators';
+                  location.href = `${this.$env().ADMIN_URL}/announce-moderators`;
                }
             }
          }
          if (this.single_announce.transferred) {
-            location.href = '/alvcp/resources/transferred-announces';
+            location.href = `${this.$env().ADMIN_URL}/transferred-announces`;
          }
       },
 

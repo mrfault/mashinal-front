@@ -1179,7 +1179,7 @@ export const actions = {
       const res = await this.$axios.$get("/get_body_options");
       commit("mutate", {property: "bodyOptions", value: res});
    },
-   async getMotoOptions({state, commit}) {
+async getMotoOptions({state, commit}) {
       if (objectNotEmpty(state, commit, "motoOptions")) return;
       const res = await this.$axios.$get(`/moto/search_options`);
       commit("mutate", {property: "motoOptions", value: res});

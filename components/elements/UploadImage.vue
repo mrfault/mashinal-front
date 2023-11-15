@@ -391,12 +391,12 @@ export default {
 
       else return
     },
-    onSwiper() {
-      console.log(swiper);
-    },
-    onSlideChange(){
-      console.log('slide change');
-    },
+    // onSwiper() {
+    //   console.log(swiper);
+    // },
+    // onSlideChange(){
+    //   console.log('slide change');
+    // },
   },
   computed: {
     filesLength() {

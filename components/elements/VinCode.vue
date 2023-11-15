@@ -5,10 +5,10 @@
          <span>{{ vin }}</span>
       </h4>
 
-      <p class="vinCode__subtitle">Avtomobil almazdan əvvəl VIN kodunu yoxlamaq tövsiyyə olunur</p>
+      <p class="vinCode__subtitle">{{ $t('beforeBuyCar') }}</p>
 
       <button class="vinCode__btn" @click="checkVin">
-         <span>VIN kodu yoxla</span>
+         <span>{{ $t('checkVinCode') }}</span>
 
          <inline-svg src="/icons/search_new.svg" />
       </button>

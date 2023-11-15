@@ -8,15 +8,14 @@
          <inline-svg v-if="!notification.read_at" src="/new-icons/notification.svg"/>
          <inline-svg v-else src="/new-icons/notification-read.svg"/>
       </div>
+
       <div class="ma-notification__content">
          <div class="ma-notification__content--body">
             <h6 class="ma-notification__content--title">{{ notification.title }}</h6>
             <slot/>
             <p class="ma-notification__content--desc" v-html="notification.body"></p>
          </div>
-         <span class="ma-notification__date">
-               {{ date }}
-            </span>
+         <span class="ma-notification__date">{{ date }}</span>
       </div>
    </div>
 </template>
@@ -40,13 +39,11 @@ export default {
          if (match && match[2]) {
             const href = match[2];
             // window.open(href, '_blank');
-            console.log("href", href)
             this.$router.push(href)
          } else {
             // Handle case when no valid link is found
             const routePath = this.link;
             // window.open(routePath, '_blank');
-            console.log("href else", routePath)
             this.$router.push(routePath)
             this.$store.dispatch('getNotifications', this.page);
             this.$nuxt.refresh();

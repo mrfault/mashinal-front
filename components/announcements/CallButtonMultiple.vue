@@ -14,7 +14,9 @@
 
          <template v-else>
             <span>{{ $t('show_number') }}</span>
-            <span>+994 {{ String(phones[0]).slice(3, 8).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') }} ** **</span>
+            <span>
+               +994 {{ String(phones[0]).slice(3, 3).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') }} ** *** ** **
+            </span>
          </template>
       </template>
 

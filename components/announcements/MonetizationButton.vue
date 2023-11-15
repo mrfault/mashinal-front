@@ -290,8 +290,6 @@ export default {
             e.stopPropagation();
             this.showPaymentModal = true;
          }
-
-         console.log('sss', this.showPaymentModal)
       },
 
       handlePaymentType(id) {

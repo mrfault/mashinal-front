@@ -134,6 +134,8 @@ export default {
    additional_features_6_title: "0 ₼ aylıq ödəniş",
    additive_engine: "Növ",
    address: "Ünvan",
+   beforeBuyCar: 'Avtomobil almazdan əvvəl VIN kodunu yoxlamaq tövsiyyə olunur',
+   checkVinCode: 'VIN kodu yoxla',
    "Adjustable foot pedal switch": "Tənzimlənən pedallar",
    advanced_search: "Ətraflı axtarış",
    advanced_search2: "Ətraflı axtarış",
@@ -1274,6 +1276,7 @@ export default {
    mileage: "Yürüş",
    mileage_from: "Yürüş min.",
    mileage_from_km: "Yürüş min., km",
+   mileage_is_new: "Yeni seçildikdə yürüş 0 dan çox ola bilməz",
    min_image_count: "Minimal - {count} şəkil",
    min_image_size: "Minimal ölçü - {w}x{h} px",
    miniven: "Miniven",
@@ -2560,7 +2563,7 @@ export default {
    drink_type: "İçkinin növü",
    alcometer: "Alkotest",
    alcometer_descr:
-      "İçkili vəziyyətdə avtomobili idarə etmək qadağandır. Bu, sizin və başqalarının həyatını riskə atır. Lorem ipsum dolor sit amet consectur emprario merbaken ",
+      "İçkili vəziyyətdə avtomobili idarə etmək qadağandır. Bu, sizin və başqalarının həyatını riskə atır.",
    dimensions_tire: "Ölçülər",
    visual_tire_calculator: "Vizual şin kalkulyatoru",
    size_of_old_tire: "Köhnə şinin ölçüsü",
@@ -2854,6 +2857,7 @@ export default {
    "vehicle_is_processing": "Nəqliyyat vasitəsi prosesdədir",
 
    "no_payment_history": "Ödəniş tarixçəsi yoxdur",
+   "empty_message": "Burada sizin mesajlarınız görsənəcək",
    "no_message": "Mesaj yoxdur",
    "no_message_text": "Sizə mesaj gəlsə vəya kiməsə mesaj yazsanız burada görünəcək",
    "change_cover": "Örtük şəklini dəyiş",

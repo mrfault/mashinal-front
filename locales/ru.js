@@ -133,6 +133,8 @@ export default {
    additional_features_6_title: "0 ₼ ежемесячной оплаты",
    additive_engine: "Тип",
    address: "Адрес",
+   beforeBuyCar: 'Перед покупкой автомобиля рекомендуется проверить VIN-код',
+   checkVinCode: 'Проверить VIN-код',
    "Adjustable foot pedal switch": "Регулируемый педальный узел",
    advanced_search: "Расширенный поиск",
    advanced_search2: "Расш. поиск",
@@ -1265,6 +1267,7 @@ export default {
    mileage: "Пробег",
    mileage_from: "Пробег от.",
    mileage_from_km: "Пробег от, км",
+   mileage_is_new: "Пробег не может быть больше 0, если выбран новый",
    min_image_count: "Минимум - {count} фото",
    min_image_size: "Минимальный размер - {w}x{h} px",
    miniven: "Минивэн",
@@ -1576,6 +1579,7 @@ export default {
    price_change: "Изменение цены",
    price_from: "Цена от",
    price_from_2: "Цена минимум",
+   price_to: "Цена до",
    price_to_2: "Цена максимум",
    price_from_azn: "Цена от, AZN",
    pricing: "Оценивание",
@@ -2784,7 +2788,7 @@ export default {
 
 
    "remove_message": "Удалить",
-
+   "empty_message": "Здесь отобразятся ваши чаты",
    "no_message": "Нет сообщений",
    "no_message_text": "Если вы получили сообщение или сообщение кому-то, оно появится здесь",
    "change_cover": "Изменить обложку",

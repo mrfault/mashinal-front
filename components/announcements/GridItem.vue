@@ -326,7 +326,7 @@
 
       computed: {
          getType() {
-            let item = this.announcement
+            let item = this.announcement;
 
             if (item.type === "motorcycle") return 'Motorcycle'
             else if (item.type === "scooter") return 'Scooter'

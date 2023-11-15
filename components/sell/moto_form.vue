@@ -138,6 +138,7 @@
                   v-model="form.box"
                />
             </div>
+
             <div class="divider">
                <form-select
                   :class="{form_error: $v.form.color.$error}"
@@ -151,7 +152,6 @@
                   :disabled="!isEdit && !readyAllParameters"
                   :invalid="$v.form.color.$error"
                />
-
                <form-select
                   :label="$t('gearing')"
                   :options="motoOptions?.config?.drive?.sell_values[form.type_of_moto.id]?.map((f) => ({...f, name: $t(f.name)}))"
@@ -162,6 +162,7 @@
                   v-model="form.gearing"
                />
             </div>
+
             <div class="divider mobile-column">
                <form-select
                   :label="$t('number_of_cylinders')"
@@ -181,14 +182,23 @@
                   :disabled="!isEdit && !readyAllParameters"
                   v-model="form.number_of_vehicles"
                />
-               <form-numeric-input
-                  :placeholder="$t('mileage')"
-                  :class="{form_error: $v.form.mileage.$error}"
-                  :max-value="form.is_new ? (form.mileage_type === 1 ? 500 : 310) : 10000000"
-                  v-model="form.mileage"
-                  :disabled="!isEdit && !readyAllParameters"
-                  :invalid="$v.form.mileage.$error"
-               />
+               <div>
+                  <form-numeric-input
+                      :placeholder="$t('mileage')"
+                      :class="{form_error: $v.form.mileage.$error || mileage_is_new}"
+
+                      v-model="form.mileage"
+                      :disabled="!isEdit && !readyAllParameters"
+                      :invalid="$v.form.mileage.$error"
+                  />
+                  <!--               :max-value="form.is_new ? (form.mileage_type === 1 ? 500 : 310) : 10000000"-->
+
+                  <span
+                      class="mileage_is_new"
+                      v-if="mileage_is_new && form.mileage"
+                  >{{ $t('mileage_is_new') }}</span>
+               </div>
+
                <radio-group
                   class="divider"
                   v-model="form.mileage_type"
@@ -196,7 +206,8 @@
                   :options="[{key:1, name: 'char_kilometre'},{key:2, name: 'ml'}]"
                />
             </div>
-            <div class="divider">
+
+            <div class="divider_3">
                <form-radio
                   :id="'3'"
                   :type="'checkbox'"
@@ -205,8 +216,9 @@
                   v-model="form.is_new"
                   :radio-value="1"
                   :disabled="!isEdit && !readyAllParameters"
-                  @change="onChangeIsNew"
+
                />
+<!--               @change="onChangeIsNew"-->
 
                <form-radio
                   :id="'4'"
@@ -229,6 +241,14 @@
                      />
                   </template>
                </form-radio>
+
+               <form-checkbox
+                   v-model="form.guaranty"
+                   :label="$t('in_garanty')"
+                   input-name="guaranty"
+                   transparent
+                   :disabled="!isEdit && !readyAllParameters"
+               />
             </div>
             <div class="divider_3" v-if="!user.external_salon">
                <form-checkbox
@@ -406,6 +426,7 @@
 
       data() {
          return {
+            mileage_is_new: false,
             motoTypeKey: "",
             priceTypes: [
                {
@@ -461,16 +482,19 @@
       },
 
       watch: {
-         'form.mileage_type'() {
-            if (this.form.is_new) {
-               if (this.form.mileage_type === 1 && this.form.mileage > 500) {
-                  this.form.mileage = 500
-               }
-               if (this.form.mileage_type === 2 && this.form.mileage > 310) {
-                  this.form.mileage = 310
-               }
-            }
+         'form.is_new'(val) {
+            this.mileage_is_new = !!val;
          },
+         // 'form.mileage_type'() {
+         //    if (this.form.is_new) {
+         //       if (this.form.mileage_type === 1 && this.form.mileage > 500) {
+         //          this.form.mileage = 500
+         //       }
+         //       if (this.form.mileage_type === 2 && this.form.mileage > 310) {
+         //          this.form.mileage = 310
+         //       }
+         //    }
+         // },
          'form.car_number'() {
             !this.form.car_number && (this.form.show_car_number = false)
          },
@@ -478,14 +502,17 @@
             !this.form.vin && (this.form.show_vin = false)
          },
          isReady() {
-            this.$v.form.$touch()
+            this.$v.form.$touch();
+
             setTimeout(() => {
                this.scrollTo('.form_error', -190)
             });
-            if (this.$v.form.$error) {
+
+            if (this.$v.form.$error || (this.mileage_is_new && this.form.mileage)) {
                this.$toasted.error(this.$t('required_fields'));
                return;
             }
+
             const newForm = {
                selectedBrand: this.form.brand.id,
                selectedModel: this.form.model.id,
@@ -524,10 +551,11 @@
                youtube: {"id": "", "thumb": ""},
                is_rent: this.form.is_rent
             }
+
             this.$emit("getForm", {
                form: newForm,
                deletedImages: (this.isEdit && this.deletedFiles.length) ? this.deletedFiles : []
-            })
+            });
          }
       },
 
@@ -552,16 +580,16 @@
          onChangeMotoModel() {
             this.clearFields(['year'])
          },
-         onChangeIsNew(isnew) {
-            if (isnew) {
-               if (this.form.mileage_type === 1 && this.form.mileage > 500) {
-                  this.form.mileage = 500
-               }
-               if (this.form.mileage_type === 2 && this.form.mileage > 310) {
-                  this.form.mileage = 310
-               }
-            }
-         },
+         // onChangeIsNew(isnew) {
+         //    if (isnew) {
+         //       if (this.form.mileage_type === 1 && this.form.mileage > 500) {
+         //          this.form.mileage = 500
+         //       }
+         //       if (this.form.mileage_type === 2 && this.form.mileage > 310) {
+         //          this.form.mileage = 310
+         //       }
+         //    }
+         // },
          toggleCurrency(currency) {
             this.form.currency = currency.id
          },
@@ -588,7 +616,7 @@
 
       mounted() {
          if (this.isEdit) {
-           console.log('this.announcement', this.announcement)
+           // console.log('this.announcement', this.announcement)
             this.form.type_of_moto = {id: this.announcement.type_of_moto}
             this.form.year = this.announcement.year
             this.form.volume = this.announcement.capacity
@@ -633,7 +661,7 @@
                   required: requiredIf(function () {
                      return !this.form.is_new
                   }),
-                  maxValue: maxValue(this.form.is_new ? 500 : 10000000)
+                  // maxValue: maxValue(this.form.is_new ? 500 : 10000000)
                },
                price: {required},
                country_id: {
@@ -672,7 +700,12 @@
          .inner_left, .inner_right {
             display: flex;
             flex-direction: column;
-            gap: 20px
+            gap: 20px;
+
+            .mileage_is_new {
+               font-size: 14px;
+               color: red;
+            }
          }
       }
 
@@ -740,6 +773,10 @@
                   padding: 0 8px;
                }
             }
+         }
+
+         .divider_3 {
+            flex-direction: column;
          }
       }
    }

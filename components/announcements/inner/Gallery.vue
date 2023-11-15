@@ -34,10 +34,15 @@
 
                   <div
                      v-else
-                     :class="['swiper-slide-bg', { 'youtube-play': showYtVideo(index) }]"
-                     :style="`background-image:url(${showYtVideo(index) ? getYtVideoImage('hq') : slide}&width=716)`"
+                     :class="['swiper-slide-bg']"
                   >
-<!--                                   <loader />-->
+<!--                     :class="['swiper-slide-bg', { 'youtube-play': showYtVideo(index) }]"-->
+<!--                     :style="`background-image:url(${showYtVideo(index) ? getYtVideoImage('hq') : slide}&width=716)`"-->
+                     <span
+                         class="swiper-slide-backdrop"
+                         :style="`background-image:url(${slide}&width=716)`"
+                     />
+                     <img class="swiper-slide-img" :src="`${slide}&width=716`" alt="">
                   </div>
                </div>
             </div>

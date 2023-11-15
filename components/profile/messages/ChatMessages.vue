@@ -452,7 +452,7 @@ export default {
       }
    },
    mounted() {
-      console.log(this.chatAnnouncement);
+      // console.log(this.chatAnnouncement);
       this.checkIfRead();
       this.handleScrollToMessage(this.messagePin, false);
       this.$nextTick(() => {
@@ -480,7 +480,7 @@ export default {
 
       setTimeout(() => {
          this.scrollToBottom('chat');
-         console.log('ok');
+         // console.log('ok');
       }, 1000);
    },
    ready() {

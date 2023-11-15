@@ -40,34 +40,38 @@
 
                   <thumbs-gallery />
 
-                  <ul class="characteristics" v-if="isMobileBreakpoint">
-                     <li class="characteristics__item" v-if="announcement.tradeable">
-                        <inline-svg src="/icons/barter.svg" />
-                        <span>{{ $t('barter') }}</span>
-                     </li>
+                  <template v-if="isMobileBreakpoint">
+                     <ul class="characteristics">
+                        <li class="characteristics__item" v-if="announcement.tradeable">
+                           <inline-svg src="/icons/barter.svg" />
+                           <span>{{ $t('barter') }}</span>
+                        </li>
 
-                     <li class="characteristics__item" v-if="announcement.credit">
-                        <inline-svg src="/icons/credit.svg" />
-                        <span>{{ $t('credit') }}</span>
-                     </li>
+                        <li class="characteristics__item" v-if="announcement.credit">
+                           <inline-svg src="/icons/credit.svg" />
+                           <span>{{ $t('credit') }}</span>
+                        </li>
 
-                     <li class="characteristics__item" v-if="announcement.has_360">
-                        <inline-svg src="/icons/360_deg_2.svg" />
-                        <span>360</span>
-                     </li>
+                        <li class="characteristics__item" v-if="announcement.has_360">
+                           <inline-svg src="/icons/360_deg_2.svg" />
+                           <span>360</span>
+                        </li>
 
-                     <li class="characteristics__item" v-if="announcement.show_vin">
-                        <inline-svg src="/icons/vin_2.svg" />
-                        <span>VIN kod</span>
-                        <span class="badgeMin">{{ $t('is_new') }}</span>
-                     </li>
-                  </ul>
+                        <li class="characteristics__item" v-if="announcement.show_vin">
+                           <inline-svg src="/icons/vin_2.svg" />
+                           <span>VIN kod</span>
+                           <span class="badgeMin">{{ $t('is_new') }}</span>
+                        </li>
+                     </ul>
+
+                     <AnnouncementTitle :announcement="announcement" />
+                  </template>
 
                   <announcement-specs type="cars" :title="$t('announcement_info')" brief />
 
                   <comment v-if="announcement.comment" :comment="announcement.comment" />
 
-                  <car-complects :options="getComplectOptions" v-if="hasComplects"/>
+                  <car-complects :options="getComplectOptions" v-if="hasComplects" />
 
                   <template v-if="getCarHealth">
                      <damage-options
@@ -82,18 +86,7 @@
                <div class="product-inner__info-right">
                   <quick-info type="cars"/>
 
-                  <site-banner v-if="!isMobileBreakpoint" class="mb-3" type="in-announcement"/>
-
-<!--                  <comment :comment="announcement.comment" v-if="isMobileBreakpoint">-->
-<!--                     <template #after v-if="hasComplects || getCarHealth">-->
-<!--                        <hr v-if="announcement.comment"/>-->
-<!--                        <template v-if="getCarHealth">-->
-<!--                           <damage-options :selected="getCarHealth" read-only v-if="false"/>-->
-<!--                           <hr v-if="hasComplects"/>-->
-<!--                        </template>-->
-<!--                        <car-complects :options="getComplectOptions" v-if="hasComplects"/>-->
-<!--                     </template>-->
-<!--                  </comment>-->
+                  <site-banner v-if="!isMobileBreakpoint" class="mb-3" type="in-announcement" />
                </div>
             </div>
          </div>
@@ -101,7 +94,12 @@
 
       <relatives />
 
-      <HandleIds :single="true" :items="{ type: 'car', id: announcement.id }" />
+<!--      <HandleIds :single="true" :items="{ type: 'car', id: announcement.id }" />-->
+
+      <AnnouncementBar
+          v-if="isMobileBreakpoint && isActiveBar"
+          :announcement="announcement"
+      />
    </div>
 </template>
 
@@ -119,12 +117,17 @@
    import ProductInnerTitle from "~/components/announcements/ProductInnerTitle.vue";
    import AddFavorite from "~/components/announcements/AddFavorite.vue";
    import AddComparison from "~/components/announcements/AddComparison.vue";
+   import AnnouncementTitle from "~/components/announcements/inner/AnnouncementTitle.vue";
    import { mapGetters } from 'vuex';
+   import QuickInfoDetails from "~/components/announcements/inner/QuickInfoDetails.vue";
+   import AnnouncementBar from "~/components/announcements/inner/AnnouncementBar.vue";
 
    export default {
       name: 'pages-cars-id',
 
       components: {
+         AnnouncementBar,
+         QuickInfoDetails,
          SiteBanner,
          QuickInfo,
          AnnouncementSpecs,
@@ -137,7 +140,8 @@
          HandleIds,
          ProductInnerTitle,
          AddFavorite,
-         AddComparison
+         AddComparison,
+         AnnouncementTitle
       },
 
       nuxtI18n: {
@@ -167,6 +171,12 @@
          });
       },
 
+      data() {
+        return {
+           isActiveBar: true
+        }
+      },
+
       async fetch({store, route}) {
          let id = route.params.id;
          if (id.length > 10) id = id.slice(0, -1);
@@ -182,6 +192,10 @@
       },
 
       methods: {
+         handleNavBar(val) {
+            this.isActiveBar = !val;
+         },
+
          getFilterLink(type) {
             let form = {
                sorting: 'created_at_desc',
@@ -210,6 +224,10 @@
       computed: {
          ...mapGetters(['announcement', 'catalog']),
 
+         contact() {
+            return this.getAnnouncementContact(this.announcement)
+         },
+
          getComplectOptions() {
             return typeof this.announcement.options === 'string'
                ? JSON.parse(this.announcement.options)
@@ -217,6 +235,7 @@
          },
 
          hasComplects() {
+            console.log('this.getComplectOptions', this.getComplectOptions)
             return Object.keys(this.getComplectOptions).length;
          },
 
@@ -256,6 +275,14 @@
                { id: 5, name: `${this.announcement.mileage} ${this.$t('char_kilometre')}` }
             ]
          }
+      },
+
+      mounted() {
+         this.$nuxt.$on('changeNavbar', this.handleNavBar);
+      },
+
+      beforeDestroy() {
+         this.$nuxt.$off('changeNavbar', this.handleNavBar);
       }
    }
 </script>
