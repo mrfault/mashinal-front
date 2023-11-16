@@ -6,7 +6,8 @@
             <div class="card">
                <form class="add_announce_form">
                   <part_form isEdit :announcement="announcement" :isReady="isReady"
-                             @getForm="getPartForm($event)"/>
+                             @getForm="getPartForm($event)"
+                  />
                   <button type="button" @click="onClick()" class="btn full-width btn--pale-green-outline active">
                      {{ $t("place_announcement") }}
                   </button>

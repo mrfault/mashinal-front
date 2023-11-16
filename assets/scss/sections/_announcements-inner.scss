@@ -661,11 +661,14 @@
 
 .images-slider {
    width: 100%;
+   height: 100%;
    margin-top: 112px;
 
    &__grid {
       display: flex;
+      justify-content: space-between;
       flex-direction: column-reverse;
+      height: 100%;
       gap: 20px;
 
       &-item {
@@ -766,7 +769,7 @@
    &__container {
       position: relative;
       width: 100%;
-      height: 100%;
+      height: calc(100% - 130px);
       max-width: 1024px;
       //max-height: 786px;
       margin: 0 auto;
@@ -1218,7 +1221,7 @@
 
       &__container {
          max-width: 1000px;
-         max-height: 686px;
+         //max-height: 686px;
       }
 
       &__grid {
@@ -1235,7 +1238,7 @@
    .images-slider {
       &__container {
          max-width: 850px;
-         max-height: 636px;
+         //max-height: 636px;
       }
 
       .swiper-slide {
@@ -1256,7 +1259,7 @@
    .images-slider {
       &__container {
          max-width: 800px;
-         max-height: 586px;
+         //max-height: 586px;
       }
 
       .swiper-slide {
@@ -1291,7 +1294,7 @@
    .images-slider {
       &__container {
          max-width: 750px;
-         max-height: 536px;
+         //max-height: 536px;
       }
 
       &__grid {

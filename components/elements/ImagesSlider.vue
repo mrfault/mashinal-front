@@ -110,7 +110,7 @@
                </button>
             </div>
 
-            <div class="images-slider__grid-item">
+            <div class="images-slider__grid-item d-flex flex-column justify-content-center height-100">
                <div class="position-relative">
                   <div
                      id="images-swiper"
