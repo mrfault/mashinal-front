@@ -311,6 +311,7 @@
             this.modalTitle = title || ""
          },
          async getCarForm({form}) {
+            console.log('form', form);
             if ((this.form.add_monetization === 1 || this.user.announce_left_car < 1) && !this.alertShowed) {
                this.modalType = 'monetization_alert'
                this.modalTitle = ""
