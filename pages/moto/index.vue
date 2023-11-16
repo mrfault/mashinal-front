@@ -199,6 +199,11 @@
 
       methods: {
          ...mapActions(['getGridSearch']),
+
+         resetSearch() {
+            this.announceType = 0;
+         },
+
          openMore() {
             this.advancedSearch = true;
          },
@@ -222,7 +227,7 @@
             post = { ...post, sort_by: post.sort_by, sort_order: post.sort_order }
             this.pending = true;
             await this.getGridSearch({...this.searchParams, post, page});
-            await this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'moto', data: post });
+            // await this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'moto', data: post });
             this.pending = false;
             this.scrollTo('.cap', [20, -150]);
          }
@@ -320,9 +325,9 @@
       mounted() {
          this.searchType = 2;
 
-         if (!Object.keys(this.$route.query)?.length) {
-            this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'moto' });
-         }
+         // if (!Object.keys(this.$route.query)?.length) {
+         //    this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'moto' });
+         // }
 
          if (this.$route.query?.filter) {
             let filters = JSON.parse(this.$route.query?.filter)
@@ -340,9 +345,11 @@
             // console.log('filters.announce_type', filters.announce_type)
          }
          this.isMobileBreakpoint && this.$nuxt.$on("submitSearchMixin", this.submitOnMobile)
+         this.$nuxt.$on("resetSubmit", this.resetSearch);
       },
       beforeDestroy() {
-         this.$nuxt.$off("submitSearchMixin", this.submitOnMobile)
+         this.$nuxt.$off("submitSearchMixin", this.submitOnMobile);
+         this.$nuxt.$off("resetSubmit", this.resetSearch);
       },
 
       beforeRouteLeave(to, from, next) {
