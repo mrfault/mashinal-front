@@ -873,10 +873,12 @@ export const actions = {
    },
    // Saved search
    async getSavedSearch({commit}) {
+      console.log('getSavedSearch')
       const res = await this.$axios.$get("/saved-search");
       commit("mutate", {property: "savedSearchList", value: res});
    },
    async createSavedSearch({commit}, data) {
+      console.log('createSavedSearch')
       const res = await this.$axios.$post("/saved-search", data);
       commit("mutate", {property: "singleSavedSearch", value: res});
    },
@@ -885,12 +887,14 @@ export const actions = {
       commit("mutate", {property: "singleSavedSearch", value: res || {}});
    },
    async deleteSavedSearch({commit, state}, id) {
+      console.log('deleteSavedSearch')
       await this.$axios.$delete(`/saved-search/${id}`);
       const list = state.savedSearchList.filter(search => search.id !== id);
       commit("mutate", {property: "savedSearchList", value: list});
       commit("mutate", {property: "singleSavedSearch", value: {}});
    },
    async deleteSavedSearchMultiple({commit, state}, data) {
+      console.log('deleteSavedSearchMultiple')
       await this.$axios.$post(`/saved-search/delete_all`, data);
       const list = state.savedSearchList.filter(
          search => !data.ids.includes(search.id)
@@ -1263,8 +1267,15 @@ async getMotoOptions({state, commit}) {
       }
    },
 
-   async fetchInfiniteMainMonetized({commit}, data = {}) {
-      const res = await this.$axios.$post(`/grid/monetized-${data.type}`, data.data);
+   async fetchInfiniteMainMonetized({commit}, payload = {}) {
+      let res;
+
+      if (payload.type === 'moto') {
+         res = await this.$axios.$post(`${this.$env().API_SECRET}/moto/monetized`, payload.data);
+      } else {
+         res = await this.$axios.$post(`/grid/monetized-${payload.type}`, payload.data);
+      }
+
       commit("mutate", {property: "mainMonetized", value: res});
    },
 

@@ -258,32 +258,12 @@ export default {
       }
    },
 
-   mounted() {
-      this.searchType = 1;
-      if (!Object.keys(this.$route.query).length) {
-         this.$store.dispatch('fetchInfiniteMainMonetized', {type: 'cars'});
-      }
-
-      if (this.$route.query?.car_filter) {
-         let filters = JSON.parse(this.$route.query?.car_filter)
-
-         if (filters.sort_by === 'price') {
-            this.sorting.key = `${filters.sort_by}_${filters.sort_order}`;
-            this.sorting.value = filters.sort_order;
-         } else {
-            this.sorting.key = filters.sort_by;
-            this.sorting.value = filters.sort_order;
-         }
-
-         this.announceType = filters.announce_type || 0;
-         this.additionalBrands[0] = filters.additional_brands[0];
-      }
-      this.$nuxt.$on("submitSearchMixin", this.submitOnMobile)
-      this.$nuxt.$on("resetSubmit", () => this.resetSubmit = true)
-   },
-
    methods: {
       ...mapActions(['getGridSearch']),
+      resetSearch() {
+         this.resetSubmit = true;
+         this.announceType = 0;
+      },
       goBack() {
          this.advancedSearch = false
          if (this.isMobileBreakpoint) {
@@ -415,8 +395,34 @@ export default {
          return ids;
       }
    },
+
+   mounted() {
+      this.searchType = 1;
+      if (!Object.keys(this.$route.query).length) {
+         this.$store.dispatch('fetchInfiniteMainMonetized', {type: 'cars'});
+      }
+
+      if (this.$route.query?.car_filter) {
+         let filters = JSON.parse(this.$route.query?.car_filter)
+
+         if (filters.sort_by === 'price') {
+            this.sorting.key = `${filters.sort_by}_${filters.sort_order}`;
+            this.sorting.value = filters.sort_order;
+         } else {
+            this.sorting.key = filters.sort_by;
+            this.sorting.value = filters.sort_order;
+         }
+
+         this.announceType = filters.announce_type || 0;
+         this.additionalBrands[0] = filters.additional_brands[0];
+      }
+      this.$nuxt.$on("submitSearchMixin", this.submitOnMobile);
+      this.$nuxt.$on("resetSubmit", this.resetSearch);
+   },
+
    beforeDestroy() {
-      this.$nuxt.$off("submitSearchMixin", this.submitOnMobile)
+      this.$nuxt.$off("submitSearchMixin", this.submitOnMobile);
+      this.$nuxt.$off("resetSubmit", this.resetSearch);
    },
 
    beforeRouteLeave(to, from, next) {

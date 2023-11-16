@@ -213,7 +213,7 @@ export const SearchMixin = {
 
       resetForm(submit = false) {
             this.setFormData({});
-            this.$nuxt.$emit("resetSubmit")
+            this.$nuxt.$emit("resetSubmit");
             if (submit) this.submitForm(false);
       },
 
