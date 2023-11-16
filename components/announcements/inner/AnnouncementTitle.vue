@@ -11,7 +11,7 @@
 
          <p>
             {{announcement?.car_catalog?.main[" "]?.obem}} {{ $t('char_litre') }}
-            {{announcement?.car_catalog?.generation?.start_year}} {{ $t('year') }}
+            {{announcement?.year}} {{ $t('year') }}
             {{announcement?.mileage}} {{ $t('char_kilometre') }}
          </p>
       </template>

@@ -316,328 +316,343 @@
 </template>
 
 <script>
-import {mapActions, mapGetters} from "vuex";
-import ToggleGroup from "~/components/elements/ToggleGroup.vue";
-import ImageComponent from "~/pages/sell/image-component.vue";
-import {maxLength, minLength, minValue, required, requiredIf} from "vuelidate/lib/validators";
-import FormKeywords from "~/components/forms/FormKeywords.vue";
+   import {mapActions, mapGetters} from "vuex";
+   import ToggleGroup from "~/components/elements/ToggleGroup.vue";
+   import ImageComponent from "~/pages/sell/image-component.vue";
+   import {maxLength, minLength, minValue, required, requiredIf} from "vuelidate/lib/validators";
+   import FormKeywords from "~/components/forms/FormKeywords.vue";
 
-export default {
-   components: {FormKeywords, ImageComponent, ToggleGroup},
-   props: {
-      announcement: {
-         type: Object
-      },
-      isReady: {
-         type: Boolean,
-         default: false
-      },
-      isEdit: {
-         type: Boolean,
-         default: false
-      }
-   },
-   computed: {
-      ...mapGetters(['partCategories', 'partFilters']),
-      readyAllParameters() {
-         return this.form.brand_id || this.form.sub_category_id
-      },
-   },
-   data() {
-      return {
-         priceTypes: [
-            {
-               id: 1,
-               name: {az: "AZN", ru: "AZN"},
-            },
-            {
-               id: 2,
-               name: {az: "USD", ru: "USD"},
-            },
-            {
-               id: 3,
-               name: {az: "EUR", ru: "EUR"},
-            },
-         ],
-         deletedFiles: [],
-         imageComponentKey: 0,
-         form: {
-            category_id: "",
-            brand_id: "",
-            sub_category_id: "",
-            brand: "",
-            title: "",
-            product_code: "",
-            is_new: 1,
-            is_original: 1,
-            run_flat: false,
-            thorns: "",
-            number_of_mounting_holes: "",
-            diameter: "",
-            height: "",
-            shine_width: "",
-            starting_current: "",
-            length: "",
-            width: "",
-            weight: "",
-            have_delivery: false,
-            have_warranty: false,
-            price: 0,
-            currency: 1,
-            is_negotiable: false,
-            region_id: 1,
-            description: "",
-            keywords: [],
-            saved_images: [],
+   export default {
+      components: {FormKeywords, ImageComponent, ToggleGroup},
+
+      props: {
+         announcement: {
+            type: Object
          },
-         initialForm: {}
-      }
-   },
-   methods: {
-      ...mapActions(['getPartFilters']),
-      async onChangeCategory() {
-         this.clearFields(['brand_id', 'sub_category_id'])
-         if (this.form.category_id) {
-            await this.getPartFilters(this.form.category_id);
-         }
-         this.resetImages()
-      },
-      toggleIsNegotiation(val) {
-         if (val) {
-            this.form.price = 0
+         isReady: {
+            type: Boolean,
+            default: false
+         },
+         isEdit: {
+            type: Boolean,
+            default: false
          }
       },
-      toggleCurrency(currency) {
-         this.form.currency = currency.id
-      },
-      onChangeSubCategory() {
-         this.form = {
-            ...this.initialForm,
-            category_id: this.form.category_id,
-            brand_id: this.form.brand_id,
-            sub_category_id: this.form.sub_category_id
-         }
 
+      computed: {
+         ...mapGetters(['partCategories', 'partFilters']),
+         readyAllParameters() {
+            return this.form.brand_id || this.form.sub_category_id
+         },
       },
-      hasComponent(key) {
-         return this.partFilters?.filters?.map((ftr) => ftr.key).includes(key)
-      },
-      clearFields(keys) {
-         keys.forEach((key) => {
-            this.form[key] = ""
-         })
-      },
-      resetImages() {
-         // return;
-         this.form.saved_images = [];
-         this.savedFiles = [];
-         this.imageComponentKey ++;
-      }
-   },
-   mounted() {
-      this.initialForm = {...this.form}
-      if (this.isEdit) {
-         this.getPartFilters(this.announcement.category_id);
-         this.form.category_id = this.announcement.category_id
-         this.form.brand_id = this.announcement.brand_id
-         this.form.sub_category_id = this.announcement.sub_category_id
-         this.form.title = this.announcement.title
-         this.form.product_code = this.announcement.product_code
-         this.form.is_new = this.announcement.is_new ? 1 : 0
-         this.form.is_original = this.announcement.is_original ? 1 : 0
-         this.form.run_flat = this.announcement.run_flat
-         this.form.thorns = this.announcement.thorns
-         this.form.height = this.announcement.height
-         this.form.starting_current = this.announcement.starting_current
-         this.form.length = this.announcement.length
-         this.form.width = this.announcement.width
-         this.form.weight = this.announcement.weight
-         this.form.diameter = this.announcement.diameter
-         this.form.number_of_mounting_holes = this.announcement.number_of_mounting_holes
-         this.form.shine_width = this.announcement.shine_width
-         this.form.price = this.announcement.price
-         this.form.currency = this.announcement.currency_id
-         this.form.have_delivery = this.announcement.have_delivery
-         this.form.have_warranty = this.announcement.have_warranty
-         this.form.is_negotiable = this.announcement.is_negotiable
-         this.form.region_id = this.announcement.region_id
-         this.form.description = this.announcement.description
-         this.form.saved_images = this.announcement.defaultImageIds
-         this.form.keywords = this.announcement.tags.map((tag) => tag.text)
-      }
-   },
-   watch: {
-      'form.price'() {
-         if (this.form.price > 0) {
-            this.form.is_negotiable = false
-         }
-      },
-      isReady() {
-         this.$v.form.$touch()
-         setTimeout(() => {
-            this.scrollTo('.form_error', -190)
-         });
-         if (this.$v.form.$error) {
-            this.$toasted.error(this.$t('required_fields'));
-            return;
-         }
-         const newForm = {
-            product_code: this.form.product_code,
-            title: this.form.title,
-            description: this.form.description,
-            category_id: this.form.category_id,
-            region_id: this.form.region_id,
-            currency: this.form.currency,
-            is_new: this.form.is_new ? 1 : 0,
-            is_original: this.form.is_original ? 1 : 0,
-            have_delivery: this.form.have_delivery ? 1 : 0,
-            have_warranty: this.form.have_warranty ? 1 : 0,
-            price: this.form.is_negotiable ? 0 : this.form.price,
-            is_negotiable: this.form.is_negotiable,
-            diameter: this.form.diameter,
-            shine_width: this.form.shine_width,
-            height: this.form.height,
-            starting_current: this.form.starting_current,
-            length: this.form.length,
-            width: this.form.width,
-            weight: this.form.weight,
-            number_of_mounting_holes: this.form.number_of_mounting_holes,
-            tags: this.form.keywords.map((k) => ({text: k})),
-            saved_images: this.form.saved_images
-         }
-         let filteredForm = this.partFilters?.sub_categories.length ? {
-            ...newForm,
-            sub_category_id: this.form.sub_category_id
-         } : {...newForm, brand_id: this.form.brand_id}
 
-         this.$emit("getForm", {
-            form: filteredForm,
-            deletedImages: (this.isEdit && this.deletedFiles.length) ? this.deletedFiles : []
-         })
-      }
-   },
-   updated() {
-      const announceDescription = ['title',
-            'price',].every((key) => this.form[key]) &&
-         (this.hasComponent('diameter') ? this.form.diameter : true) &&
-         (this.form.category_id !== 27 && this.hasComponent('height') ? this.form.height : true) &&
-         (this.hasComponent('shine_width') ? this.form.shine_width : true) &&
-         (this.hasComponent('number_of_mounting_holes') ? this.form.number_of_mounting_holes : true)
-      this.$emit("navigationProgress", {id: 2, status: announceDescription})
-   },
-   validations() {
-      return {
-         form: {
-            title: {
-               required,
-               maxLength: maxLength(25)
+      data() {
+         return {
+            priceTypes: [
+               {
+                  id: 1,
+                  name: {az: "AZN", ru: "AZN"},
+               },
+               {
+                  id: 2,
+                  name: {az: "USD", ru: "USD"},
+               },
+               {
+                  id: 3,
+                  name: {az: "EUR", ru: "EUR"},
+               },
+            ],
+            deletedFiles: [],
+            imageComponentKey: 0,
+            form: {
+               category_id: "",
+               brand_id: "",
+               sub_category_id: "",
+               brand: "",
+               title: "",
+               product_code: "",
+               is_new: 1,
+               is_original: 1,
+               run_flat: false,
+               thorns: "",
+               number_of_mounting_holes: "",
+               diameter: "",
+               height: "",
+               shine_width: "",
+               starting_current: "",
+               length: "",
+               width: "",
+               weight: "",
+               have_delivery: false,
+               have_warranty: false,
+               price: 0,
+               currency: 1,
+               is_negotiable: false,
+               region_id: 1,
+               description: "",
+               keywords: [],
+               saved_images: [],
             },
-            description: {maxLength: maxLength(3000)},
-            price: {
-               required: requiredIf(function () {
-                  return !this.form.is_negotiable
-               }),
-               minValue: minValue(!this.form.is_negotiable && 1)
-            },
-            region_id: {required},
-            diameter: {
-               required: requiredIf(function () {
-                  return this.hasComponent('diameter')
-               })
-            },
-            height: {
-               required: requiredIf(function () {
-                  return this.form.category_id !== 27 && this.hasComponent('height')
-               })
-            },
-            shine_width: {
-               required: requiredIf(function () {
-                  return this.hasComponent('shine_width')
-               })
-            },
-            number_of_mounting_holes: {
-               required: requiredIf(function () {
-                  return this.hasComponent('number_of_mounting_holes')
-               })
-            },
-            saved_images: {
-               required
+            initialForm: {}
+         }
+      },
+
+      methods: {
+         ...mapActions(['getPartFilters']),
+         async onChangeCategory() {
+            this.clearFields(['brand_id', 'sub_category_id'])
+            if (this.form.category_id) {
+               await this.getPartFilters(this.form.category_id);
+            }
+            this.resetImages()
+         },
+         toggleIsNegotiation(val) {
+            if (val) {
+               this.form.price = 0
+            }
+         },
+         toggleCurrency(currency) {
+            this.form.currency = currency.id
+         },
+         onChangeSubCategory() {
+            this.form = {
+               ...this.initialForm,
+               category_id: this.form.category_id,
+               brand_id: this.form.brand_id,
+               sub_category_id: this.form.sub_category_id
+            }
+
+         },
+         hasComponent(key) {
+            return this.partFilters?.filters?.map((ftr) => ftr.key).includes(key)
+         },
+         clearFields(keys) {
+            keys.forEach((key) => {
+               this.form[key] = ""
+            })
+         },
+         resetImages() {
+            // return;
+            this.form.saved_images = [];
+            this.savedFiles = [];
+            this.imageComponentKey ++;
+         }
+      },
+
+      mounted() {
+         this.initialForm = {...this.form}
+         if (this.isEdit) {
+            this.getPartFilters(this.announcement.category_id);
+            this.form.category_id = this.announcement.category_id
+            this.form.brand_id = this.announcement.brand_id
+            this.form.sub_category_id = this.announcement.sub_category_id
+            this.form.title = this.announcement.title
+            this.form.product_code = this.announcement.product_code
+            this.form.is_new = this.announcement.is_new ? 1 : 0
+            this.form.is_original = this.announcement.is_original ? 1 : 0
+            this.form.run_flat = this.announcement.run_flat
+            this.form.thorns = this.announcement.thorns
+            this.form.height = this.announcement.height
+            this.form.starting_current = this.announcement.starting_current
+            this.form.length = this.announcement.length
+            this.form.width = this.announcement.width
+            this.form.weight = this.announcement.weight
+            this.form.diameter = this.announcement.diameter
+            this.form.number_of_mounting_holes = this.announcement.number_of_mounting_holes
+            this.form.shine_width = this.announcement.shine_width
+            this.form.price = this.announcement.price
+            this.form.currency = this.announcement.currency_id
+            this.form.have_delivery = this.announcement.have_delivery
+            this.form.have_warranty = this.announcement.have_warranty
+            this.form.is_negotiable = this.announcement.is_negotiable
+            this.form.region_id = this.announcement.region_id
+            this.form.description = this.announcement.description
+            this.form.saved_images = this.announcement.defaultImageIds
+            this.form.keywords = this.announcement.tags.map((tag) => tag.text)
+         }
+      },
+
+      watch: {
+         'form.price'() {
+            if (this.form.price > 0) {
+               this.form.is_negotiable = false
+            }
+         },
+         isReady() {
+            this.$v.form.$touch()
+            setTimeout(() => {
+               this.scrollTo('.form_error', -190)
+            });
+            if (this.$v.form.$error) {
+               this.$toasted.error(this.$t('required_fields'));
+               return;
+            }
+            const newForm = {
+               product_code: this.form.product_code,
+               title: this.form.title,
+               description: this.form.description,
+               category_id: this.form.category_id,
+               region_id: this.form.region_id,
+               currency: this.form.currency,
+               is_new: this.form.is_new ? 1 : 0,
+               is_original: this.form.is_original ? 1 : 0,
+               have_delivery: this.form.have_delivery ? 1 : 0,
+               have_warranty: this.form.have_warranty ? 1 : 0,
+               price: this.form.is_negotiable ? 0 : this.form.price,
+               is_negotiable: this.form.is_negotiable,
+               diameter: this.form.diameter,
+               shine_width: this.form.shine_width,
+               height: this.form.height,
+               starting_current: this.form.starting_current,
+               length: this.form.length,
+               width: this.form.width,
+               weight: this.form.weight,
+               number_of_mounting_holes: this.form.number_of_mounting_holes,
+               tags: this.form.keywords.map((k) => ({text: k})),
+               saved_images: this.form.saved_images
+            }
+            let filteredForm = this.partFilters?.sub_categories.length ? {
+               ...newForm,
+               sub_category_id: this.form.sub_category_id
+            } : {...newForm, brand_id: this.form.brand_id}
+
+            this.$emit("getForm", {
+               form: filteredForm,
+               deletedImages: (this.isEdit && this.deletedFiles.length) ? this.deletedFiles : []
+            })
+         }
+      },
+
+      updated() {
+         const announceDescription = ['title',
+               'price',].every((key) => this.form[key]) &&
+            (this.hasComponent('diameter') ? this.form.diameter : true) &&
+            (this.form.category_id !== 27 && this.hasComponent('height') ? this.form.height : true) &&
+            (this.hasComponent('shine_width') ? this.form.shine_width : true) &&
+            (this.hasComponent('number_of_mounting_holes') ? this.form.number_of_mounting_holes : true)
+         this.$emit("navigationProgress", {id: 2, status: announceDescription})
+      },
+
+      validations() {
+         return {
+            form: {
+               title: {
+                  required,
+                  maxLength: maxLength(25)
+               },
+               description: {maxLength: maxLength(3000)},
+               price: {
+                  required: requiredIf(function () {
+                     return !this.form.is_negotiable
+                  }),
+                  minValue: minValue(!this.form.is_negotiable && 1)
+               },
+               region_id: {required},
+               diameter: {
+                  required: requiredIf(function () {
+                     return this.hasComponent('diameter')
+                  })
+               },
+               height: {
+                  required: requiredIf(function () {
+                     return this.form.category_id !== 27 && this.hasComponent('height')
+                  })
+               },
+               shine_width: {
+                  required: requiredIf(function () {
+                     return this.hasComponent('shine_width')
+                  })
+               },
+               number_of_mounting_holes: {
+                  required: requiredIf(function () {
+                     return this.hasComponent('number_of_mounting_holes')
+                  })
+               },
+               saved_images: {
+                  required
+               }
             }
          }
       }
    }
-}
 </script>
 
 <style lang="scss">
-.part_form {
-   display: flex;
-   flex-grow: 1;
-   flex-direction: column;
-   gap: 20px;
-
-
-   .divider {
-      display: grid;
-      grid-template-columns: repeat(2, calc(50% - 8px));
+   .part_form {
+      display: flex;
+      flex-grow: 1;
+      flex-direction: column;
       gap: 20px;
 
-      .full_grid {
-         grid-column: 1/3;
-      }
+      .divider {
+         display: grid;
+         grid-template-columns: repeat(2, calc(50% - 8px));
+         gap: 20px;
 
-      .price_types {
-         .price_item {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 52px;
-            padding: 0 16px;
+         .full_grid {
+            grid-column: 1/3;
+         }
+
+         .price_types {
+            .price_item {
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               height: 52px;
+               padding: 0 16px;
+            }
          }
       }
-   }
 
-   .head_section {
-      .inner_left, .inner_right {
+      .head_section {
+         .inner_left, .inner_right {
+            display: flex;
+            flex-direction: column;
+            gap: 20px
+         }
+      }
+
+      &_with_info {
+         position: relative;
+         flex: 1;
          display: flex;
          flex-direction: column;
-         gap: 20px
-      }
-   }
 
-   &_with_info {
-      position: relative;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
+         .form-group {
+            flex: 1;
 
-      .form-group {
-         flex: 1;
+            .textarea, textarea, input {
+               height: 100%;
+            }
 
-         .textarea, textarea, input {
-            height: 100%;
+            textarea {
+               min-height: 200px;
+            }
          }
 
-         textarea {
-            min-height: 200px;
-         }
-      }
+         &_inner {
+            display: flex;
+            margin-top: 12px;
+            align-items: center;
+            gap: 10px;
 
-      &_inner {
-         display: flex;
-         margin-top: 12px;
-         align-items: center;
-         gap: 10px;
+            .isInvalid {
+               color: red
+            }
 
-         .isInvalid {
-            color: red
-         }
-
-         svg {
-            min-width: 24px;
-            min-height: 24px;
+            svg {
+               min-width: 24px;
+               min-height: 24px;
+            }
          }
       }
    }
-}
+
+   @media (max-width: 992px) {
+      .part_form {
+         .divider {
+            grid-template-columns: repeat(1, 1fr);
+         }
+      }
+   }
 </style>
