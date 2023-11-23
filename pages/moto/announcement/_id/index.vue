@@ -6,7 +6,7 @@
                <div class="product-inner__head">
                   <breadcrumbs :crumbs="crumbs" />
 
-                  <div class="btns">
+                  <div class="btns d-none d-md-block">
                      <add-favorite
                         class="h-52"
                         :template="'btn'"

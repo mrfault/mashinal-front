@@ -2,7 +2,19 @@
    <div class="pages-parts-id product-inner">
       <div class="bg-white">
          <div class="container">
-            <breadcrumbs :crumbs="crumbs" />
+            <div class="product-inner__head">
+               <breadcrumbs :crumbs="crumbs" />
+
+               <div class="btns d-none d-md-block">
+                  <add-favorite
+                     class="h-52"
+                     :template="'btn'"
+                     :text="$t('add_favorite')"
+                     :announcement="announcement"
+                     v-if="![0,2,3,4].includes(announcement.status)"
+                  />
+               </div>
+            </div>
 
             <div class="product-inner__info">
                <div class="product-inner__info-left">
@@ -96,11 +108,13 @@
    import QuickInfoDetails from "~/components/announcements/inner/QuickInfoDetails.vue";
    import AnnouncementTitle from "~/components/announcements/inner/AnnouncementTitle.vue";
    import AnnouncementBar from "~/components/announcements/inner/AnnouncementBar.vue";
+   import AddFavorite from "~/components/announcements/AddFavorite.vue";
 
    export default {
       name: 'pages-parts-id',
 
       components: {
+         AddFavorite,
          AnnouncementBar,
          AnnouncementTitle, QuickInfoDetails,
          SiteBanner,
