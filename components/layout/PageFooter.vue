@@ -57,7 +57,7 @@
          </div>
       </div>
 
-      <div class="footer__copyright">Copyright 2023 Mashin.al Developed by AlVentures</div>
+      <div class="footer__copyright">2023 Alventures MMC. VÖEN: 2006113431</div>
    </footer>
 </template>
 

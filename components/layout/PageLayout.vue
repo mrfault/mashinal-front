@@ -159,7 +159,7 @@
             ]);
          }
          await Promise.all([
-            this.$store.dispatch("getStaticPages"),
+            // this.$store.dispatch("getStaticPages"),
             this.$store.dispatch("getCommercialTypes")
          ]);
 

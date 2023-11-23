@@ -9,23 +9,29 @@
             </template>
          </Cap>
 
-         <div class="termsOfUse__content" v-html="this.rules[1]?.text[locale]?.replace(/&nbsp;/g, ' ')" />
+         <div class="termsOfUse__content" v-html="staticPages[1]?.text[locale]?.replace(/&nbsp;/g, ' ')" />
       </div>
    </div>
 </template>
 
 <script>
    import Cap from "~/components/elements/Cap.vue";
+   import {mapGetters} from "vuex";
+
    export default {
       components: { Cap },
 
-      data() {
-         return {
-            rules: ''
-         }
-      },
+      // data() {
+      //    return {
+      //       rules: ''
+      //    }
+      // },
 
       computed: {
+         ...mapGetters({
+            staticPages: 'staticPages'
+         }),
+
          crumbs() {
             return [
                { name: this.$t('policy'), route: '/policy' },
@@ -34,8 +40,12 @@
          }
       },
 
+      async asyncData({ store }) {
+         await store.dispatch('fetchStaticPages');
+      },
+
       mounted() {
-         this.rules = JSON.parse(localStorage.getItem('static_pages'));
+         // this.rules = JSON.parse(localStorage.getItem('static_pages'));
 
          this.$nextTick(() => {
             const p = document.querySelectorAll('.termsOfUse__content p');
