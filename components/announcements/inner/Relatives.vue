@@ -6,6 +6,7 @@
             v-if="shopAnnouncements?.data && shopAnnouncements?.data?.length"
             :announcements="shopAnnouncements?.data"
             :paginate="shopAnnouncements?.meta"
+            :escapeDuplicates="true"
             @change-page="searchAnnouncements"
          >
             <template #cap>
@@ -23,6 +24,7 @@
             class="dark-bg"
             v-if="relativeAnnouncements.length"
             :announcements="relativeAnnouncements"
+            :escapeDuplicates="true"
          >
             <template #cap>
                <Cap :className="'mb20'">
@@ -58,7 +60,7 @@
                        this.announcement?.user?.external_salon?.possible_announce_count == 0);
             }
 
-            return false
+            return false;
          },
 
          title() {
@@ -95,12 +97,20 @@
 
       created() {
          // if (this.announcement?.is_part_salon) this.getShopOtherAnnouncements(this.announcement.id);
-         if (this.isShop) this.getAutoSalonOtherAnnouncements({
-            id: this.announcement?.user?.auto_salon?.id || this.announcement?.user?.external_salon?.id,
-            excluded_id: this.announcement.id,
-            page: this.$route.query.page || 1
-         });
-         else this.getRelativeAnnouncements({type: this.announcement.type || 'light_vehicle', id: this.announcement.id});
+         if (this.isShop) {
+            console.log('this.isShop')
+            this.getAutoSalonOtherAnnouncements({
+               id: this.announcement?.user?.auto_salon?.id || this.announcement?.user?.external_salon?.id,
+               excluded_id: this.announcement.id,
+               page: this.$route.query.page || 1
+            });
+         } else {
+            console.log('else this.isShop')
+            this.getRelativeAnnouncements({
+               type: this.announcement.type || 'light_vehicle',
+               id: this.announcement.id
+            });
+         }
       },
 
       beforeDestroy() {
