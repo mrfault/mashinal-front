@@ -3,7 +3,19 @@
       <div class="bg-white">
          <div class="container">
             <div class="announcements-inner">
-               <breadcrumbs :crumbs="crumbs" />
+               <div class="product-inner__head">
+                  <breadcrumbs :crumbs="crumbs" />
+
+                  <div class="btns">
+                     <add-favorite
+                        class="h-52"
+                        :template="'btn'"
+                        :text="$t('add_favorite')"
+                        :announcement="announcement"
+                        v-if="![0,2,3,4].includes(announcement.status)"
+                     />
+                  </div>
+               </div>
 
                <div class="product-inner__info">
                   <div class="product-inner__info-left">
@@ -95,11 +107,13 @@
    import QuickInfoDetails from "~/components/announcements/inner/QuickInfoDetails.vue";
    import AnnouncementTitle from "~/components/announcements/inner/AnnouncementTitle.vue";
    import AnnouncementBar from "~/components/announcements/inner/AnnouncementBar.vue";
+   import AddFavorite from "~/components/announcements/AddFavorite.vue";
 
    export default {
       name: 'pages-moto-id',
 
       components: {
+         AddFavorite,
          AnnouncementBar,
          AnnouncementTitle, QuickInfoDetails,
          Grid,
@@ -224,6 +238,12 @@
       .breadcrumbs {
          border: none;
          padding: 20px 0;
+      }
+
+      .product-inner {
+         &__head {
+            padding: 0;
+         }
       }
    }
 </style>

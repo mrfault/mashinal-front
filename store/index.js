@@ -766,17 +766,17 @@ export const actions = {
       commit("mutate", {property: "menus", value: res});
    },
 
-   async getStaticPages({commit}) {
-      let static_pages;
-
-      if (localStorage.getItem('static_pages')) {
-         static_pages = localStorage.getItem('static_pages');
-         commit("mutate", {property: "staticPages", value: JSON.parse(static_pages)});
-      } else {
+   async fetchStaticPages({commit}) {
+      // let static_pages;
+      //
+      // if (localStorage.getItem('static_pages')) {
+      //    static_pages = localStorage.getItem('static_pages');
+      //    commit("mutate", {property: "staticPages", value: JSON.parse(static_pages)});
+      // } else {
          const res = await this.$axios.$get("/get_static_pages");
          commit("mutate", {property: "staticPages", value: res});
-         localStorage.setItem('static_pages', JSON.stringify(res));
-      }
+         // localStorage.setItem('static_pages', JSON.stringify(res));
+      // }
    },
 
    setPageRefs({commit}, {index, path}) {
