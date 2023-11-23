@@ -68,6 +68,10 @@ export default {
       });
    },
 
+   async asyncData({ store }) {
+      await store.dispatch('fetchStaticPages');
+   },
+
    computed: {
       ...mapGetters(['staticPages']),
 
