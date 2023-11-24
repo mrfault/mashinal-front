@@ -357,8 +357,8 @@ export default {
                formData.append('text', this.text);
                // include attachments
                await Promise.all(this.files.map(async (file) => {
-                  let resizedFile = await this.getResizedImage(file);
-                  formData.append('files[]', resizedFile);
+                  // let resizedFile = await this.getResizedImage(file);
+                  formData.append('files[]', file);
                }));
                // before send
                if (hasAttachments) {

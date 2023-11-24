@@ -270,8 +270,8 @@ export default {
       formData.append('auto_salon_offer_id', this.auto_salon_offer_id)
 
       await Promise.all(this.files.map(async (file) => {
-        let resizedFile = await this.getResizedImage(file);
-        formData.append('files[]', resizedFile);
+        // let resizedFile = await this.getResizedImage(file);
+        formData.append('files[]', file);
       }));
       this.$axios.$post('/offer/messages/send', formData).then((res) => {
         this.chat.text = ''
