@@ -190,9 +190,10 @@ hr {
    min-height: 100%;
    min-width: 0;
 
-   //& > div {
-   //   flex: 1;
-   //}
+   &:has(.isPromotion) {
+      border-radius: 4px;
+      overflow: hidden;
+   }
 }
 
 [class^='pages-'] {
