@@ -513,6 +513,7 @@
             </div>
          </div>
       </div>
+
       <div class="car_description_section">
          <h2>{{ $t("vehicle_supply") }}</h2>
          <div class="divider mobile-column">
@@ -556,9 +557,19 @@
       </div>
       <div :class="{form_error: $v.form.saved_images.$error || form_errored}" class="image_section">
          <h2>{{ $t("photos") }}</h2>
+<!--         <div style="border: 2px solid red; padding: 20px;">-->
+<!--            <form>-->
+<!--               <input type="file" name="images[]" multiple @input="aaa">-->
+<!--               <button type="submit">Send</button>-->
+<!--            </form>-->
+<!--         </div>~-->
          <client-only>
-            <image-component :announcement="announcement" :deletedFiles="deletedFiles" :initial-form="form"
-                             :type="'cars'"/>
+            <image-component
+               :announcement="announcement"
+               :deletedFiles="deletedFiles"
+               :initial-form="form"
+               :type="'cars'"
+            />
          </client-only>
          <div class="image_info">
             <inline-svg :src="'/icons/info.svg'"/>
@@ -744,6 +755,16 @@
       },
 
       methods: {
+         aaa(e) {
+            e.preventDefault();
+            let image = e.target.files[0];
+            let formData = new FormData();
+            formData.append('images[]', image)
+
+
+            this.$axios.post('https://dev.mashin.al/api/upload_temporary_images', formData)
+            console.log(formData)
+         },
          ...mapActions(['getModels', 'getSellYears', 'getSellBody', 'getSellGenerationsV2', 'getSellEngines', 'getSellGearing', 'getSellTransmissions', 'getSellModificationsV2']),
 
          async onChangeBrand({slug}) {

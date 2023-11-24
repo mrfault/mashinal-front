@@ -108,8 +108,7 @@
 <!--        v-if="-->
 <!--          canUpload && (isMobileBreakpoint || filesLength >= helpers.length)-->
 <!--        "-->
-      <template
-      >
+      <template>
         <div key="add-image" class="upload-image_thumbnail">
           <div
             class="upload-image_thumbnail add-image draggable_item"
@@ -124,6 +123,7 @@
         </div>
       </template>
     </draggable>
+
     <input
       :id="'upload-image_input--' + inputId"
       accept="image/*"
@@ -298,6 +298,7 @@ export default {
       this.$emit('order-changed', sorted, preview)
     },
     fileDrop(e) {
+       console.log('sssssss')
       e.preventDefault()
 
       let droppedFiles = e.target.files || e.dataTransfer.files

@@ -71,7 +71,8 @@ export default {
          await Promise.all(
             images.map(async (image) => {
                let formData = new FormData();
-               let file = await this.getResizedImage(image.file);
+               // let file = await this.getResizedImage(image.file);
+               let file = image.file;
                formData.append('temp_id', this.date);
                formData.append('images[]', file);
                try {
