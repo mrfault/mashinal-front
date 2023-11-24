@@ -14,7 +14,7 @@
                class="pages-policy__content-link"
                v-for="(page, i) in staticPages"
                :key="i"
-               :to="`${page.id === 1 ? '/rules' : '/terms-of-use'}`"
+               :to="$localePath(`${page.id === 1 ? '/rules' : '/terms-of-use'}`)"
             >
                <inline-svg :src="`/icons/${page.id === 1 ? 'rules' : 'agreement'}.svg`"/>
 
