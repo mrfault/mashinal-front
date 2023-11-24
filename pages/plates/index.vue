@@ -223,7 +223,6 @@
             this.$route.query?.filters?.slice(1).split('&').forEach(query => {
                if (query.split('=')[0] === 'page') {
                   this.page = +query.split('=')[1];
-                  // console.log('222222222', +query.split('=')[1])
                }
 
                for (const item in this.form) {
@@ -246,7 +245,7 @@
          ...mapGetters({
             getRegionNumbers: 'getRegionNumbers',
             getRegistrationMarks: 'getRegistrationMarks',
-            cities: 'sellOptions',
+            // cities: 'sellOptions',
             loading: 'loadingData'
          }),
 
@@ -330,7 +329,8 @@
          },
       },
 
-      mounted() {
+      async mounted() {
+         await this.$store.dispatch('fetchRegionNumbers');
          this.setInitialValues();
 
          // if (this.$route.query?.filters) {
@@ -349,9 +349,9 @@
       },
 
       async asyncData({ store }) {
-         await store.dispatch('fetchRegionNumbers');
          await store.dispatch('fetchRegistrationMarks');
-         await store.dispatch('getOptions');
+         // await store.dispatch('fetchRegionNumbers');
+         // await store.dispatch('getOptions');
       },
 
       validations: {

@@ -311,7 +311,7 @@
             else if (electricPower && electricPower[0] && electricPower[0] != '0')
                calculatedPower = Math.ceil(electricPower[0]) + ' ' + this.$t('char_h_power')
             else
-               calculatedPower = (mod.main['  ']['moshchnost'] && (mod.main['  ']['moshchnost'] + ' ' + this.$t('char_h_power'))) || '—';
+               calculatedPower = (mod.horse_power && (mod.horse_power + ' ' + this.$t('char_h_power'))) || '—';
             return calculatedPower;
          },
 

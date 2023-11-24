@@ -256,7 +256,7 @@
             if (!item['main']) {
                return false;
             }
-            let txt = item['main'] ? item['main']["  "]['moshchnost'] : '';
+            let txt = item?.horse_power ? item?.horse_power : '';
             return txt + this.$t('l.s.');
          },
          addToList() {
