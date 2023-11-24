@@ -79,8 +79,9 @@
          </span>
          <!--         dropdown mobile-->
          <portal v-if="isMobileBreakpoint" to="mobile-dropdown">
+<!--            v-if="showOptions && isMobileBreakpoint && !inSelectMenu"-->
             <action-bar
-               v-if="showOptions && isMobileBreakpoint && !inSelectMenu"
+               v-if="showOptions && isMobileBreakpoint"
                :show-check="(custom || multiple) && !hasNoValue"
                :title="getActionBarText"
                :useBack="false"
@@ -88,6 +89,7 @@
                @accept="showOptions = false"
                @back="showOptions = false"
             />
+
             <div
                :class="[
                'select-menu_dropdown responsive',
