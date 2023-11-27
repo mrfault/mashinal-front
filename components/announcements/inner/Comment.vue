@@ -4,7 +4,7 @@
 
       <p
          class="announcement-comment__comment"
-         :class="{'ellipsis' : comment.length > 538 && !seeMore}"
+         :class="{'ellipsis' : comment?.length > 538 && !seeMore}"
       >{{ comment.trim() }}</p>
 
       <button
@@ -87,7 +87,6 @@
    }
 
    @media (max-width: 960px) {
-
       .announcement-comment {
          padding: 32px;
          border-radius: 12px;
@@ -100,9 +99,9 @@
             font-weight: 600;
             line-height: 24px;
          }
-
       }
    }
+
    @media (max-width: 385px) {
       .announcement-comment {
          padding: 16px;

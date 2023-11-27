@@ -291,7 +291,7 @@
             // store.dispatch('getMotoTransmissionsV2'),
             // store.dispatch('getMotoFuelTypesV2'),
             store.dispatch('getColors'),
-            store.dispatch('getFavorites'),
+            // store.dispatch('getFavorites'),
          ])
          return {
             pending: false,
