@@ -761,9 +761,7 @@
             let formData = new FormData();
             formData.append('images[]', image)
 
-
-            this.$axios.post('https://dev.mashin.al/api/upload_temporary_images', formData)
-            console.log(formData)
+            this.$axios.post(`${this.$env().API_SECRET}/media/upload/images`, formData)
          },
          ...mapActions(['getModels', 'getSellYears', 'getSellBody', 'getSellGenerationsV2', 'getSellEngines', 'getSellGearing', 'getSellTransmissions', 'getSellModificationsV2']),
 

@@ -326,7 +326,7 @@
           <!-- Gallery -->
           <form-gallery
             itemClass="col-4 col-lg-1-5 mb-lg-3 mb-2"
-            uploadPath="/upload_temporary_images"
+            :uploadPath="`${this.$env().API_SECRET}/media/upload/images`"
             rotatable
             :maxFiles="22"
             :initialFiles="initialFiles"
