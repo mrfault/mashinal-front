@@ -733,7 +733,7 @@ export default {
          }${this.getLabelText}`
       },
       hasNoValue() {
-         if (this.objectInValue && this.getSelectedOptions.length) return false
+         if (this.objectInValue && this.getSelectedOptions?.length) return false
 
          if (this.custom)
             return this.values?.count
