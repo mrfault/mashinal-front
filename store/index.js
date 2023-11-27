@@ -1279,10 +1279,20 @@ async getMotoOptions({state, commit}) {
       commit("mutate", {property: "mainMonetized", value: res});
    },
 
+   // ===========================================================================
+   async getInfiniteMainSearch({commit, dispatch}, data = {}) {
+      const res = await this.$axios.$get(`/grid/home_page_all?page=${data.page || 1}`);
+      commit("mutate", {property: "mainAnnouncements", value: res});
+   },
+
+   async fetchInfiniteMainMonetizedHome({ commit }, data = {}) {
+      const res = await this.$axios.$get(`/grid/home_page_monetized`);
+      commit("mutate", {property: "mainMonetized", value: res});
+   },
+   // ===========================================================================
+
    async getInfiniteMainSearchWithoutMutate({commit, dispatch}, data = {}) {
-      const res = await this.$axios.$get(
-         `/grid/home_page_all?page=${data.page || 1}`
-      );
+      const res = await this.$axios.$get(`/grid/home_page_all?page=${data.page || 1}`);
       commit("mutate", {property: "temporaryLazyData", value: res});
    },
 

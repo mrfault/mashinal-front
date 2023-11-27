@@ -545,7 +545,7 @@
             <div class="comment">
                <form-textarea
                   v-model="form.comment"
-                  :maxlength="600"
+                  :maxlength="1200"
                   :placeholder="$t('additional_info')"
                />
             </div>

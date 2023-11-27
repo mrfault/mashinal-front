@@ -272,6 +272,7 @@ export default {
    auth_end_date: "Servisin bitmə tarixi",
    auto_accessories: "Avtoaksesuar",
    see_all: "Hamısına bax",
+   see_more: "Davamını oxu",
    autocatalog: "Avtokataloq",
    autoloaders: "Yükvuranlar",
    automatic: "Avtomatik",

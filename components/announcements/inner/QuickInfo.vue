@@ -36,11 +36,11 @@
 
          <div class="btns">
             <add-favorite
-               class="h-52 d-md-none"
+               class="h-52"
                :template="'btn'"
                :text="$t('add_favorite')"
                :announcement="announcement"
-               v-if="![0,2,3,4].includes(announcement.status) && !isMobileBreakpoint"
+               v-if="(![0,2,3,4].includes(announcement.status) && isMobileBreakpoint)"
             />
 
             <add-comparison
