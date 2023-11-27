@@ -107,7 +107,7 @@
                <form-textarea
                   v-model="form.comment"
                   :placeholder="$t('additional_info')"
-                  :maxlength="600"
+                  :maxlength="1200"
                   :disabled="!isEdit && !readyAllParameters"
                />
                <div class="comment_info">

@@ -3,7 +3,19 @@
       <div class="bg-white">
          <div class="container">
             <div class="announcements-inner">
-               <breadcrumbs :crumbs="crumbs" />
+               <div class="product-inner__head">
+                  <breadcrumbs :crumbs="crumbs" />
+
+                  <div class="btns d-none d-md-block">
+                     <add-favorite
+                        class="h-52"
+                        :template="'btn'"
+                        :text="$t('add_favorite')"
+                        :announcement="registrationMark"
+                        v-if="![0,2,3,4].includes(registrationMark.status)"
+                     />
+                  </div>
+               </div>
 
                <div class="row flex-column flex-lg-row">
                   <div class="col-auto">
@@ -150,6 +162,10 @@
 <style lang="scss">
    .plate-id {
       padding-bottom: 20px;
+
+      .product-inner__head {
+         padding: 0;
+      }
 
       .bg-white {
          padding-bottom: 56px;

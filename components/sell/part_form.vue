@@ -263,7 +263,7 @@
                <form-textarea
                   v-model="form.description"
                   :disabled="!isEdit && !readyAllParameters"
-                  :maxlength="600"
+                  :maxlength="1200"
                   :placeholder="$t('additional_info')"
                />
                <div class="part_form_with_info_inner">

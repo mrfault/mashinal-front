@@ -267,6 +267,7 @@ export default {
    auth_end_date: "Дата окончания сервиса",
    auto_accessories: "Автоаксессуары",
    see_all: "Посмотреть всё",
+   see_more: "Читать дальше",
    autocatalog: "Автокаталог",
    autoloaders: "Погрузчики",
    automatic: "Автоматическая",

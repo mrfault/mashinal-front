@@ -18,6 +18,16 @@
          </grid>
       </div>
 
+<!--      <infinite-loading-->
+<!--         :per-page="20"-->
+<!--         :per-page-b="4"-->
+<!--         :offset="5000"-->
+<!--         action="getInfiniteMainSearchWithoutMutate"-->
+<!--         action-b="getInfiniteMainPartsSearchWithoutMutate"-->
+<!--         getter="mainAnnouncements"-->
+<!--         getter-b="mainPartsAnnouncements"-->
+<!--      />-->
+
       <HandleIds :items="handleIdsOptions" />
    </div>
 </template>
@@ -26,7 +36,7 @@
    import Grid from "~/components/announcements/Grid.vue";
    import Cap from "~/components/elements/Cap.vue";
    import HandleIds from "~/components/announcements/HandleIds.vue";
-   import { mapGetters } from "vuex";
+   import { mapActions, mapGetters } from "vuex";
 
    export default {
       name: 'monetized-page',
@@ -55,6 +65,8 @@
       },
 
       methods: {
+         // ...mapActions(['getInfiniteMainSearch', 'clearSavedSearch', 'fetchInfiniteMainMonetizedHome']),
+
          async changePage(page = 1) {
             page = this.$route.query.page || 1;
 
@@ -112,7 +124,12 @@
 
       async asyncData({ store }) {
          await store.dispatch('fetchMonetizedAnnouncementsPage', 'page=1');
-      }
+      },
+
+      // mounted() {
+      //    this.$store.dispatch('getInfiniteMainSearch')
+      //    this.$store.dispatch('fetchInfiniteMainMonetizedHome');
+      // }
    }
 </script>
 
