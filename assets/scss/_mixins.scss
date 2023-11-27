@@ -20,7 +20,8 @@
 
 @mixin calc-vh($property: min-height, $expression: calc(100vh)) {
    #{$property}: $expression;
-   #{$property}: #{str-replace(quote($expression), '100vh','(var(--vh, 1vh) * 100)')};
+   //#{$property}: #{str-replace(quote($expression), '100vh','(var(--vh, 1vh) * 100)')};
+   // Закоментировал из за того что выдовала ошибку node-sass. Я поменял версию.
 }
 
 @mixin backdrop-filter($bg-color: $dark-blue-1, $alpha: .5) {

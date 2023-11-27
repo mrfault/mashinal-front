@@ -1107,7 +1107,7 @@ export default {
           formData.append('temp_id', this.date)
           formData.append('images[]', image);
           try {
-            const data = await this.$axios.$post('/upload_temporary_images', formData, {
+            const data = await this.$axios.$post(`${this.$env().API_SECRET}/media/upload/images`, formData, {
               headers: {
                 'Content-Type': 'multipart/form-data'
               }

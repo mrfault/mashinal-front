@@ -1292,6 +1292,7 @@
 
       //handle image
       async addFiles(v) {
+         console.log('yyyyyy1')
         this.imageIsUploading = true;
         await Promise.all(
           v.map(async (image) => {
@@ -1300,7 +1301,7 @@
             formData.append('images[]', image)
             try {
               const data = await this.$axios.$post(
-                '/upload_temporary_images',
+                 `${this.$env().API_SECRET}/media/upload/images`,
                 formData,
                 {
                   headers: {
