@@ -169,18 +169,14 @@
          //    //    this.$router.push({ path: this.showAll, query: { page } }, () => {
          //    //       this.scrollTo('.announcements-grid', [-15, -20])
          //    //    })
-         //    //    console.log('1111')
          //    //
          //    // } else {
-         //    //    console.log('222')
          //    //    if (!this.pushIntoRouter) {
          //    //       this.$emit('change-page', page)
-         //    //       console.log('333')
          //    //    } else {
          //    //       this.$router.push({ query: { ...this.$route.query, page } }, () => {
          //    //          this.$emit('change-page', page)
          //    //       })
-         //    //       console.log('444')
          //    //    }
          //    // }
          // },
@@ -204,9 +200,9 @@
          }
       },
 
-      mounted() {
+      // mounted() {
          // console.log(this.pushIntoRouter, 'this.pushIntoRouter')
-      },
+      // },
 
       created() {
          this.markViewedFavorites();

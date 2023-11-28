@@ -256,7 +256,6 @@ export default {
                   this.region_number = res.data.car_number.split('-')[2];
                   this.form.price = res.data.price.split(' ').slice(0, -1).join('');
                   this.form.comment = res.data.comment;
-                  // console.log('res', res)
                })
          } catch (e) {
             console.log(e)

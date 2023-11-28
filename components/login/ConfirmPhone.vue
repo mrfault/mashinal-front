@@ -62,7 +62,6 @@
       <button :class="['btn', 'btn--green', 'full-width', { pending }]" type="submit">
          {{ actionText || $t('confirm') }}
       </button>
-
    </form>
 </template>
 
@@ -159,7 +158,6 @@ export default {
                   },1500)
                   this.$store.commit("mutate", {property: "loginInEditModal", value: false})
                }
-
             })
             .catch((err) => {
                this.pending = false;

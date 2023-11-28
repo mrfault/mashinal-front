@@ -74,7 +74,6 @@ export default {
       this.$refs.keywordInput.value = ''
     },
     removeKeyword(index) {
-       // console.log(this.keywords)
       this.keywords.splice(index, 1)
     }
   },

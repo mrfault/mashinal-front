@@ -344,7 +344,6 @@ export default {
       } */
 
       //this.$refs.viewPercentage.innerHTML = percentage + '%';
-      //console.log(percentage + '%')
     },
     onAllImagesLoaded(e) {
       this.imagesLoaded = true
@@ -600,7 +599,6 @@ export default {
         }
 
         this.$refs.viewport.appendChild(divElement)
-        //console.log('draw')
         //this.ctx.drawImage(this.currentCanvasImage, hotspotElement.x*this.canvas.width, hotspotElement.y*this.canvas.height, 10, 10)
       }
     },
@@ -763,9 +761,7 @@ export default {
       return scale;
     },
     zoom(clicks) {
-      //console.log(this.lastX + ' - ' + this.lastY)
       let factor = Math.pow(1.01, clicks);
-      //console.log(factor)
 
       if (factor > 1) {
         this.currentScale += factor
@@ -780,7 +776,6 @@ export default {
         let pt = this.ctx.transformedPoint(this.lastX, this.lastY);
         this.ctx.translate(pt.x, pt.y);
 
-        //console.log(this.currentScale)
         this.ctx.scale(factor, factor);
         this.ctx.translate(-pt.x, -pt.y);
         this.redraw();

@@ -1718,6 +1718,7 @@ export default {
    renew_package: "Paket yeniləndi",
    repair_tools: "Təmir alətləri",
    repeat_password: "Şifrənin təkrarı",
+   enter_password: "Şifrənin daxil edin",
    replenish: "Balansı artır",
    replenishment: "Balans artırma",
    report: "Hesabat",
