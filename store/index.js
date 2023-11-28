@@ -852,8 +852,10 @@ export const actions = {
    },
    // Favorites
    async getFavorites({commit}) {
-      const res = await this.$axios.$get("/announce/favorites");
-      commit("mutate", {property: "favorites", value: res});
+      if (this.$auth.loggedIn) {
+         const res = await this.$axios.$get("/announce/favorites");
+         commit("mutate", {property: "favorites", value: res});
+      }
    },
    async addToFavorites({commit}, id) {
       commit("addToFavorites", {id});
