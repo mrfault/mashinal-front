@@ -207,12 +207,6 @@ export default {
       let searchParams = {url: '/car', prefix: 'cars'}
       if (!store.state.carsAnnouncements.total) await store.dispatch('getGridSearch', {...searchParams, post, page})
 
-      // if (route.query.monetized) {
-      //    store.dispatch('fetchMonetizedAnnouncementsHome');
-      //    console.log('1')
-      // } else {
-      //    console.log('2')
-
       await Promise.all([
          store.dispatch('getAllOtherOptions', '2'),
          store.dispatch('getBrandsOnlyExists'),

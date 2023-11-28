@@ -311,7 +311,6 @@
             this.modalTitle = title || ""
          },
          async getCarForm({form}) {
-            console.log('form', form);
             if ((this.form.add_monetization === 1 || this.user.announce_left_car < 1) && !this.alertShowed) {
                this.modalType = 'monetization_alert'
                this.modalTitle = ""
@@ -383,11 +382,9 @@
                const res = await this.plateNumbersPost({form, isMobile: this.isMobileBreakpoint});
                if (res?.redirect_url) {
                   const response = {data: {...res}}
-                  console.log('response', response)
                   this.handlePayment(response, this.$localePath('/profile/announcements'), this.$t('plate_added'), 'v2');
                   // !this.isMobileBreakpoint && this.$router.push(this.$localePath('/profile/announcements'));
                } else {
-                  console.log('222')
                   this.$router.push(this.$localePath('/profile/announcements'), () => {
                      this.updatePaidStatus({
                         type: 'success',
@@ -547,7 +544,6 @@
 
       async mounted() {
          if (Object.values(this.user).length) {
-            // console.log('this.user.phone', this.user.phone)
             this.authForm.name = this.user.full_name
             this.authForm.email = this.user.email
             this.authForm.phone = this.user.phone.toString().slice(3)

@@ -298,7 +298,6 @@ export default {
       this.$emit('order-changed', sorted, preview)
     },
     fileDrop(e) {
-       console.log('sssssss')
       e.preventDefault()
 
       let droppedFiles = e.target.files || e.dataTransfer.files
@@ -383,7 +382,6 @@ export default {
         this.defaultFiles.forEach(el =>{
           arr.push(el.key);
         })
-        // console.log(arr)
         this.slider.allSlides = arr
         this.slider.currentSlide = image[key];
         this.slider.showLightbox = true;
@@ -391,13 +389,7 @@ export default {
       }
 
       else return
-    },
-    // onSwiper() {
-    //   console.log(swiper);
-    // },
-    // onSlideChange(){
-    //   console.log('slide change');
-    // },
+    }
   },
   computed: {
     filesLength() {

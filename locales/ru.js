@@ -1704,6 +1704,7 @@ export default {
    renew_package: "Пакет обновлен",
    repair_tools: "Инструменты для ремонта",
    repeat_password: "Повторный пароль",
+   enter_password: "Введите пароль",
    replenish: "Пополнить баланс",
    replenishment: "Пополнение баланса",
    report: "Отчет",

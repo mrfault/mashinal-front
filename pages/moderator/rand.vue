@@ -26,20 +26,16 @@
       this.$nuxt.$emit('loading_status', true);
       await this.$auth.setUserToken(`Bearer ${this.$route.query.token}`);
       const admin_user = await this.$axios.$get('/user');
-      // console.log("admin_user",admin_user);
       if (!admin_user.user.is_admin) return false;
       if (admin_user.user.admin_group !== 2) return false;
 
       let havePendingAnnounce = await this.$axios.$get(`/ticket/checkNonCompletedTask`);
-      // console.log("././././.",havePendingAnnounce);
       if (havePendingAnnounce.data.length > 0){
         this.$router.push('/moderator/ticket/'+havePendingAnnounce.data[0]+'?token='+this.$route.query.token+'&type='+havePendingAnnounce.data[1]);
-        // console.log("havePendingAnnounce",havePendingAnnounce);
         return false;
       }
 
       let data = await this.getAnnounce(this.getRandomData());
-        // console.log("data",data);
 
       if (data.data){
         if (['moto', 'moto_atv', 'scooters'].includes(data.randomType)){
@@ -57,7 +53,6 @@
         return this.types[Math.floor(Math.random() * this.types.length)];
       },
       async getAnnounce(randomType) {
-        // console.log("randomType",randomType);
         let data = false;
         try {
           if (['moto', 'moto_atv', 'scooters'].includes(randomType)){

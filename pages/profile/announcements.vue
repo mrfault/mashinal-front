@@ -234,7 +234,6 @@
          }),
 
         changeTabPay() {
-          console.log('changeTabPay')
           this.$refs.tabsWrapper.scrollLeft = 0;
           this.activeTab = 2;
         },

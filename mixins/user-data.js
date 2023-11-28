@@ -49,6 +49,7 @@ export const UserDataMixin = {
             })
       },
       async logout() {
+         console.log('logout')
          this.$router.push(this.$localePath('/') + '?logout=true', async () => {
             this.$router.push(this.$localePath('/'));
             this.$auth.setUser(false);

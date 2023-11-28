@@ -323,85 +323,82 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex'
-import {MenusDataMixin} from '~/mixins/menus-data'
-import {UserDataMixin} from '~/mixins/user-data'
+   import {mapGetters, mapActions} from 'vuex'
+   import {MenusDataMixin} from '~/mixins/menus-data'
+   import {UserDataMixin} from '~/mixins/user-data'
+   import ThemeSwitch from '~/components/elements/ThemeSwitch'
+   import SiteBanner from "~/components/banners/SiteBanner";
+   import IconNovelties from "~/components/elements/IconNovelties.vue";
+   import LanguageChange from "~/components/elements/languageChange.vue";
 
-import ThemeSwitch from '~/components/elements/ThemeSwitch'
-import SiteBanner from "~/components/banners/SiteBanner";
-import CustomDropdown from "~/components/elements/CustomDropdown.vue";
-import IconNovelties from "~/components/elements/IconNovelties.vue";
-import LanguageChange from "~/components/elements/languageChange.vue";
+   export default {
+      mixins: [MenusDataMixin, UserDataMixin],
 
-export default {
-   mixins: [MenusDataMixin, UserDataMixin],
-
-   components: {
-      LanguageChange,
-      IconNovelties,
-      CustomDropdown,
-      SiteBanner,
-      ThemeSwitch,
-   },
-
-   data() {
-      return {
-         close: false,
-         hoverMenu: false,
-         activeCategory: 0,
-         topAdsVisible: true,
-         closeDropdownMenu: false,
-      }
-   },
-
-   methods: {
-      ...mapActions(['changeLocale']),
-
-      closePromotion() {
-         this.$cookies.set('smartbanner_exited', 1)
-         this.close = true
-         this.$store.commit('closeSmartBanner', false)
+      components: {
+         LanguageChange,
+         IconNovelties,
+         SiteBanner,
+         ThemeSwitch,
       },
 
-      handleBtnClick(name) {
-         if (this.routeName === name) {
-            this.scrollTo(9, 9)
+      data() {
+         return {
+            close: false,
+            hoverMenu: false,
+            activeCategory: 0,
+            topAdsVisible: true,
+            closeDropdownMenu: false,
          }
       },
-   },
 
-   computed: {
-      ...mapGetters({
-         notViewedFavorites: 'notViewedFavorites',
-         notViewedSavedSearch: 'notViewedSavedSearch',
-         homePageSliders: 'homePageSliders',
-         comparisonCount: 'comparison/count'
-      }),
+      methods: {
+         ...mapActions(['changeLocale']),
 
-      image() {
-         if (this.user?.autosalon) {
-            return (this.user?.autosalon?.logo.includes('http') ? '' : 'https://mashin.al/storage/') + this.user?.autosalon?.logo;
-         } else if (this.user?.avatar){
-            return (this.user?.avatar?.includes('http') ? '' : 'https://mashin.al/storage/') + this.user?.avatar;
-         } else {
-            return false;
+         closePromotion() {
+            this.$cookies.set('smartbanner_exited', 1)
+            this.close = true
+            this.$store.commit('closeSmartBanner', false)
+         },
+
+         handleBtnClick(name) {
+            if (this.routeName === name) {
+               this.scrollTo(9, 9)
+            }
+         },
+      },
+
+      computed: {
+         ...mapGetters({
+            notViewedFavorites: 'notViewedFavorites',
+            notViewedSavedSearch: 'notViewedSavedSearch',
+            homePageSliders: 'homePageSliders',
+            comparisonCount: 'comparison/count'
+         }),
+
+         image() {
+            if (this.user?.autosalon) {
+               return (this.user?.autosalon?.logo.includes('http') ? '' : 'https://mashin.al/storage/') + this.user?.autosalon?.logo;
+            } else if (this.user?.avatar){
+               return (this.user?.avatar?.includes('http') ? '' : 'https://mashin.al/storage/') + this.user?.avatar;
+            } else {
+               return false;
+            }
+         },
+      },
+
+      watch: {
+         $route(to, from) {
+            this.closeDropdownMenu = true
+            setTimeout(() => {
+               this.closeDropdownMenu = false
+            }, 1000)
          }
       },
-   },
 
-   watch: {
-      $route(to, from) {
-         this.closeDropdownMenu = true
-         setTimeout(() => {
-            this.closeDropdownMenu = false
-         }, 1000)
-      }
-   },
-
-   mounted() {
-      // this.$store.dispatch('comparison/getInitialAnnouncements')
+      // mounted() {
+         // this.$store.dispatch('comparison/getInitialAnnouncements')
+      // }
    }
-}
 </script>
 
 <style lang="scss" scoped>

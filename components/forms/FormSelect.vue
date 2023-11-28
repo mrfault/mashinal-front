@@ -647,12 +647,10 @@ export default {
             this.$search(this.getOptionName(option), this.search),
          )
 
-         // console.log('this.search', this.search)
          // let searchLength = this.search.length;
          // return this.options?.filter(item => {
          //    let itemName = item?.name.toLowerCase().split('').slice(0, searchLength).join('');
          //    if (itemName === this.search.toLowerCase()) return item?.name;
-         //    // console.log('itemName', itemName)
          // })
       },
       getLabelText() {

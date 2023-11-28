@@ -263,7 +263,6 @@ export default {
   },
   methods: {
     changeGearBox(values) {
-      // console.log(this.form[this.index].box)
       this.form[this.index].gearBoxes = values;
 
     },

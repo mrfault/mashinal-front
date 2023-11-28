@@ -107,9 +107,6 @@ export default {
       ChangeEmail,
       ChangePhone
    },
-   mounted() {
-      // console.log(this.getUserAvatar)
-   },
    nuxtI18n: {
       paths: {
          az: '/profil/parametrler'
@@ -124,7 +121,6 @@ export default {
    async asyncData({$auth, app}) {
       await $auth.fetchUser();
 
-      // console.log('$auth.user.gender', $auth.user.gender)
 
       return {
          form: {

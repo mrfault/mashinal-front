@@ -1138,10 +1138,8 @@
         )
         for (let i = 0; i < arr.length; i++) {
           var element = arr[i]
-          // console.log("element", element)
           if (id == element.id) {
             var o = element;
-            // console.log("ahey ahey", id)
             name = `${this.$t('box_mode_values')[o.box]}/${
               generation?.start_year || this.data.sellYears[0].key
             } - ${generation?.end_year || this.currentYear}`
@@ -1227,8 +1225,6 @@
         window.location.href = "https://mashin.al/alvcp/resources/announcements"
       },
       getSellLastStepRejectObj(value) {
-        // console.log('value', value)
-        // console.log('this.rejectObj.rejectArray', this.rejectObj.rejectArray)
         if (!this.rejectObj.rejectArray.includes(value)) {
           this.rejectObj.rejectArray.push(value)
         } else {
@@ -1292,7 +1288,6 @@
 
       //handle image
       async addFiles(v) {
-         console.log('yyyyyy1')
         this.imageIsUploading = true;
         await Promise.all(
           v.map(async (image) => {
@@ -1397,8 +1392,6 @@
           .then((res) => {
             if (res.status == 200) {
               this.$toast.success(this.$t('video_360_successfully_upload'))
-              // console.log(" res.data.url", res.data.data.id)
-              // console.log(" res.data.id", res.data.data.url)
               this.form.video_360_url = res.data.data.url
               this.form.video_360_id = res.data.data.id
             }
@@ -1514,7 +1507,6 @@
 
       // post
       async transferToSupervisor(withRejectReason = false) {
-        // console.log('transferToSupervisor')
         this.button_loading = true
 
         if (withRejectReason) {

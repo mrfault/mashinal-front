@@ -70,11 +70,8 @@ export default {
       },
       set(value) {
         this.$emit('input', (this.disabled || (this.value.length > 1000)) ? this.value : value);
-
-
 /*        if (this.value.length == 0) {
           this.attachments = [];
-          console.log(11)
         }*/
       }
 

@@ -223,7 +223,6 @@
             // Object.values(post.additional_brands).map(item => {
             //    if (item.category) this.showSorting = true;
             // })
-            // console.log('post', post.additional_brands)
             post = { ...post, sort_by: post.sort_by, sort_order: post.sort_order }
             this.pending = true;
             await this.getGridSearch({...this.searchParams, post, page});
@@ -307,7 +306,6 @@
          //
          //    return Object.values(post.additional_brands).map(item => {
          //       if (item.category) {
-         //          console.log('vvvvvvvvv', item.category)
          //          return true
          //       }
          //    })
@@ -342,7 +340,6 @@
             this.announceType = filters.announce_type || 0;
             this.additionalBrands[0] = filters.additional_brands[0];
             this.formMotoType = filters.moto_type;
-            // console.log('filters.announce_type', filters.announce_type)
          }
          this.isMobileBreakpoint && this.$nuxt.$on("submitSearchMixin", this.submitOnMobile)
          this.$nuxt.$on("resetSubmit", this.resetSearch);

@@ -39,7 +39,6 @@ export const LayoutMixin = {
       },
 
       showLoginPopup(val) {
-         console.log('val', val)
          this.$nuxt.$emit('changeNavbar', val);
       }
    },
@@ -187,9 +186,7 @@ export const LayoutMixin = {
                   setTimeout(() => {
                      this.scrollTo('.his:last-child', 0, 500, '.offerDetail')
                   }, 1000)
-
                }
-
             })
             this.connectEcho('global-channel.' + this.$auth.user.id).listen(
                'GlobalFrontEndEvent',
@@ -285,7 +282,6 @@ export const LayoutMixin = {
          //
          //
          // var observer = new IntersectionObserver(function(entries) {
-         //   console.log('run')
          //   // if(entries[0].isIntersecting !== true)
          //   //   entries[0].target.style.display = "none"
          // }, { threshold: [0] });

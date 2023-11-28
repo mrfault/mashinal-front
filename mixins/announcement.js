@@ -38,7 +38,6 @@ export const AnnouncementDataMixin = {
                return this.$t('box_values')[this.catalog.main[' ']['box']];
             case 'moto':
                if (!this.motoOptions.config) return false;
-               console.log('this.announcement', this.motoOptions)
                return this.$t(getName(this.announcement.box_id, this.motoOptions.config.box.sell_values[this.motoTypeKey]));
             case 'commercial':
                return getName(this.announcement.box_id, [
@@ -58,7 +57,6 @@ export const AnnouncementDataMixin = {
          else if (this.announcement.gear_id === 3) return this.$t('tsep');
       },
       gear() {
-         // console.log('this.announcement', this.announcement)
          switch (this.type) {
             case 'cars':
                return {
