@@ -1,5 +1,4 @@
 <template>
-
   <div class="vue_component__upload--image" v-bind:class="{ 'dragover': onDragover }">
     <div v-if="loading || imageIsUploading" class="vue_component__upload--image__overlay"></div>
     <div>
@@ -410,6 +409,9 @@ export default {
         });
     },
     openCroppa(e, key) {
+       console.log('e', e)
+       console.log('key', key)
+
       this.isOpenCroppa = true;
       this.croppaSelectedKey = key;
     },
