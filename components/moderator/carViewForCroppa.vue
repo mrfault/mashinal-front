@@ -198,8 +198,10 @@ export default {
       return capacity + year + mileage;
     },
     getType() {
-      if (this.announce.type[1] !== undefined) this.types.push('Vip');
-      if (this.announce.type[2] !== undefined) this.types.push('Premium');
+       if (this.announce.type) {
+          if (this.announce.type[1] !== undefined) this.types.push('Vip');
+          if (this.announce.type[2] !== undefined) this.types.push('Premium');
+       }
     },
     cropperCrop() {
       let getData = this.$refs.cropper.getData();
