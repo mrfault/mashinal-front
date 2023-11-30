@@ -16,7 +16,8 @@
                   </div>
                   <div class="card-option">
                      <button class="btn-delete" @click="deleteCardDialog(card)">
-                        <inline-svg src="/icons/close.svg"/>
+<!--                        <inline-svg src="/icons/close2.svg"/>-->
+                        <icon name="cross" />
                      </button>
                   </div>
                </li>
