@@ -1503,9 +1503,6 @@ export default {
    }
 }
 
-@media (max-width: 1150px) {
-}
-
 @media (max-width: 992px) {
    .table tbody td, .table thead th {
       padding: 12px;
