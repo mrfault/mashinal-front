@@ -1236,11 +1236,12 @@
          grid-template-columns: 104px 624px;
       }
 
-      .swiper-wrapper {
-         .swiper-slide-bg {
-            height: 100%;
-         }
-      }
+      // maratoid
+      //.swiper-wrapper {
+      //   .swiper-slide-bg {
+      //      height: 100%;
+      //   }
+      //}
    }
 }
 
@@ -1278,10 +1279,11 @@
    }
 }
 
-@media (max-height: 700px) {
+// maratoid
+@media (max-height: 750px) {
    .images-slider {
       .swiper-slide {
-         max-height: 320px !important;
+         max-height: 400px !important;
       }
    }
 }

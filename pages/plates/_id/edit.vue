@@ -203,7 +203,6 @@ export default {
 
    @media (max-width: 1150px) {
       .pages-sell {
-
          .announce_container {
             .card {
                padding-right: 24px;
