@@ -64,7 +64,6 @@
             :href="getLink"
             class="abs-link"
             target="_blank"
-            @click.stop
          >
             <!--        <span class="sr-only">{{ getAnnouncementTitle(announcement) }}</span>-->
          </a>
@@ -408,6 +407,7 @@
          },
 
          goToAnnouncement(event) {
+            this.$store.dispatch('clickCount', this.announcement.id_unique);
             this.$store.commit('closeDropdown');
 
             if (!this.clickable) return;

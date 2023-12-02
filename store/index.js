@@ -506,6 +506,14 @@ const objectNotEmpty = (state, commit, property) => {
 };
 export const actions = {
    // New API ++++++++++++++++++++
+   async clickCount({ commit }, id) {
+      try {
+         await this.$axios.$get(`${this.$env().API_SECRET}/announcements/${id}/click`);
+      } catch (e) {
+         console.error(e);
+      }
+   },
+
    async fetchCustoms({commit}, payload) {
       const res = await this.$axios.$post('/cal_auto_duty', payload);
       if (res?.exception?.errorMessage) this._vm.$toasted.error(res?.exception?.errorMessage);
