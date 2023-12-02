@@ -56,8 +56,6 @@
 
       methods: {
          handleClick() {
-            // console.log('this.phone', this.phone)
-            // console.log(this.phone)
             if (this.callAtOnce) {
                window.location.href = `tel:+${this.phone}`;
                this.trackCall(2);
@@ -74,7 +72,8 @@
          trackCall(n) {
             this.fbTrack('Call ' + n);
             this.gtagTrack('AW-600951956/' + (n === 1 ? 'rgWNCOTA8IMCEJSZx54C' : 'VunMCPr51oMCEJSZx54C'));
-            this.$axios.$get(`/announce/${this.announcementId}/show/phone`);
+            // this.$axios.$get(`/announce/${this.announcementId}/show/phone`);
+            this.$axios.$get(`${this.$env().API_SECRET}/announcements/${this.announcementId}/click/phone`);
          }
       },
 

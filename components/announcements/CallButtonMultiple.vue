@@ -37,11 +37,7 @@
          announcement: {
             type: Object,
             default() { return {} }
-         },
-         // announcementId: {
-         //    type: [String, Number],
-         //    required: false
-         // }
+         }
       },
 
       data() {
@@ -96,7 +92,8 @@
          trackCall(n) {
             this.fbTrack('Call ' + n);
             this.gtagTrack('AW-600951956/' + (n === 1 ? 'rgWNCOTA8IMCEJSZx54C' : 'VunMCPr51oMCEJSZx54C'));
-            this.$axios.$get(`/announce/${this.announcement.id_unique}/show/phone`);
+            // this.$axios.$get(`/announce/${this.announcement.id_unique}/show/phone`);
+            this.$axios.$get(`${this.$env().API_SECRET}/announcements/${this.announcement.id_unique}/click/phone`);
          }
       }
    }
