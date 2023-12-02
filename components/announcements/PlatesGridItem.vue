@@ -167,11 +167,12 @@ export default {
    },
 
    methods: {
-      goToRegistrationMark(id, event) {
+      async goToRegistrationMark(id, event) {
          if (this.clickable) {
             event.stopPropagation();
             event.preventDefault();
-            this.$router.push(this.localePath(`/plates/${id}`));
+            await this.$store.dispatch('clickCount', id);
+            await this.$router.push(this.localePath(`/plates/${id}`));
          }
       },
 
