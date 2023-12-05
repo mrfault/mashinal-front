@@ -123,7 +123,6 @@
                               :mask="'99999'"
                               :maxlength="5"
                               :placeholder="$t('OTP') + '*'"
-
                            />
                            <div v-if="authStep === 'handleOTP'" class="resend_section">
                               <p :class="{link_active: resendSmsAfterSecond === 0}" @click="resendCode">
@@ -145,11 +144,11 @@
                            </div>
 
                            <div class="submit_button">
-<!--                              <div v-if="inLimit"-->
-<!--                                   class="limit_error">-->
-<!--                                 <p>{{ $t('announce_limit_alert', {price: settingsV2?.settings?.restore_price}) }}</p>-->
-<!--                              </div>-->
-                              <button :class="['btn', 'full-width', 'btn--pale-green-outline', 'active', {pending}]"
+                              <button
+                                 :class="[
+                                    'btn', 'full-width', 'btn--pale-green-outline', 'active',
+                                    {pending}
+                                 ]"
                                       type="button"
                                       @click="onClick()">
                                  {{ authStep === "notLoggedIn" ? $t("enter_sms_code") : $t("place_announcement") }}
@@ -201,7 +200,7 @@
                }) : $t('only_additional', {
                   price: settingsV2?.settings?.additional_price
                })"
-            @close="showModal = false"
+            @close="showModal = false; alertShowed = false"
             @onSubmit="onSubmitMonetizationModal"
          />
       </modal-popup>
@@ -223,11 +222,11 @@
    import Part_form from "~/components/sell/part_form.vue";
    import Registration_mark from "~/components/sell/registration_mark.vue";
    import Moto_form from "~/components/sell/moto_form.vue";
-   import {required, email, requiredIf} from "vuelidate/lib/validators";
-   import {PaymentMixin} from "~/mixins/payment";
    import FeedbackModal from "~/components/sell/FeedbackModal.vue";
    import ServicePackages from "~/components/sell/ServicePackages.vue";
    import MonetizationAlertModal from "~/components/sell/MonetizationAlertModal.vue";
+   import {required, email, requiredIf} from "vuelidate/lib/validators";
+   import {PaymentMixin} from "~/mixins/payment";
 
    export default {
       name: "add-announce",
@@ -299,19 +298,25 @@
       methods: {
          ...mapActions(['carsPost', 'motoPost', 'partsPost', 'plateNumbersPost', 'updatePaidStatus']),
 
+         onShowModal(type, title) {
+            this.showModal = true
+            this.modalType = type
+            this.modalTitle = title || ""
+         },
+
+         onSubmitMonetizationModal() {
+            this.showModal = false;
+            this.isReady = !this.isReady;
+         },
+
          async handleAnnounceType(payload) {
             this.form.announce_type = payload
             if (payload) {
                await this.$store.dispatch(payload.api_key)
             }
          },
-         onShowModal(type, title) {
-            this.showModal = true
-            this.modalType = type
-            this.modalTitle = title || ""
-         },
+
          async getCarForm({form}) {
-            console.log('form', form);
             if ((this.form.add_monetization === 1 || this.user.announce_left_car < 1) && !this.alertShowed) {
                this.modalType = 'monetization_alert'
                this.modalTitle = ""
@@ -319,8 +324,15 @@
                this.showModal = true
                return
             }
+
+            console.log('11', this.form.add_monetization)
+            console.log('22', this.user.announce_left_car < 1)
+            console.log('33', !this.alertShowed)
+
             this.pending = true;
+
             try {
+               console.log('getCarForm-3');
                const formData = new FormData()
                formData.append('data', JSON.stringify(form))
                formData.append('add_monetization', this.form.add_monetization)
@@ -339,11 +351,12 @@
                   });
                }
             } catch (e) {
-
+               console.error(e);
             } finally {
                this.pending = false;
             }
          },
+
          async getMotoForm({form}) {
             if ((this.form.add_monetization === 1 || this.user.announce_left_moto < 1) && !this.alertShowed) {
                this.modalType = 'monetization_alert'
@@ -377,6 +390,7 @@
                this.pending = false;
             }
          },
+
          async getRegistrationMarksForm(form) {
             this.pending = true;
             try {
@@ -402,6 +416,7 @@
                this.pending = false;
             }
          },
+
          async getPartForm({form}) {
             this.pending = true;
             try {
@@ -427,6 +442,7 @@
                this.pending = false;
             }
          },
+
          async resendCode() {
             try {
                await this.$axios
@@ -439,10 +455,7 @@
 
             }
          },
-         onSubmitMonetizationModal() {
-            this.showModal = false
-            this.isReady = !this.isReady
-         },
+
          async onClick() {
             try {
               this.$v.authForm.$touch();
@@ -459,8 +472,10 @@
                 let phone = this.authForm.phone.replace(/[^0-9]+/g, '');
                 if (phone.length < 10) phone = `994${phone}`;
 
-                const res = await this.$axios.$post(this.$env().API_SECRET + '/auth/update/before-publish',
-                    { phone: phone, email: this.authForm.email } );
+                const res = await this.$axios
+                   .$post(this.$env().API_SECRET + '/auth/update/before-publish', {
+                      phone: phone, email: this.authForm.email
+                   });
 
                 if (res.message === 'success') this.isReady = !this.isReady;
               } else if (this.authStep === "notLoggedIn") {
@@ -472,6 +487,7 @@
               console.log(e)
             }
          },
+
          async onPhoneVerification() {
             this.pending = true;
             try {
@@ -491,6 +507,7 @@
                this.pending = false;
             }
          },
+
          async onOTPVerification() {
             this.pending = true;
             this.authError = []
@@ -547,7 +564,6 @@
 
       async mounted() {
          if (Object.values(this.user).length) {
-            // console.log('this.user.phone', this.user.phone)
             this.authForm.name = this.user.full_name
             this.authForm.email = this.user.email
             this.authForm.phone = this.user.phone.toString().slice(3)
