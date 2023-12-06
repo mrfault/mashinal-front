@@ -141,7 +141,7 @@
          ...mapGetters(['announcement','loginInEditModal']),
 
          contact() {
-            return this.getAnnouncementContact(this.announcement)
+            return this.getAnnouncementContact(this.announcement);
          },
 
          needToPay() {

@@ -180,6 +180,7 @@ Vue.use({
                   lng: item.longitude ? parseFloat(item.longitude) : 0
                };
             },
+
             getAnnouncementImage(item) {
                if (item.media.main_inner) {
                   return item.media.main_inner[0]
