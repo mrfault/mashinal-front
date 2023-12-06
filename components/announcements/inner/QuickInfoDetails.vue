@@ -148,6 +148,17 @@
          }
       },
 
+      methods: {
+         handleContactClick() {
+            if (this.contact?.user?.active_announcements_count > 1 ||
+               this.announcement?.is_part_salon ||
+               this.announcement?.is_auto_salon ||
+               this.announcement?.is_external_salon) {
+               this.$router.push(this.contact.link)
+            }
+         },
+      },
+
       computed: {
          getAddress() {
             return this.announcement?.is_auto_salon ?
