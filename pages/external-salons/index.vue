@@ -92,7 +92,8 @@
          ...mapGetters(['salonsFiltered', 'salonsInBounds', 'mapView']),
 
          nonOfficialSalons() {
-            return this.salonsFiltered.filter(item => item.announcement_count > 0).filter(item => !item.is_official);
+            // return this.salonsFiltered.filter(item => item.announcement_count > 0).filter(item => !item.is_official);
+            return this.salonsFiltered.filter(item => item.announcement_count > 0);
          },
 
          officialSalons() {
