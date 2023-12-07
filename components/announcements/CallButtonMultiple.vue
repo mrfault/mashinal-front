@@ -74,18 +74,18 @@
                this.trackCall(1);
                this.pending = true;
 
-               if (this.announcement.is_official_auto_salon) {
-                  window.getManualClassifiedNumber(ringostat_announce,
-                     (number) => {
-                        this.ringostat_number = number.numberWithoutMask;
-                        this.ringostat_number_mask = number.numberWithoutMask;
-                        this.pending = false
-                     }, 0, this.phones.map(item => `${item}`).join(',')
-                  );
-               } else {
+               // if (this.announcement.is_official_auto_salon) {
+               //    window.getManualClassifiedNumber(ringostat_announce,
+               //       (number) => {
+               //          this.ringostat_number = number.numberWithoutMask;
+               //          this.ringostat_number_mask = number.numberWithoutMask;
+               //          this.pending = false
+               //       }, 0, this.phones.map(item => `${item}`).join(',')
+               //    );
+               // } else {
                   this.pending = false;
                   this.ringostat_number = this.phones[0];
-               }
+               // }
             }
          },
 

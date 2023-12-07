@@ -147,7 +147,10 @@
          },
 
          userFullName() {
-            return this.userAnnouncements.find(item => item.user.full_name) || this.getUserRegistrationMarks?.data?.find(item => item.user.full_name);
+            console.log('w1', this.userAnnouncements.find(item => item.user.full_name))
+            console.log('w2', this.getUserRegistrationMarks?.data?.find(item => item?.user?.full_name))
+
+            return this.userAnnouncements.find(item => item?.user?.full_name) || this.getUserRegistrationMarks?.data?.find(item => item?.user?.full_name);
          },
 
          // crumbs() {
