@@ -2183,7 +2183,7 @@ export default {
    wallet_balance: "Pul kisəsinin balansı",
    want_to_change_your_email: "E-mail ünvanı dəyişmək istərdinizmi?",
    want_to_change_your_phone_number: "Əlaqə nömrənizi dəyişmək istərdinizmi?",
-   want_to_delete_a_search:
+   want_to__search:
       "Seçilmiş axtarış şablonları silmək istədiyinizə əminsiniz?",
    "Washer nozzles": "şüşə yuyucu uçün forsunka",
    watch_files: "Şəkil/videoya bax",
@@ -2973,6 +2973,8 @@ export default {
    "vin_search_1": "Qeydiyyat nişanın və ya BAN (VİN) nömrəni daxil etdikdə, elanınız axtarışlarda daha ön sıralarda yer alacaqdır.",
    "registration_number_note": "QEYD: Daxil etdiyiniz qeydiyyat nişanı avtomobilin həqiqiliyin təsdiq edir və saytda istifadəçilərə nümayiş etdirilməyəcək!",
    "important_info": "Vacib məlumat",
-
+   delete_account: 'Hesabın silinməsi',
+   delete_account_description: 'Mashin.AL portalından hesabınızın silinməsini (elanlarınızın, qaraja əlavə edilmiş avtomobillərinizin və fərdi məlumatlarınızın) istəyirsinizsə, aşağıda göstərilmiş pəncərədə, hesabınıza bağlı mobil nömrənizi daxil edin.',
+   delete_account_description_2: 'Hesabınızın silinmə prosesi uğurla həyata keçirildi.'
 };
 
