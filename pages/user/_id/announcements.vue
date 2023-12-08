@@ -1,7 +1,8 @@
 <template>
    <div class="pages-user-announcements">
       <div class="container">
-         <h2 class="pages-user-announcements__title">{{ $t('all_announcements_of_user', { name: userFullName?.user?.full_name }) }}</h2>
+<!--         <h2 class="pages-user-announcements__title">{{ $t('all_announcements_of_user', { name: userFullName?.user?.full_name }) }}</h2>-->
+<!--         <h2 class="pages-user-announcements__title">{{ $t('all_announcements_of_user', { name: userFullName }) }}</h2>-->
 
          <div class="pages-user-announcements__subhead">
             <div class="tabsWrapper">
@@ -147,7 +148,7 @@
          },
 
          userFullName() {
-            console.log('w1', this.userAnnouncements.find(item => item.user.full_name))
+            console.log('w1', this.userAnnouncements?.find(item => item?.user?.full_name))
             console.log('w2', this.getUserRegistrationMarks?.data?.find(item => item?.user?.full_name))
 
             return this.userAnnouncements.find(item => item?.user?.full_name) || this.getUserRegistrationMarks?.data?.find(item => item?.user?.full_name);

@@ -410,6 +410,7 @@ export default {
         });
     },
     openCroppa(e, key) {
+       console.log('openCroppa', key)
       this.isOpenCroppa = true;
       this.croppaSelectedKey = key;
     },

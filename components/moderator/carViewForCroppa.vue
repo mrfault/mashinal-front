@@ -198,8 +198,10 @@ export default {
       return capacity + year + mileage;
     },
     getType() {
-      if (this.announce.type[1] !== undefined) this.types.push('Vip');
-      if (this.announce.type[2] !== undefined) this.types.push('Premium');
+       if (this.announce.type) {
+          if (this.announce.type[1] !== undefined) this.types.push('Vip');
+          if (this.announce.type[2] !== undefined) this.types.push('Premium');
+       }
     },
     cropperCrop() {
       let getData = this.$refs.cropper.getData();
@@ -232,10 +234,12 @@ export default {
   },
   computed: {
     findOriginalImage() {
+       console.log('222222fff', this.images[this.croppaSelectedKey])
       let original = this.images[this.croppaSelectedKey].replace('/conversions', '').replace('-thumb', '').replace('-upload_thumb', '');
       if (!this.imageExists(original)) original = original.replace('.jpg', '.png')
       return original;
     },
+
     day() {
       let str = this.announce.humanize_created_at.toString().split(' ')[0].toString().split('');
       if (str[0] === '0') {
