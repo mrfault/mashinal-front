@@ -234,10 +234,18 @@ export default {
   },
   computed: {
     findOriginalImage() {
-       console.log('222222fff', this.images[this.croppaSelectedKey])
-      let original = this.images[this.croppaSelectedKey].replace('/conversions', '').replace('-thumb', '').replace('-upload_thumb', '');
-      if (!this.imageExists(original)) original = original.replace('.jpg', '.png')
-      return original;
+       if (this.saved_images[this.croppaSelectedKey] !== undefined) {
+          let imageId = this.saved_images[this.croppaSelectedKey];
+
+          if (this.announce.original_media[imageId] !== undefined) {
+             return this.announce.original_media[imageId]
+          }
+       }
+       return this.images[this.croppaSelectedKey];
+
+      // let original = this.images[this.croppaSelectedKey].replace('/conversions', '').replace('-thumb', '').replace('-upload_thumb', '');
+      // if (!this.imageExists(original)) original = original.replace('.jpg', '.png')
+      // return original;
     },
 
     day() {

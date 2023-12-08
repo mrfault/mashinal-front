@@ -21,7 +21,6 @@
                 </div>
                 <div style="margin-top: 13px; font-size: 13px;">{{ $t('add_image_name_' + i) }}</div>
               </a>
-
             </div>
 
             <div :class="{'disable': !draggableEnabled}" class="image-load-content" @click="handleDisabledContentClick">
@@ -35,14 +34,12 @@
                     :class="{'loadCroppa':loadCroppa}"
                     :style="imagePreloaderContainer[imagePreloaderContainer.length-1] === false ? 'cursor: move' : ''"
                     class="announcement-category__overlay__generation__item announcement-category__photo mb-20 cursor-pointer"
-
               >
-                    <div v-if="rotateKey == key" class="moderator-image-loader">
+                 <div v-if="rotateKey == key" class="moderator-image-loader">
 <!--                      <elements-loader></elements-loader>-->
                       <img alt="" class="show" src="/images/loading-78.gif">
                     </div>
                 <div
-
                   v-else
                   :class="{'imagePreloaderContainer':imagePreloaderContainer[key]}"
                   :style="'background-image:url('+((imagePreloaderContainer[key] === undefined || !imagePreloaderContainer[key]) ? setSavedImageUrls[key] : '')+')'"
@@ -116,7 +113,6 @@
           @newThumb="newThumb"
         />
       </modal-popup>
-
 
       <no-ssr>
         <LightBox v-if="active_box" :key="'LB'+lbIndex" :media="fancyBoxMedia" :showLightBox="active_box"
@@ -410,7 +406,7 @@ export default {
         });
     },
     openCroppa(e, key) {
-       console.log('openCroppa', key)
+       // console.log('openCroppa', key)
       this.isOpenCroppa = true;
       this.croppaSelectedKey = key;
     },
