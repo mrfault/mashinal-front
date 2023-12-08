@@ -3,7 +3,19 @@
       <div class="bg-white">
          <div class="container">
             <div class="announcements-inner">
-               <breadcrumbs :crumbs="crumbs" />
+               <div class="plate-id__head">
+                  <breadcrumbs :crumbs="crumbs" />
+
+                  <div class="btns d-none d-md-block">
+                     <add-favorite
+                        class="h-52"
+                        :template="'btn'"
+                        :text="$t('add_favorite')"
+                        :announcement="registrationMark"
+                        v-if="![0,2,3,4].includes(registrationMark.status)"
+                     />
+                  </div>
+               </div>
 
                <div class="row flex-column flex-lg-row">
                   <div class="col-auto">
@@ -62,6 +74,11 @@
 
 <!--         <HandleIds :single="true" :items="{ type: 'plate', id: registrationMark.id }" />-->
       </div>
+
+      <AnnouncementBar
+         v-if="isMobileBreakpoint"
+         :announcement="registrationMark"
+      />
    </div>
 </template>
 
@@ -74,6 +91,7 @@
    import FloatingCta from "~/components/announcements/inner/FloatingCta.vue";
    import HandleIds from "~/components/announcements/HandleIds.vue";
    import Cap from "~/components/elements/Cap.vue";
+   import AnnouncementBar from "~/components/announcements/inner/AnnouncementBar.vue";
 
    export default {
       name: 'pages-marks-id',
@@ -87,6 +105,7 @@
       // middleware: ['auth_general'],
 
       components: {
+         AnnouncementBar,
          QuickInfo,
          Comment,
          AddFavorite,
@@ -150,6 +169,25 @@
 <style lang="scss">
    .plate-id {
       padding-bottom: 20px;
+
+      &__head {
+         display: flex;
+         align-items: center;
+
+         .btns {
+            .favorite-btn {
+               border: none;
+               height: 25px !important;
+               padding: 0 !important;
+               background-color: transparent;
+
+               span {
+                  white-space: nowrap;
+                  margin: 0;
+               }
+            }
+         }
+      }
 
       .bg-white {
          padding-bottom: 56px;

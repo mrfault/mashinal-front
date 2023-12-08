@@ -238,6 +238,7 @@ const getInitialState = () => ({
    registrationMarks: [],
    myPlates: [],
    mySavedPlates: [],
+   userInfo: {},
    mySavedParts: [],
    registrationMark: [],
    handleIds: null,
@@ -275,6 +276,7 @@ export const getters = {
    getUserRegistrationMarks: s => s.userRegistrationMarks,
    getMyPlates: s => s.myPlates,
    getMySavedPlates: s => s.mySavedPlates,
+   getUserInfo: s => s.userInfo,
    getMySavedParts: s => s.mySavedParts,
    getRegionNumbers: s => s.regionNumbers,
    getRegistrationMarks: s => s.registrationMarks,
@@ -714,6 +716,11 @@ export const actions = {
    async fetchMySavedPlates({commit}, data = '') {
       const res = await this.$axios.$get(`${this.$env().API_SECRET}/me/bookmarks/plate-numbers${data}`)
       commit("mutate", {property: "mySavedPlates", value: res || []})
+   },
+
+   async fetchUserInfo({commit}, id ) {
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/user/${id}/info`)
+      commit("mutate", {property: "userInfo", value: res || {}})
    },
 
    async fetchMySavedParts({commit}, data = '') {
