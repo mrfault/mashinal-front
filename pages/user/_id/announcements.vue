@@ -1,8 +1,9 @@
 <template>
    <div class="pages-user-announcements">
       <div class="container">
-         <h2 class="pages-user-announcements__title">{{ $t('all_announcements_of_user', { name: userFullName?.user?.full_name }) }}</h2>
-<!--         <h2 class="pages-user-announcements__title">{{ $t('all_announcements_of_user', { name: userFullName }) }}</h2>-->
+         <h2 class="pages-user-announcements__title">
+            {{ $t('all_announcements_of_user', { name: getUserInfo.name }) }}
+         </h2>
 
          <div class="pages-user-announcements__subhead">
             <div class="tabsWrapper">
@@ -94,7 +95,7 @@
 
       head() {
          return this.$headMeta({
-            title: this.$t('all_announcements_of_user', { name: this.userFullName?.user?.full_name })
+            title: this.$t('all_announcements_of_user', { name: this.getUserInfo.name })
          });
       },
 
@@ -132,12 +133,13 @@
       },
 
       async asyncData({ store, route }) {
+         await store.dispatch('fetchUserInfo', route.params.id);
          await store.dispatch('getUserAnnouncements', route.params.id);
          await store.dispatch('fetchUserRegistrationMarks', `${route.params.id}`);
       },
 
       computed: {
-         ...mapGetters(['userAnnouncements', 'getUserRegistrationMarks']),
+         ...mapGetters(['userAnnouncements', 'getUserRegistrationMarks', 'getUserInfo']),
 
          tabs() {
             return [
@@ -145,20 +147,7 @@
                { id: 2, name: this.$t('registration_badges_2'), length: this.getUserRegistrationMarks?.data?.length },
                { id: 3, name: this.$t('menu_spare_parts'), length: this.userAnnouncements?.filter(item => item.type === 'part')?.length },
             ]
-         },
-
-         userFullName() {
-            console.log('w1', this.userAnnouncements?.find(item => item?.user?.full_name))
-            console.log('w2', this.getUserRegistrationMarks?.data?.find(item => item?.user?.full_name))
-
-            return this.userAnnouncements.find(item => item?.user?.full_name) || this.getUserRegistrationMarks?.data?.find(item => item?.user?.full_name);
-         },
-
-         // crumbs() {
-         //    return [
-         //       { name: this.$t('all_announcements_of_user', { name: this.userFullName }) },
-         //    ]
-         // }
+         }
       }
    }
 </script>
