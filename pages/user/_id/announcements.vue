@@ -1,7 +1,7 @@
 <template>
    <div class="pages-user-announcements">
       <div class="container">
-<!--         <h2 class="pages-user-announcements__title">{{ $t('all_announcements_of_user', { name: userFullName?.user?.full_name }) }}</h2>-->
+         <h2 class="pages-user-announcements__title">{{ $t('all_announcements_of_user', { name: userFullName?.user?.full_name }) }}</h2>
 <!--         <h2 class="pages-user-announcements__title">{{ $t('all_announcements_of_user', { name: userFullName }) }}</h2>-->
 
          <div class="pages-user-announcements__subhead">
