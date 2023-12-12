@@ -364,7 +364,7 @@
          <h2>{{ $t('photos') }}</h2>
          <client-only>
             <image-component :type="'moto'" :initial-form="form" :announcement="announcement"
-                             :deletedFiles="deletedFiles"/>
+                             :deletedFiles="deletedFiles" />
          </client-only>
          <div class="image_info">
             <inline-svg class="comment_svg" :src="'/icons/info.svg'"/>

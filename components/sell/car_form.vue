@@ -31,6 +31,7 @@
                   @change="onChangeModel()"
                   @clear="clearFields(['year', 'body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])"
                />
+
                <form-select
                   v-model="form.year"
                   :clear-option="false"
@@ -43,6 +44,7 @@
                   @change="onChangeYear"
                   @clear="clearFields(['body_type', 'generation', 'fuel_type', 'transmission', 'gearing', 'modification'])"
                />
+
                <form-select
                   v-model="form.body_type"
                   :clear-option="false"
@@ -55,6 +57,7 @@
                   @change="onChangeBody"
                   @clear="clearFields(['generation', 'fuel_type', 'transmission', 'gearing', 'modification'])"
                />
+
                <form-select
                   v-model="form.generation"
                   :clear-option="false"
@@ -67,6 +70,7 @@
                   @change="onChangeGeneration"
                   @clear="clearFields(['generation', 'fuel_type', 'transmission', 'gearing', 'modification'])"
                />
+
                <div class="divider mobile-column">
                   <form-select
                      v-model="form.fuel_type"
@@ -87,6 +91,7 @@
                      transparent
                   />
                </div>
+
                <form-select
                   v-model="form.gearing"
                   :clear-option="false"
@@ -98,6 +103,7 @@
                   :translate-options="false"
                   @change="onChangeGearing"
                />
+
                <form-select
                   v-model="form.transmission"
                   :clear-option="false"
@@ -108,6 +114,7 @@
                   :options="sellTransmissions.map((transmission) => ({id: transmission.box, name: $t('box_values')[transmission.box]}))"
                   @change="onChangeTransmission($event)"
                />
+
                <form-select
                   v-model="form.modification"
                   :clear-option="false"
@@ -120,8 +127,8 @@
                   object-in-value
                />
             </template>
+
             <div class="divider mobile-column">
-<!--               {{$v.form.mileage.$error}}-->
                <div>
                   <form-numeric-input
                       v-model="form.mileage"
@@ -146,9 +153,6 @@
                   class="mileage_types"
                />
             </div>
-
-<!--            {{$v.form.mileage.$error}} - $v.form.mileage.$error <br>-->
-<!--            {{form.mileage}} - form.mileage.length-->
 
             <template v-if="isEdit">
                <div class="divider">
@@ -186,9 +190,7 @@
                      :radio-value="1"
                      :type="'checkbox'"
                      input-name="is_new"
-
                   />
-<!--                  @change="onChangeIsNew"-->
 
                   <form-radio
                      :id="'4'"
@@ -212,6 +214,7 @@
                      </template>
                   </form-radio>
                </div>
+
                <div v-if="!user.external_salon" class="divider mobile-column">
                   <form-checkbox
                      v-model="form.customs_clearance"
@@ -228,6 +231,7 @@
                      transparent
                   />
                </div>
+
                <div class="divider mobile-column">
                   <form-numeric-input
                      v-model="form.price"
@@ -246,6 +250,7 @@
                      </toggle-group>
                   </div>
                </div>
+
                <div v-if="!user.external_salon" class="divider_3">
                   <form-checkbox
                      v-model="form.tradeable"
@@ -555,14 +560,11 @@
             <p>{{ $t("additional_info_warning") }}</p>
          </div>
       </div>
+
       <div :class="{form_error: $v.form.saved_images.$error || form_errored}" class="image_section">
          <h2>{{ $t("photos") }}</h2>
-<!--         <div style="border: 2px solid red; padding: 20px;">-->
-<!--            <form>-->
-<!--               <input type="file" name="images[]" multiple @input="aaa">-->
-<!--               <button type="submit">Send</button>-->
-<!--            </form>-->
-<!--         </div>~-->
+<!--         <pre>{{form.saved_images}}</pre>-->
+
          <client-only>
             <image-component
                :announcement="announcement"
@@ -571,6 +573,7 @@
                :type="'cars'"
             />
          </client-only>
+
          <div class="image_info">
             <inline-svg :src="'/icons/info.svg'"/>
             <div class="warning_texts">
@@ -654,9 +657,11 @@
 
       computed: {
          ...mapGetters(['brands', 'models', 'sellYears', 'sellBody', "sellGenerationsV2", "sellEngines", "sellGearing", "sellTransmissions", "sellModificationsV2", "colors", "popularOptions", 'sellOptions', "allSellOptions2"]),
+
          readyAllParameters() {
             return this.form.modification && this.sellModificationsV2.length > 0
          },
+
          otherParameters() {
             let list = this.popularOptions.map((p) => ({
                ...p,
@@ -669,31 +674,36 @@
                this.other_parameters_checkboxes[p.slug] = false
             })
             return list
-         },
+         }
       },
 
       props: {
          announcement: {
             type: Object,
          },
+
          isReady: {
             type: Boolean,
             default: false
          },
+
          isEdit: {
             type: Boolean,
             default: false
          },
+
          region_id: {
             type: Number,
             required: true
          },
-         form_errored: Boolean,
+
+         form_errored: Boolean
       },
 
       data() {
          return {
             gearingIcons: ["-", "/icons/rear-transmission.svg", "/icons/front-transmission.svg", "/icons/full-transmission.svg"],
+
             priceTypes: [
                {
                   id: 1,
@@ -708,9 +718,13 @@
                   name: {az: "EUR", ru: "EUR"},
                },
             ],
+
             other_parameters_checkboxes: {},
+
             deletedFiles: [],
+
             mileage_is_new: false,
+
             form: {
                brand: "",
                model: "",
@@ -755,16 +769,6 @@
       },
 
       methods: {
-         aaa(e) {
-            e.preventDefault();
-            let image = e.target.files[0];
-            let formData = new FormData();
-            formData.append('images[]', image)
-
-
-            this.$axios.post('https://dev.mashin.al/api/upload_temporary_images', formData)
-            console.log(formData)
-         },
          ...mapActions(['getModels', 'getSellYears', 'getSellBody', 'getSellGenerationsV2', 'getSellEngines', 'getSellGearing', 'getSellTransmissions', 'getSellModificationsV2']),
 
          async onChangeBrand({slug}) {
