@@ -18,9 +18,15 @@
          <span class="registration-marks__number-description">MASHIN.AL</span>
       </div>
 
+      <QuickInfoPrice
+         v-if="type === 'plates' && isMobileBreakpoint"
+         :class="{'mt-2 mb-2' : type === 'plates'}"
+         :announcement="announcement"
+         :type="type"
+      />
+
 <!--      v-if="!isMobileBreakpoint || type === 'plates'"-->
       <QuickInfoDetails
-
           :announcement="announcement"
           :contact="contact"
           :type="type"
@@ -399,6 +405,16 @@
       .quick-info {
          .quickInfoDetails {
             padding: 12px;
+
+            &.registration-marks {
+               border-radius: 12px !important;
+            }
+         }
+
+         .registration-marks {
+            &__number {
+               border-radius: 12px !important;
+            }
          }
 
          &__details {

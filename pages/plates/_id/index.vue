@@ -92,6 +92,8 @@
    import HandleIds from "~/components/announcements/HandleIds.vue";
    import Cap from "~/components/elements/Cap.vue";
    import AnnouncementBar from "~/components/announcements/inner/AnnouncementBar.vue";
+   import AnnouncementTitle from "~/components/announcements/inner/AnnouncementTitle.vue";
+   import QuickInfoPrice from "~/components/announcements/inner/QuickInfoPrice.vue";
 
    export default {
       name: 'pages-marks-id',
@@ -105,6 +107,8 @@
       // middleware: ['auth_general'],
 
       components: {
+         QuickInfoPrice,
+         AnnouncementTitle,
          AnnouncementBar,
          QuickInfo,
          Comment,
