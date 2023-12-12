@@ -22,8 +22,8 @@
                 :class="{ disabled: loading[key], 'button-new-tab' : isModeationPage, 'btn-transparent' : !isModeationPage }"
                 type="button"
                 @click.stop="fileRotate(key, index)"
-              >
-              </button>
+              ></button>
+
               <button
                 v-if="isModeationPage"
                 :class="['button-new-tab', { disabled: loading[key] }]"
@@ -32,22 +32,20 @@
               >
                 <icon name="edit"/>
               </button>
+
               <button
                 v-if="isModeationPage"
                 :class="['button-new-tab', { disabled: loading[key] }]"
                 type="button"
                 @click.stop="openInNewTab(key)"
-              >
-                D
-              </button>
+              >D</button>
+
               <button
                 :class="{ disabled: loading[key], 'button-new-tab' : isModeationPage, 'btn-transparent' : !isModeationPage }"
                 type="button"
                 @click.stop="fileDelete(key, index)"
               >
                 <icon name="cross"/>
-
-                <!-- <inline-svg src="/icons/cross.svg" height="14"/> -->
               </button>
             </div>
 <!--            <button-->
