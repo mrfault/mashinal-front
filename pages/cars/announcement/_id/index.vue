@@ -84,7 +84,7 @@
                </div>
 
                <div class="product-inner__info-right">
-                  <quick-info type="cars"/>
+                  <quick-info type="cars" />
 
                   <site-banner v-if="!isMobileBreakpoint" class="mb-3" type="in-announcement" />
                </div>
