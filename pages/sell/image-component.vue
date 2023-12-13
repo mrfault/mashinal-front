@@ -143,7 +143,6 @@
       watch: {
          files() {
             if (this.files.length) this.$nuxt.$emit('get-main-image', this.files[0].image);
-            console.log('this.files', this.files)
          }
       }
    }
