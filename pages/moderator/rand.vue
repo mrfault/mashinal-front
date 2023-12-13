@@ -57,7 +57,6 @@
         return this.types[Math.floor(Math.random() * this.types.length)];
       },
       async getAnnounce(randomType) {
-        // console.log("randomType",randomType);
         let data = false;
         try {
           if (['moto', 'moto_atv', 'scooters'].includes(randomType)){
@@ -87,8 +86,3 @@
     }
   }
 </script>
-
-<style scoped>
-
-</style>
-

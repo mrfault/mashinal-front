@@ -869,6 +869,8 @@
           this.handleGearings(this.type_of_drives);
 
 
+           console.log('data.announce?.brand.slug', data.announce)
+
           this.form = {
             delay_comment: '',
             car_catalog_id: data.announce?.car_catalog_id,
@@ -961,10 +963,8 @@
           })
           this.announcementIsAvailable = false;
           this.loading = false;
-
+           this.$toast.error(e);
         }
-
-
       },
       async checkWithVin() {
         let vin = this.form.vin

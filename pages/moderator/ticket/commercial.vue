@@ -686,7 +686,7 @@ export default {
 
   async fetch({store, route}) {
     await store.dispatch('getCommercialAllOptions');
-    await store.dispatch('getCommercialTypes');
+    // await store.dispatch('getCommercialTypes');
     await store.dispatch('getOptions');
     await store.dispatch('getAllOtherOptions');
     await store.dispatch('getColors');

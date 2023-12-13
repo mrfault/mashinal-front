@@ -111,7 +111,7 @@
                >
                </no-results>
 
-               <HandleIds :items="handleIdsOptions" />
+<!--               <HandleIds :items="handleIdsOptions" />-->
             </div>
          </div>
       </div>

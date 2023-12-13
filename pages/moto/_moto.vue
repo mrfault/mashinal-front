@@ -35,7 +35,7 @@
 
          <no-results v-else/>
 
-         <HandleIds :items="handleIdsOptions" />
+<!--         <HandleIds :items="handleIdsOptions" />-->
       </div>
    </div>
 </template>
