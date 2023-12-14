@@ -56,7 +56,7 @@
                              style="background: #dadada !important"
                              @click="openInNewTab(setSavedImageUrls[key], key)"
                              @click.stop>
-                                               <icon name="image"/>
+                          <icon name="image" />
                        </span>
                        <span v-if="!imagePreloaderContainer[key]" class="cursor-pointer button-new-tab"
                              @click.stop="rotateLeft($event,key)">
@@ -269,7 +269,6 @@
            // return this.$env.API_BASE_URL + this.defaultImages[item];
            return this.defaultImages[item];
          });
-          console.log('qunduz', this.image)
          this.$store.commit('setSavedImageUrls', this.image);
          this.$emit('passBase64Images', this.image);
        }
@@ -348,7 +347,6 @@
            })
          },
          get() {
-            console.log('555555', this.savedImageUrls)
            return this.savedImageUrls;
          }
        },
@@ -373,11 +371,11 @@
              return this.announce.original_media[imageId]
            }
          }
-
          return value;
        },
        openInNewTab(value, key) {
          window.open(this.findOriginalImage(value, key));
+         // window.open(value);
        },
        newThumb(newThumb) {
          this.isOpenCroppa = false;
@@ -449,7 +447,6 @@
        },
 
        handleFormClick() {
-          // console.log('handleFormClick')
          this.input.click();
        },
        handleDisabledContentClick() {
@@ -508,7 +505,6 @@
          }
        },
        fileRead: function (key) {
-          // console.log('fileRead', key)
          let reader = new FileReader();
 
          reader.addEventListener("load", (e) => {

@@ -1,6 +1,6 @@
 <template>
-   <div class="infiniteLoadingData">
-      <!-- ваш контент -->
+   <div class="infiniteLoadingData" v-if="isLoading">
+      <loader />
    </div>
 </template>
 
@@ -31,7 +31,7 @@
 
             if (bottomOfWindow) {
                this.loadMoreData();
-               this.$emit('handleScroll', this.page);
+               // this.$emit('handleScroll', this.page);
             }
          },
       },
@@ -54,6 +54,14 @@
    };
 </script>
 
-<style scoped>
-/* Ваш стиль для компонента */
+<style lang="scss">
+   .infiniteLoadingData {
+      position: relative;
+      height: 100px;
+
+      .loader {
+         top: 0;
+         transform: translateX(-50%);
+      }
+   }
 </style>
