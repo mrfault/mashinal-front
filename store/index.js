@@ -531,14 +531,18 @@ export const actions = {
    },
 
    async fetchMonetizedAnnouncementsPageInfinite({ state, commit }, payload) {
-      let infiniteData = JSON.parse(JSON.stringify(state.monetizedPage));
+      let infiniteData = JSON.parse(JSON.stringify(state.monetizedPage)),
+          res;
 
-      const res = await this.$axios.$get(
-         `${this.$env().API_SECRET}/monetized-announcements?page=${payload.page || 1}`
-      );
+      if (infiniteData.meta.current_page < infiniteData.meta.total_pages) {
+         res = await this.$axios.$get(
+            `${this.$env().API_SECRET}/monetized-announcements?page=${payload.page || 1}`
+         );
+      }
 
       infiniteData.data.push(...res.data);
-      commit("mutate", {property: "monetizedPage", value: infiniteData});
+      infiniteData.meta = res.meta;
+      commit("mutate", { property: "monetizedPage", value: infiniteData });
    },
 
    async fetchMonetizedAnnouncementsHome({commit}) {
@@ -2237,9 +2241,7 @@ export const mutations = {
    },
    //  moderator
    setSavedImageUrls(state, data) {
-      console.log('setSavedImageUrls-1', data)
       state.savedImageUrls = state.savedImageUrls.concat(data);
-      console.log('setSavedImageUrls-2', state.savedImageUrls)
    },
    resetSavedImages(state) {
       Vue.set(state, "savedImageUrls", []);

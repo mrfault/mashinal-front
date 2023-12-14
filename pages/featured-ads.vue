@@ -20,7 +20,6 @@
 
       <InfiniteLoadingData
          :action="'fetchMonetizedAnnouncementsPageInfinite'"
-         @handleScroll="handleScroll"
       />
    </div>
 </template>
@@ -65,12 +64,8 @@
             this.pending = true;
             await this.$store.dispatch('fetchMonetizedAnnouncementsPage', { page: page });
             this.pending = false;
-            //
-            this.scrollTo('.announcements-grid', [-70, -200]);
-         },
 
-         handleScroll(e) {
-            console.log('handleScroll', e)
+            this.scrollTo('.announcements-grid', [-70, -200]);
          }
       },
 

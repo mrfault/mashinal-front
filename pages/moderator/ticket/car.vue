@@ -896,7 +896,6 @@
               thumb: `https://img.youtube.com/vi/${data.announce?.youtube_link}/hqdefault.jpg`,
             },
 
-
             selectedColor: data.announce?.colors,
             is_matte: data.announce?.is_matte,
             mileage: parseInt(data.announce?.mileage) || 0,
