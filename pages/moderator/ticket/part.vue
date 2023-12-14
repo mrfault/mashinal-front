@@ -405,7 +405,7 @@
                <upload-image-moderator
                   :announce="single_announce"
                   :changePosition="saved_images.length === imagesBase64.length"
-                  :default-images="single_announce.media"
+                  :default-images="single_announce.original_media"
                   :imageIsUploading="imageIsUploading"
                   :is-edit="false"
                   :load-croppa="true"
@@ -845,7 +845,7 @@ export default {
                   )
                   this.imageIsUploading = false;
                   this.saved_images = this.saved_images.concat(data.ids)
-                  this.$store.commit('setSavedImageUrls', data.images)
+                  this.$store.commit('setSavedImageUrls', data.original_media)
                   this.$nuxt.$emit(
                      'remove_image_loading_by_index',
                      this.saved_images.length,
