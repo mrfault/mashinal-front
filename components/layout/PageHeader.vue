@@ -329,7 +329,6 @@ import {UserDataMixin} from '~/mixins/user-data'
 
 import ThemeSwitch from '~/components/elements/ThemeSwitch'
 import SiteBanner from "~/components/banners/SiteBanner";
-import CustomDropdown from "~/components/elements/CustomDropdown.vue";
 import IconNovelties from "~/components/elements/IconNovelties.vue";
 import LanguageChange from "~/components/elements/languageChange.vue";
 
@@ -339,7 +338,7 @@ export default {
    components: {
       LanguageChange,
       IconNovelties,
-      CustomDropdown,
+      // CustomDropdown,
       SiteBanner,
       ThemeSwitch,
    },

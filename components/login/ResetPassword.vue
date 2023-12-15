@@ -2,9 +2,9 @@
   <form class="form reset-password" @submit.prevent="submit" novalidate>
     <div class="form-part">
       <form-text-input
-        :placeholder="$t('enter_the_code')" 
+        :placeholder="$t('enter_the_code')"
         :mask="'99999'"
-        :invalid="validator.code.$error" 
+        :invalid="validator.code.$error"
         v-model="form.code"
       />
       <form-text-input
