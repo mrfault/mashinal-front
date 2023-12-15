@@ -162,7 +162,6 @@
    import Grid from '~/components/announcements/Grid'
    import Gallery from '~/components/announcements/inner/Gallery'
    import ThumbsGallery from '~/components/announcements/inner/ThumbsGallery'
-   import CustomDropdown from "~/components/elements/CustomDropdown.vue";
    import Cap from "~/components/elements/Cap.vue";
    import Relatives from "~/components/announcements/inner/Relatives.vue";
    import HandleIds from "~/components/announcements/HandleIds.vue";
@@ -172,7 +171,7 @@
          Grid,
          Gallery,
          ThumbsGallery,
-         CustomDropdown,
+         // CustomDropdown,
          Cap,
          Relatives,
          HandleIds
