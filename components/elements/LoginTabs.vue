@@ -35,12 +35,14 @@
 
          <div v-else-if="action === 'password'">
             <form-text-input
+               :invalid="!!errorMessage"
                type="password"
                autocomplete="new-password"
                :maxlength="255"
                :placeholder="$t('enter_password')"
                v-model="userPassword"
             />
+            <span class="errorMessage" v-if="errorMessage">{{ errorMessage }}</span>
 
             <button
                :class="['btn', 'btn--green', 'full-width', 'mt-4', { pending }]"
@@ -112,7 +114,8 @@
             form: {},
             resendData: false,
             userPassword: '',
-            userPhone: ''
+            userPhone: '',
+            errorMessage: null
          }
       },
 
@@ -161,7 +164,7 @@
                this.$nuxt.$emit('closeModal');
             } catch (err) {
                this.pending = false;
-               this.$toasted.error(err.response.data.message);
+               this.errorMessage = err.response.data.message;
             }
          },
 

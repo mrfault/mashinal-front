@@ -3,19 +3,21 @@
       <div class="form-part">
          <div v-if="isMobileBreakpoint" class="ma-login-tab--mobile__top">
             <div class="ma-login-tab--mobile__top--image">
-               <img src="/images/confirm-phone-mobile.png"/>
+               <img src="/images/confirm-phone-mobile.png" alt="confirm-phone-img"/>
             </div>
+
             <h2 class="ma-title--md">{{ $t('confirmation_code') }}</h2>
             <p class="login_mobile_desc">{{ $t('confirmation_code_desc') }}</p>
          </div>
+
          <form-text-input
             v-if="!form.staticPhone && isNewUser"
             v-model="form.name"
             :maxlength="30"
             :placeholder="$t('your_name')"
             auto-focus
-            :class="{form_error: authError.includes('name')}"
-            :invalid=" authError.includes('name')"
+            :class="{form_error: !!otpErrorMessage}"
+            :invalid="!!otpErrorMessage"
          />
          <separated-input v-if="isMobileBreakpoint" v-model="form.code"/>
 
@@ -28,12 +30,13 @@
          <form-text-input
             v-if="!isMobileBreakpoint"
             v-model="form.code"
-            :class="{form_error: authError.includes('code')}"
-            :invalid="validator.code.$error || authError.includes('code')"
+            :class="{form_error: !!otpErrorMessage}"
+            :invalid="validator.code.$error || !!otpErrorMessage"
             :mask="'99999'"
             :placeholder="$t('enter_the_code')"
             auto-focus
          />
+         <span class="errorMessage" v-if="otpErrorMessage">{{otpErrorMessage}}</span>
       </div>
 
       <p v-if="showResend || codeSent || askToCallSupport" class="send-again-text">
@@ -77,6 +80,7 @@
       data() {
          return {
             authError: [],
+            otpErrorMessage: null,
             pending: false,
             showResend: this.resendData.showResend || true,
             resendSmsAfterSecond: this.resendData.resendSmsAfterSecond || 30,
@@ -119,7 +123,6 @@
             this.$axios
                .$post(this.$env().API_SECRET + '/auth/confirm-otp', form)
                .then(async (data) => {
-                  console.log('submit')
                   // track conversion
                   this.fbTrack('Complete Registration Api')
                   this.gtagTrack('AW-600951956/-O6CCJGB2fIBEJSZx54C')
@@ -134,16 +137,9 @@
                      if (this.editingPostAuthor == this.$auth.user.id)
                         this.$router.push(decodeURI(this.$route.query.ref));
                   }
-                  // if (this.$store.state.editing == true) {
-                  //   if (this.editingPostAuthor == this.$auth.user.id) {
-                  //     this.$router.push(
-                  //       this.$localePath(`/cars/announcement/${this.editPath}/edit`),
-                  //     )
-                  //   }
-                  //   // this.$router.push("ehtiyat-hisseleri/magazalar")
-                  // }
-                  if (this.loginInEditModal){
-                     setTimeout(()=>{
+
+                  if (this.loginInEditModal) {
+                     setTimeout(() => {
                         if (this.$route.name == 'cars-announcement-id___az' || this.$route.name == 'cars-announcement-id___ru') {
                            this.$toasted.error(this.$t('this_announcement_belongs_to_another_user'))
                         }
@@ -153,14 +149,7 @@
                })
                .catch((err) => {
                   this.pending = false;
-                  // const errors = []
-                  // this.$toasted.error(err.response.data.code || err.response.data.message || err.response)
-                  // for (const key in err.response.data?.data) {
-                  //    errors.push(key)
-                  // }
-
-                  // this.authError = [];
-                  this.$toasted.error(err.response.data.message);
+                  this.otpErrorMessage = err.response.data.message;
                })
          }
       },
@@ -187,5 +176,12 @@
       text-decoration: underline !important;
       color: #0a77e8 !important;
       cursor: pointer !important;
+   }
+
+   .confirm-sms-code {
+      .errorMessage {
+         display: block;
+         margin: -15px 0 10px 0;
+      }
    }
 </style>

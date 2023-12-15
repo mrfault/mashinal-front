@@ -25,3 +25,8 @@ body {
    overflow-y: scroll;
    background: $grey-1-new;
 }
+
+.errorMessage {
+   font-size: 14px;
+   color: red;
+}
