@@ -62,7 +62,7 @@ export default function ({app, store, error, $axios, $cookies}) {
          } else {
             app.$toast.error(app.i18n.t(err.message));
          }
-      } else if (![433].includes(code)) {
+      } else if (![433, 400].includes(code)) {
          if (process.client) {
             app.$toast.error(app.i18n.t(err.response.data.message));
          }
