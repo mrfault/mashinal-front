@@ -438,7 +438,6 @@
          },
 
          openMore() {
-            console.log("yesss")
             this.advancedSearch = true;
          },
 
