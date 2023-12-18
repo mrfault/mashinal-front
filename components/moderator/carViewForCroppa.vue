@@ -206,6 +206,7 @@ export default {
     cropperCrop() {
       let getData = this.$refs.cropper.getData();
       this.button_loading = true;
+       console.log('Get1')
 
       this.$axios.post('/ticket/media/' + this.saved_images[this.croppaSelectedKey] + '/manipulate', getData, {
         headers: {
@@ -213,8 +214,10 @@ export default {
         }
       })
         .then((data) => {
-          this.$emit('newThumb', data.data.data.thumb);
-          this.button_loading = false;
+           // let original = data.data.data.thumb.replace(/\/conversions\//, '/').replace(/-thumb/, '');
+           // this.$emit('newThumb', original);
+           this.$emit('newThumb', data.data.data.thumb);
+           this.button_loading = false;
         })
         .catch((data) => {
           this.button_loading = false;
@@ -234,28 +237,18 @@ export default {
   },
   computed: {
     findOriginalImage() {
-       console.log('this.croppaSelectedKey', this.croppaSelectedKey)
-       console.log('this.saved_images', this.saved_images)
-       console.log('this.media', this.announce.media)
+       if (this.images[this.croppaSelectedKey].includes('/conversions/')) {
+          return this.images[this.croppaSelectedKey].replace(/\/conversions\//, '/').replace(/-thumb/, '');
+       } else {
+          if (this.saved_images[this.croppaSelectedKey] !== undefined) {
+             let imageId = this.saved_images[this.croppaSelectedKey];
 
-       if (this.saved_images[this.croppaSelectedKey] !== undefined) {
-          let imageId = this.saved_images[this.croppaSelectedKey];
-          console.log('imageId---', imageId)
-          console.log('foundedImage---', this.announce.original_media[imageId])
-          console.log('originalList---', this.announce.original_media)
-
-          if (this.announce.original_media[imageId] !== undefined) {
-             console.log('ttttt', this.announce.original_media[imageId])
-             return this.announce.original_media[imageId]
+             if (this.announce.original_media[imageId] !== undefined) {
+                return this.announce.original_media[imageId]
+             }
           }
+          return this.images[this.croppaSelectedKey];
        }
-
-       console.log('222', this.images[this.croppaSelectedKey])
-       return this.images[this.croppaSelectedKey];
-
-      // let original = this.images[this.croppaSelectedKey].replace('/conversions', '').replace('-thumb', '').replace('-upload_thumb', '');
-      // if (!this.imageExists(original)) original = original.replace('.jpg', '.png')
-      // return original;
     },
 
     day() {
