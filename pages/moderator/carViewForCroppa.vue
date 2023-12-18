@@ -167,6 +167,7 @@ export default {
     cropperCrop(){
       let getData = this.$refs.cropper.getData();
       this.button_loading = true;
+
       this.$axios
         .$post('/ticket/media/'+this.saved_images[this.croppaSelectedKey]+'/manipulate', getData)
         .then( (data) => {

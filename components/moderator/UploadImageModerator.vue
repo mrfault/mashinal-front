@@ -20,8 +20,6 @@
               </a>
             </div>
 
-<!--             <pre>{{image}}</pre>-->
-<!--             <pre>{{setSavedImageUrls}}</pre>-->
             <div
                :class="{'disable': !draggableEnabled}"
                class="image-load-content"
@@ -399,14 +397,18 @@
          }
        },
        findOriginalImage(value, key) {
-         if (this.saved_images[key] !== undefined) {
-           let imageId = this.saved_images[key];
+          if (value.includes('/conversions/')) {
+             return value.replace(/\/conversions\//, '/').replace(/-thumb/, '');
+          } else {
+             if (this.saved_images[key] !== undefined) {
+                let imageId = this.saved_images[key];
 
-           if (this.announce.original_media[imageId] !== undefined) {
-             return this.announce.original_media[imageId]
-           }
-         }
-         return value;
+                if (this.announce.original_media[imageId] !== undefined) {
+                   return this.announce.original_media[imageId]
+                }
+             }
+             return value;
+          }
        },
        openInNewTab(value, key) {
          window.open(this.findOriginalImage(value, key));
@@ -451,7 +453,7 @@
            });
        },
        openCroppa(e, key) {
-          console.log('openCroppa', key)
+          console.log('yyywywww', e)
          this.isOpenCroppa = true;
          this.croppaSelectedKey = key;
        },
