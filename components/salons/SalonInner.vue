@@ -171,7 +171,6 @@
          Grid,
          Gallery,
          ThumbsGallery,
-         // CustomDropdown,
          Cap,
          Relatives,
          HandleIds

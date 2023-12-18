@@ -412,8 +412,12 @@
                      svg {
                         //width: 25px;
 
-                        path {
-                           stroke: #FFFFFF;
+                        g {
+                           opacity: 1;
+
+                           path {
+                              stroke: #FFFFFF;
+                           }
                         }
                      }
 
@@ -424,21 +428,6 @@
                            }
                         }
                      }
-
-                     //display: flex;
-                     //align-items: center;
-                     //gap: 2px;
-                     //padding: 3px 10px;
-                     //border-radius: 4px;
-                     //background-color: $white;
-                     //pointer-events: all;
-
-                     //span {
-                     //   color: #364152;
-                     //   font-size: 15px;
-                     //   font-weight: 500;
-                     //   line-height: 18px;
-                     //}
                   }
                }
             }

@@ -338,7 +338,6 @@ export default {
    components: {
       LanguageChange,
       IconNovelties,
-      // CustomDropdown,
       SiteBanner,
       ThemeSwitch,
    },

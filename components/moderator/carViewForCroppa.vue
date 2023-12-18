@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="item" style="width: 307px;margin: 0;">
-      <span class="d-block">
+      <div class="d-block">
         <div class="swiper-container js-inner__slider swiper-container-initialized swiper-container-horizontal"
              style="position: relative;">
           <div class="swiper-wrapper">
@@ -14,7 +14,7 @@
                 :src="findOriginalImage"
                 :viewMode="3"
                 alt="Source Image"
-                style="width: 308px;height: 210px;"
+                style="width: 308px; height: 210px;"
               >
               </vue-cropper>
             </div>
@@ -130,7 +130,7 @@
             </div>
           </div>
         </div>
-      </span>
+      </div>
     </div>
 
     <div class="cropper_buttons">
@@ -234,13 +234,23 @@ export default {
   },
   computed: {
     findOriginalImage() {
+       console.log('this.croppaSelectedKey', this.croppaSelectedKey)
+       console.log('this.saved_images', this.saved_images)
+       console.log('this.media', this.announce.media)
+
        if (this.saved_images[this.croppaSelectedKey] !== undefined) {
           let imageId = this.saved_images[this.croppaSelectedKey];
+          console.log('imageId---', imageId)
+          console.log('foundedImage---', this.announce.original_media[imageId])
+          console.log('originalList---', this.announce.original_media)
 
           if (this.announce.original_media[imageId] !== undefined) {
+             console.log('ttttt', this.announce.original_media[imageId])
              return this.announce.original_media[imageId]
           }
        }
+
+       console.log('222', this.images[this.croppaSelectedKey])
        return this.images[this.croppaSelectedKey];
 
       // let original = this.images[this.croppaSelectedKey].replace('/conversions', '').replace('-thumb', '').replace('-upload_thumb', '');
