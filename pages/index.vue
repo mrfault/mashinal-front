@@ -186,7 +186,7 @@
          </grid>
       </div>
 
-      <HandleIds :items="handleIdsOptions" :watchIds="false" />
+<!--      <HandleIds :items="handleIdsOptions" :watchIds="false" />-->
    </div>
 </template>
 

@@ -160,7 +160,7 @@
          }
          await Promise.all([
             // this.$store.dispatch("getStaticPages"),
-            this.$store.dispatch("getCommercialTypes")
+            // this.$store.dispatch("getCommercialTypes")
          ]);
 
          this.$nuxt.$on('changeNavbar', this.handleNavBar);

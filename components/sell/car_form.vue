@@ -563,7 +563,6 @@
 
       <div :class="{form_error: $v.form.saved_images.$error || form_errored}" class="image_section">
          <h2>{{ $t("photos") }}</h2>
-<!--         <pre>{{form.saved_images}}</pre>-->
 
          <client-only>
             <image-component

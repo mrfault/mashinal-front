@@ -111,7 +111,7 @@
                >
                </no-results>
 
-               <HandleIds :items="handleIdsOptions" />
+<!--               <HandleIds :items="handleIdsOptions" />-->
             </div>
          </div>
       </div>
@@ -123,7 +123,6 @@
    import NoResults from "~/components/elements/NoResults.vue";
    import HandleIds from "~/components/announcements/HandleIds.vue";
    import Cap from "~/components/elements/Cap.vue";
-   import CustomDropdown from "~/components/elements/CustomDropdown.vue";
    import { mapGetters } from "vuex";
    import { minLength } from "vuelidate/lib/validators";
 

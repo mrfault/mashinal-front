@@ -1,12 +1,12 @@
 <template>
    <div class="monetizedPage">
       <div class="container">
+<!--         :paginate="announcements?.meta"-->
+<!--         @change-page="changePage"-->
          <grid
             :announcements="announcements?.data"
-            :paginate="announcements?.meta"
             :hasContainer="false"
             :pending="pending"
-            @change-page="changePage"
          >
             <template #cap>
                <Cap :className="'mb40'">
@@ -18,7 +18,9 @@
          </grid>
       </div>
 
-      <HandleIds :items="handleIdsOptions" />
+      <InfiniteLoadingData
+         :action="'fetchMonetizedAnnouncementsPageInfinite'"
+      />
    </div>
 </template>
 
@@ -26,6 +28,7 @@
    import Grid from "~/components/announcements/Grid.vue";
    import Cap from "~/components/elements/Cap.vue";
    import HandleIds from "~/components/announcements/HandleIds.vue";
+   import InfiniteLoadingData from "~/components/announcements/InfiniteLoadingData.vue";
    import { mapGetters } from "vuex";
 
    export default {
@@ -46,7 +49,7 @@
          }
       },
 
-      components: { Grid, Cap, HandleIds },
+      components: {InfiniteLoadingData, Grid, Cap, HandleIds },
 
       data() {
         return {
@@ -59,12 +62,10 @@
             page = this.$route.query.page || 1;
 
             this.pending = true;
-            await this.$store.dispatch('fetchMonetizedAnnouncementsPage', `page=${page}`);
+            await this.$store.dispatch('fetchMonetizedAnnouncementsPage', { page: page });
             this.pending = false;
 
-            // setTimeout(() => {
-               this.scrollTo('.announcements-grid', [-70, -200]);
-            // }, 100)
+            this.scrollTo('.announcements-grid', [-70, -200]);
          }
       },
 
@@ -72,46 +73,10 @@
          ...mapGetters({
              announcements: 'monetizedPage'
          }),
-
-         handleIdsOptions() {
-            let ids = [];
-
-            ids.push({
-               type: 'car',
-               ids: [...this.announcements?.data?.filter(car => car.type === 'light_vehicle').map(item => item.id)]
-            });
-
-            ids.push({
-               type: 'motorcycle',
-               ids: [...this.announcements?.data?.filter(car => car.type === 'motorcycle').map(item => item.id)]
-            });
-
-            ids.push({
-               type: 'scooter',
-               ids: [...this.announcements?.data?.filter(car => car.type === 'scooter').map(item => item.id)]
-            });
-
-            ids.push({
-               type: 'motoatv',
-               ids: [...this.announcements?.data?.filter(car => car.type === 'motoatv').map(item => item.id)]
-            });
-
-            ids.push({
-               type: 'commercial',
-               ids: [...this.announcements?.data?.filter(car => car.type === 'commercial').map(item => item.id)]
-            });
-
-            ids.push({
-               type: 'parts',
-               ids: [...this.announcements?.data?.filter(car => car.type === 'parts').map(item => item.id)]
-            });
-
-            return ids;
-         }
       },
 
       async asyncData({ store }) {
-         await store.dispatch('fetchMonetizedAnnouncementsPage', 'page=1');
+         await store.dispatch('fetchMonetizedAnnouncementsPage', { page: 1 });
       }
    }
 </script>

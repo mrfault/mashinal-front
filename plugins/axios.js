@@ -29,12 +29,11 @@ export default function ({app, store, error, $axios, $cookies}) {
 
    $axios.onError(err => {
       // stop loading
-      if (process.client) {
-         app.store.dispatch('setLoading', false);
-      }
+      if (process.client) app.store.dispatch('setLoading', false);
 
       // handle global errors
       const code = parseInt(err.response && err.response.status);
+
       if (code === 402) return;
       if (code === 404/* || code === 500*/) {
          error({statusCode: code});
@@ -63,7 +62,7 @@ export default function ({app, store, error, $axios, $cookies}) {
          } else {
             app.$toast.error(app.i18n.t(err.message));
          }
-      } else if (![433].includes(code)) {
+      } else if (![433, 400].includes(code)) {
          if (process.client) {
             app.$toast.error(app.i18n.t(err.response.data.message));
          }

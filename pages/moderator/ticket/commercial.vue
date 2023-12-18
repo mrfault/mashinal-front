@@ -188,7 +188,7 @@
         <upload-image-moderator
           :announce="single_announce"
           :changePosition="saved_images.length === imagesBase64.length"
-          :default-images="single_announce.media"
+          :default-images="single_announce.original_media"
           :imageCount="imagesBase64.length"
           :imageIsUploading="imageIsUploading"
           :is-edit="false"
@@ -686,7 +686,7 @@ export default {
 
   async fetch({store, route}) {
     await store.dispatch('getCommercialAllOptions');
-    await store.dispatch('getCommercialTypes');
+    // await store.dispatch('getCommercialTypes');
     await store.dispatch('getOptions');
     await store.dispatch('getAllOtherOptions');
     await store.dispatch('getColors');
@@ -1114,7 +1114,7 @@ export default {
             })
             this.imageIsUploading = false;
             this.saved_images = this.saved_images.concat(data.ids)
-            this.$store.commit('setSavedImageUrls', data.images);
+            this.$store.commit('setSavedImageUrls', data.original_media);
             this.$nuxt.$emit('remove_image_loading_by_index', this.saved_images.length);
           } catch ({response: {data: {data}}}) {
             this.$nuxt.$emit('remove_image_by_index', this.saved_images.length);

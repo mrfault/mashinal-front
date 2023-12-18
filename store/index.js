@@ -522,9 +522,27 @@ export const actions = {
       else commit("mutate", {property: "customsData", value: res});
    },
 
-   async fetchMonetizedAnnouncementsPage({commit}, page = 1) {
-      const res = await this.$axios.$get(`${this.$env().API_SECRET}/monetized-announcements?${page}`);
+   async fetchMonetizedAnnouncementsPage({commit}, payload) {
+      const res = await this.$axios.$get(
+         `${this.$env().API_SECRET}/monetized-announcements?page=${payload.page || 1}`
+      );
+
       commit("mutate", {property: "monetizedPage", value: res});
+   },
+
+   async fetchMonetizedAnnouncementsPageInfinite({ state, commit }, payload) {
+      let infiniteData = JSON.parse(JSON.stringify(state.monetizedPage)),
+          res;
+
+      if (infiniteData.meta.current_page < infiniteData.meta.total_pages) {
+         res = await this.$axios.$get(
+            `${this.$env().API_SECRET}/monetized-announcements?page=${payload.page || 1}`
+         );
+      }
+
+      infiniteData.data.push(...res.data);
+      infiniteData.meta = res.meta;
+      commit("mutate", { property: "monetizedPage", value: infiniteData });
    },
 
    async fetchMonetizedAnnouncementsHome({commit}) {
@@ -1370,11 +1388,9 @@ async getMotoOptions({state, commit}) {
    },
 
    async getAutoSalonOtherAnnouncements({commit, state}, payload) {
-      console.log('Test-payload', payload);
-
       let excluded_id = payload.excluded_id ? `&excluded_id=${payload.excluded_id}` : ''
       const res = await this.$axios.$get(
-         `${this.$env().API_SECRET}/autosalon/announcements/${payload?.id}?page=${payload.page || 1}${excluded_id}`
+         `${this.$env().API_SECRET}/autosalon/announcements/${payload?.id}?page=${payload.page || 1}${excluded_id}&per_page=24`
       );
       commit("mutate", {property: "shopAnnouncements", value: res});
    },
@@ -2239,5 +2255,4 @@ export const mutations = {
    mutateSavedImageUrls(state, payload) {
       state[payload.property] = payload.with;
    },
-
 };

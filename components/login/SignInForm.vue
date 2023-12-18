@@ -4,15 +4,17 @@
          <p v-if="form.staticPhone">
             <span v-mask="$maskPhone(true)">{{ sellPhoneEntered }}</span>
          </p>
+
          <template v-if="isMobileBreakpoint">
             <div class="ma-login-tab--mobile__top">
                <div class="ma-login-tab--mobile__top--image">
-                  <img src="/images/login-image-mobile.png"/>
+                  <img src="/images/login-image-mobile.png" alt=""/>
                </div>
                <h2 class="ma-title--md" :class="{'text-center': isMobileBreakpoint}">{{ $t('sign_in_to_account') }}</h2>
                <p class="login_mobile_desc">{{ $t('login_mobile_desc') }}</p>
             </div>
          </template>
+
          <form-text-input
             v-if="!form.staticPhone"
             v-model="form.phone"
@@ -24,7 +26,6 @@
             style="margin-bottom: 32px"
             name="mashinal-login-phone"
          />
-
       </div>
       <!--    <p style="margin-bottom: 20px;" class="info-text" v-if="form.staticPhone"><icon name="alert-circle" /> {{ $t('login_before_announce') }}</p>-->
 
@@ -35,6 +36,7 @@
       >
          {{ actionText || $t('go_ahead') }}
       </button>
+
       <form-text-input
          v-if="form.staticPhone && !sellPhoneRegistered"
          v-model="form.name"
@@ -42,6 +44,7 @@
          :maxlength="30"
          :placeholder="$t('your_name')"
       />
+
       <confirm-phone
          v-if="form.staticPhone"
          :action-text="actionText && actionText.confirm"
@@ -108,45 +111,52 @@ export default {
             })
       },
       loginOrRegister() {
-         // console.log("salam")
          this.validator.$touch()
-         if (this.pending || this.validator.$pending || this.validator.$error)
-            return
+         if (this.pending || this.validator.$pending || this.validator.$error) return
+
          this.pending = true
+
          let form = {
             name: this.form.name,
             phone: this.form.phone.replace(/[^0-9]+/g, ''),
          }
-         if (!this.popup) {
-            delete form.name
-         }
+
+         if (!this.popup) delete form.name;
+
          this.$axios
-            .$post('/login_or_register', form)
+            .$post(`${this.$env().API_SECRET}/auth/login-or-register`, form)
             .then((res) => {
-               if (res.data.password) {
-                  this.$auth
-                     .loginWith('local', {
-                        data: {
-                           phone: this.form.phone.replace(/[^0-9]+/g, ''),
-                           password: res.data.password,
-                        },
-                     })
-                     .then(() => {
-                        this.pending = false
-                        //this.$nuxt.$emit('login', true);
-                     })
-                     .catch((err) => {
-                        this.pending = false
-                     })
+               if (res.has_otp) {
+                  this.$emit('check-user', res.is_new);
+                  this.$emit('update-tab', 'sign-up', 'sms');
                } else {
-                  this.pending = false
-                  this.$emit('check-user', res.data.new_user)
-                  this.$emit('update-tab', 'sign-up', 'sms')
+                  this.$emit('update-tab', 'sign-up', 'password');
+                  this.$nuxt.$emit('login-phone', form.phone);
                }
+               // if (res.data.password) {
+               //    this.$auth
+               //       .loginWith('local', {
+               //          data: {
+               //             phone: this.form.phone.replace(/[^0-9]+/g, ''),
+               //             password: res.data.password,
+               //          },
+               //       })
+               //       .then(() => {
+               //          this.pending = false
+               //          //this.$nuxt.$emit('login', true);
+               //       })
+               //       .catch((err) => {
+               //          this.pending = false
+               //       })
+               // } else {
+               //    this.pending = false
+               //    this.$emit('check-user', res.is_new)
+               //    this.$emit('update-tab', 'sign-up', 'sms')
+               // }
             })
             .catch((err) => {
                this.pending = false
-               this.$toasted.error(err.response.data.message)
+               // this.$toasted.error(err.response.data.message)
             })
       },
       async checkPhone() {
@@ -154,13 +164,11 @@ export default {
          if (this.pending || this.$v.$error) return
          this.pending = true
          try {
-            // console.log("salam")
             await this.checkSellTokens(this.form.phone.replace(/[^0-9]+/g, ''))
             this.mutate({property: 'sellPhoneEntered', value: this.form.phone})
             this.pending = false
          } catch (error) {
             this.pending = false;
-            // console.log("sagol",err)
             this.$toasted.error(error.response.data.message || error.response.data.data.message )
          }
       },

@@ -49,7 +49,7 @@
             <h2 class="title-with-line full-width">
               <span>{{ $t("vehicle_type") }}</span>
             </h2>
-            <!--             <pre>{{vehicleOptions}}</pre>-->
+
             <vehicle-options
               :group-by="2"
               :options="vehicleOptions"
