@@ -196,7 +196,7 @@
                      <upload-image-moderator
                         :announce="single_announce"
                         :changePosition="saved_images.length === imagesBase64.length"
-                        :default-images="single_announce.original_media"
+                        :default-images="single_announce.media"
                         :imageIsUploading="imageIsUploading"
                         :is-edit="false"
                         :load-croppa="true"

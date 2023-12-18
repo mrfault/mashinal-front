@@ -147,7 +147,6 @@
          PlatesGrid,
          NoResults,
          HandleIds,
-         // CustomDropdown
       },
 
       transition: 'fade-y-20',
