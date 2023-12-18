@@ -399,10 +399,22 @@
                   gap: 10px;
 
                   .comparisonDelete {
+                     display: flex;
+                     align-items: center;
+                     justify-content: center;
+                     width: 36px;
+                     height: 26px;
+                     border-radius: 4px;
+                     opacity: 0.8;
+                     background: #364152;
                      pointer-events: all;
 
                      svg {
-                        width: 25px;
+                        //width: 25px;
+
+                        path {
+                           stroke: #FFFFFF;
+                        }
                      }
 
                      &:hover {
