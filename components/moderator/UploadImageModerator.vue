@@ -25,6 +25,7 @@
                class="image-load-content"
                @click="handleDisabledContentClick"
             >
+
               <draggable
                  v-model="setSavedImageUrls"
                  :sort="true"
@@ -295,7 +296,6 @@
        });
 
        if (this.defaultImages) {
-          console.log('defaultImages', this.defaultImages)
          this.index = Object.keys(this.defaultImages).length;
          this.max_files = Object.keys(this.defaultImages).length + 1;
          this.image = Object.keys(this.defaultImages).map((item) => {
@@ -397,9 +397,18 @@
          }
        },
        findOriginalImage(value, key) {
-          if (value.includes('/conversions/')) {
-             return value.replace(/\/conversions\//, '/').replace(/-thumb/, '');
-          } else {
+
+          console.log('findOriginalImage', value, key);
+          console.log(this.saved_images);
+          console.log('this.announce.original_media', this.announce.original_media);
+
+          // if (value.includes('/conversions/')) {
+          //    console.log('findOriginalImage-1', value)
+          //
+          //    return value.replace(/\/conversions\//, '/').replace(/-thumb/, '');
+          // } else {
+          //    console.log('findOriginalImage-2', value)
+
              if (this.saved_images[key] !== undefined) {
                 let imageId = this.saved_images[key];
 
@@ -408,7 +417,7 @@
                 }
              }
              return value;
-          }
+          // }
        },
        openInNewTab(value, key) {
          window.open(this.findOriginalImage(value, key));
@@ -422,6 +431,7 @@
          })
          this.$set(this.image, this.croppaSelectedKey, newThumb);
        },
+
        async rotateLeft(e, key) {
          await this.rotateDirection('left', e, key)
        },
@@ -453,7 +463,8 @@
            });
        },
        openCroppa(e, key) {
-          console.log('yyywywww', e)
+          console.log('openCroppa-1', e)
+          console.log('openCroppa-2', key)
          this.isOpenCroppa = true;
          this.croppaSelectedKey = key;
        },

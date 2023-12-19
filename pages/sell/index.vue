@@ -2,6 +2,7 @@
    <div class="add_announce">
       <div class="position-relative container">
          <h1 class="add_announce_title">{{ $t('place_an_ad') }}</h1>
+
          <div class="announce_container">
             <div class="announce_view">
                <div class="main_card">
@@ -83,6 +84,7 @@
                               :invalid="$v.authForm.name.$error || authError.includes('name')"
                               :placeholder="$t('your_name') + '*'"
                            />
+
                            <form-text-input
                               key="phone"
                               v-model="authForm.phone"
@@ -107,14 +109,31 @@
                               :mask="$maskEmail()"
                               :placeholder="$t('email') + '*'"
                            />
+
+<!--                           <form-select-->
+<!--                              v-if="$auth.loggedIn && $auth.user.external_salon"-->
+<!--                              v-model="authForm.country_id"-->
+<!--                              :clear-option="false"-->
+<!--                              :clear-placeholder="true"-->
+<!--                              :label="$t('sale_region_country')"-->
+<!--                              :new-label="false"-->
+<!--                              :options="countries.map(country => ({-->
+<!--                                    key: country.code,-->
+<!--                                    name: country.title-->
+<!--                                 }))"-->
+<!--                              has-search-->
+<!--                           />-->
+
                            <form-select
                               v-model="authForm.region_id"
                               :clear-option="false"
                               :clear-placeholder="true"
-                              :label="$t('city_of_sale')" :new-label="false"
+                              :label="$t('city_of_sale')"
+                              :new-label="false"
                               :options="sellOptions.regions"
                               has-search
                            />
+
                            <form-text-input
                               v-if="authStep === 'handleOTP'"
                               v-model="authForm.code"
@@ -124,6 +143,7 @@
                               :maxlength="5"
                               :placeholder="$t('OTP') + '*'"
                            />
+
                            <div v-if="authStep === 'handleOTP'" class="resend_section">
                               <p :class="{link_active: resendSmsAfterSecond === 0}" @click="resendCode">
                                  {{ $t('resend_otp') }}
@@ -289,6 +309,7 @@
                email: "",
                phone: "",
                region_id: 1,
+               country_id: '',
                code: ""
             },
             authStep: "",
@@ -533,7 +554,7 @@
       },
 
       computed: {
-         ...mapGetters(['staticPages', 'servicePackages', 'settingsV2', 'sellOptions']),
+         ...mapGetters(['staticPages', 'servicePackages', 'settingsV2', 'sellOptions', 'countries']),
 
          getRulesPage() {
             return this.staticPages.find(page => page.id == 1);
@@ -551,7 +572,8 @@
             store.dispatch('getServicePackages'),
             store.dispatch('getSettingsV2'),
             store.dispatch('getBrands'),
-            store.dispatch('getAllOtherOptions', '2')
+            store.dispatch('getAllOtherOptions', '2'),
+            store.dispatch('fetchCountryList'),
          ]);
       },
 

@@ -2689,7 +2689,7 @@ export default {
    logo_on_the_picture: "Şəkilin üzərində loqo var",
    edit_image: "Şəkli redaktə et",
    deavtive_announce: "Elanı deaktiv et",
-   sale_region_country: "Satış ölkəsi",
+   sale_region_country: "Страна продажи",
    your_announce_rejected: "Elanın dərc edilməsindən imtina edildi",
    show_logs: "Loqları göstər",
    logs: "Loqlar",
