@@ -233,8 +233,6 @@ export default {
          }
       },
       async deleteCar(event) {
-         // console.log('222', this.announcement)
-
          event.stopPropagation();
          this.pending = true;
          try {

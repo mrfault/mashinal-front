@@ -325,14 +325,9 @@
                return
             }
 
-            console.log('11', this.form.add_monetization)
-            console.log('22', this.user.announce_left_car < 1)
-            console.log('33', !this.alertShowed)
-
             this.pending = true;
 
             try {
-               console.log('getCarForm-3');
                const formData = new FormData()
                formData.append('data', JSON.stringify(form))
                formData.append('add_monetization', this.form.add_monetization)
@@ -397,11 +392,9 @@
                const res = await this.plateNumbersPost({form, isMobile: this.isMobileBreakpoint});
                if (res?.redirect_url) {
                   const response = {data: {...res}}
-                  console.log('response', response)
                   this.handlePayment(response, this.$localePath('/profile/announcements'), this.$t('plate_added'), 'v2');
                   // !this.isMobileBreakpoint && this.$router.push(this.$localePath('/profile/announcements'));
                } else {
-                  console.log('222')
                   this.$router.push(this.$localePath('/profile/announcements'), () => {
                      this.updatePaidStatus({
                         type: 'success',

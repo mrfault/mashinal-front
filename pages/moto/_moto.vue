@@ -94,7 +94,6 @@ export default {
       let post = JSON.parse(route.query.filter || '{}');
       let page = route.query.page || 1;
       let searchParams = {url: category.url, prefix: 'moto'}
-      console.log('motooooooo')
 
       await Promise.all([
          store.dispatch('getOptions'),

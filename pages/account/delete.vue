@@ -88,7 +88,6 @@
             if (+this.phone.replace(/[^0-9]+/g, '') === this.user.phone) {
                this.openModal = true;
             } else {
-               console.log('else')
                this.invalidPhone = true;
             }
          },

@@ -235,7 +235,6 @@ export default {
     }),
     deactiveMyOffer(id){
       this.$axios.delete('/offer/user/deactive-offer/'+id).then((res)=>{
-        // console.log(res)
             if (res.data.status=='success'){
               this.$store.dispatch('activeMyOffers')
               this.offerDeletePromp=false

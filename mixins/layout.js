@@ -39,7 +39,6 @@ export const LayoutMixin = {
       },
 
       showLoginPopup(val) {
-         console.log('val', val)
          this.$nuxt.$emit('changeNavbar', val);
       }
    },
