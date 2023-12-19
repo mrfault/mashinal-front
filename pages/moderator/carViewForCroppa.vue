@@ -191,9 +191,19 @@ export default {
   },
   computed: {
     findOriginalImage() {
-      let original = this.images[this.croppaSelectedKey].replace('/conversions', '').replace('-thumb', '').replace('-upload_thumb', '');
-      if(!this.imageExists(original)) original = original.replace('.jpg','.png')
-      return original;
+       console.log('findOriginalImage')
+       if (this.saved_images[this.croppaSelectedKey] !== undefined) {
+          let imageId = this.saved_images[this.croppaSelectedKey];
+
+          if (this.announce.original_media[imageId] !== undefined) {
+             return this.announce.original_media[imageId]
+          }
+       }
+       return value;
+
+      // let original = this.images[this.croppaSelectedKey].replace('/conversions', '').replace('-thumb', '').replace('-upload_thumb', '');
+      // if(!this.imageExists(original)) original = original.replace('.jpg','.png')
+      // return original;
     },
     day() {
       let str = this.announce.humanize_created_at.toString().split(' ')[0].toString().split('');

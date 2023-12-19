@@ -214,9 +214,8 @@ export default {
         }
       })
         .then((data) => {
-           // let original = data.data.data.thumb.replace(/\/conversions\//, '/').replace(/-thumb/, '');
-           // this.$emit('newThumb', original);
            this.$emit('newThumb', data.data.data.thumb);
+           // this.$emit('newOriginalImage', data.data.data.original_image);
            this.button_loading = false;
         })
         .catch((data) => {
@@ -237,18 +236,14 @@ export default {
   },
   computed: {
     findOriginalImage() {
-       if (this.images[this.croppaSelectedKey].includes('/conversions/')) {
-          return this.images[this.croppaSelectedKey].replace(/\/conversions\//, '/').replace(/-thumb/, '');
-       } else {
-          if (this.saved_images[this.croppaSelectedKey] !== undefined) {
-             let imageId = this.saved_images[this.croppaSelectedKey];
+       if (this.saved_images[this.croppaSelectedKey] !== undefined) {
+          let imageId = this.saved_images[this.croppaSelectedKey];
 
-             if (this.announce.original_media[imageId] !== undefined) {
-                return this.announce.original_media[imageId]
-             }
+          if (this.announce.original_media[imageId] !== undefined) {
+             return this.announce.original_media[imageId]
           }
-          return this.images[this.croppaSelectedKey];
        }
+       return this.images[this.croppaSelectedKey];
     },
 
     day() {

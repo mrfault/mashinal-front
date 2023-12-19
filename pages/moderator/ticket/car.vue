@@ -402,6 +402,8 @@
                     />
                   </transition>
                   <div style="padding-left: 7px">
+<!--                     <pre>{{single_announce}}</pre>-->
+<!--                     <pre>{{saved_images}}</pre>-->
                     <upload-image-moderator
                       :announce="single_announce"
                       :changePosition="saved_images.length === imagesBase64.length"
@@ -1287,6 +1289,7 @@
 
       //handle image
       async addFiles(v) {
+         console.log('adddddd')
         this.imageIsUploading = true;
         await Promise.all(
           v.map(async (image) => {
@@ -1304,12 +1307,11 @@
                 },
               )
               this.saved_images = this.saved_images.concat(data.ids)
-              this.$store.commit('setSavedImageUrls', data.original_media)
+              this.$store.commit('setSavedImageUrls', data.original_media);
+              this.$store.commit('moderator/addOriginalImages', data);
+
               this.imageIsUploading = false;
-              this.$nuxt.$emit(
-                'remove_image_loading_by_index',
-                this.saved_images.length,
-              )
+              this.$nuxt.$emit('remove_image_loading_by_index', this.saved_images.length);
             } catch ({
               response: {
                 data: {data},
