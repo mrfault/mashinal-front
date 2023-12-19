@@ -235,7 +235,6 @@
          },
 
          hasComplects() {
-            console.log('this.getComplectOptions', this.getComplectOptions)
             return Object.keys(this.getComplectOptions).length;
          },
 

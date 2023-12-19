@@ -333,9 +333,7 @@
 
          // if (this.$route.query?.filters) {
          //    this.$route.query?.filters.slice(1).split('&').forEach(item => {
-         //       console.log('111', item.split('='))
          //       if (item.split('=')[1] === 'price') {
-         //          console.log('222', item.split('='))
          //          // this.form.sorting.key = `${item.split('=')[1]}_${item.split('=')[0].sort_order}`;
          //          // this.form.sorting.value = item.split('=')[0].sort_order;
          //       } else {

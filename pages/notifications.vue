@@ -150,7 +150,6 @@ export default {
                case '/messages_bnb' :
                   return this.$localePath('/profile/messages?group=' + n?.value)
                case '/announcement_details' :
-                  // console.log("n./././",n)
                   return this.$localePath(this.getAnnounceTypePath(n?.notifiable_type) + '/' + (n?.notifiable?.id || n?.notifiable_id))
                case '/garage_bnb' :
                   return this.$localePath(`/garage?id=${n?.notifiable?.id}`)

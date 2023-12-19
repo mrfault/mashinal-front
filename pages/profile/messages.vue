@@ -253,7 +253,6 @@ export default {
          this.activeMessage = messageId;
          setTimeout(() => {
             this.$root.$refs.ChatMessages.scrollToBottom('chat');
-            // console.log('ok');
          }, 1000);
       },
 
@@ -265,8 +264,6 @@ export default {
          let announcement = group.announce;
          if (announcement.status !== 1) return;
          let type = group.announce_type.replace('App\\', '').toLowerCase();
-
-         console.log(announcement);
 
          // get inner link
          if (type === 'announcement') type = 'cars';

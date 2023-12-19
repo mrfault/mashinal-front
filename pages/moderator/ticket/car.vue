@@ -868,9 +868,6 @@
           })
           this.handleGearings(this.type_of_drives);
 
-
-           console.log('data.announce?.brand.slug', data.announce)
-
           this.form = {
             delay_comment: '',
             car_catalog_id: data.announce?.car_catalog_id,
@@ -1137,7 +1134,6 @@
         )
         for (let i = 0; i < arr.length; i++) {
           var element = arr[i]
-          // console.log("element", element)
           if (id == element.id) {
             var o = element;
             // console.log("ahey ahey", id)

@@ -222,10 +222,8 @@ export const mutations = {
     state[payload.property] = JSON.parse(JSON.stringify(payload.with));
   },
   moderatorMotoSingleAnnounce(state, payload) {
-    // console.log("moderatorMotoSingleAnnounce  payload", payload);
     //  state[payload.property] = payload.with;
     Vue.set(state, payload.property, payload.with);
-    // console.log("moderatorMotoSingleAnnounce state", state.single_announce);
   },
   reset: reset(getInitialState()),
   sell_saved_items_push(state, payload) {

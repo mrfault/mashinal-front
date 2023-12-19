@@ -326,9 +326,7 @@ export default {
     },
 
     async getOfferDetail(id) {
-      // console.log(id)
       this.chat.text=''
-
 
       if (this.isMobileBreakpoint) {
         this.$router.push(this.$localePath('/salons/offer') + '/' + id)
@@ -406,7 +404,6 @@ export default {
   watch: {
     async $route(newVal, oldVal) {
       await this.$store.dispatch('getAllOffers', newVal.query)
-      // console.log(newVal)
     },
     search(newVal){
       this.$router.push({

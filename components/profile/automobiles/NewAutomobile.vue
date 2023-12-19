@@ -541,7 +541,6 @@ export default {
 
       },
       async getModelsList() {
-         // console.log("getModelsList")
          await this.getModelsArray({value: this.announcement.brand.slug});
          this.form.model = this.announcement.model.id
       },
