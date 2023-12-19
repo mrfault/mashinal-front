@@ -26,7 +26,6 @@ export default {
    },
    methods:{
       openEditModal(item){
-         // console.log("card openEditModal")
          this.$emit('openEditModal',item)
          this.$store.commit('closeDropdown');
       },

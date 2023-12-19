@@ -221,11 +221,19 @@ export const mutations = {
   moderatorMutator(state, payload) {
     state[payload.property] = JSON.parse(JSON.stringify(payload.with));
   },
+
+  addOriginalImages(state, payload) {
+    let mergedImages = [];
+    payload.ids.map((item,index) => (
+       mergedImages[item] = payload.original_media[index]
+    ));
+
+    state.single_announce.original_media = {...state.single_announce.original_media, ...mergedImages};
+  },
+
   moderatorMotoSingleAnnounce(state, payload) {
-    // console.log("moderatorMotoSingleAnnounce  payload", payload);
     //  state[payload.property] = payload.with;
     Vue.set(state, payload.property, payload.with);
-    // console.log("moderatorMotoSingleAnnounce state", state.single_announce);
   },
   reset: reset(getInitialState()),
   sell_saved_items_push(state, payload) {

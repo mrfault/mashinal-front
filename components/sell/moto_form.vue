@@ -616,7 +616,6 @@
 
       mounted() {
          if (this.isEdit) {
-           // console.log('this.announcement', this.announcement)
             this.form.type_of_moto = {id: this.announcement.type_of_moto}
             this.form.year = this.announcement.year
             this.form.volume = this.announcement.capacity

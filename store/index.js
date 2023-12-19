@@ -70,6 +70,7 @@ const getInitialState = () => ({
    carShowroom: [],
    partsHome: [],
    partsV2: [],
+   countries: [],
    partsV2Monetized: [],
    plateNumbers: [],
    approvedCondition: [],
@@ -355,6 +356,7 @@ export const getters = {
    plateNumbers: s => s.plateNumbers,
    partsHome: s => s.partsHome,
    partsV2: s => s.partsV2,
+   countries: s => s.countries,
    partsV2Monetized: s => s.partsV2Monetized,
    brandsList: s => s.brandsList,
    approvedCondition: s => s.approvedCondition,
@@ -570,9 +572,9 @@ export const actions = {
       commit("mutate", {property: "partsHome", value: res});
    },
 
-   async fetchPartsAnnouncements({commit}, page = 1) {
-      const res = await this.$axios.$post(`${this.$env().API_SECRET}/parts?page=${page}`);
-      commit("mutate", {property: "partsV2", value: res});
+   async fetchCountryList({ commit }) {
+      const res = await this.$axios.$get(`${this.$env().API_SECRET}/common/countries`);
+      commit("mutate", {property: "countries", value: res});
    },
 
    async fetchPartMonetized({commit}, payload = {}) {
@@ -908,12 +910,10 @@ export const actions = {
    },
    // Saved search
    async getSavedSearch({commit}) {
-      console.log('getSavedSearch')
       const res = await this.$axios.$get("/saved-search");
       commit("mutate", {property: "savedSearchList", value: res});
    },
    async createSavedSearch({commit}, data) {
-      console.log('createSavedSearch')
       const res = await this.$axios.$post("/saved-search", data);
       commit("mutate", {property: "singleSavedSearch", value: res});
    },
@@ -922,14 +922,12 @@ export const actions = {
       commit("mutate", {property: "singleSavedSearch", value: res || {}});
    },
    async deleteSavedSearch({commit, state}, id) {
-      console.log('deleteSavedSearch')
       await this.$axios.$delete(`/saved-search/${id}`);
       const list = state.savedSearchList.filter(search => search.id !== id);
       commit("mutate", {property: "savedSearchList", value: list});
       commit("mutate", {property: "singleSavedSearch", value: {}});
    },
    async deleteSavedSearchMultiple({commit, state}, data) {
-      console.log('deleteSavedSearchMultiple')
       await this.$axios.$post(`/saved-search/delete_all`, data);
       const list = state.savedSearchList.filter(
          search => !data.ids.includes(search.id)
@@ -1423,7 +1421,6 @@ async getMotoOptions({state, commit}) {
    // async payAnnouncement({ commit }, payload) {
    //    const res = await this.$axios.$post(`${this.$env().API_SECRET}/announcements/${payload.id}/${payload.type}`);
    //    // if (res.)
-   //    console.log(res.redirect_url)
    //    // commit("mutate", {property: "myAnnouncementsV2", value: res});
    // },
 
@@ -1509,22 +1506,18 @@ async getMotoOptions({state, commit}) {
       if (data.params.body) data.params.body = "body_" + data.params.body;
 
       let filteredData = {};
-      console.log('1', data.post)
       for (let key in data.post) {
          if (["kolichestvo-mest", "privod", "tip-dvigatelya", "korobka", "body"].includes(key)) {
             filteredData[key] = { key, value: data.post[key] };
-            console.log('2', filteredData[key])
          } else if (key.includes("max_")) {
             let rangeKey = key.replace("max_", "");
             filteredData[rangeKey] = `${data.post["min_" + rangeKey] || 0}-${data.post["max_" + rangeKey] || 0}`;
-            console.log('3', filteredData[rangeKey])
          } else if (key.includes("min_")) {
             let rangeKey = key.replace("min_", "");
             filteredData[rangeKey] = `${data.post["min_" + rangeKey] || 0}-${data.post["max_" + rangeKey] || 0}`;
             // continue;
          } else {
             filteredData[key] = data.post[key];
-            console.log('5', filteredData[key])
          }
       }
 
@@ -1669,7 +1662,6 @@ async getMotoOptions({state, commit}) {
       commit("mutate", {property: "promotion", key, value});
    },
    async updatePaidStatus({commit}, value) {
-      console.log('updatePaidStatus', value)
       commit("mutate", {property: "paidStatusData", value});
    },
    // Salons
@@ -1872,7 +1864,6 @@ async getMotoOptions({state, commit}) {
                         await this.$axios
                            .post("/offer", state.offer_announcements)
                            .then(res => {
-                              // console.log('Post error')
                               commit("openOfferPaymentModal", {status: true});
                               commit("setOfferId", {offer_id: res.data.offer_id});
                            });

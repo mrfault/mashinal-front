@@ -25,6 +25,7 @@
                class="image-load-content"
                @click="handleDisabledContentClick"
             >
+
               <draggable
                  v-model="setSavedImageUrls"
                  :sort="true"
@@ -33,57 +34,88 @@
                  group="people"
                  @end="handleMove"
               >
-                 <span v-for="(value, key) in image" :key="(new Date().getTime()+key)"
+                 <div v-for="(value, key) in image" :key="(new Date().getTime()+key)"
                        :class="{'loadCroppa':loadCroppa}"
                        :style="imagePreloaderContainer[imagePreloaderContainer.length-1] === false ? 'cursor: move' : ''"
                        class="announcement-category__overlay__generation__item announcement-category__photo mb-20 cursor-pointer"
                  >
                     <div v-if="rotateKey == key" class="moderator-image-loader">
-   <!--                      <elements-loader></elements-loader>-->
                       <img alt="" class="show" src="/images/loading-78.gif">
                     </div>
 
-                   <div
-                     v-else
-                     :class="{'imagePreloaderContainer':imagePreloaderContainer[key]}"
-                     :style="'background-image:url('+((imagePreloaderContainer[key] === undefined || !imagePreloaderContainer[key]) ? setSavedImageUrls[key] : '')+')'"
-                     class="upload_image_form__thumbnail upload_image_form__thumbnail_fixed"
+                    <div
+                       v-else
+                       :class="{'imagePreloaderContainer':imagePreloaderContainer[key]}"
+                       :style="'background-image:url('+((imagePreloaderContainer[key] === undefined || !imagePreloaderContainer[key]) ? setSavedImageUrls[key] : '')+')'"
+                       class="upload_image_form__thumbnail upload_image_form__thumbnail_fixed"
                    >
                      <div class="imagePreloader"></div>
-                     <!--                  actions-->
-                     <div v-if="!loading && !imageIsUploading" class="w-100 d-flex justify-content-between p-2">
-                       <span v-if="loadCroppa" class="cursor-pointer button-new-tab"
-                             style="background: #dadada !important"
-                             @click="openInNewTab(setSavedImageUrls[key], key)"
-                             @click.stop>
+
+                     <div
+                        v-if="!loading && !imageIsUploading"
+                        class="w-100 d-flex justify-content-between p-2"
+                     >
+                       <span
+                          v-if="loadCroppa"
+                          class="cursor-pointer button-new-tab"
+                          style="background: #dadada !important"
+                          @click="openInNewTab(setSavedImageUrls[key], key)"
+                          @click.stop
+                       >
                           <icon name="image" />
                        </span>
-                       <span v-if="!imagePreloaderContainer[key]" class="cursor-pointer button-new-tab"
-                             @click.stop="rotateLeft($event,key)">
-                            <icon name="reset"/>
+
+                       <span
+                          v-if="!imagePreloaderContainer[key]"
+                          class="cursor-pointer button-new-tab"
+                          @click.stop="rotateLeft($event,key)"
+                       >
+                          <icon name="reset"/>
                        </span>
-                       <span v-if="!imagePreloaderContainer[key]" class="cursor-pointer button-new-tab"
-                             @click.stop="rotateRight($event,key)">
-   <!--                      <icon name="reset"></icon>-->
+
+                       <span
+                          v-if="!imagePreloaderContainer[key]"
+                          class="cursor-pointer button-new-tab"
+                          @click.stop="rotateRight($event,key)"
+                       >
                          <icon name="reset" style="transform: scaleX(-1)"></icon>
                        </span>
-                       <span v-if="!imagePreloaderContainer[key] && loadCroppa" class="cursor-pointer button-new-tab"
-                             @click.stop="openCroppa($event, key)">
-                        <icon name="edit"/>
+
+                       <span
+                          v-if="!imagePreloaderContainer[key] && loadCroppa"
+                          class="cursor-pointer button-new-tab"
+                          @click.stop="openCroppa($event, key)"
+                       >
+                          <icon name="edit"/>
                        </span>
-                       <span v-if="!imagePreloaderContainer[key]"
-                             class="cursor-pointer button-new-tab"
-                             @click.stop="fileDelete($event, setSavedImageUrls[key],key)">
-                         <icon name="cross"/>
+
+                       <span
+                          v-if="!imagePreloaderContainer[key]"
+                          class="cursor-pointer button-new-tab"
+                          @click.stop="fileDelete($event, setSavedImageUrls[key],key)"
+                       >
+                          <icon name="cross"/>
                        </span>
                      </div>
-                       <img v-if="imageIsUploading && (key == saved_images.length)" alt="" class="show" src="/images/loading-78.gif"
-                            style=" width: 100%; height: 100%; object-fit: cover;">
 
-                      <img v-else :class="{ 'show': setSavedImageUrls[key] }" :src="setSavedImageUrls[key]"
-                          style="opacity: 0" @click.stop="openFancyBox(key)">
-                   </div>
-                 </span>
+                      <img
+                         v-if="imageIsUploading && (key == saved_images.length)"
+                         alt=""
+                         class="show"
+                         src="/images/loading-78.gif"
+                         style=" width: 100%; height: 100%; object-fit: cover;"
+                      >
+
+                      <img
+                         v-else
+                         :class="{ 'show': setSavedImageUrls[key] }"
+                         :src="setSavedImageUrls[key]"
+                         alt=""
+                         style="opacity: 0"
+                         @click.stop="openFancyBox(key)"
+                      >
+                    </div>
+                 </div>
 
                  <a
                     v-if="!stopUploading"
@@ -219,6 +251,7 @@
          rotateKey: null,
          isOpenCroppa: false,
          croppaSelectedKey: 0,
+         croppaSelectedId: 0,
          imagePreloaderContainer: [],
          list: [],
          deleteArr: [],
@@ -364,14 +397,27 @@
          }
        },
        findOriginalImage(value, key) {
-         if (this.saved_images[key] !== undefined) {
-           let imageId = this.saved_images[key];
 
-           if (this.announce.original_media[imageId] !== undefined) {
-             return this.announce.original_media[imageId]
-           }
-         }
-         return value;
+          console.log('findOriginalImage', value, key);
+          console.log(this.saved_images);
+          console.log('this.announce.original_media', this.announce.original_media);
+
+          // if (value.includes('/conversions/')) {
+          //    console.log('findOriginalImage-1', value)
+          //
+          //    return value.replace(/\/conversions\//, '/').replace(/-thumb/, '');
+          // } else {
+          //    console.log('findOriginalImage-2', value)
+
+             if (this.saved_images[key] !== undefined) {
+                let imageId = this.saved_images[key];
+
+                if (this.announce.original_media[imageId] !== undefined) {
+                   return this.announce.original_media[imageId]
+                }
+             }
+             return value;
+          // }
        },
        openInNewTab(value, key) {
          window.open(this.findOriginalImage(value, key));
@@ -385,6 +431,7 @@
          })
          this.$set(this.image, this.croppaSelectedKey, newThumb);
        },
+
        async rotateLeft(e, key) {
          await this.rotateDirection('left', e, key)
        },
@@ -416,6 +463,8 @@
            });
        },
        openCroppa(e, key) {
+          console.log('openCroppa-1', e)
+          console.log('openCroppa-2', key)
          this.isOpenCroppa = true;
          this.croppaSelectedKey = key;
        },

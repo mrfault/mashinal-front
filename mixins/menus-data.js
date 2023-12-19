@@ -168,7 +168,6 @@ export const MenusDataMixin = {
       },
 
       exceptions() {
-         console.log('this.routeName', this.routeName)
          return [
             'index', 'calculator-customs', 'parts-shops-id'
          ].includes(this.routeName);

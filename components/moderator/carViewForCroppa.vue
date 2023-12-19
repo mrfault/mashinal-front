@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="item" style="width: 307px;margin: 0;">
-      <span class="d-block">
+      <div class="d-block">
         <div class="swiper-container js-inner__slider swiper-container-initialized swiper-container-horizontal"
              style="position: relative;">
           <div class="swiper-wrapper">
@@ -14,7 +14,7 @@
                 :src="findOriginalImage"
                 :viewMode="3"
                 alt="Source Image"
-                style="width: 308px;height: 210px;"
+                style="width: 308px; height: 210px;"
               >
               </vue-cropper>
             </div>
@@ -130,7 +130,7 @@
             </div>
           </div>
         </div>
-      </span>
+      </div>
     </div>
 
     <div class="cropper_buttons">
@@ -206,6 +206,7 @@ export default {
     cropperCrop() {
       let getData = this.$refs.cropper.getData();
       this.button_loading = true;
+       console.log('Get1')
 
       this.$axios.post('/ticket/media/' + this.saved_images[this.croppaSelectedKey] + '/manipulate', getData, {
         headers: {
@@ -213,8 +214,9 @@ export default {
         }
       })
         .then((data) => {
-          this.$emit('newThumb', data.data.data.thumb);
-          this.button_loading = false;
+           this.$emit('newThumb', data.data.data.thumb);
+           // this.$emit('newOriginalImage', data.data.data.original_image);
+           this.button_loading = false;
         })
         .catch((data) => {
           this.button_loading = false;
@@ -242,10 +244,6 @@ export default {
           }
        }
        return this.images[this.croppaSelectedKey];
-
-      // let original = this.images[this.croppaSelectedKey].replace('/conversions', '').replace('-thumb', '').replace('-upload_thumb', '');
-      // if (!this.imageExists(original)) original = original.replace('.jpg', '.png')
-      // return original;
     },
 
     day() {

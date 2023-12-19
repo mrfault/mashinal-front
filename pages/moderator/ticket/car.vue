@@ -402,10 +402,12 @@
                     />
                   </transition>
                   <div style="padding-left: 7px">
+<!--                     <pre>{{single_announce}}</pre>-->
+<!--                     <pre>{{saved_images}}</pre>-->
                     <upload-image-moderator
                       :announce="single_announce"
                       :changePosition="saved_images.length === imagesBase64.length"
-                      :default-images="single_announce.original_media"
+                      :default-images="single_announce.media"
                       :imageIsUploading="imageIsUploading"
                       :is-edit="false"
                       :load-croppa="true"
@@ -868,9 +870,6 @@
           })
           this.handleGearings(this.type_of_drives);
 
-
-           console.log('data.announce?.brand.slug', data.announce)
-
           this.form = {
             delay_comment: '',
             car_catalog_id: data.announce?.car_catalog_id,
@@ -1137,7 +1136,6 @@
         )
         for (let i = 0; i < arr.length; i++) {
           var element = arr[i]
-          // console.log("element", element)
           if (id == element.id) {
             var o = element;
             // console.log("ahey ahey", id)
@@ -1291,6 +1289,7 @@
 
       //handle image
       async addFiles(v) {
+         console.log('adddddd')
         this.imageIsUploading = true;
         await Promise.all(
           v.map(async (image) => {
@@ -1308,12 +1307,11 @@
                 },
               )
               this.saved_images = this.saved_images.concat(data.ids)
-              this.$store.commit('setSavedImageUrls', data.original_media)
+              this.$store.commit('setSavedImageUrls', data.original_media);
+              this.$store.commit('moderator/addOriginalImages', data);
+
               this.imageIsUploading = false;
-              this.$nuxt.$emit(
-                'remove_image_loading_by_index',
-                this.saved_images.length,
-              )
+              this.$nuxt.$emit('remove_image_loading_by_index', this.saved_images.length);
             } catch ({
               response: {
                 data: {data},

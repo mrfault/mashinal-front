@@ -1862,6 +1862,7 @@ export default {
    silver: "Серебряный",
    simple: "Краткий",
    simpled: "Обычный",
+   sale_region_country: "Страна продажи",
    "sistema-pitaniya-dvigatelya": "Система питания двигателя",
    site_map: "Карта Сайта",
    size_type: "Типоразмер",

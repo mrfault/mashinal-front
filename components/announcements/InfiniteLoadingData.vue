@@ -20,6 +20,8 @@
                try {
                   await this.$store.dispatch(this.action, { page: this.page });
                   this.page++;
+               } catch (error) {
+                  console.error(error);
                } finally {
                   this.isLoading = false;
                }

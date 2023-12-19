@@ -2,6 +2,7 @@
    <div class="add_announce">
       <div class="position-relative container">
          <h1 class="add_announce_title">{{ $t('place_an_ad') }}</h1>
+
          <div class="announce_container">
             <div class="announce_view">
                <div class="main_card">
@@ -83,6 +84,7 @@
                               :invalid="$v.authForm.name.$error || authError.includes('name')"
                               :placeholder="$t('your_name') + '*'"
                            />
+
                            <form-text-input
                               key="phone"
                               v-model="authForm.phone"
@@ -107,14 +109,31 @@
                               :mask="$maskEmail()"
                               :placeholder="$t('email') + '*'"
                            />
+
+<!--                           <form-select-->
+<!--                              v-if="$auth.loggedIn && $auth.user.external_salon"-->
+<!--                              v-model="authForm.country_id"-->
+<!--                              :clear-option="false"-->
+<!--                              :clear-placeholder="true"-->
+<!--                              :label="$t('sale_region_country')"-->
+<!--                              :new-label="false"-->
+<!--                              :options="countries.map(country => ({-->
+<!--                                    key: country.code,-->
+<!--                                    name: country.title-->
+<!--                                 }))"-->
+<!--                              has-search-->
+<!--                           />-->
+
                            <form-select
                               v-model="authForm.region_id"
                               :clear-option="false"
                               :clear-placeholder="true"
-                              :label="$t('city_of_sale')" :new-label="false"
+                              :label="$t('city_of_sale')"
+                              :new-label="false"
                               :options="sellOptions.regions"
                               has-search
                            />
+
                            <form-text-input
                               v-if="authStep === 'handleOTP'"
                               v-model="authForm.code"
@@ -124,6 +143,7 @@
                               :maxlength="5"
                               :placeholder="$t('OTP') + '*'"
                            />
+
                            <div v-if="authStep === 'handleOTP'" class="resend_section">
                               <p :class="{link_active: resendSmsAfterSecond === 0}" @click="resendCode">
                                  {{ $t('resend_otp') }}
@@ -289,6 +309,7 @@
                email: "",
                phone: "",
                region_id: 1,
+               country_id: '',
                code: ""
             },
             authStep: "",
@@ -325,14 +346,9 @@
                return
             }
 
-            console.log('11', this.form.add_monetization)
-            console.log('22', this.user.announce_left_car < 1)
-            console.log('33', !this.alertShowed)
-
             this.pending = true;
 
             try {
-               console.log('getCarForm-3');
                const formData = new FormData()
                formData.append('data', JSON.stringify(form))
                formData.append('add_monetization', this.form.add_monetization)
@@ -397,11 +413,9 @@
                const res = await this.plateNumbersPost({form, isMobile: this.isMobileBreakpoint});
                if (res?.redirect_url) {
                   const response = {data: {...res}}
-                  console.log('response', response)
                   this.handlePayment(response, this.$localePath('/profile/announcements'), this.$t('plate_added'), 'v2');
                   // !this.isMobileBreakpoint && this.$router.push(this.$localePath('/profile/announcements'));
                } else {
-                  console.log('222')
                   this.$router.push(this.$localePath('/profile/announcements'), () => {
                      this.updatePaidStatus({
                         type: 'success',
@@ -540,7 +554,7 @@
       },
 
       computed: {
-         ...mapGetters(['staticPages', 'servicePackages', 'settingsV2', 'sellOptions']),
+         ...mapGetters(['staticPages', 'servicePackages', 'settingsV2', 'sellOptions', 'countries']),
 
          getRulesPage() {
             return this.staticPages.find(page => page.id == 1);
@@ -558,7 +572,8 @@
             store.dispatch('getServicePackages'),
             store.dispatch('getSettingsV2'),
             store.dispatch('getBrands'),
-            store.dispatch('getAllOtherOptions', '2')
+            store.dispatch('getAllOtherOptions', '2'),
+            store.dispatch('fetchCountryList'),
          ]);
       },
 
