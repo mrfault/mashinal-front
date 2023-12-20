@@ -21,7 +21,7 @@
             this.$axios.$get('/new-notifications-count')
          }
 
-         window.ringostat_announce = parseInt(this.$route.params?.id);
+         // window.ringostat_announce = parseInt(this.$route.params?.id);
       }
    }
 </script>

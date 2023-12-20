@@ -42,6 +42,7 @@
             :announcements="partsMonetized"
             :pending="pending"
             :has-container="false"
+            :escapeDuplicates="true"
          >
             <template #cap>
                <Cap :className="'mb24'">

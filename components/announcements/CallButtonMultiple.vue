@@ -72,7 +72,7 @@
             } else {
                this.showPhone = true;
                this.trackCall(1);
-               this.pending = true;
+               // this.pending = true;
 
                // if (this.announcement.is_official_auto_salon) {
                //    window.getManualClassifiedNumber(ringostat_announce,

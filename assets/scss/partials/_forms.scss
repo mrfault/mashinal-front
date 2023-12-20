@@ -66,6 +66,7 @@ input::-webkit-inner-spin-button {
    &.content-max-width {
       .select-menu {
          &_dropdown {
+            min-width: 100%;
             width: max-content;
 
             & > div {
