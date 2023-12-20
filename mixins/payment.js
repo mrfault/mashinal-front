@@ -81,6 +81,7 @@ export const PaymentMixin = {
                      this.callUpdatePaidStatus(paid, text);
                   }
                   localStorage.removeItem('selectedPackage');
+                  this.$nuxt.$emit('isPaid');
                } else {
                   this.callUpdatePaidStatus(paid);
                }
