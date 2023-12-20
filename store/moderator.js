@@ -224,7 +224,7 @@ export const mutations = {
 
   addOriginalImages(state, payload) {
     let mergedImages = [];
-    payload.ids.map((item,index) => (
+    payload.ids.map((item, index) => (
        mergedImages[item] = payload.original_media[index]
     ));
 

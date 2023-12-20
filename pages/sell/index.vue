@@ -447,11 +447,10 @@
                         text: this.$t('announcement_paid'),
                         title: this.$t('success_payment')
                      });
-
                   });
                }
-               this.$router.push(this.$localePath('/profile/announcements'))
             } catch (e) {
+               console.error(e);
             } finally {
                this.pending = false;
             }
