@@ -77,6 +77,7 @@
                         <h2>{{ $t("contact_information") }}</h2>
 
                         <div class="auth_column">
+<!--                           {{$v.authForm.name.$error}}-->
                            <form-text-input
                               v-model="authForm.name"
                               :class="{form_error: $v.authForm.name.$error || authError.includes('name')}"
@@ -85,6 +86,7 @@
                               :placeholder="$t('your_name') + '*'"
                            />
 
+<!--                           {{$v.authForm.phone.$error}}-->
                            <form-text-input
                               key="phone"
                               v-model="authForm.phone"
@@ -102,6 +104,7 @@
                               </template>
                            </form-text-input>
 
+<!--                           {{$v.authForm.email.$error}}-->
                            <form-text-input
                               v-model="authForm.email"
                               :class="{form_error: $v.authForm.email.$error}"
@@ -110,21 +113,24 @@
                               :placeholder="$t('email') + '*'"
                            />
 
-<!--                           <form-select-->
-<!--                              v-if="$auth.loggedIn && $auth.user.external_salon"-->
-<!--                              v-model="authForm.country_id"-->
-<!--                              :clear-option="false"-->
-<!--                              :clear-placeholder="true"-->
-<!--                              :label="$t('sale_region_country')"-->
-<!--                              :new-label="false"-->
-<!--                              :options="countries.map(country => ({-->
-<!--                                    key: country.code,-->
-<!--                                    name: country.title-->
-<!--                                 }))"-->
-<!--                              has-search-->
-<!--                           />-->
+<!--                           {{$v.authForm.country_id.$error}}-->
+                           <form-select
+                              v-if="$auth.loggedIn && $auth.user.external_salon"
+                              v-model="authForm.country_id"
+                              :clear-option="false"
+                              :clear-placeholder="true"
+                              :label="$t('sale_region_country')"
+                              :new-label="false"
+                              :invalid="$v.authForm.country_id.$error"
+                              :options="countries.map(country => ({
+                                 key: country.code,
+                                 name: country.title
+                              }))"
+                              has-search
+                           />
 
                            <form-select
+                              v-else
                               v-model="authForm.region_id"
                               :clear-option="false"
                               :clear-placeholder="true"
@@ -134,6 +140,7 @@
                               has-search
                            />
 
+<!--                           {{$v.authForm.code.$error}}-->
                            <form-text-input
                               v-if="authStep === 'handleOTP'"
                               v-model="authForm.code"
@@ -349,7 +356,13 @@
             this.pending = true;
 
             try {
-               const formData = new FormData()
+               if (this.$auth.loggedIn && this.$auth.user.external_salon) {
+                  form.region_id = null;
+                  form.country_id = this.authForm.country_id;
+               }
+
+               const formData = new FormData();
+
                formData.append('data', JSON.stringify(form))
                formData.append('add_monetization', this.form.add_monetization)
                const res = await this.carsPost({form: formData, isMobile: this.isMobileBreakpoint});
@@ -472,11 +485,10 @@
          async onClick() {
             try {
               this.$v.authForm.$touch();
-              setTimeout(() => {
-                this.scrollTo('.form_error', -190)
-              });
+              setTimeout(() => this.scrollTo('.form_error', -190));
 
               if (this.$v.authForm.$error) {
+                 console.log('this.$v.authForm.$error', this.$v.authForm)
                 this.$toasted.error(this.$t('required_fields'));
                 return;
               }
@@ -589,11 +601,14 @@
 
       validations: {
          authForm: {
-            name: {required},
-            email: {
-               email, required
+            name: { required },
+            email: { email, required },
+            phone: { required },
+            country_id: {
+               required: requiredIf(function () {
+                  return this.$auth.loggedIn && this.$auth.user.external_salon;
+               })
             },
-            phone: {required},
             code: {
                required: requiredIf(function () {
                   return !(this.authStep === "loggedIn" || this.authStep === "notLoggedIn")

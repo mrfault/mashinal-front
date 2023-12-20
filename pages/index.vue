@@ -1,6 +1,6 @@
 <template>
    <div class="pages-index">
-      <div class="container">
+      <div class="container pb-5">
          <div class="filters-container">
             <template v-if="isMobileBreakpoint && !advancedSearch" >
                <FiltersMobile
@@ -71,8 +71,8 @@
 
       <div class="overflow-hidden" v-if="getMainMonetized?.length">
          <grid
+            class="mt-0 mb-5"
             :announcements="getMainMonetized"
-            :pending="pending"
          >
             <template #cap>
                <Cap :className="'mb20'">
@@ -95,7 +95,6 @@
          <grid
             :announcements="mainAnnouncements"
             :itemDetailsDark="true"
-            :pending="pending"
          >
             <template #cap>
                <Cap :className="'mb20'">
@@ -142,7 +141,6 @@
          <grid
             :announcements="carShowroom?.announcements"
             :announcementsBanner="carShowroom?.autosalon"
-            :pending="pending"
             :showBanner="true"
          >
             <template #cap>
@@ -167,7 +165,6 @@
             :announcements="partsHome"
             :showBanner="true"
             :urlBanner="'/parts'"
-            :pending="pending"
          >
             <template #cap>
                <Cap :className="'mb20'">
@@ -185,8 +182,6 @@
             </template>
          </grid>
       </div>
-
-<!--      <HandleIds :items="handleIdsOptions" :watchIds="false" />-->
    </div>
 </template>
 

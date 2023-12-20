@@ -215,10 +215,12 @@
          this.getAllData();
          this.$nuxt.$on('refresh-my-announcements', () => this.refresh++);
          this.$nuxt.$on('changeTabPayment', this.changeTabPay);
+         this.$nuxt.$on('isPaid', this.fetchData);
       },
 
       beforeDestroy() {
          this.$nuxt.$off('changeTabPayment', this.changeTabPay);
+         this.$nuxt.$off('isPaid', this.fetchData);
       },
 
       async asyncData({ store }) {
@@ -233,14 +235,7 @@
             getSettingsV2: 'getSettingsV2'
          }),
 
-        changeTabPay() {
-          this.$refs.tabsWrapper.scrollLeft = 0;
-          this.activeTab = 2;
-        },
-
-         async getAllData() {
-            this.loading = true;
-            this.pending = true;
+         async fetchData() {
             let store = this.$store;
             let route = this.$route;
 
@@ -258,14 +253,19 @@
                   sorting: 1
                });
             }
+         },
 
-            // return {
+        changeTabPay() {
+          this.$refs.tabsWrapper.scrollLeft = 0;
+          this.activeTab = 2;
+        },
+
+         async getAllData() {
+            this.loading = true;
+            this.pending = true;
+            await this.fetchData();
             this.pending = false;
             this.loading = false;
-            // this.statusReady = this.form.status;
-            // form: {status},
-            // refresh: 0,
-            // }
          },
 
          changePageMarks(page) {
