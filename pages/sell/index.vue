@@ -123,7 +123,7 @@
                               :new-label="false"
                               :invalid="$v.authForm.country_id.$error"
                               :options="countries.map(country => ({
-                                 key: country.code,
+                                 key: country.id,
                                  name: country.title
                               }))"
                               has-search
@@ -488,7 +488,6 @@
               setTimeout(() => this.scrollTo('.form_error', -190));
 
               if (this.$v.authForm.$error) {
-                 console.log('this.$v.authForm.$error', this.$v.authForm)
                 this.$toasted.error(this.$t('required_fields'));
                 return;
               }

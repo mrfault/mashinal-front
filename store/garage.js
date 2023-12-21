@@ -21,9 +21,9 @@ export const getters = {
 
 export const actions = {
   async getCarList({ commit }, data) {
-    const res = await this.$axios.$get(`/garage/car/list${this.$queryParams(data)}`);
-    commit('mutate', { property: 'cars', value: res });
-    return res;
+    const res = await this.$axios.$get(`${this.$env().API_SECRET}/garage/car/list${this.$queryParams(data)}`);
+    commit('mutate', { property: 'cars', value: {data: res} });
+    return {data: res};
   },
   async getAttorneyList({ commit }) {
     const res = await this.$axios.$get(`/attorney/list`);
@@ -31,30 +31,27 @@ export const actions = {
     return res;
   },
   async checkNewCar({}, data) {
-    const res = await this.$axios.$get(`/garage/check${this.$queryParams(data)}`);
-    return res;
+    return await this.$axios.$get(`/garage/check${this.$queryParams(data)}`);
   },
   async registerNewCar({}, data) {
-    const res = await this.$axios.$post(`/garage/register_pay`,data);
-    return res;
+    return await this.$axios.$post(`${this.$env().API_SECRET}/garage/car/add`, data);
   },
   async activateCar({}, data) {
-    const res = await this.$axios.$get(`/garage/activate_pay${this.$queryParams(data)}`);
-    return res;
+    return await this.$axios.$patch(`${this.$env().API_SECRET}/garage/car/${data.id}/activate`);
   },
   async deactivateCar({ commit }, data) {
-    const res = await this.$axios.$get(`/garage/car/deactivate${this.$queryParams(data)}`);
+    const res = await this.$axios.$patch(`${this.$env().API_SECRET}/garage/car/${data.id}/deactivate`);
     commit('updateCar', { id: data.id, key: 'status', value: 0 });
     commit('updateCar', { id: data.id, key: 'sync_status', value: 0 });
     return res;
   },
   async deleteCar({ commit }, data) {
-    const res = await this.$axios.$get(`/garage/car/delete${this.$queryParams(data)}`);
+    const res = await this.$axios.$delete(`${this.$env().API_SECRET}/garage/car/${data.id}/delete`);
     commit('removeCar', { id: data.id });
     return res;
   },
   async getProtocols({ commit }, data) {
-    const res = await this.$axios.$get(`/garage/protocols/list${this.$queryParams(data)}`);
+    const res = await this.$axios.$get(`${this.$env().API_SECRET}/garage/protocols/list${this.$queryParams(data)}`);
     commit('mutate', { property: 'protocols', value: res });
     return res;
   },

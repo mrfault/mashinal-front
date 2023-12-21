@@ -308,7 +308,7 @@ export default {
       },
       async refreshCarData() {
          await this.getAllCarsList();
-         this.selectedCar = item;
+         // this.selectedCar = item;
          this.$nuxt.refresh()
       },
       getPayLink(protocol) {
