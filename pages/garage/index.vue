@@ -4,7 +4,8 @@
 <!--         <portal to="breadcrumbs">-->
 <!--            <breadcrumbs :crumbs="crumbs"/>-->
 <!--         </portal>-->
-         <div :class="{'flex-wrap': isMobileBreakpoint}" class="d-flex  justify-content-between">
+
+         <div :class="{'flex-wrap': isMobileBreakpoint}" class="d-flex justify-content-between">
             <h2 :class="{'w-100 text-center': isMobileBreakpoint}" class="ma-title--md" style="margin-bottom: 32px">
                {{ $t('penalties') }}</h2>
             <div :class="{'mt-2 w-100':isMobileBreakpoint}">
@@ -199,8 +200,6 @@
             <h2 class="ma-title--md text-center w-100">{{ $t('no_models_found_for_this_request') }}</h2>
 
          </div>
-
-
       </div>
    </div>
 </template>
