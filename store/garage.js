@@ -52,6 +52,7 @@ export const actions = {
   },
   async getProtocols({ commit }, data) {
     const res = await this.$axios.$get(`${this.$env().API_SECRET}/garage/protocols/list${this.$queryParams(data)}`);
+    console.log('sssss4444', data)
     commit('mutate', { property: 'protocols', value: res });
     return res;
   },
