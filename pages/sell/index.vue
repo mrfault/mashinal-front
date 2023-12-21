@@ -115,7 +115,7 @@
 
 <!--                           {{$v.authForm.country_id.$error}}-->
                            <form-select
-                              v-if="$auth.loggedIn && $auth.user.external_salon"
+                              v-if="($auth.loggedIn && $auth.user.external_salon) && [1,4].includes(form.announce_type.id)"
                               v-model="authForm.country_id"
                               :clear-option="false"
                               :clear-placeholder="true"
@@ -396,6 +396,11 @@
             }
             this.pending = true;
             try {
+               if (this.$auth.loggedIn && this.$auth.user.external_salon) {
+                  form.region_id = null;
+                  form.country_id = this.authForm.country_id;
+               }
+
                const formData = new FormData()
                formData.append('data', JSON.stringify(form))
                formData.append('add_monetization', this.form.add_monetization)
@@ -605,7 +610,7 @@
             phone: { required },
             country_id: {
                required: requiredIf(function () {
-                  return this.$auth.loggedIn && this.$auth.user.external_salon;
+                  return (this.$auth.loggedIn && this.$auth.user.external_salon) && [1,4].includes(this.form.announce_type.id);
                })
             },
             code: {
