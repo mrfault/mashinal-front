@@ -250,13 +250,13 @@ export default {
          this.form.car_number = this.form.car_number.replace("_", '')
          try {
             const res = await this.registerNewCar({
-               vehicles: [{
+               // vehicles: [{
                   car_number: this.form.car_number.replace(/-|[ ]/g, ''),
                   tech_id: this.form.tech_id,
-               }],
+               // }],
                card_id: this.bankingCard,
                pay_type: this.paymentMethod,
-               is_mobile: this.isMobileBreakpoint,
+               is_mobile: this.isMobileBreakpoint
             })
             this.form.car_number = ''
             this.form.tech_id = ''
@@ -265,21 +265,32 @@ export default {
             if (this.paymentMethod === 'card' && !this.bankingCard) {
                this.pending = false
                this.showPaymentModal = false
-               this.handlePayment(res, false, this.$t('car_added'), 'v2')
+               await this.$store.dispatch('garage/payNewCar', {
+                  id: res.data.id,
+                  payment_type: 'bank_card',
+                  is_mobile: this.isMobileBreakpoint
+               }).then(payload => {
+                  this.handlePayment({data: payload}, false, this.$t('car_added'), 'v2')
+                  // this.$emit('newVehicleAdded', true)
+               });
             } else {
+               await this.$store.dispatch('garage/payNewCar', {
+                  id: res.data.id,
+                  payment_type: 'balance',
+                  is_mobile: this.isMobileBreakpoint
+               });
                await Promise.all([this.$nuxt.refresh(), this.$auth.fetchUser()])
                this.pending = false
                this.showPaymentModal = false
                this.bankingCard = ''
-               this.$emit('newVehicleAdded', true)
-               this.updatePaidStatus({
+               await this.$emit('newVehicleAdded', true)
+               await this.updatePaidStatus({
                   type: 'success',
                   text: this.$t('car_added'),
                   title: this.$t('success_payment'),
                });
                this.closeAndReset();
             }
-
          } catch (err) {
             this.pending = false;
          }
