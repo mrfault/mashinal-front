@@ -92,9 +92,10 @@
 
                         <div
                            v-else
-                           :style="{ backgroundImage: `url('${slide}?width=104')` }"
+                           :style="{ backgroundImage: `url('${slide}?&width=104')` }"
                            :class="{'protocolImageThumb': isProtocolMedia}"
                            @click="changeSlide(index)"
+                           @mouseenter="changeSlide(index)"
                         />
                      </div>
                   </div>
@@ -342,9 +343,7 @@
          },
 
          handleEscapeKey(e) {
-            if (e.key === 'Escape') {
-               this.$emit('close')
-            }
+            if (e.key === 'Escape') this.$emit('close');
             // if(e.key === "ArrowLeft") {
             //   this.slidePrev();
             //   //Left arrow pressed

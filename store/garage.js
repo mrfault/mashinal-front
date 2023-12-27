@@ -33,6 +33,9 @@ export const actions = {
   async checkNewCar({}, data) {
     return await this.$axios.$get(`/garage/check${this.$queryParams(data)}`);
   },
+  async payNewCar({}, payload) {
+   return await this.$axios.$post(`${this.$env().API_SECRET}/garage/pay/${payload.id}`, payload);
+  },
   async registerNewCar({}, data) {
     return await this.$axios.$post(`${this.$env().API_SECRET}/garage/car/add`, data);
   },
@@ -52,7 +55,6 @@ export const actions = {
   },
   async getProtocols({ commit }, data) {
     const res = await this.$axios.$get(`${this.$env().API_SECRET}/garage/protocols/list${this.$queryParams(data)}`);
-    console.log('sssss4444', data)
     commit('mutate', { property: 'protocols', value: res });
     return res;
   },
