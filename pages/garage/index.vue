@@ -504,11 +504,15 @@
             this.protocol.selected = {};
          },
          async getAllCarsList() {
+            console.log('carsList', this.carsList)
             this.loading = true;
             const res = await this.$store.dispatch('garage/getCarList', {})
             this.carsList = res.data;
+            console.log('res', res.data)
+            console.log('carsList', this.carsList)
             this.loading = false;
             this.setInitialSelectedCar();
+
          },
          async activatePaymentModal() {
             this.openPaymentModal();
