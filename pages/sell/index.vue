@@ -379,8 +379,8 @@
                      });
                   });
                }
-            } catch (e) {
-               console.error(e);
+            } catch (error) {
+               console.error(error)
             } finally {
                this.pending = false;
             }
