@@ -463,6 +463,8 @@
                v-if="user.external_salon && form.auction === 1"
                v-model="form.end_date"
                :placeholder="$t('announcement_end_date')"
+               :invalid="$v.form.end_date.$error"
+               :class="{form_error: $v.form.end_date.$error}"
                date-format="DD.MM.YYYY HH:00"
                date-type="datetime"
                input-date
@@ -1071,11 +1073,11 @@
                   }),
                   // maxValue: maxValue(this.form.is_new ? 500 : 10000000)
                },
-               // country_id: {
-               //    required: requiredIf(function () {
-               //       return !!this.user.external_salon
-               //    })
-               // },
+               end_date: {
+                  required: requiredIf(function () {
+                     return this.user.external_salon && this.form.auction === 1
+                  })
+               },
                vin: {
                   required: requiredIf(function () {
                      return (!this.user.external_salon && !this.user.autosalon) && this.form.customs_clearance
