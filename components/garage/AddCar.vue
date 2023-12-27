@@ -271,8 +271,7 @@ export default {
                   is_mobile: this.isMobileBreakpoint
                }).then(payload => {
                   this.handlePayment({data: payload}, false, this.$t('car_added'), 'v2')
-                  // this.$emit('newVehicleAdded', true)
-               });
+               })
             } else {
                await this.$store.dispatch('garage/payNewCar', {
                   id: res.data.id,
@@ -371,12 +370,14 @@ export default {
          this.hasAsanLoginCopy = false
       }
       this.hasAsanLoginCopy = this.hasAsanLogin
+      this.$nuxt.$on('isPaid', () => this.$emit('newVehicleAdded', true));
    },
    beforeDestroy() {
       this.form = {
          car_number: '',
          tech_id: '',
       }
+      this.$nuxt.$off('isPaid', () => this.$emit('newVehicleAdded', true));
    },
    watch:{
       'form.tech_id':{
