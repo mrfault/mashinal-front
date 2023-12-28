@@ -215,20 +215,6 @@
          });
       },
 
-      mounted() {
-         if (this.user?.autosalon?.id) this.getStatistics();
-
-         this.getAllData();
-         this.$nuxt.$on('refresh-my-announcements', () => this.refresh++);
-         this.$nuxt.$on('changeTabPayment', this.changeTabPay);
-         this.$nuxt.$on('isPaid', this.fetchData);
-      },
-
-      beforeDestroy() {
-         this.$nuxt.$off('changeTabPayment', this.changeTabPay);
-         this.$nuxt.$off('isPaid', this.fetchData);
-      },
-
       async asyncData({ store }) {
          await store.dispatch('getSettingsV2');
          await store.dispatch('getAnnouncementsStatuses');
@@ -428,6 +414,21 @@
             if (this.user.autosalon && this.isMobileBreakpoint) return true
             else return true
          }
+      },
+
+      mounted() {
+         if (this.user?.autosalon?.id) this.getStatistics();
+         this.activeTab = null;
+
+         this.getAllData();
+         this.$nuxt.$on('refresh-my-announcements', () => this.refresh++);
+         this.$nuxt.$on('changeTabPayment', this.changeTabPay);
+         this.$nuxt.$on('isPaid', this.fetchData);
+      },
+
+      beforeDestroy() {
+         this.$nuxt.$off('changeTabPayment', this.changeTabPay);
+         this.$nuxt.$off('isPaid', this.fetchData);
       }
    }
 </script>

@@ -1003,8 +1003,8 @@
             setTimeout(() => this.scrollTo('.form_error', -190));
 
             if (this.$v.form.$error || (this.mileage_is_new && this.form.mileage)) {
-               console.log('errorrrrr-1', this.$v.form)
-               console.log('errorrrrr-2', (this.mileage_is_new && this.form.mileage))
+               // console.log('errorrrrr-1', this.$v.form)
+               // console.log('errorrrrr-2', (this.mileage_is_new && this.form.mileage))
                this.$toasted.error(this.$t('required_fields'));
                return;
             }

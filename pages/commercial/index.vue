@@ -107,7 +107,7 @@
             let post = JSON.parse(this.$route.query.filter || '{}');
             this.pending = true;
             await this.getGridSearch({...this.searchParams, post, page, type: 'commercials'});
-            await this.$store.dispatch('fetchInfiniteMainMonetized', {type: 'commercial', data: post});
+            // await this.$store.dispatch('fetchInfiniteMainMonetized', {type: 'commercial', data: post});
             this.pending = false;
             this.scrollTo('.announcements-grid.paginated', [-15, -20]);
          }
@@ -134,11 +134,11 @@
          }
       },
 
-      mounted() {
-         if (!Object.keys(this.$route.query).length) {
-            this.$store.dispatch('fetchInfiniteMainMonetized', {type: 'commercial'});
-         }
-      },
+      // mounted() {
+      //    if (!Object.keys(this.$route.query).length) {
+      //       this.$store.dispatch('fetchInfiniteMainMonetized', {type: 'commercial'});
+      //    }
+      // },
 
       beforeRouteLeave(to, from, next) {
          this.$nuxt.$emit('prevent-popstate');

@@ -398,9 +398,9 @@
        },
        findOriginalImage(value, key) {
 
-          console.log('findOriginalImage', value, key);
-          console.log(this.saved_images);
-          console.log('this.announce.original_media', this.announce.original_media);
+          // console.log('findOriginalImage', value, key);
+          // console.log(this.saved_images);
+          // console.log('this.announce.original_media', this.announce.original_media);
 
           // if (value.includes('/conversions/')) {
           //    console.log('findOriginalImage-1', value)
@@ -463,8 +463,8 @@
            });
        },
        openCroppa(e, key) {
-          console.log('openCroppa-1', e)
-          console.log('openCroppa-2', key)
+          // console.log('openCroppa-1', e)
+          // console.log('openCroppa-2', key)
          this.isOpenCroppa = true;
          this.croppaSelectedKey = key;
        },

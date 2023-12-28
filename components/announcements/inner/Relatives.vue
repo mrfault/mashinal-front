@@ -98,15 +98,15 @@
       created() {
          // if (this.announcement?.is_part_salon) this.getShopOtherAnnouncements(this.announcement.id);
          if (this.isShop) {
-            console.log('this.isShop')
-            console.log('test-announcement', this.announcement)
+            // console.log('this.isShop')
+            // console.log('test-announcement', this.announcement)
             this.getAutoSalonOtherAnnouncements({
                id: this.announcement?.user?.auto_salon?.id || this.announcement?.user?.external_salon?.id || this.announcement?.user?.part_salon?.id,
                excluded_id: this.announcement.id,
                page: this.$route.query.page || 1
             });
          } else {
-            console.log('else this.isShop')
+            // console.log('else this.isShop')
             this.getRelativeAnnouncements({
                type: this.announcement.type || 'light_vehicle',
                id: this.announcement.id

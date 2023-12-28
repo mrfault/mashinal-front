@@ -84,6 +84,7 @@
                class="col-12 col-md-6"
             >
                <div class="ma-penalties__card">
+                  {{loading}}
                   <div v-if="carsList.length" class="ma-penalties__card--header">
                      <template v-for="(item,index) in cardTabs">
 
@@ -104,7 +105,7 @@
 
                         <!--                                loading-->
                         <div v-if="loading">
-                           <loader/>
+                           <loader />
                         </div>
 
                         <!--                                content-->
@@ -192,7 +193,6 @@
               class="row flex-wrap justify-content-center" style="height: 500px">
             <no-results class="mb-0"/>
             <h2 class="ma-title--md text-center w-100">{{ $t('no_models_found_for_this_request') }}</h2>
-
          </div>
       </div>
    </div>
@@ -432,8 +432,8 @@
             document.addEventListener('mousemove', scrollByDragging);
             document.addEventListener('mouseup', stopDragging);
             container.style.userSelect = 'none'; // Disable content selection during dragging
-         }
-         ,
+         },
+
          scrollToRight(e) {
             const carNumberContainer = document.getElementById('carNumberContainer');
             carNumberContainer.scrollLeft += 100
@@ -456,11 +456,9 @@
                   this.loading = false;
                   this.vehiclePassportExpired = true;
                }
-
             } else {
                this.loading = false;
             }
-
          },
          selectCar(car) {
             this.vehiclePassportExpired = false;
@@ -469,7 +467,7 @@
             this.pending = true;
             this.protocol.selected = {};
             this.protocol.allSelected = [];
-            this.loading = true;
+            // this.loading = true;
             this.selectedCar = car;
 
             this.protocol.selected = {};
@@ -479,11 +477,11 @@
                this.activeCardTab = 2
             }
             this.protocol.filteredList = [];
+
             if (car.sync_status == 1) {
                this.getCarProtocols();
-            } else {
-               return
             }
+            this.loading = false;
          },
          selectProtocol(protocol) {
             this.protocol.selected = protocol;
@@ -492,9 +490,7 @@
                isSelected: obj.protocol_number === protocol.protocol_number,
             }));
 
-
             this.protocol.filteredList = updatedArrayOfObjects;
-
          },
          switchCardTab(id) {
             this.loading = true;
@@ -504,15 +500,11 @@
             this.protocol.selected = {};
          },
          async getAllCarsList() {
-            console.log('carsList', this.carsList)
             this.loading = true;
             const res = await this.$store.dispatch('garage/getCarList', {})
             this.carsList = res.data;
-            console.log('res', res.data)
-            console.log('carsList', this.carsList)
             this.loading = false;
             this.setInitialSelectedCar();
-
          },
          async activatePaymentModal() {
             this.openPaymentModal();
