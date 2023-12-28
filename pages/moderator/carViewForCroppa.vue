@@ -191,7 +191,7 @@ export default {
   },
   computed: {
     findOriginalImage() {
-       console.log('findOriginalImage')
+       // console.log('findOriginalImage')
        if (this.saved_images[this.croppaSelectedKey] !== undefined) {
           let imageId = this.saved_images[this.croppaSelectedKey];
 

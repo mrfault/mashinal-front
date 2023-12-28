@@ -266,7 +266,7 @@
       async fetch() {
          // await this.$store.dispatch('getSalonById', {slug: this.$route.params.id});
          await this.$store.dispatch('getAutoSalonOtherAnnouncements', {id: this.$store?.getters?.salonSingle?.id});
-         console.log('Test-aaa', this.$store?.getters?.salonSingle?.id)
+         // console.log('Test-aaa', this.$store?.getters?.salonSingle?.id)
       },
 
       beforeDestroy() {

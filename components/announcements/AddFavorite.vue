@@ -98,8 +98,6 @@
          ...mapGetters(['favorites']),
 
          isAdded() {
-            // console.log('this.favorites', this.favorites)
-            // console.log('this.announcement.id_unique', this.announcement.id_unique)
             return this.favorites.includes(this.announcement.id_unique);
          },
       },

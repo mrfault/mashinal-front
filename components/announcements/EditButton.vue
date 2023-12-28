@@ -25,12 +25,9 @@
          ...mapGetters(['editPath']),
 
          path() {
-            // console.log('this.$route.params', this.type)
             if (this.type === 'plates') {
-               // console.log('1')
                return this.$localePath(`/${this.type}/${this.$route.params.id}/edit`);
             } else {
-               // console.log('2')
                return this.$localePath(`/${this.type}/announcement/${this.announcement.id_unique}/edit`);
             }
          }
@@ -53,7 +50,6 @@
                   this.$toasted.error('Sizin düzəliş etmə hüququnuz yoxdur')
                }
             } else {
-               // console.log('this.announcement', this.announcement)
                // this.changeEditPath(this.$route.params.id);
                // this.changeEditing(true);
                // this.changeEditPostAuthor(this.announcement.user_id);

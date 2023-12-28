@@ -168,7 +168,7 @@
 
       methods: {
          handleNavBar(val) {
-            console.log('ttttt', val)
+            // console.log('ttttt', val)
             this.isActiveBar = val;
          },
          detectDevice() {
