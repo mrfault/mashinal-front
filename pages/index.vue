@@ -189,13 +189,14 @@
          @close="isActive = false"
       >
          <lottie
+            class="newYearAnim"
             :width="600"
             :height="600"
             :options="lottieOptions"
             v-on:animCreated="handleAnimation"
          />
 
-         <p>Dünya Azərbaycanlılarının Həmrəylik Günü <br/> və <br/> Yeni İliniz Mübarək !!!</p>
+         <p><span>Dünya Azərbaycanlılarının Həmrəylik Günü</span> <br/> <span>və</span> <br/> Yeni İliniz Mübarək !!!</p>
 
          <img src="/icons/cloud_2.svg" alt="cloud_icon">
          <img src="/icons/cloud_3.svg" alt="cloud_icon">
@@ -482,8 +483,8 @@
             this.$router.push(this.$localePath('/profile/announcements'));
          }
 
-         if (localStorage.getItem("newYear")) this.isActive = false;
-         else localStorage.setItem("newYear", 'true');
+         // if (localStorage.getItem("newYear")) this.isActive = false;
+         // else localStorage.setItem("newYear", 'true');
       },
 
       beforeDestroy() {
@@ -549,6 +550,10 @@
                line-height: 32px;
                font-weight: 600;
             }
+         }
+
+         .__rail-is-vertical {
+            display: none !important;
          }
       }
    }
@@ -727,7 +732,6 @@
 
    @media (min-width: 992px) {
       .filters-container {
-
          &__head {
             flex-direction: row !important;
             gap: unset;
@@ -741,6 +745,78 @@
                   .btn {
                      width: 110px !important;
                   }
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 1150px) {
+      .modal-popup {
+         &.newYear {
+            max-width: unset;
+            position: unset;
+            transform: unset;
+         }
+      }
+   }
+
+   @media (max-width: 992px) {
+      .modal-popup {
+         &.newYear {
+            .newYearAnim {
+               width: 500px !important;
+            }
+
+            .modal-popup_content {
+               p {
+                  font-size: 18px;
+                  line-height: 28px;
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 768px) {
+      .modal-popup {
+         &.newYear {
+            .newYearAnim {
+               width: 400px !important;
+            }
+
+            .modal-popup_content {
+               p {
+                  span {
+                     display: none;
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 576px) {
+      .modal-popup {
+         &.newYear {
+            .newYearAnim {
+               width: 300px !important;
+            }
+
+            .modal-popup_content {
+               img {
+                  width: 100px;
+                  top: 190px !important;
+
+                  &:last-of-type {
+                     right: 20px;
+                     top: 220px !important;
+                  }
+               }
+
+               p {
+                  font-size: 14px;
+                  line-height: 24px;
                }
             }
          }
