@@ -195,11 +195,10 @@
             v-on:animCreated="handleAnimation"
          />
 
-         <p>Yeni iliniz mübarək!</p>
+         <p>Dünya Azərbaycanlılarının Həmrəylik Günü <br/> və <br/> Yeni İliniz Mübarək !!!</p>
 
-         <img src="/icons/cloud.png" alt="cloud_icon">
-         <img src="/icons/cloud.png" alt="cloud_icon">
-<!--         <img src="/icons/cloud.png" alt="cloud_icon">-->
+         <img src="/icons/cloud_2.svg" alt="cloud_icon">
+         <img src="/icons/cloud_3.svg" alt="cloud_icon">
       </modal-popup>
    </div>
 </template>
@@ -483,8 +482,8 @@
             this.$router.push(this.$localePath('/profile/announcements'));
          }
 
-         // if (localStorage.getItem("newYear")) this.isActive = false;
-         // else localStorage.setItem("newYear", 'true');
+         if (localStorage.getItem("newYear")) this.isActive = false;
+         else localStorage.setItem("newYear", 'true');
       },
 
       beforeDestroy() {
@@ -519,36 +518,35 @@
 
             img {
                position: absolute;
-               top: 60px;
-               width: 250px;
 
-               //animation-duration: 5s;   /* Сколько сек будет меняться цвет фона */
-               //animation-iteration-count: infinite;   /* Будет проигрываться бесконечно */
-               //animation-direction: alternate; /* Будет плавно с from до to, без разрывов */
+               width: 200px;
+               animation-duration: 5s;   /* Сколько сек будет меняться цвет фона */
+               animation-iteration-count: infinite;   /* Будет проигрываться бесконечно */
+               animation-direction: alternate; /* Будет плавно с from до to, без разрывов */
 
                &:first-of-type {
-                  //left: 0;
-                  animation: moveCloud1 5s linear infinite;
+                  top: 80px;
+                  //animation: moveCloud1 11s linear infinite;
+                  animation-name: moveCloud3;
                }
 
-               //&:nth-last-of-type(2) {
-               //   animation: moveCloud2 5s linear infinite;
-               //   right: 100px;
-               //}
                &:last-of-type {
-                  right: 0;
-                  animation: moveCloud3 5s linear infinite; /* Adjust the duration and timing function as needed */
+                  top: 100px;
+                  right: 50px;
+                  animation-name: moveCloud4;
+                  //animation: moveCloud2 11s linear infinite;
                }
             }
 
             p {
                position: absolute;
-               top: 50%;
+               top: calc(50% - 30px);
                left: 50%;
                transform: translate(-50%, -50%);
-               text-transform: uppercase;
                color: #FFFFFF;
-               font-size: 26px;
+               text-align: center;
+               font-size: 23px;
+               line-height: 32px;
                font-weight: 600;
             }
          }
@@ -558,6 +556,9 @@
    @keyframes moveCloud1 {
       0% {
          transform: translateX(70%);
+         opacity: 1;
+      }
+      70% {
          opacity: 1;
       }
       100% {
@@ -579,21 +580,30 @@
 
    @keyframes moveCloud3 {
       0% {
-         transform: translateX(70%);
-         opacity: 0;
+         transform: translate(10px, 10px);
+      }
+      50% {
+         transform: translate(20px, 20px);
       }
       100% {
-         transform: translateX(-70%);
-         opacity: 1;
+         transform: translate(-5px, -5px);
+      }
+   }
+
+   @keyframes moveCloud4 {
+      0% {
+         transform: translate(5px, 15px);
+      }
+      50% {
+         transform: translate(-5px, -15px);
+      }
+      100% {
+         transform: translate(5px, 5px);
       }
    }
 
    .pages-index {
       padding-top: 24px;
-
-      //.announcements-grid {
-      //   margin: 32px 0;
-      //}
    }
 
    .filters-container {
