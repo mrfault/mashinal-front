@@ -483,8 +483,8 @@
             this.$router.push(this.$localePath('/profile/announcements'));
          }
 
-         // if (localStorage.getItem("newYear")) this.isActive = false;
-         // else localStorage.setItem("newYear", 'true');
+         if (localStorage.getItem("newYear")) this.isActive = false;
+         else localStorage.setItem("newYear", 'true');
       },
 
       beforeDestroy() {
