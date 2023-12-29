@@ -1,6 +1,6 @@
 <template>
    <div class="pages-index">
-      <div class="container">
+      <div class="container pb-5">
          <div class="filters-container">
             <template v-if="isMobileBreakpoint && !advancedSearch" >
                <FiltersMobile
@@ -71,8 +71,8 @@
 
       <div class="overflow-hidden" v-if="getMainMonetized?.length">
          <grid
+            class="mt-0 mb-5"
             :announcements="getMainMonetized"
-            :pending="pending"
          >
             <template #cap>
                <Cap :className="'mb20'">
@@ -95,7 +95,6 @@
          <grid
             :announcements="mainAnnouncements"
             :itemDetailsDark="true"
-            :pending="pending"
          >
             <template #cap>
                <Cap :className="'mb20'">
@@ -142,7 +141,6 @@
          <grid
             :announcements="carShowroom?.announcements"
             :announcementsBanner="carShowroom?.autosalon"
-            :pending="pending"
             :showBanner="true"
          >
             <template #cap>
@@ -167,7 +165,6 @@
             :announcements="partsHome"
             :showBanner="true"
             :urlBanner="'/parts'"
-            :pending="pending"
          >
             <template #cap>
                <Cap :className="'mb20'">
@@ -186,11 +183,31 @@
          </grid>
       </div>
 
-<!--      <HandleIds :items="handleIdsOptions" :watchIds="false" />-->
+      <modal-popup
+         :modal-class="'newYear'"
+         :toggle="isActive"
+         @close="isActive = false"
+      >
+         <lottie
+            class="newYearAnim"
+            :width="600"
+            :height="600"
+            :options="lottieOptions"
+            v-on:animCreated="handleAnimation"
+         />
+
+         <p><span>Dünya Azərbaycanlılarının Həmrəylik Günü</span> <br/> <span>və</span> <br/> Yeni İliniz Mübarək !!!</p>
+
+         <img src="/icons/cloud_2.svg" alt="cloud_icon">
+         <img src="/icons/cloud_3.svg" alt="cloud_icon">
+      </modal-popup>
    </div>
 </template>
 
 <script>
+   import lottie from 'vue-lottie/src/lottie.vue'
+   import * as animationData from "~/assets/animation.json";
+
    import { mapGetters, mapActions } from 'vuex'
    import CarSearchForm from '~/components/cars/CarSearchForm';
    import MotoSearchForm from '~/components/moto/MotoSearchForm';
@@ -219,7 +236,8 @@
          HandleIds,
          Cap,
          PlatesGrid,
-         FiltersMobile
+         FiltersMobile,
+         lottie
       },
 
       head() {
@@ -231,6 +249,10 @@
 
       data() {
          return {
+            anim: null,
+            lottieOptions: { animationData: animationData.default },
+            isActive: true,
+
             additionalBrands: { 0 :{} },
             advancedSearch: false,
             announceType: 0,
@@ -407,12 +429,21 @@
             'getGridSearch',
          ]),
 
+         handleAnimation: function (anim) {
+            this.anim = anim;
+         },
+
          goBack() {
             this.advancedSearch = false
             if(this.isMobileBreakpoint) {
                this.$nuxt.$emit('submit-car-search-form-mobile')
             }
          },
+
+         openMore() {
+            this.advancedSearch = true;
+         },
+
          async handleLogoClick() {
             this.$scrollTo('body')
             this.$nuxt.$emit('reset-search-form')
@@ -424,69 +455,7 @@
                this.fetchCarShowroomAnnouncementsHome()
             ])
             this.pending = false
-         },
-
-         gotoRoute(link) {
-            if (this.loggedIn) {
-               // this.$route.push(link)
-               this.$router.push({path: '/qaraj'})
-            } else {
-               // this.$route.push(link)
-               this.$router.push({path: '/login'})
-               localStorage.setItem('loginFromSlider', true)
-            }
-         },
-
-         openMore() {
-            this.advancedSearch = true;
-         },
-
-         async getSliderData() {
-            if (this.homePageSliders && this.homePageSliders.length) {
-               return;
-            } else {
-               await this.$store.dispatch('getHomePageSliders');
-               this.homePageSliders.forEach(el => {
-                  if (el.video) {
-                     this.video = el.video;
-                  }
-               })
-            }
-         },
-
-         playVideo(url) {
-            if (document) {
-               var vid = document.getElementById('sliderVideo')
-            }
-            if (vid) {
-               vid.pause();
-               vid.play()
-            }
-            return url
-         },
-
-         onElementObserved() {
-            const observer = new IntersectionObserver((entries) => {
-               entries.forEach((entry) => {
-                  if (entry.intersectionRatio > 0) {
-                     this.player.play();
-                  } else {
-                     this.player.pause();
-                  }
-               });
-            });
-            observer.observe(this.$refs.theVideo);
-         },
-
-         // async searchMoto(page = 1) {
-         //    page = this.$route.query.page || 1;
-         //    let post = JSON.parse(this.$route.query.filter || '{}');
-         //    // this.pending = true;
-         //    await this.getGridSearch({...this.searchParams, post, page});
-         //    await this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'moto', data: post });
-         //    this.pending = false;
-         //    this.scrollTo('.announcements-grid.paginated', [-15, -20]);
-         // }
+         }
       },
 
       watch: {
@@ -507,39 +476,139 @@
             if (window.innerWidth < 769) this.absoluteMobileScreen = true
             else this.absoluteMobileScreen = false
          })
-         // setTimeout(() => {
-         //    // this.gallerySwiper.init()
-         //    this.gallerySwiper.on('slideChange', () => {
-         //       this.currentSlide = this.gallerySwiper.realIndex
-         //    })
-         // }, 100)
-         this.$nuxt.$on('logo-click', this.handleLogoClick)
 
-         // this.getSliderData()
+         this.$nuxt.$on('logo-click', this.handleLogoClick)
 
          if (this.$route.query.page === 'plate-announce') {
             this.$router.push(this.$localePath('/profile/announcements'));
          }
+
+         if (localStorage.getItem("newYear")) this.isActive = false;
+         else localStorage.setItem("newYear", 'true');
       },
 
       beforeDestroy() {
-         this.$nuxt.$off('logo-click', this.handleLogoCkick)
+         this.$nuxt.$off('logo-click', this.handleLogoCkick);
       },
 
       beforeRouteLeave(to, from, next) {
-         this.$nuxt.$emit('prevent-popstate')
+         this.$nuxt.$emit('prevent-popstate');
          next();
       }
    }
 </script>
 
 <style lang="scss">
+   .modal-popup {
+      &.newYear {
+         width: max-content;
+         background: transparent;
+
+         div {
+            overflow: visible !important;
+         }
+
+         .modal-popup_content {
+            position: relative;
+
+            .title {
+               margin-bottom: -50px;
+               position: relative;
+               z-index: 100;
+            }
+
+            img {
+               position: absolute;
+
+               width: 200px;
+               animation-duration: 5s;   /* Сколько сек будет меняться цвет фона */
+               animation-iteration-count: infinite;   /* Будет проигрываться бесконечно */
+               animation-direction: alternate; /* Будет плавно с from до to, без разрывов */
+
+               &:first-of-type {
+                  top: 80px;
+                  //animation: moveCloud1 11s linear infinite;
+                  animation-name: moveCloud3;
+               }
+
+               &:last-of-type {
+                  top: 100px;
+                  right: 50px;
+                  animation-name: moveCloud4;
+                  //animation: moveCloud2 11s linear infinite;
+               }
+            }
+
+            p {
+               position: absolute;
+               top: calc(50% - 30px);
+               left: 50%;
+               transform: translate(-50%, -50%);
+               color: #FFFFFF;
+               text-align: center;
+               font-size: 23px;
+               line-height: 32px;
+               font-weight: 600;
+            }
+         }
+
+         .__rail-is-vertical {
+            display: none !important;
+         }
+      }
+   }
+
+   @keyframes moveCloud1 {
+      0% {
+         transform: translateX(70%);
+         opacity: 1;
+      }
+      70% {
+         opacity: 1;
+      }
+      100% {
+         transform: translateX(-70%);
+         opacity: 0;
+      }
+   }
+
+   @keyframes moveCloud2 {
+      0% {
+         transform: translateX(70%);
+         opacity: 0;
+      }
+      100% {
+         transform: translateX(-70%);
+         opacity: 1;
+      }
+   }
+
+   @keyframes moveCloud3 {
+      0% {
+         transform: translate(10px, 10px);
+      }
+      50% {
+         transform: translate(20px, 20px);
+      }
+      100% {
+         transform: translate(-5px, -5px);
+      }
+   }
+
+   @keyframes moveCloud4 {
+      0% {
+         transform: translate(5px, 15px);
+      }
+      50% {
+         transform: translate(-5px, -15px);
+      }
+      100% {
+         transform: translate(5px, 5px);
+      }
+   }
+
    .pages-index {
       padding-top: 24px;
-
-      //.announcements-grid {
-      //   margin: 32px 0;
-      //}
    }
 
    .filters-container {
@@ -663,7 +732,6 @@
 
    @media (min-width: 992px) {
       .filters-container {
-
          &__head {
             flex-direction: row !important;
             gap: unset;
@@ -683,59 +751,75 @@
       }
    }
 
-//.swiper-container {
-//   .btn--green {
-//      height: 25px !important;
-//   }
-//
-//   @media screen and (max-width: 1024px) {
-//      .btn--green {
-//         height: 12px !important;
-//      }
-//   }
-//   @media screen and (max-width: 768px) {
-//      .swiper-pagination {
-//         left: 0 !important;
-//         bottom: 14px !important;
-//      }
-//      .swiper-pagination-bullet {
-//         position: absolute;
-//         top: -6px;
-//         left: 44%;
-//         z-index: 111;
-//
-//         &:first-child {
-//            top: -6px;
-//            left: 49%;
-//         }
-//      }
-//   }
-//}
-//
-//.mobileHomePage-slide-item {
-//   height: 170px;
-//   position: relative;
-//   justify-content: flex-start;
-//
-//   .mobileHomePage-slide-left {
-//      width: 50%;
-//   }
-//
-//   .mobileHomePage-slide-right {
-//      position: absolute;
-//      top: 0;
-//      right: 0;
-//      width: 50%;
-//      height: 100%;
-//      box-sizing: border-box;
-//      overflow: hidden;
-//      clip-path: polygon(43% 0, 100% 0, 100% 100%, 0% 100%);
-//
-//      img {
-//         width: 100%;
-//         height: 100%;
-//         object-fit: cover;
-//      }
-//   }
-//}
+   @media (max-width: 1150px) {
+      .modal-popup {
+         &.newYear {
+            max-width: unset;
+            position: unset;
+            transform: unset;
+         }
+      }
+   }
+
+   @media (max-width: 992px) {
+      .modal-popup {
+         &.newYear {
+            .newYearAnim {
+               width: 500px !important;
+            }
+
+            .modal-popup_content {
+               p {
+                  font-size: 18px;
+                  line-height: 28px;
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 768px) {
+      .modal-popup {
+         &.newYear {
+            .newYearAnim {
+               width: 400px !important;
+            }
+
+            .modal-popup_content {
+               p {
+                  span {
+                     display: none;
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   @media (max-width: 576px) {
+      .modal-popup {
+         &.newYear {
+            .newYearAnim {
+               width: 300px !important;
+            }
+
+            .modal-popup_content {
+               img {
+                  width: 100px;
+                  top: 190px !important;
+
+                  &:last-of-type {
+                     right: 20px;
+                     top: 220px !important;
+                  }
+               }
+
+               p {
+                  font-size: 14px;
+                  line-height: 24px;
+               }
+            }
+         }
+      }
+   }
 </style>

@@ -16,7 +16,7 @@ export default {
   props: {
     car: {},
     history:{
-      default:0,
+      default: 0
     }
   },
   components: {

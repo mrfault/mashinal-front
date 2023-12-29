@@ -43,6 +43,9 @@ export default function ({app, store, error, $axios, $cookies}) {
             window.location.reload();
          }
       } else if (code === 422) {
+         if (err?.response?.data?.data?.end_date) {
+            err?.response?.data?.data?.end_date?.forEach(item => app.$toast.error(item));
+         }
          if (err?.response?.data?.data?.code ){
             app.$toast.error(app.i18n.t(err.response.data.data.code[0]));
          }

@@ -1702,35 +1702,26 @@ async getMotoOptions({state, commit}) {
          return res;
    },
    async partsPost({}, form) {
-         const res = await this.$axios.$post(`/sell/part/post/publish`, form);
-         return res;
+         return await this.$axios.$post(`/sell/part/post/publish`, form);;
    },
    async carsPost({}, {form, isMobile}) {
-      const res = await this.$axios.$post(`/sell/post/publish?is_mobile=${isMobile}`, form);
-      return res;
+      return await this.$axios.$post(`/sell/post/publish?is_mobile=${isMobile}`, form);
    },
    async motoPost({}, {form, isMobile}) {
-      const res = await this.$axios.$post(`/sell/moto/post/publish?is_mobile=${isMobile}`, form);
-      return res;
-
+      return await this.$axios.$post(`/sell/moto/post/publish?is_mobile=${isMobile}`, form);
    },
    async motoEdit({}, {id, isMobile, form}) {
-      const res = await this.$axios.$post(`sell/moto/post/edit/${id}?is_mobile=${isMobile}`, form);
-      return res;
+      return await this.$axios.$post(`sell/moto/post/edit/${id}?is_mobile=${isMobile}`, form);
    },
    async carEdit({}, {id, isMobile, form}) {
-      const res = await this.$axios.$post(`sell/post/edit/${id}?is_mobile=${isMobile}`, form);
-      return res;
+      return await this.$axios.$post(`sell/post/edit/${id}?is_mobile=${isMobile}`, form);
    },
    async partEdit({}, {id, form}) {
-      const res = await this.$axios.$post(`/sell/part/edit/${id}`, form);
-      return res;
+      return await this.$axios.$post(`/sell/part/edit/${id}`, form);
    },
    async registrationMarkEdit({}, {id, form}) {
-      const res = await this.$axios.$post(`${this.$env().API_SECRET}/plate-numbers/update/${id}`, form);
-      return res;
+      return await this.$axios.$post(`${this.$env().API_SECRET}/plate-numbers/update/${id}`, form);
    },
-
 
    updateSalonsFilters({commit}, form) {
       commit("mutate", {property: "salonsFilters", value: form});

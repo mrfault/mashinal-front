@@ -35,6 +35,7 @@
                      v-for="item in announcementsStatuses"
                      :class="{'ma-announcements__head--item--active': item.id == activeTab}"
                      class="ma-announcements__head--item"
+                     :style="loading ? 'pointer-events: none' : ''"
                      @click="changeTab(item)"
                   >
                      <span>{{ item.count }}</span>
@@ -51,7 +52,9 @@
          </div>
 
          <div :class="{'ma-announcements__body-autosalon': user.autosalon}" class="ma-announcements__body">
-            <h4 v-if="!loading && !user.autosalon" class="ma-subtitle--lg">{{ $t('my_vehicle_announcements') }}</h4>
+            <h4 v-if="!loading && !user.autosalon" class="ma-subtitle--lg">
+               {{ $t('my_vehicle_announcements') }}
+            </h4>
 
             <div id="announcementsContainer" :class="{'overflow-x-hidden': !myAnnouncements.length}"
                  class="ma-announcements__body--row" @mousedown.prevent="startDragging" @mouseup.prevent="mouseUp">
@@ -112,7 +115,10 @@
             </div>
 
             <!--            number plates-->
-            <h4 v-if="!loading && !user.autosalon" class="ma-subtitle--lg">{{ $t('my_car_number_announcements') }}</h4>
+            <h4 v-if="!loading && !user.autosalon" class="ma-subtitle--lg">
+               {{ $t('my_car_number_announcements') }}
+            </h4>
+
             <div v-if="!user.autosalon"
                  id="platesContainer"
                  :class="{'overflow-x-hidden': !allMyPlates.length}"
@@ -176,7 +182,7 @@
 
       data() {
          return {
-            activeTab: null,
+            activeTab: '',
             loading: false,
             escapeDuplicates: false,
             isDragging: false,
@@ -209,18 +215,6 @@
          });
       },
 
-      mounted() {
-         if (this.user?.autosalon?.id) this.getStatistics();
-
-         this.getAllData();
-         this.$nuxt.$on('refresh-my-announcements', () => this.refresh++);
-         this.$nuxt.$on('changeTabPayment', this.changeTabPay);
-      },
-
-      beforeDestroy() {
-         this.$nuxt.$off('changeTabPayment', this.changeTabPay);
-      },
-
       async asyncData({ store }) {
          await store.dispatch('getSettingsV2');
          await store.dispatch('getAnnouncementsStatuses');
@@ -233,14 +227,7 @@
             getSettingsV2: 'getSettingsV2'
          }),
 
-        changeTabPay() {
-          this.$refs.tabsWrapper.scrollLeft = 0;
-          this.activeTab = 2;
-        },
-
-         async getAllData() {
-            this.loading = true;
-            this.pending = true;
+         async fetchData() {
             let store = this.$store;
             let route = this.$route;
 
@@ -258,14 +245,19 @@
                   sorting: 1
                });
             }
+         },
 
-            // return {
+        changeTabPay() {
+          this.$refs.tabsWrapper.scrollLeft = 0;
+          this.activeTab = 2;
+        },
+
+         async getAllData() {
+            this.loading = true;
+            this.pending = true;
+            await this.fetchData();
             this.pending = false;
             this.loading = false;
-            // this.statusReady = this.form.status;
-            // form: {status},
-            // refresh: 0,
-            // }
          },
 
          changePageMarks(page) {
@@ -275,7 +267,7 @@
 
          async changeTab(item) {
             let id = item.id;
-            if (item.id === null) id = 'null';
+            if (item.id === null) id = null;
 
             await this.$store.commit('closeDropdown');
             this.loading = true;
@@ -422,6 +414,21 @@
             if (this.user.autosalon && this.isMobileBreakpoint) return true
             else return true
          }
+      },
+
+      mounted() {
+         if (this.user?.autosalon?.id) this.getStatistics();
+         this.activeTab = null;
+
+         this.getAllData();
+         this.$nuxt.$on('refresh-my-announcements', () => this.refresh++);
+         this.$nuxt.$on('changeTabPayment', this.changeTabPay);
+         this.$nuxt.$on('isPaid', this.fetchData);
+      },
+
+      beforeDestroy() {
+         this.$nuxt.$off('changeTabPayment', this.changeTabPay);
+         this.$nuxt.$off('isPaid', this.fetchData);
       }
    }
 </script>

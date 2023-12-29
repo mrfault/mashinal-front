@@ -458,10 +458,13 @@
                   input-name="auction"
                />
             </div>
+
             <form-text-input
                v-if="user.external_salon && form.auction === 1"
                v-model="form.end_date"
                :placeholder="$t('announcement_end_date')"
+               :invalid="$v.form.end_date.$error"
+               :class="{form_error: $v.form.end_date.$error}"
                date-format="DD.MM.YYYY HH:00"
                date-type="datetime"
                input-date
@@ -584,56 +587,34 @@
          </div>
       </div>
 
-      <template v-if="form.modification && sellModificationsV2.length">
-         <div v-if="user.external_salon" class="divider">
-            <form-radio
-               :id="'5'"
-               v-model="form.auction"
-               :label="$t('auction')"
-               :radio-value="1"
-               input-name="auction"
-            />
-            <form-radio
-               :id="'6'"
-               v-model="form.auction"
-               :label="$t('sell')"
-               :radio-value="0"
-               input-name="auction"
-            />
-         </div>
-         <form-text-input
-            v-if="user.external_salon && form.auction === 1"
-            v-model="form.end_date"
-            :placeholder="$t('announcement_end_date')"
-            date-format="DD.MM.YYYY HH:00"
-            date-type="datetime"
-            input-date
-            value-type="datetime"
-            @change="removeError('end_date')"
-         />
-
-         <!--         <div v-if="!user.external_salon">-->
-         <!--            <p class="mb-1">{{ $t("license_plate_number") }}</p>-->
-         <!--            <div class="divider mobile-column">-->
-         <!--               <form-text-input-->
-         <!--                  :class="{form_error: $v.form.car_number.$error}"-->
-         <!--                  v-model="form.car_number"-->
-         <!--                  input-class="car-number-show-popover"-->
-         <!--                  img-src="/icons/circled_flag.svg"-->
-         <!--                  :mask="'99 - AA - 999'"-->
-         <!--                  placeholder="__ - __ - ___"-->
-         <!--                  :invalid="$v.form.car_number.$error"-->
-         <!--               />-->
-         <!--               <form-checkbox-->
-         <!--                  v-model="form.show_car_number"-->
-         <!--                  :label="$t('show_on_site')"-->
-         <!--                  input-name="show_car_number"-->
-         <!--                  :disabled="!form.car_number"-->
-         <!--                  transparent-->
-         <!--               />-->
-         <!--            </div>-->
-         <!--         </div>-->
-      </template>
+<!--      <template v-if="form.modification && sellModificationsV2.length">-->
+<!--         <div v-if="user.external_salon" class="divider">-->
+<!--            <form-radio-->
+<!--               :id="'5'"-->
+<!--               v-model="form.auction"-->
+<!--               :label="$t('auction')"-->
+<!--               :radio-value="1"-->
+<!--               input-name="auction"-->
+<!--            />-->
+<!--            <form-radio-->
+<!--               :id="'6'"-->
+<!--               v-model="form.auction"-->
+<!--               :label="$t('sell')"-->
+<!--               :radio-value="0"-->
+<!--               input-name="auction"-->
+<!--            />-->
+<!--         </div>-->
+<!--         <form-text-input-->
+<!--            v-if="user.external_salon && form.auction === 1"-->
+<!--            v-model="form.end_date"-->
+<!--            :placeholder="$t('announcement_end_date')"-->
+<!--            date-format="DD.MM.YYYY HH:00"-->
+<!--            date-type="datetime"-->
+<!--            input-date-->
+<!--            value-type="datetime"-->
+<!--            @change="removeError('end_date')"-->
+<!--         />-->
+<!--      </template>-->
    </div>
 </template>
 
@@ -1019,11 +1000,11 @@
          isReady() {
             this.$v.form.$touch();
 
-            setTimeout(() => {
-               this.scrollTo('.form_error', -190)
-            });
+            setTimeout(() => this.scrollTo('.form_error', -190));
 
             if (this.$v.form.$error || (this.mileage_is_new && this.form.mileage)) {
+               // console.log('errorrrrr-1', this.$v.form)
+               // console.log('errorrrrr-2', (this.mileage_is_new && this.form.mileage))
                this.$toasted.error(this.$t('required_fields'));
                return;
             }
@@ -1092,16 +1073,15 @@
                   }),
                   // maxValue: maxValue(this.form.is_new ? 500 : 10000000)
                },
-               country_id: {
+               end_date: {
                   required: requiredIf(function () {
-                     return !!this.user.external_salon
+                     return this.user.external_salon && this.form.auction === 1
                   })
                },
                vin: {
                   required: requiredIf(function () {
                      return (!this.user.external_salon && !this.user.autosalon) && this.form.customs_clearance
                   })
-
                },
                price: {required},
                saved_images: {required, minLength: minLength(3)}

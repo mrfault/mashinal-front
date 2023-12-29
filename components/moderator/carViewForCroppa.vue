@@ -206,7 +206,7 @@ export default {
     cropperCrop() {
       let getData = this.$refs.cropper.getData();
       this.button_loading = true;
-       console.log('Get1')
+       // console.log('Get1')
 
       this.$axios.post('/ticket/media/' + this.saved_images[this.croppaSelectedKey] + '/manipulate', getData, {
         headers: {

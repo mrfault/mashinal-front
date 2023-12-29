@@ -172,7 +172,6 @@ export default {
             this.showPaymentModal = true;
          } else {
             this.showPaymentModal = true;
-
          }
       },
       openModal() {

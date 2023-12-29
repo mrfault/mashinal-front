@@ -398,9 +398,9 @@ export default {
 
    mounted() {
       this.searchType = 1;
-      if (!Object.keys(this.$route.query).length) {
-         this.$store.dispatch('fetchInfiniteMainMonetized', {type: 'cars'});
-      }
+      // if (!Object.keys(this.$route.query).length) {
+      //    this.$store.dispatch('fetchInfiniteMainMonetized', {type: 'cars'});
+      // }
 
       if (this.$route.query?.car_filter) {
          let filters = JSON.parse(this.$route.query?.car_filter)

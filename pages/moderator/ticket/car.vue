@@ -1289,7 +1289,7 @@
 
       //handle image
       async addFiles(v) {
-         console.log('adddddd')
+         // console.log('adddddd')
         this.imageIsUploading = true;
         await Promise.all(
           v.map(async (image) => {
