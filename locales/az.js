@@ -629,6 +629,8 @@ export default {
    current_password: "Hazırkı şifrə",
    customs: "Gömrük",
    customs_calculator: "Gömrük rüsumu kalkulyatoru",
+   customs_calculator_title: "Cəmi bir neçə kliklə Gömrük Rüsumunuzu Hesablayın",
+   customs_calculator_description: "Gömrük ödənişləriniz artıq sürpriz olmayacaq. Gömrük Rüsumu Kalkulyatoru ilə əvvəlcədən hesablayaraq ödənişinizə büdcənizi asan uyğunlaşdıra bilərsiniz. ",
    custom_duty: "Mühərrikin işçi həcminə görə tutulan gömrük rüsum",
    customs_value_of_vehicle: "Gömrük dəyəri (USD)",
    cylinder_block: "Silindirlər bloku",
@@ -821,6 +823,8 @@ export default {
    error_payment_msg: "Sizin ödəməniz həyata keçmədi.",
    ESP: "Elektrik əyləc sistemi (EBS)",
    eservices: "E-xidmətlər",
+   eservices_title: "E-xidmətlər ilə gündəlik həyatınız daha rahat və sürətli",
+   eservices_description: "Hər bir sürücünün ehtiyacı olacaq bütün xidmətlərə bir neçə kliklə asanlıqla çata bilərsiniz. Onlayn edilə biləcək bütün xitmətlər E-xidmətlərdə mövcuddur.",
    eservices2: "Elektron xidmətlər",
    excavators: "Ekskavatorlar",
    exchange: "Barter",
@@ -942,6 +946,8 @@ export default {
    "Full size": "Tam ölçülü",
    furgon: "Furqon ",
    garage: "Qaraj",
+   garage_title: "Bütün cərimələrinizi bir neçə kliklə öyrənin və gecikməyin",
+   garage_description: "Avtomobilinizi bu bölməyə əlavə etməklə bütün cərimələr haqqında bildiriş alacaqsınız. Cərimələr ilə heç bir cəriməni qaçırmayın, gecikmə cəzasını unudun.",
    garage_activate_pay: "NV-si aktivləşdirilib",
    garage_renew_pay: "NV-si yenilənib",
    garage_error_10000:
@@ -1042,6 +1048,8 @@ export default {
    Height: "Hündürlük",
    "Help on starting uphill": "Dağa qalxarkən start köməkçisi",
    helper_search: "Bələdçi",
+   helper_search_title: "Maşın alışı yolunuzda etibarlı və məlumatlı bələdçiniz",
+   helper_search_description: " Bələdçi sizin ən uyğun avtomobili seçməyinizdə ən böyük köməkçiniz olacaq. Bir neçə məlumat daxil etməklə Bələdçi sizə uyğun elanları qarşınıza gətirəcək.",
    here_can_be_your_advertising: "Burda reklamınız ola bilər",
    "Hi-Fi Audio system": "Hi-Fi audio sistem",
    history: "Tarixi",
@@ -1206,24 +1214,24 @@ export default {
    "meta-descr_cars":
       "Yeni Və İşlənmiş Maşın Elanlar Siyahısı Bax Və Yeni Və İşlənmiş Maşınların Qiymətlərini Müqayisə Et. Bəyəndiyin Maşın Elanlarını Yadda Saxla.",
    "meta-descr_catalog":
-      "Maşın markaları və modelleri haqqında lazım olan bütün məlumatları – avto kataloqda.",
+      "Mashin.al-ın avtokataloqu ölkədəki ən geniş avtokataloqdur. Hər gün yenilənən elanlar bazası ilə axtardığınız avtomobili ən qısa zamanda tapa biləcəksiniz.",
    "meta-descr_catalog-car":
       "{car} texniki göstəriciləri. Eksteryerin və interyerin şəkilləri. Maşının ölçüləri. Bütün kompelktasiyalar.",
    "meta-descr_commercial":
       "Yeni Və İşlənmiş Ticari Avtomobil Elanları. Ucuz Ticari Avtomobil Qiymətləri. Kreditlə Ticari Avtomobil. Pulsuz Ticari Avtomobil Elanı Yerləşdir.",
    "meta-descr_comparison":
-      "Hansı maşın daha yaxşıdır? Modeli və markanı seç və müqayisə et.",
+      "Bir neçə model arasında qalmısınızsa, Müqayisələr ilə daha uyğununun hansı olduğunu daha asan görə biləcəksiniz. Avtomobil seçiminə daha az vaxt səfr edin.",
    "meta-descr_comparison-announcements":
       "Hansı elan daha yaxşıdır? Bəyəndiyin elanları seç və müqayisə et.",
    "meta-descr_login":
       "Yeni Və istifadə Olunmuş Maşın Elanlarını Axtar, Tap, Müqayisə Et Və Yadda Saxla. Pulsuz Maşın Elanı Yaratmaq Üçün Daxil Ol.",
    "meta-descr_main-page":
-      "Yeni Və İşlənmiş Maşın Elanları. Ucuz Maşın Qiymətləri. Kreditlə Maşınlar. Pulsuz Maşın Elanı Yerləşdir.",
+      "Masin al I Hər gün yenilənən ölkənin ən geniş avtokataloqunda istədiyiniz avtomobili tapmaq çox asandır. Hər gün yeni avtomobil elanları mashin.al-da.",
    "meta-descr_moto":
       "Yeni Və İşlənmiş {type} Elanları. Ucuz {type} Qiymətləri. Kreditlə {type}. Pulsuz {type} Elanı Yerləşdir.",
    "meta-descr_moto-sell":
       "Motosikleti satmaq üçün 5 Dəqiqəyə Pulsuz Motosiklet Elanı Yarat Və Yaxşı Təkliflərdən Yararlan.",
-   "meta-descr_parts": "Ehtiyat hissələri",
+   "meta-descr_parts": "Geniş çeşiddə ehtiyat hissələrinin satış elanları ilə ehtiyacınız olanı hissəni qısa zamanda tapın. Bütün elanların etibarlılığına arxayın ola bilərsiniz.",
    "meta-descr_parts-sell":
       "Ehtiyat hissələrini satmaq üçün 5 Dəqiqəyə Pulsuz Ehtiyat hissələri Elanı Yarat Və Yaxşı Təkliflərdən Yararlan.",
    "meta-descr_promote":
@@ -1236,17 +1244,17 @@ export default {
    "meta-title_business-profile": "Biznes profili yarat",
    "meta-title_cars":
       "Yeni Və İşlənmiş Maşın Elanları | Yeni Və İşlənmiş Maşın Qiymətləri",
-   "meta-title_catalog": "Maşın kataloqu, maşınların xüsusiyyətləri",
+   "meta-title_catalog": "Ölkənin ən geniş avtokataloqu ilə axtardığınızı tapın",
    "meta-title_catalog-car": "{car} {word}",
    "meta-title_commercial":
       "Ticari Avtomobil Elanları | Ticari Avtomobil Qiymətləri",
-   "meta-title_comparison": "Maşınları müqayisə et",
+   "meta-title_comparison": "Avtomobil seçiminizi müqayisələr ilə daha da asanlaşdırın",
    "meta-title_comparison-announcements": "Elanları müqayisə et",
    "meta-title_login": "Daxil ol/Qeydiyyat",
-   "meta-title_main-page": "Onlayn Maşın Bazarı | Maşın Elanları Və Qiymətləri",
+   "meta-title_main-page": "Ən yeni və çox avtomobil elanlarının ünvanı mashin.al-dır",
    "meta-title_moto": "{type} Elanları | {type} Qiymətləri",
    "meta-title_moto-sell": "Motosikleti Onlayn Maşın Bazarında Sat",
-   "meta-title_parts": "Ehtiyat hissələri",
+   "meta-title_parts": "Hər marka və modelə uyğun ehtiyat hissələri burada",
    "meta-title_parts_category": "{category} Elanları | {category} Qiymətləri",
    "meta-title_parts-sell": "Ehtiyat hissələrini Onlayn Maşın Bazarında Sat",
    "meta-title_promote": "Maşını daha tez sat",
@@ -1337,6 +1345,8 @@ export default {
    salon_profile: "Avtosalon profili",
    my_reports: "Hesabatlarım",
    my_searches: "Axtarış şablonları",
+   my_searches_title: "Axtarış şablonları ilə axtardığınız avtomobil sizi tapsın",
+   my_searches_description: "Axtarış şablonuna axtardığınız xüsusiyyətləri qeyd edin və uyğun avtomobilin elanı əlavə olunanda bildiriş gəlsin. Hər gün elanlara baxmaya da bilərsiniz.",
    my_stores: "Mənim salonlarım",
    my_templates_removed: "Axtarış şablonlardan silindi",
    n_azn_return_after_ad_stop:
@@ -1491,7 +1501,8 @@ export default {
    part_roof: "Dam",
    parts: "Ehtiyat hissələri",
    parts_name: "Ehtiyat hissənin adı",
-   parts_shops: "Ehtiyat hissələri mağazaları",
+   parts_shops: "Ehtiyacınız olacaq əşyaların satıldığı mağazaların siyahısı",
+   parts_shops_description: "Ehtiyat hissələri və avtomobil aksesuarları üçün etibarlı mağazalar axtarırsınızsa, bu siyahıya nəzər salın. Bu mağazalarda axtardığınız tapacaqsınız.",
    Passenger: "Sərnişin üçün",
    "Passenger seat back folding function":
       "Konvertasiya edilən oturacaq funksiyası",
@@ -1763,6 +1774,10 @@ export default {
    "salon-edit": "Salonu redaktə et",
    "salon-settings": "Salonun Parametrləri",
    salons: "Salonlar",
+   salons_title: "Rəsmi dillerlər və avtosalonlardan birbaşa elanlar",
+   external_salons_title: "İstədiyiniz ölkədən sifarişlə avtomobil gətirmək imkanı!",
+   salons_description: "Birbaşa salonlar tərəfindən verilən elanların hamısı mashin.al-da. Elanlara nəzər salaraq avtosalonu tərk etməmiş avtomobilləri daha rahat ala biləcəksiniz.",
+   external_salons_description: 'İstədiyiniz model hazırda ölkədə olmasa, Sifarişlə avto funksiyamızla asanlıqla ölkəyə gətirə bilərsiniz. Sadəcə sifarişinizi yerləşdirməyiniz kifayətdir.',
    saturday: "Şənbə",
    save: "Yadda saxla",
    save_searches_so_you_dont_miss_new_offers:
@@ -2553,6 +2568,8 @@ export default {
    external: "Sifarişlə",
    external_salon: "Sifarişlə avto",
    "external-salons": "Sifarişlə avto",
+   plates_title: "Qeydiyyat nişanlarının alışı və satışında ən etibarlı məkan",
+   plates_description: "Etibarlı qeydiyyat nişanı elanları ilə arzuladığınız qeydiyyat nişanını tapın və asanlıqla əldə edin. Geniş çeşiddə elan bazamızda qeydiyyat nişanı axtarın.",
    registration_marks: "Qeydiyyat nişanları",
    registration_marks_min: "Qeydiyyat nişanları",
    registration_marks_text:
@@ -2562,11 +2579,15 @@ export default {
    ml: "ml",
    amount_of_ml: "Miqdarı, ml",
    drink_type: "İçkinin növü",
+   alcometer_meta_title: "Alkotest ilə özünüzün və başqalarının həyatını qoruyun",
+   alcometer_meta_description: "Alkoltest ilə nə vaxt sükan arxasına keçə biləcəyinizi öyrənin. Məlumatları daxil edərək sərxoşluq səviyyənizi və nə vaxt sürə biləcəyinizi rahat görün.",
    alcometer: "Alkotest",
    alcometer_descr:
       "İçkili vəziyyətdə avtomobili idarə etmək qadağandır. Bu, sizin və başqalarının həyatını riskə atır.",
    dimensions_tire: "Ölçülər",
    visual_tire_calculator: "Vizual şin kalkulyatoru",
+   visual_tire_calculator_title: "Vizual şin kalkulyatoru ilə avtomobilinizə uyğun şini seçin",
+   visual_tire_calculator_description: "Vizual şin kalkulyatoru ilə həm avtomobilinizə ən uyğun şini daha rahat seçəcəksiniz və spidometr xəta faizi, klirens dəyişikliyini  görə biləcəksiniz.",
    size_of_old_tire: "Köhnə şinin ölçüsü",
    size_of_new_tire: "Yeni şinin ölçüsü",
    result_of_calculation: "Hesablama nəticələri",
@@ -2952,7 +2973,6 @@ export default {
    comparisons_description: "Avtomobil seçə bilmirsən? O zaman onları müqaisə et və seçimini rahatlaşdır!",
    search_templates: "Axtarış şablonları",
    search_templates_description: "Axtarış parametlərini yaddaşda saxla, uyğun olan avtomobil haqqında bildiriş al.",
-   visual_tire_calculator_description: "Təkər ölçüsünün dəyişdirilməsi avtomobilinin performansına necə təsir edəcək.",
    external_salon_2: "Sifarişlə avto",
    external_salon_2_description: "Xaricdən avtomobil sifariş etməyin tam zamanıdır!",
    autocatalog_description: "Avtomobillər haqqında bilmədiyin hər məlumat bir məkanda! Sən də öyrən.",

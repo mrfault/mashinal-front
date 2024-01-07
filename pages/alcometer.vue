@@ -212,12 +212,13 @@
    export default {
       components: {
          AlcometerPromil,
-         AlcometerSpeedometer,
+         AlcometerSpeedometer
       },
 
       head() {
          return this.$headMeta({
-            title: this.$t('alcometer'),
+            title: this.$t('alcometer_meta_title'),
+            description: this.$t('alcometer_meta_description')
          })
       },
 

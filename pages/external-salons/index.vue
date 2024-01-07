@@ -5,11 +5,7 @@
             class="mb-5"
             :bg="'/img/salon-bg.png'"
             :title="$t('external_salon')"
-         >
-<!--            <template #content>-->
-<!--               <breadcrumbs class="light-color" :crumbs="crumbs"/>-->
-<!--            </template>-->
-         </Banner>
+         />
 
          <salon-filters-form v-if="nonOfficialSalons.length" :count="salonsFiltered.length" />
 
@@ -69,7 +65,8 @@
 
       head() {
          return this.$headMeta({
-            title: this.$t('salons'),
+            title: this.$t('external_salons_title'),
+            description: this.$t('external_salons_description')
          })
       },
 

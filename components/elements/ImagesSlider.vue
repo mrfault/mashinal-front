@@ -303,7 +303,7 @@
                slidesPerView: 12,
                spaceBetween: 16,
                mousewheel: {
-                  sensitivity: 1,
+                  sensitivity: 1
                }
             },
             showIframe: true,
@@ -391,7 +391,7 @@
                this.$nextTick(() => {
                   this.showIframe = true
                   this.$emit('slide-change', this.imagesSwiper.realIndex)
-                  this.thumbsSwiper.slideTo(this.imagesSwiper.activeIndex)
+                  // this.thumbsSwiper.slideTo(this.imagesSwiper.activeIndex)
                   this.updateTouchEvents()
                })
             })
