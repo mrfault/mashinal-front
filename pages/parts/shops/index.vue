@@ -195,6 +195,7 @@
       head() {
          return this.$headMeta({
             title: this.$t('parts_shops'),
+            description: this.$t('parts_shops_description')
          })
       },
 

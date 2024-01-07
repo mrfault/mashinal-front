@@ -204,13 +204,14 @@ export default {
 
    nuxtI18n: {
       paths: {
-         az: '/salonlar',
+         az: '/salonlar'
       },
    },
 
    head() {
       return this.$headMeta({
-         title: this.$t('salons'),
+         title: this.$t('salons_title'),
+         description: this.$t('salons_description')
       })
    },
 

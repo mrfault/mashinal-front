@@ -1,8 +1,6 @@
 <template>
    <div class="pages-comparison-index">
       <div class="container">
-<!--         <breadcrumbs :crumbs="crumbs" />-->
-
          <div class="pages-comparison-index__inner">
             <h2 class="pages-comparison-index__title">{{ $t('comparisons') }}</h2>
 
@@ -41,7 +39,7 @@
       head() {
          return this.$headMeta({
             title: this.$t('meta-title_comparison'),
-            description: this.$t('meta-descr_comparison'),
+            description: this.$t('meta-descr_comparison')
          });
       },
 

@@ -94,8 +94,6 @@
 
       <relatives />
 
-<!--      <HandleIds :single="true" :items="{ type: 'car', id: announcement.id }" />-->
-
       <AnnouncementBar
           v-if="isMobileBreakpoint && isActiveBar"
           :announcement="announcement"
@@ -113,7 +111,6 @@
    import DamageOptions from '~/components/options/DamageOptions';
    import Relatives from '~/components/announcements/inner/Relatives';
    import SiteBanner from "~/components/banners/SiteBanner";
-   import HandleIds from "~/components/announcements/HandleIds.vue";
    import ProductInnerTitle from "~/components/announcements/ProductInnerTitle.vue";
    import AddFavorite from "~/components/announcements/AddFavorite.vue";
    import AddComparison from "~/components/announcements/AddComparison.vue";
@@ -137,7 +134,6 @@
          CarComplects,
          DamageOptions,
          Relatives,
-         HandleIds,
          ProductInnerTitle,
          AddFavorite,
          AddComparison,

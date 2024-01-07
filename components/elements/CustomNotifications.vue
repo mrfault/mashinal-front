@@ -17,7 +17,8 @@
          :toggle="openModal"
          :title="$t('ads_balans')"
          :modal-class="'larger packages'"
-         @close="openModal = false">
+         @close="openModal = false"
+      >
          <div class="d-flex justify-content-between align-items-center">
             <form-radio
                :id="'1'"
@@ -40,12 +41,15 @@
                @change="payment_type = 'balance'"
             />
          </div>
+
          <hr/>
+
          <div class="terminal-section" v-if="totalBalance > 0">
             {{ $t('package_price') }}: {{ unpaidAgreement?.package?.price * duration }} AZN
          </div>
 
          <hr v-if="totalBalance < 1" />
+
          <div class="terminal-section" v-if="totalBalance < 1">
             {{ $t('package_price') }} {{ unpaidAgreement?.package?.price  * duration }} AZN
          </div>

@@ -4,11 +4,13 @@
          <portal to="breadcrumbs">
             <breadcrumbs :crumbs="crumbs"/>
          </portal>
+
          <component
             :is="isMobileBreakpoint ? 'mobile-screen' : 'div'"
             :bar-title="$t('my_packages')"
             @back="$router.push($localePath('/garage-services'))"
-            height-auto>
+            height-auto
+         >
             <div>
                <div v-if="showPackage === false">
                   <div class="row">
@@ -22,7 +24,8 @@
                               package_type: unpaidAgreement.package.name,
                               start_date: $moment(unpaidAgreement.start_date).format('DD.MM.YYYY'),
                               end_date: $moment(unpaidAgreement.end_date).format('DD.MM.YYYY'),
-                              price: unpaidAgreement.price })"/>
+                              price: unpaidAgreement.price })"
+                        />
                      </div>
                   </div>
                   <div class="row" v-if="getAgreements.length > 0">
@@ -103,6 +106,7 @@
                      <div class="clearfix"></div>
                   </div>
                </div>
+
                <template v-else>
                   <CustomNotifications
                      v-if="!!unpaidAgreement"
@@ -113,7 +117,9 @@
                         package_type: unpaidAgreement.package.name,
                         start_date: $moment(unpaidAgreement.start_date).format('DD.MM.YYYY'),
                         end_date: $moment(unpaidAgreement.end_date).format('DD.MM.YYYY'),
-                        price: unpaidAgreement.price })"/>
+                        price: unpaidAgreement.price })"
+                  />
+
                   <Packages :packages="getPackages" :disableBtn="disableBtn"/>
 
                   <div class="row" v-if="!isMobileBreakpoint">

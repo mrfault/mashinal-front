@@ -1,8 +1,6 @@
 <template>
    <div class="pages-dashboard pt-2 pb-lg-5 pt-lg-0">
       <div class="container d-flex flex-wrap">
-<!--         <breadcrumbs :crumbs="crumbs"/>-->
-
          <Cap :className="'mb-3 mt-md-3 mb-md-5'">
             <template #left>
                <h3>{{ $t('eservices2') }}</h3>
@@ -36,7 +34,7 @@
 
       nuxtI18n: {
          paths: {
-            az: '/e-xidmetler',
+            az: '/e-xidmetler'
          }
       },
 
@@ -44,7 +42,8 @@
 
       head() {
          return this.$headMeta({
-            title: this.$t('eservices')
+            title: this.$t('eservices_title'),
+            description: this.$t('eservices_description')
          })
       },
 

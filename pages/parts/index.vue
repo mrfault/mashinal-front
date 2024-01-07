@@ -4,11 +4,7 @@
          class="mt-0 d-sm-none"
          :bg="'/img/part_bg.png'"
          :title="$t('parts')"
-      >
-<!--         <template #content>-->
-<!--            <breadcrumbs :crumbs="crumbs" />-->
-<!--         </template>-->
-      </Banner>
+     />
 
       <part-search-form
          class="mt-0 d-sm-none"
@@ -23,11 +19,7 @@
             class="d-none d-sm-block"
             :bg="'/img/part_bg.png'"
             :title="$t('parts')"
-         >
-<!--            <template #content>-->
-<!--               <breadcrumbs :crumbs="crumbs" />-->
-<!--            </template>-->
-         </Banner>
+         />
 
          <part-search-form
             class="d-none d-sm-block"
@@ -118,8 +110,6 @@
 
    export default {
       name: 'pages-parts-index',
-
-      // layout: 'search',
 
       nuxtI18n: {
          paths: {
