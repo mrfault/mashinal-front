@@ -182,32 +182,10 @@
             </template>
          </grid>
       </div>
-
-<!--      <modal-popup-->
-<!--         :modal-class="'newYear'"-->
-<!--         :toggle="isActive"-->
-<!--         @close="isActive = false"-->
-<!--      >-->
-<!--         <lottie-->
-<!--            class="newYearAnim"-->
-<!--            :width="600"-->
-<!--            :height="600"-->
-<!--            :options="lottieOptions"-->
-<!--            v-on:animCreated="handleAnimation"-->
-<!--         />-->
-
-<!--         <p><span>Dünya Azərbaycanlılarının Həmrəylik Günü</span> <br/> <span>və</span> <br/> Yeni İliniz Mübarək !!!</p>-->
-
-<!--         <img src="/icons/cloud_2.svg" alt="cloud_icon">-->
-<!--         <img src="/icons/cloud_3.svg" alt="cloud_icon">-->
-<!--      </modal-popup>-->
    </div>
 </template>
 
 <script>
-   // import lottie from 'vue-lottie/src/lottie.vue'
-   // import * as animationData from "~/assets/animation.json";
-
    import { mapGetters, mapActions } from 'vuex'
    import CarSearchForm from '~/components/cars/CarSearchForm';
    import MotoSearchForm from '~/components/moto/MotoSearchForm';
@@ -236,23 +214,18 @@
          HandleIds,
          Cap,
          PlatesGrid,
-         FiltersMobile,
-         // lottie
+         FiltersMobile
       },
 
       head() {
          return this.$headMeta({
             title: this.$t('meta-title_main-page'),
-            description: this.$t('meta-descr_main-page'),
+            description: this.$t('meta-descr_main-page')
          })
       },
 
       data() {
          return {
-            // anim: null,
-            // lottieOptions: { animationData: animationData.default },
-            isActive: true,
-
             additionalBrands: { 0 :{} },
             advancedSearch: false,
             announceType: 0,
@@ -429,10 +402,6 @@
             'getGridSearch',
          ]),
 
-         handleAnimation: function (anim) {
-            this.anim = anim;
-         },
-
          goBack() {
             this.advancedSearch = false
             if(this.isMobileBreakpoint) {
@@ -472,7 +441,7 @@
          if (window.innerWidth < 769) this.absoluteMobileScreen = true
          else this.absoluteMobileScreen = false
 
-         window.addEventListener('resize', (e) => {
+         window.addEventListener('resize', () => {
             if (window.innerWidth < 769) this.absoluteMobileScreen = true
             else this.absoluteMobileScreen = false
          })
@@ -482,9 +451,6 @@
          if (this.$route.query.page === 'plate-announce') {
             this.$router.push(this.$localePath('/profile/announcements'));
          }
-
-         // if (localStorage.getItem("newYear")) this.isActive = false;
-         // else localStorage.setItem("newYear", 'true');
       },
 
       beforeDestroy() {
@@ -499,114 +465,6 @@
 </script>
 
 <style lang="scss">
-   //.modal-popup {
-   //   &.newYear {
-   //      width: max-content;
-   //      background: transparent;
-   //
-   //      div {
-   //         overflow: visible !important;
-   //      }
-   //
-   //      .modal-popup_content {
-   //         position: relative;
-   //
-   //         .title {
-   //            margin-bottom: -50px;
-   //            position: relative;
-   //            z-index: 100;
-   //         }
-   //
-   //         img {
-   //            position: absolute;
-   //
-   //            width: 200px;
-   //            animation-duration: 5s;   /* Сколько сек будет меняться цвет фона */
-   //            animation-iteration-count: infinite;   /* Будет проигрываться бесконечно */
-   //            animation-direction: alternate; /* Будет плавно с from до to, без разрывов */
-   //
-   //            &:first-of-type {
-   //               top: 80px;
-   //               //animation: moveCloud1 11s linear infinite;
-   //               animation-name: moveCloud3;
-   //            }
-   //
-   //            &:last-of-type {
-   //               top: 100px;
-   //               right: 50px;
-   //               animation-name: moveCloud4;
-   //               //animation: moveCloud2 11s linear infinite;
-   //            }
-   //         }
-   //
-   //         p {
-   //            position: absolute;
-   //            top: calc(50% - 30px);
-   //            left: 50%;
-   //            transform: translate(-50%, -50%);
-   //            color: #FFFFFF;
-   //            text-align: center;
-   //            font-size: 23px;
-   //            line-height: 32px;
-   //            font-weight: 600;
-   //         }
-   //      }
-   //
-   //      .__rail-is-vertical {
-   //         display: none !important;
-   //      }
-   //   }
-   //}
-
-   //@keyframes moveCloud1 {
-   //   0% {
-   //      transform: translateX(70%);
-   //      opacity: 1;
-   //   }
-   //   70% {
-   //      opacity: 1;
-   //   }
-   //   100% {
-   //      transform: translateX(-70%);
-   //      opacity: 0;
-   //   }
-   //}
-   //
-   //@keyframes moveCloud2 {
-   //   0% {
-   //      transform: translateX(70%);
-   //      opacity: 0;
-   //   }
-   //   100% {
-   //      transform: translateX(-70%);
-   //      opacity: 1;
-   //   }
-   //}
-   //
-   //@keyframes moveCloud3 {
-   //   0% {
-   //      transform: translate(10px, 10px);
-   //   }
-   //   50% {
-   //      transform: translate(20px, 20px);
-   //   }
-   //   100% {
-   //      transform: translate(-5px, -5px);
-   //   }
-   //}
-   //
-   //@keyframes moveCloud4 {
-   //   0% {
-   //      transform: translate(5px, 15px);
-   //   }
-   //   50% {
-   //      transform: translate(-5px, -15px);
-   //   }
-   //   100% {
-   //      transform: translate(5px, 5px);
-   //   }
-   //}
-
    .pages-index {
       padding-top: 24px;
    }
@@ -654,7 +512,6 @@
                padding: 8px;
                border-radius: 12px;
                background-color: #EEF2F6;
-               //gap: 0;
 
                .form-group {
                   button {
@@ -685,18 +542,6 @@
          &__head {
             .announce_types {
                background-color: #121926;
-
-               //.btn {
-               //   &:not(:has(.active)) {
-               //      &:hover {
-               //         background-color: #1B2434 !important;
-               //
-               //         span {
-               //            color: #9AA4B2 !important;
-               //         }
-               //      }
-               //   }
-               //}
             }
 
             .no-bg {
@@ -750,76 +595,4 @@
          }
       }
    }
-
-   //@media (max-width: 1150px) {
-   //   .modal-popup {
-   //      &.newYear {
-   //         max-width: unset;
-   //         position: unset;
-   //         transform: unset;
-   //      }
-   //   }
-   //}
-
-   //@media (max-width: 992px) {
-   //   .modal-popup {
-   //      &.newYear {
-   //         .newYearAnim {
-   //            width: 500px !important;
-   //         }
-   //
-   //         .modal-popup_content {
-   //            p {
-   //               font-size: 18px;
-   //               line-height: 28px;
-   //            }
-   //         }
-   //      }
-   //   }
-   //}
-
-   //@media (max-width: 768px) {
-   //   .modal-popup {
-   //      &.newYear {
-   //         .newYearAnim {
-   //            width: 400px !important;
-   //         }
-   //
-   //         .modal-popup_content {
-   //            p {
-   //               span {
-   //                  display: none;
-   //               }
-   //            }
-   //         }
-   //      }
-   //   }
-   //}
-
-   //@media (max-width: 576px) {
-   //   .modal-popup {
-   //      &.newYear {
-   //         .newYearAnim {
-   //            width: 300px !important;
-   //         }
-   //
-   //         .modal-popup_content {
-   //            img {
-   //               width: 100px;
-   //               top: 190px !important;
-   //
-   //               &:last-of-type {
-   //                  right: 20px;
-   //                  top: 220px !important;
-   //               }
-   //            }
-   //
-   //            p {
-   //               font-size: 14px;
-   //               line-height: 24px;
-   //            }
-   //         }
-   //      }
-   //   }
-   //}
 </style>

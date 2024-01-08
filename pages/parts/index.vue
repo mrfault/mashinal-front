@@ -4,11 +4,7 @@
          class="mt-0 d-sm-none"
          :bg="'/img/part_bg.png'"
          :title="$t('parts')"
-      >
-<!--         <template #content>-->
-<!--            <breadcrumbs :crumbs="crumbs" />-->
-<!--         </template>-->
-      </Banner>
+     />
 
       <part-search-form
          class="mt-0 d-sm-none"
@@ -23,11 +19,7 @@
             class="d-none d-sm-block"
             :bg="'/img/part_bg.png'"
             :title="$t('parts')"
-         >
-<!--            <template #content>-->
-<!--               <breadcrumbs :crumbs="crumbs" />-->
-<!--            </template>-->
-         </Banner>
+         />
 
          <part-search-form
             class="d-none d-sm-block"
@@ -118,8 +110,6 @@
 
    export default {
       name: 'pages-parts-index',
-
-      // layout: 'search',
 
       nuxtI18n: {
          paths: {
@@ -257,18 +247,53 @@
       .announcements-grid {
          margin: 24px 0;
       }
+
+      .part-search-form {
+         .form-buttons {
+            width: max-content;
+            gap: 10px;
+            padding: 8px;
+            border-radius: 12px;
+            background-color: #EEF2F6;
+
+            &__item {
+               width: 100px !important;
+               height: 32px !important;
+
+                &:not(.active) {
+                   button {
+                      border: none;
+                      background-color: transparent;
+
+                      &:hover {
+                         background-color: #E3E8EF;
+
+                         span {
+                            color: #4B5565;
+                         }
+                      }
+                   }
+                }
+            }
+         }
+      }
    }
 
    .dark-mode {
       .pages-parts-index {
          .form-buttons {
-            .btn {
+            background-color: #121926;
+
+            &__item {
                &:not(.active) {
-                  color: #EEF2F6;
-                  border-color: transparent;
-                  background-color: transparent;
-                  &:hover {
-                     background-color: #155EEF;
+                  button {
+                     span {
+                        color: #9AA4B2 !important;
+                     }
+
+                     &:hover {
+                        background-color: #1B2434;
+                     }
                   }
                }
             }

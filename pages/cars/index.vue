@@ -163,8 +163,8 @@ export default {
          // title: this.$t('meta-title_cars'),
          // description: this.$t('meta-descr_cars'),
 
-         title: this.getHeadDetails,
-         description: this.getHeadDetails
+         title: this.metaDescription,
+         description: this.metaDescription
       });
    },
 
@@ -318,7 +318,7 @@ export default {
 
       crumbs() {
          return [
-            {name: this.$t('cars')}
+            { name: this.$t('cars') }
          ]
       },
 
@@ -342,11 +342,25 @@ export default {
          }
       },
 
-      getHeadDetails() {
+      metaTitle() {
          if (this.getCarDetails?.brand) {
             return `
-                  ${this.getCarDetails?.brand}
+                  ${this.getCarDetails?.brand} ${this.getCarDetails?.model ? '' : 'Elanları'}
                   ${this.getCarDetails?.model ? this.getCarDetails?.model : ''}
+                  ${(this.getCarDetails?.model && !this.getCarDetails?.generation) ? 'Elanları' : ''}
+                  ${this.getCarDetails?.generation ? this.getCarDetails?.generation[this.locale] : ''}
+               `
+         } else {
+            return this.$t('meta-title_cars');
+         }
+      },
+
+      metaDescription() {
+         if (this.getCarDetails?.brand) {
+            return `
+                  ${this.getCarDetails?.brand} ${this.getCarDetails?.model ? '' : 'Elanları'}
+                  ${this.getCarDetails?.model ? this.getCarDetails?.model : ''}
+                  ${(this.getCarDetails?.model && !this.getCarDetails?.generation) ? 'Elanları' : ''}
                   ${this.getCarDetails?.generation ? this.getCarDetails?.generation[this.locale] : ''}
                `
          } else {
@@ -433,19 +447,19 @@ export default {
 </script>
 
 <style lang="scss">
-.pages-cars-index {
-   margin-top: 32px;
-
-   &__title {
-      font-weight: 600;
-      font-size: 32px;
-      line-height: 38px;
-      color: #121926;
-      margin-bottom: 32px;
-   }
-
-   .announcements-grid {
+   .pages-cars-index {
       margin-top: 32px;
+
+      &__title {
+         font-weight: 600;
+         font-size: 32px;
+         line-height: 38px;
+         color: #121926;
+         margin-bottom: 32px;
+      }
+
+      .announcements-grid {
+         margin-top: 32px;
+      }
    }
-}
 </style>

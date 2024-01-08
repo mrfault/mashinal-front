@@ -248,7 +248,8 @@
       },
       head() {
          return this.$headMeta({
-            title: this.$t('garage'),
+            title: this.$t('garage_title'),
+            description: this.$t('garage_description')
          })
       },
       async asyncData({store, $cookies, $axios}) {

@@ -131,8 +131,8 @@
 
       head() {
          return this.$headMeta({
-            title: this.$t('registration_marks'),
-            // description: this.$t('meta-registration_marks')
+            title: this.$t('plates_title'),
+            description: this.$t('plates_description')
          });
       },
 

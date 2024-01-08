@@ -570,7 +570,8 @@ export default {
    },
    head() {
       return this.$headMeta({
-         title: this.$t('visual_tire_calculator'),
+         title: this.$t('visual_tire_calculator_title'),
+         description: this.$t('visual_tire_calculator_description')
       })
    },
    data() {

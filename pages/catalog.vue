@@ -5,11 +5,7 @@
             class="mt-0 d-sm-none"
             :bg="'/img/salon-bg.png'"
             :title="$t('autocatalog')"
-         >
-<!--            <template #content>-->
-<!--               <breadcrumbs class="light-color" :crumbs="crumbs"/>-->
-<!--            </template>-->
-         </Banner>
+         />
 
          <catalog-search-form
             class="d-sm-none"
@@ -21,21 +17,12 @@
       </template>
 
       <div class="container">
-<!--         <breadcrumbs-->
-<!--            :crumbs="crumbs"-->
-<!--            v-if="$route.params.body"-->
-<!--         />-->
-
          <Banner
             class="mb-5 d-none d-sm-block"
             :bg="'/img/salon-bg.png'"
             :title="$t('autocatalog')"
             v-if="!$route.params.body"
-         >
-<!--            <template #content>-->
-<!--               <breadcrumbs class="light-color" :crumbs="crumbs"/>-->
-<!--            </template>-->
-         </Banner>
+         />
 
          <template v-if="!$route.params.body">
             <catalog-search-form

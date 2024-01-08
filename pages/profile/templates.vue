@@ -84,7 +84,8 @@ export default {
    middleware: 'auth_general',
    head() {
       return this.$headMeta({
-         title: this.$t('my_searches')
+         title: this.$t('my_searches_title'),
+         description: this.$t('my_searches_description')
       });
    },
    computed: {

@@ -163,8 +163,8 @@
 
       head() {
          return this.$headMeta({
-            title: this.$t('customs_calculator'),
-            // description: this.$t('meta-registration_marks')
+            title: this.$t('customs_calculator_title'),
+            description: this.$t('customs_calculator_description')
          });
       },
 
