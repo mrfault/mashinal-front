@@ -38,50 +38,13 @@
                         @keyup.native.enter="submitForm"
                      />
                   </div>
-                  <!-- Subcategory -->
-<!--                  <div class="col col-lg-2" :class="{'mb-3': isMobileBreakpoint}" v-if="showSubcategories">-->
-<!--                     <form-select-->
-<!--                        :label="$t('category')"-->
-<!--                        v-model="form.sub_category_id"-->
-<!--                        :options="subcategories"-->
-<!--                        has-search-->
-<!--                     />-->
-<!--                  </div>-->
-                  <!-- Price -->
+
                   <div class="col-6 col-md-3">
                      <MinMaxSearch
                         :options="minMaxOptions"
                         :selectedValue="{ min: form.price_from, max: form.price_to }"
                         @change="minMaxValue"
                      />
-
-<!--                       <form-select-->
-<!--                         :label="$t('price')"-->
-<!--                         custom-->
-<!--                         suffix="AZN"-->
-<!--                         :values="{from: form.price_from, to: form.price_to, suffix: getSuffix }"-->
-<!--                         @clear="form.price_from = '', form.price_to = ''"-->
-<!--                       >-->
-<!--                         &lt;!&ndash; :suffix="getOptionValue('Currency', form.currency)" &ndash;&gt;-->
-<!--                         <div class="form-merged">-->
-<!--                           <form-numeric-input-->
-<!--                             :placeholder="$t('from')"-->
-<!--                             v-model="form.price_from"-->
-<!--                           />-->
-<!--                           <form-numeric-input-->
-<!--                             :placeholder="$t('to')"-->
-<!--                             v-model="form.price_to"-->
-<!--                           />-->
-<!--&lt;!&ndash;                            <form-select&ndash;&gt;-->
-<!--&lt;!&ndash;                             :label="'AZN'"&ndash;&gt;-->
-<!--&lt;!&ndash;                             :options="getCurrencyOptions"&ndash;&gt;-->
-<!--&lt;!&ndash;                             v-model="form.currency"&ndash;&gt;-->
-<!--&lt;!&ndash;                             :allow-clear="false"&ndash;&gt;-->
-<!--&lt;!&ndash;                             :clear-option="false"&ndash;&gt;-->
-<!--&lt;!&ndash;                             in-select-menu&ndash;&gt;-->
-<!--&lt;!&ndash;                           />&ndash;&gt;-->
-<!--                         </div>-->
-<!--                       </form-select>-->
                   </div>
 
                   <div class="col-6 col-md-3">
@@ -89,105 +52,8 @@
                         type="button"
                         :class="['btn h-52', 'full-width', 'btn--new-dark-green', {pending}]"
                         @click="submitForm"
-                     >
-                        {{ $t('find') }}
-                     </button>
+                     >{{ $t('find') }}</button>
                   </div>
-
-                  <!-- Announcement count -->
-                  <!--            <div class="col-12 col-lg-2" v-if="!isMobileBreakpoint && pagination.total !== undefined">-->
-                  <!--              <div class="form-info text-green">-->
-                  <!--                {{ $readPlural(pagination.total, $t('plural_forms_announcements')) }}-->
-                  <!--              </div>-->
-                  <!--            </div>-->
-
-<!--                  <div class="col-12" v-if="showDynamicFilter">-->
-<!--                     <transition-expand>-->
-<!--                        <div v-if="!collapsed" class="row">-->
-<!--                           &lt;!&ndash; Dynamic filters &ndash;&gt;-->
-<!--                           <div class="col-lg-12" v-if="showDynamicFilter">-->
-<!--                              <hr/>-->
-
-<!--                              <div class="row">-->
-<!--                                 <div class="col-lg-2 mb-3">-->
-<!--                                    <form-select-->
-<!--                                       :label="$t('select_brand')"-->
-<!--                                       v-model="form.brand_ids"-->
-<!--                                       has-search-->
-<!--                                       multiple-->
-<!--                                       :options="brands"-->
-<!--                                    />-->
-<!--                                 </div>-->
-<!--                                 <div-->
-<!--                                    v-for="filter in dynamicFilters"-->
-<!--                                    :key="filter.id"-->
-<!--                                    class="col-lg-2 mb-3"-->
-<!--                                 >-->
-<!--                                    &lt;!&ndash; Select &ndash;&gt;-->
-<!--                                    <form-select-->
-<!--                                       v-if="filter.component === 'multiselect-component'"-->
-<!--                                       v-model="form[filter.key]"-->
-<!--                                       :label="$t(filter.key)"-->
-<!--                                       :options="filter.values"-->
-<!--                                       translateOptions-->
-<!--                                       multiple-->
-<!--                                    />-->
-
-<!--                                    &lt;!&ndash; Checkbox &ndash;&gt;-->
-<!--                                    <form-checkbox-->
-<!--                                       v-if="filter.component === 'checkbox-component'"-->
-<!--                                       v-model="form[filter.key]"-->
-<!--                                       :label="$t(filter.key)"-->
-<!--                                       :checked-value="form[filter.key]"-->
-<!--                                       :id="'dynamic-filter-' + filter.key"-->
-<!--                                    />-->
-
-<!--                                    &lt;!&ndash; Input &ndash;&gt;-->
-<!--                                    <form-text-input-->
-<!--                                       v-if="filter.component === 'filter-single-input'"-->
-<!--                                       v-model="form[filter.key]"-->
-<!--                                       :id="'dynamic-filter-' + filter.key"-->
-<!--                                       :placeholder="$t(filter.key === 'capacity' ? 'battery_capacity' : filter.key)"-->
-<!--                                    />-->
-<!--                                 </div>-->
-<!--                              </div>-->
-<!--                           </div>-->
-<!--                        </div>-->
-<!--                     </transition-expand>-->
-<!--                  </div>-->
-<!--                  <div class="col-12">-->
-<!--                     <div class="row">-->
-<!--                        <div class="col-lg-8" v-if="!isMobileBreakpoint"></div>-->
-<!--                        &lt;!&ndash; Announcement count &ndash;&gt;-->
-<!--                        <div class="col-12 col-lg-2 mt-3" v-if="isMobileBreakpoint && pagination.total !== undefined">-->
-<!--                           <div class="form-info text-green">-->
-<!--                              {{ $readPlural(pagination.total, $t('plural_forms_announcements')) }}-->
-<!--                           </div>-->
-<!--                        </div>-->
-<!--                        &lt;!&ndash; Reset button &ndash;&gt;-->
-<!--                        <div class="col-6 col-lg-2 mt-3">-->
-<!--                           <button-->
-<!--                              type="button"-->
-<!--                              :class="['btn', 'full-width', 'btn&#45;&#45;red-outline']"-->
-<!--                              @click="reset"-->
-<!--                           >-->
-<!--                              <icon name="reset"/>-->
-<!--                              {{ $t('clear_search') }}-->
-<!--                           </button>-->
-<!--                        </div>-->
-<!--                        &lt;!&ndash; Search button &ndash;&gt;-->
-<!--                        <div class="col-6 col-lg-2 mt-3">-->
-<!--                           <button-->
-<!--                              type="button"-->
-<!--                              :class="['btn', 'full-width', 'btn&#45;&#45;green']"-->
-<!--                              @click="submitForm"-->
-<!--                           >-->
-<!--                              <icon name="search"/>-->
-<!--                              {{ $t('find') }}-->
-<!--                           </button>-->
-<!--                        </div>-->
-<!--                     </div>-->
-<!--                  </div>-->
                </div>
             </div>
          </div>
@@ -296,10 +162,6 @@
                   }
                }
             }
-            // console.log('filters', filters)
-            // console.log('form', this.form)
-            // this.sorting.key = filters.sort_by;
-            // this.sorting.value = filters.sort_order;
          }
       },
 
@@ -329,10 +191,6 @@
       },
 
       computed: {
-         // ...mapGetters({
-         //   pagination: 'parts/pagination'
-         // }),
-
          pagination() {
             return this.$store.getters.partAnnouncements;
          },
