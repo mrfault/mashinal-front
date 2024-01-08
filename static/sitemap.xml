@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+   <urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+      http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
+   >
+
+   <url>
+      <loc>https://www.mashinal.az/</loc>
+      <lastmod>2024-01-01T08:17:09+00:00</lastmod>
+      <changefreq>always</changefreq>
+      <priority>1.00</priority>
+   </url>
+
+   <url>
+      <loc>https://www.mashinal.az/salonlar</loc>
+      <lastmod>2024-01-01T08:17:09+00:00</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.8</priority>
+   </url>
+
+   <url>
+      <loc>https://www.mashinal.az/ehtiyat-hisseleri/magazalar</loc>
+      <lastmod>2024-01-01T08:17:09+00:00</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.8</priority>
+   </url>
+
+   <url>
+      <loc>https://www.mashinal.az/qeydiyyat-nisanlari</loc>
+      <lastmod>2024-01-01T08:17:09+00:00</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>1.00</priority>
+   </url>
+
+   <url>
+      <loc>https://www.mashinal.az/ehtiyat-hisseleri</loc>
+      <lastmod>2024-01-01T08:17:09+00:00</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>1.00</priority>
+   </url>
+
+   <url>
+      <loc>https://www.mashinal.az/e-xidmetler</loc>
+      <lastmod>2024-01-01T08:17:09+00:00</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>1.00</priority>
+   </url>
+
+   <url>
+      <loc>https://www.mashinal.az/calculator/customs</loc>
+      <lastmod>2024-01-01T08:17:09+00:00</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>1.00</priority>
+   </url>
+
+   <url>
+      <loc>https://www.mashinal.az/masinlar/beledci</loc>
+      <lastmod>2024-01-01T08:17:09+00:00</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>1.00</priority>
+   </url>
+
+   <url>
+      <loc>https://www.mashinal.az/qaraj</loc>
+      <lastmod>2024-01-01T08:17:09+00:00</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>1.00</priority>
+   </url>
+
+   <url>
+      <loc>https://www.mashinal.az/alcometer</loc>
+      <lastmod>2024-01-01T08:17:09+00:00</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>1.00</priority>
+   </url>
+
+   <url>
+      <loc>https://www.mashinal.az/muqayise</loc>
+      <lastmod>2024-01-01T08:17:09+00:00</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.8</priority>
+   </url>
+
+   <url>
+      <loc>https://www.mashinal.az/profil/axtaris-sablonlari</loc>
+      <lastmod>2024-01-01T08:17:09+00:00</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.8</priority>
+   </url>
+
+   <url>
+      <loc>https://www.mashinal.az/tiremeter</loc>
+      <lastmod>2024-01-01T08:17:09+00:00</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.8</priority>
+   </url>
+
+   <url>
+      <loc>https://www.mashinal.az/xarici-avto</loc>
+      <lastmod>2024-01-01T08:17:09+00:00</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.8</priority>
+   </url>
+
+   <url>
+      <loc>https://www.mashinal.az/kataloq</loc>
+      <lastmod>2024-01-01T08:17:09+00:00</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.8</priority>
+   </url>
+
+   <url>
+      <loc>https://www.mashinal.az/masinlar</loc>
+      <lastmod>2024-01-01T08:17:09+00:00</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.8</priority>
+   </url>
+</urlset>
