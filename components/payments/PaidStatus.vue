@@ -17,23 +17,26 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+   import { mapGetters, mapActions } from 'vuex';
 
-export default {
-  computed: {
-    ...mapGetters(['paidStatusData'])
-  },
-  methods: {
-    ...mapActions(['updatePaidStatus'])
-  },
-  mounted() {
-    if (this.isMobileBreakpoint) 
-      this.setBodyOverflow('hidden');
-  },
-  beforeDestroy() {
-    if (this.isMobileBreakpoint)
-      this.setBodyOverflow('scroll');
-    this.updatePaidStatus(false);
-  }
-}
+   export default {
+     computed: {
+       ...mapGetters(['paidStatusData'])
+     },
+
+     methods: {
+       ...mapActions(['updatePaidStatus'])
+     },
+
+     mounted() {
+       if (this.isMobileBreakpoint)
+         this.setBodyOverflow('hidden');
+     },
+
+     beforeDestroy() {
+       if (this.isMobileBreakpoint)
+         this.setBodyOverflow('scroll');
+       this.updatePaidStatus(false);
+     }
+   }
 </script>

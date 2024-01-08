@@ -9,9 +9,10 @@
             <h1>{{ $t('site_settings') }}</h1>
          </div>
       </div>
+
       <div class="row">
          <div class="col-md-12 pb-5">
-            <div class="row flex-column-reverse flex-lg-row pt-lg-0 pt-5">
+            <div class="row flex-column-reverse flex-lg-row">
                <div class="col-md-12 pb-5">
                   <div class="card-settings">
                      <div class="row">
@@ -19,7 +20,7 @@
                            <div class="row">
                               <div class="col-md-12 d-flex justify-content-between align-items-center">
                                  <label @click="changeTheme()" class="settings-label">{{$t('dark_mode')}}</label>
-                                 <custom-switch :value="darkTheme" @input="changeTheme()"/>
+                                 <custom-switch :value="darkTheme" :translateX="'19'" @input="changeTheme()" />
                               </div>
                            </div>
                         </div>
@@ -27,7 +28,7 @@
                            <div class="row">
                               <div class="col-md-12 d-flex justify-content-between align-items-center">
                                  <label @click="changeNotificationStatus()" class="settings-label">{{$t('notification_status')}}</label>
-                                 <custom-switch :value="notificationStatus" @input="changeNotificationStatus()"/>
+                                 <custom-switch :value="notificationStatus" :translateX="'19'" @input="changeNotificationStatus()"/>
                               </div>
                            </div>
                         </div>
@@ -60,108 +61,106 @@
 </template>
 
 <script>
-import {mapActions} from "vuex";
-import {ColorModeMixin} from '~/mixins/color-mode';
-import CustomSwitch from "~/components/elements/CustomSwitch.vue";
-import LanguageChange from "~/components/elements/languageChange.vue";
-export default {
-   components: {LanguageChange, CustomSwitch},
-   mixins: [ColorModeMixin],
-   nuxtI18n: {
-      paths: {
-         az: '/tenzimlemeler',
-      },
-   },
-   layout: 'garageLayout',
-   head() {
-      return this.$headMeta({
-         title: this.$t('site_settings'),
-      })
-   },
-   created() {
-      this.$root.$refs.Settings = this;
-   },
-   methods: {
-      ...mapActions(['setNotificationStatus', 'changeLocale']),
-      changeTheme() {
-         this.darkTheme = !this.darkTheme;
-         this.$root?.$refs?.ThemeSwitch?.switchColorMode();
-      },
-      changeOptionValue(value) {
-         this.darkTheme = value;
-      },
-      changeNotificationStatus() {
-         this.notificationStatus = !this.notificationStatus;
+   import {mapActions} from "vuex";
+   import {ColorModeMixin} from '~/mixins/color-mode';
+   import CustomSwitch from "~/components/elements/CustomSwitch.vue";
+   import LanguageChange from "~/components/elements/languageChange.vue";
+   export default {
+      components: {LanguageChange, CustomSwitch},
 
-         let notificationStatus = this.notificationStatus ? 'active' : 'deactive';
+      mixins: [ColorModeMixin],
 
-         this.setNotificationStatus(notificationStatus);
-
-         this.$cookies.set('notification-status', notificationStatus);
+      nuxtI18n: {
+         paths: {
+            az: '/tenzimlemeler',
+         },
       },
-      changeSiteLanguage() {
 
-         this.changeLocale(this.language);
+      layout: 'garageLayout',
 
-         this.$cookies.set('current-language', this.language);
-      }
-   },
-   computed: {
-      crumbs() {
-         return [
-            {name: this.$t('user_information'), route: '/profile'},
-            {name: this.$t('site_settings')}
-         ]
+      head() {
+         return this.$headMeta({
+            title: this.$t('site_settings'),
+         })
       },
-      getLanguageOptions() {
-         return [
-            {key: 'az', name: 'Azerbaijani'},
-            {key: 'ru', name: 'Russian'}
-         ];
+
+      data() {
+         return {
+            language: this.$cookies.get('current-language') ?? 'az',
+            notificationStatus: (this.$cookies.get('notification-status') === 'active'),
+            darkTheme: (this.$cookies.get('color-mode') === 'dark')
+         }
       },
-   },
-   data() {
-      return {
-         language: this.$cookies.get('current-language') ?? 'az',
-         notificationStatus: (this.$cookies.get('notification-status') === 'active'),
-         darkTheme: (this.$cookies.get('color-mode') === 'dark')
-      }
+
+      methods: {
+         ...mapActions(['setNotificationStatus', 'changeLocale']),
+         changeTheme() {
+            this.darkTheme = !this.darkTheme;
+            this.$root?.$refs?.ThemeSwitch?.switchColorMode();
+         },
+         changeOptionValue(value) {
+            this.darkTheme = value;
+         },
+         changeNotificationStatus() {
+            this.notificationStatus = !this.notificationStatus;
+
+            let notificationStatus = this.notificationStatus ? 'active' : 'deactive';
+
+            this.setNotificationStatus(notificationStatus);
+
+            this.$cookies.set('notification-status', notificationStatus);
+         },
+         changeSiteLanguage() {
+
+            this.changeLocale(this.language);
+
+            this.$cookies.set('current-language', this.language);
+         }
+      },
+
+      computed: {
+         crumbs() {
+            return [
+               {name: this.$t('user_information'), route: '/profile'},
+               {name: this.$t('site_settings')}
+            ]
+         },
+         getLanguageOptions() {
+            return [
+               {key: 'az', name: 'Azerbaijani'},
+               {key: 'ru', name: 'Russian'}
+            ];
+         },
+      },
+
+      created() {
+         this.$root.$refs.Settings = this;
+      },
    }
-}
 </script>
 
 <style>
-.settings-label{
-   font-size: 18px;
-   font-weight: 500;
-   line-height: 22px;
-   letter-spacing: 0;
-   text-align: left;
-   color: #364152;
-   cursor: pointer;
-}
-.card-settings{
-   width: 100%;
-   min-height: 112px;
-   top: 128px;
-   left: 16px;
-   padding: 20px 24px 20px 24px;
-   border-radius: 12px;
-   gap: 16px;
-   border: 1px solid #CDD5DF;
-   background: #FFF;
-}
-.border-bottom{
-   border-bottom: 1px solid #CDD5DF;
-}
-.mobile-screen {
-   .settings-label{
+   .pages-dashboard-settings {
+      .toggle-wrapper {
+         width: 44px;
+         height: 24px;
+
+         .toggle-indicator {
+            height: 18px;
+            width: 19px;
+            bottom: 3px;
+         }
+      }
+   }
+
+   .settings-label {
       font-size: 18px;
       font-weight: 500;
       line-height: 22px;
       letter-spacing: 0;
       text-align: left;
       color: #364152;
+      cursor: pointer;
    }
    .card-settings{
       width: 100%;
@@ -177,21 +176,31 @@ export default {
    .border-bottom{
       border-bottom: 1px solid #CDD5DF;
    }
-}
-.dark-mode{
-   .card-settings{
-      background: #1B2434!important;
-      border: 1px solid #1b2434!important;
-   }
-   .settings-label{
-      color: #9AA4B2!important;
-   }
-   .border-bottom{
-      border-bottom: 1px solid #9AA4B2!important;
-   }
-}
-.dark-mode {
    .mobile-screen {
+      .settings-label{
+         font-size: 18px;
+         font-weight: 500;
+         line-height: 22px;
+         letter-spacing: 0;
+         text-align: left;
+         color: #364152;
+      }
+      .card-settings{
+         width: 100%;
+         min-height: 112px;
+         top: 128px;
+         left: 16px;
+         padding: 20px 24px 20px 24px;
+         border-radius: 12px;
+         gap: 16px;
+         border: 1px solid #CDD5DF;
+         background: #FFF;
+      }
+      .border-bottom{
+         border-bottom: 1px solid #CDD5DF;
+      }
+   }
+   .dark-mode{
       .card-settings{
          background: #1B2434!important;
          border: 1px solid #1b2434!important;
@@ -202,6 +211,18 @@ export default {
       .border-bottom{
          border-bottom: 1px solid #9AA4B2!important;
       }
+
+      .mobile-screen {
+         .card-settings{
+            background: #1B2434!important;
+            border: 1px solid #1b2434!important;
+         }
+         .settings-label{
+            color: #9AA4B2!important;
+         }
+         .border-bottom{
+            border-bottom: 1px solid #9AA4B2!important;
+         }
+      }
    }
-}
 </style>
