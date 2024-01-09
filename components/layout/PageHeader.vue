@@ -1,47 +1,5 @@
 <template>
    <div class="page-header">
-      <!--       <div-->
-      <!--          v-if="!isMobileBreakpoint && !close && !$cookies.get('smartbanner_exited')"-->
-      <!--          :style="(!isMobileBreakpoint ? 'height: 96px;': ''),!isMobileBreakpoint ? ($cookies.get('smartbanner_exited')  ? 'margin-bottom: 70px;' :'margin-bottom:70px;') : ''"-->
-      <!--       >-->
-      <!--         <div class="top-promotion-row">-->
-      <!--           <div class="container">-->
-      <!--             <div class="top-promotion">-->
-      <!--               <div class="top-promotion-row-item">-->
-      <!--                 <img src="/img/logo-red.svg" />-->
-      <!--                 <p>-->
-      <!--                   Mashin.al-dan çoxfunksiyalı yeni əlavə-->
-      <!--                 </p>-->
-      <!--               </div>-->
-      <!--               <div class="top-promotion-row-item">-->
-      <!--                 <a-->
-      <!--                   target="_blank"-->
-      <!--                   href="https://apps.apple.com/tn/app/mashin-al/id1588371190?l=az"-->
-      <!--                 >-->
-      <!--                   <img src="/img/app-store.svg" class="app-store-img" />-->
-      <!--                 </a>-->
-      <!--                 <a-->
-      <!--                   target="_blank"-->
-      <!--                   href="https://play.google.com/store/apps/details?id=ventures.al.mashinal&hl=az&gl=US"-->
-      <!--                 >-->
-      <!--                   <img src="/img/google-play.svg" class="google-play-img" />-->
-      <!--                 </a>-->
-      <!--               </div>-->
-      <!--               <div class="top-promotion-row-item">-->
-      <!--                 <img src="/img/mobile-app.png" class="mobile-app" />-->
-      <!--                 <a-->
-      <!--                   style="margin-left: 10px; cursor: pointer;"-->
-      <!--                   @click.prevent="closePromotion"-->
-      <!--                 >-->
-      <!--                   <icon style="color: #081a3e;" name="cross" />-->
-      <!--                   &lt;!&ndash; <inline-svg src="/icons/cross.svg" height="14" style="color: #081a3e;"/> &ndash;&gt;-->
-      <!--                 </a>-->
-      <!--               </div>-->
-      <!--             </div>-->
-      <!--           </div>-->
-      <!--         </div>-->
-      <!--       </div>-->
-
       <header :class="['header-menu d-none d-lg-block', { 'no-border-radius': hoverMenu }]">
          <!-- topbar -->
          <div class="topbar">
@@ -51,12 +9,6 @@
                   :to="$localePath('/')"
                   @click.native="$nuxt.$emit('logo-click')"
                >
-                  <!--                 <img-->
-                  <!--                   :src="$env.NEW_YEAR_SOON ? '/img/logo-white-newyear.svg' : '/img/logo_new.svg'"-->
-                  <!--                   alt="logo"-->
-                  <!--                   :style="$env.NEW_YEAR_SOON ? 'height: unset;': ''"-->
-                  <!--                 />-->
-
                   <inline-svg
                      :src="'/img/logo_new.svg'"
                      v-if="!btlCookie"
@@ -206,95 +158,81 @@
                   <div class="row align-items-center">
                      <div class="col-lg-10 position-static">
                         <ul class="menu position-relative">
-                           <!-- v-if="(user.children && user.children.length) || user.parent_id ? !['eservices','salons','shops'].includes(menu.title) :true"-->
                            <li v-for="menu in navbarMenus"
                               :key="menu.title"
                               @mouseover="menu.children ? (hoverMenu = true) : ''"
                               @mouseleave="hoverMenu = false, activeCategory = 0"
-                              :class="{ dropdown: menu.children }">
+                              :class="{ dropdown: menu.children }"
+                           >
                               <nuxt-link
                                  class="external_salon_hover"
+                                 :class="{'exact-active' : menu.activeRoute === activeTab}"
                                  style="position: relative"
-                                 :active-class="''"
-                                 :exact-active-clas="'active'"
-                                 :to="$localePath(menu.route)">
-                                 <!--<icon -->
-                                 <!--   v-if="menu.icon !== 'external-tab'"-->
-                                 <!--   style="font-size: 20px; margin-right: 10px;"-->
-                                 <!--   class="no-transform "-->
-                                 <!--   :name="menu.icon"-->
-                                 <!--/>-->
-                                 <!--<inline-svg-->
-                                 <!--   class="no-transform "-->
-                                 <!--   style="width: 20px; fill:inherit; margin-right: 10px;" v-else-->
-                                 <!--   src="/img/external_salon.svg"-->
-                                 <!--/>-->
+                                 :to="$localePath(menu.route)"
+                              >
                                  {{ $t(menu.title) }}
-                                 <icon name="chevron-down" v-if="menu.children"/>
+                                 <icon name="chevron-down" v-if="menu.children" />
                                  <IconNovelties v-if="menu.with_badge" />
-                                 <!--<span style="position: absolute; top: 3px; right: 0; display: flex;">-->
-                                 <!--   <inline-svg style="width: 31px;" v-if="menu.icon === 'external-tab'" src="/img/new_badge.svg"/>-->
-                                 <!--</span>-->
                               </nuxt-link>
 
-                              <div
-                                 class="dropdown-content container"
-                                 style="padding-left: 0;"
-                                 v-if="menu.children"
-                                 :class="{ 'dropdown-menu-click': closeDropdownMenu }"
-                              >
-                                 <div class="container">
-                                    <div class="row">
-                                       <div class="col-3" v-if="menu.categories">
-                                          <ul class="dropdown-menu_categories">
-                                             <li
-                                                @mouseover="activeCategory = index"
-                                                v-for="(category, index) in menu.categories"
-                                                :key="category.title"
-                                             >
-                                                <nuxt-link
-                                                   :to="$localePath(category.route)"
-                                                   active-class="link-active"
-                                                   :class="{ active: index === activeCategory }"
-                                                >
-                                                   {{ $t(category.title) }}
+<!--                              <div-->
+<!--                                 class="dropdown-content container"-->
+<!--                                 style="padding-left: 0;"-->
+<!--                                 v-if="menu.children"-->
+<!--                                 :class="{ 'dropdown-menu-click': closeDropdownMenu }"-->
+<!--                              >-->
+<!--                                 <div class="container">-->
+<!--                                    <div class="row">-->
+<!--                                       <div class="col-3" v-if="menu.categories">-->
+<!--                                          <ul class="dropdown-menu_categories">-->
+<!--                                             <li-->
+<!--                                                @mouseover="activeCategory = index"-->
+<!--                                                v-for="(category, index) in menu.categories"-->
+<!--                                                :key="category.title"-->
+<!--                                             >-->
+<!--                                                <nuxt-link-->
+<!--                                                   :to="$localePath(category.route)"-->
+<!--                                                   active-class="link-active"-->
+<!--                                                   :class="{ active: index === activeCategory }"-->
+<!--                                                >-->
+<!--                                                   {{ $t(category.title) }}-->
 
-                                                   <icon name="chevron-right"/>
+<!--                                                   <icon name="chevron-right"/>-->
 
-                                                   <!-- <inline-svg src="/icons/chevron-right.svg" :height="14" /> -->
-                                                </nuxt-link>
-                                             </li>
-                                          </ul>
-                                       </div>
+<!--                                                   &lt;!&ndash; <inline-svg src="/icons/chevron-right.svg" :height="14" /> &ndash;&gt;-->
+<!--                                                </nuxt-link>-->
+<!--                                             </li>-->
+<!--                                          </ul>-->
+<!--                                       </div>-->
 
-                                       <div :class="`col-${menu.categories ? 9 : 12}`">
-                                          <ul :class="['dropdown-menu row', {'resize-icon': activeCategory === 3}]">
-                                             <li
-                                                :class="`col-${menu.categories ? 4 : 3}`"
-                                                v-for="submenu in (menu.categories ? menu.categories[activeCategory].children : menu.children)"
-                                                :key="submenu.title"
-                                             >
-                                                <nuxt-link
-                                                   class="svg-hover"
-                                                   :to="$localePath(submenu.route)"
-                                                   exact
-                                                >
-                                                   <inline-svg
-                                                      v-if="submenu.icon ==='camera360'"
-                                                      style="width: 28px; height:28px;"
-                                                      src="/img/camera360.svg"
-                                                   />
+<!--                                       <div :class="`col-${menu.categories ? 9 : 12}`">-->
+<!--                                          <ul :class="['dropdown-menu row', {'resize-icon': activeCategory === 3}]">-->
+<!--                                             <li-->
+<!--                                                :class="`col-${menu.categories ? 4 : 3}`"-->
+<!--                                                v-for="submenu in (menu.categories ? menu.categories[activeCategory].children : menu.children)"-->
+<!--                                                :key="submenu.title"-->
+<!--                                             >-->
+<!--                                                <nuxt-link-->
+<!--                                                   class="svg-hover"-->
+<!--                                                   :to="$localePath(submenu.route)"-->
+<!--                                                   exact-->
+<!--                                                >-->
+<!--                                                   <inline-svg-->
+<!--                                                      v-if="submenu.icon ==='camera360'"-->
+<!--                                                      style="width: 28px; height:28px;"-->
+<!--                                                      src="/img/camera360.svg"-->
+<!--                                                   />-->
 
-                                                   <icon v-else :name="submenu.icon"/>
+<!--                                                   <icon v-else :name="submenu.icon"/>-->
 
-                                                   {{ $t(submenu.title) }}
-                                                </nuxt-link>
-                                             </li>
-                                          </ul>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
+<!--                                                   {{ $t(submenu.title) }}-->
+<!--                                                </nuxt-link>-->
+<!--                                             </li>-->
+<!--                                          </ul>-->
+<!--                                       </div>-->
+<!--                                    </div>-->
+<!--                                 </div>-->
+<!--                              </div>-->
                            </li>
                         </ul>
                      </div>
@@ -323,165 +261,144 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex'
-import {MenusDataMixin} from '~/mixins/menus-data'
-import {UserDataMixin} from '~/mixins/user-data'
+   import {mapGetters, mapActions} from 'vuex'
+   import {MenusDataMixin} from '~/mixins/menus-data'
+   import {UserDataMixin} from '~/mixins/user-data'
+   import ThemeSwitch from '~/components/elements/ThemeSwitch'
+   import SiteBanner from "~/components/banners/SiteBanner";
+   import IconNovelties from "~/components/elements/IconNovelties.vue";
+   import LanguageChange from "~/components/elements/languageChange.vue";
 
-import ThemeSwitch from '~/components/elements/ThemeSwitch'
-import SiteBanner from "~/components/banners/SiteBanner";
-import IconNovelties from "~/components/elements/IconNovelties.vue";
-import LanguageChange from "~/components/elements/languageChange.vue";
+   export default {
+      mixins: [MenusDataMixin, UserDataMixin],
 
-export default {
-   mixins: [MenusDataMixin, UserDataMixin],
-
-   components: {
-      LanguageChange,
-      IconNovelties,
-      SiteBanner,
-      ThemeSwitch,
-   },
-
-   data() {
-      return {
-         close: false,
-         hoverMenu: false,
-         activeCategory: 0,
-         topAdsVisible: true,
-         closeDropdownMenu: false,
-      }
-   },
-
-   methods: {
-      ...mapActions(['changeLocale']),
-
-      closePromotion() {
-         this.$cookies.set('smartbanner_exited', 1)
-         this.close = true
-         this.$store.commit('closeSmartBanner', false)
+      components: {
+         LanguageChange,
+         SiteBanner,
+         ThemeSwitch,
+         IconNovelties
       },
 
-      handleBtnClick(name) {
-         if (this.routeName === name) {
-            this.scrollTo(9, 9)
+      data() {
+         return {
+            close: false,
+            hoverMenu: false,
+            topAdsVisible: true,
+            closeDropdownMenu: false,
+            activeCategory: 0
          }
       },
-   },
 
-   computed: {
-      ...mapGetters({
-         notViewedFavorites: 'notViewedFavorites',
-         notViewedSavedSearch: 'notViewedSavedSearch',
-         homePageSliders: 'homePageSliders',
-         comparisonCount: 'comparison/count'
-      }),
+      methods: {
+         ...mapActions(['changeLocale']),
 
-      image() {
-         if (this.user?.autosalon) {
-            return (this.user?.autosalon?.logo.includes('http') ? '' : 'https://mashin.al/storage/') + this.user?.autosalon?.logo;
-         } else if (this.user?.avatar){
-            return (this.user?.avatar?.includes('http') ? '' : 'https://mashin.al/storage/') + this.user?.avatar;
-         } else {
-            return false;
+         handleBtnClick(name) {
+            if (this.routeName === name) this.scrollTo(9, 9);
          }
       },
-   },
 
-   watch: {
-      $route(to, from) {
-         this.closeDropdownMenu = true
-         setTimeout(() => {
-            this.closeDropdownMenu = false
-         }, 1000)
+      computed: {
+         ...mapGetters({
+            notViewedFavorites: 'notViewedFavorites',
+            notViewedSavedSearch: 'notViewedSavedSearch',
+            homePageSliders: 'homePageSliders',
+            comparisonCount: 'comparison/count'
+         }),
+
+         image() {
+            if (this.user?.autosalon) {
+               return (this.user?.autosalon?.logo.includes('http') ? '' : 'https://mashin.al/storage/') + this.user?.autosalon?.logo;
+            } else if (this.user?.avatar){
+               return (this.user?.avatar?.includes('http') ? '' : 'https://mashin.al/storage/') + this.user?.avatar;
+            } else {
+               return false;
+            }
+         },
+
+         activeTab() {
+            return this.$route.name.split('__')[0];
+         }
+      },
+
+      watch: {
+         $route(to, from) {
+            this.closeDropdownMenu = true;
+            setTimeout(() => this.closeDropdownMenu = false, 1000);
+         }
       }
-   },
-
-   mounted() {
-      // this.$store.dispatch('comparison/getInitialAnnouncements')
    }
-}
 </script>
 
 <style lang="scss" scoped>
-.ma-garage__nav--profile{
-   margin-bottom: 30px;
-}
-.ma-garage__nav--profile__avatar img{
-   height: 36px;
-   width: 36px;
-   object-fit: contain;
-}
-.dark-mode{
-   .ma-garage__nav--item__title{
-      color: #9AA4B2!important;
+   .ma-garage__nav--profile {
+      margin-bottom: 30px;
    }
-   .ma-garage__nav--profile__name{
-      color: #fff!important;
+   .ma-garage__nav--profile__avatar img {
+      height: 36px;
+      width: 36px;
+      object-fit: contain;
    }
-}
-
-.resize-icon {
-   i {
-      font-size: 35px !important;
-   }
-}
-
-.external_salon_hover:hover, .external_salon_hover.exact-active {
-   svg, path {
-      fill: #F81734 !important;
-   }
-}
-
-.topbar-nav {
-   position: relative;
-
-   &__menu {
-      display: flex;
-      align-items: center;
-      margin-bottom: 0;
-      justify-content: space-between;
-      padding-left: 0;
-
-      li {
-         list-style-type: none;
-
-         &:not(:first-child) {
-            margin-left: 40px;
-         }
-
-         a {
-            //width: 24px;
-            //height: 24px;
-            position: relative;
-
-            i {
-               color: #fff;
-               font-size: 24px;
-            }
-
-            //svg {
-               //height: 24px;
-            //}
-
-            span {
-               position: absolute;
-               top: -14px;
-               right: -9px;
-            }
-         }
+   .dark-mode{
+      .ma-garage__nav--item__title{
+         color: #9AA4B2!important;
+      }
+      .ma-garage__nav--profile__name{
+         color: #fff!important;
       }
    }
 
-   .languageChange {
-      margin-right: 15px;
-      //position: absolute;
-      //top: 0;
-      //right: 50px;
-      //margin-left: 10px;
+   .resize-icon {
+      i {
+         font-size: 35px !important;
+      }
    }
-}
 
-.page-header .navbar .menu > li a.active, .page-header .navbar .menu > li a.exact-active {
-   color: #F81734;
-}
+   .external_salon_hover:hover, .external_salon_hover.exact-active {
+      svg, path {
+         fill: #F81734 !important;
+      }
+   }
+
+   .topbar-nav {
+      position: relative;
+
+      &__menu {
+         display: flex;
+         align-items: center;
+         margin-bottom: 0;
+         justify-content: space-between;
+         padding-left: 0;
+
+         li {
+            list-style-type: none;
+
+            &:not(:first-child) {
+               margin-left: 40px;
+            }
+
+            a {
+               position: relative;
+
+               i {
+                  color: #fff;
+                  font-size: 24px;
+               }
+
+               span {
+                  position: absolute;
+                  top: -14px;
+                  right: -9px;
+               }
+            }
+         }
+      }
+
+      .languageChange {
+         margin-right: 15px;
+      }
+   }
+
+   .page-header .navbar .menu > li a.active, .page-header .navbar .menu > li a.exact-active {
+      color: #F81734;
+   }
 </style>

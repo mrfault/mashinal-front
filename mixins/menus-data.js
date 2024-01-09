@@ -1,8 +1,9 @@
-import {mapGetters} from 'vuex';
-import {RoutesMixin} from './routes';
+import { mapGetters } from 'vuex';
+import { RoutesMixin } from './routes';
 
 export const MenusDataMixin = {
    mixins: [RoutesMixin],
+
    computed: {
       ...mapGetters(['commercialTypes']),
 
@@ -24,36 +25,13 @@ export const MenusDataMixin = {
       },
 
       navbarMenus() {
-         let announcementCategories =
-            [
-               {
-                  title: 'cars',
-                  route: '/cars',
-                  children: [
-                     { title: 'car_plural', route: '/cars', icon: 'car-1' },
-                     { title: '360', route: '/cars?with_panorama=true', icon: 'camera360' }
-                  ]
-               },
-               {title: 'moto', route: '/moto', children: this.motoMenus},
-               {title: 'commercial', route: '/commercial', children: this.commercialMenus},
-               {title: 'parts', route: '/parts', children: this.partsSubMenus},
-            ];
-
          return [
-            {
-               icon: 'car-manat',
-               title: 'dealer_all_announcements',
-               route: '/cars',
-               // children: [],
-               // categories: announcementCategories
-            },
-            { icon: 'salons-tab', title: 'auto_salons', route: '/salons' },
-            { icon: 'shops-tab', title: 'shops', route: '/parts/shops' },
-            { title: 'registration_marks_min', route: '/plates' },
-            { icon: '', title: 'parts', route: '/parts' },
-            // {icon: 'catalog-tab', title: 'autocatalog', route: '/catalog'},
-            // {icon: 'external-tab', title: 'external-salons', route: '/external-salons', with_badge: true},
-            { icon: 'globe', title: 'eservices', route: '/e-services' }
+            { title: 'dealer_all_announcements', route: '/cars', activeRoute: 'cars' },
+            { title: 'auto_salons', route: '/salons', activeRoute: 'salons' },
+            { title: 'shops', route: '/parts/shops', activeRoute: 'parts-shops' },
+            { title: 'registration_marks_min', route: '/plates', activeRoute: 'plates' },
+            { title: 'parts', route: '/parts', activeRoute: 'parts' },
+            { title: 'eservices', route: '/e-services', activeRoute: 'e-services' }
          ]
       },
 
@@ -82,11 +60,11 @@ export const MenusDataMixin = {
 
       bottomMenus() {
          return [
-            {title: 'main', route: '/', icon: '/icons/home_2.svg'},
-            {title: 'favorites', route: '/profile/favorites', icon: '/icons/favorites.svg'},
-            {title: 'new_announce', route: '/sell', icon: '/icons/plus-circle-2.svg'},
-            {title: 'messages', route: '/profile/messages', icon: '/icons/message.svg'},
-            {title: 'garage', route: '/garage-services', icon: '/icons/user_2.svg', hide: !this.loggedIn},
+            {title: 'main', route: '/', icon: '/icons/home_2.svg', activeRoute: 'index'},
+            {title: 'favorites', route: '/profile/favorites', icon: '/icons/favorites.svg', activeRoute: 'profile-favorites'},
+            {title: 'new_announce', route: '/sell', icon: '/icons/plus-circle-2.svg', activeRoute: 'sell'},
+            {title: 'messages', route: '/profile/messages', icon: '/icons/message.svg', activeRoute: 'profile-messages'},
+            {title: 'garage', route: '/garage-services', icon: '/icons/user_2.svg', hide: !this.loggedIn, activeRoute: 'garage-services'},
             {title: 'login', route: '/login', icon: '/icons/user_2.svg', hide: this.loggedIn}
          ];
       },
@@ -168,15 +146,11 @@ export const MenusDataMixin = {
       },
 
       exceptions() {
-         return [
-            'index', 'calculator-customs', 'parts-shops-id'
-         ].includes(this.routeName);
+         return ['index', 'calculator-customs', 'parts-shops-id'].includes(this.routeName);
       },
 
       hasProfileData() {
-         return [
-            'profile', 'profile-settings'
-         ].includes(this.routeName);
+         return ['profile', 'profile-settings'].includes(this.routeName);
       },
 
       hasDashboardPanel() {

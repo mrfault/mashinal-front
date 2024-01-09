@@ -124,326 +124,315 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex';
-import {SearchMixin} from '~/mixins/search';
-import CarSearchForm from '~/components/cars/CarSearchForm';
-import MotoSearchForm from "~/components/moto/MotoSearchForm.vue";
-import Grid from '~/components/announcements/Grid';
-import NoResults from '~/components/elements/NoResults';
-import brand from "../../components/moderator/brand.vue";
-import HandleIds from "~/components/announcements/HandleIds.vue";
-import Cap from "~/components/elements/Cap.vue";
-import FiltersMobile from "~/components/elements/FiltersMobile.vue";
+   import {mapGetters, mapActions} from 'vuex';
+   import {SearchMixin} from '~/mixins/search';
+   import CarSearchForm from '~/components/cars/CarSearchForm';
+   import MotoSearchForm from "~/components/moto/MotoSearchForm.vue";
+   import Grid from '~/components/announcements/Grid';
+   import NoResults from '~/components/elements/NoResults';
+   import brand from "../../components/moderator/brand.vue";
+   import HandleIds from "~/components/announcements/HandleIds.vue";
+   import Cap from "~/components/elements/Cap.vue";
+   import FiltersMobile from "~/components/elements/FiltersMobile.vue";
 
-export default {
-   name: 'pages-cars-index',
+   export default {
+      name: 'pages-cars-index',
 
-   layout: 'search',
+      layout: 'search',
 
-   mixins: [SearchMixin],
+      mixins: [SearchMixin],
 
-   components: {
-      CarSearchForm,
-      MotoSearchForm,
-      Grid,
-      NoResults,
-      HandleIds,
-      Cap,
-      FiltersMobile
-   },
+      components: {
+         CarSearchForm,
+         MotoSearchForm,
+         Grid,
+         NoResults,
+         HandleIds,
+         Cap,
+         FiltersMobile
+      },
 
-   nuxtI18n: {
-      paths: {
-         az: '/masinlar'
-      }
-   },
-
-   head() {
-      return this.$headMeta({
-         // title: this.$t('meta-title_cars'),
-         // description: this.$t('meta-descr_cars'),
-
-         title: this.metaDescription,
-         description: this.metaDescription
-      });
-   },
-
-   data() {
-      return {
-         meta: {type: 'cars', path: '/cars', param: 'car_filter'},
-         additionalBrands: {0: {}},
-         advancedSearch: false,
-         announceType: 0,
-         searchType: 1,
-         sorting: {key: 'created_at', value: 'desc', name: this.$t('show_by_date')},
-         resetSubmit: false,
-         sortItems: [
-            {key: 'created_at', value: 'desc', name: this.$t('show_by_date')},
-            {key: 'price_asc', value: 'asc', name: this.$t('show_cheap_first')},
-            {key: 'price_desc', value: 'desc', name: this.$t('show_expensive_first')},
-            {key: 'mileage', value: 'asc', name: this.$t('mileage')},
-            {key: 'year', value: 'desc', name: this.$t('years')}
-         ]
-      }
-   },
-
-   watch: {
-      '$route.query'(query) {
-         if (query && query.with_panorama == 'true') {
-            this.searchCars(1, true);
+      nuxtI18n: {
+         paths: {
+            az: '/masinlar'
          }
       },
-      // searchType() {
-      //    this.announceType = 0;
-      // }
-   },
 
-   async asyncData({store, route, $auth}) {
-      let post = JSON.parse(route.query.car_filter || '{}');
-      if (route.query.with_panorama == 'true') {
-         post = {...post, with_video: true}
-      }
-      let page = route.query.page || 1;
-      let searchParams = {url: '/car', prefix: 'cars'}
-      if (!store.state.carsAnnouncements.total) await store.dispatch('getGridSearch', {...searchParams, post, page})
-
-      // if (route.query.monetized) {
-      //    store.dispatch('fetchMonetizedAnnouncementsHome');
-      //    console.log('1')
-      // } else {
-      //    console.log('2')
-
-      await Promise.all([
-         store.dispatch('getAllOtherOptions', '2'),
-         store.dispatch('getBrandsOnlyExists'),
-         store.dispatch('getBodyOptions'),
-         store.dispatch('getOptions'),
-         store.dispatch('fetchBrandsList'),
-         store.dispatch('getMotoOptions'),
-         store.dispatch('getColors'),
-         store.dispatch('getPopularOptions'),
-         // store.dispatch('fetchMonetizedCarsSearch', post),
-         // store.dispatch('fetchMonetizedCars'),
-
-         // get model options for brands
-         ...Object.keys(post?.additional_brands || {})
-            .filter(key => post?.additional_brands?.[key]?.brand)
-            .map((key) => {
-               let row = post.additional_brands[key];
-               return store.dispatch('getModelsArray', {value: row.brand_slug, index: key})
-            }),
-         // get generation options for models
-         ...Object.keys(post?.additional_brands || {})
-            .filter(key => post?.additional_brands?.[key]?.model)
-            .map((key) => {
-               let row = post.additional_brands[key];
-               return store.dispatch('getModelGenerationsArray', {
-                  value: row.model_slug,
-                  brand_slug: row.brand_slug,
-                  index: key
-               })
-            }),
-      ]);
-      // }
-
-      if ($auth.loggedIn) {
-         await store.dispatch('fetchSavedSearch', {
-            search_url: `/cars?car_filter=${encodeURI(JSON.stringify(post))}`
+      head() {
+         return this.$headMeta({
+            title: this.metaDescription,
+            description: this.metaDescription
          });
-      }
-
-      return {
-         searchParams,
-         pending: false
-      }
-   },
-
-   methods: {
-      ...mapActions(['getGridSearch']),
-      resetSearch() {
-         this.resetSubmit = true;
-         this.announceType = 0;
       },
-      goBack() {
-         this.advancedSearch = false
-         if (this.isMobileBreakpoint) {
-            this.$nuxt.$emit('submit-car-search-form-mobile')
+
+      data() {
+         return {
+            meta: {type: 'cars', path: '/cars', param: 'car_filter'},
+            additionalBrands: {0: {}},
+            advancedSearch: false,
+            announceType: 0,
+            searchType: 1,
+            sorting: {key: 'created_at', value: 'desc', name: this.$t('show_by_date')},
+            resetSubmit: false,
+            sortItems: [
+               {key: 'created_at', value: 'desc', name: this.$t('show_by_date')},
+               {key: 'price_asc', value: 'asc', name: this.$t('show_cheap_first')},
+               {key: 'price_desc', value: 'desc', name: this.$t('show_expensive_first')},
+               {key: 'mileage', value: 'asc', name: this.$t('mileage')},
+               {key: 'year', value: 'desc', name: this.$t('years')}
+            ]
          }
       },
-      openMore() {
-         this.advancedSearch = true;
-      },
 
-      submitOnMobile() {
-         this.searchCars()
-      },
-
-      async searchCars(page = 1, with_panorama = false) {
-         this.advancedSearch = false;
-         page = this.$route.query.page || 1;
-         let post = JSON.parse(this.$route.query.car_filter || '{}');
-
-         if (!post?.brandsList) {
-            if (with_panorama) {
-               post = {...post, with_video: true};
-            } else {
-               post = {...post, sort_by: post.sort_by, sort_order: post.sort_order};
+      watch: {
+         '$route.query'(query) {
+            if (query && query.with_panorama == 'true') {
+               this.searchCars(1, true);
             }
-            this.pending = true;
-            await this.getGridSearch({...this.searchParams, post, page});
-            // await this.$store.dispatch('fetchMonetizedCarsSearch', post);
-            // await this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'cars', data: post });
-            this.pending = false;
-            !this.resetSubmit && this.scrollTo('.cap', [20, -150]);
-            this.resetSubmit = false
          }
-      }
-   },
-
-   computed: {
-      ...mapGetters([
-         'carsAnnouncements',
-         'getMainMonetized',
-         'singleSavedSearch',
-         'brandsList',
-         // 'monetizedCars',
-         'motoAnnouncements',
-         'popularOptions',
-         'filterVehicle'
-      ]),
-
-      brand() {
-         return brand
       },
 
-      crumbs() {
-         return [
-            { name: this.$t('cars') }
-         ]
-      },
+      async asyncData({store, route, $auth}) {
+         let post = JSON.parse(route.query.car_filter || '{}');
+         if (route.query.with_panorama == 'true') {
+            post = {...post, with_video: true}
+         }
+         let page = route.query.page || 1;
+         let searchParams = {url: '/car', prefix: 'cars'}
+         if (!store.state.carsAnnouncements.total) await store.dispatch('getGridSearch', {...searchParams, post, page})
 
-      getCarDetails() {
-         let carInfo;
-         if (this.$route?.query?.car_filter) {
-            carInfo = JSON.parse(this.$route?.query?.car_filter);
-            this.additionalBrands[0] = carInfo.additional_brands[0];
+         // if (route.query.monetized) {
+         //    store.dispatch('fetchMonetizedAnnouncementsHome');
+         //    console.log('1')
+         // } else {
+         //    console.log('2')
+
+         await Promise.all([
+            store.dispatch('getAllOtherOptions', '2'),
+            store.dispatch('getBrandsOnlyExists'),
+            store.dispatch('getBodyOptions'),
+            store.dispatch('getOptions'),
+            store.dispatch('fetchBrandsList'),
+            store.dispatch('getMotoOptions'),
+            store.dispatch('getColors'),
+            store.dispatch('getPopularOptions'),
+            // store.dispatch('fetchMonetizedCarsSearch', post),
+            // store.dispatch('fetchMonetizedCars'),
+
+            // get model options for brands
+            ...Object.keys(post?.additional_brands || {})
+               .filter(key => post?.additional_brands?.[key]?.brand)
+               .map((key) => {
+                  let row = post.additional_brands[key];
+                  return store.dispatch('getModelsArray', {value: row.brand_slug, index: key})
+               }),
+            // get generation options for models
+            ...Object.keys(post?.additional_brands || {})
+               .filter(key => post?.additional_brands?.[key]?.model)
+               .map((key) => {
+                  let row = post.additional_brands[key];
+                  return store.dispatch('getModelGenerationsArray', {
+                     value: row.model_slug,
+                     brand_slug: row.brand_slug,
+                     index: key
+                  })
+               }),
+         ]);
+         // }
+
+         if ($auth.loggedIn) {
+            await store.dispatch('fetchSavedSearch', {
+               search_url: `/cars?car_filter=${encodeURI(JSON.stringify(post))}`
+            });
          }
 
-         if (!carInfo?.additional_brands[1]?.brand) {
-            for (let i = 0; i < this.brandsList?.length; i++) {
-               if (this.brandsList[i]?.id === carInfo?.additional_brands[0]?.brand) {
-                  return {
-                     brand: this.brandsList[i]?.name,
-                     model: carInfo?.additional_brands[0]?.model_name,
-                     generation: carInfo?.additional_brands[0]?.generation_name
+         return {
+            searchParams,
+            pending: false
+         }
+      },
+
+      methods: {
+         ...mapActions(['getGridSearch']),
+         resetSearch() {
+            this.resetSubmit = true;
+            this.announceType = 0;
+         },
+         goBack() {
+            this.advancedSearch = false
+            if (this.isMobileBreakpoint) {
+               this.$nuxt.$emit('submit-car-search-form-mobile')
+            }
+         },
+         openMore() {
+            this.advancedSearch = true;
+         },
+
+         submitOnMobile() {
+            this.searchCars()
+         },
+
+         async searchCars(page = 1, with_panorama = false) {
+            this.advancedSearch = false;
+            page = this.$route.query.page || 1;
+            let post = JSON.parse(this.$route.query.car_filter || '{}');
+
+            if (!post?.brandsList) {
+               if (with_panorama) {
+                  post = {...post, with_video: true};
+               } else {
+                  post = {...post, sort_by: post.sort_by, sort_order: post.sort_order};
+               }
+               this.pending = true;
+               await this.getGridSearch({...this.searchParams, post, page});
+               // await this.$store.dispatch('fetchMonetizedCarsSearch', post);
+               // await this.$store.dispatch('fetchInfiniteMainMonetized', { type: 'cars', data: post });
+               this.pending = false;
+               !this.resetSubmit && this.scrollTo('.cap', [20, -150]);
+               this.resetSubmit = false
+            }
+         }
+      },
+
+      computed: {
+         ...mapGetters([
+            'carsAnnouncements',
+            'getMainMonetized',
+            'singleSavedSearch',
+            'brandsList',
+            // 'monetizedCars',
+            'motoAnnouncements',
+            'popularOptions',
+            'filterVehicle'
+         ]),
+
+         brand() {
+            return brand
+         },
+
+         crumbs() {
+            return [
+               { name: this.$t('cars') }
+            ]
+         },
+
+         getCarDetails() {
+            let carInfo;
+            if (this.$route?.query?.car_filter) {
+               carInfo = JSON.parse(this.$route?.query?.car_filter);
+               this.additionalBrands[0] = carInfo.additional_brands[0];
+            }
+
+            if (!carInfo?.additional_brands[1]?.brand) {
+               for (let i = 0; i < this.brandsList?.length; i++) {
+                  if (this.brandsList[i]?.id === carInfo?.additional_brands[0]?.brand) {
+                     return {
+                        brand: this.brandsList[i]?.name,
+                        model: carInfo?.additional_brands[0]?.model_name,
+                        generation: carInfo?.additional_brands[0]?.generation_name
+                     }
                   }
                }
             }
+         },
+
+         metaTitle() {
+            if (this.getCarDetails?.brand) {
+               return `
+                     ${this.getCarDetails?.brand} ${this.getCarDetails?.model ? '' : 'Elanları'}
+                     ${this.getCarDetails?.model ? this.getCarDetails?.model : ''}
+                     ${(this.getCarDetails?.model && !this.getCarDetails?.generation) ? 'Elanları' : ''}
+                     ${this.getCarDetails?.generation ? this.getCarDetails?.generation[this.locale] : ''}
+                  `
+            } else {
+               return this.$t('meta-title_cars');
+            }
+         },
+
+         metaDescription() {
+            if (this.getCarDetails?.brand) {
+               return `
+                     ${this.getCarDetails?.brand} ${this.getCarDetails?.model ? '' : 'Elanları'}
+                     ${this.getCarDetails?.model ? this.getCarDetails?.model : ''}
+                     ${(this.getCarDetails?.model && !this.getCarDetails?.generation) ? 'Elanları' : ''}
+                     ${this.getCarDetails?.generation ? this.getCarDetails?.generation[this.locale] : ''}
+                  `
+            } else {
+               return this.$t('meta-title_cars');
+            }
+         },
+
+         // sortItems() {
+         //    return [
+         //       { key: 'created_at', value: 'desc', name: this.$t('show_by_date') },
+         //       { key: 'price', value: 'asc', name: this.$t('show_cheap_first') },
+         //       { key: 'price', value: 'desc', name: this.$t('show_expensive_first') },
+         //       { key: 'mileage', value: 'desc', name: this.$t('mileage') },
+         //       { key: 'year', value: 'desc', name: this.$t('years') }
+         //    ]
+         // },
+
+         getMileageOptions() {
+            // let zeroFirst;
+            return [
+               {name: this.$t('all2'), key: 0},
+               {name: this.$t('new'), key: 1},
+               {name: this.$t('with_mileage_2'), key: 2}
+            ];
+         },
+
+         getSearchTabs() {
+            return [
+               {name: this.$t('auto'), key: 1},
+               {name: this.$t('category_moto'), key: 2}
+            ];
+         },
+
+         handleIdsOptions() {
+            let ids = [];
+
+            ids.push({
+               type: 'car',
+               ids: [
+                  ...this.carsAnnouncements.data.map(item => item.id),
+                  // ...this.monetizedCars.map(item => item.id)
+               ]
+            });
+
+            return ids;
          }
       },
 
-      metaTitle() {
-         if (this.getCarDetails?.brand) {
-            return `
-                  ${this.getCarDetails?.brand} ${this.getCarDetails?.model ? '' : 'Elanları'}
-                  ${this.getCarDetails?.model ? this.getCarDetails?.model : ''}
-                  ${(this.getCarDetails?.model && !this.getCarDetails?.generation) ? 'Elanları' : ''}
-                  ${this.getCarDetails?.generation ? this.getCarDetails?.generation[this.locale] : ''}
-               `
-         } else {
-            return this.$t('meta-title_cars');
+      mounted() {
+         this.searchType = 1;
+         if (this.$route.query?.car_filter) {
+            let filters = JSON.parse(this.$route.query?.car_filter)
+
+            if (filters.sort_by === 'price') {
+               this.sorting.key = `${filters.sort_by}_${filters.sort_order}`;
+               this.sorting.value = filters.sort_order;
+            } else {
+               this.sorting.key = filters.sort_by;
+               this.sorting.value = filters.sort_order;
+            }
+
+            this.announceType = filters.announce_type || 0;
+            this.additionalBrands[0] = filters.additional_brands[0];
          }
+         this.$nuxt.$on("submitSearchMixin", this.submitOnMobile);
+         this.$nuxt.$on("resetSubmit", this.resetSearch);
       },
 
-      metaDescription() {
-         if (this.getCarDetails?.brand) {
-            return `
-                  ${this.getCarDetails?.brand} ${this.getCarDetails?.model ? '' : 'Elanları'}
-                  ${this.getCarDetails?.model ? this.getCarDetails?.model : ''}
-                  ${(this.getCarDetails?.model && !this.getCarDetails?.generation) ? 'Elanları' : ''}
-                  ${this.getCarDetails?.generation ? this.getCarDetails?.generation[this.locale] : ''}
-               `
-         } else {
-            return this.$t('meta-title_cars');
-         }
+      beforeDestroy() {
+         this.$nuxt.$off("submitSearchMixin", this.submitOnMobile);
+         this.$nuxt.$off("resetSubmit", this.resetSearch);
       },
 
-      // sortItems() {
-      //    return [
-      //       { key: 'created_at', value: 'desc', name: this.$t('show_by_date') },
-      //       { key: 'price', value: 'asc', name: this.$t('show_cheap_first') },
-      //       { key: 'price', value: 'desc', name: this.$t('show_expensive_first') },
-      //       { key: 'mileage', value: 'desc', name: this.$t('mileage') },
-      //       { key: 'year', value: 'desc', name: this.$t('years') }
-      //    ]
-      // },
-
-      getMileageOptions() {
-         // let zeroFirst;
-         return [
-            {name: this.$t('all2'), key: 0},
-            {name: this.$t('new'), key: 1},
-            {name: this.$t('with_mileage_2'), key: 2}
-            // {name: this.$t(this.meta.type === 'parts' ? 'S_H' : 'with_mileage'), key: zeroFirst ? 2 : 3}
-         ];
-      },
-
-      getSearchTabs() {
-         return [
-            {name: this.$t('auto'), key: 1},
-            {name: this.$t('category_moto'), key: 2}
-         ];
-      },
-
-      handleIdsOptions() {
-         let ids = [];
-
-         ids.push({
-            type: 'car',
-            ids: [
-               ...this.carsAnnouncements.data.map(item => item.id),
-               // ...this.monetizedCars.map(item => item.id)
-            ]
-         });
-
-         return ids;
+      beforeRouteLeave(to, from, next) {
+         this.$nuxt.$emit('prevent-popstate');
+         next();
       }
-   },
-
-   mounted() {
-      this.searchType = 1;
-      // if (!Object.keys(this.$route.query).length) {
-      //    this.$store.dispatch('fetchInfiniteMainMonetized', {type: 'cars'});
-      // }
-
-      if (this.$route.query?.car_filter) {
-         let filters = JSON.parse(this.$route.query?.car_filter)
-
-         if (filters.sort_by === 'price') {
-            this.sorting.key = `${filters.sort_by}_${filters.sort_order}`;
-            this.sorting.value = filters.sort_order;
-         } else {
-            this.sorting.key = filters.sort_by;
-            this.sorting.value = filters.sort_order;
-         }
-
-         this.announceType = filters.announce_type || 0;
-         this.additionalBrands[0] = filters.additional_brands[0];
-      }
-      this.$nuxt.$on("submitSearchMixin", this.submitOnMobile);
-      this.$nuxt.$on("resetSubmit", this.resetSearch);
-   },
-
-   beforeDestroy() {
-      this.$nuxt.$off("submitSearchMixin", this.submitOnMobile);
-      this.$nuxt.$off("resetSubmit", this.resetSearch);
-   },
-
-   beforeRouteLeave(to, from, next) {
-      this.$nuxt.$emit('prevent-popstate');
-      next();
    }
-}
 </script>
 
 <style lang="scss">

@@ -2996,6 +2996,6 @@ export default {
    "important_info": "Vacib məlumat",
    delete_account: 'Hesabın silinməsi',
    delete_account_description: 'Mashin.AL portalından hesabınızın silinməsini (elanlarınızın, qaraja əlavə edilmiş avtomobillərinizin və fərdi məlumatlarınızın) istəyirsinizsə, aşağıda göstərilmiş pəncərədə, hesabınıza bağlı mobil nömrənizi daxil edin.',
-   delete_account_description_2: 'Hesabınızın silinmə prosesi uğurla həyata keçirildi.'
+   delete_account_description_2: 'Hesabınızın silinmə prosesi uğurla həyata keçirildi.',
 };
 
