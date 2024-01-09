@@ -129,15 +129,6 @@
                <h6>{{ $t(specs.key) }}</h6>
                <h5>{{ specs.value }}</h5>
             </div>
-            <!--            <span>-->
-            <!--               {{ $t(spec.key === 'engine' ? 'engine_only' : spec.key) }}-->
-            <!--            </span>-->
-
-            <!--            <span v-if="spec.key !== 'vin'">{{ spec.value }}</span>-->
-
-            <!--            <span v-else>-->
-            <!--               <p class="mb-0" style="width: calc(100% - 30px)">{{ spec.value }}</p>-->
-            <!--            </span>-->
          </li>
       </ul>
 
@@ -278,7 +269,6 @@
                   icon: '/icons/speedometer.svg',
                   for: ['cars', 'commercial', 'moto']
                },
-
                {
                   key: 'condition',
                   value: (this.announcement.broken || this.announcement.status_id || this.announcement.beaten) && this.$t('bitie'),
@@ -294,8 +284,6 @@
                   value: this.commercialType,
                   for: ['commercial']
                },
-
-
                // {key: 'the_number_of_measures', value: this.tact, for: ['moto']},
                // {key: 'cylinder_block', value: this.cylinderBlock, for: ['moto']},
                {
@@ -306,7 +294,7 @@
                },
                {
                   key: 'condition_2',
-                  value: this.announcement.is_new ? this.$t('new_2') : this.$t('with_mileage'),
+                  value: this.announcement.is_new ? this.$t('new_1') : this.$t('with_mileage'),
                   icon: '/icons/condition.svg',
                   for: ['parts']
                },
@@ -385,7 +373,6 @@
                   for: ['parts']
                },
                {key: 'commercial_size', value: this.announcement.commercial_size},
-
                {
                   key: 'rent',
                   icon: '/icons/clock.svg',
