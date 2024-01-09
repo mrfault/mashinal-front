@@ -94,6 +94,7 @@
 
       methods: {
          ...mapActions(['setNotificationStatus', 'changeLocale']),
+
          changeTheme() {
             this.darkTheme = !this.darkTheme;
             this.$root?.$refs?.ThemeSwitch?.switchColorMode();
@@ -135,13 +136,14 @@
 
       created() {
          this.$root.$refs.Settings = this;
-      },
+      }
    }
 </script>
 
 <style>
    .pages-dashboard-settings {
       .toggle-wrapper {
+         margin-top: 6px;
          width: 44px;
          height: 24px;
 

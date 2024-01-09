@@ -4,10 +4,9 @@
          <li v-for="menu in bottomMenus.filter(item => !item.hide)" :key="menu.title">
             <nuxt-link
                class="position-relative"
+               :class="{'exact-active' : menu.activeRoute === activeTab}"
                :to="$localePath(menu.route)"
                @click="toggleSidebarMenu()"
-               :active-class="''"
-               :exact-active-clas="'active'"
             >
                <inline-svg :src="menu.icon" />
                <span>{{ $t(menu.title) }}</span>
@@ -33,7 +32,11 @@
       mixins: [MenusDataMixin],
 
       computed: {
-         ...mapGetters(['countNewMessages', 'notViewedFavorites'])
+         ...mapGetters(['countNewMessages', 'notViewedFavorites']),
+
+         activeTab() {
+            return this.$route.name.split('__')[0];
+         }
       },
 
       methods: {
