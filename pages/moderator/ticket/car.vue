@@ -1289,7 +1289,6 @@
 
       //handle image
       async addFiles(v) {
-         // console.log('adddddd')
         this.imageIsUploading = true;
         await Promise.all(
           v.map(async (image) => {
@@ -1297,14 +1296,11 @@
             formData.append('temp_id', this.date)
             formData.append('images[]', image)
             try {
+               // `${this.$env().API_SECRET}/media/upload/images`,
               const data = await this.$axios.$post(
                 '/upload_temporary_images',
                 formData,
-                {
-                  headers: {
-                    'Content-Type': 'multipart/form-data',
-                  },
-                },
+                { headers: { 'Content-Type': 'multipart/form-data' }}
               )
               this.saved_images = this.saved_images.concat(data.ids)
               this.$store.commit('setSavedImageUrls', data.original_media);
