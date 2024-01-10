@@ -107,8 +107,9 @@
                :radio-value="'card'"
                :checked="true"
             />
+
             <form-radio
-               v-if="this.$auth.loggedIn && $readNumber(user.balance) > 0"
+               v-if="$auth.loggedIn && user.balance > 0"
                :id="'2'"
                :value="'balance'"
                :label="$t('balans') +' ('+$readNumber(user.balance)+' AZN)'"
@@ -120,17 +121,17 @@
             />
          </div>
 
-         <hr v-if="$readNumber(user.balance) > 0" />
+         <hr v-if="user.balance > 0" />
 
          <div class="wrapp">
-            <div class="terminal-section" v-if="$readNumber(user.balance) > 0">
+            <div class="terminal-section" v-if="user.balance > 0">
                {{ $t('package_price') }}: <span>{{ selectedPackage?.price * duration }} AZN</span>
             </div>
          </div>
 
-         <hr v-if="$readNumber(user.balance) < 1" />
+         <hr v-if="user.balance < 1" />
 
-         <div class="terminal-section" v-if="$readNumber(user.balance) < 1">
+         <div class="terminal-section" v-if="user.balance < 1">
             {{ $t('package_price') }} {{ selectedPackage?.price * duration }} AZN
          </div>
 
@@ -155,7 +156,6 @@
    import { PaymentMixin } from "~/mixins/payment";
    import ComeBack from "~/components/elements/ComeBack.vue";
    import Alert from "~/components/elements/Alert.vue";
-   import Da from "vue2-datepicker/locale/es/da";
 
    export default {
       components: {Alert, ComeBack },
@@ -261,9 +261,6 @@
       },
 
       computed: {
-         Da() {
-            return Da
-         },
          ...mapGetters({
             getAgreements: 'getAgreements',
             getResetForm: 'getResetForm'

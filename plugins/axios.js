@@ -47,7 +47,7 @@ export default function ({app, store, error, $axios, $cookies}) {
             err?.response?.data?.data?.end_date?.forEach(item => app.$toast.error(item));
          }
          if (err?.response?.data?.data?.code ){
-            app.$toast.error(app.i18n.t(err.response.data.data.code[0]));
+            app.$toast.error(app.i18n.t(err.response?.data?.data?.code[0]));
          }
          if (err?.response?.data?.message ){
             app.$toast.error(app.i18n.t(err.response.data.message));
@@ -56,8 +56,8 @@ export default function ({app, store, error, $axios, $cookies}) {
             app.$toast.error(err.response.data.message);
          }
 
-         if (err.response.data.data) {
-            Object.values(err.response.data.data).forEach((val) => {
+         if (err.response?.data?.data) {
+            Object.values(err.response?.data?.data).forEach((val) => {
                app.$toast.error(app.i18n.t(val[0]))
             })
          }else if(err.response.data.message){

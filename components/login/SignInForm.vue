@@ -106,7 +106,7 @@ export default {
                if (response.status === 401) {
                   this.passwordWrong = true
                } else if (response.status === 406) {
-                  this.$emit('update-tab', 'sign-up', 'sms', response.data.data)
+                  this.$emit('update-tab', 'sign-up', 'sms', response?.data?.data)
                }
             })
       },
@@ -169,7 +169,7 @@ export default {
             this.pending = false
          } catch (error) {
             this.pending = false;
-            this.$toasted.error(error.response.data.message || error.response.data.data.message )
+            this.$toasted.error(error.response?.data?.message || error.response?.data?.data?.message )
          }
       },
    },
